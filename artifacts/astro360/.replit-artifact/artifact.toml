@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "ASTRO360"
+version = "1.0.0"
+id = "artifacts/astro360"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25933
+
+[services.development]
+run = "pnpm --filter @workspace/astro360 run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/astro360", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/astro360/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25933"
+BASE_PATH = "/"

@@ -1,0 +1,220 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Playfair Display', ui-serif, Georgia, serif;
+
+  --color-cosmic-50: #f8fafc;
+  --color-cosmic-100: #f1f5f9;
+  --color-cosmic-200: #e2e8f0;
+  --color-cosmic-300: #cbd5e1;
+  --color-cosmic-400: #94a3b8;
+  --color-cosmic-500: #64748b;
+  --color-cosmic-600: #475569;
+  --color-cosmic-700: #334155;
+  --color-cosmic-800: #1e293b;
+  --color-cosmic-900: #0f172a;
+  --color-cosmic-950: #0b0f19;
+
+  /* Design system tokens */
+  --color-background: #090d16;
+  --color-foreground: #e2e8f0;
+  --color-border: rgba(255,255,255,0.08);
+  --color-card: #1e293b;
+  --color-card-foreground: #e2e8f0;
+  --color-primary: #d97706;
+  --color-primary-foreground: #ffffff;
+  --color-muted: #334155;
+  --color-muted-foreground: #94a3b8;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  background-color: #090d16;
+  color: #e2e8f0;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: 'Playfair Display', ui-serif, Georgia, serif;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Sophisticated Slate & Royal Gold Glass Card */
+.glass-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.glass-card-hover {
+  transition: all 0.3s ease;
+}
+.glass-card-hover:hover {
+  background: linear-gradient(135deg, rgba(51, 65, 85, 0.7) 0%, rgba(30, 41, 59, 0.9) 100%);
+  border-color: rgba(217, 119, 6, 0.35);
+  transform: translateY(-4px) rotateX(2deg) rotateY(-2deg);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(217, 119, 6, 0.12);
+}
+.glass-card-hover:active {
+  transform: translateY(0px) scale(0.99);
+}
+
+/* 3D Perspective Card Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* 3D Orbital Spin Animation */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 40s linear infinite;
+}
+.animate-spin-reverse {
+  animation: spin-reverse 30s linear infinite;
+}
+
+/* Elegant Royal Gold & Titanium Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, #fef08a 0%, #eab308 45%, #ca8a04 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-gold {
+  background: linear-gradient(135deg, #fef08a 0%, #d97706 50%, #b45309 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-emerald {
+  background: linear-gradient(135deg, #a7f3d0 0%, #059669 50%, #047857 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Deep Obsidian & Warm Bronze Atmosphere */
+.starfield {
+  background-color: #090d16;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(30, 41, 59, 0.5) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(180, 83, 9, 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(15, 23, 42, 0.6) 0px, transparent 50%),
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 65%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 50% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85% 75%, rgba(255,255,255,0.4) 0%, transparent 100%);
+}
+
+/* Shimmer loading effect */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+/* Zodiac wheel gradient */
+.zodiac-gradient {
+  background: conic-gradient(
+    from 0deg,
+    #94a3b8, #cbd5e1, #d97706, #059669,
+    #0284c7, #475569, #64748b, #78350f,
+    #d97706, #94a3b8, #cbd5e1, #94a3b8
+  );
+}
+
+/* Sidebar active indicator */
+.nav-active {
+  position: relative;
+}
+.nav-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  border-radius: 0 4px 4px 0;
+  background: linear-gradient(180deg, #d97706, #b45309);
+}
+
+/* Smooth page transitions */
+.page-enter {
+  animation: pageEnter 0.3s ease-out forwards;
+}
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Subtle glow effects */
+.glow-indigo { box-shadow: 0 0 30px rgba(51, 65, 85, 0.2); }
+.glow-purple { box-shadow: 0 0 30px rgba(180, 83, 9, 0.15); }
+.glow-pink { box-shadow: 0 0 30px rgba(217, 119, 6, 0.15); }
+
+/* Select dropdown dark mode fix */
+select option {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+/* Prose overrides for dark mode */
+.prose {
+  --tw-prose-body: #cbd5e1;
+  --tw-prose-headings: #f1f5f9;
+  --tw-prose-bold: #f1f5f9;
+  --tw-prose-links: #d97706;
+  --tw-prose-code: #fef08a;
+  --tw-prose-quotes: #94a3b8;
+  --tw-prose-bullets: #64748b;
+}
