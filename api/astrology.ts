@@ -39,7 +39,7 @@ export default async function handler(req: any, res: any) {
         ]
       };
 
-      const fetchFn = (globalThis as any).fetch || fetch;
+      const fetchFn = (globalThis as any).fetch;
       const geminiRes = await fetchFn(geminiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
