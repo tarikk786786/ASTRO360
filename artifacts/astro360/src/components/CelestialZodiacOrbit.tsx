@@ -43,10 +43,8 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
       {/* Radiant Glowing Nebula Backdrop */}
       <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600/20 via-purple-600/25 to-amber-500/20 blur-2xl animate-pulse pointer-events-none" />
 
-      {/* Outer Zodiac Belt Ring (Rotates Slowly) */}
-      <motion.div 
-        animate={{ rotate: 360 }}
-        transition={{ duration: 150, repeat: Infinity, ease: 'linear' }}
+      {/* Outer Zodiac Belt Ring (Steady & Crisp) */}
+      <div 
         className="absolute inset-2 rounded-full border border-blue-500/25 flex items-center justify-center pointer-events-none"
       >
         {ZODIAC_SIGNS.map((z, idx) => {
@@ -64,12 +62,10 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
             </div>
           );
         })}
-      </motion.div>
+      </div>
 
       {/* Middle Orbit Track */}
-      <motion.div 
-        animate={{ rotate: -360 }}
-        transition={{ duration: 100, repeat: Infinity, ease: 'linear' }}
+      <div 
         className="absolute inset-10 rounded-full border border-dashed border-cyan-500/30 flex items-center justify-center pointer-events-none"
       />
 
@@ -84,7 +80,7 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
       >
         <div className="w-full h-full rounded-full bg-[#0B1220] flex flex-col items-center justify-center text-center p-1 border border-white/20">
           <div className="flex items-center gap-1">
-            <Sun className="w-4 h-4 text-amber-400 animate-spin-slow" />
+            <Sun className="w-4 h-4 text-amber-400" />
             <Moon className="w-4 h-4 text-cyan-400" />
           </div>
           <span className="text-[9px] font-mono font-bold text-amber-300 pt-0.5">CORE SOL</span>

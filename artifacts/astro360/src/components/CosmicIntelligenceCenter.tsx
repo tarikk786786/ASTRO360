@@ -734,7 +734,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
                 <div className="p-4 rounded-2xl bg-[#0B1220] border border-cyan-500/30 space-y-2 shadow-2xl overflow-hidden relative">
                   <div className="flex items-center justify-between border-b border-white/10 pb-2">
                     <span className="text-xs font-mono font-bold text-amber-300 flex items-center gap-1.5">
-                      <Sparkles className="w-4 h-4 text-amber-400 animate-spin-slow" /> Animated Zodiac Orbit & Ephemeris Wheel
+                      <Sparkles className="w-4 h-4 text-amber-400" /> Animated Zodiac Orbit & Ephemeris Wheel
                     </span>
                     <span className="text-[9px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30">Interactive 3D Rings</span>
                   </div>
