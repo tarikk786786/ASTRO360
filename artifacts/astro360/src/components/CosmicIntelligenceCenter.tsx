@@ -876,28 +876,28 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs font-mono">
-              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10">
-                <span className="text-[10px] text-[#94A3B8] block">Tithi</span>
+              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                <span className="text-[10px] text-[#94A3B8] block">Tithi (Lunar Day Phase)</span>
                 <span className="font-semibold text-[#F59E0B]">{panchang.tithi}</span>
               </div>
-              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10">
-                <span className="text-[10px] text-[#94A3B8] block">Nakshatra</span>
+              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                <span className="text-[10px] text-[#94A3B8] block">Nakshatra (Lunar Mansion)</span>
                 <span className="font-semibold text-[#22C55E]">{panchang.nakshatra}</span>
               </div>
-              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10">
-                <span className="text-[10px] text-[#94A3B8] block">Yoga</span>
+              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                <span className="text-[10px] text-[#94A3B8] block">Yoga (Sol-Lunar Harmony)</span>
                 <span className="font-semibold text-[#06B6D4]">{panchang.yoga}</span>
               </div>
-              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10">
-                <span className="text-[10px] text-[#94A3B8] block">Abhijit Muhurta</span>
+              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                <span className="text-[10px] text-[#94A3B8] block">Golden Window (Abhijit)</span>
                 <span className="font-semibold text-[#22C55E]">{panchang.abhijitMuhurta}</span>
               </div>
-              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10">
-                <span className="text-[10px] text-[#94A3B8] block">Rahu Kalam</span>
+              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                <span className="text-[10px] text-[#94A3B8] block">Friction Hours (Rahu Kalam)</span>
                 <span className="font-semibold text-[#EF4444]">{panchang.rahuKalam}</span>
               </div>
-              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10">
-                <span className="text-[10px] text-[#94A3B8] block">Karana</span>
+              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                <span className="text-[10px] text-[#94A3B8] block">Karana (Action Energy)</span>
                 <span className="font-semibold text-[#CBD5E1]">{panchang.karana}</span>
               </div>
             </div>
