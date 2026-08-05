@@ -119,7 +119,9 @@ export default function App() {
 
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
     'Asian & Eastern': true,
-    'Western & European': true
+    'Western & European': true,
+    'Middle Eastern & Semitic': true,
+    'Indigenous & Ancient': true
   });
 
   const toggleGroup = (group: string) => {
@@ -164,7 +166,7 @@ export default function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden"
+            className="fixed inset-0 bg-black/70 backdrop-blur-md z-40 md:hidden"
             onClick={() => setIsSidebarOpen(false)}
           />
         )}
@@ -172,7 +174,7 @@ export default function App() {
 
       {/* Sidebar */}
       <aside 
-        className={`w-72 border-r border-white/[0.06] bg-black/50 backdrop-blur-2xl z-40 flex-shrink-0 fixed md:relative h-full flex flex-col transition-transform duration-300 ease-out ${
+        className={`w-72 border-r border-white/[0.08] bg-[#090d16]/95 backdrop-blur-2xl z-50 flex-shrink-0 fixed md:relative inset-y-0 left-0 h-full flex flex-col transition-transform duration-300 ease-out shadow-2xl ${
           isSidebarOpen || !isMobile ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
