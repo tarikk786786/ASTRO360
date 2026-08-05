@@ -587,11 +587,13 @@ export default function AstroRemedialGemstoneEngine({ userProfile }: AstroRemedi
             <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
               <Globe className="w-4 h-4 text-emerald-400" /> Remedy Tradition
             </label>
-            <div className="grid grid-cols-3 gap-1.5">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
               {[
                 { id: 'vedic', label: '🕉️ Vedic' },
                 { id: 'western', label: '🔮 Western' },
                 { id: 'islamic', label: '🌙 Islamic' },
+                { id: 'chinese', label: '☯️ BaZi' },
+                { id: 'universal', label: '🌐 Universal' },
               ].map((t) => (
                 <button
                   key={t.id}
