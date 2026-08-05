@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, ShieldCheck, Heart, Briefcase, DollarSign, Activity, BookOpen, Download, 
   Compass, CheckCircle2, AlertCircle, RefreshCw, Layers, Search, Sun, Moon, Zap, 
-  HelpCircle, Eye, Users, GraduationCap, Anchor, ArrowRight, Check, Share2, Filter
+  HelpCircle, Eye, Users, GraduationCap, Anchor, ArrowRight, Check, Share2, Filter,
+  Sliders, User, Shield, CheckSquare
 } from 'lucide-react';
 import type { UserProfile } from '../types';
+import { calculatePlanetaryPositions, calculateAshtaKootaScore } from '../lib/astroCalculations';
 
 interface HolisticAdvisorProps {
   userProfile: UserProfile;
@@ -148,155 +150,108 @@ export const LIFE_PROBLEMS: ProblemDomain[] = [
     id: 'relationship_heartbreak',
     category: 'Love & Relationships',
     title: 'Relationship Tension, Breakups & Loneliness',
-    subtitle: 'Heal from betrayal or heartbreak, resolve marital conflicts, and attract genuine love',
+    subtitle: 'Heal emotional wounds, align Venusian energy, and attract genuine soul connection',
     iconName: 'Heart',
     color: 'from-pink-500 to-rose-600',
-    badge: 'Emotional Care',
+    badge: 'Soul Healing',
     rootCauses: [
-      'Venus-Mars disharmony or 7th House Rahu/Ketu karmic node influences',
-      'Unexpressed emotional expectations and poor communication channels',
-      'Past attachment wounds leaking into current relationships'
+      'Venus-Ketu affliction causing detachment or repetition of toxic patterns',
+      'Unresolved childhood attachment style insecurities',
+      'Lack of clear boundary communication with partners'
     ],
     symptoms: [
-      'Frequent arguments over minor daily chores or misunderstandings',
-      'Feeling emotionally distant or walking on eggshells around partner',
-      'Deep fear of abandonment or reluctance to trust new people'
+      'Fear of abandonment or anxious attachment loops',
+      'Difficulty trusting new partners after past betrayals',
+      'Feeling misunderstood or unappreciated in relationships'
     ],
     islamicRemedy: {
-      title: 'Du\'a for Domestic Harmony & Affection (Surah Al-Furqan)',
+      title: 'Du\'a of Prophet Musa for Soulmates & Mawaddah',
       duaArabic: 'رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا',
       duaTranslation: '"Our Lord, grant us from among our wives and offspring comfort to our eyes and make us an example for the righteous." (Qur\'an 25:74)',
-      action: 'Make intention of Sabr (Patience) and Husn al-Dhan (Good Assumption). Speak soft words and give unexpected gifts.',
-      source: 'Qur\'an 25:74 & Sunnah Advice'
+      action: 'Recite 7x after Isha prayer. Perform Tahajjud prayer for divine emotional healing and noble spouse.',
+      source: 'Qur\'an 25:74'
     },
     planetaryRemedy: {
       planet: 'Venus (Shukra) & Moon (Chandra)',
       element: 'Water & Air',
-      gemstone: 'Rose Quartz / Opal / Moonstone',
-      day: 'Friday (Love & Reconciliation) & Monday (Mind & Feelings)',
-      action: 'Wear soft pink or white tones on Fridays; spend 20 minutes sharing quiet gratitude with loved ones.'
+      gemstone: 'Diamond / White Sapphire / Opal',
+      day: 'Friday (Love & Harmony)',
+      action: 'Wear light pastel colors on Fridays; practice loving-kindness journaling during Moon hours.'
     },
     psychologicalRemedy: {
-      framework: 'Gottman Method & Secure Attachment Therapy',
-      mindsetShift: 'Conflict in relationship is an invitation to understand unfulfilled needs, not a sign of fundamental incompatibility.',
-      exercise: 'Practice the 5:1 ratio: Offer 5 positive affirmations or gentle gestures for every 1 constructive feedback.'
+      framework: 'Attachment Theory & Emotionally Focused Healing',
+      mindsetShift: 'Your current heartbreak is a sacred threshold clearing space for a higher quality, aligned partnership.',
+      exercise: 'Write a letter to your ex or past self forgiving all transgressions. Do not send it—burn or delete it as a ritual of release.'
     },
     sevenDayPlan: [
-      'Day 1: Write down unvoiced emotional hurts in a private journal to process without reacting.',
-      'Day 2: Identify your partner\'s (or your own) top Love Language (Words, Time, Service, Touch, Gifts).',
-      'Day 3: Initiate a non-defensive 20-minute conversation focused strictly on listening without interrupting.',
-      'Day 4: Plan a zero-screen quality date or self-care evening if single.',
-      'Day 5: Practice forgiveness for past small mistakes—release grudges to lighten your heart.',
-      'Day 6: Send an explicit text or note of genuine appreciation to your partner/loved one.',
-      'Day 7: Set clear, respectful boundaries on what behavior is acceptable moving forward.'
+      'Day 1: Unfollow or mute social triggers related to past relationships.',
+      'Day 2: Write down 5 core values you require in your future partner.',
+      'Day 3: Spend 1 full day practicing self-care and self-love rituals.',
+      'Day 4: Engage in a group hobby or community service to broaden social horizons.',
+      'Day 5: Practice vocalizing personal boundaries politely with friends or family.',
+      'Day 6: Recite Quranic supplications for harmonious companionship.',
+      'Day 7: Step into the world with an open, resilient, and confident heart.'
     ]
   },
   {
-    id: 'anxiety_overthinking',
-    category: 'Mental Health & Peace',
-    title: 'Anxiety, Overthinking & Fear of the Future',
-    subtitle: 'Calm racing thoughts, cure insomnia, and cultivate unshakeable inner peace',
-    iconName: 'Sparkles',
-    color: 'from-purple-500 to-indigo-600',
-    badge: 'Mental Wellness',
-    rootCauses: [
-      'Afflicted Moon or Mercury causing rapid, uncontrolled mental loops',
-      'Over-stimulation from digital devices and chronic elevated cortisol',
-      'Attempting to control future outcomes beyond personal sphere of influence'
-    ],
-    symptoms: [
-      'Waking up with sudden tightness in chest or racing heartbeat',
-      'Replaying worst-case scenarios over and over late at night',
-      'Difficulty staying present in conversations or daily activities'
-    ],
-    islamicRemedy: {
-      title: 'Dhikr of Tranquility (Surah Ar-Ra\'d & Remembrance)',
-      duaArabic: 'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ',
-      duaTranslation: '"Unquestionably, by the remembrance of Allah do hearts find rest." (Qur\'an 13:28)',
-      action: 'Recite "La hawla wa la quwwata illa billah" (There is no power nor strength except through Allah) 33x when feeling overwhelmed.',
-      source: 'Qur\'an 13:28 & Sahih Muslim'
-    },
-    planetaryRemedy: {
-      planet: 'Moon (Chandra) & Neptune',
-      element: 'Water',
-      gemstone: 'Pearl / Amethyst / Silver',
-      day: 'Monday (Mind & Ocean Calmness)',
-      action: 'Drink water stored in silver or glass containers; avoid screens after 9 PM on Mondays.'
-    },
-    psychologicalRemedy: {
-      framework: 'CBT (Cognitive Behavioral Therapy) & 5-4-3-2-1 Grounding',
-      mindsetShift: 'Thoughts are mental events, not objective facts. You are the observer of thoughts, not the thoughts themselves.',
-      exercise: 'Use the 5-4-3-2-1 grounding technique: Name 5 things you see, 4 you can touch, 3 you hear, 2 you smell, 1 you taste.'
-    },
-    sevenDayPlan: [
-      'Day 1: Implement a strict 60-minute digital curfew before sleep.',
-      'Day 2: Practice 4-7-8 breathing for 5 minutes twice daily (Inhale 4s, Hold 7s, Exhale 8s).',
-      'Day 3: Write down all catastrophic worries on paper, then physically tear up the page.',
-      'Day 4: Walk outdoors barefoot on grass or in nature for 20 minutes grounding.',
-      'Day 5: Limit caffeine intake after 12 PM to protect nervous system.',
-      'Day 6: Engage in 15 minutes of slow physical stretching or restorative yoga/salat.',
-      'Day 7: Schedule a weekly "Worry Window"—allow 15 mins to worry, then move on.'
-    ]
-  },
-  {
-    id: 'health_burnout',
+    id: 'health_lethargy',
     category: 'Health & Vitality',
-    title: 'Physical Burnout, Fatigue & Energy Slumps',
-    subtitle: 'Recharge depleted physical energy, restore sleep architecture, and rebuild immunity',
+    title: 'Chronic Fatigue, Lethargy & Mental Anxiety',
+    subtitle: 'Re-energize your physical vessel, balance Ojas/Prana, and restore inner peace',
     iconName: 'Activity',
-    color: 'from-red-500 to-rose-600',
-    badge: 'Physical Revival',
+    color: 'from-purple-500 to-indigo-600',
+    badge: 'Vitality Boost',
     rootCauses: [
-      '6th/8th House Mars affliction or Sun vitality depletion',
-      'Chronic sleep debt and irregular meal circadian timings',
-      'Suppressed emotional anger or grief manifesting physically'
+      'Sun or Mars weakness causing low digestive fire (Agni) and stamina',
+      'Disrupted circadian sleep cycles and screen overuse before bed',
+      'Repressed emotions manifesting as physical aches or brain fog'
     ],
     symptoms: [
-      'Constant brain fog, difficulty focusing past 2 PM',
-      'Frequent muscle tension, headaches, or digestive discomfort',
-      'Waking up feeling unrefreshed despite 8 hours in bed'
+      'Waking up tired despite 8 hours of sleep',
+      'Constant digestive bloating or erratic appetite',
+      'Racing thoughts or panic attacks during low-energy periods'
     ],
     islamicRemedy: {
-      title: 'Tibb an-Nabawi (Prophetic Healing & Cupping / Honey)',
-      duaArabic: 'اللَّهُمَّ رَبَّ النَّاسِ أَذْهِبِ الْبَاسَ اشْفِ أَنْتَ الشَّافِي لاَ شِفَاءَ إِلاَّ شِفَاؤُكَ',
-      duaTranslation: '"O Allah, Lord of mankind, remove the hardship and heal, for You are the Healer. There is no healing except Your healing."',
-      action: 'Consume 1 tsp raw honey with warm water in morning. Practice Sunnah fasting (Mondays/Thursdays) for cellular detox.',
+      title: 'Ruqyah & Prophetic Healing (Tibb al-Nabawi)',
+      duaArabic: 'اللَّهُمَّ رَبَّ النَّاسِ أَذْهِبِ الْبَاسَ اشْفِ أَنْتَ الشَّافِي لاَ شِفَاءَ إِلاَّ شِفَاؤُكَ شِفَاءً لاَ يُغَادِرُ سَقَمًا',
+      duaTranslation: '"O Allah, Lord of mankind, remove the hardship and heal, You are the Healer. There is no healing except Your healing, a healing that leaves no illness."',
+      action: 'Recite over water and drink. Take 1 tsp of pure Black Seed (Habbat al-Sawda) honey every morning.',
       source: 'Sahih al-Bukhari 5675'
     },
     planetaryRemedy: {
       planet: 'Sun (Surya) & Mars (Mangal)',
-      element: 'Fire & Light',
-      gemstone: 'Red Coral / Ruby / Carnelian',
-      day: 'Tuesday (Physical Strength) & Sunday (Vitality)',
-      action: 'Get 15 minutes of direct morning sunlight within 30 minutes of waking on Sundays.'
+      element: 'Fire & Solar Prana',
+      gemstone: 'Ruby / Red Coral',
+      day: 'Sunday (Solar Vitality)',
+      action: 'Expose skin to early morning sunlight (7:00–7:30 AM) for 15 minutes to absorb Prana.'
     },
     psychologicalRemedy: {
-      framework: 'Circadian Biology & Somatic Energetics',
-      mindsetShift: 'Rest is not a reward earned after exhaustion; rest is a fundamental biological requirement for creation.',
-      exercise: 'Perform a 10-minute progressive muscle relaxation scan from toes to crown before sleeping.'
+      framework: 'Somatic Experiencing & Polyvagal Nervous System Reset',
+      mindsetShift: 'Fatigue is your body\'s intelligent emergency brake. Honor the need for deep restoration.',
+      exercise: 'Perform 4-7-8 Breathing (Inhale 4s, Hold 7s, Exhale 8s) for 5 minutes when anxiety peaks.'
     },
     sevenDayPlan: [
-      'Day 1: Hydrate with 3 liters of water infused with minerals/electrolytes.',
-      'Day 2: Get morning sunlight exposure at 7-8 AM for 15 minutes to reset melatonin.',
-      'Day 3: Replace processed sugars with whole fruits, nuts, and organic dates.',
-      'Day 4: Engage in 20 minutes of moderate zone-2 cardio (brisk walk or swimming).',
-      'Day 5: Disconnect from work emails at 6 PM sharp to allow parasympathetic nervous system recovery.',
-      'Day 6: Experience a warm bath with Epsom salts or Hijama (cupping) if suitable.',
-      'Day 7: Protect 8 full hours of sleep in a pitch-black, cool room (65-68°F / 18-20°C).'
+      'Day 1: Eliminate screens 1 hour before bedtime; drink warm chamomile or mint tea.',
+      'Day 2: Walk outdoors in morning sunlight for 20 minutes.',
+      'Day 3: Replace processed sugars with raw dates, almonds, and clean hydration.',
+      'Day 4: Practice 15 minutes of light stretching or yoga/pranayama.',
+      'Day 5: Take a warm sea-salt bath or shower while practicing mindful gratitude.',
+      'Day 6: Recite prophetic healing supplications during quiet morning hours.',
+      'Day 7: Schedule a complete rest day with zero high-stress commitments.'
     ]
   },
   {
-    id: 'family_disputes',
+    id: 'family_conflict',
     category: 'Family & Home',
-    title: 'Family Disputes, In-Law Friction & Home Tension',
-    subtitle: 'Restore peace at home, resolve lineage conflicts, and protect household unity',
+    title: 'Family Discord, Domestic Strain & In-Law Tension',
+    subtitle: 'Harmonize domestic energy, establish healthy boundaries, and restore peace at home',
     iconName: 'Users',
-    color: 'from-blue-500 to-indigo-600',
-    badge: 'Home Peace',
+    color: 'from-rose-600 to-purple-600',
+    badge: 'Harmony Shield',
     rootCauses: [
-      '4th House affliction (Ketu/Mars) impacting domestic tranquility',
-      'Unclear boundaries between extended family and nuclear household',
-      'Generational communication gap and conflicting cultural values'
+      '4th House (Home) afflicted by Rahu/Saturn transits',
+      'Intergenerational communication gaps and unaligned priorities',
+      'Boundary erosion where extended relatives overly dictate private decisions'
     ],
     symptoms: [
       'Frequent tense atmosphere during family dinners or gatherings',
@@ -530,7 +485,28 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [completedSteps, setCompletedSteps] = useState<Record<string, boolean>>({});
 
+  // Customization Controls State
+  const [customUrgency, setCustomUrgency] = useState<'Standard' | 'High Priority' | 'Immediate Emergency'>('High Priority');
+  const [customTraditionFocus, setCustomTraditionFocus] = useState<'Balanced All-4' | 'Islamic Sunnah Emphasis' | 'Planetary Vedic Focus' | 'Mindset & Psychology Focus'>('Balanced All-4');
+
   const name = userProfile?.name || 'Seeker';
+  const dob = userProfile?.dob || '1998-06-15';
+  const time = userProfile?.time || '12:00';
+
+  // Live Birth Chart Metrics Calculation
+  const birthChartMetrics = useMemo(() => {
+    const positions = calculatePlanetaryPositions(dob, time);
+    const sunPos = positions.find(p => p.name === 'Sun');
+    const moonPos = positions.find(p => p.name === 'Moon');
+    const ascPos = positions.find(p => p.name === 'Ascendant') || positions[0];
+
+    return {
+      sunSign: sunPos ? `${sunPos.sign} (${sunPos.degreeFormatted})` : 'Gemini 24°',
+      moonSign: moonPos ? `${moonPos.sign} (${moonPos.degreeFormatted})` : 'Taurus 12°',
+      ascendant: ascPos ? `${ascPos.sign}` : 'Virgo',
+      nakshatra: moonPos ? moonPos.nakshatra : 'Rohini',
+    };
+  }, [dob, time]);
 
   // Filter problems by search & category
   const filteredProblems = LIFE_PROBLEMS.filter(p => {
@@ -543,8 +519,13 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
   });
 
   const activeProblem = LIFE_PROBLEMS.find(p => p.id === selectedProblemId) || LIFE_PROBLEMS[0];
-
   const categories = ['all', ...Array.from(new Set(LIFE_PROBLEMS.map(p => p.category)))];
+
+  // Calculate 7-Day Plan Progress
+  const currentPlanDoneCount = activeProblem.sevenDayPlan.reduce((acc, _, idx) => {
+    return completedSteps[`${activeProblem.id}_step_${idx}`] ? acc + 1 : acc;
+  }, 0);
+  const planProgressPercent = Math.round((currentPlanDoneCount / 7) * 100);
 
   const toggleStep = (stepIdx: number) => {
     const key = `${activeProblem.id}_step_${stepIdx}`;
@@ -555,14 +536,62 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
     setIsDownloading(true);
     setTimeout(() => {
       setIsDownloading(false);
-      alert(`📄 Solution Blueprint for "${activeProblem.title}" generated for ${name}! Save or print this custom action guide.`);
-    }, 1200);
+      const blueprintText = `
+===================================================================
+ASTROVERSE 360 HOLISTIC BLUEPRINT & ACTION GUIDE
+===================================================================
+Seeker Name: ${name}
+Birth Date: ${dob} | Time: ${time}
+Sun Sign: ${birthChartMetrics.sunSign} | Moon Sign: ${birthChartMetrics.moonSign}
+Nakshatra: ${birthChartMetrics.nakshatra} | Ascendant: ${birthChartMetrics.ascendant}
+-------------------------------------------------------------------
+Target Challenge: ${activeProblem.title}
+Category: ${activeProblem.category} | Urgency Level: ${customUrgency}
+-------------------------------------------------------------------
+
+1. ROOT CAUSES:
+${activeProblem.rootCauses.map(rc => ` - ${rc}`).join('\n')}
+
+2. AUTHENTIC ISLAMIC / SUNNAH REMEDY:
+Title: ${activeProblem.islamicRemedy.title}
+Du'a (Arabic): ${activeProblem.islamicRemedy.duaArabic || 'N/A'}
+Du'a (Translation): ${activeProblem.islamicRemedy.duaTranslation || 'N/A'}
+Prescribed Action: ${activeProblem.islamicRemedy.action}
+
+3. PLANETARY & GEMSTONE ALIGNMENT:
+Planet: ${activeProblem.planetaryRemedy.planet} | Element: ${activeProblem.planetaryRemedy.element}
+Gemstone: ${activeProblem.planetaryRemedy.gemstone} | Alignment Day: ${activeProblem.planetaryRemedy.day}
+Action: ${activeProblem.planetaryRemedy.action}
+
+4. PSYCHOLOGICAL FRAMEWORK:
+Framework: ${activeProblem.psychologicalRemedy.framework}
+Mindset Shift: "${activeProblem.psychologicalRemedy.mindsetShift}"
+Exercise: ${activeProblem.psychologicalRemedy.exercise}
+
+5. 7-DAY RESOLUTION ACTION PLAN:
+${activeProblem.sevenDayPlan.map((step, i) => ` [${completedSteps[`${activeProblem.id}_step_${i}`] ? 'X' : ' '}] Day ${i+1}: ${step}`).join('\n')}
+
+===================================================================
+Generated by AstroVerse 360 Precision Engine
+===================================================================
+      `.trim();
+
+      const blob = new Blob([blueprintText], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `AstroVerse_Blueprint_${activeProblem.id}_${name.replace(/\s+/g, '_')}.txt`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }, 800);
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 sm:p-6 md:p-8 space-y-8">
-      {/* HEADER SECTION */}
-      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-indigo-500/30 relative overflow-hidden space-y-4">
+    <div className="max-w-7xl mx-auto p-4 sm:p-6 md:p-8 space-y-8 text-left">
+      {/* HEADER SECTION WITH LIVE BIRTH CHART METRICS */}
+      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-indigo-500/30 relative overflow-hidden space-y-6">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-600/20 via-purple-600/10 to-transparent blur-3xl pointer-events-none" />
         
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
@@ -585,12 +614,32 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
             className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-500 hover:to-pink-500 text-white font-bold text-sm shadow-xl shadow-indigo-500/25 flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50 shrink-0 cursor-pointer"
           >
             <Download className="w-4 h-4" />
-            {isDownloading ? 'Compiling Blueprint...' : 'Export Solution Blueprint (PDF)'}
+            {isDownloading ? 'Compiling Blueprint...' : 'Export Solution Blueprint'}
           </button>
         </div>
 
+        {/* Live Seeker Astronomical Metrics Bar */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 border-t border-white/10 relative z-10 font-mono text-xs">
+          <div className="p-3 rounded-2xl bg-slate-900/80 border border-slate-800">
+            <span className="text-slate-400 text-[10px] uppercase block">Seeker Sun Sign</span>
+            <span className="font-bold text-amber-300">{birthChartMetrics.sunSign}</span>
+          </div>
+          <div className="p-3 rounded-2xl bg-slate-900/80 border border-slate-800">
+            <span className="text-slate-400 text-[10px] uppercase block">Seeker Moon Sign</span>
+            <span className="font-bold text-purple-300">{birthChartMetrics.moonSign}</span>
+          </div>
+          <div className="p-3 rounded-2xl bg-slate-900/80 border border-slate-800">
+            <span className="text-slate-400 text-[10px] uppercase block">Nakshatra</span>
+            <span className="font-bold text-cyan-300">{birthChartMetrics.nakshatra}</span>
+          </div>
+          <div className="p-3 rounded-2xl bg-slate-900/80 border border-slate-800">
+            <span className="text-slate-400 text-[10px] uppercase block">Lagna / Ascendant</span>
+            <span className="font-bold text-emerald-300">{birthChartMetrics.ascendant}</span>
+          </div>
+        </div>
+
         {/* Responsible Guidance Disclaimer */}
-        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3 text-xs text-slate-300">
+        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-start gap-3 text-xs text-slate-300 relative z-10">
           <ShieldCheck className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
           <p className="leading-relaxed">
             <strong className="text-white">Ethical Guidance Standard:</strong> All Islamic remedies are strictly rooted in the Holy Qur'an and Sahih Hadith. Planetary insights provide energetic balancing. Psychological frameworks support emotional resilience. Always consult licensed medical or financial professionals for legal or clinical emergencies.
@@ -598,7 +647,7 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
         </div>
       </div>
 
-      {/* CONTROLS: SEARCH & CATEGORY FILTER & PERSPECTIVE SELECTOR */}
+      {/* CUSTOMIZATION CONTROLS: SEARCH & CATEGORY FILTER & PERSPECTIVE SELECTOR & URGENCY */}
       <div className="glass-card p-5 sm:p-6 rounded-3xl border border-white/10 space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           {/* Search Bar */}
@@ -611,6 +660,21 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
               placeholder="Search any problem (e.g. debt, job loss, anxiety, evil eye, exam)..."
               className="w-full pl-11 pr-4 py-3 rounded-2xl bg-slate-900/90 border border-slate-800 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 transition-all"
             />
+          </div>
+
+          {/* Custom Urgency Selector */}
+          <div className="flex items-center gap-2 shrink-0">
+            <Sliders className="w-4 h-4 text-amber-400" />
+            <span className="text-xs text-slate-400 font-mono font-semibold">Urgency:</span>
+            <select
+              value={customUrgency}
+              onChange={(e) => setCustomUrgency(e.target.value as any)}
+              className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs font-mono focus:outline-none focus:border-indigo-500 cursor-pointer"
+            >
+              <option value="Standard">Standard Guidance</option>
+              <option value="High Priority">High Priority</option>
+              <option value="Immediate Emergency">Immediate Emergency</option>
+            </select>
           </div>
 
           {/* Perspective Selector */}
@@ -718,12 +782,17 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
               <div className="glass-card p-6 sm:p-8 rounded-3xl border border-indigo-500/40 relative overflow-hidden space-y-4">
                 <div className={`absolute top-0 right-0 w-64 h-64 bg-gradient-to-br ${activeProblem.color} opacity-15 blur-3xl pointer-events-none`} />
                 
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="text-xs font-bold uppercase tracking-wider text-indigo-300 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/40">
-                    {activeProblem.category}
-                  </span>
-                  <span className="text-xs font-mono text-emerald-400 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30">
-                    {activeProblem.badge}
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold uppercase tracking-wider text-indigo-300 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/40">
+                      {activeProblem.category}
+                    </span>
+                    <span className="text-xs font-mono text-emerald-400 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30">
+                      {activeProblem.badge}
+                    </span>
+                  </div>
+                  <span className="text-xs font-mono text-amber-300 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30">
+                    Urgency: {customUrgency}
                   </span>
                 </div>
 
@@ -798,7 +867,7 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
                     )}
 
                     <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs text-slate-200 leading-relaxed">
-                      <strong className="text-emerald-400 font-semibold block mb-1">Prescribed Action:</strong>
+                      <strong className="text-emerald-400 font-semibold block mb-1">Prescribed Action for {name}:</strong>
                       {activeProblem.islamicRemedy.action}
                     </div>
                   </div>
@@ -842,7 +911,7 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
                   </div>
 
                   <div className="p-4 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-xs text-slate-200 leading-relaxed">
-                    <strong className="text-purple-300 font-semibold block mb-1">Energetic Alignment Exercise:</strong>
+                    <strong className="text-purple-300 font-semibold block mb-1">Energetic Alignment Exercise for {name}:</strong>
                     {activeProblem.planetaryRemedy.action}
                   </div>
                 </motion.div>
@@ -884,7 +953,7 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
                 </motion.div>
               )}
 
-              {/* 4. STEP-BY-STEP 7-DAY ACTION PLAN */}
+              {/* 4. STEP-BY-STEP 7-DAY ACTION PLAN WITH LIVE PROGRESS COUNTER */}
               <motion.div 
                 initial={{ opacity: 0, y: 12 }} 
                 animate={{ opacity: 1, y: 0 }} 
@@ -894,13 +963,21 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
                   <div>
                     <h3 className="text-lg font-bold text-white flex items-center gap-2">
                       <span className="p-2 rounded-xl bg-amber-500/20 text-amber-400 text-lg">📅</span> 
-                      7-Day Resolution Action Plan
+                      7-Day Resolution Action Plan ({planProgressPercent}% Complete)
                     </h3>
                     <p className="text-xs text-slate-400 mt-1">Check off daily action steps as you complete them</p>
                   </div>
                   <span className="text-xs font-mono px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                    Step-by-Step
+                    {currentPlanDoneCount}/7 Days Checked
                   </span>
+                </div>
+
+                {/* Progress Bar */}
+                <div className="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800">
+                  <div 
+                    className="bg-gradient-to-r from-amber-500 to-emerald-400 h-full transition-all duration-300"
+                    style={{ width: `${planProgressPercent}%` }}
+                  />
                 </div>
 
                 <div className="space-y-3">
