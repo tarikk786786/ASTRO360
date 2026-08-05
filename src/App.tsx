@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, Globe2, Bell, Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TRADITIONS, CategoryInfo, TraditionGroup, UserProfile, GROUP_ICONS } from './types';
@@ -518,15 +518,21 @@ export default function App() {
         {/* Page Content */}
         <div className="flex-1 overflow-auto custom-scrollbar pb-16 md:pb-0">
           <div className="max-w-7xl mx-auto h-full">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.2, ease: 'easeOut' }}
-                className="h-full"
-              >
+            <Suspense fallback={
+              <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
+                <div className="w-12 h-12 rounded-full border-2 border-blue-500/30 border-t-blue-500 animate-spin" />
+                <p className="text-xs font-mono text-slate-400">Loading Cosmic Intelligence Engine...</p>
+              </div>
+            }>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
+                  className="h-full"
+                >
                 {activeTab === 'dashboard' && <CosmicIntelligenceCenter onNavigate={navigateTo} userProfile={userProfile} />}
                 {activeTab === 'live-diagnostics' && <LiveCosmicDiagnostics userProfile={userProfile} />}
                 {activeTab === 'advisor' && <HolisticAdvisor userProfile={userProfile} />}
@@ -558,6 +564,7 @@ export default function App() {
                 )}
               </motion.div>
             </AnimatePresence>
+          </Suspense>
           </div>
         </div>
 
