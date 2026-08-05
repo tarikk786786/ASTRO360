@@ -773,54 +773,70 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
           </div>
 
           {/* FIX 4: LIVE DIAGNOSTICS BANNER (DYNAMIC WHAT/WHY/SOLUTION) */}
-          <div className="lg:col-span-6 p-6 rounded-3xl bg-[#111827] border border-[#EF4444]/30 shadow-2xl space-y-4 flex flex-col justify-between">
+          <div className="lg:col-span-6 p-6 rounded-3xl bg-[#111827] border border-[#EF4444]/40 shadow-2xl space-y-4 flex flex-col justify-between relative overflow-hidden">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
               <div>
                 <div className="flex items-center gap-2 text-[#EF4444] text-xs font-mono font-semibold mb-1">
                   <Activity className="w-4 h-4 text-[#EF4444] animate-pulse" />
-                  <span>Live Cosmic Root-Cause Diagnostics</span>
+                  <span>Today's Cosmic Diagnostic & Solution</span>
                 </div>
-                <h3 className="text-base font-bold text-[#F8FAFC]">Active Life Transits: What, Why & Solution</h3>
+                <h3 className="text-base font-bold text-[#F8FAFC]">Active Life Transits: What, Why & Multi-Religious Solutions</h3>
               </div>
 
               <button
                 onClick={() => onNavigate('live-diagnostics')}
-                className="px-3.5 py-1.5 rounded-xl bg-[#EF4444]/10 hover:bg-[#EF4444]/20 text-[#EF4444] border border-[#EF4444]/30 text-xs font-mono font-semibold flex items-center gap-1 cursor-pointer transition-colors shrink-0"
+                className="px-3.5 py-1.5 rounded-xl bg-[#EF4444]/20 hover:bg-[#EF4444]/30 text-rose-200 border border-[#EF4444]/40 text-xs font-mono font-semibold flex items-center gap-1 cursor-pointer transition-colors shrink-0"
               >
-                <span>Full View</span>
+                <span>Full Diagnostics</span>
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
 
             <div className="grid grid-cols-1 gap-3 text-xs">
-              {/* WHAT IS HAPPENING */}
-              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-[#2563EB]/30 space-y-1">
+              {/* 1. WHAT IS HAPPENING */}
+              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-[#2563EB]/40 space-y-1">
                 <span className="text-xs font-mono font-bold text-[#2563EB] uppercase tracking-wider block flex items-center gap-1.5">
-                  <Activity className="w-3.5 h-3.5" /> 1. What is Happening
+                  <Activity className="w-3.5 h-3.5 text-[#2563EB]" /> 1. What is Happening Today
                 </span>
                 <p className="text-[#CBD5E1] leading-relaxed text-[11px]">
                   {dynamicDiagnostics.what}
                 </p>
               </div>
 
-              {/* WHY IT IS HAPPENING */}
-              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-[#F59E0B]/30 space-y-1">
+              {/* 2. WHY IT IS HAPPENING */}
+              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-[#F59E0B]/40 space-y-1">
                 <span className="text-xs font-mono font-bold text-[#F59E0B] uppercase tracking-wider block flex items-center gap-1.5">
-                  <Compass className="w-3.5 h-3.5" /> 2. Why it is Happening
+                  <Compass className="w-3.5 h-3.5 text-[#F59E0B]" /> 2. Why it is Happening (Root Cause)
                 </span>
                 <p className="text-[#CBD5E1] leading-relaxed text-[11px]">
                   {dynamicDiagnostics.why}
                 </p>
               </div>
 
-              {/* SOLUTION & REMEDY */}
-              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-[#22C55E]/30 space-y-1">
+              {/* 3. SOLUTION & PRACTICAL REMEDY */}
+              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-[#22C55E]/40 space-y-1.5">
                 <span className="text-xs font-mono font-bold text-[#22C55E] uppercase tracking-wider block flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5" /> 3. Solution & Practical Remedy
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#22C55E]" /> 3. Prescribed Solution & Multi-Religious Remedy
                 </span>
-                <p className="text-[#22C55E] leading-relaxed text-[11px]">
+                <p className="text-[#22C55E] leading-relaxed text-[11px] font-medium">
                   {dynamicDiagnostics.solution}
                 </p>
+
+                {/* MULTI-RELIGIOUS QUICK REMEDY SNIPPETS */}
+                <div className="grid grid-cols-3 gap-2 pt-1 font-mono text-[10px]">
+                  <div className="p-2 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300">
+                    <span className="font-bold block">🕌 Islamic:</span>
+                    <span>Recite Ayatul Kursi & Give Sadaqah</span>
+                  </div>
+                  <div className="p-2 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-300">
+                    <span className="font-bold block">🕉️ Vedic:</span>
+                    <span>Surya Arghya & Yellow Sapphire</span>
+                  </div>
+                  <div className="p-2 rounded-xl bg-indigo-950/40 border border-indigo-500/30 text-indigo-300">
+                    <span className="font-bold block">🧠 CBT:</span>
+                    <span>4-7-8 Breathwork & Task Audit</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
