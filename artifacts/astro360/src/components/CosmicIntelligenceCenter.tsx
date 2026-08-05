@@ -740,18 +740,20 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
 
               <div className="grid grid-cols-3 gap-2">
                 {planetPositions.map((p, idx) => (
-                  <button
+                  <motion.button
                     key={idx}
                     onClick={() => setSelectedPlanet(p)}
-                    className={`p-2.5 rounded-xl bg-[#111827] border ${p.border} text-left space-y-0.5 hover:bg-[#1E293B] transition-all cursor-pointer group`}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.96 }}
+                    className={`p-2.5 rounded-xl bg-[#111827] border ${p.border} text-left space-y-0.5 hover:bg-[#1E293B] hover:border-cyan-500/40 hover:shadow-[0_0_15px_rgba(6,182,212,0.2)] transition-all cursor-pointer group`}
                   >
                     <div className="flex items-center justify-between">
                       <span className={`text-xs font-bold ${p.color}`}>{p.symbol} {p.name}</span>
-                      {p.retrograde && <span className="text-[9px] font-mono text-[#EF4444] font-bold">Rx</span>}
+                      {p.retrograde && <span className="text-[9px] font-mono text-[#EF4444] font-bold animate-pulse">Rx</span>}
                     </div>
                     <span className="text-[11px] font-semibold text-white block truncate">{p.sign}</span>
                     <span className="text-[10px] font-mono text-[#94A3B8] block">{p.degree}</span>
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             </div>
@@ -845,15 +847,15 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
               <motion.button
                 key={tool.id}
                 onClick={() => onNavigate(tool.id)}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="p-4 rounded-2xl bg-[#111827] border border-white/10 hover:border-white/30 transition-all text-left space-y-2.5 group cursor-pointer shadow-lg hover:shadow-2xl"
+                whileHover={{ scale: 1.05, y: -3 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-4 rounded-2xl bg-[#111827]/90 border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_25px_rgba(37,99,235,0.25)] transition-all duration-300 text-left space-y-2.5 group cursor-pointer shadow-lg backdrop-blur-xl"
               >
-                <div className="p-2.5 rounded-xl bg-[#0B1220] border border-white/10 w-fit group-hover:border-white/20 transition-colors">
+                <div className="p-2.5 rounded-xl bg-[#0B1220] border border-white/10 w-fit group-hover:border-blue-400/40 group-hover:scale-110 transition-all duration-300">
                   {tool.icon}
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-white group-hover:text-[#2563EB] transition-colors">{tool.title}</h4>
+                  <h4 className="text-xs font-bold text-white group-hover:text-blue-400 transition-colors">{tool.title}</h4>
                   <p className="text-[10px] text-[#94A3B8]">{tool.desc}</p>
                 </div>
               </motion.button>
