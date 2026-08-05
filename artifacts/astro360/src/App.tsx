@@ -66,7 +66,6 @@ export default function App() {
   });
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isToolModalOpen, setIsToolModalOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
 
   // Global Cmd+K / Ctrl+K keyboard shortcut listener
@@ -486,99 +485,11 @@ export default function App() {
             </h1>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
-            <button
-              onClick={() => setIsToolModalOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-300 hover:bg-emerald-500/20 transition-all cursor-pointer shadow-sm shadow-emerald-500/10"
-              title="Click to view why AstroVerse AI tools are exact, accurate & connected"
-            >
-              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="font-semibold">Tool Active</span>
-              <span className="text-[10px] bg-emerald-400/20 text-emerald-200 px-1.5 py-0.2 rounded-full">Info</span>
-            </button>
+            <span className="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live Telemetry
+            </span>
           </div>
         </header>
-
-        {/* Tool Active Feature Breakdown Modal */}
-        <AnimatePresence>
-          {isToolModalOpen && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                className="glass-card max-w-xl w-full rounded-3xl p-6 sm:p-8 space-y-6 border border-slate-700 shadow-2xl relative"
-              >
-                {/* Modal Header */}
-                <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">
-                      <Sparkles className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h2 className="text-xl font-display font-bold text-slate-100">Astronomical & Calculation Precision</h2>
-                      <p className="text-xs text-slate-400">Multi-engine precision architecture & cross-tradition calculation synthesis</p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setIsToolModalOpen(false)}
-                    className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-
-                {/* 4 Feature Pillars */}
-                <div className="space-y-4">
-                  <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1">
-                    <div className="flex items-center gap-2 text-amber-300 font-bold text-xs uppercase tracking-wider">
-                      🎯 1. 100% Astronomical Precision & Exact Math
-                    </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      Calculates exact sidereal ayanamsha degrees, Julian dates, and planetary longitudes for D1–D60 divisional charts without rounding approximations.
-                    </p>
-                  </div>
-
-                  <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1">
-                    <div className="flex items-center gap-2 text-emerald-300 font-bold text-xs uppercase tracking-wider">
-                      🔗 2. Connected Multi-Tradition Synthesis
-                    </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      Connects 5 global wisdom traditions (Vedic Jyotish, Western Tropical, Chinese Four Pillars, Mayan Tzolkin & Islamic Nujum) into one cohesive master framework.
-                    </p>
-                  </div>
-
-                  <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1">
-                    <div className="flex items-center gap-2 text-blue-300 font-bold text-xs uppercase tracking-wider">
-                      💡 3. Root Cause Diagnostics (What, Why & Solution)
-                    </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      Explains what events are occurring, why planetary transits trigger them, and provides immediate practical solutions and remedies.
-                    </p>
-                  </div>
-
-                  <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1">
-                    <div className="flex items-center gap-2 text-purple-300 font-bold text-xs uppercase tracking-wider">
-                      🤝 4. Professional Astrological Guidance
-                    </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      Delivers compassionate, humanized consultation crafted by experienced master astrologers rather than automated template summaries.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Footer Action */}
-                <div className="pt-2 flex justify-end">
-                  <button
-                    onClick={() => setIsToolModalOpen(false)}
-                    className="px-5 py-2.5 rounded-xl bg-amber-500/20 text-amber-300 font-semibold text-xs border border-amber-500/40 hover:bg-amber-500/30 transition-all"
-                  >
-                    Got It — Continue Journey
-                  </button>
-                </div>
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
 
         {/* Page Content */}
         <div className="flex-1 overflow-auto custom-scrollbar pb-16 md:pb-0">
