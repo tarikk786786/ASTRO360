@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Activity, AlertTriangle, Lightbulb, RefreshCw, Clock, CheckCircle2, 
   Shield, Globe, Sparkles, Gem, BookOpen, Heart, Flame, Sun, Moon, 
-  Download, Cpu, Filter, Info, Scale
+  Download, Cpu, Filter, Info, Scale, Search, Calendar, ChevronDown, CheckSquare, Square
 } from 'lucide-react';
 import type { UserProfile } from '../types';
 import { calculatePlanetaryPositions } from '../lib/astroCalculations';
@@ -13,7 +13,7 @@ interface LiveCosmicDiagnosticsProps {
 }
 
 export type DiagnosticCategory = 'all' | 'career' | 'wealth' | 'mind' | 'vitality' | 'relationships' | 'spiritual';
-export type TraditionFilter = 'all' | 'islamic' | 'vedic' | 'western' | 'chinese' | 'cbt';
+export type TraditionFilter = 'all' | 'islamic' | 'vedic' | 'western' | 'chinese' | 'kabbalah' | 'cbt';
 
 interface MultiTraditionDiagnosticItem {
   id: string;
@@ -31,7 +31,7 @@ interface MultiTraditionDiagnosticItem {
   // 2. Why it is Happening (Root Cause)
   whyIsHappening: string;
 
-  // 3. Multi-Tradition Solutions
+  // 3. Multi-Tradition Solutions Across World Faiths
   solutions: {
     islamic: {
       title: string;
@@ -54,6 +54,11 @@ interface MultiTraditionDiagnosticItem {
       fengShuiZone: string;
       action: string;
     };
+    kabbalah: {
+      sephira: string;
+      hebrewName: string;
+      meditation: string;
+    };
     cbt: {
       framework: string;
       exercise: string;
@@ -62,20 +67,26 @@ interface MultiTraditionDiagnosticItem {
 }
 
 export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnosticsProps) {
-  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [diagnosticDate, setDiagnosticDate] = useState<string>(() => new Date().toISOString().split('T')[0]);
+  const [diagnosticTime, setDiagnosticTime] = useState<string>(() => new Date().toTimeString().split(' ')[0].substring(0, 5));
+  const [useLiveNow, setUseLiveNow] = useState<boolean>(true);
+  
   const [selectedCategory, setSelectedCategory] = useState<DiagnosticCategory>('all');
   const [selectedTradition, setSelectedTradition] = useState<TraditionFilter>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
+  const [showPlanetaryTable, setShowPlanetaryTable] = useState<boolean>(false);
+  const [completedRemedies, setCompletedRemedies] = useState<Record<string, boolean>>({});
 
   const name = userProfile?.name || 'Seeker';
 
-  // Compute live planetary ephemeris positions dynamically
+  // Compute live planetary ephemeris positions dynamically for active date/time
   const positions = useMemo(() => {
-    const dateStr = lastUpdated.toISOString().split('T')[0];
-    const timeStr = lastUpdated.toTimeString().split(' ')[0].substring(0, 5);
-    return calculatePlanetaryPositions(dateStr, timeStr, 24.178);
-  }, [lastUpdated]);
+    const activeD = useLiveNow ? new Date().toISOString().split('T')[0] : diagnosticDate;
+    const activeT = useLiveNow ? new Date().toTimeString().split(' ')[0].substring(0, 5) : diagnosticTime;
+    return calculatePlanetaryPositions(activeD, activeT, 24.178);
+  }, [useLiveNow, diagnosticDate, diagnosticTime]);
 
   // Derived ephemeris planets
   const sun = positions.find(p => p.name === 'Sun');
@@ -88,18 +99,18 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
   const rahu = positions.find(p => p.name === 'Rahu');
   const ketu = positions.find(p => p.name === 'Ketu');
 
-  // Multi-Tradition Live Diagnostic Database for 9 Planetary Energies
+  // Multi-Tradition Live Diagnostic Database for All 9 Planetary Energies
   const diagnosticItems: MultiTraditionDiagnosticItem[] = useMemo(() => [
     {
       id: 'saturn-career',
       category: 'career',
-      planet: 'Saturn (Shani / زحل)',
+      planet: 'Saturn (Shani / زحل / Binah)',
       symbol: '♄',
       transitSign: saturn?.sign || 'Aquarius ♒',
       houseAffected: `${saturn?.house || '7th House'} (Structure & Career)`,
       intensityScore: 88,
       statusColor: 'from-amber-500 to-amber-700',
-      whatIsHappening: 'High friction in career deadlines, milestone delays, and intense scrutiny from senior leadership or business partners.',
+      whatIsHappening: 'High friction in career deliverables, milestone delays, and intense scrutiny from senior leadership or business partners.',
       whyIsHappening: `Saturn transits your ${saturn?.house || '7th House'} in ${saturn?.sign || 'Aquarius'}, enforcing systematic discipline, testing endurance, and dissolving weak foundations.`,
       solutions: {
         islamic: {
@@ -123,6 +134,11 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
           fengShuiZone: 'North-East Zone',
           action: 'Place heavy black obsidian spheres in North-East sector to ground chaotic qi.'
         },
+        kabbalah: {
+          sephira: 'Binah (Understanding & Form)',
+          hebrewName: 'YHVH Elohim (יְהוָה אֱלֹהִים)',
+          meditation: 'Meditate on structured boundaries, accepting spiritual refinement through patience.'
+        },
         cbt: {
           framework: 'Locus of Control Restructuring',
           exercise: 'Separate external delays from personal actions. List 3 controllable tasks every morning.'
@@ -132,7 +148,7 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
     {
       id: 'jupiter-wealth',
       category: 'wealth',
-      planet: 'Jupiter (Guru / مشتری)',
+      planet: 'Jupiter (Guru / مشتری / Chesed)',
       symbol: '♃',
       transitSign: jupiter?.sign || 'Pisces ♓',
       houseAffected: `${jupiter?.house || '10th House'} (Wisdom & Abundance)`,
@@ -162,6 +178,11 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
           fengShuiZone: 'South-East Wealth Corner',
           action: 'Add a 9-step flowing water fountain in South-East to stimulate prosperity qi.'
         },
+        kabbalah: {
+          sephira: 'Chesed (Lovingkindness & Expansion)',
+          hebrewName: 'El (אֵל)',
+          meditation: 'Contemplate infinite generosity and channel wealth into charitable deeds.'
+        },
         cbt: {
           framework: 'Abundance Mindset Anchoring',
           exercise: 'Log daily gratitude items and write down 2 new monetization ideas before noon.'
@@ -171,7 +192,7 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
     {
       id: 'sun-vitality',
       category: 'vitality',
-      planet: 'Sun (Surya / شمس)',
+      planet: 'Sun (Surya / شمس / Tiphereth)',
       symbol: '☉',
       transitSign: sun?.sign || 'Aries ♈',
       houseAffected: `${sun?.house || '1st House'} (Core Vitality & Aura)`,
@@ -201,6 +222,11 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
           fengShuiZone: 'South Energy Zone',
           action: 'Ensure South area is brightly lit with warm amber lighting to strengthen prestige.'
         },
+        kabbalah: {
+          sephira: 'Tiphereth (Beauty & Central Sun)',
+          hebrewName: 'YHVH Eloah Va-Daath (יְהוָה אֱלוֹהַ וָדַעַت)',
+          meditation: 'Align heart center with radiant divine sun, balancing mercy and strength.'
+        },
         cbt: {
           framework: 'Ego-Stamina Regulation',
           exercise: 'Practice 4-7-8 breathwork when feeling heat or frustration in conversations.'
@@ -210,7 +236,7 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
     {
       id: 'moon-mind',
       category: 'mind',
-      planet: 'Moon (Chandra / قمر)',
+      planet: 'Moon (Chandra / قمر / Yesod)',
       symbol: '☽',
       transitSign: moon?.sign || 'Taurus ♉',
       houseAffected: `${moon?.house || '4th House'} (Mental Peace & Emotion)`,
@@ -240,9 +266,58 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
           fengShuiZone: 'North Sector',
           action: 'Place a clear glass bowl of still water in North bedroom corner to absorb anxiety.'
         },
+        kabbalah: {
+          sephira: 'Yesod (Foundation & Subconscious Astral)',
+          hebrewName: 'Shaddai El Chai (שַׁדַּי אֵל חָי)',
+          meditation: 'Purify memory and subconscious imagery through silver light meditation.'
+        },
         cbt: {
           framework: 'Cognitive Reframing of Worry',
           exercise: 'Write down catastrophic thoughts, evaluate evidence for/against, and write balanced truths.'
+        }
+      }
+    },
+    {
+      id: 'mars-vitality',
+      category: 'vitality',
+      planet: 'Mars (Mangal / مريخ / Gevurah)',
+      symbol: '♂',
+      transitSign: mars?.sign || 'Scorpio ♏',
+      houseAffected: `${mars?.house || '1st House'} (Courage & Physical Stamina)`,
+      intensityScore: 86,
+      statusColor: 'from-red-600 to-rose-800',
+      whatIsHappening: 'High motor courage, impulse drive, potential for heated arguments or physical inflammation.',
+      whyIsHappening: `Mars in ${mars?.sign || 'Scorpio'} activates your ${mars?.house || '1st House'} motor center.`,
+      solutions: {
+        islamic: {
+          title: 'Dua for Anger Control & Courage',
+          duaArabic: 'أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ',
+          duaTranslation: 'I seek refuge in Allah from Satan the accursed.',
+          action: 'Perform Wudu (ablution) with cold water when anger rises to cool internal thermal fire.'
+        },
+        vedic: {
+          gemstone: 'Red Coral (Moonga)',
+          mantra: 'Om Kram Kreem Kroom Sah Bhaumaya Namah (108x)',
+          ritual: 'Chant Hanuman Chalisa on Tuesday morning.'
+        },
+        western: {
+          crystal: 'Red Jasper & Bloodstone',
+          affirmation: 'I channel my passion and courage into constructive achievement.',
+          archangel: 'Archangel Camael (Angel of Courage & Strength)'
+        },
+        chinese: {
+          element: 'Fire (火) / Metal (金)',
+          fengShuiZone: 'South-West Zone',
+          action: 'Avoid red decor in bedroom; introduce soothing earth tones to absorb excess fire.'
+        },
+        kabbalah: {
+          sephira: 'Gevurah (Strength & Judgment)',
+          hebrewName: 'Elohim Gibbor (אֱלֹהִים גִּבּוֹר)',
+          meditation: 'Channel righteous discipline and burn away spiritual sloth.'
+        },
+        cbt: {
+          framework: 'Impulse Delay Technique',
+          exercise: 'Count backwards from 10 before responding in high-stakes negotiations.'
         }
       }
     },
@@ -279,26 +354,46 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
           fengShuiZone: 'North-West Bagua Area',
           action: 'Place a copper Pixiu or Wind Chime in North-West to block chaotic Sha Qi.'
         },
+        kabbalah: {
+          sephira: 'Daath (Hidden Knowledge & Abyss)',
+          hebrewName: 'YHVH El Elyon (יְהוָה אֵל عֶלְיוֹן)',
+          meditation: 'Anchor consciousness in divine truth to cross illusion without falling.'
+        },
         cbt: {
           framework: 'Impulse Delay Protocol',
           exercise: 'Institute a mandatory 48-hour waiting rule before making large financial or lifestyle choices.'
         }
       }
     }
-  ], [positions, saturn, jupiter, sun, moon, rahu]);
+  ], [positions, saturn, jupiter, sun, moon, mars, rahu]);
 
-  // Filter items by category and tradition
+  // Filter items by category, search query, and tradition
   const filteredDiagnostics = useMemo(() => {
     return diagnosticItems.filter(item => {
       const matchCat = selectedCategory === 'all' || item.category === selectedCategory;
-      return matchCat;
+      const matchSearch = searchQuery === '' || 
+        item.planet.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.whatIsHappening.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.whyIsHappening.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.solutions.islamic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.solutions.vedic.gemstone.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchCat && matchSearch;
     });
-  }, [diagnosticItems, selectedCategory]);
+  }, [diagnosticItems, selectedCategory, searchQuery]);
+
+  // Toggle remedy completion tracker
+  const toggleRemedyDone = (key: string) => {
+    setCompletedRemedies(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const totalRemediesCount = filteredDiagnostics.length * 4;
+  const completedCount = Object.values(completedRemedies).filter(Boolean).length;
+  const progressPercent = totalRemediesCount > 0 ? Math.round((completedCount / totalRemediesCount) * 100) : 0;
 
   // Refresh Ephemeris Handler
   const handleRefresh = () => {
     setIsRefreshing(true);
-    setLastUpdated(new Date());
+    setUseLiveNow(true);
     setTimeout(() => setIsRefreshing(false), 500);
   };
 
@@ -326,7 +421,7 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
           <body>
             <div class="h">
               <div class="title">LIVE ASTRO360 MULTI-TRADITION DIAGNOSTIC REPORT</div>
-              <div>Seeker: ${name} · Timestamp: ${lastUpdated.toLocaleString()}</div>
+              <div>Seeker: ${name} · Timestamp: ${useLiveNow ? 'Live Ephemeris' : `${diagnosticDate} ${diagnosticTime}`}</div>
             </div>
 
             ${filteredDiagnostics.map(item => `
@@ -351,8 +446,8 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
                   <div>Gemstone: <strong>${item.solutions.vedic.gemstone}</strong> | Mantra: <em>${item.solutions.vedic.mantra}</em></div>
                 </div>
                 <div class="sec">
-                  <div class="sec-title">5. Western Crystal & CBT Exercise</div>
-                  <div>Crystal: ${item.solutions.western.crystal} | CBT: ${item.solutions.cbt.exercise}</div>
+                  <div class="sec-title">5. Western Crystal & Kabbalah</div>
+                  <div>Crystal: ${item.solutions.western.crystal} | Sephira: ${item.solutions.kabbalah.sephira}</div>
                 </div>
               </div>
             `).join('')}
@@ -382,18 +477,20 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
               <span className="text-xs font-mono font-bold tracking-widest uppercase">Universal Live Diagnostic Center</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-display font-bold text-white">
-              Live Cosmic Diagnostics: <span className="bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-400 bg-clip-text text-transparent">All Traditions & Ways</span>
+              Live Cosmic Diagnostics: <span className="bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-400 bg-clip-text text-transparent">All World Religions & Ways</span>
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 mt-2 max-w-2xl leading-relaxed">
-              Real-time ephemeris diagnostics analyzing 9 active planetary influences for {name}. Identifies exact root causes ("Why") and prescribes multi-tradition remedies spanning Sunnah Islamic, Vedic Ratnas, Western Crystals, Chinese BaZi, and CBT Psychology.
+              Real-time ephemeris diagnostics analyzing 9 active planetary influences for {name}. Identifies exact root causes ("Why") and prescribes multi-tradition remedies spanning Sunnah Islamic, Vedic Ratnas, Western Crystals, Chinese BaZi, Kabbalah, and CBT Psychology.
             </p>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
-            <div className="px-3.5 py-2 rounded-2xl bg-white/5 border border-white/10 text-xs text-slate-300 font-mono flex items-center gap-2">
-              <Clock className="w-3.5 h-3.5 text-amber-400" />
-              <span>{lastUpdated.toLocaleTimeString()}</span>
-            </div>
+          <div className="flex items-center gap-3 shrink-0 flex-wrap">
+            <button
+              onClick={() => setShowPlanetaryTable(!showPlanetaryTable)}
+              className="px-3.5 py-2 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 text-xs text-indigo-300 font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+            >
+              <Cpu className="w-3.5 h-3.5" /> {showPlanetaryTable ? 'Hide Ephemeris Table' : 'Show Live Ephemeris Grid'}
+            </button>
             <button
               onClick={handleRefresh}
               disabled={isRefreshing}
@@ -411,8 +508,84 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
           </div>
         </div>
 
-        {/* 🎛️ CONTROLS: CATEGORY & TRADITION SELECTORS */}
-        <div className="space-y-4 pt-4 border-t border-white/10 relative z-10">
+        {/* 📅 CUSTOM DATE/TIME OVERRIDE CONTROL */}
+        <div className="p-4 rounded-2xl bg-slate-900/80 border border-indigo-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10 text-xs">
+          <div className="flex items-center gap-3">
+            <span className="font-bold text-indigo-300 flex items-center gap-1.5">
+              <Calendar className="w-4 h-4 text-indigo-400" /> Diagnostic Transit Date/Time:
+            </span>
+            <button
+              onClick={() => setUseLiveNow(true)}
+              className={`px-3 py-1 rounded-xl font-bold transition-all ${
+                useLiveNow ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-white/5 text-slate-400'
+              }`}
+            >
+              🟢 Real-time NOW ({new Date().toLocaleTimeString()})
+            </button>
+          </div>
+
+          <div className="flex items-center gap-3 flex-wrap">
+            <input
+              type="date"
+              value={diagnosticDate}
+              onChange={(e) => {
+                setDiagnosticDate(e.target.value);
+                setUseLiveNow(false);
+              }}
+              className="bg-slate-950 border border-slate-700 text-white rounded-xl text-xs p-2 outline-none"
+            />
+            <input
+              type="time"
+              value={diagnosticTime}
+              onChange={(e) => {
+                setDiagnosticTime(e.target.value);
+                setUseLiveNow(false);
+              }}
+              className="bg-slate-950 border border-slate-700 text-white rounded-xl text-xs p-2 outline-none"
+            />
+          </div>
+        </div>
+
+        {/* 📊 EPHEMERIS TABLE DRAWER */}
+        {showPlanetaryTable && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="p-4 rounded-2xl bg-slate-950 border border-white/10 relative z-10 space-y-3"
+          >
+            <h4 className="text-xs font-mono font-bold text-amber-300 uppercase tracking-widest flex items-center gap-2">
+              <Cpu className="w-4 h-4" /> Live Astronomical Positions & Longitudes (9 Planets)
+            </h4>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 text-xs">
+              {positions.map(p => (
+                <div key={p.name} className="p-2.5 rounded-xl bg-white/5 border border-white/5 space-y-0.5">
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-white">{p.symbol} {p.name}</span>
+                    <span className="text-[9px] text-amber-400 font-mono font-bold">{p.house}</span>
+                  </div>
+                  <div className="text-[11px] text-slate-300">{p.sign}</div>
+                  <div className="text-[10px] text-slate-400 font-mono">{p.nakshatra} ({p.pada})</div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* 🎛️ CONTROLS: SEARCH, TRADITION & CATEGORY FILTERS */}
+        <div className="space-y-4 pt-2 relative z-10">
+          {/* Search Input Bar */}
+          <div className="relative">
+            <Search className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search diagnostic symptoms, Dua, Gemstones, Planets, or Remedies..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-slate-950/80 border border-slate-800 focus:border-indigo-500 text-white rounded-2xl pl-10 pr-4 py-2.5 text-xs outline-none"
+            />
+          </div>
+
           {/* Tradition Switcher */}
           <div className="space-y-2">
             <label className="text-[11px] font-mono text-slate-400 uppercase tracking-widest font-bold flex items-center gap-1.5">
@@ -420,11 +593,12 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
             </label>
             <div className="flex items-center gap-2 flex-wrap">
               {[
-                { id: 'all', label: '🌐 All 5 Traditions Combined' },
+                { id: 'all', label: '🌐 All 6 Traditions Combined' },
                 { id: 'islamic', label: '🕌 Authentic Sunnah & Qur\'an' },
                 { id: 'vedic', label: '🕉️ Vedic Ratna & Mantras' },
                 { id: 'western', label: '🔮 Western Crystals & Archangels' },
                 { id: 'chinese', label: '☯️ Chinese BaZi & Feng Shui' },
+                { id: 'kabbalah', label: '✡️ Kabbalah & Sephirot' },
                 { id: 'cbt', label: '🧠 CBT & Psychology' },
               ].map((t) => (
                 <button
@@ -449,7 +623,7 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
             </label>
             <div className="flex items-center gap-2 flex-wrap">
               {[
-                { id: 'all', label: '✨ All 9 Planetary Transits' },
+                { id: 'all', label: '✨ All Transits' },
                 { id: 'career', label: '💼 Career & Structure' },
                 { id: 'wealth', label: '💰 Wealth & Abundance' },
                 { id: 'vitality', label: '☀️ Vitality & Energy' },
@@ -468,6 +642,27 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
                   {c.label}
                 </button>
               ))}
+            </div>
+          </div>
+        </div>
+
+        {/* 📈 REMEDY ACTION CHECKLIST & PROGRESS BAR */}
+        <div className="p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10 text-xs">
+          <div className="space-y-1">
+            <div className="font-bold text-white flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Active Remedy Checklist & Progress Tracker
+            </div>
+            <p className="text-slate-300 text-[11px]">
+              {completedCount} of {totalRemediesCount} prescribe remedies checked ({progressPercent}% Complete)
+            </p>
+          </div>
+          <div className="w-full md:w-64 space-y-1">
+            <div className="h-2.5 w-full bg-slate-900 rounded-full overflow-hidden border border-white/10">
+              <motion.div
+                className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: `${progressPercent}%` }}
+              />
             </div>
           </div>
         </div>
@@ -537,26 +732,32 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
                 </div>
               </div>
 
-              {/* 🕌 ☯️ 🕉️ MULTI-TRADITION REMEDY BREAKDOWN GRID */}
+              {/* 🕌 ☯️ 🕉️ MULTI-TRADITION REMEDY BREAKDOWN GRID WITH ACTION CHECKBOXES */}
               <div className="pt-2 border-t border-white/10 space-y-4">
                 <div className="flex items-center justify-between">
                   <h4 className="text-xs font-mono font-bold text-amber-300 uppercase tracking-widest flex items-center gap-1.5">
-                    <Sparkles className="w-4 h-4 text-amber-400" /> Multi-Tradition Solution Breakdown:
+                    <Sparkles className="w-4 h-4 text-amber-400" /> Multi-Tradition Solution Breakdown & Checklist:
                   </h4>
                   <button
                     onClick={() => setExpandedItem(isExpanded ? null : item.id)}
                     className="text-xs text-indigo-400 hover:text-indigo-300 font-bold cursor-pointer"
                   >
-                    {isExpanded ? 'Collapse Details' : 'Expand All 5 Traditions'}
+                    {isExpanded ? 'Collapse Details' : 'Expand All 6 Traditions'}
                   </button>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
                   {/* 1. Islamic Sunnah Solution */}
                   {(selectedTradition === 'all' || selectedTradition === 'islamic') && (
-                    <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 space-y-2">
-                      <div className="font-bold text-emerald-300 flex items-center gap-1.5">
-                        🕌 Authentic Sunnah & Qur'an
+                    <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 space-y-2 relative">
+                      <div className="flex items-center justify-between font-bold text-emerald-300">
+                        <span>🕌 Authentic Sunnah & Qur'an</span>
+                        <button
+                          onClick={() => toggleRemedyDone(`${item.id}_islamic`)}
+                          className="text-emerald-400 hover:text-emerald-300 cursor-pointer"
+                        >
+                          {completedRemedies[`${item.id}_islamic`] ? <CheckSquare className="w-4 h-4 text-emerald-400" /> : <Square className="w-4 h-4 opacity-50" />}
+                        </button>
                       </div>
                       <div className="font-bold text-white text-xs">{item.solutions.islamic.title}</div>
                       {item.solutions.islamic.duaArabic && (
@@ -574,8 +775,14 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
                   {/* 2. Vedic Gemstone & Mantra */}
                   {(selectedTradition === 'all' || selectedTradition === 'vedic') && (
                     <div className="p-4 rounded-2xl bg-amber-950/40 border border-amber-500/30 space-y-2">
-                      <div className="font-bold text-amber-300 flex items-center gap-1.5">
-                        🕉️ Vedic Ratna & Beej Mantra
+                      <div className="flex items-center justify-between font-bold text-amber-300">
+                        <span>🕉️ Vedic Ratna & Beej Mantra</span>
+                        <button
+                          onClick={() => toggleRemedyDone(`${item.id}_vedic`)}
+                          className="text-amber-400 hover:text-amber-300 cursor-pointer"
+                        >
+                          {completedRemedies[`${item.id}_vedic`] ? <CheckSquare className="w-4 h-4 text-amber-400" /> : <Square className="w-4 h-4 opacity-50" />}
+                        </button>
                       </div>
                       <p><strong>Gemstone:</strong> <span className="text-amber-200 font-bold">{item.solutions.vedic.gemstone}</span></p>
                       <p className="font-mono text-amber-300 text-[11px]"><strong>Mantra:</strong> {item.solutions.vedic.mantra}</p>
@@ -586,8 +793,14 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
                   {/* 3. Western Crystals & Archangel */}
                   {(selectedTradition === 'all' || selectedTradition === 'western') && (
                     <div className="p-4 rounded-2xl bg-purple-950/40 border border-purple-500/30 space-y-2">
-                      <div className="font-bold text-purple-300 flex items-center gap-1.5">
-                        🔮 Western Crystal & Archangel
+                      <div className="flex items-center justify-between font-bold text-purple-300">
+                        <span>🔮 Western Crystal & Archangel</span>
+                        <button
+                          onClick={() => toggleRemedyDone(`${item.id}_western`)}
+                          className="text-purple-400 hover:text-purple-300 cursor-pointer"
+                        >
+                          {completedRemedies[`${item.id}_western`] ? <CheckSquare className="w-4 h-4 text-purple-400" /> : <Square className="w-4 h-4 opacity-50" />}
+                        </button>
                       </div>
                       <p><strong>Crystal:</strong> <span className="text-purple-200 font-bold">{item.solutions.western.crystal}</span></p>
                       {item.solutions.western.archangel && (
@@ -600,8 +813,8 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
                   {/* 4. Chinese BaZi & Feng Shui */}
                   {(selectedTradition === 'all' || selectedTradition === 'chinese') && (
                     <div className="p-4 rounded-2xl bg-red-950/40 border border-red-500/30 space-y-2">
-                      <div className="font-bold text-red-300 flex items-center gap-1.5">
-                        ☯️ Chinese BaZi & Feng Shui
+                      <div className="flex items-center justify-between font-bold text-red-300">
+                        <span>☯️ Chinese BaZi & Feng Shui</span>
                       </div>
                       <p><strong>Wu Xing Element:</strong> <span className="text-red-200 font-bold">{item.solutions.chinese.element}</span></p>
                       <p><strong>Bagua Zone:</strong> {item.solutions.chinese.fengShuiZone}</p>
@@ -609,11 +822,29 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
                     </div>
                   )}
 
-                  {/* 5. CBT & Modern Psychology */}
+                  {/* 5. Kabbalah & Sephirot */}
+                  {(selectedTradition === 'all' || selectedTradition === 'kabbalah') && (
+                    <div className="p-4 rounded-2xl bg-indigo-950/40 border border-indigo-500/30 space-y-2">
+                      <div className="flex items-center justify-between font-bold text-indigo-300">
+                        <span>✡️ Kabbalah & Sephirot</span>
+                      </div>
+                      <p><strong>Sephira:</strong> <span className="text-indigo-200 font-bold">{item.solutions.kabbalah.sephira}</span></p>
+                      <p className="font-mono text-indigo-300 text-[11px]"><strong>Divine Name:</strong> {item.solutions.kabbalah.hebrewName}</p>
+                      <p className="text-slate-300 text-[11px]"><strong>Meditation:</strong> {item.solutions.kabbalah.meditation}</p>
+                    </div>
+                  )}
+
+                  {/* 6. CBT & Modern Psychology */}
                   {(selectedTradition === 'all' || selectedTradition === 'cbt') && (
                     <div className="p-4 rounded-2xl bg-cyan-950/40 border border-cyan-500/30 space-y-2">
-                      <div className="font-bold text-cyan-300 flex items-center gap-1.5">
-                        🧠 CBT & Psychology
+                      <div className="flex items-center justify-between font-bold text-cyan-300">
+                        <span>🧠 CBT & Psychology</span>
+                        <button
+                          onClick={() => toggleRemedyDone(`${item.id}_cbt`)}
+                          className="text-cyan-400 hover:text-cyan-300 cursor-pointer"
+                        >
+                          {completedRemedies[`${item.id}_cbt`] ? <CheckSquare className="w-4 h-4 text-cyan-400" /> : <Square className="w-4 h-4 opacity-50" />}
+                        </button>
                       </div>
                       <p><strong>Framework:</strong> <span className="text-cyan-200 font-bold">{item.solutions.cbt.framework}</span></p>
                       <p className="text-slate-300 text-[11px]"><strong>Behavioral Exercise:</strong> {item.solutions.cbt.exercise}</p>
