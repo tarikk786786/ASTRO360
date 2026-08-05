@@ -15,6 +15,7 @@ import {
   type PanchangInfo, 
   type VimshottariDashaInfo 
 } from '../lib/astroCalculations';
+import CelestialZodiacOrbit from './CelestialZodiacOrbit';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -535,7 +536,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
           <div>
             <div className="flex items-center gap-2.5">
               <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-                <Compass className="w-6 h-6 text-[#2563EB]" /> ASTRO360
+                <Compass className="w-6 h-6 text-[#2563EB]" /> ASTRO360 OMNI
               </h1>
               <span className="text-[10px] font-mono text-[#22C55E] bg-[#22C55E]/10 px-2.5 py-0.5 rounded-full border border-[#22C55E]/30 font-semibold flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] animate-pulse" />
@@ -726,6 +727,19 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
                 <span className="px-3 py-1.5 rounded-xl bg-[#2563EB]/10 border border-[#2563EB]/20 text-[#2563EB] text-xs font-mono font-semibold">
                   Abhijit: {panchang.abhijitMuhurta}
                 </span>
+              </div>
+
+              {/* 🪐 ANIMATED CELESTIAL ZODIAC ORBIT VISUALIZER */}
+              <div className="pt-2">
+                <div className="p-4 rounded-2xl bg-[#0B1220] border border-cyan-500/30 space-y-2 shadow-2xl overflow-hidden relative">
+                  <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                    <span className="text-xs font-mono font-bold text-amber-300 flex items-center gap-1.5">
+                      <Sparkles className="w-4 h-4 text-amber-400 animate-spin-slow" /> Animated Zodiac Orbit & Ephemeris Wheel
+                    </span>
+                    <span className="text-[9px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30">Interactive 3D Rings</span>
+                  </div>
+                  <CelestialZodiacOrbit planetPositions={planetPositions} onSelectPlanet={(p) => setSelectedPlanet(p)} />
+                </div>
               </div>
             </div>
 
