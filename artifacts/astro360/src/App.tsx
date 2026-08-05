@@ -31,17 +31,21 @@ import SpiritualTraditionsModule from './components/SpiritualTraditionsModule';
 const STORAGE_KEY = 'astroverse_profile';
 const TAB_KEY = 'astroverse_tab';
 
-function loadProfile(): UserProfile | null {
+function loadProfile(): UserProfile {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : null;
+    return saved ? JSON.parse(saved) : DEFAULT_PROFILE;
   } catch {
-    return null;
+    return DEFAULT_PROFILE;
   }
 }
 
 function saveProfile(profile: UserProfile): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+  } catch (e) {
+    console.warn("localStorage unavailable", e);
+  }
 }
 
 const DEFAULT_PROFILE: UserProfile = {
@@ -51,7 +55,7 @@ const DEFAULT_PROFILE: UserProfile = {
   gender: 'universal',
   dob: '1998-06-15',
   time: '12:00',
-  location: 'Global',
+  location: 'Mecca, Saudi Arabia',
   preferredSystem: 'western',
   careerGoal: 'Business Growth & Prosperity',
   relationshipStatus: 'Seeking Harmony',
@@ -59,11 +63,15 @@ const DEFAULT_PROFILE: UserProfile = {
 };
 
 export default function App() {
-  const [userProfile, setUserProfile] = useState<UserProfile>(() => loadProfile() || DEFAULT_PROFILE);
-  const [hasOnboarded, setHasOnboarded] = useState<boolean>(() => !!loadProfile());
+  const [userProfile, setUserProfile] = useState<UserProfile>(() => loadProfile());
+  const [hasOnboarded, setHasOnboarded] = useState<boolean>(true);
   
   const [activeTab, setActiveTab] = useState<string>(() => {
-    return localStorage.getItem(TAB_KEY) || 'dashboard';
+    try {
+      return localStorage.getItem(TAB_KEY) || 'dashboard';
+    } catch {
+      return 'dashboard';
+    }
   });
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -561,6 +569,9 @@ export default function App() {
                 )}
                 {TRADITIONS[activeTab] && (
                   <TraditionView tradition={TRADITIONS[activeTab]} onNavigate={navigateTo} />
+                )}
+                {!['dashboard', 'live-diagnostics', 'advisor', 'remedies', 'remedy', 'custom-remedies', 'synastry', 'compatibility', 'match', 'global-suite', 'tools-catalog', 'birth-chart', 'kundli', 'master-chart', 'islamic-astrology', 'islamic-suite', 'islamic', 'chat', 'dream-interpreter', 'dream', 'problem-solver', 'spiritual-traditions', 'horoscope', 'transits', 'panchang', 'reports', 'gemstone', 'muhurta', 'learning', 'notifications', 'settings', 'admin'].includes(activeTab) && !TRADITIONS[activeTab] && (
+                  <CosmicIntelligenceCenter onNavigate={navigateTo} userProfile={userProfile} />
                 )}
               </motion.div>
             </AnimatePresence>
