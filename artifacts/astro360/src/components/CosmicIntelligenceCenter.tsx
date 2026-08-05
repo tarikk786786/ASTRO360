@@ -488,8 +488,48 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
       variants={staggerContainer}
       className="min-h-screen bg-[#0B1220] text-[#F8FAFC] font-sans overflow-y-auto custom-scrollbar p-4 sm:p-8 lg:p-12 pb-28 text-left relative"
     >
-      <div className="max-w-7xl mx-auto space-y-8">
-        
+      <div className="max-w-7xl mx-auto space-y-6">
+
+        {/* 🚀 UNIVERSAL BETA TEST MODE & DEVELOPER ATTRIBUTION BANNER */}
+        <motion.div variants={staggerItem} className="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-indigo-950 via-slate-900 to-purple-950 border border-amber-500/40 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 relative overflow-hidden">
+          <div className="flex items-start md:items-center gap-3.5">
+            <div className="w-10 h-10 rounded-2xl bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center justify-center font-bold text-lg shrink-0 shadow-md">
+              🧪
+            </div>
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-xs font-mono font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/30">
+                  BETA TEST MODE
+                </span>
+                <span className="text-xs font-bold text-white">
+                  Universal Global Platform for All People & Beliefs Worldwide
+                </span>
+              </div>
+              <p className="text-xs text-slate-300">
+                Architected & Created by <strong className="text-amber-300">Tarik Islam</strong>. For suggestions, feature requests, or bug reports, connect directly.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0 flex-wrap">
+            <a
+              href="https://tarikislam.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 text-xs font-bold font-mono transition-all flex items-center gap-1.5 cursor-pointer"
+            >
+              <span>tarikislam.in ↗</span>
+            </a>
+
+            <a
+              href="mailto:princetarikislam@gmail.com?subject=ASTRO360%20Beta%20Feedback%20%2F%20Bug%20Report"
+              className="px-4 py-2 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 hover:bg-indigo-500/30 text-xs font-bold font-mono transition-all flex items-center gap-1.5 cursor-pointer"
+            >
+              <span>✉️ Send Feedback</span>
+            </a>
+          </div>
+        </motion.div>
+
         {/* SECTION 1: GLOBAL HEADER WITH SEARCH & ACCURATE LOCAL TIME */}
         <motion.div variants={staggerItem} className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 p-4 sm:p-6 rounded-3xl bg-[#111827] border border-white/10 shadow-2xl backdrop-blur-xl">
           <div>

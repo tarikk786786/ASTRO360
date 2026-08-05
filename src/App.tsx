@@ -497,8 +497,19 @@ export default function App() {
               {getPageTitle()}
             </h1>
           </div>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <span className="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-full font-bold flex items-center gap-1">
+              🧪 BETA TEST MODE
+            </span>
+            <a
+              href="https://tarikislam.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[10px] font-mono text-[#06B6D4] bg-[#06B6D4]/10 border border-[#06B6D4]/30 hover:bg-[#06B6D4]/20 px-2.5 py-1 rounded-full font-bold transition-all flex items-center gap-1"
+            >
+              <span>By Tarik Islam (tarikislam.in) ↗</span>
+            </a>
+            <span className="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full hidden sm:flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live Telemetry
             </span>
           </div>
