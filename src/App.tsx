@@ -26,6 +26,7 @@ import CommandPalette from './components/CommandPalette';
 import DreamInterpretationEngine from './components/DreamInterpretationEngine';
 import UniversalProblemSolverSuite from './components/UniversalProblemSolverSuite';
 import PremiumHoroscopeEngine from './components/PremiumHoroscopeEngine';
+import SpiritualTraditionsModule from './components/SpiritualTraditionsModule';
 
 const STORAGE_KEY = 'astroverse_profile';
 const TAB_KEY = 'astroverse_tab';
@@ -383,6 +384,18 @@ export default function App() {
             <span className="font-medium text-sm font-bold text-cyan-300">Interactive Problem Tools</span>
           </button>
 
+          <button 
+            onClick={() => navigateTo('spiritual-traditions')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer ${
+              activeTab === 'spiritual-traditions' 
+                ? 'bg-amber-500/15 text-amber-300 border border-amber-500/25 shadow-sm shadow-amber-500/10' 
+                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
+            }`}
+          >
+            <ShieldCheck className="w-5 h-5 text-amber-400" />
+            <span className="font-medium text-sm font-bold text-amber-300">Spiritual & Cultural Beliefs</span>
+          </button>
+
           {/* Traditions Section */}
           <div className="pt-5 pb-2 px-2">
             <div className="flex items-center gap-2">
@@ -517,6 +530,7 @@ export default function App() {
                 {activeTab === 'chat' && <AstrologyChat />}
                 {(activeTab === 'dream-interpreter' || activeTab === 'dream') && <DreamInterpretationEngine userProfile={userProfile} />}
                 {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
+                {activeTab === 'spiritual-traditions' && <SpiritualTraditionsModule userProfile={userProfile} />}
                 {(activeTab === 'horoscope' || activeTab === 'transits' || activeTab === 'panchang') && <PremiumHoroscopeEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
                 {(activeTab === 'reports' || activeTab === 'gemstone' || activeTab === 'muhurta' || activeTab === 'learning') && <Astro150ToolsCatalog userProfile={userProfile} onNavigate={navigateTo} activeCategory={activeTab} initialCategory={activeTab} />}
                 {(activeTab === 'notifications' || activeTab === 'settings' || activeTab === 'admin') && (
