@@ -644,7 +644,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
             <span className="font-bold text-amber-400 font-mono flex items-center gap-1.5 shrink-0">
               <Globe2 className="w-4 h-4 text-amber-400" /> {i18n.viewByReligion}
             </span>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex overflow-x-auto no-scrollbar pb-1 sm:pb-0 gap-1.5 max-w-full">
               {[
                 { id: 'universal', label: '🌐 All Systems', badge: 'Multi-Faith' },
                 { id: 'islamic', label: '🕌 Islamic (النُّجوم)', badge: 'Sunnah' },
@@ -656,7 +656,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
                 <button
                   key={rel.id}
                   onClick={() => setSelectedReligionView(rel.id as any)}
-                  className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap ${
                     selectedReligionView === rel.id
                       ? 'bg-amber-500/25 text-amber-300 border border-amber-500/50 shadow-md shadow-amber-500/10'
                       : 'bg-white/5 text-slate-400 hover:text-white border border-white/5'
@@ -1024,7 +1024,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
                 </p>
 
                 {/* MULTI-RELIGIOUS QUICK REMEDY SNIPPETS */}
-                <div className="grid grid-cols-3 gap-2 pt-1 font-mono text-[10px]">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1 font-mono text-[10px]">
                   <div className="p-2 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300">
                     <span className="font-bold block">🕌 Islamic:</span>
                     <span>Recite Ayatul Kursi & Give Sadaqah</span>
