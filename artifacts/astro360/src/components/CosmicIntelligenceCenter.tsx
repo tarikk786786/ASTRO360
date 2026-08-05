@@ -183,6 +183,87 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isSearchFocused, setIsSearchFocused] = useState<boolean>(false);
 
+  // Selected Religion Perspective & Language State
+  const [selectedReligionView, setSelectedReligionView] = useState<'universal' | 'islamic' | 'vedic' | 'western' | 'chinese' | 'kabbalah'>('universal');
+  const [selectedLanguage, setSelectedLanguage] = useState<'en' | 'ar' | 'hi' | 'ur' | 'es' | 'fr' | 'zh'>('en');
+
+  // Multi-Language Dictionary for Dashboard Labels
+  const i18n = useMemo(() => {
+    const dict = {
+      en: {
+        welcome: "Welcome Back",
+        systemActive: "SYSTEM ACTIVE",
+        todaysDiagnostics: "Today's Cosmic Diagnostic & Solution",
+        ephemerisPositions: "Live Ephemeris Positions (Computed)",
+        activeDasha: "Active Dasha Period",
+        quickActions: "Essential Quick Actions",
+        viewByReligion: "Filter Dashboard Perspective by Faith / Tradition:",
+        languageSelect: "Language / اللُّغَة:"
+      },
+      ar: {
+        welcome: "مرحباً بعودتك",
+        systemActive: "النظام نشط",
+        todaysDiagnostics: "التشخيص الكوني والحل اليومي",
+        ephemerisPositions: "مواقع الكواكب الحية الحسابية",
+        activeDasha: "الفترة الفلكية النشطة (الدشا)",
+        quickActions: "الإجراءات السريعة الأساسية",
+        viewByReligion: "تصفية لوحة التحكم حسب الديانة / التقليد:",
+        languageSelect: "Language / اللُّغَة:"
+      },
+      hi: {
+        welcome: "पुनः स्वागत है",
+        systemActive: "सिस्टम सक्रिय",
+        todaysDiagnostics: "आज का कॉस्मिक निदान और समाधान",
+        ephemerisPositions: "लाइव ग्रह स्थिति (गणना की गई)",
+        activeDasha: "सक्रिय दशा अवधि",
+        quickActions: "आवश्यक त्वरित कार्य",
+        viewByReligion: "धर्म / परंपरा द्वारा डैशबोर्ड फ़िल्टर करें:",
+        languageSelect: "भाषा / Language:"
+      },
+      ur: {
+        welcome: "خوش آمدید",
+        systemActive: "سسٹم فعال ہے",
+        todaysDiagnostics: "آج کا کاسمک تشخیص اور حل",
+        ephemerisPositions: "لائیو سیاروں کی پوزیشنیں",
+        activeDasha: "فعال دشا کی مدت",
+        quickActions: "اہم فوری اقدامات",
+        viewByReligion: "مذہب / روایت کے لحاظ سے ڈیش بورڈ فلٹر کریں:",
+        languageSelect: "زبان / Language:"
+      },
+      es: {
+        welcome: "Bienvenido de nuevo",
+        systemActive: "SISTEMA ACTIVO",
+        todaysDiagnostics: "Diagnóstico Cósmico y Solución de Hoy",
+        ephemerisPositions: "Posiciones Efemérides en Vivo (Calculadas)",
+        activeDasha: "Período Dasha Activo",
+        quickActions: "Acciones Rápidas Esenciales",
+        viewByReligion: "Filtrar Perspectiva del Panel por Fe / Tradición:",
+        languageSelect: "Idioma / Language:"
+      },
+      fr: {
+        welcome: "Content de vous revoir",
+        systemActive: "SYSTÈME ACTIF",
+        todaysDiagnostics: "Diagnostic et Solution Cosmiques du Jour",
+        ephemerisPositions: "Positions Éphémérides en Direct (Calculées)",
+        activeDasha: "Période Dasha Active",
+        quickActions: "Actions Rapides Essentielles",
+        viewByReligion: "Filtrer la Perspective du Tableau de Bord par Foi / Tradition:",
+        languageSelect: "Langue / Language:"
+      },
+      zh: {
+        welcome: "欢迎回来",
+        systemActive: "系统已激活",
+        todaysDiagnostics: "今日宇宙诊断与解决方案",
+        ephemerisPositions: "实时星历位置（计算值）",
+        activeDasha: "活跃的大运周期",
+        quickActions: "核心快捷操作",
+        viewByReligion: "按信仰/传统过滤仪表板视角：",
+        languageSelect: "语言 / Language:"
+      }
+    };
+    return dict[selectedLanguage] || dict['en'];
+  }, [selectedLanguage]);
+
   // Accurate Local Time Telemetry with Timezone Abbreviation
   const [currentTimeStr, setCurrentTimeStr] = useState<string>('');
   const [timeZoneAbbr, setTimeZoneAbbr] = useState<string>('');
@@ -292,19 +373,33 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
     };
   }, [planetPositions]);
 
-  // FIX 4: Compute dynamic What / Why / Solution text from Sun house & Mahadasha
+  // FIX 4: Compute dynamic What / Why / Solution text from Sun house & Mahadasha, customized by Religion View
   const dynamicDiagnostics = useMemo(() => {
     const sunPlanet = planetPositions.find(p => p.name === 'Sun');
     const sunHouseNum = sunPlanet?.houseNumber || 1;
     const houseData = SUN_HOUSE_DIAGNOSTICS[sunHouseNum] || SUN_HOUSE_DIAGNOSTICS[1];
     const mahadashaDesc = MAHADASHA_DIAGNOSTICS[dashaInfo.mahadasha] || MAHADASHA_DIAGNOSTICS['Jupiter'];
 
+    let religionSolution = `${houseData.solution} Maintain daily solar discipline and align actions with ${dashaInfo.mahadasha} energy.`;
+    
+    if (selectedReligionView === 'islamic') {
+      religionSolution = `🕌 Islamic Guidance: Recite Ayatul Kursi & Surah Ash-Sharh for clarity. Give Sadaqah on Friday and maintain morning Adhkar for divine protection and Barakah in income.`;
+    } else if (selectedReligionView === 'vedic') {
+      religionSolution = `🕉️ Vedic Remedy: Offer Surya Arghya at sunrise with copper vessel. Wear Yellow Sapphire (Pukhraj) / Ruby based on Lagna Lord, and chant ${dashaInfo.mahadasha} Gayatri Mantra (108x).`;
+    } else if (selectedReligionView === 'western') {
+      religionSolution = `⭐ Western Insight: Invoke Archangel Michael for spiritual courage. Work with Golden Citrine crystal to amplify solar 10th house executive focus and alignment.`;
+    } else if (selectedReligionView === 'chinese') {
+      religionSolution = `☯️ BaZi & Feng Shui: Balance Fire (火) and Earth (土) elements in South-East sector. Place Wu Lou or jade ornament to harmonize Qi and stimulate career luck.`;
+    } else if (selectedReligionView === 'kabbalah') {
+      religionSolution = `✡️ Kabbalistic Focus: Align with Tiphereth (Heart Sun Center). Recite Psalm 91 and meditate on YHVH Eloah Va-Daath for spiritual elevation and peace.`;
+    }
+
     return {
       what: houseData.what,
       why: `Sun transiting your ${sunPlanet?.house || '10th House'} combined with active ${dashaInfo.mahadasha} Mahadasha (${dashaInfo.antardasha} Antardasha). ${mahadashaDesc}`,
-      solution: `${houseData.solution} Maintain daily solar discipline and align actions with ${dashaInfo.mahadasha} energy.`
+      solution: religionSolution
     };
-  }, [planetPositions, dashaInfo]);
+  }, [planetPositions, dashaInfo, selectedReligionView]);
 
   // Global Tool Search Items
   const TOOLS_CATALOG = [
@@ -500,6 +595,56 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
           onSaveProfile={(prof) => setTargetProfile(prof)}
           currentProfile={userProfile}
         />
+
+        {/* 🌐 RELIGION PERSPECTIVE & LANGUAGE SELECTOR BAR */}
+        <motion.div variants={staggerItem} className="p-4 sm:p-5 rounded-3xl bg-[#111827] border border-white/10 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs font-sans">
+          {/* Religion View Selector */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+            <span className="font-bold text-amber-400 font-mono flex items-center gap-1.5 shrink-0">
+              <Globe2 className="w-4 h-4 text-amber-400" /> {i18n.viewByReligion}
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {[
+                { id: 'universal', label: '🌐 All Systems', badge: 'Multi-Faith' },
+                { id: 'islamic', label: '🕌 Islamic (النُّجوم)', badge: 'Sunnah' },
+                { id: 'vedic', label: '🕉️ Vedic (ज्योतिष)', badge: 'Sidereal' },
+                { id: 'western', label: '⭐ Western', badge: 'Tropical' },
+                { id: 'chinese', label: '☯️ BaZi (八字)', badge: 'Wu Xing' },
+                { id: 'kabbalah', label: '✡️ Kabbalah', badge: 'Sephirot' },
+              ].map((rel) => (
+                <button
+                  key={rel.id}
+                  onClick={() => setSelectedReligionView(rel.id as any)}
+                  className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    selectedReligionView === rel.id
+                      ? 'bg-amber-500/25 text-amber-300 border border-amber-500/50 shadow-md shadow-amber-500/10'
+                      : 'bg-white/5 text-slate-400 hover:text-white border border-white/5'
+                  }`}
+                >
+                  <span>{rel.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Language Selector */}
+          <div className="flex items-center gap-2 shrink-0 border-t md:border-t-0 pt-2 md:pt-0 border-white/10">
+            <span className="font-bold text-cyan-400 font-mono">{i18n.languageSelect}</span>
+            <select
+              value={selectedLanguage}
+              onChange={(e) => setSelectedLanguage(e.target.value as any)}
+              className="bg-[#0B1220] border border-white/10 text-white rounded-xl px-3 py-1.5 font-bold focus:outline-none focus:border-cyan-500 cursor-pointer"
+            >
+              <option value="en">🇺🇸 English</option>
+              <option value="ar">🇸🇦 العربية (Arabic)</option>
+              <option value="hi">🇮🇳 हिन्दी (Hindi)</option>
+              <option value="ur">🇵🇰 اردو (Urdu)</option>
+              <option value="es">🇪🇸 Español (Spanish)</option>
+              <option value="fr">🇫🇷 Français (French)</option>
+              <option value="zh">🇨🇳 中文 (Chinese)</option>
+            </select>
+          </div>
+        </motion.div>
 
         {/* SECTION 2: HERO AI DAILY SUMMARY & COMPUTED PLANETARY POSITIONS GRID */}
         <motion.div variants={staggerItem} className="relative rounded-3xl overflow-hidden bg-[#111827] border border-white/10 shadow-2xl p-6 sm:p-8">
