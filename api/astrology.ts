@@ -1,6 +1,7 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+// Vercel Serverless Function: /api/astrology
+// Standard Vercel HTTP Handler (Type-safe for root TypeScript compiler)
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: any, res: any) {
   // CORS Headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -20,7 +21,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     const { prompt, userContext } = req.body || {};
-    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+    const apiKey = (globalThis as any).process?.env?.GEMINI_API_KEY || (globalThis as any).process?.env?.GOOGLE_API_KEY;
 
     if (apiKey) {
       // Direct fetch to Google Gemini REST API v1beta
@@ -38,7 +39,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         ]
       };
 
-      const geminiRes = await fetch(geminiUrl, {
+      const fetchFn = (globalThis as any).fetch || fetch;
+      const geminiRes = await fetchFn(geminiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -68,7 +70,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
 
   } catch (error: any) {
-    console.error('Serverless Astrology Handler Error:', error);
+    (globalThis as any).console?.error('Serverless Astrology Handler Error:', error);
     return res.status(500).json({
       success: false,
       error: error?.message || 'Internal Astrological Engine Error',
