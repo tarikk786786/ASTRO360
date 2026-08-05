@@ -536,56 +536,289 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
     setIsDownloading(true);
     setTimeout(() => {
       setIsDownloading(false);
-      const blueprintText = `
-===================================================================
-ASTROVERSE 360 HOLISTIC BLUEPRINT & ACTION GUIDE
-===================================================================
-Seeker Name: ${name}
-Birth Date: ${dob} | Time: ${time}
-Sun Sign: ${birthChartMetrics.sunSign} | Moon Sign: ${birthChartMetrics.moonSign}
-Nakshatra: ${birthChartMetrics.nakshatra} | Ascendant: ${birthChartMetrics.ascendant}
+      
+      const printWindow = window.open('', '_blank');
+      if (printWindow) {
+        printWindow.document.write(`
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>Holistic Solution Blueprint — ${activeProblem.title}</title>
+              <meta charset="utf-8" />
+              <style>
+                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Amiri:wght@400;700&display=swap');
+                body {
+                  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+                  background: #ffffff;
+                  color: #0f172a;
+                  padding: 40px;
+                  margin: 0;
+                  line-height: 1.6;
+                }
+                .header {
+                  border-bottom: 3px double #4f46e5;
+                  padding-bottom: 20px;
+                  margin-bottom: 24px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: flex-start;
+                }
+                .logo {
+                  font-size: 22px;
+                  font-weight: 800;
+                  color: #4f46e5;
+                  letter-spacing: -0.5px;
+                }
+                .tagline {
+                  font-size: 11px;
+                  color: #64748b;
+                  text-transform: uppercase;
+                  letter-spacing: 1px;
+                }
+                .metrics-box {
+                  background: #f8fafc;
+                  border: 1px solid #e2e8f0;
+                  border-radius: 12px;
+                  padding: 16px;
+                  display: grid;
+                  grid-template-columns: repeat(4, 1fr);
+                  gap: 12px;
+                  margin-bottom: 24px;
+                }
+                .metric-label {
+                  font-size: 10px;
+                  color: #64748b;
+                  text-transform: uppercase;
+                  font-weight: 700;
+                }
+                .metric-val {
+                  font-size: 13px;
+                  color: #1e293b;
+                  font-weight: 700;
+                }
+                .problem-banner {
+                  background: #eef2ff;
+                  border: 1px solid #c7d2fe;
+                  border-radius: 16px;
+                  padding: 20px;
+                  margin-bottom: 24px;
+                }
+                .problem-title {
+                  font-size: 20px;
+                  font-weight: 800;
+                  color: #312e81;
+                  margin: 0 0 6px 0;
+                }
+                .problem-sub {
+                  font-size: 13px;
+                  color: #4338ca;
+                  margin: 0;
+                }
+                .section-card {
+                  border: 1px solid #e2e8f0;
+                  border-radius: 14px;
+                  padding: 20px;
+                  margin-bottom: 20px;
+                  background: #ffffff;
+                }
+                .sec-title {
+                  font-size: 14px;
+                  font-weight: 700;
+                  color: #0f172a;
+                  margin-bottom: 12px;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                }
+                .arabic-box {
+                  background: #f0fdf4;
+                  border: 1px solid #bbf7d0;
+                  border-radius: 12px;
+                  padding: 16px;
+                  text-align: right;
+                  margin: 12px 0;
+                }
+                .arabic-text {
+                  font-family: 'Amiri', serif;
+                  font-size: 22px;
+                  color: #14532d;
+                  line-height: 1.8;
+                }
+                .trans-text {
+                  font-size: 12px;
+                  color: #166534;
+                  text-align: left;
+                  font-style: italic;
+                  margin-top: 8px;
+                  border-top: 1px solid #dcfce7;
+                  padding-top: 8px;
+                }
+                .plan-step {
+                  padding: 10px 14px;
+                  border-radius: 10px;
+                  background: #f8fafc;
+                  border: 1px solid #e2e8f0;
+                  margin-bottom: 8px;
+                  font-size: 12px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                }
+                .checkbox-done {
+                  width: 18px;
+                  height: 18px;
+                  border-radius: 4px;
+                  background: #10b981;
+                  color: white;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 12px;
+                  font-weight: bold;
+                }
+                .checkbox-open {
+                  width: 18px;
+                  height: 18px;
+                  border-radius: 4px;
+                  border: 1px solid #cbd5e1;
+                  background: white;
+                }
+                .footer {
+                  text-align: center;
+                  font-size: 11px;
+                  color: #94a3b8;
+                  border-top: 1px solid #e2e8f0;
+                  padding-top: 20px;
+                  margin-top: 30px;
+                }
+              </style>
+            </head>
+            <body>
+              <div class="header">
+                <div>
+                  <div class="logo">ASTRO360 HOLISTIC BLUEPRINT</div>
+                  <div class="tagline">Universal Multi-Perspective Problem Resolution Guide</div>
+                </div>
+                <div style="text-align: right; font-size: 12px; color: #64748b;">
+                  <div>Date: ${new Date().toLocaleDateString()}</div>
+                  <div>Urgency: <strong>${customUrgency}</strong></div>
+                </div>
+              </div>
+
+              <div class="metrics-box">
+                <div>
+                  <div class="metric-label">Seeker Name</div>
+                  <div class="metric-val">${name}</div>
+                </div>
+                <div>
+                  <div class="metric-label">Sun Sign</div>
+                  <div class="metric-val">${birthChartMetrics.sunSign}</div>
+                </div>
+                <div>
+                  <div class="metric-label">Moon Sign</div>
+                  <div class="metric-val">${birthChartMetrics.moonSign}</div>
+                </div>
+                <div>
+                  <div class="metric-label">Nakshatra & Lagna</div>
+                  <div class="metric-val">${birthChartMetrics.nakshatra} (${birthChartMetrics.ascendant})</div>
+                </div>
+              </div>
+
+              <div class="problem-banner">
+                <h1 class="problem-title">${activeProblem.title}</h1>
+                <p class="problem-sub">${activeProblem.subtitle}</p>
+              </div>
+
+              <div class="section-card">
+                <div class="sec-title">⚠️ Root Causes & Diagnostic Insights</div>
+                <ul style="font-size: 12px; color: #334155; padding-left: 20px; margin: 0;">
+                  ${activeProblem.rootCauses.map(rc => `<li>${rc}</li>`).join('')}
+                </ul>
+              </div>
+
+              <div class="section-card" style="border-color: #86efac; background: #fafdfb;">
+                <div class="sec-title" style="color: #15803d;">🕌 1. Authentic Sunnah & Qur'anic Remedy (${activeProblem.islamicRemedy.source})</div>
+                <div style="font-size: 13px; font-weight: 700; color: #166534; margin-bottom: 6px;">${activeProblem.islamicRemedy.title}</div>
+                ${activeProblem.islamicRemedy.duaArabic ? `
+                  <div class="arabic-box">
+                    <div class="arabic-text">${activeProblem.islamicRemedy.duaArabic}</div>
+                    <div class="trans-text">${activeProblem.islamicRemedy.duaTranslation}</div>
+                  </div>
+                ` : ''}
+                <div style="font-size: 12px; color: #15803d;"><strong>Prescribed Action:</strong> ${activeProblem.islamicRemedy.action}</div>
+              </div>
+
+              <div class="section-card" style="border-color: #d8b4fe; background: #fdfafe;">
+                <div class="sec-title" style="color: #7e22ce;">🪐 2. Classical Planetary & Gemstone Alignment</div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 11px; margin-bottom: 12px; background: #f5f3ff; padding: 12px; border-radius: 10px;">
+                  <div><strong>Planet:</strong> ${activeProblem.planetaryRemedy.planet}</div>
+                  <div><strong>Element:</strong> ${activeProblem.planetaryRemedy.element}</div>
+                  <div><strong>Gemstone:</strong> ${activeProblem.planetaryRemedy.gemstone}</div>
+                  <div><strong>Day:</strong> ${activeProblem.planetaryRemedy.day}</div>
+                </div>
+                <div style="font-size: 12px; color: #6b21a8;"><strong>Energetic Action:</strong> ${activeProblem.planetaryRemedy.action}</div>
+              </div>
+
+              <div class="section-card" style="border-color: #a5f3fc; background: #f8fafc;">
+                <div class="sec-title" style="color: #0369a1;">🧠 3. Psychological Framework & CBT Exercise</div>
+                <div style="font-size: 12px; color: #0c4a6e; margin-bottom: 8px;"><strong>Framework:</strong> ${activeProblem.psychologicalRemedy.framework}</div>
+                <div style="font-size: 12px; color: #0c4a6e; margin-bottom: 8px; font-style: italic;"><strong>Mindset Shift:</strong> "${activeProblem.psychologicalRemedy.mindsetShift}"</div>
+                <div style="font-size: 12px; color: #0c4a6e;"><strong>Exercise:</strong> ${activeProblem.psychologicalRemedy.exercise}</div>
+              </div>
+
+              <div class="section-card" style="border-color: #fde68a; background: #fffdf5;">
+                <div class="sec-title" style="color: #b45309;">📅 4. 7-Day Resolution Action Plan (${currentPlanDoneCount}/7 Days Completed)</div>
+                ${activeProblem.sevenDayPlan.map((step, i) => {
+                  const isDone = completedSteps[`${activeProblem.id}_step_${i}`];
+                  return `
+                    <div class="plan-step" style="${isDone ? 'background: #ecfdf5; border-color: #a7f3d0;' : ''}">
+                      <div class="${isDone ? 'checkbox-done' : 'checkbox-open'}">${isDone ? '✓' : ''}</div>
+                      <div style="${isDone ? 'text-decoration: line-through; color: #059669;' : ''}">${step}</div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+
+              <div class="footer">
+                Confidential & Personalized Solution Blueprint generated for ${name} · ASTRO360 Precision Engine
+              </div>
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+        printWindow.focus();
+        setTimeout(() => printWindow.print(), 500);
+      } else {
+        // Fallback text download if popups are blocked by browser
+        const blueprintText = `
+ASTRO360 HOLISTIC BLUEPRINT & ACTION GUIDE
+Seeker Name: ${name} | Date: ${new Date().toLocaleDateString()}
+Challenge: ${activeProblem.title}
 -------------------------------------------------------------------
-Target Challenge: ${activeProblem.title}
-Category: ${activeProblem.category} | Urgency Level: ${customUrgency}
--------------------------------------------------------------------
+1. ISLAMIC REMEDY: ${activeProblem.islamicRemedy.title}
+Action: ${activeProblem.islamicRemedy.action}
 
-1. ROOT CAUSES:
-${activeProblem.rootCauses.map(rc => ` - ${rc}`).join('\n')}
-
-2. AUTHENTIC ISLAMIC / SUNNAH REMEDY:
-Title: ${activeProblem.islamicRemedy.title}
-Du'a (Arabic): ${activeProblem.islamicRemedy.duaArabic || 'N/A'}
-Du'a (Translation): ${activeProblem.islamicRemedy.duaTranslation || 'N/A'}
-Prescribed Action: ${activeProblem.islamicRemedy.action}
-
-3. PLANETARY & GEMSTONE ALIGNMENT:
-Planet: ${activeProblem.planetaryRemedy.planet} | Element: ${activeProblem.planetaryRemedy.element}
-Gemstone: ${activeProblem.planetaryRemedy.gemstone} | Alignment Day: ${activeProblem.planetaryRemedy.day}
+2. PLANETARY REMEDY: ${activeProblem.planetaryRemedy.planet} | Gemstone: ${activeProblem.planetaryRemedy.gemstone}
 Action: ${activeProblem.planetaryRemedy.action}
 
-4. PSYCHOLOGICAL FRAMEWORK:
-Framework: ${activeProblem.psychologicalRemedy.framework}
+3. PSYCHOLOGICAL FRAMEWORK: ${activeProblem.psychologicalRemedy.framework}
 Mindset Shift: "${activeProblem.psychologicalRemedy.mindsetShift}"
-Exercise: ${activeProblem.psychologicalRemedy.exercise}
 
-5. 7-DAY RESOLUTION ACTION PLAN:
-${activeProblem.sevenDayPlan.map((step, i) => ` [${completedSteps[`${activeProblem.id}_step_${i}`] ? 'X' : ' '}] Day ${i+1}: ${step}`).join('\n')}
+4. 7-DAY ACTION PLAN:
+${activeProblem.sevenDayPlan.map((step, i) => `[${completedSteps[`${activeProblem.id}_step_${i}`] ? 'X' : ' '}] Day ${i+1}: ${step}`).join('\n')}
+        `.trim();
 
-===================================================================
-Generated by AstroVerse 360 Precision Engine
-===================================================================
-      `.trim();
-
-      const blob = new Blob([blueprintText], { type: 'text/plain;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `AstroVerse_Blueprint_${activeProblem.id}_${name.replace(/\s+/g, '_')}.txt`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    }, 800);
+        const blob = new Blob([blueprintText], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `AstroVerse_Blueprint_${activeProblem.id}_${name.replace(/\s+/g, '_')}.txt`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+    }, 400);
   };
 
   return (
