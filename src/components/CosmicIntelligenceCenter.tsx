@@ -21,6 +21,11 @@ import { ShimmerButton } from './magicui/shimmer-button';
 import { Marquee } from './magicui/marquee';
 import { NumberTicker } from './magicui/number-ticker';
 import { BentoGrid, BentoCard } from './magicui/bento-grid';
+import { SplitText } from './reactbits/SplitText';
+import { SpotlightCard } from './reactbits/SpotlightCard';
+import { MagnetButton } from './reactbits/MagnetButton';
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
+import { toast } from 'sonner';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -415,6 +420,14 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
     };
     return { name: planetName, desc: horaInfo[planetName] || 'Balanced cosmic hour.' };
   }, []);
+
+  // Recharts Radar Data for Elemental Balance Chart
+  const radarData = useMemo(() => [
+    { subject: 'Fire (Action)', A: elementalBalance.firePct, fullMark: 100 },
+    { subject: 'Earth (Assets)', A: elementalBalance.earthPct, fullMark: 100 },
+    { subject: 'Air (Mind)', A: elementalBalance.airPct, fullMark: 100 },
+    { subject: 'Water (Soul)', A: elementalBalance.waterPct, fullMark: 100 },
+  ], [elementalBalance]);
 
   // FIX 4: Compute dynamic What / Why / Solution text from Sun house & Mahadasha, customized by Religion View
   const dynamicDiagnostics = useMemo(() => {
@@ -865,30 +878,43 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
                 ))}
               </div>
 
-              {/* 📊 ELEMENTAL BALANCE TELEMETRY */}
+              {/* 📊 ELEMENTAL BALANCE TELEMETRY & RECHARTS RADAR */}
               <div className="pt-2 border-t border-white/10 space-y-2">
                 <div className="flex items-center justify-between text-[11px] font-mono">
                   <span className="text-amber-400 font-bold flex items-center gap-1">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Elemental Balance:
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Elemental Balance Radar (Recharts):
                   </span>
                   <span className="text-[#94A3B8]">4 Elements Breakdown</span>
                 </div>
+
+                {/* Recharts Radar Visualization */}
+                <div className="h-40 w-full bg-[#111827]/80 rounded-2xl border border-white/10 p-1 flex items-center justify-center">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
+                      <PolarGrid stroke="#334155" />
+                      <PolarAngleAxis dataKey="subject" stroke="#94A3B8" tick={{ fontSize: 9, fill: '#CBD5E1' }} />
+                      <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#475569" tick={{ fontSize: 8 }} />
+                      <Radar name="Elemental Strength" dataKey="A" stroke="#06B6D4" fill="#06B6D4" fillOpacity={0.4} />
+                    </RadarChart>
+                  </ResponsiveContainer>
+                </div>
+
                 <div className="grid grid-cols-4 gap-2 text-center text-[10px] font-mono">
                   <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300">
                     <span className="font-bold block">🔥 Fire</span>
-                    <span>{elementalBalance.firePct}% ({elementalBalance.counts.Fire})</span>
+                    <span>{elementalBalance.firePct}%</span>
                   </div>
                   <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
                     <span className="font-bold block">🌍 Earth</span>
-                    <span>{elementalBalance.earthPct}% ({elementalBalance.counts.Earth})</span>
+                    <span>{elementalBalance.earthPct}%</span>
                   </div>
                   <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-300">
                     <span className="font-bold block">💨 Air</span>
-                    <span>{elementalBalance.airPct}% ({elementalBalance.counts.Air})</span>
+                    <span>{elementalBalance.airPct}%</span>
                   </div>
                   <div className="p-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-300">
                     <span className="font-bold block">🌊 Water</span>
-                    <span>{elementalBalance.waterPct}% ({elementalBalance.counts.Water})</span>
+                    <span>{elementalBalance.waterPct}%</span>
                   </div>
                 </div>
               </div>

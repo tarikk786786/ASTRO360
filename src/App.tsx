@@ -22,11 +22,12 @@ import AstroMultiTraditionRemedySuite from './components/AstroMultiTraditionReme
 import GlobalWisdomSuite from './components/GlobalWisdomSuite';
 import AstroSynastryMatchmaker from './components/AstroSynastryMatchmaker';
 import Astro150ToolsCatalog from './components/Astro150ToolsCatalog';
-import CommandPalette from './components/CommandPalette';
+import CommandPaletteModal from './components/CommandPaletteModal';
 import DreamInterpretationEngine from './components/DreamInterpretationEngine';
 import UniversalProblemSolverSuite from './components/UniversalProblemSolverSuite';
 import PremiumHoroscopeEngine from './components/PremiumHoroscopeEngine';
 import SpiritualTraditionsModule from './components/SpiritualTraditionsModule';
+import { Toaster, toast } from 'sonner';
 
 const STORAGE_KEY = 'astroverse_profile';
 const TAB_KEY = 'astroverse_tab';
@@ -636,11 +637,14 @@ export default function App() {
       </main>
 
       {/* Command Palette Modal */}
-      <CommandPalette
+      <CommandPaletteModal
         isOpen={isCommandPaletteOpen}
         onClose={() => setIsCommandPaletteOpen(false)}
         onNavigate={navigateTo}
       />
+
+      {/* Sonner Toast Provider */}
+      <Toaster position="top-right" theme="dark" richColors />
     </div>
   );
 }
