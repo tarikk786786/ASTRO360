@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Heart, Compass, Sparkles, ShieldCheck, User, Users, Info, Award } from 'lucide-react';
+import { Heart, Compass, Sparkles, ShieldCheck, User, Users, Info, Award, Settings, CheckCircle2 } from 'lucide-react';
 import type { PlanetPosition } from '../lib/astroCalculations';
 
 interface SynastryOverlayChartProps {
@@ -17,6 +17,10 @@ export default function SynastryOverlayChart({
   personBName = 'Spouse / Partner'
 }: SynastryOverlayChartProps) {
   const [selectedPlanet, setSelectedPlanet] = useState<PlanetPosition | null>(null);
+  const [showPartnerModal, setShowPartnerModal] = useState<boolean>(false);
+  const [partnerName, setPartnerName] = useState<string>(personBName);
+  const [partnerDob, setPartnerDob] = useState<string>('2000-02-14');
+  const [partnerTime, setPartnerTime] = useState<string>('14:30');
 
   // Compute Dual Ring Aspect Overlaps
   const synastryScore = useMemo(() => {
@@ -41,11 +45,17 @@ export default function SynastryOverlayChart({
             <Heart className="w-5 h-5 text-pink-400" /> Synastry Dual-Ring Chart Overlay
           </h3>
           <p className="text-xs text-slate-400 font-mono pt-0.5">
-            Inter-Natal Chart Comparison: {personAName} vs {personBName}
+            Inter-Natal Chart Comparison: {personAName} vs {partnerName}
           </p>
         </div>
 
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowPartnerModal(true)}
+            className="px-3 py-1 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-mono font-bold flex items-center gap-1 border border-white/10 cursor-pointer transition-all"
+          >
+            <Settings className="w-3.5 h-3.5 text-pink-400" /> Partner Details
+          </button>
           <span className="text-xs font-mono font-bold text-pink-300 bg-pink-500/10 px-3 py-1 rounded-full border border-pink-500/30 flex items-center gap-1.5 shadow-md">
             <Award className="w-4 h-4 text-pink-400" />
             Synastry Score: {synastryScore}/100
@@ -60,7 +70,7 @@ export default function SynastryOverlayChart({
             {/* Outer Ring: Person B */}
             <circle cx="170" cy="170" r="140" fill="none" stroke="#EC4899" strokeWidth="2" strokeDasharray="4 4" opacity="0.6" />
             <text x="170" y="22" textAnchor="middle" fill="#EC4899" fontSize="9" fontWeight="bold" fontFamily="monospace">
-              Outer Ring: {personBName}
+              Outer Ring: {partnerName}
             </text>
 
             {/* Inner Ring: Person A */}
@@ -110,7 +120,7 @@ export default function SynastryOverlayChart({
               <Users className="w-4 h-4 text-pink-400" /> Synastry Harmony & Inter-Aspect Analysis:
             </span>
             <p className="text-slate-300 leading-relaxed text-[11px]">
-              Strong elemental convergence between <strong className="text-cyan-300">{personAName}</strong> and <strong className="text-pink-300">{personBName}</strong>. 
+              Strong elemental convergence between <strong className="text-cyan-300">{personAName}</strong> and <strong className="text-pink-300">{partnerName}</strong>. 
               Sun & Moon house positions align in Kendra 4th/10th relationship, bringing mutual respect, financial co-growth, and emotional safety.
             </p>
           </div>
@@ -135,6 +145,73 @@ export default function SynastryOverlayChart({
           </div>
         </div>
       </div>
+
+      {/* PARTNER INPUT MODAL */}
+      <AnimatePresence>
+        {showPartnerModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.95 }}
+              className="max-w-md w-full rounded-3xl bg-[#111827] border border-pink-500/40 p-6 space-y-4 shadow-2xl relative text-left"
+            >
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <h3 className="text-sm font-bold text-white font-mono flex items-center gap-2">
+                  <Heart className="w-4 h-4 text-pink-400" /> Spouse / Partner Birth Details
+                </h3>
+                <button onClick={() => setShowPartnerModal(false)} className="text-slate-400 hover:text-white cursor-pointer">✕</button>
+              </div>
+
+              <div className="space-y-3">
+                <div>
+                  <label className="text-[11px] font-mono text-slate-400 block font-bold mb-1">Partner's Full Name:</label>
+                  <input
+                    type="text"
+                    value={partnerName}
+                    onChange={(e) => setPartnerName(e.target.value)}
+                    className="w-full p-2.5 rounded-xl bg-[#0B1220] border border-white/10 text-xs text-white focus:outline-none focus:border-pink-400"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="text-[11px] font-mono text-slate-400 block font-bold mb-1">Date of Birth:</label>
+                    <input
+                      type="date"
+                      value={partnerDob}
+                      onChange={(e) => setPartnerDob(e.target.value)}
+                      className="w-full p-2.5 rounded-xl bg-[#0B1220] border border-white/10 text-xs text-white font-mono focus:outline-none focus:border-pink-400"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-mono text-slate-400 block font-bold mb-1">Time of Birth:</label>
+                    <input
+                      type="time"
+                      value={partnerTime}
+                      onChange={(e) => setPartnerTime(e.target.value)}
+                      className="w-full p-2.5 rounded-xl bg-[#0B1220] border border-white/10 text-xs text-white font-mono focus:outline-none focus:border-pink-400"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setShowPartnerModal(false)}
+                  className="w-full py-2.5 rounded-xl bg-pink-600 hover:bg-pink-700 text-white text-xs font-mono font-bold flex items-center justify-center gap-2 cursor-pointer transition-all shadow-lg mt-2"
+                >
+                  <CheckCircle2 className="w-4 h-4" /> Save & Compute Synastry Overlay
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
