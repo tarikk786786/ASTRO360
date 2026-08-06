@@ -9,18 +9,18 @@ interface CelestialZodiacOrbitProps {
 }
 
 const ZODIAC_SIGNS = [
-  { symbol: '♈', name: 'Aries', deg: 0, color: 'text-red-400' },
-  { symbol: '♉', name: 'Taurus', deg: 30, color: 'text-emerald-400' },
-  { symbol: '♊', name: 'Gemini', deg: 60, color: 'text-cyan-400' },
-  { symbol: '♋', name: 'Cancer', deg: 90, color: 'text-indigo-400' },
-  { symbol: '♌', name: 'Leo', deg: 120, color: 'text-amber-400' },
-  { symbol: '♍', name: 'Virgo', deg: 150, color: 'text-emerald-400' },
-  { symbol: '♎', name: 'Libra', deg: 180, color: 'text-pink-400' },
-  { symbol: '♏', name: 'Scorpio', deg: 210, color: 'text-red-400' },
-  { symbol: '♐', name: 'Sagittarius', deg: 240, color: 'text-purple-400' },
-  { symbol: '♑', name: 'Capricorn', deg: 270, color: 'text-slate-300' },
-  { symbol: '♒', name: 'Aquarius', deg: 300, color: 'text-cyan-400' },
-  { symbol: '♓', name: 'Pisces', deg: 330, color: 'text-indigo-400' },
+  { symbol: '♈', name: 'Aries', deg: 0, color: 'text-red-400', element: 'Fire 🔥' },
+  { symbol: '♉', name: 'Taurus', deg: 30, color: 'text-emerald-400', element: 'Earth 🌍' },
+  { symbol: '♊', name: 'Gemini', deg: 60, color: 'text-cyan-400', element: 'Air 💨' },
+  { symbol: '♋', name: 'Cancer', deg: 90, color: 'text-indigo-400', element: 'Water 🌊' },
+  { symbol: '♌', name: 'Leo', deg: 120, color: 'text-amber-400', element: 'Fire 🔥' },
+  { symbol: '♍', name: 'Virgo', deg: 150, color: 'text-emerald-400', element: 'Earth 🌍' },
+  { symbol: '♎', name: 'Libra', deg: 180, color: 'text-pink-400', element: 'Air 💨' },
+  { symbol: '♏', name: 'Scorpio', deg: 210, color: 'text-red-400', element: 'Water 🌊' },
+  { symbol: '♐', name: 'Sagittarius', deg: 240, color: 'text-purple-400', element: 'Fire 🔥' },
+  { symbol: '♑', name: 'Capricorn', deg: 270, color: 'text-slate-300', element: 'Earth 🌍' },
+  { symbol: '♒', name: 'Aquarius', deg: 300, color: 'text-cyan-400', element: 'Air 💨' },
+  { symbol: '♓', name: 'Pisces', deg: 330, color: 'text-indigo-400', element: 'Water 🌊' },
 ];
 
 const SIGN_BASE_DEGREES: Record<string, number> = {
@@ -39,7 +39,7 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
   };
 
   return (
-    <div className="relative w-full aspect-square max-w-[380px] mx-auto flex items-center justify-center p-2 sm:p-4">
+    <div className="relative w-full aspect-square max-w-[380px] mx-auto flex items-center justify-center p-2 sm:p-4 text-left">
       {/* Radiant Glowing Nebula Backdrop (Static Crisp Glow) */}
       <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600/15 via-purple-600/20 to-amber-500/15 blur-2xl pointer-events-none" />
 
@@ -72,8 +72,12 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
       {/* Inner Orbit Track */}
       <div className="absolute inset-20 rounded-full border border-purple-500/30 flex items-center justify-center pointer-events-none" />
 
-      {/* Central Solar Core (Steady Solar Core) */}
-      <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 p-0.5 shadow-[0_0_35px_rgba(245,158,11,0.5)] flex items-center justify-center z-10 cursor-pointer">
+      {/* Central Solar Core (Steady Solar Core with Soft Breathing Aura) */}
+      <motion.div 
+        animate={{ opacity: [0.85, 1, 0.85] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        className="w-20 h-20 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 p-0.5 shadow-[0_0_35px_rgba(245,158,11,0.5)] flex items-center justify-center z-10 cursor-pointer"
+      >
         <div className="w-full h-full rounded-full bg-[#0B1220] flex flex-col items-center justify-center text-center p-1 border border-white/20">
           <div className="flex items-center gap-1">
             <Sun className="w-4 h-4 text-amber-400" />
@@ -81,7 +85,7 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
           </div>
           <span className="text-[9px] font-mono font-bold text-amber-300 pt-0.5">CORE SOL</span>
         </div>
-      </div>
+      </motion.div>
 
       {/* Dynamic 9 Planets Nodes Computed on Real Longitude Angle */}
       {planetPositions.map((p, idx) => {
@@ -104,7 +108,7 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
             onClick={() => onSelectPlanet?.(p)}
             onMouseEnter={() => setHoveredPlanet(p)}
             onMouseLeave={() => setHoveredPlanet(null)}
-            whileHover={{ scale: 1.2, zIndex: 40 }}
+            whileHover={{ scale: 1.25, zIndex: 40 }}
             whileTap={{ scale: 0.95 }}
             style={{ transform: `translate(${px}px, ${py}px)` }}
             className={`absolute z-20 p-1.5 sm:p-2 rounded-2xl bg-[#111827]/95 border ${p.border} shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:border-cyan-400 cursor-pointer group flex flex-col items-center justify-center space-y-0.5 backdrop-blur-md`}
