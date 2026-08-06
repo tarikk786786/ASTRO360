@@ -27,6 +27,7 @@ import DreamInterpretationEngine from './components/DreamInterpretationEngine';
 import UniversalProblemSolverSuite from './components/UniversalProblemSolverSuite';
 import PremiumHoroscopeEngine from './components/PremiumHoroscopeEngine';
 import SpiritualTraditionsModule from './components/SpiritualTraditionsModule';
+import CommunityConsultationHub from './components/CommunityConsultationHub';
 import { Toaster, toast } from 'sonner';
 
 const STORAGE_KEY = 'astroverse_profile';
@@ -407,6 +408,24 @@ export default function App() {
             <span className="font-medium text-sm font-bold text-amber-300">Spiritual & Cultural Beliefs</span>
           </button>
 
+          {/* Astrologer Consultation & Community Q&A Hub Side Option */}
+          <button 
+            onClick={() => navigateTo('consultation-hub')}
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer border ${
+              activeTab === 'consultation-hub' 
+                ? 'bg-purple-500/15 text-purple-300 border-purple-500/30 shadow-sm shadow-purple-500/10' 
+                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border-white/5'
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <User className="w-5 h-5 text-purple-400" />
+              <span className="font-medium text-sm font-bold text-purple-300">Astrologer Consultations</span>
+            </div>
+            <span className="text-[9px] font-mono font-bold text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full border border-amber-500/40 shrink-0">
+              Coming Soon
+            </span>
+          </button>
+
           {/* Traditions Section */}
           <div className="pt-5 pb-2 px-2">
             <div className="flex items-center gap-2">
@@ -559,6 +578,7 @@ export default function App() {
                 {(activeTab === 'dream-interpreter' || activeTab === 'dream') && <DreamInterpretationEngine userProfile={userProfile} />}
                 {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
                 {activeTab === 'spiritual-traditions' && <SpiritualTraditionsModule userProfile={userProfile} />}
+                {(activeTab === 'consultation-hub' || activeTab === 'astrologers') && <CommunityConsultationHub />}
                 {(activeTab === 'horoscope' || activeTab === 'transits' || activeTab === 'panchang') && <PremiumHoroscopeEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
                 {(activeTab === 'reports' || activeTab === 'gemstone' || activeTab === 'muhurta' || activeTab === 'learning') && <Astro150ToolsCatalog userProfile={userProfile} onNavigate={navigateTo} activeCategory={activeTab} initialCategory={activeTab} />}
                 {(activeTab === 'notifications' || activeTab === 'settings' || activeTab === 'admin') && (
