@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles, Sun, Moon, Info, ShieldCheck, Compass, Activity } from 'lucide-react';
+import { Sparkles, Sun, Moon, Info, ShieldCheck, Compass, Activity, Eye, Layers } from 'lucide-react';
 import type { PlanetPosition } from '../lib/astroCalculations';
 
 interface CelestialZodiacOrbitProps {
@@ -31,6 +31,7 @@ const SIGN_BASE_DEGREES: Record<string, number> = {
 
 export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }: CelestialZodiacOrbitProps) {
   const [hoveredPlanet, setHoveredPlanet] = useState<PlanetPosition | null>(null);
+  const [is3DMode, setIs3DMode] = useState<boolean>(false);
 
   // Parse numeric degree from string e.g. "14° 22'" -> 14.36
   const getDegreeValue = (degStr: string): number => {
@@ -42,92 +43,106 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
     <div 
       role="img"
       aria-label="360-Degree Animated Zodiac Orbit and Ephemeris Wheel showing real-time planetary positions"
-      className="relative w-full aspect-square max-w-[380px] mx-auto flex items-center justify-center p-2 sm:p-4 text-left"
+      className="relative w-full aspect-square max-w-[380px] mx-auto flex items-center justify-center p-2 sm:p-4 text-left group"
     >
+      {/* 3D PERSPECTIVE TILT TOGGLE BUTTON */}
+      <button
+        onClick={() => setIs3DMode(!is3DMode)}
+        className="absolute top-2 right-2 z-40 px-2.5 py-1 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-[10px] font-mono font-bold flex items-center gap-1 border border-white/10 cursor-pointer transition-all shadow-md"
+      >
+        <Layers className="w-3 h-3 text-cyan-400" />
+        {is3DMode ? '2D View' : '3D Orbit View'}
+      </button>
+
       {/* Radiant Glowing Nebula Backdrop (Static Crisp Glow) */}
       <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600/15 via-purple-600/20 to-amber-500/15 blur-2xl pointer-events-none" />
 
-      {/* Outer Zodiac Belt Ring (Steady & Crisp) */}
+      {/* MAIN CONTAINER WITH 3D PERSPECTIVE TRANSFORM */}
       <div 
-        className="absolute inset-2 rounded-full border border-blue-500/25 flex items-center justify-center pointer-events-none"
+        style={{
+          transform: is3DMode ? 'rotateX(42deg) rotateZ(-15deg)' : 'none',
+          transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
+        }}
+        className="relative w-full h-full flex items-center justify-center pointer-events-auto"
       >
-        {ZODIAC_SIGNS.map((z, idx) => {
-          const angleRad = (z.deg - 90) * (Math.PI / 180);
-          const radius = 158; // radius in px
-          const x = radius * Math.cos(angleRad);
-          const y = radius * Math.sin(angleRad);
-          return (
-            <div
-              key={idx}
-              style={{ transform: `translate(${x}px, ${y}px)` }}
-              className="absolute text-xs font-bold font-mono text-slate-400 hover:text-white transition-colors flex items-center gap-0.5"
-            >
-              <span className={z.color}>{z.symbol}</span>
+        {/* Outer Zodiac Belt Ring (Steady & Crisp) */}
+        <div className="absolute inset-2 rounded-full border border-blue-500/25 flex items-center justify-center pointer-events-none">
+          {ZODIAC_SIGNS.map((z, idx) => {
+            const angleRad = (z.deg - 90) * (Math.PI / 180);
+            const radius = 158; // radius in px
+            const x = radius * Math.cos(angleRad);
+            const y = radius * Math.sin(angleRad);
+            return (
+              <div
+                key={idx}
+                style={{ transform: `translate(${x}px, ${y}px)` }}
+                className="absolute text-xs font-bold font-mono text-slate-400 hover:text-white transition-colors flex items-center gap-0.5"
+              >
+                <span className={z.color}>{z.symbol}</span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Middle Orbit Track */}
+        <div className="absolute inset-10 rounded-full border border-dashed border-cyan-500/30 flex items-center justify-center pointer-events-none" />
+
+        {/* Inner Orbit Track */}
+        <div className="absolute inset-20 rounded-full border border-purple-500/30 flex items-center justify-center pointer-events-none" />
+
+        {/* Central Solar Core (Steady Solar Core with Soft Breathing Aura) */}
+        <motion.div 
+          animate={{ opacity: [0.85, 1, 0.85] }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          className="w-20 h-20 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 p-0.5 shadow-[0_0_35px_rgba(245,158,11,0.5)] flex items-center justify-center z-10 cursor-pointer"
+        >
+          <div className="w-full h-full rounded-full bg-[#0B1220] flex flex-col items-center justify-center text-center p-1 border border-white/20">
+            <div className="flex items-center gap-1">
+              <Sun className="w-4 h-4 text-amber-400" />
+              <Moon className="w-4 h-4 text-cyan-400" />
             </div>
+            <span className="text-[9px] font-mono font-bold text-amber-300 pt-0.5">CORE SOL</span>
+          </div>
+        </motion.div>
+
+        {/* Dynamic 9 Planets Nodes Computed on Real Longitude Angle */}
+        {planetPositions.map((p, idx) => {
+          // Calculate real angle: Sign base + planet degree within sign
+          const baseDeg = SIGN_BASE_DEGREES[p.sign] ?? (idx * 40);
+          const inSignDeg = getDegreeValue(p.degree);
+          const totalDeg = (baseDeg + inSignDeg - 90) * (Math.PI / 180);
+          
+          // Vary orbit radius slightly for visual separation
+          const orbitRadius = 118 - ((idx % 3) * 16);
+          const px = orbitRadius * Math.cos(totalDeg);
+          const py = orbitRadius * Math.sin(totalDeg);
+
+          const isExalted = p.strength?.toLowerCase().includes('exalt');
+          const isOwnSign = p.strength?.toLowerCase().includes('own');
+
+          return (
+            <motion.button
+              key={idx}
+              onClick={() => onSelectPlanet?.(p)}
+              onMouseEnter={() => setHoveredPlanet(p)}
+              onMouseLeave={() => setHoveredPlanet(null)}
+              whileHover={{ scale: 1.25, zIndex: 40 }}
+              whileTap={{ scale: 0.95 }}
+              style={{ transform: `translate(${px}px, ${py}px)` }}
+              className={`absolute z-20 p-1.5 sm:p-2 rounded-2xl bg-[#111827]/95 border ${p.border} shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:border-cyan-400 cursor-pointer group flex flex-col items-center justify-center space-y-0.5 backdrop-blur-md`}
+            >
+              <div className="flex items-center gap-1">
+                <span className={`text-xs sm:text-sm font-bold ${p.color}`}>{p.symbol}</span>
+                {p.retrograde && <span className="text-[8px] font-mono text-red-400 font-bold animate-pulse">Rx</span>}
+                {isExalted && <span className="text-[8px] text-amber-300">👑</span>}
+                {isOwnSign && <span className="text-[8px] text-emerald-300">🏠</span>}
+              </div>
+              <span className="text-[9px] font-mono text-white font-semibold block leading-tight">{p.name}</span>
+              <span className="text-[8px] font-mono text-slate-400 block">{p.degree}</span>
+            </motion.button>
           );
         })}
       </div>
-
-      {/* Middle Orbit Track */}
-      <div 
-        className="absolute inset-10 rounded-full border border-dashed border-cyan-500/30 flex items-center justify-center pointer-events-none"
-      />
-
-      {/* Inner Orbit Track */}
-      <div className="absolute inset-20 rounded-full border border-purple-500/30 flex items-center justify-center pointer-events-none" />
-
-      {/* Central Solar Core (Steady Solar Core with Soft Breathing Aura) */}
-      <motion.div 
-        animate={{ opacity: [0.85, 1, 0.85] }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-        className="w-20 h-20 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 p-0.5 shadow-[0_0_35px_rgba(245,158,11,0.5)] flex items-center justify-center z-10 cursor-pointer"
-      >
-        <div className="w-full h-full rounded-full bg-[#0B1220] flex flex-col items-center justify-center text-center p-1 border border-white/20">
-          <div className="flex items-center gap-1">
-            <Sun className="w-4 h-4 text-amber-400" />
-            <Moon className="w-4 h-4 text-cyan-400" />
-          </div>
-          <span className="text-[9px] font-mono font-bold text-amber-300 pt-0.5">CORE SOL</span>
-        </div>
-      </motion.div>
-
-      {/* Dynamic 9 Planets Nodes Computed on Real Longitude Angle */}
-      {planetPositions.map((p, idx) => {
-        // Calculate real angle: Sign base + planet degree within sign
-        const baseDeg = SIGN_BASE_DEGREES[p.sign] ?? (idx * 40);
-        const inSignDeg = getDegreeValue(p.degree);
-        const totalDeg = (baseDeg + inSignDeg - 90) * (Math.PI / 180);
-        
-        // Vary orbit radius slightly for visual separation
-        const orbitRadius = 118 - ((idx % 3) * 16);
-        const px = orbitRadius * Math.cos(totalDeg);
-        const py = orbitRadius * Math.sin(totalDeg);
-
-        const isExalted = p.strength?.toLowerCase().includes('exalt');
-        const isOwnSign = p.strength?.toLowerCase().includes('own');
-
-        return (
-          <motion.button
-            key={idx}
-            onClick={() => onSelectPlanet?.(p)}
-            onMouseEnter={() => setHoveredPlanet(p)}
-            onMouseLeave={() => setHoveredPlanet(null)}
-            whileHover={{ scale: 1.25, zIndex: 40 }}
-            whileTap={{ scale: 0.95 }}
-            style={{ transform: `translate(${px}px, ${py}px)` }}
-            className={`absolute z-20 p-1.5 sm:p-2 rounded-2xl bg-[#111827]/95 border ${p.border} shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:border-cyan-400 cursor-pointer group flex flex-col items-center justify-center space-y-0.5 backdrop-blur-md`}
-          >
-            <div className="flex items-center gap-1">
-              <span className={`text-xs sm:text-sm font-bold ${p.color}`}>{p.symbol}</span>
-              {p.retrograde && <span className="text-[8px] font-mono text-red-400 font-bold animate-pulse">Rx</span>}
-              {isExalted && <span className="text-[8px] text-amber-300">👑</span>}
-              {isOwnSign && <span className="text-[8px] text-emerald-300">🏠</span>}
-            </div>
-            <span className="text-[9px] font-mono text-white font-semibold block leading-tight">{p.name}</span>
-            <span className="text-[8px] font-mono text-slate-400 block">{p.degree}</span>
-          </motion.button>
-        );
-      })}
 
       {/* Floating Shimmer Star Particles */}
       <div className="absolute top-4 left-6 pointer-events-none animate-pulse">
