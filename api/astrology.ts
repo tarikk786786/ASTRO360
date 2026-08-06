@@ -1,5 +1,4 @@
-// Vercel Serverless Function: /api/astrology
-// Standard Vercel HTTP Handler (Type-safe for root TypeScript compiler)
+import { orchestrateAstrologyRequest } from '../src/backend/agentOrchestrator';
 
 export default async function handler(req: any, res: any) {
   // CORS Headers
@@ -21,19 +20,25 @@ export default async function handler(req: any, res: any) {
 
   try {
     const { prompt, userContext } = req.body || {};
+    
+    // Execute LangGraph Master Supervisor Multi-Agent Engine
+    const result = await orchestrateAstrologyRequest({
+      prompt: prompt || 'Provide my general astrological forecast',
+      userContext
+    });
+
     const apiKey = (globalThis as any).process?.env?.GEMINI_API_KEY || (globalThis as any).process?.env?.GOOGLE_API_KEY;
 
     if (apiKey) {
-      // Direct fetch to Google Gemini REST API v1beta
       const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-      const systemInstruction = `You are ASTRO360 Master AI, a world-class astrological scholar specializing in Universal Multi-Religious Astrological Intelligence (Islamic Ilm al-Nujum, Vedic Jyotish, Western Tropical, Chinese BaZi, and Kabbalah Tree of Life). Provide precise, compassionate, and actionable guidance without superstition or claim of force verification.`;
+      const systemInstruction = `You are ASTRO360 Master AI, powered by LangGraph Master Supervisor orchestrating 16 specialized agents (Birth Chart, Transit, Dasha, Compatibility, Panchang, Muhurta, Numerology, Palmistry, Face Reading, Tarot, etc.).\n\nMem0 Context: ${result.memoryContext}\nLlamaIndex RAG Citations: ${result.ragSources.join(', ')}`;
       
       const payload = {
         contents: [
           {
             role: 'user',
             parts: [
-              { text: `${systemInstruction}\n\nUser Profile Context: ${JSON.stringify(userContext || {})}\n\nQuestion / Request: ${prompt}` }
+              { text: `${systemInstruction}\n\nUser Profile Context: ${JSON.stringify(userContext || {})}\n\nQuestion: ${prompt}` }
             ]
           }
         ]
@@ -52,20 +57,18 @@ export default async function handler(req: any, res: any) {
         if (textOutput) {
           return res.status(200).json({
             success: true,
-            content: textOutput,
-            source: 'gemini-1.5-flash',
+            content: `⚡ **[LangGraph Multi-Agent Stack Executed]**\n• Primary Agent: ${result.primaryAgent.agentName}\n• Mem0 Context: Synced\n• RAG Citations: ${result.ragSources.slice(0, 2).join(' | ')}\n\n---\n\n${textOutput}`,
+            source: 'langgraph-multi-agent-gemini',
             timestamp: new Date().toISOString()
           });
         }
       }
     }
 
-    // High-Precision Architectural Fallback Engine
-    const localContent = generateStructuredAstrologyResponse(prompt || '', userContext || {});
     return res.status(200).json({
       success: true,
-      content: localContent,
-      source: 'astro360-core-engine',
+      content: result.synthesizedResponse,
+      source: 'langgraph-multi-agent-local',
       timestamp: new Date().toISOString()
     });
 
