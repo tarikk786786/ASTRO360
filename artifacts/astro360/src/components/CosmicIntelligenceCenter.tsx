@@ -375,6 +375,42 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
     };
   }, [planetPositions]);
 
+  // Compute Elemental Balance from planetary sign placements
+  const elementalBalance = useMemo(() => {
+    const counts = { Fire: 0, Earth: 0, Air: 0, Water: 0 };
+    planetPositions.forEach(p => {
+      if (['Aries ♈', 'Leo ♌', 'Sagittarius ♐'].includes(p.sign)) counts.Fire++;
+      else if (['Taurus ♉', 'Virgo ♍', 'Capricorn ♑'].includes(p.sign)) counts.Earth++;
+      else if (['Gemini ♊', 'Libra ♎', 'Aquarius ♒'].includes(p.sign)) counts.Air++;
+      else if (['Cancer ♋', 'Scorpio ♏', 'Pisces ♓'].includes(p.sign)) counts.Water++;
+    });
+    const total = planetPositions.length || 1;
+    return {
+      firePct: Math.round((counts.Fire / total) * 100),
+      earthPct: Math.round((counts.Earth / total) * 100),
+      airPct: Math.round((counts.Air / total) * 100),
+      waterPct: Math.round((counts.Water / total) * 100),
+      counts
+    };
+  }, [planetPositions]);
+
+  // Compute Current Active Planetary Hour (Hora)
+  const currentHora = useMemo(() => {
+    const hour = new Date().getHours();
+    const horaOrder = ['Sun', 'Venus', 'Mercury', 'Moon', 'Saturn', 'Jupiter', 'Mars'];
+    const planetName = horaOrder[hour % 7];
+    const horaInfo: Record<string, string> = {
+      Sun: 'Ideal for executive leadership, authority & clarity.',
+      Venus: 'Harmonious for arts, romance & financial agreements.',
+      Mercury: 'Accelerates trade, writing, data analysis & tech.',
+      Moon: 'Best for intuitive decisions, public care & family.',
+      Saturn: 'Focus on discipline, deep structure & hard work.',
+      Jupiter: 'Auspicious for wisdom, investment & learning.',
+      Mars: 'Injects courage, physical effort & problem-solving.'
+    };
+    return { name: planetName, desc: horaInfo[planetName] || 'Balanced cosmic hour.' };
+  }, []);
+
   // FIX 4: Compute dynamic What / Why / Solution text from Sun house & Mahadasha, customized by Religion View
   const dynamicDiagnostics = useMemo(() => {
     const sunPlanet = planetPositions.find(p => p.name === 'Sun');
@@ -797,6 +833,46 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
                     <span className="text-[10px] font-mono text-[#94A3B8] block">{p.degree}</span>
                   </motion.button>
                 ))}
+              </div>
+
+              {/* 📊 ELEMENTAL BALANCE TELEMETRY */}
+              <div className="pt-2 border-t border-white/10 space-y-2">
+                <div className="flex items-center justify-between text-[11px] font-mono">
+                  <span className="text-amber-400 font-bold flex items-center gap-1">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Elemental Balance:
+                  </span>
+                  <span className="text-[#94A3B8]">4 Elements Breakdown</span>
+                </div>
+                <div className="grid grid-cols-4 gap-2 text-center text-[10px] font-mono">
+                  <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300">
+                    <span className="font-bold block">🔥 Fire</span>
+                    <span>{elementalBalance.firePct}% ({elementalBalance.counts.Fire})</span>
+                  </div>
+                  <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
+                    <span className="font-bold block">🌍 Earth</span>
+                    <span>{elementalBalance.earthPct}% ({elementalBalance.counts.Earth})</span>
+                  </div>
+                  <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-300">
+                    <span className="font-bold block">💨 Air</span>
+                    <span>{elementalBalance.airPct}% ({elementalBalance.counts.Air})</span>
+                  </div>
+                  <div className="p-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-300">
+                    <span className="font-bold block">🌊 Water</span>
+                    <span>{elementalBalance.waterPct}% ({elementalBalance.counts.Water})</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* ⏰ CURRENT PLANETARY HORA (HOUR) WIDGET */}
+              <div className="p-3 rounded-xl bg-[#111827] border border-cyan-500/30 flex items-center justify-between text-xs font-mono">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-cyan-400 animate-pulse" />
+                  <div>
+                    <span className="font-bold text-white">Active Hora: <strong className="text-cyan-300">{currentHora.name} Hour</strong></span>
+                    <span className="text-[10px] text-slate-400 block">{currentHora.desc}</span>
+                  </div>
+                </div>
+                <span className="text-[9px] font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30 shrink-0">Live Hora</span>
               </div>
             </div>
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, Sun, Moon, Info, ShieldCheck, Compass, Activity } from 'lucide-react';
-import type { PlanetPosition } from '../lib/astrologyEngines';
+import type { PlanetPosition } from '../lib/astroCalculations';
 
 interface CelestialZodiacOrbitProps {
   planetPositions: PlanetPosition[];

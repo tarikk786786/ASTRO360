@@ -501,8 +501,8 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
     const ascPos = positions.find(p => p.name === 'Ascendant') || positions[0];
 
     return {
-      sunSign: sunPos ? `${sunPos.sign} (${sunPos.degreeFormatted})` : 'Gemini 24°',
-      moonSign: moonPos ? `${moonPos.sign} (${moonPos.degreeFormatted})` : 'Taurus 12°',
+      sunSign: sunPos ? `${sunPos.sign} (${sunPos.degree})` : 'Gemini 24°',
+      moonSign: moonPos ? `${moonPos.sign} (${moonPos.degree})` : 'Taurus 12°',
       ascendant: ascPos ? `${ascPos.sign}` : 'Virgo',
       nakshatra: moonPos ? moonPos.nakshatra : 'Rohini',
     };
