@@ -127,8 +127,8 @@ function MoonPhaseVisual({ panchang }: { panchang: PanchangInfo }) {
 
       {/* Animated Graphic Disc */}
       <motion.div 
-        animate={{ scale: [1, 1.03, 1], rotate: [0, 1, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        animate={{ opacity: [0.9, 1, 0.9] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
         className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.25)] border border-[#06B6D4]/40"
       >
         <svg viewBox="0 0 100 100" className="w-full h-full rounded-full">
