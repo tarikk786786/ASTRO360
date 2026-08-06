@@ -35,6 +35,12 @@ import LunarMansionsWheel from './LunarMansionsWheel';
 import SynastryOverlayChart from './SynastryOverlayChart';
 import AstrologicalMindMap from './AstrologicalMindMap';
 import CosmicChartAnalytics from './CosmicChartAnalytics';
+import GlobalLanguageSelector from './GlobalLanguageSelector';
+import DivisionalChartsSuite from './DivisionalChartsSuite';
+import AstrologyLearningHub from './AstrologyLearningHub';
+import ExecutiveReportGenerator from './ExecutiveReportGenerator';
+import CommunityConsultationHub from './CommunityConsultationHub';
+import AdminAnalyticsDashboard from './AdminAnalyticsDashboard';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -1092,6 +1098,31 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
         {/* 📊 COSMIC CHART ANALYTICS & SHADBALA STRENGTH */}
         <motion.div variants={staggerItem}>
           <CosmicChartAnalytics />
+        </motion.div>
+
+        {/* 🪐 D1–D60 DIVISIONAL VARGA CHARTS SUITE */}
+        <motion.div variants={staggerItem}>
+          <DivisionalChartsSuite planetPositions={planetPositions} />
+        </motion.div>
+
+        {/* 📚 MASTER ASTROLOGY ENCYCLOPEDIA & LEARNING HUB */}
+        <motion.div variants={staggerItem}>
+          <AstrologyLearningHub />
+        </motion.div>
+
+        {/* 📑 EXECUTIVE PDF & DOSSIER REPORT GENERATOR */}
+        <motion.div variants={staggerItem}>
+          <ExecutiveReportGenerator />
+        </motion.div>
+
+        {/* 🤝 ASTROLOGER CONSULTATION & COMMUNITY Q&A HUB */}
+        <motion.div variants={staggerItem}>
+          <CommunityConsultationHub />
+        </motion.div>
+
+        {/* 🛡️ ADMIN ANALYTICS & AI OBSERVABILITY PANEL */}
+        <motion.div variants={staggerItem}>
+          <AdminAnalyticsDashboard />
         </motion.div>
 
         {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}
