@@ -99,8 +99,8 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
         const px = orbitRadius * Math.cos(totalDeg);
         const py = orbitRadius * Math.sin(totalDeg);
 
-        const isExalted = p.dignity?.toLowerCase().includes('exalt');
-        const isOwnSign = p.dignity?.toLowerCase().includes('own');
+        const isExalted = p.strength?.toLowerCase().includes('exalt');
+        const isOwnSign = p.strength?.toLowerCase().includes('own');
 
         return (
           <motion.button
@@ -157,7 +157,7 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
             <div className="flex items-center justify-between border-b border-white/10 pb-1.5">
               <div className="flex items-center gap-1.5">
                 <span className={`text-base font-bold ${hoveredPlanet.color}`}>{hoveredPlanet.symbol}</span>
-                <span className="text-xs font-bold text-white font-mono">{hoveredPlanet.name} ({hoveredPlanet.sanskritName})</span>
+                <span className="text-xs font-bold text-white font-mono">{hoveredPlanet.name}</span>
               </div>
               <span className="text-[9px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30">
                 {hoveredPlanet.retrograde ? 'Retrograde (Rx)' : 'Direct Motion'}
@@ -180,7 +180,7 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
             </div>
 
             <div className="text-[10px] text-slate-300 leading-tight bg-slate-900/80 p-1.5 rounded-lg border border-white/5">
-              <strong className="text-emerald-400">Dignity:</strong> {hoveredPlanet.dignity}
+              <strong className="text-emerald-400">Dignity:</strong> {hoveredPlanet.strength}
             </div>
           </motion.div>
         )}

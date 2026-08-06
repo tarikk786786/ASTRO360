@@ -16,6 +16,11 @@ import {
   type VimshottariDashaInfo 
 } from '../lib/astroCalculations';
 import CelestialZodiacOrbit from './CelestialZodiacOrbit';
+import { BorderBeam } from './magicui/border-beam';
+import { ShimmerButton } from './magicui/shimmer-button';
+import { Marquee } from './magicui/marquee';
+import { NumberTicker } from './magicui/number-ticker';
+import { BentoGrid, BentoCard } from './magicui/bento-grid';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -684,12 +689,13 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
               <span>For Whom: <strong className="text-white capitalize">{targetProfile.targetType} ({targetProfile.name})</strong></span>
             </button>
 
-            <button
+            <ShimmerButton
               onClick={() => onNavigate('chat')}
-              className="px-4 py-2.5 rounded-2xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-mono font-semibold flex items-center gap-1.5 shadow-lg transition-colors cursor-pointer"
+              shimmerColor="#06B6D4"
+              background="rgba(37, 99, 235, 0.9)"
             >
-              <Bot className="w-4 h-4" /> AI Oracle
-            </button>
+              <Bot className="w-4 h-4 text-cyan-200" /> AI Oracle
+            </ShimmerButton>
           </div>
         </motion.div>
 
@@ -751,8 +757,32 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
           </div>
         </motion.div>
 
+        {/* 🪄 MAGIC UI INFINITE MARQUEE COSMIC TICKER */}
+        <motion.div variants={staggerItem} className="rounded-2xl bg-[#111827]/90 border border-cyan-500/30 shadow-xl overflow-hidden py-1.5 backdrop-blur-xl">
+          <Marquee pauseOnHover repeat={4} className="[--duration:28s]">
+            <span className="text-xs font-mono text-cyan-300 font-bold px-4 flex items-center gap-1.5 shrink-0">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Tithi: <strong className="text-white">{panchang.tithi}</strong>
+            </span>
+            <span className="text-xs font-mono text-emerald-300 font-bold px-4 flex items-center gap-1.5 shrink-0">
+              <Moon className="w-3.5 h-3.5 text-emerald-400" /> Nakshatra: <strong className="text-white">{panchang.nakshatra}</strong>
+            </span>
+            <span className="text-xs font-mono text-amber-300 font-bold px-4 flex items-center gap-1.5 shrink-0">
+              <Sun className="w-3.5 h-3.5 text-amber-400" /> Golden Window: <strong className="text-white">{panchang.abhijitMuhurta}</strong>
+            </span>
+            <span className="text-xs font-mono text-purple-300 font-bold px-4 flex items-center gap-1.5 shrink-0">
+              <Clock className="w-3.5 h-3.5 text-purple-400" /> Active Dasha: <strong className="text-white">{dashaInfo.mahadasha} - {dashaInfo.antardasha}</strong>
+            </span>
+            <span className="text-xs font-mono text-rose-300 font-bold px-4 flex items-center gap-1.5 shrink-0">
+              <Activity className="w-3.5 h-3.5 text-rose-400" /> Rahu Kalam: <strong className="text-white">{panchang.rahuKalam}</strong>
+            </span>
+          </Marquee>
+        </motion.div>
+
         {/* SECTION 2: HERO AI DAILY SUMMARY & COMPUTED PLANETARY POSITIONS GRID */}
         <motion.div variants={staggerItem} className="relative rounded-3xl overflow-hidden bg-[#111827] border border-white/10 shadow-2xl p-6 sm:p-8">
+          {/* Magic UI Border Beam */}
+          <BorderBeam size={250} duration={12} delay={0} colorFrom="#06B6D4" colorTo="#3B82F6" />
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
             {/* LEFT: PERSONALIZED COSMIC SYNTHESIS & DYNAMIC SCORE */}
@@ -780,7 +810,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
               <div className="flex items-center gap-3 pt-1 flex-wrap">
                 <span className="px-3.5 py-2 rounded-2xl bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-[#D4AF37] text-xs font-mono font-semibold flex items-center gap-1.5 shadow-md">
                   <Award className="w-4 h-4 text-[#D4AF37]" />
-                  Cosmic Score: {cosmicScoreData.score}/100
+                  Cosmic Score: <NumberTicker value={cosmicScoreData.score} className="text-[#D4AF37] font-bold" />/100
                 </span>
                 <span className="px-3 py-1.5 rounded-xl bg-[#22C55E]/10 border border-[#22C55E]/20 text-[#22C55E] text-xs font-mono font-semibold">
                   Exalted: {cosmicScoreData.exaltedCount}
