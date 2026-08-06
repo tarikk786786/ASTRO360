@@ -41,6 +41,10 @@ import AstrologyLearningHub from './AstrologyLearningHub';
 import ExecutiveReportGenerator from './ExecutiveReportGenerator';
 import CommunityConsultationHub from './CommunityConsultationHub';
 import AdminAnalyticsDashboard from './AdminAnalyticsDashboard';
+import BirthTimeRectificationSuite from './BirthTimeRectificationSuite';
+import GemstoneRudrakshaSuite from './GemstoneRudrakshaSuite';
+import NumerologyNameSuite from './NumerologyNameSuite';
+import TarotIChingSuite from './TarotIChingSuite';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -1123,6 +1127,26 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
         {/* 🛡️ ADMIN ANALYTICS & AI OBSERVABILITY PANEL */}
         <motion.div variants={staggerItem}>
           <AdminAnalyticsDashboard />
+        </motion.div>
+
+        {/* ⏱️ BIRTH TIME RECTIFICATION (BTR) SUITE */}
+        <motion.div variants={staggerItem}>
+          <BirthTimeRectificationSuite />
+        </motion.div>
+
+        {/* 💎 GEMSTONE & SACRED RUDRAKSHA PRESCRIPTION SUITE */}
+        <motion.div variants={staggerItem}>
+          <GemstoneRudrakshaSuite />
+        </motion.div>
+
+        {/* 🔢 CHALDEAN & PYTHAGOREAN NUMEROLOGY SUITE */}
+        <motion.div variants={staggerItem}>
+          <NumerologyNameSuite />
+        </motion.div>
+
+        {/* 🎴 ASTROLOGICAL TAROT & 64 I CHING ORACLE SUITE */}
+        <motion.div variants={staggerItem}>
+          <TarotIChingSuite />
         </motion.div>
 
         {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}
