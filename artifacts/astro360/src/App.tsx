@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
-import { Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, Globe2, Bell, Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon, Zap } from 'lucide-react';
+import { Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, Users, Globe2, Bell, Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon, Zap, Wrench } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TRADITIONS, CategoryInfo, TraditionGroup, UserProfile, GROUP_ICONS } from './types';
 import CosmicIntelligenceCenter from './components/CosmicIntelligenceCenter';
@@ -413,18 +413,135 @@ export default function App() {
             onClick={() => navigateTo('consultation-hub')}
             className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer border ${
               activeTab === 'consultation-hub' 
-                ? 'bg-purple-500/15 text-purple-300 border-purple-500/30 shadow-sm shadow-purple-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border-white/5'
+                ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30 shadow-sm' 
+                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border-transparent'
             }`}
           >
             <div className="flex items-center gap-3">
-              <User className="w-5 h-5 text-purple-400" />
-              <span className="font-medium text-sm font-bold text-purple-300">Astrologer Consultations</span>
+              <Users className="w-5 h-5 text-cyan-400" />
+              <span className="font-medium text-sm font-bold text-cyan-300">Astrologer Consultations</span>
             </div>
-            <span className="text-[9px] font-mono font-bold text-amber-300 bg-amber-500/20 px-2 py-0.5 rounded-full border border-amber-500/40 shrink-0">
+            <span className="text-[9px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/30">
               Coming Soon
             </span>
           </button>
+
+          {/* DEDICATED ASTROLOGICAL TOOLS SUITE (SIDEBAR NAV) */}
+          <div className="pt-3 pb-1 border-t border-white/10 my-2">
+            <div className="px-4 text-[10px] font-mono font-bold text-cyan-400 tracking-wider uppercase mb-2 flex items-center gap-1.5">
+              <Wrench className="w-3.5 h-3.5 text-cyan-400" /> Standalone Astro Tools
+            </div>
+
+            <div className="space-y-1 pl-1">
+              <button 
+                onClick={() => navigateTo('divisional-charts')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'divisional-charts' ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>🪐</span> D1–D60 Divisional Charts
+              </button>
+
+              <button 
+                onClick={() => navigateTo('btr-suite')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'btr-suite' ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>⏱️</span> Birth Time Rectification
+              </button>
+
+              <button 
+                onClick={() => navigateTo('gemstone-suite')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'gemstone-suite' ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>💎</span> Gemstone & Rudraksha
+              </button>
+
+              <button 
+                onClick={() => navigateTo('numerology-suite')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'numerology-suite' ? 'bg-purple-500/15 text-purple-300 border border-purple-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>🔢</span> Numerology & Name Vibration
+              </button>
+
+              <button 
+                onClick={() => navigateTo('tarot-iching')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'tarot-iching' ? 'bg-pink-500/15 text-pink-300 border border-pink-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>🎴</span> Tarot & 64 I Ching Oracle
+              </button>
+
+              <button 
+                onClick={() => navigateTo('transit-calendar')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'transit-calendar' ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>📅</span> Cosmic Transit Calendar
+              </button>
+
+              <button 
+                onClick={() => navigateTo('synastry-overlay')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'synastry-overlay' ? 'bg-pink-500/15 text-pink-300 border border-pink-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>💞</span> Synastry Dual-Ring Overlay
+              </button>
+
+              <button 
+                onClick={() => navigateTo('mind-map')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'mind-map' ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>🕸️</span> Astrological Mind Map
+              </button>
+
+              <button 
+                onClick={() => navigateTo('chart-analytics')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'chart-analytics' ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>📊</span> Shadbala & Element Analytics
+              </button>
+
+              <button 
+                onClick={() => navigateTo('learning-hub')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'learning-hub' ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>📚</span> Astrology Encyclopedia
+              </button>
+
+              <button 
+                onClick={() => navigateTo('report-generator')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'report-generator' ? 'bg-rose-500/15 text-rose-300 border border-rose-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>📑</span> Executive PDF Dossier
+              </button>
+
+              <button 
+                onClick={() => navigateTo('admin-dashboard')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'admin-dashboard' ? 'bg-purple-500/15 text-purple-300 border border-purple-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>🛡️</span> Admin Observability
+              </button>
+            </div>
+          </div>
 
           {/* Traditions Section */}
           <div className="pt-5 pb-2 px-2">
