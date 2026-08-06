@@ -148,9 +148,16 @@ export default function CommunityConsultationHub() {
             <motion.div
               key={astro.id}
               whileHover={{ scale: 1.02, y: -2 }}
-              className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 hover:border-purple-500/40 transition-all space-y-3 shadow-lg group flex flex-col justify-between"
+              className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 hover:border-purple-500/40 transition-all space-y-3 shadow-lg group flex flex-col justify-between relative overflow-hidden"
             >
-              <div className="space-y-2">
+              {/* Coming Soon Banner Badge */}
+              <div className="absolute top-2 right-2">
+                <span className="text-[9px] font-mono font-bold text-amber-300 bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
+                  <Clock className="w-3 h-3 text-amber-400" /> Coming Soon
+                </span>
+              </div>
+
+              <div className="space-y-2 pt-1">
                 <div className="flex items-center justify-between border-b border-white/10 pb-2">
                   <div className="flex items-center gap-2">
                     <span className="text-2xl">{astro.avatar}</span>
@@ -169,12 +176,22 @@ export default function CommunityConsultationHub() {
                 </div>
               </div>
 
-              <button
-                onClick={() => setBookingAstrologer(astro)}
-                className="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-mono font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all shadow-md mt-2"
-              >
-                <Calendar className="w-3.5 h-3.5" /> Book 1-on-1 Consultation
-              </button>
+              <div className="space-y-2 pt-2 border-t border-white/10">
+                <button
+                  onClick={() => setBookingAstrologer(astro)}
+                  className="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-mono font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all shadow-md"
+                >
+                  <Calendar className="w-3.5 h-3.5" /> Book Consultation <span className="text-[9px] bg-amber-400/20 text-amber-300 px-1.5 py-0.5 rounded ml-1 border border-amber-400/30">Coming Soon</span>
+                </button>
+
+                {/* Email Notification Option */}
+                <button
+                  onClick={() => alert(`📧 Email Notification Activated! You will receive an email alert as soon as ${astro.name}'s live 1-on-1 consultations launch.`)}
+                  className="w-full py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-[10px] font-mono font-semibold flex items-center justify-center gap-1.5 border border-white/10 cursor-pointer transition-all"
+                >
+                  <Send className="w-3 h-3 text-cyan-400" /> Email Notification (Notify Me) <span className="text-[9px] text-cyan-400">Coming Soon</span>
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>
