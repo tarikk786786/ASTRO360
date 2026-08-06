@@ -33,6 +33,8 @@ import CosmicTransitCalendar from './CosmicTransitCalendar';
 import DailyMuhurtaPlanner from './DailyMuhurtaPlanner';
 import LunarMansionsWheel from './LunarMansionsWheel';
 import SynastryOverlayChart from './SynastryOverlayChart';
+import AstrologicalMindMap from './AstrologicalMindMap';
+import CosmicChartAnalytics from './CosmicChartAnalytics';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -1080,6 +1082,16 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
         {/* 💞 SYNASTRY DUAL-RING CHART OVERLAY */}
         <motion.div variants={staggerItem}>
           <SynastryOverlayChart personAPositions={planetPositions} />
+        </motion.div>
+
+        {/* 🕸️ INTERACTIVE ASTROLOGICAL MIND MAP NODE GRAPH */}
+        <motion.div variants={staggerItem}>
+          <AstrologicalMindMap />
+        </motion.div>
+
+        {/* 📊 COSMIC CHART ANALYTICS & SHADBALA STRENGTH */}
+        <motion.div variants={staggerItem}>
+          <CosmicChartAnalytics />
         </motion.div>
 
         {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}
