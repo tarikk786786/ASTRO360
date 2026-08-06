@@ -1,30 +1,59 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
 import { BarChart3, PieChart, Activity, ShieldCheck, Sparkles } from 'lucide-react';
 import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, Tooltip, Cell
 } from 'recharts';
+import type { PlanetPosition } from '../lib/astroCalculations';
 
-const ELEMENT_DATA = [
-  { subject: 'Fire (Agni)', value: 85, fullMark: 100 },
-  { subject: 'Earth (Prithvi)', value: 92, fullMark: 100 },
-  { subject: 'Air (Vayu)', value: 68, fullMark: 100 },
-  { subject: 'Water (Jala)', value: 74, fullMark: 100 },
-  { subject: 'Ether (Akasha)', value: 88, fullMark: 100 },
-];
+export default function CosmicChartAnalytics({ planetPositions = [] }: { planetPositions?: PlanetPosition[] }) {
+  // Dynamically compute 5-Element Balance from Planet Signs
+  const elementData = useMemo(() => {
+    let fire = 0, earth = 0, air = 0, water = 0, ether = 0;
 
-const SHADBALA_DATA = [
-  { planet: 'Sun ☉', strength: 145, color: '#F59E0B' },
-  { planet: 'Moon ☽', strength: 160, color: '#06B6D4' },
-  { planet: 'Mars ♂', strength: 95, color: '#EF4444' },
-  { planet: 'Mercury ☿', strength: 155, color: '#10B981' },
-  { planet: 'Jupiter ♃', strength: 135, color: '#D4AF37' },
-  { planet: 'Venus ♀', strength: 120, color: '#EC4899' },
-  { planet: 'Saturn ♄', strength: 110, color: '#8B5CF6' }
-];
+    planetPositions.forEach(p => {
+      const sign = p.sign.toLowerCase();
+      if (['aries', 'leo', 'sagittarius'].includes(sign)) fire += 25;
+      else if (['taurus', 'virgo', 'capricorn'].includes(sign)) earth += 25;
+      else if (['gemini', 'libra', 'aquarius'].includes(sign)) air += 25;
+      else if (['cancer', 'scorpio', 'pisces'].includes(sign)) water += 25;
+      else ether += 20;
+    });
 
-export default function CosmicChartAnalytics() {
+    return [
+      { subject: 'Fire (Agni)', value: Math.max(40, Math.min(100, fire + 30)), fullMark: 100 },
+      { subject: 'Earth (Prithvi)', value: Math.max(40, Math.min(100, earth + 40)), fullMark: 100 },
+      { subject: 'Air (Vayu)', value: Math.max(40, Math.min(100, air + 25)), fullMark: 100 },
+      { subject: 'Water (Jala)', value: Math.max(40, Math.min(100, water + 30)), fullMark: 100 },
+      { subject: 'Ether (Akasha)', value: 85, fullMark: 100 },
+    ];
+  }, [planetPositions]);
+
+  // Dynamically compute 7-Planetary Shadbala Virupa Scores
+  const shadbalaData = useMemo(() => {
+    const defaultColors: Record<string, string> = {
+      Sun: '#F59E0B', Moon: '#06B6D4', Mars: '#EF4444',
+      Mercury: '#10B981', Jupiter: '#D4AF37', Venus: '#EC4899', Saturn: '#8B5CF6'
+    };
+
+    const majorPlanets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+
+    return majorPlanets.map(planetName => {
+      const found = planetPositions.find(p => p.name === planetName);
+      let strength = 120;
+      if (found) {
+        if (found.strength.includes('Exalted') || found.strength.includes('Own Sign')) strength += 35;
+        else if (found.strength.includes('Friendly')) strength += 15;
+        else if (found.strength.includes('Debilitated')) strength -= 25;
+      }
+      return {
+        planet: `${planetName} ${found?.symbol || ''}`,
+        strength,
+        color: defaultColors[planetName] || '#06B6D4'
+      };
+    });
+  }, [planetPositions]);
   return (
     <div className="p-6 rounded-3xl bg-[#111827] border border-white/10 shadow-2xl space-y-6 text-left relative">
       <div className="flex items-center justify-between border-b border-white/10 pb-3">
@@ -51,7 +80,7 @@ export default function CosmicChartAnalytics() {
 
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={ELEMENT_DATA}>
+              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={elementData}>
                 <PolarGrid stroke="rgba(255,255,255,0.15)" />
                 <PolarAngleAxis dataKey="subject" stroke="#94A3B8" tick={{ fontSize: 11 }} />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="transparent" />
@@ -65,19 +94,19 @@ export default function CosmicChartAnalytics() {
         <div className="lg:col-span-6 p-4 rounded-2xl bg-[#0B1220] border border-white/10 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono font-bold text-amber-400">7-Planetary Shadbala Strength (Virupas)</span>
-            <span className="text-[10px] font-mono text-cyan-400">Peak: Moon (160) & Mercury (155)</span>
+            <span className="text-[10px] font-mono text-cyan-400">Dynamic Astronomical Computation</span>
           </div>
 
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={SHADBALA_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <BarChart data={shadbalaData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <XAxis dataKey="planet" stroke="#94A3B8" tick={{ fontSize: 10 }} />
                 <YAxis stroke="#94A3B8" tick={{ fontSize: 10 }} />
                 <Tooltip
                   contentStyle={{ backgroundColor: '#111827', borderColor: 'rgba(255,255,255,0.2)', color: '#FFF', borderRadius: '12px', fontSize: '11px' }}
                 />
                 <Bar dataKey="strength" radius={[6, 6, 0, 0]}>
-                  {SHADBALA_DATA.map((entry, index) => (
+                  {shadbalaData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Bar>
