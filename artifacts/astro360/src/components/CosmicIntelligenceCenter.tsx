@@ -30,6 +30,9 @@ import PlanetaryAspectGraph from './PlanetaryAspectGraph';
 import CosmicAnalyticsKPI from './CosmicAnalyticsKPI';
 import EphemerisDataTable from './EphemerisDataTable';
 import CosmicTransitCalendar from './CosmicTransitCalendar';
+import DailyMuhurtaPlanner from './DailyMuhurtaPlanner';
+import LunarMansionsWheel from './LunarMansionsWheel';
+import SynastryOverlayChart from './SynastryOverlayChart';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -1062,6 +1065,21 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
         {/* 📅 COSMIC TRANSIT & PLANETARY INGRESS CALENDAR */}
         <motion.div variants={staggerItem}>
           <CosmicTransitCalendar />
+        </motion.div>
+
+        {/* ⏱️ DAILY MUHURTA & HOURLY HORA SCHEDULE PLANNER */}
+        <motion.div variants={staggerItem}>
+          <DailyMuhurtaPlanner />
+        </motion.div>
+
+        {/* 🌙 28 LUNAR MANSIONS (MANAZIL AL-QAMAR / NAKSHATRAS) HUB */}
+        <motion.div variants={staggerItem}>
+          <LunarMansionsWheel />
+        </motion.div>
+
+        {/* 💞 SYNASTRY DUAL-RING CHART OVERLAY */}
+        <motion.div variants={staggerItem}>
+          <SynastryOverlayChart personAPositions={planetPositions} />
         </motion.div>
 
         {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}
