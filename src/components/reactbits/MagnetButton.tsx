@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'motion/react';
 
-export interface MagnetButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface MagnetButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
   magnetStrength?: number;
@@ -13,10 +13,10 @@ export function MagnetButton({
   magnetStrength = 0.35,
   ...props
 }: MagnetButtonProps) {
-  const ref = useRef<HTMLButtonElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
     const { left, top, width, height } = ref.current.getBoundingClientRect();
     const centerX = left + width / 2;
@@ -31,7 +31,7 @@ export function MagnetButton({
   };
 
   return (
-    <motion.button
+    <motion.div
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -41,6 +41,6 @@ export function MagnetButton({
       {...props}
     >
       {children}
-    </motion.button>
+    </motion.div>
   );
 }

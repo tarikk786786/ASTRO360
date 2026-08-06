@@ -25,7 +25,10 @@ import { SplitText } from './reactbits/SplitText';
 import { SpotlightCard } from './reactbits/SpotlightCard';
 import { MagnetButton } from './reactbits/MagnetButton';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
-import { toast } from 'sonner';
+import CosmicParticleBackground from './CosmicParticleBackground';
+import PlanetaryAspectGraph from './PlanetaryAspectGraph';
+import CosmicAnalyticsKPI from './CosmicAnalyticsKPI';
+import EphemerisDataTable from './EphemerisDataTable';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -544,7 +547,10 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
       variants={staggerContainer}
       className="min-h-screen bg-[#0B1220] text-[#F8FAFC] font-sans overflow-y-auto custom-scrollbar p-4 sm:p-8 lg:p-12 pb-28 text-left relative"
     >
-      <div className="max-w-7xl mx-auto space-y-6">
+      {/* 🌌 INTERACTIVE CANVAS PARTICLE STARFIELD */}
+      <CosmicParticleBackground />
+
+      <div className="max-w-7xl mx-auto space-y-6 relative z-10">
 
         {/* 🚀 UNIVERSAL BETA TEST MODE & DEVELOPER ATTRIBUTION BANNER (TOGGLEABLE HIDE/SHOW) */}
         <AnimatePresence>
@@ -768,6 +774,16 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
               <option value="zh">🇨🇳 中文 (Chinese)</option>
             </select>
           </div>
+        </motion.div>
+
+        {/* 📈 ENTERPRISE COSMIC ANALYTICS KPI BAR */}
+        <motion.div variants={staggerItem}>
+          <CosmicAnalyticsKPI
+            score={cosmicScoreData.score}
+            exaltedCount={cosmicScoreData.exaltedCount}
+            ownSignCount={cosmicScoreData.ownSignCount}
+            retrogradeCount={cosmicScoreData.retrogradeCount}
+          />
         </motion.div>
 
         {/* 🪄 MAGIC UI INFINITE MARQUEE COSMIC TICKER */}
@@ -1037,6 +1053,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
           </div>
         </motion.div>
 
+        {/* 🕸️ INTERACTIVE PLANETARY ASPECT NETWORK GRAPH */}
+        <motion.div variants={staggerItem}>
+          <PlanetaryAspectGraph planetPositions={planetPositions} />
+        </motion.div>
+
         {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}
         <motion.div variants={staggerItem} className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
           
@@ -1273,6 +1294,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
             </div>
           </div>
 
+        </motion.div>
+
+        {/* 📋 SEARCHABLE & SORTABLE EPHEMERIS DATA TABLE */}
+        <motion.div variants={staggerItem}>
+          <EphemerisDataTable planetPositions={planetPositions} />
         </motion.div>
 
         {/* KEYBOARD SHORTCUT FOOTER HINTS */}
