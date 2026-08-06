@@ -1030,20 +1030,21 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
           )}
         </AnimatePresence>
 
-        {/* SECTION 3: QUICK ACTIONS GRID (8 ESSENTIAL CORE TOOLS) */}
+        {/* SECTION 3: QUICK ACTIONS GRID (9 ESSENTIAL CORE TOOLS) */}
         <motion.div variants={staggerItem} className="space-y-4 text-left">
           <div className="flex items-center justify-between">
             <h3 className="text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
               <Compass className="w-5 h-5 text-[#2563EB]" /> Essential Quick Actions
             </h3>
-            <span className="text-xs font-mono text-[#94A3B8]">8 Core Astrological Tools</span>
+            <span className="text-xs font-mono text-[#94A3B8]">9 Core Astrological Tools</span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-3">
             {[
               { id: 'birth-chart', title: 'Birth Chart', desc: 'Natal Kundli', icon: <Compass className="w-5 h-5 text-[#2563EB]" /> },
               { id: 'horoscope', title: 'Horoscope', desc: 'Transits & energy', icon: <Sun className="w-5 h-5 text-[#F59E0B]" /> },
               { id: 'compatibility', title: 'Compatibility', desc: '36-Guna match', icon: <Heart className="w-5 h-5 text-[#EC4899]" /> },
+              { id: 'consultation-hub', title: 'Consultations', desc: 'Book Scholars', icon: <User className="w-5 h-5 text-purple-400" />, isComingSoon: true },
               { id: 'islamic-suite', title: 'Islamic Hub', desc: 'Qur\'an & Hadith', icon: <Moon className="w-5 h-5 text-[#22C55E]" /> },
               { id: 'dream-interpreter', title: 'Dream Engine', desc: 'Symbol analysis', icon: <CloudMoon className="w-5 h-5 text-[#7C3AED]" /> },
               { id: 'remedies', title: 'Remedies', desc: 'Gemstones & Yantras', icon: <Award className="w-5 h-5 text-[#D4AF37]" /> },
@@ -1055,14 +1056,19 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
                 onClick={() => onNavigate(tool.id)}
                 whileHover={{ scale: 1.05, y: -3 }}
                 whileTap={{ scale: 0.95 }}
-                className="p-4 rounded-2xl bg-[#111827]/90 border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_25px_rgba(37,99,235,0.25)] transition-all duration-300 text-left space-y-2.5 group cursor-pointer shadow-lg backdrop-blur-xl"
+                className="p-3.5 rounded-2xl bg-[#111827]/90 border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_25px_rgba(37,99,235,0.25)] transition-all duration-300 text-left space-y-2 group cursor-pointer shadow-lg backdrop-blur-xl relative overflow-hidden flex flex-col justify-between"
               >
-                <div className="p-2.5 rounded-xl bg-[#0B1220] border border-white/10 w-fit group-hover:border-blue-400/40 group-hover:scale-110 transition-all duration-300">
+                {tool.isComingSoon && (
+                  <span className="absolute top-1.5 right-1.5 text-[8px] font-mono font-bold text-amber-300 bg-amber-500/20 px-1.5 py-0.5 rounded border border-amber-500/30">
+                    Soon
+                  </span>
+                )}
+                <div className="p-2 rounded-xl bg-[#0B1220] border border-white/10 w-fit group-hover:border-blue-400/40 group-hover:scale-110 transition-all duration-300">
                   {tool.icon}
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-white group-hover:text-blue-400 transition-colors">{tool.title}</h4>
-                  <p className="text-[10px] text-[#94A3B8]">{tool.desc}</p>
+                  <h4 className="text-xs font-bold text-white group-hover:text-blue-400 transition-colors leading-tight">{tool.title}</h4>
+                  <p className="text-[9px] text-[#94A3B8] pt-0.5 truncate">{tool.desc}</p>
                 </div>
               </motion.button>
             ))}
