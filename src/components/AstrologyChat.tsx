@@ -19,12 +19,59 @@ const SUGGESTED_PROMPTS = [
   "🛡️ Custom remedial remedies & planetary peace"
 ];
 
+interface Persona {
+  id: 'vedic' | 'islamic' | 'western' | 'bazi';
+  name: string;
+  title: string;
+  icon: string;
+  badgeColor: string;
+  greeting: string;
+}
+
+const PERSONAS: Persona[] = [
+  {
+    id: 'vedic',
+    name: 'Sage Parashara',
+    title: 'Vedic Jyotish Rishi',
+    icon: '🕉️',
+    badgeColor: 'text-amber-300 bg-amber-500/10 border-amber-500/30',
+    greeting: 'Namaste, seeker. I am **Sage Parashara**, master of Vedic Sidereal Jyotish, Vimshottari Dasha, and Navaratna Gemstones. Let us analyze your karma and planetary alignment.'
+  },
+  {
+    id: 'islamic',
+    name: 'Al-Biruni',
+    title: 'Islamic Astronomy & Abjad Scholar',
+    icon: '🕌',
+    badgeColor: 'text-emerald-300 bg-emerald-500/10 border-emerald-500/30',
+    greeting: 'Assalamu Alaikum. I am **Al-Biruni**, scholar of 28 Manazil al-Qamar (Lunar Mansions), Ilm al-Nujum, Abjad numerology, and Istikhara. Ask me for sacred guidance and Barakah.'
+  },
+  {
+    id: 'western',
+    name: 'Claudius Ptolemy',
+    title: 'Hellenistic & Tropical Master',
+    icon: '🏛️',
+    badgeColor: 'text-cyan-300 bg-cyan-500/10 border-cyan-500/30',
+    greeting: 'Greetings. I am **Claudius Ptolemy**, architect of the Tetrabiblos, Tropical transits, and Planetary Hours. Let us examine your natal houses and planetary aspects.'
+  },
+  {
+    id: 'bazi',
+    name: 'Grandmaster Wu',
+    title: 'BaZi 4 Pillars & Wu Xing Master',
+    icon: '☯️',
+    badgeColor: 'text-purple-300 bg-purple-500/10 border-purple-500/30',
+    greeting: 'Welcome. I am **Grandmaster Wu**, keeper of the BaZi 4 Pillars of Destiny (八字) and Wu Xing 5-Element Feng Shui balance. Let us harmonize your Yin & Yang Chi.'
+  }
+];
+
 export default function AstrologyChat() {
+  const [activePersonaId, setActivePersonaId] = useState<'vedic' | 'islamic' | 'western' | 'bazi'>('vedic');
+  const activePersona = PERSONAS.find(p => p.id === activePersonaId) || PERSONAS[0];
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
       role: 'ai',
-      content: "Welcome, dear seeker. I am your **Master Astrologer & Cosmic Guide**. I am tuned into your exact birth chart coordinates, ephemeris transits, and multi-tradition wisdom systems. Ask me anything about your career, love, health, or spiritual purpose.",
+      content: activePersona.greeting,
       timestamp: new Date()
     }
   ]);
@@ -157,9 +204,40 @@ export default function AstrologyChat() {
             <Sparkles className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="font-display text-lg font-bold text-white">Astrologer & Cosmic Guide</h2>
-            <p className="text-xs text-white/50">Personalized Chart Reading & Guidance</p>
+            <h2 className="font-display text-lg font-bold text-white flex items-center gap-1.5">
+              <span>{activePersona.icon}</span> {activePersona.name} ({activePersona.title})
+            </h2>
+            <p className="text-xs text-white/50">Personalized Chart Reading & Multi-Persona Oracle</p>
           </div>
+        </div>
+
+        {/* Persona Selector Buttons */}
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+          {PERSONAS.map(p => (
+            <button
+              key={p.id}
+              onClick={() => {
+                setActivePersonaId(p.id);
+                setMessages(prev => [
+                  ...prev,
+                  {
+                    id: Date.now().toString(),
+                    role: 'ai',
+                    content: `*Switched consultation to **${p.name}** (${p.title})*\n\n${p.greeting}`,
+                    timestamp: new Date()
+                  }
+                ]);
+              }}
+              className={`px-2.5 py-1 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
+                activePersonaId === p.id
+                  ? 'bg-white/20 text-white border border-white/40 shadow-md'
+                  : 'bg-white/5 text-slate-400 hover:text-white border border-white/5'
+              }`}
+            >
+              <span>{p.icon}</span>
+              <span className="hidden sm:inline">{p.name}</span>
+            </button>
+          ))}
         </div>
         <div className="flex items-center gap-2">
           <button

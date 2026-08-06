@@ -29,6 +29,7 @@ import CosmicParticleBackground from './CosmicParticleBackground';
 import PlanetaryAspectGraph from './PlanetaryAspectGraph';
 import CosmicAnalyticsKPI from './CosmicAnalyticsKPI';
 import EphemerisDataTable from './EphemerisDataTable';
+import CosmicTransitCalendar from './CosmicTransitCalendar';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -1056,6 +1057,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
         {/* 🕸️ INTERACTIVE PLANETARY ASPECT NETWORK GRAPH */}
         <motion.div variants={staggerItem}>
           <PlanetaryAspectGraph planetPositions={planetPositions} />
+        </motion.div>
+
+        {/* 📅 COSMIC TRANSIT & PLANETARY INGRESS CALENDAR */}
+        <motion.div variants={staggerItem}>
+          <CosmicTransitCalendar />
         </motion.div>
 
         {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}
