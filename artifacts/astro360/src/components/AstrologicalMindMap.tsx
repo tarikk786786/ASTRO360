@@ -94,7 +94,12 @@ export default function AstrologicalMindMap() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         {/* SVG Interactive Node Graph */}
         <div className="lg:col-span-7 relative bg-[#0B1220] rounded-2xl border border-white/10 p-4">
-          <svg viewBox="0 0 450 430" className="w-full h-80 sm:h-96">
+          <svg 
+            role="graphics-document"
+            aria-label="Astrological Causality Graph linking Planets, Signs, Houses, and Life Outcomes"
+            viewBox="0 0 450 430" 
+            className="w-full h-80 sm:h-96"
+          >
             <defs>
               <linearGradient id="edgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#06B6D4" stopOpacity="0.8" />

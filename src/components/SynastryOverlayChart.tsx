@@ -66,7 +66,12 @@ export default function SynastryOverlayChart({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         {/* Dual Concentric Ring Chart Visualizer */}
         <div className="lg:col-span-6 flex items-center justify-center relative">
-          <svg viewBox="0 0 340 340" className="w-72 h-72 sm:w-80 sm:h-80 overflow-visible">
+          <svg 
+            role="img"
+            aria-label="Synastry Dual-Ring Inter-Natal Chart Overlay comparison"
+            viewBox="0 0 340 340" 
+            className="w-72 h-72 sm:w-80 sm:h-80 overflow-visible"
+          >
             {/* Outer Ring: Person B */}
             <circle cx="170" cy="170" r="140" fill="none" stroke="#EC4899" strokeWidth="2" strokeDasharray="4 4" opacity="0.6" />
             <text x="170" y="22" textAnchor="middle" fill="#EC4899" fontSize="9" fontWeight="bold" fontFamily="monospace">

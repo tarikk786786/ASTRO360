@@ -94,6 +94,16 @@ const DASHA_LORDS = [
 ];
 
 /**
+ * Calculates Lahiri Ayanamsha for a given Date (Chitra Paksha Ayanamsha)
+ */
+export function calculateLahiriAyanamsha(date: Date = new Date()): number {
+  const year = date.getUTCFullYear();
+  // Standard Lahiri Ayanamsha: 23° 51' in 2000 + 50.29" per year
+  const t = (year - 2000);
+  return 23.85 + (t * 0.01397);
+}
+
+/**
  * Calculates planetary positions based on date/time.
  * Uses Julian Day calculations and planetary mean longitudes.
  */

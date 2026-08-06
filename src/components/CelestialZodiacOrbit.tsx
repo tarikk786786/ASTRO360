@@ -39,7 +39,11 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
   };
 
   return (
-    <div className="relative w-full aspect-square max-w-[380px] mx-auto flex items-center justify-center p-2 sm:p-4 text-left">
+    <div 
+      role="img"
+      aria-label="360-Degree Animated Zodiac Orbit and Ephemeris Wheel showing real-time planetary positions"
+      className="relative w-full aspect-square max-w-[380px] mx-auto flex items-center justify-center p-2 sm:p-4 text-left"
+    >
       {/* Radiant Glowing Nebula Backdrop (Static Crisp Glow) */}
       <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600/15 via-purple-600/20 to-amber-500/15 blur-2xl pointer-events-none" />
 
