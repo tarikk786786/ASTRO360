@@ -40,8 +40,8 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
 
   return (
     <div className="relative w-full aspect-square max-w-[380px] mx-auto flex items-center justify-center p-2 sm:p-4">
-      {/* Radiant Glowing Nebula Backdrop */}
-      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600/20 via-purple-600/25 to-amber-500/20 blur-2xl animate-pulse pointer-events-none" />
+      {/* Radiant Glowing Nebula Backdrop (Static Crisp Glow) */}
+      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600/15 via-purple-600/20 to-amber-500/15 blur-2xl pointer-events-none" />
 
       {/* Outer Zodiac Belt Ring (Steady & Crisp) */}
       <div 
@@ -72,12 +72,8 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
       {/* Inner Orbit Track */}
       <div className="absolute inset-20 rounded-full border border-purple-500/30 flex items-center justify-center pointer-events-none" />
 
-      {/* Central Solar Core (Glowing Sun & Moon Balance) */}
-      <motion.div
-        animate={{ scale: [1, 1.06, 1] }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-        className="w-20 h-20 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 p-0.5 shadow-[0_0_35px_rgba(245,158,11,0.5)] flex items-center justify-center z-10 cursor-pointer"
-      >
+      {/* Central Solar Core (Steady Solar Core) */}
+      <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 p-0.5 shadow-[0_0_35px_rgba(245,158,11,0.5)] flex items-center justify-center z-10 cursor-pointer">
         <div className="w-full h-full rounded-full bg-[#0B1220] flex flex-col items-center justify-center text-center p-1 border border-white/20">
           <div className="flex items-center gap-1">
             <Sun className="w-4 h-4 text-amber-400" />
@@ -85,7 +81,7 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
           </div>
           <span className="text-[9px] font-mono font-bold text-amber-300 pt-0.5">CORE SOL</span>
         </div>
-      </motion.div>
+      </div>
 
       {/* Dynamic 9 Planets Nodes Computed on Real Longitude Angle */}
       {planetPositions.map((p, idx) => {
@@ -108,17 +104,8 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
             onClick={() => onSelectPlanet?.(p)}
             onMouseEnter={() => setHoveredPlanet(p)}
             onMouseLeave={() => setHoveredPlanet(null)}
-            whileHover={{ scale: 1.3, zIndex: 40 }}
+            whileHover={{ scale: 1.2, zIndex: 40 }}
             whileTap={{ scale: 0.95 }}
-            animate={{
-              y: [0, -3, 0],
-            }}
-            transition={{
-              duration: 3 + (idx % 3),
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: idx * 0.15
-            }}
             style={{ transform: `translate(${px}px, ${py}px)` }}
             className={`absolute z-20 p-1.5 sm:p-2 rounded-2xl bg-[#111827]/95 border ${p.border} shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:border-cyan-400 cursor-pointer group flex flex-col items-center justify-center space-y-0.5 backdrop-blur-md`}
           >
