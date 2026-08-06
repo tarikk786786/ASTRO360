@@ -54,6 +54,19 @@ export default function CosmicChartAnalytics({ planetPositions = [] }: { planetP
       };
     });
   }, [planetPositions]);
+  // Dynamically compute dominant element label
+  const dominantElement = useMemo(() => {
+    let maxSubject = 'Earth Dominant';
+    let maxVal = 92;
+    elementData.forEach(item => {
+      if (item.value > maxVal) {
+        maxVal = item.value;
+        maxSubject = `${item.subject.split(' ')[0]} Dominant`;
+      }
+    });
+    return { name: maxSubject, percent: maxVal };
+  }, [elementData]);
+
   return (
     <div className="p-6 rounded-3xl bg-[#111827] border border-white/10 shadow-2xl space-y-6 text-left relative">
       <div className="flex items-center justify-between border-b border-white/10 pb-3">
@@ -75,7 +88,9 @@ export default function CosmicChartAnalytics({ planetPositions = [] }: { planetP
         <div className="lg:col-span-6 p-4 rounded-2xl bg-[#0B1220] border border-white/10 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono font-bold text-cyan-400">5-Element (Pancha Mahabhuta) Harmony</span>
-            <span className="text-[10px] font-mono text-emerald-400">Earth Dominant (92%)</span>
+            <span className="text-[10px] font-mono text-emerald-400 font-bold">
+              {dominantElement.name} ({dominantElement.percent}%)
+            </span>
           </div>
 
           <div className="h-64 w-full">
