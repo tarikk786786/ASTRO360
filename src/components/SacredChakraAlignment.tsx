@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Activity, Sparkles, Volume2, ShieldCheck, Sun, Moon, Compass, CheckCircle2 } from 'lucide-react';
+import { playSolfeggioTone, stopSolfeggioTone } from '../lib/audioResonator';
 import type { PlanetPosition } from '../lib/astroCalculations';
 
 interface SacredChakraAlignmentProps {
@@ -91,6 +92,25 @@ export default function SacredChakraAlignment({ planetPositions }: SacredChakraA
   const [selectedChakra, setSelectedChakra] = useState(CHAKRAS[2]); // Manipura default
   const [isPlayingSound, setIsPlayingSound] = useState(false);
 
+  const handleToggleSound = () => {
+    const nextState = !isPlayingSound;
+    setIsPlayingSound(nextState);
+
+    if (nextState) {
+      const match = selectedChakra.hz.match(/(\d+)\s*Hz/i);
+      const hz = match ? parseInt(match[1], 10) : 528;
+      playSolfeggioTone(hz);
+    } else {
+      stopSolfeggioTone();
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      stopSolfeggioTone();
+    };
+  }, []);
+
   return (
     <div className="p-6 rounded-3xl bg-[#111827] border border-purple-500/40 shadow-2xl space-y-6 text-left relative overflow-hidden">
       {/* HEADER */}
@@ -139,7 +159,7 @@ export default function SacredChakraAlignment({ planetPositions }: SacredChakraA
           </div>
 
           <button
-            onClick={() => setIsPlayingSound(!isPlayingSound)}
+            onClick={handleToggleSound}
             className={`px-4 py-2 rounded-xl text-xs font-mono font-bold border transition-all cursor-pointer flex items-center gap-2 ${
               isPlayingSound
                 ? 'bg-purple-500/30 text-purple-200 border-purple-400 animate-pulse'

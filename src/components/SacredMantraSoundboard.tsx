@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Volume2, VolumeX, Play, Pause, Sparkles, Sun, Moon, ShieldCheck, Heart, Radio, Flame } from 'lucide-react';
+import { playSolfeggioTone, stopSolfeggioTone } from '../lib/audioResonator';
 
 interface MantraItem {
   id: string;
@@ -93,6 +94,25 @@ export default function SacredMantraSoundboard() {
     return MANTRAS_DATABASE.filter(m => m.tradition === activeFilter);
   }, [activeFilter]);
 
+  const handleTogglePlay = () => {
+    const nextState = !isPlaying;
+    setIsPlaying(nextState);
+
+    if (nextState) {
+      const match = selectedMantra.frequency.match(/(\d+)\s*Hz/i);
+      const hz = match ? parseInt(match[1], 10) : 528;
+      playSolfeggioTone(hz);
+    } else {
+      stopSolfeggioTone();
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      stopSolfeggioTone();
+    };
+  }, []);
+
   return (
     <div className="p-6 rounded-3xl bg-[#111827] border border-amber-500/40 shadow-2xl space-y-6 text-left relative overflow-hidden">
       {/* HEADER */}
@@ -143,7 +163,7 @@ export default function SacredMantraSoundboard() {
           </div>
 
           <button
-            onClick={() => setIsPlaying(!isPlaying)}
+            onClick={handleTogglePlay}
             className={`px-5 py-2.5 rounded-2xl font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
               isPlaying
                 ? 'bg-amber-500/30 text-amber-200 border border-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.4)] scale-105'
