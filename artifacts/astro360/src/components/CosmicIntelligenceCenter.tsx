@@ -48,6 +48,8 @@ import TarotIChingSuite from './TarotIChingSuite';
 import TimeHorizonForecastSuite from './TimeHorizonForecastSuite';
 import DoshaRemedyEngine from './DoshaRemedyEngine';
 import CosmicBiorhythmTracker from './CosmicBiorhythmTracker';
+import SacredChakraAlignment from './SacredChakraAlignment';
+import CosmicFengShuiMatrix from './CosmicFengShuiMatrix';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -1104,6 +1106,16 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
         {/* 🌊 BIORHYTHM & COSMIC ENERGY FREQUENCY TRACKER */}
         <motion.div variants={staggerItem}>
           <CosmicBiorhythmTracker userProfile={userProfile} />
+        </motion.div>
+
+        {/* 🕉️ SACRED GEOMETRY & 7-CHAKRA SOLFEGGIO FREQUENCY ALIGNMENT */}
+        <motion.div variants={staggerItem}>
+          <SacredChakraAlignment planetPositions={planetPositions} />
+        </motion.div>
+
+        {/* 🧭 PERSONALIZED LUCKY ELEMENTS & COSMIC FENG SHUI MATRIX */}
+        <motion.div variants={staggerItem}>
+          <CosmicFengShuiMatrix userProfile={userProfile} />
         </motion.div>
 
         {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}

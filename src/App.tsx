@@ -525,6 +525,24 @@ export default function App() {
               </button>
 
               <button 
+                onClick={() => navigateTo('chakra-alignment')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'chakra-alignment' ? 'bg-purple-500/15 text-purple-300 border border-purple-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>🕉️</span> 7-Chakra Solfeggio Alignment
+              </button>
+
+              <button 
+                onClick={() => navigateTo('fengshui-matrix')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'fengshui-matrix' ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>🧭</span> Cosmic Feng Shui Matrix
+              </button>
+
+              <button 
                 onClick={() => navigateTo('transit-calendar')}
                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
                   activeTab === 'transit-calendar' ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
