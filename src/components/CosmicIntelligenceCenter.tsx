@@ -562,7 +562,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
       initial="hidden"
       animate="show"
       variants={staggerContainer}
-      className="min-h-screen bg-[#0B1220] text-[#F8FAFC] font-sans overflow-y-auto custom-scrollbar p-4 sm:p-8 lg:p-12 pb-28 text-left relative"
+      className="min-h-screen bg-[#0B1220] text-[#F8FAFC] font-sans overflow-y-auto custom-scrollbar p-4 sm:p-8 lg:p-12 pb-28 text-left relative transform-gpu"
     >
       {/* 🌌 INTERACTIVE CANVAS PARTICLE STARFIELD */}
       <CosmicParticleBackground />
