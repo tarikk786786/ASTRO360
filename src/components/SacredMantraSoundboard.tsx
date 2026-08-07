@@ -50,6 +50,28 @@ const MANTRAS_DATABASE: MantraItem[] = [
     benefit: 'Neutralizes Sade Sati friction, heals physical ailments, and instills deep courage.'
   },
   {
+    id: 'durood-ibrahim',
+    title: 'Durood Ibrahim (Salawat on the Prophet)',
+    tradition: 'Islamic',
+    deityOrEnergy: 'Divine Blessings & Peace',
+    scriptText: 'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ',
+    phonetic: 'Allahumma salli \'ala Muhammadin wa \'ala ali Muhammadin kama sallayta \'ala Ibrahima',
+    meaning: 'O Allah, send blessings upon Muhammad and the family of Muhammad, as You sent blessings upon Ibrahim.',
+    frequency: '528 Hz (Heart Transformation)',
+    benefit: 'Opens spiritual light, brings tranquility to the household, and attracts divine mercy.'
+  },
+  {
+    id: 'lakshmi-mantra',
+    title: 'Mahalakshmi Wealth Mantra',
+    tradition: 'Vedic',
+    deityOrEnergy: 'Venus ♀ & Goddess Lakshmi',
+    scriptText: 'ॐ श्रीं ह्रीं श्रीं कमले कमलालये प्रसीद प्रसीद श्रीं ह्रीं श्रीं ॐ महालक्ष्म्यै नमः॥',
+    phonetic: 'Om Shreem Hreem Shreem Kamale Kamalalaye Praseeda Praseeda Shreem Hreem Shreem Om Mahalakshmyai Namah',
+    meaning: 'Om, Goddess Lakshmi residing in the lotus, grant Your grace, abundance, and divine prosperity.',
+    frequency: '639 Hz (Abundance Resonance)',
+    benefit: 'Activates Venus wealth channels, attracts financial opportunities, and dissolves monetary stress.'
+  },
+  {
     id: 'istikhara',
     title: 'Dua al-Istikhara (Divine Decision Guidance)',
     tradition: 'Islamic',
@@ -93,6 +115,17 @@ export default function SacredMantraSoundboard() {
     if (activeFilter === 'All') return MANTRAS_DATABASE;
     return MANTRAS_DATABASE.filter(m => m.tradition === activeFilter);
   }, [activeFilter]);
+
+  const handleSelectMantra = (m: MantraItem) => {
+    setSelectedMantra(m);
+    if (isPlaying) {
+      const match = m.frequency.match(/(\d+)\s*Hz/i);
+      const hz = match ? parseInt(match[1], 10) : 528;
+      playSolfeggioTone(hz);
+    } else {
+      stopSolfeggioTone();
+    }
+  };
 
   const handleTogglePlay = () => {
     const nextState = !isPlaying;
@@ -214,7 +247,7 @@ export default function SacredMantraSoundboard() {
         {filteredMantras.map(m => (
           <button
             key={m.id}
-            onClick={() => { setSelectedMantra(m); setIsPlaying(false); }}
+            onClick={() => handleSelectMantra(m)}
             className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer space-y-1.5 ${
               selectedMantra.id === m.id
                 ? 'bg-amber-500/15 border-amber-400 text-white shadow-lg'
