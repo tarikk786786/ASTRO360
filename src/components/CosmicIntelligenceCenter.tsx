@@ -57,6 +57,7 @@ import PlanetaryTransitRadar from './PlanetaryTransitRadar';
 import PanchangDeitiesEngine from './PanchangDeitiesEngine';
 import CosmicCompassVisualizer from './CosmicCompassVisualizer';
 import AstroCartographyMatrix from './AstroCartographyMatrix';
+import TarikIslamCosmicPassport from './TarikIslamCosmicPassport';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -679,6 +680,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
           </div>
         </motion.div>
 
+        {/* 👑 TARIK ISLAM COSMIC PASSPORT & PERSONALIZED IDENTITY HEADER */}
+        <motion.div variants={staggerItem}>
+          <TarikIslamCosmicPassport userProfile={userProfile} />
+        </motion.div>
+
         {/* TARGET ASTROLOGY PROFILE & SUBJECT MODAL ("FOR WHOM") */}
         <AstrologyTargetProfileModal
           isOpen={isTargetModalOpen}
@@ -1080,7 +1086,10 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
           <AdminAnalyticsDashboard />
         </motion.div>
 
-        {/* ⏱️ BIRTH TIME RECTIFICATION (BTR) SUITE */}
+        {/* 👑 TARIK ISLAM COSMIC PASSPORT & PERSONALIZED IDENTITY HEADER */}
+        <motion.div variants={staggerItem}>
+          <TarikIslamCosmicPassport userProfile={userProfile} />
+        </motion.div>
         <motion.div variants={staggerItem}>
           <BirthTimeRectificationSuite />
         </motion.div>
