@@ -52,6 +52,8 @@ import SacredChakraAlignment from './SacredChakraAlignment';
 import CosmicFengShuiMatrix from './CosmicFengShuiMatrix';
 import ElectionalMuhurtaEngine from './ElectionalMuhurtaEngine';
 import PlanetaryHorasTracker from './PlanetaryHorasTracker';
+import SacredMantraSoundboard from './SacredMantraSoundboard';
+import PlanetaryTransitRadar from './PlanetaryTransitRadar';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -1128,6 +1130,16 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
         {/* ☀️ PLANETARY HOURS & SOLAR HORAS REAL-TIME TRACKER */}
         <motion.div variants={staggerItem}>
           <PlanetaryHorasTracker />
+        </motion.div>
+
+        {/* 📻 SACRED MANTRAS & AUDIO VIBRATIONAL SOUNDBOARD */}
+        <motion.div variants={staggerItem}>
+          <SacredMantraSoundboard />
+        </motion.div>
+
+        {/* 🛰️ PLANETARY TRANSIT INGRESS RADAR & ALERT ENGINE */}
+        <motion.div variants={staggerItem}>
+          <PlanetaryTransitRadar />
         </motion.div>
 
         {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}
