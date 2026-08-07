@@ -46,6 +46,8 @@ import GemstoneRudrakshaSuite from './GemstoneRudrakshaSuite';
 import NumerologyNameSuite from './NumerologyNameSuite';
 import TarotIChingSuite from './TarotIChingSuite';
 import TimeHorizonForecastSuite from './TimeHorizonForecastSuite';
+import DoshaRemedyEngine from './DoshaRemedyEngine';
+import CosmicBiorhythmTracker from './CosmicBiorhythmTracker';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -1092,6 +1094,16 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
         {/* 📅 TIME HORIZON DIAGNOSTICS SUITE (TODAY, WEEK, MONTH, YEAR) */}
         <motion.div variants={staggerItem}>
           <TimeHorizonForecastSuite userProfile={userProfile} />
+        </motion.div>
+
+        {/* 🪐 KALSARP, SADE SATI & MANGLIK DOSHA REMEDY ENGINE */}
+        <motion.div variants={staggerItem}>
+          <DoshaRemedyEngine planetPositions={planetPositions} userProfile={userProfile} />
+        </motion.div>
+
+        {/* 🌊 BIORHYTHM & COSMIC ENERGY FREQUENCY TRACKER */}
+        <motion.div variants={staggerItem}>
+          <CosmicBiorhythmTracker userProfile={userProfile} />
         </motion.div>
 
         {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}
