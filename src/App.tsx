@@ -552,6 +552,15 @@ export default function App() {
               </button>
 
               <button 
+                onClick={() => navigateTo('planetary-horas')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'planetary-horas' ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>☀️</span> Planetary Horas Real-Time Tracker
+              </button>
+
+              <button 
                 onClick={() => navigateTo('transit-calendar')}
                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
                   activeTab === 'transit-calendar' ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'

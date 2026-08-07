@@ -51,6 +51,7 @@ import CosmicBiorhythmTracker from './CosmicBiorhythmTracker';
 import SacredChakraAlignment from './SacredChakraAlignment';
 import CosmicFengShuiMatrix from './CosmicFengShuiMatrix';
 import ElectionalMuhurtaEngine from './ElectionalMuhurtaEngine';
+import PlanetaryHorasTracker from './PlanetaryHorasTracker';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -1122,6 +1123,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
         {/* ⏰ ELECTIONAL ASTROLOGY & SHUBH MUHURTA TIME ENGINE */}
         <motion.div variants={staggerItem}>
           <ElectionalMuhurtaEngine />
+        </motion.div>
+
+        {/* ☀️ PLANETARY HOURS & SOLAR HORAS REAL-TIME TRACKER */}
+        <motion.div variants={staggerItem}>
+          <PlanetaryHorasTracker />
         </motion.div>
 
         {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}
