@@ -55,6 +55,7 @@ import PlanetaryHorasTracker from './PlanetaryHorasTracker';
 import SacredMantraSoundboard from './SacredMantraSoundboard';
 import PlanetaryTransitRadar from './PlanetaryTransitRadar';
 import PanchangDeitiesEngine from './PanchangDeitiesEngine';
+import CosmicCompassVisualizer from './CosmicCompassVisualizer';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -1146,6 +1147,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
         {/* 🌙 PANCHANGAM TITHI DEITIES & SACRED FASTING RITES ENGINE */}
         <motion.div variants={staggerItem}>
           <PanchangDeitiesEngine />
+        </motion.div>
+
+        {/* 🧭 360° SIDEREAL EPHEMERIS COMPASS & VASTU MATRIX */}
+        <motion.div variants={staggerItem}>
+          <CosmicCompassVisualizer userProfile={userProfile} />
         </motion.div>
 
         {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}
