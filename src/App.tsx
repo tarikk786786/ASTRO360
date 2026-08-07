@@ -433,10 +433,29 @@ export default function App() {
             </div>
 
             <div className="space-y-1 pl-1">
+              {/* 🤝 ASTROLOGER CONSULTATION & COMMUNITY Q&A HUB */}
+              <button 
+                onClick={() => navigateTo('consultation-hub')}
+                className={`w-full text-left p-3 rounded-2xl transition-all cursor-pointer border mb-2 ${
+                  activeTab === 'consultation-hub' 
+                    ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 shadow-lg' 
+                    : 'bg-white/5 text-slate-300 hover:bg-white/10 border-white/10'
+                }`}
+              >
+                <div className="flex items-center gap-2 font-bold text-xs">
+                  <span>🤝</span>
+                  <span className="text-white font-mono">Astrologer Consultations & Q&A</span>
+                  <span className="text-[9px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-1.5 py-0.2 rounded font-mono font-bold ml-auto">Soon</span>
+                </div>
+                <p className="text-[10px] text-slate-400 font-mono mt-1 leading-snug">
+                  Book 1-on-1 Consultations with Certified Scholars & Engage in Sacred Q&A Forums
+                </p>
+              </button>
+
               <button 
                 onClick={() => navigateTo('divisional-charts')}
                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'divisional-charts' ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                  activeTab === 'divisional-charts' ? 'bg-blue-500/15 text-blue-300 border border-blue-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >
                 <span>🪐</span> D1–D60 Divisional Charts
@@ -704,7 +723,7 @@ export default function App() {
                 {(activeTab === 'dream-interpreter' || activeTab === 'dream') && <DreamInterpretationEngine userProfile={userProfile} />}
                 {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
                 {activeTab === 'spiritual-traditions' && <SpiritualTraditionsModule userProfile={userProfile} />}
-                {(activeTab === 'consultation-hub' || activeTab === 'astrologers') && <CommunityConsultationHub />}
+                {(activeTab === 'consultation-hub' || activeTab === 'astrologers' || activeTab === 'community-consultation') && <CommunityConsultationHub />}
                 {(activeTab === 'horoscope' || activeTab === 'transits' || activeTab === 'panchang') && <PremiumHoroscopeEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
                 {(activeTab === 'reports' || activeTab === 'gemstone' || activeTab === 'muhurta' || activeTab === 'learning') && <Astro150ToolsCatalog userProfile={userProfile} onNavigate={navigateTo} activeCategory={activeTab} initialCategory={activeTab} />}
                 {(activeTab === 'notifications' || activeTab === 'settings' || activeTab === 'admin') && (
