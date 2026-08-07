@@ -45,6 +45,7 @@ import BirthTimeRectificationSuite from './BirthTimeRectificationSuite';
 import GemstoneRudrakshaSuite from './GemstoneRudrakshaSuite';
 import NumerologyNameSuite from './NumerologyNameSuite';
 import TarotIChingSuite from './TarotIChingSuite';
+import TimeHorizonForecastSuite from './TimeHorizonForecastSuite';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -1153,6 +1154,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
         {/* 🎴 ASTROLOGICAL TAROT & 64 I CHING ORACLE SUITE */}
         <motion.div variants={staggerItem}>
           <TarotIChingSuite />
+        </motion.div>
+
+        {/* 📅 TIME HORIZON DIAGNOSTICS SUITE (TODAY, WEEK, MONTH, YEAR) */}
+        <motion.div variants={staggerItem}>
+          <TimeHorizonForecastSuite userProfile={userProfile} />
         </motion.div>
 
         {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}
