@@ -562,11 +562,20 @@ export default function App() {
 
               <button 
                 onClick={() => navigateTo('admin-dashboard')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'admin-dashboard' ? 'bg-purple-500/15 text-purple-300 border border-purple-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                className={`w-full text-left p-3 rounded-2xl transition-all cursor-pointer border mt-2 ${
+                  activeTab === 'admin-dashboard' 
+                    ? 'bg-rose-500/20 text-rose-300 border-rose-500/50 shadow-lg' 
+                    : 'bg-white/5 text-slate-300 hover:bg-white/10 border-white/10'
                 }`}
               >
-                <span>🛡️</span> Admin Observability
+                <div className="flex items-center gap-2 font-bold text-xs">
+                  <span>🛡️</span>
+                  <span className="text-white font-mono">Admin Analytics & AI Tracing</span>
+                  <span className="text-[9px] bg-rose-500/20 text-rose-300 border border-rose-500/40 px-1.5 py-0.2 rounded font-mono font-bold ml-auto">Admin</span>
+                </div>
+                <p className="text-[10px] text-slate-400 font-mono mt-1 leading-snug">
+                  User Management, Subscription Metrics, AI Token Tracing (Langfuse) & Audit Logs
+                </p>
               </button>
             </div>
           </div>
