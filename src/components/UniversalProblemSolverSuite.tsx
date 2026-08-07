@@ -16,7 +16,7 @@ export default function UniversalProblemSolverSuite({ userProfile }: UniversalPr
     'deescalator' | 'timing' | 'dispute' | 'sleep' | 'shield'
   >('deescalator');
 
-  const name = userProfile?.name || 'Seeker';
+  const name = userProfile?.name || 'Tarik Islam';
 
   // --- TOOL 1: PANIC & ANXIETY DE-ESCALATOR STATE ---
   const [panicLevel, setPanicLevel] = useState<number>(5);

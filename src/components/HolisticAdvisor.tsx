@@ -489,7 +489,7 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
   const [customUrgency, setCustomUrgency] = useState<'Standard' | 'High Priority' | 'Immediate Emergency'>('High Priority');
   const [customTraditionFocus, setCustomTraditionFocus] = useState<'Balanced All-4' | 'Islamic Sunnah Emphasis' | 'Planetary Vedic Focus' | 'Mindset & Psychology Focus'>('Balanced All-4');
 
-  const name = userProfile?.name || 'Seeker';
+  const name = userProfile?.name || 'Tarik Islam';
   const dob = userProfile?.dob || '1998-06-15';
   const time = userProfile?.time || '12:00';
 

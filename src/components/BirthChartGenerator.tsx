@@ -163,8 +163,8 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
           </h1>
           <p className="text-sm text-slate-400 mt-1 max-w-2xl">
             {experienceMode === 'astrologer'
-              ? `High-precision natal ephemeris calculation, North/South Indian & Western wheel rendering, Vimshottari Dasha timeline, and D1–D60 divisional charts for ${userProfile?.name || 'Seeker'}.`
-              : `A clear, friendly, plain-English breakdown of your core life strengths, emotional tendencies, auspicious timing, and lucky life elements for ${userProfile?.name || 'Seeker'}.`}
+              ? `High-precision natal ephemeris calculation, North/South Indian & Western wheel rendering, Vimshottari Dasha timeline, and D1–D60 divisional charts for ${userProfile?.name || 'Tarik Islam'}.`
+              : `A clear, friendly, plain-English breakdown of your core life strengths, emotional tendencies, auspicious timing, and lucky life elements for ${userProfile?.name || 'Tarik Islam'}.`}
           </p>
         </div>
 
@@ -178,7 +178,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
                   <!DOCTYPE html>
                   <html>
                   <head>
-                    <title>AstroVerse Master Kundli Report - ${userProfile?.name || 'Seeker'}</title>
+                    <title>AstroVerse Master Kundli Report - ${userProfile?.name || 'Tarik Islam'}</title>
                     <style>
                       body { font-family: 'Segoe UI', system-ui, sans-serif; padding: 40px; color: #0f172a; background: #ffffff; line-height: 1.6; }
                       .header { text-align: center; border-b: 3px double #d97706; padding-bottom: 20px; margin-bottom: 30px; }
@@ -203,7 +203,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
                     <div class="section">
                       <div class="section-title">👤 Subject Profile Details</div>
                       <div class="meta-grid">
-                        <div class="meta-item"><strong>Full Name:</strong> ${userProfile?.name || 'Seeker'}</div>
+                        <div class="meta-item"><strong>Full Name:</strong> ${userProfile?.name || 'Tarik Islam'}</div>
                         <div class="meta-item"><strong>Date of Birth:</strong> ${userProfile?.dob || '1998-06-15'}</div>
                         <div class="meta-item"><strong>Time of Birth:</strong> ${userProfile?.time || '12:00'}</div>
                         <div class="meta-item"><strong>Birth Location:</strong> ${userProfile?.location || 'Global Coordinates'}</div>
@@ -461,7 +461,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
 
                       {/* Center User Crest */}
                       <text x="150" y="146" textAnchor="middle" fill="#ffffff" fontSize="11" fontWeight="bold">
-                        {userProfile?.name || 'Seeker'}
+                        {userProfile?.name || 'Tarik Islam'}
                       </text>
                       <text x="150" y="158" textAnchor="middle" fill="#f59e0b" fontSize="8" fontWeight="semibold">
                         3D Orbit Wheel

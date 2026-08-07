@@ -31,7 +31,7 @@ export default function GlobalWisdomSuite({ userProfile }: GlobalWisdomSuiteProp
   const [selectedTraditionModal, setSelectedTraditionModal] = useState<TraditionDetail | null>(null);
   const [isExporting, setIsExporting] = useState<boolean>(false);
 
-  const seekerName = userProfile?.name || 'Seeker';
+  const seekerName = userProfile?.name || 'Tarik Islam';
 
   // Live Planetary Ephemeris Positions for Seeker
   const positions = useMemo(() => {

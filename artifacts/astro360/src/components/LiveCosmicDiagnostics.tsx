@@ -91,7 +91,7 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
   const [showPlanetaryTable, setShowPlanetaryTable] = useState<boolean>(false);
   const [completedRemedies, setCompletedRemedies] = useState<Record<string, boolean>>({});
 
-  const name = userProfile?.name || 'Seeker';
+  const name = userProfile?.name || 'Tarik Islam';
 
   // Compute live planetary ephemeris positions dynamically for active date/time
   const positions = useMemo(() => {

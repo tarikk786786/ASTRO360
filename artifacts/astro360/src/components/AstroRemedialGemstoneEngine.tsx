@@ -452,7 +452,7 @@ export default function AstroRemedialGemstoneEngine({ userProfile }: AstroRemedi
             <body>
               <div class="h">
                 <div class="title">💎 ASTRO360 GEMSTONE & PLANETARY MINERAL BLUEPRINT</div>
-                <div>Personalized Prescribed Remedial Guide for ${userProfile?.name || 'Seeker'}</div>
+                <div>Personalized Prescribed Remedial Guide for ${userProfile?.name || 'Tarik Islam'}</div>
               </div>
 
               <div class="grid">
@@ -508,7 +508,7 @@ export default function AstroRemedialGemstoneEngine({ userProfile }: AstroRemedi
               Planetary Gemstones & <span className="bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 bg-clip-text text-transparent">Root Cause Remedies</span>
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 mt-2 max-w-2xl leading-relaxed">
-              Scientific, astronomical, and energetic gemstone recommendations tailored to {userProfile?.name || 'Seeker'}. Resolves core planetary afflictions with exact weight formulas, ritual purifications, and incompatibility warnings.
+              Scientific, astronomical, and energetic gemstone recommendations tailored to {userProfile?.name || 'Tarik Islam'}. Resolves core planetary afflictions with exact weight formulas, ritual purifications, and incompatibility warnings.
             </p>
           </div>
 

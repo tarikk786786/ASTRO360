@@ -25,7 +25,7 @@ export default function AstroSynastryMatchmaker({ userProfile }: AstroSynastryMa
   const [matchingSystem, setMatchingSystem] = useState<'vedic' | 'western' | 'bazi' | 'islamic' | 'kabbalah'>('vedic');
 
   // 1-on-1 State
-  const seekerName = userProfile?.name || 'Seeker (Leader)';
+  const seekerName = userProfile?.name || 'Tarik Islam';
   const seekerDob = userProfile?.dob || '1998-06-15';
   const seekerTime = userProfile?.time || '12:00';
 

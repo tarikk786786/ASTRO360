@@ -92,7 +92,7 @@ export default function IslamicAstrologyEngine({ userProfile, onNavigate }: Isla
   const userMansion = MANAZIL_AL_QAMAR[mansionIndex];
 
   // Abjad Numerical Value of User's Name
-  const abjadValue = calculateAbjadValue(userProfile?.name || 'Seeker');
+  const abjadValue = calculateAbjadValue(userProfile?.name || 'Tarik Islam');
   
   // Calculate Firdaria Planetary Ruler Period
   const firdariaPeriod = calculateFirdariaPeriod(year);
@@ -313,7 +313,7 @@ export default function IslamicAstrologyEngine({ userProfile, onNavigate }: Isla
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-white/10">
               <div className="p-6 rounded-2xl bg-white/5 border border-white/5 space-y-3">
-                <p className="text-xs text-slate-400 font-medium">Calculated Abjad Value for "{userProfile?.name || 'Seeker'}"</p>
+                <p className="text-xs text-slate-400 font-medium">Calculated Abjad Value for "{userProfile?.name || 'Tarik Islam'}"</p>
                 <p className="text-4xl font-bold font-display text-emerald-400">{abjadValue}</p>
                 <p className="text-xs text-slate-300 leading-relaxed">
                   Derived using the classical *Abjad al-Kabir* system (أبجد هوز حطي كلمن صعفض قرشت ثخذ ضظغ).

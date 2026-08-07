@@ -137,7 +137,7 @@ export default function UnifiedChartEngine({ userProfile, activeTab, initialTab 
           <!DOCTYPE html>
           <html>
           <head>
-            <title>Master Overall Chart Certificate — ${userProfile?.name || 'Seeker'}</title>
+            <title>Master Overall Chart Certificate — ${userProfile?.name || 'Tarik Islam'}</title>
             <style>
               body { font-family: system-ui, sans-serif; padding: 40px; color: #0f172a; background: #ffffff; line-height: 1.6; }
               .header { text-align: center; border-bottom: 3px double #6366f1; padding-bottom: 20px; margin-bottom: 30px; }
@@ -152,7 +152,7 @@ export default function UnifiedChartEngine({ userProfile, activeTab, initialTab 
           <body>
             <div class="header">
               <h1>🌌 ASTRO360 MASTER OVERALL CHART CERTIFICATE</h1>
-              <p>Unified Multi-Tradition Ephemeris Certificate for ${userProfile?.name || 'Seeker'}</p>
+              <p>Unified Multi-Tradition Ephemeris Certificate for ${userProfile?.name || 'Tarik Islam'}</p>
             </div>
 
             <div class="card" style="margin-bottom: 20px; background: #eef2ff; border-color: #c7d2fe;">
@@ -200,7 +200,7 @@ export default function UnifiedChartEngine({ userProfile, activeTab, initialTab 
               Unified <span className="bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-400 bg-clip-text text-transparent">Master Overall Chart</span>
             </h1>
             <p className="text-xs sm:text-sm text-slate-300 mt-2 max-w-2xl leading-relaxed">
-              Synthesizing Western Tropical, Vedic Sidereal, Islamic Manazil, Chinese BaZi, Mayan Tzolkin, and Numerology into one unified master profile for {userProfile?.name || 'Seeker'}.
+              Synthesizing Western Tropical, Vedic Sidereal, Islamic Manazil, Chinese BaZi, Mayan Tzolkin, and Numerology into one unified master profile for {userProfile?.name || 'Tarik Islam'}.
             </p>
           </div>
 
@@ -278,7 +278,7 @@ export default function UnifiedChartEngine({ userProfile, activeTab, initialTab 
               <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-[2px] shadow-2xl shadow-indigo-500/30">
                 <div className="w-full h-full rounded-full bg-slate-950 flex flex-col items-center justify-center text-center p-2">
                   <Sparkles className="w-5 h-5 text-amber-400 mb-1" />
-                  <span className="text-xs font-bold text-white truncate max-w-[90px]">{userProfile?.name || 'Seeker'}</span>
+                  <span className="text-xs font-bold text-white truncate max-w-[90px]">{userProfile?.name || 'Tarik Islam'}</span>
                   <span className="text-[9px] text-slate-400 font-mono">Master Chart</span>
                 </div>
               </div>
