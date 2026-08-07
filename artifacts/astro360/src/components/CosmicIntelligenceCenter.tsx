@@ -56,6 +56,7 @@ import SacredMantraSoundboard from './SacredMantraSoundboard';
 import PlanetaryTransitRadar from './PlanetaryTransitRadar';
 import PanchangDeitiesEngine from './PanchangDeitiesEngine';
 import CosmicCompassVisualizer from './CosmicCompassVisualizer';
+import AstroCartographyMatrix from './AstroCartographyMatrix';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -1152,6 +1153,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
         {/* 🧭 360° SIDEREAL EPHEMERIS COMPASS & VASTU MATRIX */}
         <motion.div variants={staggerItem}>
           <CosmicCompassVisualizer userProfile={userProfile} />
+        </motion.div>
+
+        {/* 🌐 ASTRO-CARTOGRAPHY & RELOCATION LOCALITY MATRIX */}
+        <motion.div variants={staggerItem}>
+          <AstroCartographyMatrix userProfile={userProfile} />
         </motion.div>
 
         {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}
