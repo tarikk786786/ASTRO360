@@ -209,7 +209,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
   const [isTargetModalOpen, setIsTargetModalOpen] = useState<boolean>(false);
   const [targetProfile, setTargetProfile] = useState<AstrologyTargetProfile>({
     targetType: 'self',
-    name: userProfile.name || 'Seeker',
+    name: userProfile.name || 'Tarik Islam',
     gender: 'universal',
     dob: userProfile.dob || '1998-06-15',
     time: userProfile.time || '12:00',

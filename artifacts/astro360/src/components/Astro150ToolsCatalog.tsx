@@ -44,7 +44,7 @@ export default function Astro150ToolsCatalog({ userProfile, onNavigate, activeCa
 
   // Interactive Live Calculation State
   const [activeLiveTool, setActiveLiveTool] = useState<ToolItem | null>(null);
-  const [subjectName, setSubjectName] = useState<string>(userProfile.name || 'Seeker');
+  const [subjectName, setSubjectName] = useState<string>(userProfile.name || 'Tarik Islam');
   const [calculationFocus, setCalculationFocus] = useState<string>('General Destiny & Life Purpose');
   const [isLiveExecuting, setIsLiveExecuting] = useState<boolean>(false);
   const [liveEngineOutput, setLiveEngineOutput] = useState<{

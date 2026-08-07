@@ -13,7 +13,7 @@ interface SynastryOverlayChartProps {
 export default function SynastryOverlayChart({
   personAPositions,
   personBPositions = personAPositions,
-  personAName = 'Seeker (Self)',
+  personAName = 'Tarik Islam',
   personBName = 'Spouse / Partner'
 }: SynastryOverlayChartProps) {
   const [selectedPlanet, setSelectedPlanet] = useState<PlanetPosition | null>(null);
