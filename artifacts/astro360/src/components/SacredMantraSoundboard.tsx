@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Volume2, VolumeX, Play, Pause, Sparkles, Sun, Moon, ShieldCheck, Heart, Radio, Flame } from 'lucide-react';
 
