@@ -254,7 +254,7 @@ export default function UnifiedChartEngine({ userProfile, activeTab, initialTab 
           <div className="lg:col-span-7 flex justify-center relative">
             <div className="relative w-[340px] h-[340px] sm:w-[420px] sm:h-[420px] flex items-center justify-center">
               {/* Outer Ring */}
-              <div className="absolute inset-0 rounded-full border-2 border-indigo-500/30 animate-spin-slow" style={{ animationDuration: '60s' }}>
+              <div className="absolute inset-0 rounded-full border-2 border-indigo-500/30">
                 {synthesisLayers.map((layer, idx) => (
                   <div
                     key={idx}

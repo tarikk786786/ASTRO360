@@ -423,7 +423,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
               {chartStyle === 'western' && (
                 <div className="relative w-full h-full flex items-center justify-center p-2 perspective-1000">
                   <div className="w-full h-full preserve-3d transition-transform duration-500 hover:rotate-x-12 hover:rotate-y-12">
-                    <svg className="w-full h-full animate-spin-slow" viewBox="0 0 300 300">
+                    <svg className="w-full h-full" viewBox="0 0 300 300">
                       <circle cx="150" cy="150" r="140" fill="none" stroke="rgba(217, 119, 6, 0.6)" strokeWidth="2" strokeDasharray="6 4" />
                       <circle cx="150" cy="150" r="105" fill="none" stroke="rgba(148, 163, 184, 0.4)" strokeWidth="1.5" />
                       <circle cx="150" cy="150" r="50" fill="rgba(15, 23, 42, 0.95)" stroke="rgba(217, 119, 6, 0.4)" strokeWidth="1.5" />

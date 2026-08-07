@@ -830,7 +830,7 @@ ${activeProblem.sevenDayPlan.map((step, i) => `[${completedSteps[`${activeProble
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div>
             <div className="flex items-center gap-2 text-indigo-400 mb-2">
-              <Compass className="w-5 h-5 animate-spin-slow" />
+              <Compass className="w-5 h-5 text-amber-400" />
               <span className="text-xs font-bold tracking-widest uppercase font-mono">Universal Problem-Solution Engine</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-display font-bold text-white leading-tight">
