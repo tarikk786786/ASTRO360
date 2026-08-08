@@ -14,6 +14,7 @@ import Onboarding from './components/Onboarding';
 import NotificationManager from './components/NotificationManager';
 import UnifiedChartEngine from './components/UnifiedChartEngine';
 import UnifiedIslamicSuite from './components/UnifiedIslamicSuite';
+import AstroCoreBrainConsole from './components/AstroCoreBrainConsole';
 import BirthChartGenerator from './components/BirthChartGenerator';
 import HolisticAdvisor from './components/HolisticAdvisor';
 import LiveCosmicDiagnostics from './components/LiveCosmicDiagnostics';
@@ -106,6 +107,8 @@ export default function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   // Global Cmd+K / Ctrl+K keyboard shortcut listener
   useEffect(() => {
@@ -176,6 +179,8 @@ export default function App() {
     if (activeTab === 'islamic-astrology') return 'Islamic Astronomy & Sciences';
     if (activeTab === 'chat') return 'Astrologer Consultation';
     if (activeTab === 'notifications') return 'Notification Settings';
+    if (activeTab === 'core-brain') return 'ASTRO360 Multi-Agent Core Brain Console';
+    if (activeTab === 'auth' || activeTab === 'login') return 'Seeker Account & Authentication';
     if (activeTab === 'divisional-charts') return 'D1–D60 Divisional Varga Charts';
     if (activeTab === 'btr-suite') return 'Birth Time Rectification Suite';
     if (activeTab === 'gemstone-suite') return 'Gemstone & Rudraksha Advisor';
@@ -800,19 +805,32 @@ export default function App() {
 
         {/* User Profile Card & Professional Engineering Verification */}
         <div className="p-3 border-t border-white/[0.06] space-y-2">
-          <button 
-            onClick={() => setHasOnboarded(false)}
-            className="w-full flex items-center gap-3 rounded-xl p-2.5 bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.08] transition-colors cursor-pointer text-left group"
-            title="Click to edit profile & re-calculate birth chart"
-          >
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cosmic-500/30 to-nebula-500/30 text-cosmic-300 flex items-center justify-center shrink-0 text-xs font-bold ring-1 ring-cosmic-500/20 group-hover:ring-amber-500/40">
-              {userProfile.name?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
+          <div className="rounded-xl p-2.5 bg-white/[0.03] border border-white/[0.06] space-y-2">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cosmic-500/30 to-nebula-500/30 text-cosmic-300 flex items-center justify-center shrink-0 text-xs font-bold ring-1 ring-cosmic-500/20">
+                {userProfile.name?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
+              </div>
+              <div className="overflow-hidden flex-1">
+                <p className="text-xs font-semibold text-white truncate">{userProfile.name || 'Seeker'}</p>
+                <p className="text-[10px] text-slate-400 truncate capitalize">{userProfile.preferredSystem || 'Western'} • {userProfile.dob || '1998-06-15'}</p>
+              </div>
             </div>
-            <div className="overflow-hidden flex-1">
-              <p className="text-xs font-semibold text-white truncate group-hover:text-amber-300">{userProfile.name || 'Seeker'}</p>
-              <p className="text-[10px] text-slate-400 truncate capitalize">Edit Profile / System Settings</p>
+
+            <div className="grid grid-cols-2 gap-1.5 pt-1">
+              <button
+                onClick={() => setIsProfileModalOpen(true)}
+                className="py-1.5 px-2 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-mono font-bold transition-all cursor-pointer truncate"
+              >
+                ⚙️ Customise
+              </button>
+              <button
+                onClick={() => setIsAuthModalOpen(true)}
+                className="py-1.5 px-2 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 text-[10px] font-mono font-bold transition-all cursor-pointer truncate"
+              >
+                🔐 Sign In
+              </button>
             </div>
-          </button>
+          </div>
 
           {/* Senior Developer & Master Astrologer Verification Badge */}
           <div className="p-2.5 rounded-xl bg-slate-900/90 border border-amber-500/20 text-[10px] space-y-1">
@@ -843,14 +861,23 @@ export default function App() {
             </h1>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-            <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-full font-bold flex items-center gap-1">
-              🧪 BETA TEST MODE
-            </span>
+            <button
+              onClick={() => setIsProfileModalOpen(true)}
+              className="text-[10px] font-mono text-amber-300 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 px-2.5 py-1 rounded-full font-bold transition-all flex items-center gap-1 cursor-pointer"
+            >
+              ⚙️ Customise Chart
+            </button>
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              className="text-[10px] font-mono text-purple-300 bg-purple-500/10 border border-purple-500/30 hover:bg-purple-500/20 px-2.5 py-1 rounded-full font-bold transition-all flex items-center gap-1 cursor-pointer"
+            >
+              🔐 Sign In / Sync
+            </button>
             <a
               href="https://tarikislam.in"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[10px] font-mono text-[#06B6D4] bg-[#06B6D4]/10 border border-[#06B6D4]/30 hover:bg-[#06B6D4]/20 px-2.5 py-1 rounded-full font-bold transition-all flex items-center gap-1"
+              className="text-[10px] font-mono text-[#06B6D4] bg-[#06B6D4]/10 border border-[#06B6D4]/30 hover:bg-[#06B6D4]/20 px-2.5 py-1 rounded-full font-bold transition-all flex items-center gap-1 hidden sm:flex"
             >
               <span>By Tarik Islam (tarikislam.in) ↗</span>
             </a>
@@ -932,10 +959,23 @@ export default function App() {
                   {activeTab === 'learning-hub' && <AstrologyLearningHub />}
                   {activeTab === 'report-generator' && <ExecutiveReportGenerator />}
                   {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
+                  {activeTab === 'core-brain' && <AstroCoreBrainConsole />}
+                  {(activeTab === 'auth' || activeTab === 'login') && (
+                    <AuthScreen
+                      userProfile={userProfile}
+                      onAuthSuccess={(updated) => {
+                        setUserProfile(updated);
+                        saveProfile(updated);
+                        navigateTo('dashboard');
+                        toast.success('Authentication synced!');
+                      }}
+                      onSkip={() => navigateTo('dashboard')}
+                    />
+                  )}
                   {TRADITIONS[activeTab] && (
                     <TraditionView tradition={TRADITIONS[activeTab]} onNavigate={navigateTo} />
                   )}
-                  {!['dashboard', 'live-diagnostics', 'advisor', 'remedies', 'remedy', 'custom-remedies', 'synastry', 'compatibility', 'match', 'global-suite', 'tools-catalog', 'birth-chart', 'kundli', 'master-chart', 'islamic-astrology', 'islamic-suite', 'islamic', 'chat', 'dream-interpreter', 'dream', 'problem-solver', 'spiritual-traditions', 'horoscope', 'transits', 'panchang', 'reports', 'gemstone', 'muhurta', 'learning', 'notifications', 'settings', 'pdf-dossier', 'consultation-hub', 'astrologers', 'community-consultation', 'divisional-charts', 'btr-suite', 'gemstone-suite', 'numerology-suite', 'tarot-iching', 'time-horizon', 'dosha-engine', 'biorhythm-tracker', 'chakra-alignment', 'fengshui-matrix', 'electional-muhurta', 'planetary-horas', 'mantra-soundboard', 'transit-radar', 'panchang-deities', 'cosmic-compass', 'astro-cartography', 'transit-calendar', 'synastry-overlay', 'mind-map', 'chart-analytics', 'learning-hub', 'report-generator', 'admin-dashboard'].includes(activeTab) && !TRADITIONS[activeTab] && (
+                  {!['dashboard', 'live-diagnostics', 'advisor', 'remedies', 'remedy', 'custom-remedies', 'synastry', 'compatibility', 'match', 'global-suite', 'tools-catalog', 'birth-chart', 'kundli', 'master-chart', 'islamic-astrology', 'islamic-suite', 'islamic', 'chat', 'dream-interpreter', 'dream', 'problem-solver', 'spiritual-traditions', 'horoscope', 'transits', 'panchang', 'reports', 'gemstone', 'muhurta', 'learning', 'notifications', 'settings', 'pdf-dossier', 'consultation-hub', 'astrologers', 'community-consultation', 'divisional-charts', 'btr-suite', 'gemstone-suite', 'numerology-suite', 'tarot-iching', 'time-horizon', 'dosha-engine', 'biorhythm-tracker', 'chakra-alignment', 'fengshui-matrix', 'electional-muhurta', 'planetary-horas', 'mantra-soundboard', 'transit-radar', 'panchang-deities', 'cosmic-compass', 'astro-cartography', 'transit-calendar', 'synastry-overlay', 'mind-map', 'chart-analytics', 'learning-hub', 'report-generator', 'admin-dashboard', 'core-brain', 'auth', 'login'].includes(activeTab) && !TRADITIONS[activeTab] && (
                     <CosmicIntelligenceCenter onNavigate={navigateTo} userProfile={userProfile} />
                   )}
                 </ErrorBoundary>
@@ -999,6 +1039,163 @@ export default function App() {
           </button>
         </div>
       </main>
+
+      {/* AUTH MODAL DIALOG */}
+      <AnimatePresence>
+        {isAuthModalOpen && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="relative w-full max-w-md">
+              <button
+                onClick={() => setIsAuthModalOpen(false)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-white p-2 rounded-full z-20 cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <AuthScreen
+                userProfile={userProfile}
+                onAuthSuccess={(updated) => {
+                  setUserProfile(updated);
+                  saveProfile(updated);
+                  setIsAuthModalOpen(false);
+                  toast.success('Account synced successfully!');
+                }}
+                onSkip={() => setIsAuthModalOpen(false)}
+              />
+            </div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* PROFILE CUSTOMISATION MODAL DIALOG */}
+      <AnimatePresence>
+        {isProfileModalOpen && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="relative w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-[#111827] border border-amber-500/40 shadow-2xl space-y-5 text-left text-xs font-mono my-8"
+            >
+              <button
+                onClick={() => setIsProfileModalOpen(false)}
+                className="absolute top-5 right-5 text-slate-400 hover:text-white p-1 rounded-full cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="border-b border-white/10 pb-3">
+                <span className="text-[10px] font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/30">
+                  COSMIC ENGINE CUSTOMISATION
+                </span>
+                <h3 className="text-xl font-bold text-white mt-1">Seeker Birth Profile & System Settings</h3>
+                <p className="text-slate-400 text-[11px] font-sans">
+                  Configure your birth details, ayanamsha calculations, and preferred tradition system to recalculate all 24 tool engines.
+                </p>
+              </div>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  saveProfile(userProfile);
+                  setIsProfileModalOpen(false);
+                  toast.success('🔮 Birth Profile & Astrological Engine Recalculated!');
+                }}
+                className="space-y-4"
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-slate-300 font-bold block">Full Name</label>
+                    <input
+                      type="text"
+                      value={userProfile.name}
+                      onChange={(e) => setUserProfile({ ...userProfile, name: e.target.value })}
+                      className="w-full px-3 py-2 rounded-xl bg-[#0B1220] border border-white/10 text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-slate-300 font-bold block">Email Address</label>
+                    <input
+                      type="email"
+                      value={userProfile.email}
+                      onChange={(e) => setUserProfile({ ...userProfile, email: e.target.value })}
+                      className="w-full px-3 py-2 rounded-xl bg-[#0B1220] border border-white/10 text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-slate-300 font-bold block">Birth Date (YYYY-MM-DD)</label>
+                    <input
+                      type="date"
+                      value={userProfile.dob}
+                      onChange={(e) => setUserProfile({ ...userProfile, dob: e.target.value })}
+                      className="w-full px-3 py-2 rounded-xl bg-[#0B1220] border border-white/10 text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-slate-300 font-bold block">Birth Time (24h HH:MM)</label>
+                    <input
+                      type="time"
+                      value={userProfile.time}
+                      onChange={(e) => setUserProfile({ ...userProfile, time: e.target.value })}
+                      className="w-full px-3 py-2 rounded-xl bg-[#0B1220] border border-white/10 text-white focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-slate-300 font-bold block">Birth City & Location</label>
+                  <input
+                    type="text"
+                    value={userProfile.location}
+                    onChange={(e) => setUserProfile({ ...userProfile, location: e.target.value })}
+                    placeholder="e.g. Mecca, Saudi Arabia or London, UK"
+                    className="w-full px-3 py-2 rounded-xl bg-[#0B1220] border border-white/10 text-white focus:outline-none focus:border-amber-400"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-slate-300 font-bold block">Preferred Tradition</label>
+                    <select
+                      value={userProfile.preferredSystem}
+                      onChange={(e) => setUserProfile({ ...userProfile, preferredSystem: e.target.value })}
+                      className="w-full px-3 py-2 rounded-xl bg-[#0B1220] border border-white/10 text-white focus:outline-none focus:border-amber-400"
+                    >
+                      <option value="vedic">Vedic Jyotish (Sidereal)</option>
+                      <option value="islamic">Islamic Astronomy (Ilm al-Nujum)</option>
+                      <option value="western">Western Tropical</option>
+                      <option value="bazi">Chinese BaZi (4 Pillars)</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-slate-300 font-bold block">Primary Life Focus</label>
+                    <select
+                      value={userProfile.primaryLifeFocus}
+                      onChange={(e) => setUserProfile({ ...userProfile, primaryLifeFocus: e.target.value })}
+                      className="w-full px-3 py-2 rounded-xl bg-[#0B1220] border border-white/10 text-white focus:outline-none focus:border-amber-400"
+                    >
+                      <option value="Wealth, Purpose & Protection">Wealth, Purpose & Protection</option>
+                      <option value="Career & Executive Power">Career & Executive Power</option>
+                      <option value="Relationship Harmony & Love">Relationship Harmony & Love</option>
+                      <option value="Spiritual Light & Healing">Spiritual Light & Healing</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-bold font-mono transition-all cursor-pointer shadow-lg shadow-amber-500/20"
+                >
+                  Save Profile & Recalculate Master Engines
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Command Palette Modal */}
       <CommandPaletteModal

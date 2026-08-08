@@ -7,7 +7,7 @@ import type { UserProfile } from '../types';
 import { calculatePlanetaryPositions } from '../lib/astroCalculations';
 
 interface UnifiedChartEngineProps {
-  userProfile: UserProfile;
+  userProfile?: UserProfile;
   activeTab?: string;
   initialTab?: string;
 }

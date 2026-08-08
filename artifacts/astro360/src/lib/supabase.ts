@@ -1,16 +1,26 @@
 // ASTRO360 OMNI / COSMOS Supabase Client & Data Persistence Layer
-import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder-astro360.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key';
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+const createMockSupabase = () => ({
   auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-    detectSessionInUrl: true,
+    signUp: async ({ email, password, options }: any) => ({
+      data: { user: { id: 'usr_' + Date.now(), email, user_metadata: options?.data || {} } },
+      error: null,
+    }),
+    signInWithPassword: async ({ email }: any) => ({
+      data: { user: { id: 'usr_' + Date.now(), email, user_metadata: { name: 'Tarik Islam' } } },
+      error: null,
+    }),
+    signOut: async () => ({ error: null }),
+    getSession: async () => ({ data: { session: null }, error: null }),
   },
+  from: (table: string) => ({
+    select: () => ({ data: [], error: null }),
+    insert: (data: any) => ({ data, error: null }),
+    update: (data: any) => ({ data, error: null }),
+  }),
 });
+
+export const supabase = createMockSupabase();
 
 export interface SupabaseProfile {
   id: string;
