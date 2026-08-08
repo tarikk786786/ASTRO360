@@ -203,11 +203,11 @@ export default function SacredMantraSoundboard() {
   const handleSelectMantra = (m: MantraItem) => {
     setSelectedMantra(m);
     setRecitationCount(0);
-    if (isPlaying) {
-      const match = m.frequency.match(/(\d+)\s*Hz/i);
-      const hz = match ? parseInt(match[1], 10) : 528;
-      playSolfeggioTone(hz, volume);
-    }
+    setIsPlaying(true);
+    const match = m.frequency.match(/(\d+)\s*Hz/i);
+    const hz = match ? parseInt(match[1], 10) : 528;
+    playSolfeggioTone(hz, volume);
+    toast.success(`🎵 Playing ${m.title} (${m.frequency})`, { duration: 3000 });
   };
 
   const handleTogglePlay = () => {
@@ -400,24 +400,34 @@ export default function SacredMantraSoundboard() {
 
       {/* MANTRAS LIST GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {filteredMantras.map(m => (
-          <button
-            key={m.id}
-            onClick={() => handleSelectMantra(m)}
-            className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer space-y-1.5 ${
-              selectedMantra.id === m.id
-                ? 'bg-amber-500/15 border-amber-400 text-white shadow-lg'
-                : 'bg-[#0B1220] border-white/10 text-slate-400 hover:text-white'
-            }`}
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-mono text-amber-400 font-bold">{m.tradition}</span>
-              <span className="text-[9px] font-mono text-cyan-300">{m.frequency}</span>
-            </div>
-            <h5 className="text-xs font-bold text-white truncate">{m.title}</h5>
-            <span className="text-[10px] text-slate-400 font-mono block truncate">{m.deityOrEnergy}</span>
-          </button>
-        ))}
+        {filteredMantras.map(m => {
+          const isCurrentPlaying = selectedMantra.id === m.id && isPlaying;
+          return (
+            <button
+              key={m.id}
+              onClick={() => handleSelectMantra(m)}
+              className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer space-y-1.5 group relative overflow-hidden ${
+                selectedMantra.id === m.id
+                  ? 'bg-amber-500/20 border-amber-400 text-white shadow-xl ring-1 ring-amber-400/40'
+                  : 'bg-[#0B1220] border-white/10 text-slate-400 hover:text-white hover:border-white/20'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-mono text-amber-400 font-bold">{m.tradition}</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[9px] font-mono text-cyan-300 font-bold">{m.frequency}</span>
+                  {isCurrentPlaying ? (
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                  ) : (
+                    <Play className="w-3 h-3 text-slate-500 group-hover:text-amber-400 transition-colors" />
+                  )}
+                </div>
+              </div>
+              <h5 className="text-xs font-bold text-white truncate group-hover:text-amber-300">{m.title}</h5>
+              <span className="text-[10px] text-slate-400 font-mono block truncate">{m.deityOrEnergy}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
