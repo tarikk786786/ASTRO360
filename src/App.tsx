@@ -56,6 +56,7 @@ import CosmicChartAnalytics from './components/CosmicChartAnalytics';
 import AstrologyLearningHub from './components/AstrologyLearningHub';
 import ExecutiveReportGenerator from './components/ExecutiveReportGenerator';
 import AdminAnalyticsDashboard from './components/AdminAnalyticsDashboard';
+import CosmicLeafletMap from './components/CosmicLeafletMap';
 import ErrorBoundary from './components/ErrorBoundary';
 import { Toaster, toast } from 'sonner';
 
@@ -181,6 +182,7 @@ export default function App() {
     if (activeTab === 'notifications') return 'Notification Settings';
     if (activeTab === 'core-brain') return 'ASTRO360 Multi-Agent Core Brain Console';
     if (activeTab === 'auth' || activeTab === 'login') return 'Seeker Account & Authentication';
+    if (activeTab === 'leaflet-map' || activeTab === 'location-picker') return 'OpenStreetMap & Nominatim Interactive Geocoding';
     if (activeTab === 'divisional-charts') return 'D1–D60 Divisional Varga Charts';
     if (activeTab === 'btr-suite') return 'Birth Time Rectification Suite';
     if (activeTab === 'gemstone-suite') return 'Gemstone & Rudraksha Advisor';
@@ -960,6 +962,16 @@ export default function App() {
                   {activeTab === 'report-generator' && <ExecutiveReportGenerator />}
                   {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
                   {activeTab === 'core-brain' && <AstroCoreBrainConsole />}
+                  {(activeTab === 'leaflet-map' || activeTab === 'location-picker') && (
+                    <CosmicLeafletMap
+                      initialCity={userProfile.location}
+                      onLocationSelect={(loc) => {
+                        const updated = { ...userProfile, location: `${loc.city}, ${loc.country}` };
+                        setUserProfile(updated);
+                        saveProfile(updated);
+                      }}
+                    />
+                  )}
                   {(activeTab === 'auth' || activeTab === 'login') && (
                     <AuthScreen
                       userProfile={userProfile}
@@ -975,7 +987,7 @@ export default function App() {
                   {TRADITIONS[activeTab] && (
                     <TraditionView tradition={TRADITIONS[activeTab]} onNavigate={navigateTo} />
                   )}
-                  {!['dashboard', 'live-diagnostics', 'advisor', 'remedies', 'remedy', 'custom-remedies', 'synastry', 'compatibility', 'match', 'global-suite', 'tools-catalog', 'birth-chart', 'kundli', 'master-chart', 'islamic-astrology', 'islamic-suite', 'islamic', 'chat', 'dream-interpreter', 'dream', 'problem-solver', 'spiritual-traditions', 'horoscope', 'transits', 'panchang', 'reports', 'gemstone', 'muhurta', 'learning', 'notifications', 'settings', 'pdf-dossier', 'consultation-hub', 'astrologers', 'community-consultation', 'divisional-charts', 'btr-suite', 'gemstone-suite', 'numerology-suite', 'tarot-iching', 'time-horizon', 'dosha-engine', 'biorhythm-tracker', 'chakra-alignment', 'fengshui-matrix', 'electional-muhurta', 'planetary-horas', 'mantra-soundboard', 'transit-radar', 'panchang-deities', 'cosmic-compass', 'astro-cartography', 'transit-calendar', 'synastry-overlay', 'mind-map', 'chart-analytics', 'learning-hub', 'report-generator', 'admin-dashboard', 'core-brain', 'auth', 'login'].includes(activeTab) && !TRADITIONS[activeTab] && (
+                  {!['dashboard', 'live-diagnostics', 'advisor', 'remedies', 'remedy', 'custom-remedies', 'synastry', 'compatibility', 'match', 'global-suite', 'tools-catalog', 'birth-chart', 'kundli', 'master-chart', 'islamic-astrology', 'islamic-suite', 'islamic', 'chat', 'dream-interpreter', 'dream', 'problem-solver', 'spiritual-traditions', 'horoscope', 'transits', 'panchang', 'reports', 'gemstone', 'muhurta', 'learning', 'notifications', 'settings', 'pdf-dossier', 'consultation-hub', 'astrologers', 'community-consultation', 'divisional-charts', 'btr-suite', 'gemstone-suite', 'numerology-suite', 'tarot-iching', 'time-horizon', 'dosha-engine', 'biorhythm-tracker', 'chakra-alignment', 'fengshui-matrix', 'electional-muhurta', 'planetary-horas', 'mantra-soundboard', 'transit-radar', 'panchang-deities', 'cosmic-compass', 'astro-cartography', 'transit-calendar', 'synastry-overlay', 'mind-map', 'chart-analytics', 'learning-hub', 'report-generator', 'admin-dashboard', 'core-brain', 'auth', 'login', 'leaflet-map', 'location-picker'].includes(activeTab) && !TRADITIONS[activeTab] && (
                     <CosmicIntelligenceCenter onNavigate={navigateTo} userProfile={userProfile} />
                   )}
                 </ErrorBoundary>

@@ -1,5 +1,5 @@
-// ASTRO360 OMNI / COSMOS City Geocoding Engine
-// Resolves city query strings to latitude/longitude coordinates & timezone offset
+// ASTRO360 OMNI / COSMOS Free Architecture Location & Timezone Engine
+// Uses OpenStreetMap Nominatim (Free, no API key required) + Open-Meteo Timezone API
 
 export interface GeocodingResult {
   city: string;
@@ -7,6 +7,7 @@ export interface GeocodingResult {
   latitude: number;
   longitude: number;
   timezone: string;
+  displayName?: string;
 }
 
 const POPULAR_CITIES: GeocodingResult[] = [
@@ -29,6 +30,9 @@ const POPULAR_CITIES: GeocodingResult[] = [
   { city: 'Sydney', country: 'Australia', latitude: -33.8688, longitude: 151.2093, timezone: 'Australia/Sydney' },
 ];
 
+/**
+ * Synchronous local city lookup fallback
+ */
 export function lookupCityCoordinates(query: string): GeocodingResult {
   const normalized = query.trim().toLowerCase();
   const match = POPULAR_CITIES.find(
@@ -37,7 +41,6 @@ export function lookupCityCoordinates(query: string): GeocodingResult {
 
   if (match) return match;
 
-  // Fallback default coordinates (Mecca)
   return {
     city: query || 'Mecca',
     country: 'Saudi Arabia',
@@ -47,6 +50,46 @@ export function lookupCityCoordinates(query: string): GeocodingResult {
   };
 }
 
+/**
+ * Free Live Geocoding via OpenStreetMap Nominatim API
+ * No API key required
+ */
+export async function geocodeCityNominatim(query: string): Promise<GeocodingResult[]> {
+  if (!query || query.trim().length < 2) return POPULAR_CITIES.slice(0, 6);
+
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&addressdetails=1`;
+    const res = await fetch(url, {
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'ASTRO360-Free-Astrology-App/1.0'
+      }
+    });
+
+    if (!res.ok) throw new Error('Nominatim request failed');
+
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) {
+      return searchCities(query);
+    }
+
+    return data.map((item: any) => ({
+      city: item.address?.city || item.address?.town || item.address?.village || item.name || query,
+      country: item.address?.country || 'Global',
+      latitude: parseFloat(item.lat),
+      longitude: parseFloat(item.lon),
+      timezone: 'UTC',
+      displayName: item.display_name
+    }));
+  } catch (err) {
+    console.warn('Nominatim live lookup failed, falling back to local database:', err);
+    return searchCities(query);
+  }
+}
+
+/**
+ * Synchronous search over local database
+ */
 export function searchCities(query: string): GeocodingResult[] {
   if (!query || query.trim().length < 2) return POPULAR_CITIES.slice(0, 6);
   const normalized = query.trim().toLowerCase();
