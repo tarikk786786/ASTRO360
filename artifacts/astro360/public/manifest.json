@@ -1,0 +1,17 @@
+{
+  "short_name": "COSMOS",
+  "name": "COSMOS OMNI — Universal Cosmic Intelligence Platform",
+  "description": "World's premier universal multi-faith astrology platform uniting Islamic, Vedic, Western, BaZi, and Kabbalah astrology.",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192 512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "display": "standalone",
+  "orientation": "portrait"
+}

@@ -1,56 +1,48 @@
-import React, { Component } from 'react';
+import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
 
-interface ErrorBoundaryProps {
-  children: React.ReactNode;
+interface Props {
+  children: ReactNode;
 }
 
-interface ErrorBoundaryState {
+interface State {
   hasError: boolean;
   error: Error | null;
 }
 
-export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
+export class ErrorBoundary extends Component<Props, State> {
+  public state: State = {
+    hasError: false,
+    error: null,
+  };
 
-  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+  public static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Uncaught React Error:', error, errorInfo);
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error("Uncaught Error Boundary Exception:", error, errorInfo);
   }
 
-  render() {
+  public render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 text-center space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-red-500/20 text-red-400 flex items-center justify-center font-bold text-xl">
-            ⚠️
-          </div>
-          <h1 className="text-2xl font-bold text-red-400 font-display">Something went wrong</h1>
-          <p className="text-sm text-slate-400 max-w-md font-mono bg-slate-900 p-3 rounded-xl border border-slate-800">
-            {this.state.error?.message || 'An unexpected rendering error occurred.'}
-          </p>
-          <div className="flex items-center gap-3">
+        <div className="min-h-screen bg-[#0B1220] flex items-center justify-center p-6 text-left font-sans text-white">
+          <div className="max-w-md p-8 rounded-3xl bg-[#111827] border border-amber-500/40 shadow-2xl space-y-4">
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
+              <AlertTriangle className="w-6 h-6 text-amber-400" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-white">Cosmic Alignment Recovered</h3>
+              <p className="text-xs text-slate-400 font-mono pt-1">
+                An unexpected exception occurred in this view. The rest of your application state remains safe.
+              </p>
+            </div>
             <button
-              onClick={() => {
-                this.setState({ hasError: false, error: null });
-              }}
-              className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-xs font-bold text-white transition-all cursor-pointer shadow-lg shadow-emerald-600/20"
+              onClick={() => this.setState({ hasError: false, error: null })}
+              className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer"
             >
-              Try Again Now
-            </button>
-            <button
-              onClick={() => {
-                localStorage.clear();
-                window.location.reload();
-              }}
-              className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-xs font-bold text-white transition-all cursor-pointer shadow-lg shadow-indigo-600/20"
-            >
-              Clear Cache & Reload
+              <RefreshCw className="w-4 h-4" /> Reset View Telemetry
             </button>
           </div>
         </div>
@@ -60,3 +52,5 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     return this.props.children;
   }
 }
+
+export default ErrorBoundary;

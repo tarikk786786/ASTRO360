@@ -28,6 +28,10 @@ import UniversalProblemSolverSuite from './components/UniversalProblemSolverSuit
 import PremiumHoroscopeEngine from './components/PremiumHoroscopeEngine';
 import SpiritualTraditionsModule from './components/SpiritualTraditionsModule';
 import CommunityConsultationHub from './components/CommunityConsultationHub';
+import ExecutivePDFDossier from './components/ExecutivePDFDossier';
+import Footer from './components/Footer';
+import AuthScreen from './components/AuthScreen';
+import ErrorBoundary from './components/ErrorBoundary';
 import { Toaster, toast } from 'sonner';
 
 const STORAGE_KEY = 'astroverse_profile';
@@ -606,6 +610,15 @@ export default function App() {
               </button>
 
               <button 
+                onClick={() => navigateTo('pdf-dossier')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'pdf-dossier' ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>📜</span> Executive PDF Dossier Report
+              </button>
+
+              <button 
                 onClick={() => navigateTo('transit-calendar')}
                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
                   activeTab === 'transit-calendar' ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
@@ -816,39 +829,43 @@ export default function App() {
                   transition={{ duration: 0.2, ease: 'easeOut' }}
                   className="h-full"
                 >
-                {activeTab === 'dashboard' && <CosmicIntelligenceCenter onNavigate={navigateTo} userProfile={userProfile} />}
-                {activeTab === 'live-diagnostics' && <LiveCosmicDiagnostics userProfile={userProfile} />}
-                {activeTab === 'advisor' && <HolisticAdvisor userProfile={userProfile} />}
-                {(activeTab === 'remedies' || activeTab === 'remedy') && <AstroMultiTraditionRemedySuite />}
-                {activeTab === 'custom-remedies' && <CustomRemedialMediumEngine userProfile={userProfile} />}
-                {(activeTab === 'synastry' || activeTab === 'compatibility' || activeTab === 'match') && <AstroSynastryMatchmaker userProfile={userProfile} />}
-                {activeTab === 'global-suite' && <GlobalWisdomSuite userProfile={userProfile} />}
-                {activeTab === 'tools-catalog' && <Astro150ToolsCatalog userProfile={userProfile} onNavigate={navigateTo} activeCategory={activeTab} initialCategory={activeTab} />}
-                {(activeTab === 'birth-chart' || activeTab === 'kundli') && <BirthChartGenerator userProfile={userProfile} />}
-                {activeTab === 'master-chart' && <UnifiedChartEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
-                {(activeTab === 'islamic-astrology' || activeTab === 'islamic-suite' || activeTab === 'islamic') && <UnifiedIslamicSuite userProfile={userProfile} />}
-                {activeTab === 'chat' && <AstrologyChat />}
-                {(activeTab === 'dream-interpreter' || activeTab === 'dream') && <DreamInterpretationEngine userProfile={userProfile} />}
-                {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
-                {activeTab === 'spiritual-traditions' && <SpiritualTraditionsModule userProfile={userProfile} />}
-                {(activeTab === 'consultation-hub' || activeTab === 'astrologers' || activeTab === 'community-consultation') && <CommunityConsultationHub />}
-                {(activeTab === 'horoscope' || activeTab === 'transits' || activeTab === 'panchang') && <PremiumHoroscopeEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
-                {(activeTab === 'reports' || activeTab === 'gemstone' || activeTab === 'muhurta' || activeTab === 'learning') && <Astro150ToolsCatalog userProfile={userProfile} onNavigate={navigateTo} activeCategory={activeTab} initialCategory={activeTab} />}
-                {(activeTab === 'notifications' || activeTab === 'settings' || activeTab === 'admin') && (
-                  <NotificationManager 
-                    userProfile={userProfile} 
-                    onUpdateProfile={(updated) => {
-                      setUserProfile(updated);
-                      saveProfile(updated);
-                    }} 
-                  />
-                )}
-                {TRADITIONS[activeTab] && (
-                  <TraditionView tradition={TRADITIONS[activeTab]} onNavigate={navigateTo} />
-                )}
-                {!['dashboard', 'live-diagnostics', 'advisor', 'remedies', 'remedy', 'custom-remedies', 'synastry', 'compatibility', 'match', 'global-suite', 'tools-catalog', 'birth-chart', 'kundli', 'master-chart', 'islamic-astrology', 'islamic-suite', 'islamic', 'chat', 'dream-interpreter', 'dream', 'problem-solver', 'spiritual-traditions', 'horoscope', 'transits', 'panchang', 'reports', 'gemstone', 'muhurta', 'learning', 'notifications', 'settings', 'admin'].includes(activeTab) && !TRADITIONS[activeTab] && (
-                  <CosmicIntelligenceCenter onNavigate={navigateTo} userProfile={userProfile} />
-                )}
+                <ErrorBoundary>
+                  {activeTab === 'dashboard' && <CosmicIntelligenceCenter onNavigate={navigateTo} userProfile={userProfile} />}
+                  {activeTab === 'live-diagnostics' && <LiveCosmicDiagnostics userProfile={userProfile} />}
+                  {activeTab === 'advisor' && <HolisticAdvisor userProfile={userProfile} />}
+                  {(activeTab === 'remedies' || activeTab === 'remedy') && <AstroMultiTraditionRemedySuite />}
+                  {activeTab === 'custom-remedies' && <CustomRemedialMediumEngine userProfile={userProfile} />}
+                  {(activeTab === 'synastry' || activeTab === 'compatibility' || activeTab === 'match') && <AstroSynastryMatchmaker userProfile={userProfile} />}
+                  {activeTab === 'global-suite' && <GlobalWisdomSuite userProfile={userProfile} />}
+                  {activeTab === 'tools-catalog' && <Astro150ToolsCatalog userProfile={userProfile} onNavigate={navigateTo} activeCategory={activeTab} initialCategory={activeTab} />}
+                  {(activeTab === 'birth-chart' || activeTab === 'kundli') && <BirthChartGenerator userProfile={userProfile} />}
+                  {activeTab === 'master-chart' && <UnifiedChartEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
+                  {(activeTab === 'islamic-astrology' || activeTab === 'islamic-suite' || activeTab === 'islamic') && <UnifiedIslamicSuite userProfile={userProfile} />}
+                  {activeTab === 'chat' && <AstrologyChat />}
+                  {(activeTab === 'dream-interpreter' || activeTab === 'dream') && <DreamInterpretationEngine userProfile={userProfile} />}
+                  {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
+                  {activeTab === 'spiritual-traditions' && <SpiritualTraditionsModule userProfile={userProfile} />}
+                  {(activeTab === 'consultation-hub' || activeTab === 'astrologers' || activeTab === 'community-consultation') && <CommunityConsultationHub />}
+                  {activeTab === 'pdf-dossier' && <ExecutivePDFDossier userProfile={userProfile} />}
+                  {(activeTab === 'horoscope' || activeTab === 'transits' || activeTab === 'panchang') && <PremiumHoroscopeEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
+                  {(activeTab === 'reports' || activeTab === 'gemstone' || activeTab === 'muhurta' || activeTab === 'learning') && <Astro150ToolsCatalog userProfile={userProfile} onNavigate={navigateTo} activeCategory={activeTab} initialCategory={activeTab} />}
+                  {(activeTab === 'notifications' || activeTab === 'settings' || activeTab === 'admin') && (
+                    <NotificationManager 
+                      userProfile={userProfile} 
+                      onUpdateProfile={(updated) => {
+                        setUserProfile(updated);
+                        saveProfile(updated);
+                      }} 
+                    />
+                  )}
+                  {TRADITIONS[activeTab] && (
+                    <TraditionView tradition={TRADITIONS[activeTab]} onNavigate={navigateTo} />
+                  )}
+                  {!['dashboard', 'live-diagnostics', 'advisor', 'remedies', 'remedy', 'custom-remedies', 'synastry', 'compatibility', 'match', 'global-suite', 'tools-catalog', 'birth-chart', 'kundli', 'master-chart', 'islamic-astrology', 'islamic-suite', 'islamic', 'chat', 'dream-interpreter', 'dream', 'problem-solver', 'spiritual-traditions', 'horoscope', 'transits', 'panchang', 'reports', 'gemstone', 'muhurta', 'learning', 'notifications', 'settings', 'admin', 'pdf-dossier'].includes(activeTab) && !TRADITIONS[activeTab] && (
+                    <CosmicIntelligenceCenter onNavigate={navigateTo} userProfile={userProfile} />
+                  )}
+                </ErrorBoundary>
+                <Footer />
               </motion.div>
             </AnimatePresence>
           </Suspense>
