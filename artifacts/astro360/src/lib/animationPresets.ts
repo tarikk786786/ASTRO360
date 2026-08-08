@@ -3,7 +3,21 @@
 
 import type { Variants } from 'motion/react';
 
-const SMOOTH_EASE = [0.16, 1, 0.3, 1] as const;
+export const SMOOTH_EASE = [0.16, 1, 0.3, 1] as const;
+
+export const SPRING_SNAPPY = {
+  type: 'spring' as const,
+  stiffness: 380,
+  damping: 26,
+  mass: 0.8,
+};
+
+export const SPRING_BOUNCY = {
+  type: 'spring' as const,
+  stiffness: 240,
+  damping: 18,
+  mass: 0.9,
+};
 
 export const fadeInUp: Variants = {
   initial: { opacity: 0, y: 14 },
@@ -16,8 +30,8 @@ export const staggerContainer: Variants = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.03,
-      delayChildren: 0.01
+      staggerChildren: 0.04,
+      delayChildren: 0.02
     }
   }
 };
@@ -39,8 +53,20 @@ export const slideInLeft: Variants = {
   exit: { opacity: 0, x: 16, transition: { duration: 0.18, ease: 'easeIn' } }
 };
 
+export const modalTransition: Variants = {
+  initial: { opacity: 0, scale: 0.95, y: 8 },
+  animate: { opacity: 1, scale: 1, y: 0, transition: SPRING_SNAPPY },
+  exit: { opacity: 0, scale: 0.97, y: 4, transition: { duration: 0.15, ease: 'easeIn' } }
+};
+
+export const toastTransition: Variants = {
+  initial: { opacity: 0, y: -12, scale: 0.92 },
+  animate: { opacity: 1, y: 0, scale: 1, transition: SPRING_SNAPPY },
+  exit: { opacity: 0, y: -8, scale: 0.95, transition: { duration: 0.15 } }
+};
+
 export const cardHoverProps = {
-  whileHover: { scale: 1.015, y: -2, transition: { duration: 0.2, ease: SMOOTH_EASE } },
+  whileHover: { scale: 1.012, y: -3, transition: { duration: 0.2, ease: SMOOTH_EASE } },
   whileTap: { scale: 0.985 }
 };
 
