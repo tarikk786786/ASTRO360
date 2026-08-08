@@ -14,7 +14,7 @@ interface GmailAutomationDashboardProps {
 export default function GmailAutomationDashboard({ userProfile }: GmailAutomationDashboardProps) {
   const [providerType, setProviderType] = useState<'mock' | 'gmail'>('mock');
   const [isConnected, setIsConnected] = useState<boolean>(true);
-  const [senderEmail, setSenderEmail] = useState<string>(userProfile?.email || 'princetarikislam@gmail.com');
+  const [senderEmail, setSenderEmail] = useState<string>(userProfile?.email || 'apnix7@gmail.com');
   
   // Google OAuth Config State
   const [clientId, setClientId] = useState<string>('');
