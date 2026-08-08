@@ -42,6 +42,7 @@ export interface UserProfile {
   careerGoal?: string;
   relationshipStatus?: string;
   primaryLifeFocus?: string;
+  ayanamsha?: string;
   notifications?: NotificationSettings;
 }
 

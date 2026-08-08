@@ -684,7 +684,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
 
         {/* 👑 TARIK ISLAM COSMIC PASSPORT & PERSONALIZED IDENTITY HEADER */}
         <motion.div variants={staggerItem}>
-          <TarikIslamCosmicPassport userProfile={userProfile} />
+          <TarikIslamCosmicPassport userProfile={userProfile} onEditProfile={() => setIsTargetModalOpen(true)} />
         </motion.div>
 
         {/* TARGET ASTROLOGY PROFILE & SUBJECT MODAL ("FOR WHOM") */}

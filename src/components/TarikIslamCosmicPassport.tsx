@@ -1,16 +1,19 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ShieldCheck, UserCheck, Sparkles, MapPin, Mail, Sun, Moon, Crown, Award, Compass, Star } from 'lucide-react';
+import { ShieldCheck, UserCheck, Sparkles, MapPin, Mail, Sun, Moon, Crown, Award, Compass, Settings, Edit3 } from 'lucide-react';
 import type { UserProfile } from '../types';
 
 interface TarikIslamCosmicPassportProps {
   userProfile: UserProfile;
+  onEditProfile?: () => void;
 }
 
-export default function TarikIslamCosmicPassport({ userProfile }: TarikIslamCosmicPassportProps) {
+export default function TarikIslamCosmicPassport({ userProfile, onEditProfile }: TarikIslamCosmicPassportProps) {
   const name = userProfile?.name || 'Tarik Islam';
-  const email = userProfile?.email || 'princetarikislam@gmail.com';
-  const location = userProfile?.location || 'Mecca, Saudi Arabia';
+  const email = userProfile?.email || 'apnix7@gmail.com';
+  const location = userProfile?.location || 'Balasore, Odisha, India';
+  const focus = userProfile?.primaryLifeFocus || 'Wealth & Purpose';
+  const ayanamsha = userProfile?.ayanamsha || 'Lahiri (24.21°)';
 
   return (
     <motion.div
@@ -31,13 +34,13 @@ export default function TarikIslamCosmicPassport({ userProfile }: TarikIslamCosm
             </div>
           </div>
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <h2 className="text-xl font-bold text-white tracking-tight">{name}</h2>
               <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30 font-bold flex items-center gap-1">
                 <UserCheck className="w-3 h-3" /> VERIFIED SEEKER PROFILE
               </span>
             </div>
-            <p className="text-xs text-slate-300 font-mono flex items-center gap-2 mt-0.5">
+            <p className="text-xs text-slate-300 font-mono flex items-center gap-2 mt-0.5 flex-wrap">
               <Mail className="w-3.5 h-3.5 text-cyan-400" /> {email}
               <span className="text-slate-500">•</span>
               <MapPin className="w-3.5 h-3.5 text-amber-400" /> {location}
@@ -45,10 +48,20 @@ export default function TarikIslamCosmicPassport({ userProfile }: TarikIslamCosm
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
           <span className="text-xs font-mono text-amber-300 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/30 font-bold flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Primary Focus: Wealth & Purpose
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Focus: {focus}
           </span>
+
+          {onEditProfile && (
+            <button
+              onClick={onEditProfile}
+              className="px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer transition-all shrink-0"
+              title="Edit Profile, Date of Birth, Time, Location & Customisations"
+            >
+              <Settings className="w-3.5 h-3.5 text-amber-400" /> Edit Profile & Parameters ⚙️
+            </button>
+          )}
         </div>
       </div>
 
@@ -67,7 +80,7 @@ export default function TarikIslamCosmicPassport({ userProfile }: TarikIslamCosm
             <Moon className="w-3 h-3 text-cyan-400" /> Sidereal Lagna
           </span>
           <span className="text-cyan-300 font-bold text-xs block">Leo ♌ (Magha Pada 1)</span>
-          <span className="text-[9px] text-slate-400 block">Lahiri Ayanamsha 24.21°</span>
+          <span className="text-[9px] text-slate-400 block">Ayanamsha: {ayanamsha}</span>
         </div>
 
         <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-1">
