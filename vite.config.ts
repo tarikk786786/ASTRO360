@@ -15,6 +15,50 @@ export default defineConfig({
     react(),
     tailwindcss(),
     runtimeErrorOverlay(),
+    {
+      name: 'email-api-server',
+      configureServer(server) {
+        server.middlewares.use('/api/send-email', async (req, res) => {
+          if (req.method !== 'POST') {
+            res.statusCode = 405;
+            res.end(JSON.stringify({ error: 'Method not allowed' }));
+            return;
+          }
+          let body = '';
+          req.on('data', (chunk: any) => { body += chunk; });
+          req.on('end', async () => {
+            try {
+              const data = JSON.parse(body || '{}');
+              const nodemailer = await import('nodemailer');
+              const userEmail = data.senderEmail || process.env.GMAIL_USER || 'apnix7@gmail.com';
+              const userPass = data.smtpPassword || process.env.GMAIL_PASS || 'Tarik@8984';
+
+              const transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true,
+                auth: { user: userEmail, pass: userPass },
+              });
+
+              const info = await transporter.sendMail({
+                from: `"COSMOS OMNI Notifications" <${userEmail}>`,
+                to: data.recipient || 'apnix7@gmail.com',
+                subject: data.subject || '🔔 COSMOS OMNI Alert',
+                text: data.text || 'Notification message',
+                html: data.html || '<p>Notification message</p>',
+              });
+
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ success: true, messageId: info.messageId }));
+            } catch (err: any) {
+              res.statusCode = 500;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ success: false, error: err?.message || 'SMTP failed' }));
+            }
+          });
+        });
+      },
+    },
     ...(process.env.NODE_ENV !== 'production' &&
     process.env.REPL_ID !== undefined
       ? [
@@ -45,13 +89,14 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, 'dist/public'),
     emptyOutDir: true,
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 2000,
     rollupOptions: {
       output: {
         manualChunks: {
           'vendor-react': ['react', 'react-dom'],
           'vendor-motion': ['motion'],
           'vendor-icons': ['lucide-react'],
+          'vendor-charts': ['recharts'],
         },
       },
     },

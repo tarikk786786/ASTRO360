@@ -98,12 +98,14 @@ export default function NotificationManager({ userProfile, onUpdateProfile }: No
 
       const res = await emailService.processQueue();
       if (res.sent > 0 || job.status === 'SENT') {
-        setTestStatus(`✅ Test notification email successfully processed for ${recipient}! Check inbox/dashboard.`);
+        setTestStatus(`✅ Live notification email successfully dispatched to ${recipient}! Check your inbox.`);
+      } else if (job.status === 'FAILED') {
+        setTestStatus(`❌ Direct Mail Delivery Error: ${job.error || 'SMTP auth failed. If using Gmail, generate an App Password at myaccount.google.com/apppasswords'}`);
       } else {
-        setTestStatus(`✅ Test notification queued for delivery to ${recipient} (Job ID: ${job.id}).`);
+        setTestStatus(`ℹ️ Email job queued for delivery to ${recipient} (Job ID: ${job.id}).`);
       }
     } catch (err: any) {
-      setTestStatus(`✅ Notification queued for delivery to ${recipient}.`);
+      setTestStatus(`❌ Dispatch Exception: ${err?.message || 'Failed to communicate with email server.'}`);
     } finally {
       setIsSendingTest(false);
     }

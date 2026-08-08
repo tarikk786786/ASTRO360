@@ -78,8 +78,8 @@ export class SmtpEmailProvider implements EmailProvider {
         }),
       });
 
-      if (res.ok) {
-        const data = await res.json();
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success) {
         return {
           success: true,
           messageId: data.messageId || `smtp_${Date.now()}`,
@@ -88,18 +88,17 @@ export class SmtpEmailProvider implements EmailProvider {
         };
       }
 
-      const err = await res.json().catch(() => ({}));
       return {
         success: false,
-        error: err.error || `HTTP ${res.status} email dispatch failed`,
+        error: data.error || `HTTP ${res.status} email dispatch failed. If using Gmail, please verify that 2FA App Password is generated at myaccount.google.com/apppasswords`,
         provider: 'gmail',
         timestamp: new Date().toISOString(),
       };
     } catch (err: any) {
-      console.warn('[SMTP DISPATCH NOTICE] API fallback queue:', err);
+      console.warn('[SMTP DISPATCH EXCEPTION]', err);
       return {
-        success: true,
-        messageId: `smtp_queued_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+        success: false,
+        error: err.message || 'Cannot reach SMTP dispatch server endpoint /api/send-email',
         provider: 'gmail',
         timestamp: new Date().toISOString(),
       };
