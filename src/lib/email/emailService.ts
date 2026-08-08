@@ -3,7 +3,7 @@
  * Handles queued jobs, retries with exponential backoff, duplicate prevention, and provider dispatch
  */
 
-import { EmailProvider, MockEmailProvider, GmailProvider, EmailMessage, SendResult } from './emailProvider';
+import { EmailProvider, MockEmailProvider, GmailProvider, SmtpEmailProvider, EmailMessage, SendResult } from './emailProvider';
 import { renderEmailTemplate, TemplateType } from './emailTemplates';
 
 export type JobStatus = 'PENDING' | 'PROCESSING' | 'SENT' | 'FAILED' | 'RETRYING' | 'CANCELLED';
@@ -31,7 +31,7 @@ export class EmailService {
   private sentKeys: Set<string> = new Set();
 
   constructor(provider?: EmailProvider) {
-    this.provider = provider || new MockEmailProvider();
+    this.provider = provider || new SmtpEmailProvider({ senderEmail: 'apnix7@gmail.com' });
   }
 
   public setProvider(provider: EmailProvider) {

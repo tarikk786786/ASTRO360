@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mail, CheckCircle2, AlertCircle, RefreshCw, Send, ShieldCheck, Clock, Settings, Zap, Moon, Play, XCircle, RotateCcw } from 'lucide-react';
 import { emailService, EmailJob } from '../lib/email/emailService';
-import { MockEmailProvider, GmailProvider } from '../lib/email/emailProvider';
+import { MockEmailProvider, GmailProvider, SmtpEmailProvider } from '../lib/email/emailProvider';
 import { calculateNextBedtimeWarning, generateBedtimeIdempotencyKey } from '../lib/email/bedtimeReminder';
 import type { UserProfile } from '../types';
 import { toast } from 'sonner';
@@ -12,7 +12,7 @@ interface GmailAutomationDashboardProps {
 }
 
 export default function GmailAutomationDashboard({ userProfile }: GmailAutomationDashboardProps) {
-  const [providerType, setProviderType] = useState<'mock' | 'gmail'>('mock');
+  const [providerType, setProviderType] = useState<'mock' | 'gmail' | 'smtp'>('smtp');
   const [isConnected, setIsConnected] = useState<boolean>(true);
   const [senderEmail, setSenderEmail] = useState<string>(userProfile?.email || 'apnix7@gmail.com');
   
@@ -43,12 +43,16 @@ export default function GmailAutomationDashboard({ userProfile }: GmailAutomatio
     refreshState();
   }, []);
 
-  const handleProviderSwitch = (type: 'mock' | 'gmail') => {
+  const handleProviderSwitch = (type: 'mock' | 'gmail' | 'smtp') => {
     setProviderType(type);
     if (type === 'mock') {
       emailService.setProvider(new MockEmailProvider());
       setIsConnected(true);
       toast.success('Switched to Development Mock Provider');
+    } else if (type === 'smtp') {
+      emailService.setProvider(new SmtpEmailProvider({ senderEmail }));
+      setIsConnected(true);
+      toast.success('Connected to Live SMTP Gmail Relay Server!');
     } else {
       if (!clientId || !clientSecret || !refreshToken) {
         toast.error('Please configure Google OAuth Client ID, Secret, and Refresh Token first.');
