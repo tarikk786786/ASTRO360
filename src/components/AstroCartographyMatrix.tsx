@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Globe, Compass, Sun, Moon, DollarSign, Heart, Briefcase, MapPin, Sparkles } from 'lucide-react';
-import type { UserProfile } from '../types/astrology';
+import type { UserProfile } from '../types';
 
 interface RelocationZone {
   city: string;

@@ -1,21 +1,21 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Heart, Compass, Sparkles, ShieldCheck, User, Users, Info, Award, Settings, CheckCircle2 } from 'lucide-react';
-import type { PlanetPosition } from '../lib/astroCalculations';
+import { calculatePlanetaryPositions, type PlanetPosition } from '../lib/astroCalculations';
 
 interface SynastryOverlayChartProps {
-  personAPositions: PlanetPosition[];
+  personAPositions?: PlanetPosition[];
   personBPositions?: PlanetPosition[];
   personAName?: string;
   personBName?: string;
 }
 
 export default function SynastryOverlayChart({
-  personAPositions,
-  personBPositions = personAPositions,
+  personAPositions = calculatePlanetaryPositions('1998-06-15', '12:00'),
+  personBPositions = calculatePlanetaryPositions('1998-06-15', '12:00'),
   personAName = 'Tarik Islam',
   personBName = 'Spouse / Partner'
-}: SynastryOverlayChartProps) {
+}: SynastryOverlayChartProps = {}) {
   const [selectedPlanet, setSelectedPlanet] = useState<PlanetPosition | null>(null);
   const [showPartnerModal, setShowPartnerModal] = useState<boolean>(false);
   const [partnerName, setPartnerName] = useState<string>(personBName);

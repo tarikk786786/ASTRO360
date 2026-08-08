@@ -31,6 +31,30 @@ import CommunityConsultationHub from './components/CommunityConsultationHub';
 import ExecutivePDFDossier from './components/ExecutivePDFDossier';
 import Footer from './components/Footer';
 import AuthScreen from './components/AuthScreen';
+import DivisionalChartsSuite from './components/DivisionalChartsSuite';
+import BirthTimeRectificationSuite from './components/BirthTimeRectificationSuite';
+import GemstoneRudrakshaSuite from './components/GemstoneRudrakshaSuite';
+import NumerologyNameSuite from './components/NumerologyNameSuite';
+import TarotIChingSuite from './components/TarotIChingSuite';
+import TimeHorizonForecastSuite from './components/TimeHorizonForecastSuite';
+import DoshaRemedyEngine from './components/DoshaRemedyEngine';
+import CosmicBiorhythmTracker from './components/CosmicBiorhythmTracker';
+import SacredChakraAlignment from './components/SacredChakraAlignment';
+import CosmicFengShuiMatrix from './components/CosmicFengShuiMatrix';
+import ElectionalMuhurtaEngine from './components/ElectionalMuhurtaEngine';
+import PlanetaryHorasTracker from './components/PlanetaryHorasTracker';
+import SacredMantraSoundboard from './components/SacredMantraSoundboard';
+import PlanetaryTransitRadar from './components/PlanetaryTransitRadar';
+import PanchangDeitiesEngine from './components/PanchangDeitiesEngine';
+import CosmicCompassVisualizer from './components/CosmicCompassVisualizer';
+import AstroCartographyMatrix from './components/AstroCartographyMatrix';
+import CosmicTransitCalendar from './components/CosmicTransitCalendar';
+import SynastryOverlayChart from './components/SynastryOverlayChart';
+import AstrologicalMindMap from './components/AstrologicalMindMap';
+import CosmicChartAnalytics from './components/CosmicChartAnalytics';
+import AstrologyLearningHub from './components/AstrologyLearningHub';
+import ExecutiveReportGenerator from './components/ExecutiveReportGenerator';
+import AdminAnalyticsDashboard from './components/AdminAnalyticsDashboard';
 import ErrorBoundary from './components/ErrorBoundary';
 import { Toaster, toast } from 'sonner';
 
@@ -152,8 +176,33 @@ export default function App() {
     if (activeTab === 'islamic-astrology') return 'Islamic Astronomy & Sciences';
     if (activeTab === 'chat') return 'Astrologer Consultation';
     if (activeTab === 'notifications') return 'Notification Settings';
+    if (activeTab === 'divisional-charts') return 'D1–D60 Divisional Varga Charts';
+    if (activeTab === 'btr-suite') return 'Birth Time Rectification Suite';
+    if (activeTab === 'gemstone-suite') return 'Gemstone & Rudraksha Advisor';
+    if (activeTab === 'numerology-suite') return 'Numerology & Name Vibration';
+    if (activeTab === 'tarot-iching') return 'Tarot & 64 I Ching Oracle';
+    if (activeTab === 'time-horizon') return 'Time Horizon Forecast Suite';
+    if (activeTab === 'dosha-engine') return 'Sade Sati & Dosha Remedy Engine';
+    if (activeTab === 'biorhythm-tracker') return 'Cosmic Biorhythm Energy Tracker';
+    if (activeTab === 'chakra-alignment') return '7-Chakra Solfeggio Alignment';
+    if (activeTab === 'fengshui-matrix') return 'Cosmic Feng Shui Matrix';
+    if (activeTab === 'electional-muhurta') return 'Shubh Muhurta Time Engine';
+    if (activeTab === 'planetary-horas') return 'Planetary Horas Real-Time Tracker';
+    if (activeTab === 'mantra-soundboard') return 'Sacred Mantra & Vibrational Soundboard';
+    if (activeTab === 'transit-radar') return 'Planetary Transit Ingress Radar';
+    if (activeTab === 'panchang-deities') return 'Panchang Tithi Deities & Vrats';
+    if (activeTab === 'cosmic-compass') return '360° Sidereal Ephemeris Compass';
+    if (activeTab === 'astro-cartography') return 'Astro-Cartography Relocation Matrix';
+    if (activeTab === 'transit-calendar') return 'Cosmic Transit Calendar';
+    if (activeTab === 'synastry-overlay') return 'Synastry Dual-Ring Overlay';
+    if (activeTab === 'mind-map') return 'Astrological Mind Map';
+    if (activeTab === 'chart-analytics') return 'Shadbala & Element Analytics';
+    if (activeTab === 'learning-hub') return 'Astrology Encyclopedia';
+    if (activeTab === 'report-generator') return 'Executive Report Generator';
+    if (activeTab === 'admin-dashboard') return 'Admin Analytics & AI Tracing';
+    if (activeTab === 'consultation-hub') return 'Astrologer Consultations & Community Q&A';
     if (TRADITIONS[activeTab]) return TRADITIONS[activeTab].name;
-    return 'AstroVerse AI';
+    return 'Cosmos OMNI';
   };
 
   if (!hasOnboarded) {
@@ -425,8 +474,8 @@ export default function App() {
               <Users className="w-5 h-5 text-cyan-400" />
               <span className="font-medium text-sm font-bold text-cyan-300">Astrologer Consultations</span>
             </div>
-            <span className="text-[9px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/30">
-              Coming Soon
+            <span className="text-[9px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/30">
+              Active
             </span>
           </button>
 
@@ -449,7 +498,7 @@ export default function App() {
                 <div className="flex items-center gap-2 font-bold text-xs">
                   <span>🤝</span>
                   <span className="text-white font-mono">Astrologer Consultations & Q&A</span>
-                  <span className="text-[9px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-1.5 py-0.2 rounded font-mono font-bold ml-auto">Soon</span>
+                  <span className="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-1.5 py-0.2 rounded font-mono font-bold ml-auto">Active</span>
                 </div>
                 <p className="text-[10px] text-slate-400 font-mono mt-1 leading-snug">
                   Book 1-on-1 Consultations with Certified Scholars & Engage in Sacred Q&A Forums
@@ -849,7 +898,7 @@ export default function App() {
                   {activeTab === 'pdf-dossier' && <ExecutivePDFDossier userProfile={userProfile} />}
                   {(activeTab === 'horoscope' || activeTab === 'transits' || activeTab === 'panchang') && <PremiumHoroscopeEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
                   {(activeTab === 'reports' || activeTab === 'gemstone' || activeTab === 'muhurta' || activeTab === 'learning') && <Astro150ToolsCatalog userProfile={userProfile} onNavigate={navigateTo} activeCategory={activeTab} initialCategory={activeTab} />}
-                  {(activeTab === 'notifications' || activeTab === 'settings' || activeTab === 'admin') && (
+                  {(activeTab === 'notifications' || activeTab === 'settings') && (
                     <NotificationManager 
                       userProfile={userProfile} 
                       onUpdateProfile={(updated) => {
@@ -858,10 +907,35 @@ export default function App() {
                       }} 
                     />
                   )}
+                  {/* === 24 STANDALONE TOOL ROUTES === */}
+                  {activeTab === 'divisional-charts' && <DivisionalChartsSuite />}
+                  {activeTab === 'btr-suite' && <BirthTimeRectificationSuite />}
+                  {activeTab === 'gemstone-suite' && <GemstoneRudrakshaSuite />}
+                  {activeTab === 'numerology-suite' && <NumerologyNameSuite />}
+                  {activeTab === 'tarot-iching' && <TarotIChingSuite />}
+                  {activeTab === 'time-horizon' && <TimeHorizonForecastSuite />}
+                  {activeTab === 'dosha-engine' && <DoshaRemedyEngine userProfile={userProfile} />}
+                  {activeTab === 'biorhythm-tracker' && <CosmicBiorhythmTracker userProfile={userProfile} />}
+                  {activeTab === 'chakra-alignment' && <SacredChakraAlignment />}
+                  {activeTab === 'fengshui-matrix' && <CosmicFengShuiMatrix userProfile={userProfile} />}
+                  {activeTab === 'electional-muhurta' && <ElectionalMuhurtaEngine />}
+                  {activeTab === 'planetary-horas' && <PlanetaryHorasTracker />}
+                  {activeTab === 'mantra-soundboard' && <SacredMantraSoundboard />}
+                  {activeTab === 'transit-radar' && <PlanetaryTransitRadar />}
+                  {activeTab === 'panchang-deities' && <PanchangDeitiesEngine />}
+                  {activeTab === 'cosmic-compass' && <CosmicCompassVisualizer userProfile={userProfile} />}
+                  {activeTab === 'astro-cartography' && <AstroCartographyMatrix userProfile={userProfile} />}
+                  {activeTab === 'transit-calendar' && <CosmicTransitCalendar />}
+                  {activeTab === 'synastry-overlay' && <SynastryOverlayChart />}
+                  {activeTab === 'mind-map' && <AstrologicalMindMap />}
+                  {activeTab === 'chart-analytics' && <CosmicChartAnalytics />}
+                  {activeTab === 'learning-hub' && <AstrologyLearningHub />}
+                  {activeTab === 'report-generator' && <ExecutiveReportGenerator />}
+                  {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
                   {TRADITIONS[activeTab] && (
                     <TraditionView tradition={TRADITIONS[activeTab]} onNavigate={navigateTo} />
                   )}
-                  {!['dashboard', 'live-diagnostics', 'advisor', 'remedies', 'remedy', 'custom-remedies', 'synastry', 'compatibility', 'match', 'global-suite', 'tools-catalog', 'birth-chart', 'kundli', 'master-chart', 'islamic-astrology', 'islamic-suite', 'islamic', 'chat', 'dream-interpreter', 'dream', 'problem-solver', 'spiritual-traditions', 'horoscope', 'transits', 'panchang', 'reports', 'gemstone', 'muhurta', 'learning', 'notifications', 'settings', 'admin', 'pdf-dossier'].includes(activeTab) && !TRADITIONS[activeTab] && (
+                  {!['dashboard', 'live-diagnostics', 'advisor', 'remedies', 'remedy', 'custom-remedies', 'synastry', 'compatibility', 'match', 'global-suite', 'tools-catalog', 'birth-chart', 'kundli', 'master-chart', 'islamic-astrology', 'islamic-suite', 'islamic', 'chat', 'dream-interpreter', 'dream', 'problem-solver', 'spiritual-traditions', 'horoscope', 'transits', 'panchang', 'reports', 'gemstone', 'muhurta', 'learning', 'notifications', 'settings', 'pdf-dossier', 'consultation-hub', 'astrologers', 'community-consultation', 'divisional-charts', 'btr-suite', 'gemstone-suite', 'numerology-suite', 'tarot-iching', 'time-horizon', 'dosha-engine', 'biorhythm-tracker', 'chakra-alignment', 'fengshui-matrix', 'electional-muhurta', 'planetary-horas', 'mantra-soundboard', 'transit-radar', 'panchang-deities', 'cosmic-compass', 'astro-cartography', 'transit-calendar', 'synastry-overlay', 'mind-map', 'chart-analytics', 'learning-hub', 'report-generator', 'admin-dashboard'].includes(activeTab) && !TRADITIONS[activeTab] && (
                     <CosmicIntelligenceCenter onNavigate={navigateTo} userProfile={userProfile} />
                   )}
                 </ErrorBoundary>

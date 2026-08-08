@@ -64,7 +64,6 @@ const HORIZON_DATA: Record<HorizonType, HorizonDetail> = {
     remedies: {
       islamic: "Recite Surah Al-Waqi'ah on Thursday evening for sustained financial barakah.",
       vedic: "Donate green mung beans on Wednesday morning & chant Vishnu Sahasranama.",
-      vedic2: "",
       western: "Consolidate business assets & audit contract fine print.",
       cbt: "Set 3 high-priority weekly goals and perform Friday progress audit."
     },

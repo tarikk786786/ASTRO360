@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
 import { Compass, Sun, Moon, ShieldCheck, Sparkles, Navigation } from 'lucide-react';
 import { calculatePlanetaryPositions } from '../lib/astroCalculations';
-import type { UserProfile } from '../types/astrology';
+import type { UserProfile } from '../types';
 
 interface CosmicCompassVisualizerProps {
   userProfile: UserProfile;
@@ -11,8 +11,8 @@ interface CosmicCompassVisualizerProps {
 export default function CosmicCompassVisualizer({ userProfile }: CosmicCompassVisualizerProps) {
   const planetPositions = useMemo(() => {
     return calculatePlanetaryPositions(
-      userProfile.birthDate,
-      userProfile.birthTime
+      userProfile.dob || '1998-06-15',
+      userProfile.time || '12:00'
     );
   }, [userProfile]);
 

@@ -3,7 +3,7 @@
 
 import type { Variants } from 'motion/react';
 
-const SMOOTH_EASE = [0.16, 1, 0.3, 1];
+const SMOOTH_EASE = [0.16, 1, 0.3, 1] as const;
 
 export const fadeInUp: Variants = {
   initial: { opacity: 0, y: 14 },

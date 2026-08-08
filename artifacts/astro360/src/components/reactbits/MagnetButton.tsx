@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'motion/react';
 
-export interface MagnetButtonProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface MagnetButtonProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart'> {
   children: React.ReactNode;
   className?: string;
   magnetStrength?: number;

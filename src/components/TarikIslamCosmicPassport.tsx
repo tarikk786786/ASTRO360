@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ShieldCheck, UserCheck, Sparkles, MapPin, Mail, Sun, Moon, Crown, Award, Compass, Star } from 'lucide-react';
-import type { UserProfile } from '../types/astrology';
+import type { UserProfile } from '../types';
 
 interface TarikIslamCosmicPassportProps {
   userProfile: UserProfile;

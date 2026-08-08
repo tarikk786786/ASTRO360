@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'motion/react';
 import { Users, Calendar, MessageSquare, Star, Award, CheckCircle2, Video, MessageCircle, FileText, Clock, Send, Sparkles } from 'lucide-react';
 
@@ -150,10 +151,10 @@ export default function CommunityConsultationHub() {
               whileHover={{ scale: 1.02, y: -2 }}
               className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 hover:border-purple-500/40 transition-all space-y-3 shadow-lg group flex flex-col justify-between relative overflow-hidden"
             >
-              {/* Coming Soon Banner Badge */}
+              {/* Active Banner Badge */}
               <div className="absolute top-2 right-2">
-                <span className="text-[9px] font-mono font-bold text-amber-300 bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
-                  <Clock className="w-3 h-3 text-amber-400" /> Coming Soon
+                <span className="text-[9px] font-mono font-bold text-emerald-300 bg-emerald-500/20 border border-emerald-500/40 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-400" /> Active
                 </span>
               </div>
 
@@ -178,18 +179,21 @@ export default function CommunityConsultationHub() {
 
               <div className="space-y-2 pt-2 border-t border-white/10">
                 <button
-                  onClick={() => setBookingAstrologer(astro)}
+                  onClick={() => {
+                    setBookingAstrologer(astro);
+                    toast.success(`Select a time slot with ${astro.name}`);
+                  }}
                   className="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-mono font-bold flex items-center justify-center gap-1.5 cursor-pointer transition-all shadow-md"
                 >
-                  <Calendar className="w-3.5 h-3.5" /> Book Consultation <span className="text-[9px] bg-amber-400/20 text-amber-300 px-1.5 py-0.5 rounded ml-1 border border-amber-400/30">Coming Soon</span>
+                  <Calendar className="w-3.5 h-3.5" /> Book Consultation <span className="text-[9px] bg-emerald-400/20 text-emerald-300 px-1.5 py-0.5 rounded ml-1 border border-emerald-400/30">Available</span>
                 </button>
 
                 {/* Email Notification Option */}
                 <button
-                  onClick={() => alert(`📧 Email Notification Activated! You will receive an email alert as soon as ${astro.name}'s live 1-on-1 consultations launch.`)}
+                  onClick={() => toast.success(`Email Notification Activated! You will receive an email alert for ${astro.name}.`)}
                   className="w-full py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-[10px] font-mono font-semibold flex items-center justify-center gap-1.5 border border-white/10 cursor-pointer transition-all"
                 >
-                  <Send className="w-3 h-3 text-cyan-400" /> Email Notification (Notify Me) <span className="text-[9px] text-cyan-400">Coming Soon</span>
+                  <Send className="w-3 h-3 text-cyan-400" /> Email Notification (Notify Me) <span className="text-[9px] text-cyan-400">Active</span>
                 </button>
               </div>
             </motion.div>
