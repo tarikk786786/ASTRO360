@@ -45,13 +45,14 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, 'dist/public'),
     emptyOutDir: true,
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 2000,
     rollupOptions: {
       output: {
         manualChunks: {
           'vendor-react': ['react', 'react-dom'],
           'vendor-motion': ['motion'],
           'vendor-icons': ['lucide-react'],
+          'vendor-charts': ['recharts'],
         },
       },
     },
