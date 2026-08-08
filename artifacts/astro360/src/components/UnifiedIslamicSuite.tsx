@@ -329,7 +329,7 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
         {[
           { id: 'quran', label: '1. Holy Qur\'an & Tafsir', icon: <BookOpen className="w-4 h-4" /> },
           { id: 'hadith', label: '2. Sahih Hadith Library', icon: <BookMarked className="w-4 h-4" /> },
-          { id: 'nujum', label: '3. Ilm al-Nujum (28 Mansions)', icon: <Moon className="w-4 h-4" /> },
+          { id: 'nujum', label: '3. Historical Lunar Mansions (Ilm al-Falak)', icon: <Moon className="w-4 h-4" /> },
           { id: 'abjad', label: '4. Abjad Gematria', icon: <Sparkles className="w-4 h-4" /> },
           { id: 'tasbeeh', label: '5. Digital Tasbeeh Counter', icon: <RotateCcw className="w-4 h-4" /> },
           { id: 'prayers', label: '6. Prayer & Qibla Compass', icon: <Compass className="w-4 h-4" /> },

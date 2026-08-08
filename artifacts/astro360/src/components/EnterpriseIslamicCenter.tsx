@@ -52,10 +52,21 @@ export default function EnterpriseIslamicCenter() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono text-emerald-300 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30 flex items-center gap-1.5">
+          <span className="text-[10px] font-mono text-emerald-300 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30 flex items-center gap-1.5 font-bold">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Authentic References (Qur'an & Sunnah)
           </span>
         </div>
+      </div>
+
+      {/* STRICT ISLAMIC SEPARATION & SOURCE VERIFICATION BANNER */}
+      <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 space-y-1 text-xs text-emerald-200 font-sans">
+        <div className="flex items-center gap-2 text-emerald-400 font-bold font-mono uppercase tracking-wider text-[11px]">
+          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+          <span>Strict Principle: Evidence-Based Islamic Module</span>
+        </div>
+        <p className="text-[11px] text-slate-300 leading-relaxed">
+          This module is <strong>100% separate</strong> from astrological calculations. Astrological predictions, fortune-telling, and horoscopes are <strong>never</strong> presented as Islamic teachings. All religious content is sourced directly from verified primary texts (Holy Qur'an & authentic Sunnah).
+        </p>
       </div>
 
       {/* MODULE SELECTION TABS */}
