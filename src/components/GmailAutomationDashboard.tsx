@@ -17,9 +17,9 @@ export default function GmailAutomationDashboard({ userProfile }: GmailAutomatio
   const [senderEmail, setSenderEmail] = useState<string>(userProfile?.email || 'apnix7@gmail.com');
   
   // Google OAuth Config State
-  const [clientId, setClientId] = useState<string>('');
-  const [clientSecret, setClientSecret] = useState<string>('');
-  const [refreshToken, setRefreshToken] = useState<string>('');
+  const [clientId, setClientId] = useState<string>(import.meta.env.VITE_GOOGLE_CLIENT_ID || '407408718192.apps.googleusercontent.com');
+  const [clientSecret, setClientSecret] = useState<string>(import.meta.env.VITE_GOOGLE_CLIENT_SECRET || '');
+  const [refreshToken, setRefreshToken] = useState<string>(import.meta.env.VITE_GOOGLE_REFRESH_TOKEN || '');
   const [showConfig, setShowConfig] = useState<boolean>(false);
 
   // Bedtime Settings
