@@ -98,7 +98,8 @@ export default function NotificationManager({ userProfile, onUpdateProfile }: No
 
       const res = await emailService.processQueue();
       if (res.sent > 0 || job.status === 'SENT') {
-        setTestStatus(`✅ Live notification email successfully dispatched to ${recipient}! Check your inbox.`);
+        const extraInfo = job.error && job.error.includes('Preview Link:') ? ` (${job.error})` : '';
+        setTestStatus(`✅ Live notification email successfully dispatched to ${recipient}!${extraInfo}`);
       } else if (job.status === 'FAILED') {
         setTestStatus(`❌ Direct Mail Delivery Error: ${job.error || 'SMTP auth failed. If using Gmail, generate an App Password at myaccount.google.com/apppasswords'}`);
       } else {

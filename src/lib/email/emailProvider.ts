@@ -85,6 +85,7 @@ export class SmtpEmailProvider implements EmailProvider {
           messageId: data.messageId || `smtp_${Date.now()}`,
           provider: 'gmail',
           timestamp: new Date().toISOString(),
+          error: data.previewUrl ? `Preview Link: ${data.previewUrl}` : undefined,
         };
       }
 
