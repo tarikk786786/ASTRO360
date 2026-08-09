@@ -28,6 +28,7 @@ import UniversalProblemSolverSuite from './components/UniversalProblemSolverSuit
 import PremiumHoroscopeEngine from './components/PremiumHoroscopeEngine';
 import SpiritualTraditionsModule from './components/SpiritualTraditionsModule';
 import BhagavadGitaSuite from './components/BhagavadGitaSuite';
+import AstrologyControlCenter from './components/AstrologyControlCenter';
 import CommunityConsultationHub from './components/CommunityConsultationHub';
 import ExecutivePDFDossier from './components/ExecutivePDFDossier';
 import Footer from './components/Footer';
@@ -860,10 +861,10 @@ export default function App() {
           </div>
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <button
-              onClick={() => setIsProfileModalOpen(true)}
+              onClick={() => navigateTo('control-center')}
               className="text-[10px] font-mono text-amber-300 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 px-2.5 py-1 rounded-full font-bold transition-all flex items-center gap-1 cursor-pointer"
             >
-              ⚙️ Customise Chart
+              ⚙️ Customisation Control Center
             </button>
             <button
               onClick={() => setIsAuthModalOpen(true)}
@@ -920,6 +921,7 @@ export default function App() {
                   {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
                   {activeTab === 'spiritual-traditions' && <SpiritualTraditionsModule userProfile={userProfile} />}
                   {(activeTab === 'bhagavad-gita' || activeTab === 'gita') && <BhagavadGitaSuite />}
+                  {(activeTab === 'control-center' || activeTab === 'settings' || activeTab === 'config') && <AstrologyControlCenter />}
                   {(activeTab === 'consultation-hub' || activeTab === 'astrologers' || activeTab === 'community-consultation') && <CommunityConsultationHub />}
                   {activeTab === 'pdf-dossier' && <ExecutivePDFDossier userProfile={userProfile} />}
                   {(activeTab === 'horoscope' || activeTab === 'transits' || activeTab === 'panchang') && <PremiumHoroscopeEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
