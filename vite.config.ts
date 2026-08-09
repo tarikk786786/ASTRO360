@@ -27,8 +27,9 @@ export default defineConfig({
           let body = '';
           req.on('data', (chunk: any) => { body += chunk; });
           req.on('end', async () => {
+            let data: any = {};
             try {
-              const data = JSON.parse(body || '{}');
+              data = JSON.parse(body || '{}');
               const nodemailer = await import('nodemailer');
               const userEmail = data.senderEmail || process.env.GMAIL_USER || 'apnix7@gmail.com';
               const userPass = data.smtpPassword || process.env.GMAIL_PASS || 'Tarik@89844';

@@ -101,9 +101,9 @@ export class EmailService {
    * Processes all due pending/retrying jobs in the queue
    */
   public async processQueue(): Promise<{ processed: number; sent: number; failed: number }> {
-    const now = new Date();
+    const nowMs = Date.now();
     const dueJobs = this.queue.filter(
-      j => (j.status === 'PENDING' || j.status === 'RETRYING') && new Date(j.scheduledAt) <= now
+      j => (j.status === 'PENDING' || j.status === 'RETRYING') && new Date(j.scheduledAt).getTime() <= nowMs + 5000
     );
 
     let sent = 0;
@@ -135,7 +135,7 @@ export class EmailService {
           job.status = 'RETRYING';
           // Exponential backoff: 1 min, 5 min, 15 min
           const backoffMinutes = Math.pow(5, job.attempts - 1);
-          const nextTry = new Date(now.getTime() + backoffMinutes * 60 * 1000);
+          const nextTry = new Date(nowMs + backoffMinutes * 60 * 1000);
           job.scheduledAt = nextTry.toISOString();
         } else {
           job.status = 'FAILED';
