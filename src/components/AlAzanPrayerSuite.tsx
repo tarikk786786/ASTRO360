@@ -40,17 +40,45 @@ export default function AlAzanPrayerSuite() {
   const [nextPrayer, setNextPrayer] = useState<string>('Asr');
 
   const MUSLIM_API_KEY = import.meta.env.VITE_MUSLIM_API_KEY || 'IeQtuzn8OpWYX9aXQ0HCrBNE9I3KHJbbx2Ns2dGufFqt4jMi';
+  const UMMAH_API_KEY = import.meta.env.VITE_UMMAH_API_KEY || 'umh_0b8d1fc3c742321a9f46ae5667ed238d8e5800f5';
 
   const fetchPrayerTimes = async (lat: number, lng: number, methodId: number) => {
     setIsLoading(true);
     try {
+      // Primary High-Precision UmmahAPI Fetch
+      const ummahRes = await fetch(`https://ummahapi.com/api/prayer-times?lat=${lat}&lng=${lng}&apikey=${UMMAH_API_KEY}`, {
+        headers: { 'X-API-Key': UMMAH_API_KEY }
+      });
+      if (ummahRes.ok) {
+        const ummahData = await ummahRes.json();
+        if (ummahData.data || ummahData.timings) {
+          const t = ummahData.data?.timings || ummahData.timings || ummahData;
+          setTimings({
+            Fajr: t.fajr || t.Fajr,
+            Sunrise: t.sunrise || t.Sunrise,
+            Dhuhr: t.dhuhr || t.Dhuhr,
+            Asr: t.asr || t.Asr,
+            Sunset: t.sunset || t.Sunset || t.maghrib || t.Maghrib,
+            Maghrib: t.maghrib || t.Maghrib,
+            Isha: t.isha || t.Isha,
+            Imsak: t.imsak || t.Imsak || t.fajr || t.Fajr,
+            Midnight: t.midnight || '00:00',
+            Firstthird: '22:00',
+            Lastthird: '02:00'
+          });
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      // Secondary Aladhan API Fetch
       const res = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=${methodId}`);
       if (res.ok) {
         const data = await res.json();
         setTimings(data.data.timings);
         setHijriDate(data.data.date.hijri);
       } else {
-        // Fallback to MuslimSalat API using configured Muslim API Key
+        // Tertiary MuslimSalat API Fetch
         const fallbackRes = await fetch(`https://muslimsalat.com/${lat},${lng}/daily.json?key=${MUSLIM_API_KEY}`);
         if (fallbackRes.ok) {
           const fallbackData = await fallbackRes.json();
