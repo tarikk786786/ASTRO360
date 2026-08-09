@@ -1,4 +1,4 @@
-import { orchestrateAstrologyRequest } from '../src/backend/agentOrchestrator';
+import { orchestrateAstrologyRequest } from '../src/backend/agentOrchestrator.js';
 
 export default async function handler(req: any, res: any) {
   // CORS Headers
