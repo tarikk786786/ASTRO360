@@ -187,14 +187,6 @@ export default function CommunityConsultationHub() {
                 >
                   <Calendar className="w-3.5 h-3.5" /> Book Consultation <span className="text-[9px] bg-emerald-400/20 text-emerald-300 px-1.5 py-0.5 rounded ml-1 border border-emerald-400/30">Available</span>
                 </button>
-
-                {/* Email Notification Option */}
-                <button
-                  onClick={() => toast.success(`Email Notification Activated! You will receive an email alert for ${astro.name}.`)}
-                  className="w-full py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-[10px] font-mono font-semibold flex items-center justify-center gap-1.5 border border-white/10 cursor-pointer transition-all"
-                >
-                  <Send className="w-3 h-3 text-cyan-400" /> Email Notification (Notify Me) <span className="text-[9px] text-cyan-400">Active</span>
-                </button>
               </div>
             </motion.div>
           ))}

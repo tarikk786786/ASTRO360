@@ -6,29 +6,6 @@ export type TraditionGroup =
   | 'Divination & Reading' 
   | 'Spiritual & Astronomy';
 
-export type NotificationFrequency = 'hourly' | 'daily' | 'weekly' | 'custom' | 'off';
-export type NotificationChannel = 'apprise' | 'ntfy' | 'webhook' | 'email' | 'browser';
-
-export interface NotificationTopics {
-  dailyHoroscope: boolean;
-  transitAlerts: boolean;
-  difficultWarningAlerts: boolean;
-  lunarPhases: boolean;
-  powerHours: boolean;
-  numerologyDay: boolean;
-  decisionHelper: boolean;
-}
-
-export interface NotificationSettings {
-  enabled: boolean;
-  frequency: NotificationFrequency;
-  channel: NotificationChannel;
-  customTime: string; // e.g. '08:00'
-  email?: string;
-  webhookUrl?: string;
-  topics: NotificationTopics;
-}
-
 export interface UserProfile {
   name: string;
   email: string;
@@ -43,7 +20,6 @@ export interface UserProfile {
   relationshipStatus?: string;
   primaryLifeFocus?: string;
   ayanamsha?: string;
-  notifications?: NotificationSettings;
 }
 
 export interface CategoryInfo {

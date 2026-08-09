@@ -4,14 +4,12 @@
  */
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
-import { Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, Users, Globe2, Bell, Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon, Zap, Wrench } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TRADITIONS, CategoryInfo, TraditionGroup, UserProfile, GROUP_ICONS } from './types';
 import CosmicIntelligenceCenter from './components/CosmicIntelligenceCenter';
 import AstrologyChat from './components/AstrologyChat';
 import TraditionView from './components/TraditionView';
 import Onboarding from './components/Onboarding';
-import NotificationManager from './components/NotificationManager';
 import UnifiedChartEngine from './components/UnifiedChartEngine';
 import UnifiedIslamicSuite from './components/UnifiedIslamicSuite';
 import AstroCoreBrainConsole from './components/AstroCoreBrainConsole';
@@ -57,7 +55,6 @@ import AstrologyLearningHub from './components/AstrologyLearningHub';
 import ExecutiveReportGenerator from './components/ExecutiveReportGenerator';
 import AdminAnalyticsDashboard from './components/AdminAnalyticsDashboard';
 import CosmicLeafletMap from './components/CosmicLeafletMap';
-import GmailAutomationDashboard from './components/GmailAutomationDashboard';
 import ErrorBoundary from './components/ErrorBoundary';
 import { Toaster, toast } from 'sonner';
 
@@ -180,11 +177,9 @@ export default function App() {
     if (activeTab === 'master-chart') return 'Master Overall Chart';
     if (activeTab === 'islamic-astrology') return 'Islamic Astronomy & Sciences';
     if (activeTab === 'chat') return 'Astrologer Consultation';
-    if (activeTab === 'notifications') return 'Notification Settings';
     if (activeTab === 'core-brain') return 'ASTRO360 Multi-Agent Core Brain Console';
     if (activeTab === 'auth' || activeTab === 'login') return 'Seeker Account & Authentication';
     if (activeTab === 'leaflet-map' || activeTab === 'location-picker') return 'OpenStreetMap & Nominatim Interactive Geocoding';
-    if (activeTab === 'gmail-dashboard' || activeTab === 'email-automation') return 'Self-Hosted Gmail Automation & Bedtime Backend';
     if (activeTab === 'divisional-charts') return 'D1–D60 Divisional Varga Charts';
     if (activeTab === 'btr-suite') return 'Birth Time Rectification Suite';
     if (activeTab === 'gemstone-suite') return 'Gemstone & Rudraksha Advisor';
@@ -420,18 +415,6 @@ export default function App() {
           >
             <MessageCircle className="w-5 h-5" />
             <span className="font-medium text-sm">Astrologer Consultation</span>
-          </button>
-
-          <button 
-            onClick={() => navigateTo('notifications')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-              activeTab === 'notifications' 
-                ? 'bg-amber-500/15 text-amber-300 border border-amber-500/25 shadow-sm shadow-amber-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <Bell className="w-5 h-5" />
-            <span className="font-medium text-sm">Daily / Hourly Alerts</span>
           </button>
 
           <button 
@@ -929,15 +912,6 @@ export default function App() {
                   {activeTab === 'pdf-dossier' && <ExecutivePDFDossier userProfile={userProfile} />}
                   {(activeTab === 'horoscope' || activeTab === 'transits' || activeTab === 'panchang') && <PremiumHoroscopeEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
                   {(activeTab === 'reports' || activeTab === 'gemstone' || activeTab === 'muhurta' || activeTab === 'learning') && <Astro150ToolsCatalog userProfile={userProfile} onNavigate={navigateTo} activeCategory={activeTab} initialCategory={activeTab} />}
-                  {(activeTab === 'notifications' || activeTab === 'settings') && (
-                    <NotificationManager 
-                      userProfile={userProfile} 
-                      onUpdateProfile={(updated) => {
-                        setUserProfile(updated);
-                        saveProfile(updated);
-                      }} 
-                    />
-                  )}
                   {/* === 24 STANDALONE TOOL ROUTES === */}
                   {activeTab === 'divisional-charts' && <DivisionalChartsSuite />}
                   {activeTab === 'btr-suite' && <BirthTimeRectificationSuite />}
@@ -964,9 +938,6 @@ export default function App() {
                   {activeTab === 'report-generator' && <ExecutiveReportGenerator />}
                   {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
                   {activeTab === 'core-brain' && <AstroCoreBrainConsole />}
-                  {(activeTab === 'gmail-dashboard' || activeTab === 'email-automation') && (
-                    <GmailAutomationDashboard userProfile={userProfile} />
-                  )}
                   {(activeTab === 'leaflet-map' || activeTab === 'location-picker') && (
                     <CosmicLeafletMap
                       initialCity={userProfile.location}
