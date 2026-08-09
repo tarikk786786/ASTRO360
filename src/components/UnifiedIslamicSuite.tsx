@@ -187,7 +187,7 @@ interface UnifiedIslamicSuiteProps {
 
 export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuiteProps) {
   const [activeTab, setActiveTab] = useState<
-    'quran' | 'hadith' | 'nujum' | 'abjad' | 'tasbeeh' | 'prayers' | 'zakat' | 'inheritance' | 'names' | 'hijri' | 'ethics' | 'adhkar'
+    'quran' | 'hadith' | 'nujum' | 'abjad' | 'tasbeeh' | 'prayers' | 'zakat' | 'inheritance' | 'names' | 'hijri' | 'ethics' | 'adhkar' | 'remedies'
   >('quran');
 
   const [selectedCurrency, setSelectedCurrency] = useState('USD');
@@ -339,6 +339,7 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
           { id: 'hijri', label: '10. Hijri Calendar', icon: <Calendar className="w-4 h-4" /> },
           { id: 'ethics', label: '11. Halal Life Ethics', icon: <ShieldCheck className="w-4 h-4" /> },
           { id: 'adhkar', label: '12. Morning & Evening Adhkar', icon: <Sun className="w-4 h-4" /> },
+          { id: 'remedies', label: '13. Islamic Problem & Solution Remedies', icon: <HeartHandshake className="w-4 h-4" /> },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -716,6 +717,116 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
         </motion.div>
       )}
 
+      {activeTab === 'remedies' && (
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 space-y-6 text-left">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+            <div>
+              <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider mb-1">
+                <HeartHandshake className="w-4 h-4 text-emerald-400" />
+                Islamic Problem & Solution Matrix (Sunnah & Qur'anic Healing)
+              </div>
+              <h3 className="text-2xl font-bold font-display text-white">Authentic Islamic Spiritual Remedies (Ruqyah & Duas)</h3>
+            </div>
+            <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-mono font-bold">
+              6 Verified Problem Categories
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* 1. Rizq */}
+            <div className="p-6 rounded-2xl bg-slate-900/90 border border-emerald-500/30 space-y-4 shadow-xl">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono text-emerald-400 font-bold uppercase">1. Financial Distress & Sustenance (Rizq)</span>
+                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">Surah Nuh 71:10-12</span>
+              </div>
+              <h4 className="text-base font-bold text-white">Hardship in Income, Debt, or Poverty</h4>
+              <p className="text-xs text-slate-300 leading-relaxed font-mono">
+                <strong>Authentic Remedy:</strong> Recite <em>Astaghfirullah</em> 100x daily, read Surah Al-Waqi'ah (56) every evening after Maghrib, maintain ties of kinship (Silat ar-Rahim), and give daily/weekly Sadaqah.
+              </p>
+              <div className="p-3 rounded-xl bg-black/50 border border-slate-800 text-xs font-mono text-emerald-300 italic">
+                "Ask forgiveness of your Lord. Indeed, He is ever a Perpetual Forgiver. He will send rain upon you in showers and give you increase in wealth and children." (Qur'an 71:10-12)
+              </div>
+            </div>
+
+            {/* 2. Huzn & Qalaq */}
+            <div className="p-6 rounded-2xl bg-slate-900/90 border border-emerald-500/30 space-y-4 shadow-xl">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono text-emerald-400 font-bold uppercase">2. Anxiety & Depression (Huzn & Qalaq)</span>
+                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">Surah Ar-Ra'd 13:28</span>
+              </div>
+              <h4 className="text-base font-bold text-white">Mental Distress, Panic, & Restlessness</h4>
+              <p className="text-xs text-slate-300 leading-relaxed font-mono">
+                <strong>Authentic Remedy:</strong> Recite Ayat al-Kursi (2:255), Surah Al-Inshirah (94), the Dua of Prophet Yunus (<em>La ilaha illa anta subhanaka inni kuntu minadh-dhalimin</em> 40x), and perform Morning & Evening Adhkar.
+              </p>
+              <div className="p-3 rounded-xl bg-black/50 border border-slate-800 text-xs font-mono text-emerald-300 italic">
+                "Unquestionably, by the remembrance of Allah do hearts find rest." (Qur'an 13:28)
+              </div>
+            </div>
+
+            {/* 3. Hayrah / Decisions */}
+            <div className="p-6 rounded-2xl bg-slate-900/90 border border-emerald-500/30 space-y-4 shadow-xl">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono text-emerald-400 font-bold uppercase">3. Confusion & Major Life Decisions (Hayrah)</span>
+                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">Sahih al-Bukhari #1166</span>
+              </div>
+              <h4 className="text-base font-bold text-white">Indecision in Marriage, Career, or Business</h4>
+              <p className="text-xs text-slate-300 leading-relaxed font-mono">
+                <strong>Authentic Remedy:</strong> Offer 2 Rakat <em>Salat al-Istikhara</em> (Guidance Prayer) before sleeping, recite the authentic Istikhara supplication, and consult (<em>Shura</em>) with wise mentors.
+              </p>
+              <div className="p-3 rounded-xl bg-black/50 border border-slate-800 text-xs font-mono text-emerald-300 italic">
+                Prophet Muhammad (ﷺ) taught us Istikhara for all decisions as he taught a Surah of the Qur'an.
+              </div>
+            </div>
+
+            {/* 4. Evil Eye & Harm */}
+            <div className="p-6 rounded-2xl bg-slate-900/90 border border-emerald-500/30 space-y-4 shadow-xl">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono text-emerald-400 font-bold uppercase">4. Evil Eye, Envy & Harm (Ayn & Hasad)</span>
+                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">Sahih Muslim #2188</span>
+              </div>
+              <h4 className="text-base font-bold text-white">Unexplained Illness, Envy, & Lethargy</h4>
+              <p className="text-xs text-slate-300 leading-relaxed font-mono">
+                <strong>Authentic Remedy:</strong> Perform Ruqyah Shari'ah by reciting Al-Fatihah, Ayat al-Kursi, Al-Ikhlas, Al-Falaq, and An-Naas 3x into water/hands, blowing over the body, and reciting <em>A'udhu bi kalimatillahi at-tammat...</em>
+              </p>
+              <div className="p-3 rounded-xl bg-black/50 border border-slate-800 text-xs font-mono text-emerald-300 italic">
+                "The evil eye is real. Seek refuge in Allah against its affliction." (Sahih Muslim)
+              </div>
+            </div>
+
+            {/* 5. Family Disharmony */}
+            <div className="p-6 rounded-2xl bg-slate-900/90 border border-emerald-500/30 space-y-4 shadow-xl">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono text-emerald-400 font-bold uppercase">5. Family & Marital Conflict</span>
+                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">Surah Al-Furqan 25:74</span>
+              </div>
+              <h4 className="text-base font-bold text-white">Arguments, Domestic Friction, & Loss of Affection</h4>
+              <p className="text-xs text-slate-300 leading-relaxed font-mono">
+                <strong>Authentic Remedy:</strong> Play or recite Surah Al-Baqarah regularly inside the home, recite the marriage supplication (Qur'an 25:74), and offer Tahajjud prayers together in the last third of the night.
+              </p>
+              <div className="p-3 rounded-xl bg-black/50 border border-slate-800 text-xs font-mono text-emerald-300 italic">
+                "Our Lord, grant us from among our wives and offspring comfort to our eyes and make us an example for the righteous." (Qur'an 25:74)
+              </div>
+            </div>
+
+            {/* 6. Physical Healing */}
+            <div className="p-6 rounded-2xl bg-slate-900/90 border border-emerald-500/30 space-y-4 shadow-xl">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-mono text-emerald-400 font-bold uppercase">6. Physical & Emotional Healing (Shifa)</span>
+                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">Sahih al-Bukhari #5688</span>
+              </div>
+              <h4 className="text-base font-bold text-white">Body Aches, Chronic Ailments, & Exhaustion</h4>
+              <p className="text-xs text-slate-300 leading-relaxed font-mono">
+                <strong>Authentic Remedy:</strong> Recite the 6 Qur'anic Healing Verses (<em>Ayat al-Shifa</em>: 9:14, 10:57, 16:69, 17:82, 26:80, 41:44), consume Black Seed Oil (Habbat al-Sawda), Pure Honey, and drink Zamzam Water with intention.
+              </p>
+              <div className="p-3 rounded-xl bg-black/50 border border-slate-800 text-xs font-mono text-emerald-300 italic">
+                "In the black seed is healing for every disease except death." (Sahih al-Bukhari)
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
     </div>
   );
 }
+
