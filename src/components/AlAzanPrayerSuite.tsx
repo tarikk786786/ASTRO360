@@ -39,6 +39,8 @@ export default function AlAzanPrayerSuite() {
   const [countdown, setCountdown] = useState<string>('00:00:00');
   const [nextPrayer, setNextPrayer] = useState<string>('Asr');
 
+  const MUSLIM_API_KEY = import.meta.env.VITE_MUSLIM_API_KEY || 'IeQtuzn8OpWYX9aXQ0HCrBNE9I3KHJbbx2Ns2dGufFqt4jMi';
+
   const fetchPrayerTimes = async (lat: number, lng: number, methodId: number) => {
     setIsLoading(true);
     try {
@@ -47,9 +49,31 @@ export default function AlAzanPrayerSuite() {
         const data = await res.json();
         setTimings(data.data.timings);
         setHijriDate(data.data.date.hijri);
+      } else {
+        // Fallback to MuslimSalat API using configured Muslim API Key
+        const fallbackRes = await fetch(`https://muslimsalat.com/${lat},${lng}/daily.json?key=${MUSLIM_API_KEY}`);
+        if (fallbackRes.ok) {
+          const fallbackData = await fallbackRes.json();
+          if (fallbackData.items && fallbackData.items[0]) {
+            const item = fallbackData.items[0];
+            setTimings({
+              Fajr: item.fajr,
+              Sunrise: item.shurooq,
+              Dhuhr: item.dhuhr,
+              Asr: item.asr,
+              Sunset: item.maghrib,
+              Maghrib: item.maghrib,
+              Isha: item.isha,
+              Imsak: item.fajr,
+              Midnight: '00:00',
+              Firstthird: '22:00',
+              Lastthird: '02:00'
+            });
+          }
+        }
       }
     } catch (e) {
-      console.error('Aladhan API error', e);
+      console.error('Prayer API fetch error', e);
     } finally {
       setIsLoading(false);
     }
