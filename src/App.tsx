@@ -27,6 +27,7 @@ import DreamInterpretationEngine from './components/DreamInterpretationEngine';
 import UniversalProblemSolverSuite from './components/UniversalProblemSolverSuite';
 import PremiumHoroscopeEngine from './components/PremiumHoroscopeEngine';
 import SpiritualTraditionsModule from './components/SpiritualTraditionsModule';
+import BhagavadGitaSuite from './components/BhagavadGitaSuite';
 import CommunityConsultationHub from './components/CommunityConsultationHub';
 import ExecutivePDFDossier from './components/ExecutivePDFDossier';
 import Footer from './components/Footer';
@@ -580,6 +581,15 @@ export default function App() {
               </button>
 
               <button 
+                onClick={() => navigateTo('bhagavad-gita')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                  activeTab === 'bhagavad-gita' ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>📜</span> Bhagavad Gita Wisdom Suite
+              </button>
+
+              <button 
                 onClick={() => navigateTo('fengshui-matrix')}
                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
                   activeTab === 'fengshui-matrix' ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
@@ -909,6 +919,7 @@ export default function App() {
                   {(activeTab === 'dream-interpreter' || activeTab === 'dream') && <DreamInterpretationEngine userProfile={userProfile} />}
                   {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
                   {activeTab === 'spiritual-traditions' && <SpiritualTraditionsModule userProfile={userProfile} />}
+                  {(activeTab === 'bhagavad-gita' || activeTab === 'gita') && <BhagavadGitaSuite />}
                   {(activeTab === 'consultation-hub' || activeTab === 'astrologers' || activeTab === 'community-consultation') && <CommunityConsultationHub />}
                   {activeTab === 'pdf-dossier' && <ExecutivePDFDossier userProfile={userProfile} />}
                   {(activeTab === 'horoscope' || activeTab === 'transits' || activeTab === 'panchang') && <PremiumHoroscopeEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
