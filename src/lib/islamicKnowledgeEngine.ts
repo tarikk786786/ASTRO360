@@ -31,7 +31,17 @@ export interface DuaCategory {
   reference: string;
 }
 
+export interface AsmaUlHusna {
+  number: number;
+  name: string;
+  transliteration: string;
+  enMeaning: string;
+}
+
 export class IslamicKnowledgeEngine {
+  private static MUSLIM_API_KEY = import.meta.env.VITE_MUSLIM_API_KEY || 'IeQtuzn8OpWYX9aXQ0HCrBNE9I3KHJbbx2Ns2dGufFqt4jMi';
+  private static UMMAH_API_KEY = import.meta.env.VITE_UMMAH_API_KEY || 'umh_0b8d1fc3c742321a9f46ae5667ed238d8e5800f5';
+
   // Guardrail Verification: Ensure references exist
   public static verifyReference(type: 'quran' | 'hadith' | 'dua', refString: string): boolean {
     if (!refString || refString.trim() === '') return false;
@@ -40,7 +50,62 @@ export class IslamicKnowledgeEngine {
     return true;
   }
 
-  // AI Knowledge Search & Citation Verification
+  // 1. Fetch Ayah via Quran.com v4 or AlQuran.cloud API
+  public static async fetchAyah(surah: number, ayah: number): Promise<QuranAyah | null> {
+    try {
+      const res = await fetch(`https://api.quran.com/api/v4/verses/by_key/${surah}:${ayah}?fields=text_uthmani&translations=131`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.verse) {
+          return {
+            id: data.verse.id,
+            verse_key: data.verse.verse_key,
+            text_uthmani: data.verse.text_uthmani,
+            translations: data.verse.translations?.map((t: any) => ({ text: t.text, language_name: t.language_name || 'English' }))
+          };
+        }
+      }
+
+      // AlQuran.cloud Fallback API
+      const fallbackRes = await fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}`);
+      if (fallbackRes.ok) {
+        const fbData = await fallbackRes.json();
+        if (fbData.data) {
+          return {
+            id: fbData.data.number,
+            verse_key: `${fbData.data.surah.number}:${fbData.data.numberInSurah}`,
+            text_uthmani: fbData.data.text,
+          };
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to fetch Ayah from Quran API:', e);
+    }
+    return null;
+  }
+
+  // 2. Fetch 99 Names of Allah (Asma ul-Husna API)
+  public static async fetchAsmaUlHusna(): Promise<AsmaUlHusna[]> {
+    try {
+      const res = await fetch('https://api.aladhan.com/v1/asmaAlHusna');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.data && Array.isArray(data.data)) {
+          return data.data.map((item: any) => ({
+            number: item.number,
+            name: item.name,
+            transliteration: item.transliteration,
+            enMeaning: item.en?.meaning || item.meaning || ''
+          }));
+        }
+      }
+    } catch (e) {
+      console.warn('Asma ul-Husna API error:', e);
+    }
+    return [];
+  }
+
+  // 3. AI Knowledge Search & Citation Verification
   public static async queryKnowledgeBase(query: string): Promise<{
     answer: string;
     citations: { source: string; reference: string; text: string }[];
