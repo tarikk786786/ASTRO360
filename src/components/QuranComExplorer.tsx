@@ -23,6 +23,11 @@ export default function QuranComExplorer() {
   const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
 
+  // QURAN AYAH LOOKUP ENGINE & TANZIL TEXT STYLE STATE
+  const [quranStyle, setQuranStyle] = useState<'UTHMANI_ALL' | 'UTHMANI' | 'SIMPLE' | 'SIMPLE_CLEAN' | 'SIMPLE_MINIMAL'>('UTHMANI_ALL');
+  const [directAyahRef, setDirectAyahRef] = useState<string>('');
+  const [lookupResult, setLookupResult] = useState<string | null>(null);
+
   // TARTEEL AI HIFZ MEMORIZATION & TAJWEED STATE
   const [hifzMode, setHifzMode] = useState<boolean>(false);
   const [revealedVerses, setRevealedVerses] = useState<Record<string, boolean>>({});
