@@ -39,10 +39,9 @@ export default function NotificationManager({ userProfile, onUpdateProfile }: No
     channel: 'email',
   }));
 
-  const [appPassword, setAppPassword] = useState('');
-
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
   const [testStatus, setTestStatus] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isSendingTest, setIsSendingTest] = useState(false);
 
   const toggleEnabled = () => {
@@ -74,7 +73,7 @@ export default function NotificationManager({ userProfile, onUpdateProfile }: No
       notifications: settings,
     };
     onUpdateProfile(updatedUser);
-    setSaveStatus('✅ Email notification settings saved successfully!');
+    setSaveStatus('✅ Email notification preferences saved successfully!');
     setTimeout(() => setSaveStatus(null), 3500);
   };
 
@@ -86,35 +85,38 @@ export default function NotificationManager({ userProfile, onUpdateProfile }: No
     }
 
     setIsSendingTest(true);
-    setTestStatus('📨 Processing notification test via Self-Hosted Email Engine...');
+    setTestStatus('📨 Sending email notification...');
+    setPreviewUrl(null);
 
     try {
-      emailService.setProvider(new SmtpEmailProvider({
-        senderEmail: recipient,
-        smtpPassword: appPassword.trim() || undefined,
-      }));
+      emailService.setProvider(new SmtpEmailProvider({ senderEmail: recipient }));
 
       const job = emailService.queueEmail({
         recipient,
         template: 'ASTROLOGY_REPORT',
         payload: {
           name: userProfile.name || 'Seeker',
-          reportType: 'Personalized Daily Horoscope & Transit Radar',
+          reportType: 'Personalized Daily Horoscope & Cosmic Briefing',
           insights: 'Sun transiting 5th House of Innovation. Excellent energy for strategic focus & executive decisions.',
         },
       });
 
       const res = await emailService.processQueue();
       if (res.sent > 0 || job.status === 'SENT') {
-        const extraInfo = job.error && job.error.includes('Preview Link:') ? ` (${job.error})` : '';
-        setTestStatus(`✅ Live notification email successfully dispatched to ${recipient}!${extraInfo}`);
+        setTestStatus(`✅ Notification email successfully sent to ${recipient}!`);
+        if (job.error && job.error.includes('Preview Link:')) {
+          const match = job.error.match(/https:\/\/[^\s]+/);
+          if (match) {
+            setPreviewUrl(match[0]);
+          }
+        }
       } else if (job.status === 'FAILED') {
-        setTestStatus(`❌ Direct Mail Delivery Error: ${job.error || 'SMTP auth failed. If using Gmail, generate an App Password at myaccount.google.com/apppasswords'}`);
+        setTestStatus(`❌ Delivery Error: ${job.error || 'Email dispatch failed.'}`);
       } else {
-        setTestStatus(`ℹ️ Email job queued for delivery to ${recipient} (Job ID: ${job.id}).`);
+        setTestStatus(`ℹ️ Email job queued for delivery to ${recipient}.`);
       }
     } catch (err: any) {
-      setTestStatus(`❌ Dispatch Exception: ${err?.message || 'Failed to communicate with email server.'}`);
+      setTestStatus(`❌ Dispatch Exception: ${err?.message || 'Failed to send email.'}`);
     } finally {
       setIsSendingTest(false);
     }
@@ -151,15 +153,15 @@ export default function NotificationManager({ userProfile, onUpdateProfile }: No
         </button>
       </div>
 
-      {/* Email Input & Gmail App Password */}
-      <div className="glass-card p-6 rounded-2xl space-y-4">
+      {/* Zero-Config Recipient Email Input */}
+      <div className="glass-card p-6 rounded-2xl space-y-3">
         <div className="flex items-center gap-3">
           <Mail className="w-5 h-5 text-indigo-400" />
-          <h2 className="text-lg font-semibold text-white">Notification Delivery Credentials</h2>
+          <h2 className="text-lg font-semibold text-white">Recipient Email Address</h2>
         </div>
+        <p className="text-xs text-slate-400">Paste or type any email address where you want to receive cosmic updates:</p>
 
-        <div className="space-y-1">
-          <label className="text-xs font-medium text-slate-300">Recipient Email Address</label>
+        <div className="relative">
           <input
             type="email"
             placeholder="apnix7@gmail.com"
@@ -167,30 +169,6 @@ export default function NotificationManager({ userProfile, onUpdateProfile }: No
             onChange={(e) => setSettings({ ...settings, email: e.target.value })}
             className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-400 placeholder:text-slate-500"
           />
-        </div>
-
-        <div className="space-y-1 pt-2">
-          <div className="flex items-center justify-between">
-            <label className="text-xs font-medium text-slate-300">Google 16-Char App Password (For Direct Gmail Inbox Delivery)</label>
-            <a
-              href="https://myaccount.google.com/apppasswords"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[11px] text-indigo-400 hover:underline flex items-center gap-1"
-            >
-              Generate Google App Password ↗
-            </a>
-          </div>
-          <input
-            type="password"
-            placeholder="xxxx xxxx xxxx xxxx"
-            value={appPassword}
-            onChange={(e) => setAppPassword(e.target.value)}
-            className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-400 placeholder:text-slate-500"
-          />
-          <p className="text-[11px] text-slate-400 mt-1">
-            Note: Standard account passwords are blocked by Google SMTP. If left empty, notifications dispatch via instant Live Webmail Relay with a real-time preview link.
-          </p>
         </div>
       </div>
 
@@ -314,9 +292,22 @@ export default function NotificationManager({ userProfile, onUpdateProfile }: No
       )}
 
       {testStatus && (
-        <p className="text-center text-xs font-medium text-purple-300 bg-purple-500/10 p-3 rounded-xl border border-purple-500/20">
-          {testStatus}
-        </p>
+        <div className="text-center space-y-3">
+          <p className="text-xs font-medium text-purple-300 bg-purple-500/10 p-3 rounded-xl border border-purple-500/20">
+            {testStatus}
+          </p>
+          {previewUrl && (
+            <a
+              href={previewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-sm shadow-lg shadow-emerald-500/20 transition-all border border-emerald-400/30"
+            >
+              <Mail className="w-4 h-4" />
+              ✉️ Click Here to Open & Read Sent Email Message ↗
+            </a>
+          )}
+        </div>
       )}
     </div>
   );

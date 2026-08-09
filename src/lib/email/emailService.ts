@@ -128,6 +128,7 @@ export class EmailService {
         job.status = 'SENT';
         job.providerMessageId = result.messageId;
         job.sentAt = new Date().toISOString();
+        job.error = result.error;
         sent += 1;
       } else {
         job.error = result.error || 'Provider send failed';
