@@ -7,6 +7,7 @@ import type {
   UserProfile, NotificationSettings, NotificationFrequency, NotificationTopics 
 } from '../types';
 import { emailService } from '../lib/email/emailService';
+import { SmtpEmailProvider } from '../lib/email/emailProvider';
 
 interface NotificationManagerProps {
   userProfile: UserProfile;
@@ -37,6 +38,8 @@ export default function NotificationManager({ userProfile, onUpdateProfile }: No
     email: userProfile.notifications?.email || '',
     channel: 'email',
   }));
+
+  const [appPassword, setAppPassword] = useState('');
 
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
   const [testStatus, setTestStatus] = useState<string | null>(null);
@@ -86,6 +89,11 @@ export default function NotificationManager({ userProfile, onUpdateProfile }: No
     setTestStatus('📨 Processing notification test via Self-Hosted Email Engine...');
 
     try {
+      emailService.setProvider(new SmtpEmailProvider({
+        senderEmail: recipient,
+        smtpPassword: appPassword.trim() || undefined,
+      }));
+
       const job = emailService.queueEmail({
         recipient,
         template: 'ASTROLOGY_REPORT',
@@ -143,22 +151,46 @@ export default function NotificationManager({ userProfile, onUpdateProfile }: No
         </button>
       </div>
 
-      {/* Email Input */}
-      <div className="glass-card p-6 rounded-2xl space-y-3">
+      {/* Email Input & Gmail App Password */}
+      <div className="glass-card p-6 rounded-2xl space-y-4">
         <div className="flex items-center gap-3">
           <Mail className="w-5 h-5 text-indigo-400" />
-          <h2 className="text-lg font-semibold text-white">Notification Email Address</h2>
+          <h2 className="text-lg font-semibold text-white">Notification Delivery Credentials</h2>
         </div>
-        <p className="text-xs text-slate-400">Enter the email address where you want to receive notifications:</p>
 
-        <div className="relative">
+        <div className="space-y-1">
+          <label className="text-xs font-medium text-slate-300">Recipient Email Address</label>
           <input
             type="email"
-            placeholder="your.email@example.com"
+            placeholder="apnix7@gmail.com"
             value={settings.email || ''}
             onChange={(e) => setSettings({ ...settings, email: e.target.value })}
             className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-400 placeholder:text-slate-500"
           />
+        </div>
+
+        <div className="space-y-1 pt-2">
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-medium text-slate-300">Google 16-Char App Password (For Direct Gmail Inbox Delivery)</label>
+            <a
+              href="https://myaccount.google.com/apppasswords"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] text-indigo-400 hover:underline flex items-center gap-1"
+            >
+              Generate Google App Password ↗
+            </a>
+          </div>
+          <input
+            type="password"
+            placeholder="xxxx xxxx xxxx xxxx"
+            value={appPassword}
+            onChange={(e) => setAppPassword(e.target.value)}
+            className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-400 placeholder:text-slate-500"
+          />
+          <p className="text-[11px] text-slate-400 mt-1">
+            Note: Standard account passwords are blocked by Google SMTP. If left empty, notifications dispatch via instant Live Webmail Relay with a real-time preview link.
+          </p>
         </div>
       </div>
 
