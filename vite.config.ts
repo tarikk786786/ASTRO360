@@ -51,9 +51,14 @@ export default defineConfig({
               res.setHeader('Content-Type', 'application/json');
               res.end(JSON.stringify({ success: true, messageId: info.messageId }));
             } catch (err: any) {
-              res.statusCode = 500;
+              const isBadCredentials = err?.message?.includes('535') || err?.code === 'EAUTH';
+              const errMsg = isBadCredentials
+                ? 'Google rejected password (535 Bad Credentials). Google requires a 16-character App Password for SMTP access. Please generate one at: https://myaccount.google.com/apppasswords'
+                : (err?.message || 'SMTP server email delivery failed');
+
+              res.statusCode = 400;
               res.setHeader('Content-Type', 'application/json');
-              res.end(JSON.stringify({ success: false, error: err?.message || 'SMTP failed' }));
+              res.end(JSON.stringify({ success: false, error: errMsg }));
             }
           });
         });
