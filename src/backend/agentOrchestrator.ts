@@ -22,10 +22,10 @@ import {
   executeSEOAgent,
   executeNotificationAgent,
   executeMasterSupervisor
-} from './specializedAgents';
+} from './specializedAgents.js';
 
-import { memoryManager } from './memoryManager';
-import { searchRAGKnowledgeBase } from './ragKnowledgeBase';
+import { memoryManager } from './memoryManager.js';
+import { searchRAGKnowledgeBase } from './ragKnowledgeBase.js';
 
 export interface OrchestrationResult {
   primaryAgent: AgentResult;
@@ -44,7 +44,7 @@ export async function orchestrateAstrologyRequest(req: AgentRequest): Promise<Or
 
   // 2. Query LlamaIndex RAG Vector Search
   const ragDocs = await searchRAGKnowledgeBase(req.prompt);
-  const ragSources = ragDocs.map(d => `${d.source}: ${d.title}`);
+  const ragSources = ragDocs.map((d: any) => `${d.source}: ${d.title}`);
 
   // 3. Supervisor Agent State Graph Selection
   let primaryAgent: AgentResult;
