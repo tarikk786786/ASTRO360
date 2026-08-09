@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Globe, Check, ChevronDown } from 'lucide-react';
+import { useGlobalConfig } from '../context/GlobalConfigContext';
 
 interface LanguageOption {
   code: string;
@@ -33,8 +34,10 @@ const LANGUAGES: LanguageOption[] = [
 ];
 
 export default function GlobalLanguageSelector() {
-  const [selectedLang, setSelectedLang] = useState<LanguageOption>(LANGUAGES[0]);
+  const { config, updateConfig } = useGlobalConfig();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const selectedLang = LANGUAGES.find(l => l.code === config.language) || LANGUAGES[0];
 
   return (
     <div className="relative z-40">
@@ -53,7 +56,7 @@ export default function GlobalLanguageSelector() {
             <button
               key={lang.code}
               onClick={() => {
-                setSelectedLang(lang);
+                updateConfig({ language: lang.code as any });
                 setIsOpen(false);
               }}
               className={`w-full text-left px-3 py-1.5 rounded-xl text-xs font-mono flex items-center justify-between transition-colors cursor-pointer ${

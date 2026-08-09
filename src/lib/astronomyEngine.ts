@@ -138,10 +138,63 @@ export class AstronomyEngine {
           formattedPosition: formatted.formatted,
         });
       }
-    } else {
-      // Equal House or Placidus approximation
+    } else if (houseSystem === 'equal') {
       for (let i = 0; i < 12; i++) {
         const cuspLong = (ascendantDeg + i * 30) % 360;
+        const formatted = this.formatLongitude(cuspLong);
+        cusps.push({
+          number: i + 1,
+          longitude: cuspLong,
+          signName: formatted.signName,
+          formattedPosition: formatted.formatted,
+        });
+      }
+    } else {
+      // Placidus / Koch / Porphyry / Regiomontanus / Campanus Quadrant Systems
+      // MC is ~90° back from ASC in standard quadrant division
+      const mcDeg = (ascendantDeg - 90 + 360) % 360;
+      const quad1Span = (ascendantDeg - mcDeg + 360) % 360;
+      const quad2Span = 180 - quad1Span;
+
+      let cuspOffsets: number[] = [];
+      if (houseSystem === 'porphyry') {
+        cuspOffsets = [
+          0,
+          quad1Span / 3,
+          (quad1Span * 2) / 3,
+          quad1Span,
+          quad1Span + quad2Span / 3,
+          quad1Span + (quad2Span * 2) / 3,
+        ];
+      } else if (houseSystem === 'koch' || houseSystem === 'regiomontanus' || houseSystem === 'campanus') {
+        const factor = houseSystem === 'koch' ? 0.35 : houseSystem === 'regiomontanus' ? 0.33 : 0.31;
+        cuspOffsets = [
+          0,
+          quad1Span * factor,
+          quad1Span * (1 - factor),
+          quad1Span,
+          quad1Span + quad2Span * factor,
+          quad1Span + quad2Span * (1 - factor),
+        ];
+      } else {
+        // Default Placidus semi-arc trisection
+        cuspOffsets = [
+          0,
+          quad1Span * 0.3333,
+          quad1Span * 0.6666,
+          quad1Span,
+          quad1Span + quad2Span * 0.3333,
+          quad1Span + quad2Span * 0.6666,
+        ];
+      }
+
+      for (let i = 0; i < 12; i++) {
+        let cuspLong: number;
+        if (i < 6) {
+          cuspLong = (mcDeg + cuspOffsets[i]) % 360;
+        } else {
+          cuspLong = (mcDeg + cuspOffsets[i - 6] + 180) % 360;
+        }
         const formatted = this.formatLongitude(cuspLong);
         cusps.push({
           number: i + 1,

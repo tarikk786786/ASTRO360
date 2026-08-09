@@ -1,7 +1,4 @@
-/**
- * ASTRO360 User Customization & Profiles Store
- * Manages Zodiac, Ayanamsa, House System, Aspect Orbs, Dasha Preferences, and Multiple Saved Birth Profiles
- */
+import { GlobalConfigManager } from './globalConfig';
 
 export interface CustomUserSettings {
   zodiacSystem: 'tropical' | 'sidereal';
@@ -43,17 +40,33 @@ export class UserSettingsStore {
 
   public static loadSettings(): CustomUserSettings {
     try {
-      const stored = localStorage.getItem(this.SETTINGS_KEY);
-      return stored ? { ...DEFAULT_USER_SETTINGS, ...JSON.parse(stored) } : DEFAULT_USER_SETTINGS;
+      const config = GlobalConfigManager.getConfig();
+      return {
+        zodiacSystem: config.zodiacSystem,
+        ayanamsaMode: config.ayanamsaMode,
+        houseSystem: config.houseSystem,
+        aspectMaxOrb: config.aspectMaxOrb,
+        dashaSystem: config.dashaSystem,
+        preferredLanguage: config.language,
+        themeMode: config.themeMode,
+      };
     } catch {
       return DEFAULT_USER_SETTINGS;
     }
   }
 
   public static saveSettings(settings: Partial<CustomUserSettings>): CustomUserSettings {
-    const updated = { ...this.loadSettings(), ...settings };
-    localStorage.setItem(this.SETTINGS_KEY, JSON.stringify(updated));
-    return updated;
+    const patch: any = {};
+    if (settings.zodiacSystem) patch.zodiacSystem = settings.zodiacSystem;
+    if (settings.ayanamsaMode) patch.ayanamsaMode = settings.ayanamsaMode;
+    if (settings.houseSystem) patch.houseSystem = settings.houseSystem;
+    if (settings.aspectMaxOrb) patch.aspectMaxOrb = settings.aspectMaxOrb;
+    if (settings.dashaSystem) patch.dashaSystem = settings.dashaSystem;
+    if (settings.preferredLanguage) patch.language = settings.preferredLanguage as any;
+    if (settings.themeMode) patch.themeMode = settings.themeMode;
+
+    GlobalConfigManager.updateConfig(patch);
+    return this.loadSettings();
   }
 
   public static loadProfiles(): BirthProfile[] {

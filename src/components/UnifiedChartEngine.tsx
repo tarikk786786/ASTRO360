@@ -5,6 +5,8 @@ import {
 } from 'lucide-react';
 import type { UserProfile } from '../types';
 import { calculatePlanetaryPositions } from '../lib/astroCalculations';
+import { useGlobalConfig } from '../context/GlobalConfigContext';
+import { AstronomyEngine } from '../lib/astronomyEngine';
 
 interface UnifiedChartEngineProps {
   userProfile?: UserProfile;
@@ -24,6 +26,7 @@ interface SynthesisLayer {
 }
 
 export default function UnifiedChartEngine({ userProfile, activeTab, initialTab }: UnifiedChartEngineProps) {
+  const { config } = useGlobalConfig();
   const [activeView, setActiveView] = useState<'wheel' | 'matrix' | 'synthesis'>('wheel');
   const [selectedSystem, setSelectedSystem] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState<boolean>(false);
@@ -34,10 +37,13 @@ export default function UnifiedChartEngine({ userProfile, activeTab, initialTab 
   const month = dobDate.getMonth() + 1 || 6;
   const year = dobDate.getFullYear() || 1998;
 
+  // Calculate Ayanamsa offset according to user config
+  const ayanamsaVal = AstronomyEngine.getAyanamsaValue(dobDate, config.ayanamsaMode);
+
   // Live Planetary Positions
   const positions = useMemo(() => {
-    return calculatePlanetaryPositions(userProfile?.dob || '1998-06-15', userProfile?.time || '12:00', 24.178);
-  }, [userProfile?.dob, userProfile?.time]);
+    return calculatePlanetaryPositions(userProfile?.dob || '1998-06-15', userProfile?.time || '12:00', ayanamsaVal);
+  }, [userProfile?.dob, userProfile?.time, ayanamsaVal]);
 
   // Western Calculation
   const westernSign = getWesternSign(month, day);
