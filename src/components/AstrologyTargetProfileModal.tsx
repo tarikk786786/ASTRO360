@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { User, Users, Heart, Baby, Building2, Compass, Calendar, Clock, MapPin, Sparkles, Check, X, Sliders, Globe } from 'lucide-react';
 import { type UserProfile } from '../types';
@@ -31,13 +31,37 @@ export default function AstrologyTargetProfileModal({
 }: AstrologyTargetProfileModalProps) {
 
   const [targetType, setTargetType] = useState<AstrologyTargetType>('self');
-  const [name, setName] = useState<string>(currentProfile.name || '');
+  const [name, setName] = useState<string>(currentProfile.name || 'Tarik Islam');
   const [gender, setGender] = useState<'male' | 'female' | 'universal'>('universal');
   const [dob, setDob] = useState<string>(currentProfile.dob || '1998-06-15');
   const [time, setTime] = useState<string>(currentProfile.time || '12:00');
   const [location, setLocation] = useState<string>(currentProfile.location || 'Mecca, Saudi Arabia');
   const [preferredSystem, setPreferredSystem] = useState<'vedic' | 'western' | 'chinese' | 'islamic' | 'mayan' | 'scientific'>('vedic');
   const [predictionFocus, setPredictionFocus] = useState<'wealth' | 'love' | 'career' | 'health' | 'spiritual' | 'general'>('wealth');
+
+  useEffect(() => {
+    if (isOpen && currentProfile) {
+      setName(currentProfile.name || 'Tarik Islam');
+      setDob(currentProfile.dob || '1998-06-15');
+      setTime(currentProfile.time || '12:00');
+      setLocation(currentProfile.location || 'Mecca, Saudi Arabia');
+    }
+  }, [isOpen, currentProfile]);
+
+  const handleSelectTargetType = (type: AstrologyTargetType) => {
+    setTargetType(type);
+    if (type === 'self') {
+      setName(currentProfile.name || 'Tarik Islam');
+    } else if (type === 'partner') {
+      setName('Partner / Spouse');
+    } else if (type === 'child') {
+      setName('Child Chart');
+    } else if (type === 'business') {
+      setName('Business Enterprise');
+    } else if (type === 'client') {
+      setName('Client Reading');
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -100,7 +124,7 @@ export default function AstrologyTargetProfileModal({
             {TARGET_OPTIONS.map((opt) => (
               <button
                 key={opt.type}
-                onClick={() => setTargetType(opt.type)}
+                onClick={() => handleSelectTargetType(opt.type)}
                 className={`p-3.5 rounded-2xl border text-left flex items-start gap-3 transition-all cursor-pointer ${
                   targetType === opt.type
                     ? 'bg-[#1E293B] border-[#2563EB] ring-1 ring-[#2563EB]'

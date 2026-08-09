@@ -63,6 +63,7 @@ import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, butto
 interface CosmicIntelligenceCenterProps {
   onNavigate: (tab: string) => void;
   userProfile: UserProfile;
+  onUpdateProfile?: (profile: UserProfile) => void;
 }
 
 const NAKSHATRA_NAMES = [
@@ -205,7 +206,7 @@ function MoonPhaseVisual({ panchang }: { panchang: PanchangInfo }) {
   );
 }
 
-export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: CosmicIntelligenceCenterProps) {
+export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUpdateProfile }: CosmicIntelligenceCenterProps) {
   // Target Profile Modal State ("For Whom")
   const [isTargetModalOpen, setIsTargetModalOpen] = useState<boolean>(false);
   const [targetProfile, setTargetProfile] = useState<AstrologyTargetProfile>({
@@ -687,11 +688,21 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile }: Co
           <TarikIslamCosmicPassport userProfile={userProfile} onEditProfile={() => setIsTargetModalOpen(true)} />
         </motion.div>
 
-        {/* TARGET ASTROLOGY PROFILE & SUBJECT MODAL ("FOR WHOM") */}
         <AstrologyTargetProfileModal
           isOpen={isTargetModalOpen}
           onClose={() => setIsTargetModalOpen(false)}
-          onSaveProfile={(prof) => setTargetProfile(prof)}
+          onSaveProfile={(prof) => {
+            setTargetProfile(prof);
+            if (onUpdateProfile) {
+              onUpdateProfile({
+                ...userProfile,
+                name: prof.name,
+                dob: prof.dob,
+                time: prof.time,
+                location: prof.location,
+              });
+            }
+          }}
           currentProfile={userProfile}
         />
 

@@ -894,7 +894,7 @@ export default function App() {
                   className="h-full"
                 >
                 <ErrorBoundary>
-                  {activeTab === 'dashboard' && <CosmicIntelligenceCenter onNavigate={navigateTo} userProfile={userProfile} />}
+                  {activeTab === 'dashboard' && <CosmicIntelligenceCenter onNavigate={navigateTo} userProfile={userProfile} onUpdateProfile={(updated) => { setUserProfile(updated); saveProfile(updated); }} />}
                   {activeTab === 'live-diagnostics' && <LiveCosmicDiagnostics userProfile={userProfile} />}
                   {activeTab === 'advisor' && <HolisticAdvisor userProfile={userProfile} />}
                   {(activeTab === 'remedies' || activeTab === 'remedy') && <AstroMultiTraditionRemedySuite />}
