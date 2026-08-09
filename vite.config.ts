@@ -31,7 +31,7 @@ export default defineConfig({
               const data = JSON.parse(body || '{}');
               const nodemailer = await import('nodemailer');
               const userEmail = data.senderEmail || process.env.GMAIL_USER || 'apnix7@gmail.com';
-              const userPass = data.smtpPassword || process.env.GMAIL_PASS || 'Tarik@8984';
+              const userPass = data.smtpPassword || process.env.GMAIL_PASS || 'Tarik@89844';
 
               const transporter = nodemailer.createTransport({
                 host: 'smtp.gmail.com',

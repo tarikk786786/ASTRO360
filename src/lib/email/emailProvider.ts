@@ -60,7 +60,7 @@ export class SmtpEmailProvider implements EmailProvider {
 
   constructor(config?: { senderEmail?: string; smtpPassword?: string }) {
     this.senderEmail = config?.senderEmail || 'apnix7@gmail.com';
-    this.smtpPassword = config?.smtpPassword || 'Tarik@8984';
+    this.smtpPassword = config?.smtpPassword || 'Tarik@89844';
   }
 
   public async sendEmail(message: EmailMessage): Promise<SendResult> {

@@ -23,7 +23,7 @@ export default async function handler(req: any, res: any) {
 
     const targetRecipient = recipient || 'apnix7@gmail.com';
     const userEmail = senderEmail || process.env.GMAIL_USER || 'apnix7@gmail.com';
-    const userPass = smtpPassword || process.env.GMAIL_PASS || 'Tarik@8984';
+    const userPass = smtpPassword || process.env.GMAIL_PASS || 'Tarik@89844';
 
     // 1. Attempt Official Gmail SMTP Transport
     try {
