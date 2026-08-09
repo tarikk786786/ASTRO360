@@ -59,6 +59,8 @@ import ExecutiveReportGenerator from './components/ExecutiveReportGenerator';
 import AdminAnalyticsDashboard from './components/AdminAnalyticsDashboard';
 import CosmicLeafletMap from './components/CosmicLeafletMap';
 import ErrorBoundary from './components/ErrorBoundary';
+import GlobalLanguageSelector from './components/GlobalLanguageSelector';
+import { useGlobalConfig } from './context/GlobalConfigContext';
 import { Toaster, toast } from 'sonner';
 
 const STORAGE_KEY = 'astroverse_profile';
@@ -95,8 +97,9 @@ const DEFAULT_PROFILE: UserProfile = {
   primaryLifeFocus: 'Wealth, Purpose & Protection',
 };
 
-export default function App() {
-  const [userProfile, setUserProfile] = useState<UserProfile>(() => loadProfile());
+export default function AppContent() {
+  const { config, updateConfig } = useGlobalConfig();
+  const [userProfile, setUserProfile] = useState<UserProfile>(loadProfile);
   const [hasOnboarded, setHasOnboarded] = useState<boolean>(true);
   
   const [activeTab, setActiveTab] = useState<string>(() => {
@@ -860,6 +863,27 @@ export default function App() {
             </h1>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+            {/* FAITH / TRADITION PERSPECTIVE FILTER */}
+            <div className="flex items-center gap-1.5 bg-slate-900/90 border border-blue-500/30 px-2.5 py-1 rounded-full text-xs font-mono">
+              <span className="text-[10px] text-slate-400 font-bold hidden lg:inline">Filter Perspective:</span>
+              <select
+                value={config.faithPerspective || 'all'}
+                onChange={(e) => updateConfig({ faithPerspective: e.target.value as any })}
+                className="bg-transparent text-[11px] font-bold text-blue-300 focus:outline-none cursor-pointer"
+              >
+                <option value="all" className="bg-slate-900 text-white">🌐 All Global Traditions</option>
+                <option value="vedic" className="bg-slate-900 text-amber-300">🕉️ Vedic / Sanatana Dharma</option>
+                <option value="islamic" className="bg-slate-900 text-emerald-300">☪️ Islamic / Hijri / Sufi</option>
+                <option value="western" className="bg-slate-900 text-blue-300">✝️ Western Hermetic</option>
+                <option value="kabbalah" className="bg-slate-900 text-purple-300">✡️ Kabbalah / Tree of Life</option>
+                <option value="taoist" className="bg-slate-900 text-cyan-300">☯️ Eastern / Taoist I Ching</option>
+                <option value="buddhist" className="bg-slate-900 text-yellow-300">☸️ Buddhist / Mindfulness</option>
+              </select>
+            </div>
+
+            {/* GLOBAL LANGUAGE SELECTOR */}
+            <GlobalLanguageSelector />
+
             <button
               onClick={() => navigateTo('control-center')}
               className="text-[10px] font-mono text-amber-300 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 px-2.5 py-1 rounded-full font-bold transition-all flex items-center gap-1 cursor-pointer"

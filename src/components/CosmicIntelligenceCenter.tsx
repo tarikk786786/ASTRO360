@@ -58,6 +58,7 @@ import PanchangDeitiesEngine from './PanchangDeitiesEngine';
 import CosmicCompassVisualizer from './CosmicCompassVisualizer';
 import AstroCartographyMatrix from './AstroCartographyMatrix';
 import TarikIslamCosmicPassport from './TarikIslamCosmicPassport';
+import { useGlobalConfig } from '../context/GlobalConfigContext';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
 interface CosmicIntelligenceCenterProps {
@@ -227,9 +228,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isSearchFocused, setIsSearchFocused] = useState<boolean>(false);
 
-  // Selected Religion Perspective & Language State
-  const [selectedReligionView, setSelectedReligionView] = useState<'universal' | 'islamic' | 'vedic' | 'western' | 'chinese' | 'kabbalah'>('universal');
-  const [selectedLanguage, setSelectedLanguage] = useState<'en' | 'ar' | 'hi' | 'ur' | 'es' | 'fr' | 'zh'>('en');
+  const { config, updateConfig } = useGlobalConfig();
+  const selectedReligionView = config.faithPerspective || 'universal';
+  const setSelectedReligionView = (v: any) => updateConfig({ faithPerspective: v });
+  const selectedLanguage = config.language || 'en';
+  const setSelectedLanguage = (l: any) => updateConfig({ language: l });
   const [isBetaBannerVisible, setIsBetaBannerVisible] = useState<boolean>(true);
 
   // Multi-Language Dictionary for Dashboard Labels

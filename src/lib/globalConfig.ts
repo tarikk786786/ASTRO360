@@ -15,6 +15,7 @@ export type UiDensity = 'comfortable' | 'compact' | 'spacious';
 export interface GlobalConfigState {
   // 1. ASTROLOGY SYSTEM & CALCULATION PARAMETERS
   astrologySystem: AstrologySystemMode;
+  faithPerspective: 'all' | 'vedic' | 'islamic' | 'western' | 'taoist' | 'buddhist' | 'kabbalah';
   zodiacSystem: ZodiacSystem;
   ayanamsaMode: AyanamsaMode;
   houseSystem: HouseSystem;
@@ -53,6 +54,7 @@ export interface GlobalConfigState {
 
 export const DEFAULT_GLOBAL_CONFIG: GlobalConfigState = {
   astrologySystem: 'vedic',
+  faithPerspective: 'all',
   zodiacSystem: 'sidereal',
   ayanamsaMode: 'lahiri',
   houseSystem: 'wholesign',
