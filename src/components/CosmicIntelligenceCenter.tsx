@@ -661,18 +661,8 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
             )}
           </div>
 
-          {/* TARGET SUBJECT & READINGS BUTTON */}
+          {/* READINGS BUTTON */}
           <div className="flex items-center gap-3 w-full lg:w-auto justify-end flex-wrap sm:flex-nowrap">
-            <button
-              onClick={() => setIsTargetModalOpen(true)}
-              className="px-4 py-2.5 rounded-2xl bg-[#1E293B] hover:bg-[#334155] border border-[#2563EB]/40 text-[#06B6D4] text-xs font-mono font-semibold flex items-center gap-2 shadow-lg transition-all cursor-pointer whitespace-nowrap shrink-0 max-w-full"
-            >
-              <User className="w-4 h-4 text-[#2563EB] shrink-0" />
-              <span className="whitespace-nowrap truncate">
-                For Whom: <strong className="text-white capitalize">{targetProfile.targetType} ({targetProfile.name})</strong>
-              </span>
-            </button>
-
             <ShimmerButton
               onClick={() => onNavigate('chat')}
               shimmerColor="#06B6D4"
