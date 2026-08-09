@@ -73,7 +73,10 @@ export class ErrorBoundary extends Component<Props, State> {
 
             <div className="flex items-center gap-3 pt-2">
               <button
-                onClick={() => this.setState({ hasError: false, error: null, errorInfo: null, showDetails: false })}
+                onClick={() => {
+                  try { localStorage.removeItem('astroverse_tab'); } catch {}
+                  this.setState({ hasError: false, error: null, errorInfo: null, showDetails: false });
+                }}
                 className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20"
               >
                 <RefreshCw className="w-4 h-4" /> Reset View Telemetry

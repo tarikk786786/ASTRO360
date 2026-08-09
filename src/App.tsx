@@ -65,7 +65,7 @@ const TAB_KEY = 'astroverse_tab';
 function loadProfile(): UserProfile {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : DEFAULT_PROFILE;
+    return saved ? { ...DEFAULT_PROFILE, ...JSON.parse(saved) } : DEFAULT_PROFILE;
   } catch {
     return DEFAULT_PROFILE;
   }
