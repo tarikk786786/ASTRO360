@@ -260,3 +260,25 @@ export function calculateAshtaKootaMatching(boyMoonSign: number, girlMoonSign: n
     summary: `Ashta Koota compatibility score is ${roundedScore}/36 Gunas. ${roundedScore >= 18 ? 'Favorable for marital harmony.' : 'Astrological remedies recommended before marriage.'}`
   };
 }
+
+// Re-export Master Architecture Sub-Engines
+export { TimezoneEngine } from './timezoneEngine';
+export { AstronomyEngine } from './astronomyEngine';
+export { DashaEngine } from './vedic/dashaEngine';
+export { YogaEngine } from './vedic/yogaEngine';
+export { DoshaEngine } from './vedic/doshaEngine';
+export { NakshatraEngine } from './vedic/nakshatraEngine';
+export { AshtakavargaEngine } from './vedic/ashtakavargaEngine';
+export { VarshaphalEngine } from './vedic/varshaphalEngine';
+export { MuhurtaEngine } from './vedic/muhurtaEngine';
+export { DivisionalChartsEngine } from './vedic/divisionalChartsEngine';
+export { WesternEngine } from './western/westernEngine';
+export { AspectEngine } from './western/aspectEngine';
+export { SynastryEngine } from './western/synastryEngine';
+export { TransitEngine } from './transitEngine';
+export { PredictionEngine } from './predictionEngine';
+export { HijriEngine } from './islamic/hijriEngine';
+export { PrayerTimeEngine } from './islamic/prayerTimeEngine';
+export { QiblaEngine } from './islamic/qiblaEngine';
+export { UserSettingsStore } from './userSettingsStore';
+
