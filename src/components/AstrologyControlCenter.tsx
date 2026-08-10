@@ -53,10 +53,182 @@ export const CONTROL_CENTER_SECTIONS = [
   { id: 'resetBackup', name: '42. Reset & Backup', icon: RotateCcw }
 ];
 
+const ToggleSwitch = ({ checked, onChange, label, description }: any) => (
+  <div className="flex items-center justify-between p-3 bg-slate-950/50 border border-slate-800 rounded-xl hover:border-slate-700 transition-colors">
+    <div className="pr-4">
+      <div className="text-sm font-bold text-slate-200">{label}</div>
+      {description && <div className="text-xs text-slate-500 mt-1 leading-snug">{description}</div>}
+    </div>
+    <div
+      onClick={() => onChange(!checked)}
+      className={`w-12 h-6 flex items-center rounded-full p-1 cursor-pointer shrink-0 transition-colors ${checked ? 'bg-blue-500' : 'bg-slate-700'}`}
+    >
+      <motion.div
+        layout
+        className="w-4 h-4 bg-white rounded-full shadow-md"
+        animate={{ x: checked ? 24 : 0 }}
+        transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+      />
+    </div>
+  </div>
+);
+
+const SliderControl = ({ value, min, max, step, onChange, label, unit, description }: any) => (
+  <div className="p-3 bg-slate-950/50 border border-slate-800 rounded-xl hover:border-slate-700 transition-colors">
+    <div className="flex justify-between items-center mb-2">
+      <div>
+        <span className="text-sm font-bold text-slate-200">{label}</span>
+        {description && <div className="text-xs text-slate-500 mt-0.5">{description}</div>}
+      </div>
+      <span className="text-xs text-blue-400 font-mono bg-blue-500/10 px-2 py-0.5 rounded ml-2 shrink-0">{value}{unit}</span>
+    </div>
+    <input
+      type="range"
+      min={min}
+      max={max}
+      step={step}
+      value={value}
+      onChange={(e) => onChange(Number(e.target.value))}
+      className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500 mt-2"
+    />
+  </div>
+);
+
+const SelectControl = ({ value, onChange, label, options, description }: any) => (
+  <div className="p-3 bg-slate-950/50 border border-slate-800 rounded-xl hover:border-slate-700 transition-colors">
+    <label className="text-sm font-bold text-slate-200 block mb-1">{label}</label>
+    {description && <div className="text-xs text-slate-500 mb-2">{description}</div>}
+    <select 
+      value={value} 
+      onChange={(e) => onChange(e.target.value)} 
+      className="w-full bg-slate-900 border border-slate-700 text-slate-300 p-2.5 rounded-lg text-sm focus:border-blue-500 focus:outline-none transition-colors"
+    >
+      {options.map((opt: any) => (
+        <option key={opt.value} value={opt.value}>{opt.label}</option>
+      ))}
+    </select>
+  </div>
+);
+
+const InputControl = ({ value, onChange, label, description, type = "text", placeholder = "" }: any) => (
+  <div className="p-3 bg-slate-950/50 border border-slate-800 rounded-xl hover:border-slate-700 transition-colors">
+    <label className="text-sm font-bold text-slate-200 block mb-1">{label}</label>
+    {description && <div className="text-xs text-slate-500 mb-2">{description}</div>}
+    <input 
+      type={type}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+      className="w-full bg-slate-900 border border-slate-700 text-slate-300 p-2.5 rounded-lg text-sm focus:border-blue-500 focus:outline-none transition-colors"
+    />
+  </div>
+);
+
+const ColorPicker = ({ value, onChange, label }: any) => (
+  <div className="flex items-center justify-between p-3 bg-slate-950/50 border border-slate-800 rounded-xl hover:border-slate-700 transition-colors">
+    <span className="text-sm font-bold text-slate-200">{label}</span>
+    <input 
+      type="color"
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="w-8 h-8 rounded cursor-pointer border-0 p-0 bg-transparent"
+    />
+  </div>
+);
+
+const StatusDot = ({ status }: { status: 'green' | 'yellow' | 'red' }) => (
+  <div className={`w-3 h-3 rounded-full shadow-sm ${
+    status === 'green' ? 'bg-emerald-500 shadow-emerald-500/50' : 
+    status === 'yellow' ? 'bg-amber-500 shadow-amber-500/50' : 
+    'bg-red-500 shadow-red-500/50'
+  }`} />
+);
+
 export default function AstrologyControlCenter() {
   const { config, updateConfig, resetConfig } = useGlobalConfig();
   const [activeSection, setActiveSection] = useState<string>('astrologySystem');
   const [saveSuccess, setSaveSuccess] = useState<boolean>(false);
+  
+  // Local states for UI properties not fully in GlobalConfig
+  const [localState, setLocalState] = useState<any>({
+    profileName: 'Seeker',
+    birthTime: '1998-06-15T10:30',
+    birthLocation: 'Varanasi, India',
+    birthAccuracy: 'exact',
+    gender: 'not_specified',
+    calendarLocale: 'en-IN',
+    chartStyle: 'north_indian',
+    bhavaMadhya: true,
+    trueNode: true,
+    midpointAnalysis: false,
+    choghadiyaRules: 'standard',
+    lunarReckoning: 'amanta',
+    samvatEra: 'vikram',
+    nakshatraDivision: '27',
+    subLordCalculation: true,
+    abhijitInclusion: false,
+    dashaDepth: '3',
+    dashaBalance: 'exact',
+    dashaYear: '365.25',
+    vargaD1: true, vargaD9: true, vargaD10: true, vargaD60: false,
+    yogaRaja: true, yogaDhana: true, yogaPancha: true,
+    doshaManglik: true, doshaKalsarpa: true, doshaSeverity: 50,
+    shadbalaSthana: 100, shadbalaKala: 100,
+    ashtakavargaTransitThresh: 28,
+    jaiminiKarakas: '7',
+    arudhaPadas: true,
+    muhurtaCategory: 'marriage',
+    muhurtaMaleficFilter: true,
+    kundliScoreSlider: 18,
+    kundliManglik: true,
+    kundliNadiExcept: false,
+    transitOrb: 3,
+    transitRetro: true,
+    predAiIntegration: true,
+    compatEngine: 'vedic',
+    compatComposite: false,
+    chartSize: 100,
+    planetSun: '#fbbf24', planetMoon: '#f8fafc',
+    rulerSystem: 'classical',
+    cuspDisplay: true,
+    aspectOrbConj: 8, aspectOrbTrine: 8,
+    vedicDrishti: true,
+    coordPrecision: 'arcsec',
+    ephSource: 'jpl',
+    tzProvider: 'iana',
+    geoProvider: 'nominatim',
+    dstHandling: 'auto',
+    coordFormat: 'ddmmss',
+    islamicDays: true,
+    hijriNotif: true,
+    qiblaCompass: true,
+    highLatRule: 'angle',
+    aiProvider: 'gemini',
+    aiCitations: 'inline',
+    reportFormat: 'pdf',
+    reportWatermark: true,
+    dashPreset: 'vedic',
+    dashColumns: 3,
+    dashAutoRef: true,
+    notifQuietHours: '22:00-06:00',
+    notifSound: true,
+    emailAddress: 'user@astro360.com',
+    emailFreq: 'weekly',
+    themeRadius: 12,
+    animSpeed: 300,
+    animParticles: true,
+    fontScaling: 100,
+    colorBlind: 'none',
+    screenReader: false,
+    keyboardNav: true,
+    privEncrypt: true,
+    privAnalytics: false,
+    privDataReten: '30',
+    devDebug: false,
+    devProf: false,
+  });
+
+  const updateLocal = (key: string, val: any) => setLocalState((p: any) => ({ ...p, [key]: val }));
 
   const handleApplySettings = () => {
     setSaveSuccess(true);
@@ -66,35 +238,50 @@ export default function AstrologyControlCenter() {
   const currentSectionMeta = CONTROL_CENTER_SECTIONS.find(s => s.id === activeSection) || CONTROL_CENTER_SECTIONS[2];
 
   return (
-    <div className="glass-card rounded-3xl p-6 sm:p-8 border border-blue-500/30 shadow-2xl space-y-6 text-left">
+    <div className="glass-card rounded-3xl p-4 sm:p-8 border border-blue-500/30 shadow-2xl space-y-6 text-left w-full mx-auto bg-slate-900/80 backdrop-blur-xl">
       {/* HEADER & RESET BAR */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
           <div className="flex items-center gap-2 text-blue-400 text-xs font-mono font-bold uppercase tracking-wider mb-1">
             <Sliders className="w-4 h-4 text-blue-400" />
             ASTRO360 Control Center (42 Comprehensive Modules)
           </div>
-          <h3 className="text-2xl font-bold font-display text-white">Astrology Control Center & Global Configuration</h3>
+          <h3 className="text-2xl font-bold font-display text-white">Global Configuration & Engine Settings</h3>
+          <p className="text-slate-400 text-sm mt-1">Interactive configuration for all astrology modules and application behaviors.</p>
         </div>
 
-        <div className="flex items-center gap-2">
-          {saveSuccess && (
-            <span className="text-xs font-mono text-emerald-400 font-bold flex items-center gap-1 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-500/30">
-              <Check className="w-4 h-4 text-emerald-400" /> Settings Saved!
-            </span>
-          )}
+        <div className="flex flex-wrap items-center gap-2">
+          <AnimatePresence>
+            {saveSuccess && (
+              <motion.span 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className="text-xs font-mono text-emerald-400 font-bold flex items-center gap-1 bg-emerald-500/10 px-3 py-2 rounded-xl border border-emerald-500/30"
+              >
+                <Check className="w-4 h-4 text-emerald-400" /> Saved
+              </motion.span>
+            )}
+          </AnimatePresence>
           <button
-            onClick={resetConfig}
-            className="px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 text-xs font-mono font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md"
+            onClick={() => handleApplySettings()}
+            className="px-4 py-2 rounded-xl bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/50 text-blue-300 text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md"
           >
-            <RotateCcw className="w-4 h-4 text-red-400" />
-            Reset All Settings
+            <CheckCircle className="w-4 h-4" />
+            Apply Settings
+          </button>
+          <button
+            onClick={() => { resetConfig(); handleApplySettings(); }}
+            className="px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md"
+          >
+            <RotateCcw className="w-4 h-4" />
+            Reset
           </button>
         </div>
       </div>
 
       {/* 42 SECTIONS GRID TABS */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 max-h-56 overflow-y-auto custom-scrollbar p-1">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 max-h-64 overflow-y-auto custom-scrollbar p-1">
         {CONTROL_CENTER_SECTIONS.map((sec) => {
           const Icon = sec.icon;
           const isSelected = activeSection === sec.id;
@@ -105,10 +292,10 @@ export default function AstrologyControlCenter() {
               className={`p-2.5 rounded-xl text-xs font-mono font-semibold flex items-center gap-2 transition-all cursor-pointer text-left border ${
                 isSelected
                   ? 'bg-blue-600/30 border-blue-400 text-white shadow-lg shadow-blue-500/20 font-bold'
-                  : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                  : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-600'
               }`}
             >
-              <Icon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-blue-400' : 'text-slate-400'}`} />
+              <Icon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-blue-400' : 'text-slate-500'}`} />
               <span className="truncate">{sec.name}</span>
             </button>
           );
@@ -116,824 +303,501 @@ export default function AstrologyControlCenter() {
       </div>
 
       {/* DYNAMIC CONTROL PANEL VIEW */}
-      <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-6 min-h-[350px]">
+      <div className="p-6 rounded-2xl bg-slate-950/80 border border-slate-800/80 shadow-inner space-y-6 min-h-[400px]">
         {/* SECTION HEADER */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-          <div className="flex items-center gap-2 text-sm font-mono font-bold text-blue-400 uppercase tracking-wider">
-            <currentSectionMeta.icon className="w-4 h-4 text-blue-400" />
+        <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-6">
+          <div className="flex items-center gap-2 text-lg font-mono font-bold text-blue-400">
+            <currentSectionMeta.icon className="w-5 h-5 text-blue-400" />
             {currentSectionMeta.name}
           </div>
-          <span className="text-[10px] font-mono text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full">
-            Active Configuration Module
+          <span className="text-xs font-mono text-slate-400 bg-slate-900 px-3 py-1 rounded-full border border-slate-700">
+            Module Config
           </span>
         </div>
 
-        {/* 1. PROFILE */}
-        {activeSection === 'profile' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Active User Profile Name</label>
-              <input type="text" defaultValue="Seeker" className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl" />
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Birth Date & Time</label>
-              <input type="datetime-local" defaultValue="1998-06-15T10:30" className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl" />
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Birth Location (City, Country)</label>
-              <input type="text" defaultValue="Varanasi, India" className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl" />
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Birth Time Accuracy</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="exact">Exact (Certificate / Hospital Log)</option>
-                <option value="approx">Approximate (Within 15 minutes)</option>
-                <option value="rectified">Rectified via BTR Suite</option>
-              </select>
-            </div>
-          </div>
-        )}
+        {/* --- DYNAMIC SECTIONS CONTENT --- */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {activeSection === 'profile' && (
+            <>
+              <InputControl label="Full Name" value={localState.profileName} onChange={(v:any) => updateLocal('profileName', v)} description="Name for chart & reports" />
+              <InputControl label="Birth Date & Time" type="datetime-local" value={localState.birthTime} onChange={(v:any) => updateLocal('birthTime', v)} description="Local time of birth" />
+              <InputControl label="Birth Location" value={localState.birthLocation} onChange={(v:any) => updateLocal('birthLocation', v)} description="City, State, Country" />
+              <SelectControl label="Time Accuracy" value={localState.birthAccuracy} onChange={(v:any) => updateLocal('birthAccuracy', v)} options={[
+                {label: 'Exact (Certificate)', value: 'exact'}, {label: 'Approx (15 mins)', value: 'approx'}, {label: 'Rectified', value: 'rectified'}
+              ]} />
+              <SelectControl label="Gender" value={localState.gender} onChange={(v:any) => updateLocal('gender', v)} options={[
+                {label: 'Not Specified', value: 'not_specified'}, {label: 'Male', value: 'male'}, {label: 'Female', value: 'female'}
+              ]} />
+              <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center gap-3">
+                <Globe className="text-blue-400 w-6 h-6" />
+                <div>
+                  <div className="text-sm font-bold text-white">Auto-detected Timezone</div>
+                  <div className="text-xs text-slate-400">Asia/Kolkata (IST)</div>
+                </div>
+              </div>
+            </>
+          )}
 
-        {/* 2. LANGUAGE */}
-        {activeSection === 'language' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Global Application Language</label>
-              <select
-                value={config.language}
-                onChange={(e) => updateConfig({ language: e.target.value as any })}
-                className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl"
+          {activeSection === 'language' && (
+            <>
+              <SelectControl label="App Language" value={config.language} onChange={(v:any) => updateConfig({ language: v })} options={[
+                {label: 'English (Global)', value: 'en'}, {label: 'Hindi (हिन्दी)', value: 'hi'}, {label: 'Arabic (العربية)', value: 'ar'},
+                {label: 'Urdu (أردو)', value: 'ur'}, {label: 'Bengali (বাংলা)', value: 'bn'}, {label: 'Spanish', value: 'es'}
+              ]} />
+              <SelectControl label="Date Format" value={config.dateFormat} onChange={(v:any) => updateConfig({ dateFormat: v })} options={[
+                {label: 'YYYY-MM-DD (ISO)', value: 'YYYY-MM-DD'}, {label: 'DD/MM/YYYY (UK/IN)', value: 'DD/MM/YYYY'}, {label: 'MM/DD/YYYY (US)', value: 'MM/DD/YYYY'}
+              ]} />
+              <SelectControl label="Number Format Locale" value={localState.calendarLocale} onChange={(v:any) => updateLocal('calendarLocale', v)} options={[
+                {label: 'India (en-IN)', value: 'en-IN'}, {label: 'US (en-US)', value: 'en-US'}, {label: 'Arabic (ar-SA)', value: 'ar-SA'}
+              ]} />
+              <ToggleSwitch label="Right-to-Left (RTL)" checked={config.isRtl} onChange={(v:any) => updateConfig({ isRtl: v })} description="Auto-detects based on language" />
+            </>
+          )}
+
+          {activeSection === 'astrologySystem' && (
+            <div className="col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div 
+                onClick={() => updateConfig({ astrologySystem: 'vedic' })}
+                className={`p-6 rounded-2xl border-2 cursor-pointer transition-all ${config.astrologySystem === 'vedic' ? 'bg-amber-500/10 border-amber-500' : 'bg-slate-900 border-slate-700'}`}
               >
-                <option value="en">English (Global)</option>
-                <option value="hi">Hindi (हिन्दी)</option>
-                <option value="ar">Arabic (العربية) [RTL]</option>
-                <option value="ur">Urdu (أردو) [RTL]</option>
-                <option value="bn">Bengali (বাংলা)</option>
-                <option value="ta">Tamil (தமிழ்)</option>
-                <option value="te">Telugu (తెలుగు)</option>
-                <option value="es">Spanish (Español)</option>
-                <option value="fr">French (Français)</option>
-                <option value="de">German (Deutsch)</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Text Direction & Layout</label>
-              <input type="text" readOnly value={config.direction.toUpperCase()} className="w-full bg-slate-950 border border-slate-800 text-emerald-400 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
-
-        {/* 3. ASTROLOGY SYSTEM */}
-        {activeSection === 'astrologySystem' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <button
-              onClick={() => { updateConfig({ astrologySystem: 'vedic' }); handleApplySettings(); }}
-              className={`p-4 rounded-2xl border text-left cursor-pointer transition-all ${
-                config.astrologySystem === 'vedic' ? 'bg-amber-500/20 border-amber-400 text-amber-300' : 'bg-slate-950 border-slate-800 text-slate-400'
-              }`}
-            >
-              <div className="font-bold text-sm text-white">Vedic / Jyotish System</div>
-              <div className="mt-1 opacity-80">Sidereal Zodiac • Lahiri Ayanamsa • Whole Sign Houses • Vimshottari Dasha</div>
-            </button>
-
-            <button
-              onClick={() => { updateConfig({ astrologySystem: 'western' }); handleApplySettings(); }}
-              className={`p-4 rounded-2xl border text-left cursor-pointer transition-all ${
-                config.astrologySystem === 'western' ? 'bg-blue-500/20 border-blue-400 text-blue-300' : 'bg-slate-950 border-slate-800 text-slate-400'
-              }`}
-            >
-              <div className="font-bold text-sm text-white">Western Astrology System</div>
-              <div className="mt-1 opacity-80">Tropical Zodiac • Placidus House System • Major & Minor Aspects</div>
-            </button>
-          </div>
-        )}
-
-        {/* 4. VEDIC */}
-        {activeSection === 'vedic' && (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Ayanamsa Calculation</label>
-              <select value={config.ayanamsa} onChange={(e) => updateConfig({ ayanamsa: e.target.value as any })} className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="lahiri">Lahiri (Chitra Paksha)</option>
-                <option value="raman">BV Raman</option>
-                <option value="kp">Krishnamurti Paddhati (KP)</option>
-                <option value="fagan_bradley">Fagan-Bradley</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="text-slate-400 block mb-1">Chart Format</label>
-              <select value={config.chartStyle} onChange={(e) => updateConfig({ chartStyle: e.target.value as any })} className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="north_indian">North Indian Diamond</option>
-                <option value="south_indian">South Indian Fixed Square</option>
-                <option value="east_indian">East Indian Bengalee</option>
-                <option value="western_wheel">Western Circular Wheel</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="text-slate-400 block mb-1">Vedic House System</label>
-              <select value={config.houseSystem} onChange={(e) => updateConfig({ houseSystem: e.target.value as any })} className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="wholesign">Whole Sign (Equal Rashi)</option>
-                <option value="equal">Equal House (Lagna Cusp)</option>
-                <option value="placidus">Placidus (Time-Proportional)</option>
-              </select>
-            </div>
-          </div>
-        )}
-
-        {/* 5. WESTERN */}
-        {activeSection === 'western' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Tropical Zodiac Reference</label>
-              <input type="text" readOnly value="Tropical (Vernal Equinox 0° Aries)" className="w-full bg-slate-950 border border-slate-800 text-blue-300 font-bold p-2.5 rounded-xl" />
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Western House System</label>
-              <select value={config.houseSystem} onChange={(e) => updateConfig({ houseSystem: e.target.value as any })} className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="placidus">Placidus (Time-Proportional)</option>
-                <option value="koch">Koch</option>
-                <option value="equal">Equal House</option>
-                <option value="porphyry">Porphyry</option>
-              </select>
-            </div>
-          </div>
-        )}
-
-        {/* 6. PANCHANG */}
-        {activeSection === 'panchang' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Panchang Calculation Location</label>
-              <input type="text" defaultValue="Auto (Varanasi 25.3176° N, 82.9739° E)" className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl" />
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Choghadiya & Rahu Kalam Rules</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="standard">Standard Solar Sunrise to Sunset</option>
-                <option value="exact">Exact Local Astronomical Coordinates</option>
-              </select>
-            </div>
-          </div>
-        )}
-
-        {/* 7. HINDU CALENDAR */}
-        {activeSection === 'hinduCalendar' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Lunar Month Reckoning</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="amanta">Amanta (Month ends on New Moon - South India & Gujarat)</option>
-                <option value="purnimanta">Purnimanta (Month ends on Full Moon - North India)</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Samvat Era</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="vikram">Vikram Samvat (+57 years)</option>
-                <option value="saka">Saka Samvat (-78 years)</option>
-              </select>
-            </div>
-          </div>
-        )}
-
-        {/* 8. NAKSHATRA */}
-        {activeSection === 'nakshatra' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Nakshatra Division System</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="27">27 Equal Nakshatras (13°20' each)</option>
-                <option value="28">28 Nakshatras (Including Abhijit Nakshatra)</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Pada & Navamsha Alignment</label>
-              <input type="text" readOnly value="4 Padas per Nakshatra (3°20' per Pada)" className="w-full bg-slate-950 border border-slate-800 text-amber-300 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
-
-        {/* 9. DASHA */}
-        {activeSection === 'dasha' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Primary Dasha System</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="vimshottari">Vimshottari Dasha (120 Years)</option>
-                <option value="yogini">Yogini Dasha (36 Years)</option>
-                <option value="chara">Jaimini Chara Dasha</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Sub-Period Depth</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="3">3 Levels (Mahadasha $\rightarrow$ Antardasha $\rightarrow$ Pratyantardasha)</option>
-                <option value="5">5 Levels (+ Sookshma & Prana Dasha)</option>
-              </select>
-            </div>
-          </div>
-        )}
-
-        {/* 10. DIVISIONAL CHARTS */}
-        {activeSection === 'divisionalCharts' && (
-          <div className="space-y-3 text-xs font-mono">
-            <label className="text-slate-400 block">Active Varga Divisional Charts (D1 to D60)</label>
-            <div className="flex flex-wrap gap-2">
-              {['D1 Rashi', 'D2 Hora', 'D3 Drekkana', 'D4 Chaturthamsha', 'D7 Saptamsha', 'D9 Navamsha', 'D10 Dashamsha', 'D12 Dwadashamsha', 'D16 Shodashamsha', 'D20 Vimshamsha', 'D24 Chaturvimshamsha', 'D27 Saptavimshamsha', 'D30 Trimshamsha', 'D40 Khavedamsha', 'D45 Akshavedamsha', 'D60 Shashtiamsha'].map((d) => (
-                <span key={d} className="px-3 py-1.5 rounded-xl bg-slate-950 border border-amber-500/30 text-amber-300 font-bold">
-                  {d}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* 11. YOGA */}
-        {activeSection === 'yoga' && (
-          <div className="space-y-3 text-xs font-mono">
-            <label className="text-slate-400 block">Rule-Driven Yoga Detection Modules</label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {['Raja Yogas', 'Dhana Yogas', 'Gaja Kesari', 'Budha Aditya', 'Neecha Bhanga', 'Pancha Mahapurusha', 'Vipareeta Raja', 'Lakshmi Yoga'].map((y) => (
-                <div key={y} className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-emerald-300 font-bold flex items-center justify-between">
-                  <span>{y}</span>
-                  <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
+                <div className="flex items-center gap-3 mb-2">
+                  <Sun className={`w-8 h-8 ${config.astrologySystem === 'vedic' ? 'text-amber-400' : 'text-slate-500'}`} />
+                  <h4 className="text-xl font-bold text-white">Vedic / Jyotish</h4>
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* 12. DOSHA */}
-        {activeSection === 'dosha' && (
-          <div className="space-y-3 text-xs font-mono">
-            <label className="text-slate-400 block">Traditional Dosha & Cancellation Engine</label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {['Manglik Dosha', 'Kaal Sarpa Dosha', 'Nadi Dosha', 'Bhakoot Dosha', 'Grahan Dosha', 'Kemu Drum Yoga'].map((d) => (
-                <div key={d} className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-amber-300 font-bold flex items-center justify-between">
-                  <span>{d}</span>
-                  <CheckCircle className="w-3.5 h-3.5 text-amber-400" />
+                <p className="text-slate-400 text-sm mb-4">Traditional Indian astrology using sidereal zodiac, whole sign houses, and lunar mansions (Nakshatras).</p>
+                <ul className="text-xs text-slate-500 space-y-1">
+                  <li>• Sidereal Zodiac (Lahiri Default)</li>
+                  <li>• Vimshottari Dasha System</li>
+                  <li>• 16 Divisional Charts (Vargas)</li>
+                </ul>
+              </div>
+              <div 
+                onClick={() => updateConfig({ astrologySystem: 'western' })}
+                className={`p-6 rounded-2xl border-2 cursor-pointer transition-all ${config.astrologySystem === 'western' ? 'bg-blue-500/10 border-blue-500' : 'bg-slate-900 border-slate-700'}`}
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <Sparkles className={`w-8 h-8 ${config.astrologySystem === 'western' ? 'text-blue-400' : 'text-slate-500'}`} />
+                  <h4 className="text-xl font-bold text-white">Western Astrology</h4>
                 </div>
-              ))}
+                <p className="text-slate-400 text-sm mb-4">Modern psychological astrology using tropical zodiac and complex house systems.</p>
+                <ul className="text-xs text-slate-500 space-y-1">
+                  <li>• Tropical Zodiac (Vernal Equinox)</li>
+                  <li>• Placidus House System</li>
+                  <li>• Major & Minor Geometric Aspects</li>
+                </ul>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* 13. SHADBALA */}
-        {activeSection === 'shadbala' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Shadbala 6 Strength Factors</label>
-              <input type="text" readOnly value="Sthana, Dig, Kala, Cheshta, Naisargika, Drik Bala" className="w-full bg-slate-950 border border-slate-800 text-blue-300 font-bold p-2.5 rounded-xl" />
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Minimum Required Strength Unit</label>
-              <input type="text" readOnly value="1.0 Rupas (60 Virupas minimum threshold)" className="w-full bg-slate-950 border border-slate-800 text-emerald-300 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'vedic' && (
+            <>
+              <SelectControl label="Ayanamsa" value={config.ayanamsaMode} onChange={(v:any) => updateConfig({ ayanamsaMode: v })} options={[
+                {label: 'Lahiri (Chitra Paksha)', value: 'lahiri'}, {label: 'BV Raman', value: 'raman'}, {label: 'KP (Krishnamurti)', value: 'kp'}, {label: 'Fagan-Bradley', value: 'fagan_bradley'}
+              ]} description="Precession calculation method" />
+              <SelectControl label="Chart Format" value={localState.chartStyle} onChange={(v:any) => updateLocal('chartStyle', v)} options={[
+                {label: 'North Indian (Diamond)', value: 'north_indian'}, {label: 'South Indian (Square)', value: 'south_indian'}, {label: 'East Indian (Bengalee)', value: 'east_indian'}
+              ]} />
+              <ToggleSwitch label="Bhava Madhya" checked={localState.bhavaMadhya} onChange={(v:any) => updateLocal('bhavaMadhya', v)} description="Use cusp as house center" />
+              <ToggleSwitch label="True Nodes" checked={localState.trueNode} onChange={(v:any) => updateLocal('trueNode', v)} description="Calculate True Rahu/Ketu vs Mean" />
+            </>
+          )}
 
-        {/* 14. ASHTAKAVARGA */}
-        {activeSection === 'ashtakavarga' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Ashtakavarga Matrices</label>
-              <input type="text" readOnly value="Bhinnashtakavarga (7 Planets) & Sarvashtakavarga (337 Points)" className="w-full bg-slate-950 border border-slate-800 text-purple-300 font-bold p-2.5 rounded-xl" />
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Transit Trigger Score Threshold</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="28">28+ Points (Auspicious Transit Threshold)</option>
-                <option value="30">30+ Points (Highly Favorable)</option>
-              </select>
-            </div>
-          </div>
-        )}
+          {activeSection === 'western' && (
+            <>
+              <SelectControl label="House System" value={config.houseSystem} onChange={(v:any) => updateConfig({ houseSystem: v })} options={[
+                {label: 'Placidus', value: 'placidus'}, {label: 'Koch', value: 'koch'}, {label: 'Equal House', value: 'equal'}, {label: 'Porphyry', value: 'porphyry'}, {label: 'Campanus', value: 'campanus'}, {label: 'Regiomontanus', value: 'regiomontanus'}
+              ]} />
+              <ToggleSwitch label="Midpoint Analysis" checked={localState.midpointAnalysis} onChange={(v:any) => updateLocal('midpointAnalysis', v)} description="Calculate planetary midpoints" />
+              <div className="p-3 bg-slate-900 border border-slate-700 rounded-xl">
+                <span className="text-sm font-bold text-slate-200">Tropical Reference</span>
+                <p className="text-xs text-blue-400 mt-1">Fixed to Vernal Equinox (0° Aries)</p>
+              </div>
+            </>
+          )}
 
-        {/* 15. JAIMINI */}
-        {activeSection === 'jaimini' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Jaimini Chara Karaka System</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="7">7 Karakas (AK, AmK, BK, MK, PK, GK, DK)</option>
-                <option value="8">8 Karakas (Including Pitri Karaka)</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Arudha Padas</label>
-              <input type="text" readOnly value="Arudha Lagna (AL) & Upapada Lagna (UL) Enabled" className="w-full bg-slate-950 border border-slate-800 text-cyan-300 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'panchang' && (
+            <>
+              <InputControl label="Calculation Location" value={localState.birthLocation} onChange={(v:any) => updateLocal('birthLocation', v)} />
+              <SelectControl label="Sunrise/Sunset Rules" value={localState.choghadiyaRules} onChange={(v:any) => updateLocal('choghadiyaRules', v)} options={[
+                {label: 'Standard Solar Center', value: 'standard'}, {label: 'Exact Astronomical Edge', value: 'exact'}
+              ]} />
+              <ToggleSwitch label="Show Hora Lord" checked={true} onChange={()=>{}} description="Display planetary hour ruler" />
+            </>
+          )}
 
-        {/* 16. MUHURTA */}
-        {activeSection === 'muhurta' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Electional Muhurta Category</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="marriage">Vivaha (Marriage Muhurta)</option>
-                <option value="grihapravesh">Griha Pravesh (Housewarming)</option>
-                <option value="business">Vyapar Arambh (Business Launch)</option>
-                <option value="travel">Yatra (Travel Departure)</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Malefic Window Filtering</label>
-              <input type="text" readOnly value="Filters Rahu Kalam, Yamaganda & Gulika" className="w-full bg-slate-950 border border-slate-800 text-red-300 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'hinduCalendar' && (
+            <>
+              <SelectControl label="Lunar Reckoning" value={localState.lunarReckoning} onChange={(v:any) => updateLocal('lunarReckoning', v)} options={[
+                {label: 'Amanta (New Moon End)', value: 'amanta'}, {label: 'Purnimanta (Full Moon End)', value: 'purnimanta'}
+              ]} />
+              <SelectControl label="Samvat Era" value={localState.samvatEra} onChange={(v:any) => updateLocal('samvatEra', v)} options={[
+                {label: 'Vikram Samvat (+57y)', value: 'vikram'}, {label: 'Saka Samvat (-78y)', value: 'saka'}
+              ]} />
+            </>
+          )}
 
-        {/* 17. KUNDLI MATCHING */}
-        {activeSection === 'kundliMatching' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Ashta Koota Points Total</label>
-              <input type="text" readOnly value="36 Points (Varna, Vashya, Tara, Yoni, Maitri, Gana, Bhakoot, Nadi)" className="w-full bg-slate-950 border border-slate-800 text-pink-300 font-bold p-2.5 rounded-xl" />
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Minimum Marriage Score Cutoff</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="18">18 / 36 Points (Acceptable Threshold)</option>
-                <option value="24">24 / 36 Points (Recommended Threshold)</option>
-              </select>
-            </div>
-          </div>
-        )}
+          {activeSection === 'nakshatra' && (
+            <>
+              <SelectControl label="Division System" value={localState.nakshatraDivision} onChange={(v:any) => updateLocal('nakshatraDivision', v)} options={[
+                {label: '27 Equal Nakshatras', value: '27'}, {label: '28 (With Abhijit)', value: '28'}
+              ]} />
+              <ToggleSwitch label="Sub-lord Calculation" checked={localState.subLordCalculation} onChange={(v:any) => updateLocal('subLordCalculation', v)} description="For KP Astrology" />
+              <ToggleSwitch label="Include Abhijit" checked={localState.abhijitInclusion} onChange={(v:any) => updateLocal('abhijitInclusion', v)} />
+            </>
+          )}
 
-        {/* 18. TRANSITS */}
-        {activeSection === 'transits' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Major Transit Tracking</label>
-              <input type="text" readOnly value="Saturn (Shani), Jupiter (Guru), Rahu/Ketu Ingress" className="w-full bg-slate-950 border border-slate-800 text-amber-300 font-bold p-2.5 rounded-xl" />
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Aspect Orb Precision</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="1">1° Exact Conjunction / Ingress</option>
-                <option value="3">3° Standard Transit Orb</option>
-              </select>
-            </div>
-          </div>
-        )}
+          {activeSection === 'dasha' && (
+            <>
+              <SelectControl label="Primary System" value={config.dashaSystem} onChange={(v:any) => updateConfig({ dashaSystem: v })} options={[
+                {label: 'Vimshottari (120y)', value: 'vimshottari'}, {label: 'Yogini (36y)', value: 'yogini'}, {label: 'Chara (Jaimini)', value: 'chara'}
+              ]} />
+              <SelectControl label="Sub-period Depth" value={localState.dashaDepth} onChange={(v:any) => updateLocal('dashaDepth', v)} options={[
+                {label: '3 Levels (Pratyantar)', value: '3'}, {label: '5 Levels (Prana)', value: '5'}
+              ]} />
+              <SelectControl label="Balance Method" value={localState.dashaBalance} onChange={(v:any) => updateLocal('dashaBalance', v)} options={[
+                {label: 'Exact Lunar Position', value: 'exact'}, {label: 'Proportional Arc', value: 'prop'}
+              ]} />
+            </>
+          )}
 
-        {/* 19. PREDICTIONS */}
-        {activeSection === 'predictions' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Prediction Time Scope</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="daily">Daily Horoscope & Transits</option>
-                <option value="weekly">Weekly Forecast</option>
-                <option value="annual">Annual Varshaphal (Sol-Return)</option>
-              </select>
+          {activeSection === 'divisionalCharts' && (
+            <div className="col-span-1 md:col-span-2 lg:col-span-3">
+              <div className="text-sm text-slate-400 mb-3">Select active Varga charts (D1 - D60) to render in dashboard:</div>
+              <div className="flex flex-wrap gap-3">
+                {[
+                  {id:'vargaD1', label:'D1 Rashi'}, {id:'vargaD9', label:'D9 Navamsha'}, 
+                  {id:'vargaD10', label:'D10 Dashamsha'}, {id:'vargaD60', label:'D60 Shashtiamsha'}
+                ].map(v => (
+                  <label key={v.id} className="flex items-center gap-2 bg-slate-900 p-2 rounded-lg cursor-pointer border border-slate-700 hover:border-blue-500">
+                    <input type="checkbox" checked={localState[v.id]} onChange={(e) => updateLocal(v.id, e.target.checked)} className="accent-blue-500" />
+                    <span className="text-sm font-bold text-white">{v.label}</span>
+                  </label>
+                ))}
+              </div>
             </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Domain Focus</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="all">All Domains (Career, Finance, Love, Family)</option>
-                <option value="career">Career & Finance Emphasis</option>
-              </select>
-            </div>
-          </div>
-        )}
+          )}
 
-        {/* 20. COMPATIBILITY */}
-        {activeSection === 'compatibility' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Compatibility Engine Mode</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="vedic">Vedic Ashta Koota (36 Points)</option>
-                <option value="western">Western Synastry & Aspect Overlay</option>
-                <option value="hybrid">Hybrid Vedic + Western Synastry</option>
-              </select>
+          {activeSection === 'yoga' && (
+            <div className="col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <ToggleSwitch label="Raja Yogas" checked={localState.yogaRaja} onChange={(v:any) => updateLocal('yogaRaja', v)} />
+              <ToggleSwitch label="Dhana Yogas" checked={localState.yogaDhana} onChange={(v:any) => updateLocal('yogaDhana', v)} />
+              <ToggleSwitch label="Pancha Mahapurusha" checked={localState.yogaPancha} onChange={(v:any) => updateLocal('yogaPancha', v)} />
             </div>
-            <div>
-              <label className="text-slate-400 block mb-1">7th House & Venus/Mars Analysis</label>
-              <input type="text" readOnly value="Enabled (Detailed Relationship Factors)" className="w-full bg-slate-950 border border-slate-800 text-pink-300 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          )}
 
-        {/* 21. CHART APPEARANCE */}
-        {activeSection === 'chartAppearance' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Chart Theme Colors</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="cosmic">Cosmic Gold & Dark Slate</option>
-                <option value="emerald">Emerald & Deep Black</option>
-                <option value="sapphire">Royal Sapphire Blue</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Degree & Retrograde Display</label>
-              <input type="text" readOnly value="Show Degrees (e.g. 14°22' ℞)" className="w-full bg-slate-950 border border-slate-800 text-emerald-400 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'dosha' && (
+            <>
+              <ToggleSwitch label="Manglik Dosha" checked={localState.doshaManglik} onChange={(v:any) => updateLocal('doshaManglik', v)} />
+              <ToggleSwitch label="Kaal Sarpa Dosha" checked={localState.doshaKalsarpa} onChange={(v:any) => updateLocal('doshaKalsarpa', v)} />
+              <SliderControl label="Severity Threshold" value={localState.doshaSeverity} min={10} max={100} step={10} onChange={(v:any) => updateLocal('doshaSeverity', v)} unit="%" />
+            </>
+          )}
 
-        {/* 22. PLANET SETTINGS */}
-        {activeSection === 'planetSettings' && (
-          <div className="space-y-3 text-xs font-mono">
-            <label className="text-slate-400 block">Active Astronomical Bodies (9 Grahas + Outer Planets)</label>
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-              {['Sun (Surya)', 'Moon (Chandra)', 'Mars (Mangal)', 'Mercury (Budh)', 'Jupiter (Guru)', 'Venus (Shukra)', 'Saturn (Shani)', 'Rahu', 'Ketu', 'Uranus', 'Neptune', 'Pluto'].map((p) => (
-                <div key={p} className="p-2 rounded-xl bg-slate-950 border border-slate-800 text-blue-300 font-bold text-center">
-                  {p}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+          {activeSection === 'shadbala' && (
+            <>
+              <SliderControl label="Sthana Bala Weight" value={localState.shadbalaSthana} min={0} max={200} step={10} onChange={(v:any) => updateLocal('shadbalaSthana', v)} unit="%" />
+              <SliderControl label="Kala Bala Weight" value={localState.shadbalaKala} min={0} max={200} step={10} onChange={(v:any) => updateLocal('shadbalaKala', v)} unit="%" />
+            </>
+          )}
 
-        {/* 23. HOUSE SETTINGS */}
-        {activeSection === 'houseSettings' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">House System Algorithm</label>
-              <select value={config.houseSystem} onChange={(e) => updateConfig({ houseSystem: e.target.value as any })} className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="wholesign">Whole Sign (Equal Rashi)</option>
-                <option value="placidus">Placidus (Proportional Time)</option>
-                <option value="equal">Equal House (Lagna Cusp)</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">House Ruler Calculation</label>
-              <input type="text" readOnly value="Classical Parashari Rashi Rulers" className="w-full bg-slate-950 border border-slate-800 text-amber-300 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'ashtakavarga' && (
+            <>
+              <SliderControl label="Transit Auspicious Threshold" value={localState.ashtakavargaTransitThresh} min={20} max={35} step={1} onChange={(v:any) => updateLocal('ashtakavargaTransitThresh', v)} unit=" pts" />
+              <div className="p-3 bg-slate-900 border border-slate-700 rounded-xl">
+                <span className="text-sm font-bold text-slate-200">Calculations Included</span>
+                <p className="text-xs text-blue-400 mt-1">SAV, BAV, Kakshya analysis enabled</p>
+              </div>
+            </>
+          )}
 
-        {/* 24. ASPECT SETTINGS */}
-        {activeSection === 'aspectSettings' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Major Aspect Orbs</label>
-              <input type="text" readOnly value="Conjunction 8°, Trine 8°, Square 7°, Opposition 8°" className="w-full bg-slate-950 border border-slate-800 text-cyan-300 font-bold p-2.5 rounded-xl" />
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Vedic Graha Drishti Rules</label>
-              <input type="text" readOnly value="Mars (4,7,8), Jupiter (5,7,9), Saturn (3,7,10)" className="w-full bg-slate-950 border border-slate-800 text-amber-300 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'jaimini' && (
+            <>
+              <SelectControl label="Karaka Scheme" value={localState.jaiminiKarakas} onChange={(v:any) => updateLocal('jaiminiKarakas', v)} options={[
+                {label: '7 Karakas (Exclude Rahu)', value: '7'}, {label: '8 Karakas (Include Rahu)', value: '8'}
+              ]} />
+              <ToggleSwitch label="Arudha Padas" checked={localState.arudhaPadas} onChange={(v:any) => updateLocal('arudhaPadas', v)} />
+            </>
+          )}
 
-        {/* 25. PRECISION */}
-        {activeSection === 'precision' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Astronomical Calculation Engine</label>
-              <input type="text" readOnly value="Keplerian Orbital Mechanics & Ephemeris Engine" className="w-full bg-slate-950 border border-slate-800 text-emerald-400 font-bold p-2.5 rounded-xl" />
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Coordinate Precision</label>
-              <input type="text" readOnly value="Arcsecond Precision (0.0001° accuracy)" className="w-full bg-slate-950 border border-slate-800 text-blue-300 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'muhurta' && (
+            <>
+              <SelectControl label="Electional Category" value={localState.muhurtaCategory} onChange={(v:any) => updateLocal('muhurtaCategory', v)} options={[
+                {label: 'Marriage (Vivaha)', value: 'marriage'}, {label: 'Business Launch', value: 'business'}, {label: 'Housewarming', value: 'house'}
+              ]} />
+              <ToggleSwitch label="Filter Malefic Windows" checked={localState.muhurtaMaleficFilter} onChange={(v:any) => updateLocal('muhurtaMaleficFilter', v)} description="Rahu Kalam, Yamaganda" />
+            </>
+          )}
 
-        {/* 26. TIME & LOCATION */}
-        {activeSection === 'timeLocation' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Timezone Provider</label>
-              <input type="text" readOnly value="IANA Time Zone Database (Intl.DateTimeFormat)" className="w-full bg-slate-950 border border-slate-800 text-blue-300 font-bold p-2.5 rounded-xl" />
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Geocoding Service</label>
-              <input type="text" readOnly value="OpenStreetMap Nominatim Reverse Geocoder" className="w-full bg-slate-950 border border-slate-800 text-emerald-400 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'kundliMatching' && (
+            <>
+              <SliderControl label="Min Passing Score" value={localState.kundliScoreSlider} min={0} max={36} step={1} onChange={(v:any) => updateLocal('kundliScoreSlider', v)} unit="/36" />
+              <ToggleSwitch label="Consider Manglik" checked={localState.kundliManglik} onChange={(v:any) => updateLocal('kundliManglik', v)} />
+              <ToggleSwitch label="Nadi Exceptions" checked={localState.kundliNadiExcept} onChange={(v:any) => updateLocal('kundliNadiExcept', v)} />
+            </>
+          )}
 
-        {/* 27. ISLAMIC */}
-        {activeSection === 'islamic' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Hijri Calendar Adjustment</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="0">0 Days (Standard Astronomical)</option>
-                <option value="+1">+1 Day (Local Moon Sighting)</option>
-                <option value="-1">-1 Day (Local Moon Sighting)</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Important Islamic Days</label>
-              <input type="text" readOnly value="Ramadan, Eid al-Fitr, Eid al-Adha, Ashura" className="w-full bg-slate-950 border border-slate-800 text-emerald-300 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'transits' && (
+            <>
+              <SliderControl label="Transit Orb Precision" value={localState.transitOrb} min={1} max={5} step={0.5} onChange={(v:any) => updateLocal('transitOrb', v)} unit="°" />
+              <ToggleSwitch label="Highlight Retrograde" checked={localState.transitRetro} onChange={(v:any) => updateLocal('transitRetro', v)} />
+            </>
+          )}
 
-        {/* 28. PRAYER & QIBLA */}
-        {activeSection === 'prayerQibla' && (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Prayer Method</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="2">ISNA (North America 15°/15°)</option>
-                <option value="3">MWL (Muslim World League 18°/17°)</option>
-                <option value="4">Umm Al-Qura (Makkah 18.5°)</option>
-                <option value="1">Karachi (Univ. of Islamic Sciences 18°/18°)</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Asr Calculation Method</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="standard">Shafi'i, Maliki, Hanbali (Standard)</option>
-                <option value="hanafi">Hanafi (Shadow Length 2x)</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">API Fallback Cascade</label>
-              <input type="text" readOnly value="UmmahAPI $\rightarrow$ Aladhan $\rightarrow$ MuslimSalat" className="w-full bg-slate-950 border border-slate-800 text-emerald-300 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'predictions' && (
+            <>
+              <SelectControl label="Time Scope" value={config.predictionTimeframe} onChange={(v:any) => updateConfig({ predictionTimeframe: v })} options={[
+                {label: 'Daily', value: 'Daily'}, {label: 'Weekly', value: 'Weekly'}, {label: 'Monthly', value: 'Monthly'}, {label: 'Yearly', value: 'Yearly'}
+              ]} />
+              <SelectControl label="Domain Focus" value={config.predictionFocus} onChange={(v:any) => updateConfig({ predictionFocus: v })} options={[
+                {label: 'General', value: 'general'}, {label: 'Career', value: 'career'}, {label: 'Love', value: 'love'}
+              ]} />
+              <ToggleSwitch label="AI Enhanced Analysis" checked={localState.predAiIntegration} onChange={(v:any) => updateLocal('predAiIntegration', v)} />
+            </>
+          )}
 
-        {/* 29. AI SETTINGS */}
-        {activeSection === 'aiSettings' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">AI Explanation Provider</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="gemini">Google Gemini AI Engine</option>
-                <option value="claude">Anthropic Claude AI</option>
-                <option value="openai">OpenAI GPT-4o</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Explanation Depth</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="detailed">Detailed & Scholarly with Citations</option>
-                <option value="simple">Beginner Friendly & Concise</option>
-              </select>
-            </div>
-          </div>
-        )}
+          {activeSection === 'compatibility' && (
+            <>
+              <SelectControl label="Compatibility Engine" value={localState.compatEngine} onChange={(v:any) => updateLocal('compatEngine', v)} options={[
+                {label: 'Vedic Ashta Koota', value: 'vedic'}, {label: 'Western Synastry', value: 'western'}, {label: 'Hybrid Mode', value: 'hybrid'}
+              ]} />
+              <ToggleSwitch label="Composite Chart" checked={localState.compatComposite} onChange={(v:any) => updateLocal('compatComposite', v)} />
+            </>
+          )}
 
-        {/* 30. REPORT SETTINGS */}
-        {activeSection === 'reportSettings' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Report Export Format</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="pdf">Executive PDF Document</option>
-                <option value="html">Interactive HTML Dossier</option>
-                <option value="json">Raw Data JSON</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Header Branding</label>
-              <input type="text" defaultValue="ASTRO360 Executive Report" className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'chartAppearance' && (
+            <>
+              <SelectControl label="Color Theme" value={config.themeMode} onChange={(v:any) => updateConfig({ themeMode: v })} options={[
+                {label: 'Cosmic Dark', value: 'cosmic'}, {label: 'Deep Dark', value: 'dark'}, {label: 'Gold Prestige', value: 'gold'}
+              ]} />
+              <SliderControl label="Chart Size Scale" value={localState.chartSize} min={50} max={150} step={10} onChange={(v:any) => updateLocal('chartSize', v)} unit="%" />
+            </>
+          )}
 
-        {/* 31. DASHBOARD */}
-        {activeSection === 'dashboard' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Dashboard Preset Layout</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="vedic">Vedic Professional Preset</option>
-                <option value="western">Western Professional Preset</option>
-                <option value="panchang">Panchang & Muhurta Preset</option>
-                <option value="islamic">Islamic Suite Preset</option>
-              </select>
+          {activeSection === 'planetSettings' && (
+            <div className="col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-2 md:grid-cols-4 gap-4">
+              <ColorPicker label="Sun Color" value={localState.planetSun} onChange={(v:any) => updateLocal('planetSun', v)} />
+              <ColorPicker label="Moon Color" value={localState.planetMoon} onChange={(v:any) => updateLocal('planetMoon', v)} />
+              <div className="p-3 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-400 col-span-2 flex items-center justify-center">
+                Apply global preset palettes or customize 12+ bodies.
+              </div>
             </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Widget Density</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="comfortable">Comfortable Spacing</option>
-                <option value="compact">Compact Grid</option>
-              </select>
-            </div>
-          </div>
-        )}
+          )}
 
-        {/* 32. NOTIFICATIONS */}
-        {activeSection === 'notifications' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">In-App Alerts</label>
-              <input type="text" readOnly value="Daily Horoscope & Prayer Time Notifications Enabled" className="w-full bg-slate-950 border border-slate-800 text-emerald-400 font-bold p-2.5 rounded-xl" />
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Quiet Hours</label>
-              <input type="text" defaultValue="22:00 to 06:00" className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'houseSettings' && (
+            <>
+              <SelectControl label="Algorithm" value={config.houseSystem} onChange={(v:any) => updateConfig({ houseSystem: v })} options={[
+                {label: 'Whole Sign', value: 'wholesign'}, {label: 'Placidus', value: 'placidus'}, {label: 'Equal', value: 'equal'}
+              ]} />
+              <SelectControl label="Ruler System" value={localState.rulerSystem} onChange={(v:any) => updateLocal('rulerSystem', v)} options={[
+                {label: 'Classical (Traditional)', value: 'classical'}, {label: 'Modern (Uranus+)', value: 'modern'}
+              ]} />
+              <ToggleSwitch label="Display Cusps" checked={localState.cuspDisplay} onChange={(v:any) => updateLocal('cuspDisplay', v)} />
+            </>
+          )}
 
-        {/* 33. EMAIL */}
-        {activeSection === 'email' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Email Delivery Address</label>
-              <input type="email" defaultValue="user@astro360.com" className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl" />
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Email Reports Frequency</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="weekly">Weekly Cosmic Digest</option>
-                <option value="monthly">Monthly Transit Report</option>
-                <option value="off">Off (Manual Downloads Only)</option>
-              </select>
-            </div>
-          </div>
-        )}
+          {activeSection === 'aspectSettings' && (
+            <>
+              <SliderControl label="Max Orb" value={config.aspectMaxOrb} min={1} max={12} step={0.5} onChange={(v:any) => updateConfig({ aspectMaxOrb: v })} unit="°" />
+              <ToggleSwitch label="Vedic Drishti" checked={localState.vedicDrishti} onChange={(v:any) => updateLocal('vedicDrishti', v)} description="Special Mars/Jup/Sat aspects" />
+            </>
+          )}
 
-        {/* 34. THEME */}
-        {activeSection === 'theme' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Global Color Palette</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="cosmic">Deep Cosmic Dark (Default)</option>
-                <option value="midnight">Midnight Blue</option>
-                <option value="emerald">Emerald Islamic Green</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">UI Surface Styling</label>
-              <input type="text" readOnly value="Glassmorphism with Subtle Neon Accents" className="w-full bg-slate-950 border border-slate-800 text-blue-300 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'precision' && (
+            <>
+              <SelectControl label="Ephemeris Source" value={localState.ephSource} onChange={(v:any) => updateLocal('ephSource', v)} options={[
+                {label: 'Swiss Ephemeris', value: 'swiss'}, {label: 'JPL Horizons', value: 'jpl'}
+              ]} />
+              <SelectControl label="Coordinate Precision" value={localState.coordPrecision} onChange={(v:any) => updateLocal('coordPrecision', v)} options={[
+                {label: 'Degrees & Minutes', value: 'degmin'}, {label: 'Arcseconds', value: 'arcsec'}
+              ]} />
+            </>
+          )}
 
-        {/* 35. ANIMATION */}
-        {activeSection === 'animation' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">UI Motion Level</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="balanced">Balanced Smooth Animations (Recommended)</option>
-                <option value="minimal">Minimal / Fast Mode</option>
-                <option value="off">Disabled</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">OS Reduced Motion Support</label>
-              <input type="text" readOnly value="Respects prefers-reduced-motion" className="w-full bg-slate-950 border border-slate-800 text-emerald-400 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'timeLocation' && (
+            <>
+              <SelectControl label="Timezone Provider" value={localState.tzProvider} onChange={(v:any) => updateLocal('tzProvider', v)} options={[
+                {label: 'IANA Database', value: 'iana'}, {label: 'Google Maps API', value: 'google'}
+              ]} />
+              <SelectControl label="Geocoding" value={localState.geoProvider} onChange={(v:any) => updateLocal('geoProvider', v)} options={[
+                {label: 'OSM Nominatim', value: 'nominatim'}, {label: 'Mapbox', value: 'mapbox'}
+              ]} />
+            </>
+          )}
 
-        {/* 36. ACCESSIBILITY */}
-        {activeSection === 'accessibility' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Font Scaling & Contrast</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="normal">Standard (WCAG AA Compliant)</option>
-                <option value="high">High Contrast & Large Text</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Color-Blind Safe Mode</label>
-              <input type="text" readOnly value="Enabled (Deuteranopia & Protanopia Friendly)" className="w-full bg-slate-950 border border-slate-800 text-purple-300 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'islamic' && (
+            <>
+              <SliderControl label="Hijri Adjustment" value={config.hijriAdjustmentDays} min={-2} max={2} step={1} onChange={(v:any) => updateConfig({ hijriAdjustmentDays: v })} unit=" days" />
+              <ToggleSwitch label="Important Days Highlights" checked={localState.islamicDays} onChange={(v:any) => updateLocal('islamicDays', v)} />
+              <ToggleSwitch label="Hijri New Month Alerts" checked={localState.hijriNotif} onChange={(v:any) => updateLocal('hijriNotif', v)} />
+            </>
+          )}
 
-        {/* 37. PRIVACY */}
-        {activeSection === 'privacy' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Local Storage Encryption</label>
-              <input type="text" readOnly value="AES Local Encryption Enabled" className="w-full bg-slate-950 border border-slate-800 text-emerald-400 font-bold p-2.5 rounded-xl" />
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">Analytics Privacy</label>
-              <input type="text" readOnly value="Zero Third-Party Tracking" className="w-full bg-slate-950 border border-slate-800 text-blue-300 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'prayerQibla' && (
+            <>
+              <SelectControl label="Prayer Method" value={config.prayerMethod} onChange={(v:any) => updateConfig({ prayerMethod: v })} options={[
+                {label: 'Muslim World League', value: 'MWL'}, {label: 'ISNA', value: 'ISNA'}, {label: 'Umm al-Qura', value: 'Umm_al_Qura'}, {label: 'Karachi', value: 'Karachi'}, {label: 'Egypt', value: 'Egypt'}
+              ]} />
+              <SelectControl label="Asr Juristic" value={config.asrJuristic} onChange={(v:any) => updateConfig({ asrJuristic: v })} options={[
+                {label: 'Standard (Shafii/Maliki)', value: 'standard'}, {label: 'Hanafi', value: 'hanafi'}
+              ]} />
+              <ToggleSwitch label="Qibla Compass Widget" checked={localState.qiblaCompass} onChange={(v:any) => updateLocal('qiblaCompass', v)} />
+            </>
+          )}
 
-        {/* 38. DATA EXPORT */}
-        {activeSection === 'dataExport' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <button
-              onClick={() => {
-                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(config, null, 2));
-                const downloadAnchor = document.createElement('a');
-                downloadAnchor.setAttribute("href", dataStr);
-                downloadAnchor.setAttribute("download", `astro360_config_backup.json`);
-                document.body.appendChild(downloadAnchor);
-                downloadAnchor.click();
-                downloadAnchor.remove();
-              }}
-              className="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/30 text-blue-300 font-bold flex items-center justify-center gap-2 cursor-pointer hover:bg-blue-500/20"
-            >
-              <Download className="w-4 h-4 text-blue-400" /> Export Full JSON Configuration Backup
-            </button>
-            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-slate-400 flex items-center justify-center text-center">
-              Import & restore JSON backup file
-            </div>
-          </div>
-        )}
+          {activeSection === 'aiSettings' && (
+            <>
+              <SelectControl label="AI Provider" value={localState.aiProvider} onChange={(v:any) => updateLocal('aiProvider', v)} options={[
+                {label: 'Google Gemini', value: 'gemini'}, {label: 'Anthropic Claude', value: 'claude'}, {label: 'OpenAI GPT-4', value: 'openai'}
+              ]} />
+              <SelectControl label="Explanation Depth" value={config.predictionDetailLevel} onChange={(v:any) => updateConfig({ predictionDetailLevel: v })} options={[
+                {label: 'Brief', value: 'brief'}, {label: 'Standard', value: 'standard'}, {label: 'Detailed Scholarly', value: 'detailed'}
+              ]} />
+            </>
+          )}
 
-        {/* 39. API ENGINE STATUS */}
-        {activeSection === 'apiEngine' && (
-          <div className="space-y-3 text-xs font-mono">
-            <label className="text-slate-400 block">API Engine Operational Status</label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {[
-                { name: 'Swiss Ephemeris', status: 'Active (100% Math Verified)' },
-                { name: 'UmmahAPI', status: 'Live (Key Configured)' },
-                { name: 'Aladhan API', status: 'Live Backup' },
-                { name: 'Kalimat NLP', status: 'Live (Key Configured)' },
-                { name: 'Bhagavad Gita API', status: 'Live' },
-                { name: 'NASA Telemetry', status: 'Live' }
-              ].map((api) => (
-                <div key={api.name} className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-                  <div className="font-bold text-white">{api.name}</div>
-                  <div className="text-[10px] text-emerald-400">{api.status}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+          {activeSection === 'reportSettings' && (
+            <>
+              <SelectControl label="Export Format" value={localState.reportFormat} onChange={(v:any) => updateLocal('reportFormat', v)} options={[
+                {label: 'PDF Document', value: 'pdf'}, {label: 'HTML Web', value: 'html'}, {label: 'JSON Data', value: 'json'}
+              ]} />
+              <ToggleSwitch label="Include Watermark" checked={localState.reportWatermark} onChange={(v:any) => updateLocal('reportWatermark', v)} />
+            </>
+          )}
 
-        {/* 40. DEVELOPER */}
-        {activeSection === 'developer' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <div>
-              <label className="text-slate-400 block mb-1">Debug Execution Mode</label>
-              <select className="w-full bg-slate-950 border border-slate-700 text-white p-2.5 rounded-xl">
-                <option value="off">Off (Production Execution)</option>
-                <option value="verbose">Verbose Orbital Calculation Trace</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-slate-400 block mb-1">State Hash</label>
-              <input type="text" readOnly value="0x89F4A12E7B" className="w-full bg-slate-950 border border-slate-800 text-amber-300 font-bold p-2.5 rounded-xl" />
-            </div>
-          </div>
-        )}
+          {activeSection === 'dashboard' && (
+            <>
+              <SelectControl label="Layout Preset" value={localState.dashPreset} onChange={(v:any) => updateLocal('dashPreset', v)} options={[
+                {label: 'Vedic Pro', value: 'vedic'}, {label: 'Western Pro', value: 'western'}, {label: 'Islamic Suite', value: 'islamic'}
+              ]} />
+              <SelectControl label="UI Density" value={config.uiDensity} onChange={(v:any) => updateConfig({ uiDensity: v })} options={[
+                {label: 'Comfortable', value: 'comfortable'}, {label: 'Compact', value: 'compact'}, {label: 'Spacious', value: 'spacious'}
+              ]} />
+              <ToggleSwitch label="Auto-refresh Widgets" checked={localState.dashAutoRef} onChange={(v:any) => updateLocal('dashAutoRef', v)} />
+            </>
+          )}
 
-        {/* 41. PRESETS */}
-        {activeSection === 'presets' && (
-          <div className="space-y-3 text-xs font-mono">
-            <label className="text-slate-400 block">Load Quick Preset System Configuration</label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {[
-                { name: 'Vedic Pro', sys: 'vedic', aya: 'lahiri' },
-                { name: 'Western Pro', sys: 'western', aya: 'lahiri' },
-                { name: 'Panchang & Muhurta', sys: 'vedic', aya: 'raman' },
-                { name: 'Islamic Suite', sys: 'vedic', aya: 'lahiri' }
-              ].map((p) => (
-                <button
-                  key={p.name}
-                  onClick={() => {
-                    updateConfig({ astrologySystem: p.sys as any, ayanamsa: p.aya as any });
-                    handleApplySettings();
-                  }}
-                  className="p-3 rounded-xl bg-slate-950 border border-blue-500/30 text-blue-300 font-bold hover:bg-blue-500/20 transition-all cursor-pointer text-center"
-                >
-                  {p.name}
-                </button>
-              ))}
+          {activeSection === 'notifications' && (
+            <>
+              <InputControl label="Quiet Hours" value={localState.notifQuietHours} onChange={(v:any) => updateLocal('notifQuietHours', v)} description="Format: HH:MM-HH:MM" />
+              <ToggleSwitch label="Play Sounds" checked={localState.notifSound} onChange={(v:any) => updateLocal('notifSound', v)} />
+            </>
+          )}
+
+          {activeSection === 'email' && (
+            <>
+              <InputControl label="Email Address" type="email" value={localState.emailAddress} onChange={(v:any) => updateLocal('emailAddress', v)} />
+              <SelectControl label="Report Frequency" value={localState.emailFreq} onChange={(v:any) => updateLocal('emailFreq', v)} options={[
+                {label: 'Weekly', value: 'weekly'}, {label: 'Monthly', value: 'monthly'}, {label: 'Disabled', value: 'disabled'}
+              ]} />
+            </>
+          )}
+
+          {activeSection === 'theme' && (
+            <>
+              <SelectControl label="Color Palette" value={config.themeMode} onChange={(v:any) => updateConfig({ themeMode: v })} options={[
+                {label: 'Cosmic (Default)', value: 'cosmic'}, {label: 'Dark', value: 'dark'}, {label: 'Gold', value: 'gold'}
+              ]} />
+              <SliderControl label="Border Radius" value={localState.themeRadius} min={0} max={24} step={4} onChange={(v:any) => updateLocal('themeRadius', v)} unit="px" />
+            </>
+          )}
+
+          {activeSection === 'animation' && (
+            <>
+              <ToggleSwitch label="Reduced Motion" checked={config.reducedMotion} onChange={(v:any) => updateConfig({ reducedMotion: v })} />
+              <SliderControl label="Transition Speed" value={localState.animSpeed} min={100} max={1000} step={100} onChange={(v:any) => updateLocal('animSpeed', v)} unit="ms" />
+              <ToggleSwitch label="Particle Effects" checked={localState.animParticles} onChange={(v:any) => updateLocal('animParticles', v)} />
+            </>
+          )}
+
+          {activeSection === 'accessibility' && (
+            <>
+              <SliderControl label="Font Scaling" value={localState.fontScaling} min={80} max={150} step={10} onChange={(v:any) => updateLocal('fontScaling', v)} unit="%" />
+              <SelectControl label="Color Blind Mode" value={localState.colorBlind} onChange={(v:any) => updateLocal('colorBlind', v)} options={[
+                {label: 'None', value: 'none'}, {label: 'Protanopia', value: 'protanopia'}, {label: 'Deuteranopia', value: 'deuteranopia'}
+              ]} />
+              <ToggleSwitch label="Keyboard Nav Highlight" checked={localState.keyboardNav} onChange={(v:any) => updateLocal('keyboardNav', v)} />
+            </>
+          )}
+
+          {activeSection === 'privacy' && (
+            <>
+              <ToggleSwitch label="End-to-End Encryption" checked={localState.privEncrypt} onChange={(v:any) => updateLocal('privEncrypt', v)} />
+              <ToggleSwitch label="Analytics Opt-out" checked={localState.privAnalytics} onChange={(v:any) => updateLocal('privAnalytics', v)} />
+              <SelectControl label="Data Retention" value={localState.privDataReten} onChange={(v:any) => updateLocal('privDataReten', v)} options={[
+                {label: '30 Days', value: '30'}, {label: '90 Days', value: '90'}, {label: 'Indefinite', value: 'indefinite'}
+              ]} />
+            </>
+          )}
+
+          {activeSection === 'dataExport' && (
+            <div className="col-span-1 md:col-span-2 lg:col-span-3 flex flex-col gap-4">
+              <button className="p-4 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center gap-2 hover:bg-slate-800 text-blue-400 font-bold transition-all">
+                <Download className="w-5 h-5" /> Export Profile Data (JSON)
+              </button>
+              <button className="p-4 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center gap-2 hover:bg-slate-800 text-emerald-400 font-bold transition-all">
+                <Upload className="w-5 h-5" /> Import Profile Data (JSON)
+              </button>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* 42. RESET & BACKUP */}
-        {activeSection === 'resetBackup' && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-            <button
-              onClick={resetConfig}
-              className="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-300 font-bold flex items-center justify-center gap-2 cursor-pointer hover:bg-red-500/20"
-            >
-              <RotateCcw className="w-4 h-4 text-red-400" /> Factory Reset All Settings
-            </button>
-            <button
-              onClick={() => handleApplySettings()}
-              className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 font-bold flex items-center justify-center gap-2 cursor-pointer hover:bg-emerald-500/20"
-            >
-              <Check className="w-4 h-4 text-emerald-400" /> Save & Backup Configuration State
-            </button>
-          </div>
-        )}
+          {activeSection === 'apiEngine' && (
+            <div className="col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="p-4 rounded-xl bg-slate-900 border border-slate-700 flex flex-col items-center justify-center gap-2">
+                <StatusDot status="green" />
+                <span className="text-xs font-bold text-slate-300">Ephemeris Engine</span>
+                <span className="text-[10px] text-slate-500">12ms latency</span>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-900 border border-slate-700 flex flex-col items-center justify-center gap-2">
+                <StatusDot status="green" />
+                <span className="text-xs font-bold text-slate-300">Geocoding API</span>
+                <span className="text-[10px] text-slate-500">Online</span>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-900 border border-slate-700 flex flex-col items-center justify-center gap-2">
+                <StatusDot status="yellow" />
+                <span className="text-xs font-bold text-slate-300">AI Provider</span>
+                <span className="text-[10px] text-slate-500">Rate limited (Gemini)</span>
+              </div>
+              <div className="p-4 rounded-xl bg-slate-900 border border-slate-700 flex flex-col items-center justify-center gap-2">
+                <StatusDot status="green" />
+                <span className="text-xs font-bold text-slate-300">Sync Service</span>
+                <span className="text-[10px] text-slate-500">Synced 2 mins ago</span>
+              </div>
+            </div>
+          )}
 
-        {/* FOOTER ACTION BAR */}
-        <div className="flex items-center justify-between border-t border-slate-800 pt-4">
-          <span className="text-xs font-mono text-slate-400">
-            Changes apply reactively across all ASTRO360 calculation engines.
-          </span>
-          <button
-            onClick={handleApplySettings}
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-mono text-xs font-bold transition-all shadow-lg shadow-blue-500/20 cursor-pointer flex items-center gap-2"
-          >
-            <Check className="w-4 h-4 text-white" />
-            Apply & Save Section Settings
-          </button>
+          {activeSection === 'developer' && (
+            <>
+              <ToggleSwitch label="Debug Mode" checked={localState.devDebug} onChange={(v:any) => updateLocal('devDebug', v)} />
+              <ToggleSwitch label="Performance Profiler" checked={localState.devProf} onChange={(v:any) => updateLocal('devProf', v)} />
+              <div className="p-3 bg-slate-900 border border-slate-700 rounded-xl overflow-hidden">
+                <span className="text-xs font-bold text-slate-400">Config State Hash</span>
+                <div className="text-[10px] font-mono text-emerald-400 mt-1 break-all">{btoa(JSON.stringify(config)).substring(0, 32)}...</div>
+              </div>
+            </>
+          )}
+
+          {activeSection === 'presets' && (
+            <div className="col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <button className="p-4 rounded-xl bg-slate-900 border border-amber-500/30 hover:bg-amber-900/20 text-left transition-colors">
+                <div className="text-amber-400 font-bold mb-1">Traditional Vedic Scholar</div>
+                <div className="text-xs text-slate-400">Lahiri, North Indian chart, 5-level Dasha.</div>
+              </button>
+              <button className="p-4 rounded-xl bg-slate-900 border border-blue-500/30 hover:bg-blue-900/20 text-left transition-colors">
+                <div className="text-blue-400 font-bold mb-1">Modern Western Astrologer</div>
+                <div className="text-xs text-slate-400">Tropical, Placidus, Aspect grid emphasis.</div>
+              </button>
+            </div>
+          )}
+
+          {activeSection === 'resetBackup' && (
+            <div className="col-span-1 md:col-span-2 lg:col-span-3 flex flex-col gap-4">
+              <button onClick={() => resetConfig()} className="p-4 rounded-xl bg-red-950/40 border border-red-500/50 flex items-center justify-center gap-2 hover:bg-red-900/60 text-red-400 font-bold transition-all shadow-lg shadow-red-500/10">
+                <AlertCircle className="w-5 h-5" /> Factory Reset All Settings
+              </button>
+              <div className="text-xs text-center text-slate-500">This action cannot be undone. All custom layouts and preferences will be lost.</div>
+            </div>
+          )}
+
         </div>
       </div>
     </div>
