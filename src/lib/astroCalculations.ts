@@ -94,13 +94,18 @@ const DASHA_LORDS = [
 ];
 
 /**
- * Calculates Lahiri Ayanamsha for a given Date (Chitra Paksha Ayanamsha)
+ * Calculates Ayanamsha for a given Date
  */
-export function calculateLahiriAyanamsha(date: Date = new Date()): number {
+export function calculateAyanamsha(date: Date = new Date(), mode: 'lahiri' | 'raman' | 'kp' | 'fagan_bradley' | 'yukteshwar' | 'true_chitrapaksha' = 'lahiri'): number {
   const year = date.getUTCFullYear();
-  // Standard Lahiri Ayanamsha: 23° 51' in 2000 + 50.29" per year
-  const t = (year - 2000);
-  return 23.85 + (t * 0.01397);
+  const fracYear = year + date.getUTCMonth() / 12.0 + date.getUTCDate() / 365.25;
+  let base2000 = 23.85;
+  if (mode === 'raman') base2000 = 22.42;
+  else if (mode === 'kp') base2000 = 23.82;
+  else if (mode === 'fagan_bradley') base2000 = 24.74;
+  else if (mode === 'yukteshwar') base2000 = 21.05;
+  else if (mode === 'true_chitrapaksha') base2000 = 23.856;
+  return base2000 + ((fracYear - 2000.0) * 0.01397);
 }
 
 /**

@@ -4,9 +4,8 @@
  */
 
 export type ZodiacSystem = 'tropical' | 'sidereal';
-export type AyanamsaMode = 'lahiri' | 'raman' | 'kp' | 'fagan_bradley' | 'yukteshwar';
-export type HouseSystem = 'placidus' | 'wholesign' | 'equal' | 'koch' | 'porphyry' | 'regiomontanus' | 'campanus';
-
+export type AyanamsaMode = 'lahiri' | 'raman' | 'kp' | 'fagan_bradley' | 'yukteshwar' | 'true_chitrapaksha';
+export type HouseSystem = 'placidus' | 'wholesign' | 'equal' | 'koch' | 'porphyry' | 'regiomontanus' | 'campanus' | 'meridian';
 export interface CelestialBodyPosition {
   id: string;
   name: string;
@@ -61,6 +60,7 @@ export class AstronomyEngine {
     else if (mode === 'kp') base2000 = 23.82;
     else if (mode === 'fagan_bradley') base2000 = 24.74;
     else if (mode === 'yukteshwar') base2000 = 21.05;
+    else if (mode === 'true_chitrapaksha') base2000 = 23.856; // High precision Lahiri true chitrapaksha
 
     // Annual precession rate ~0.01397°/year (50.29 arcseconds/year)
     const ayanamsa = base2000 + (fracYear - 2000.0) * 0.01397;
