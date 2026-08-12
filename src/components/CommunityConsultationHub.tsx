@@ -65,24 +65,31 @@ const INITIAL_THREADS: ForumThread[] = [
   }
 ];
 
+import OwnPayPaymentModal from './OwnPayPaymentModal';
+import type { OwnPayTransaction } from '../lib/ownpayEngine';
+
 export default function CommunityConsultationHub() {
   const [activeTab, setActiveTab] = useState<'astrologers' | 'forum'>('astrologers');
   const [bookingAstrologer, setBookingAstrologer] = useState<Astrologer | null>(null);
   const [selectedFormat, setSelectedFormat] = useState<'video' | 'chat' | 'written'>('video');
   const [selectedSlot, setSelectedSlot] = useState<string>('Tomorrow 10:00 AM');
   const [isBooked, setIsBooked] = useState<boolean>(false);
+  const [showOwnPayModal, setShowOwnPayModal] = useState<boolean>(false);
+  const [lastTransaction, setLastTransaction] = useState<OwnPayTransaction | null>(null);
 
   // New Question State
   const [showQuestionModal, setShowQuestionModal] = useState<boolean>(false);
   const [newQuestionText, setNewQuestionText] = useState<string>('');
   const [forumThreads, setForumThreads] = useState<ForumThread[]>(INITIAL_THREADS);
 
-  const handleConfirmBooking = () => {
+  const handleOpenOwnPayCheckout = () => {
+    setShowOwnPayModal(true);
+  };
+
+  const handleOwnPaySuccess = (tx: OwnPayTransaction) => {
+    setLastTransaction(tx);
+    setShowOwnPayModal(false);
     setIsBooked(true);
-    setTimeout(() => {
-      setIsBooked(false);
-      setBookingAstrologer(null);
-    }, 2500);
   };
 
   const handlePostQuestion = (e: React.FormEvent) => {
@@ -300,25 +307,62 @@ export default function CommunityConsultationHub() {
                   </div>
 
                   <button
-                    onClick={handleConfirmBooking}
-                    className="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-mono font-bold flex items-center justify-center gap-2 cursor-pointer transition-all shadow-lg mt-2"
+                    onClick={handleOpenOwnPayCheckout}
+                    className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 text-xs font-mono font-bold flex items-center justify-center gap-2 cursor-pointer transition-all shadow-lg shadow-amber-500/20 mt-2"
                   >
-                    <CheckCircle2 className="w-4 h-4" /> Confirm Booking ({bookingAstrologer.fee})
+                    <CheckCircle2 className="w-4 h-4 text-slate-950" /> Pay {bookingAstrologer.fee} via OwnPay Gateway Protocol
                   </button>
                 </>
               ) : (
-                <div className="py-8 text-center space-y-3">
+                <div className="py-6 text-center space-y-3 font-mono">
                   <CheckCircle2 className="w-12 h-12 text-emerald-400 mx-auto animate-bounce" />
-                  <h3 className="text-base font-bold text-white font-mono">1-on-1 Consultation Booked!</h3>
+                  <h3 className="text-base font-bold text-white">1-on-1 Consultation Booked via OwnPay!</h3>
                   <p className="text-xs text-slate-300">
-                    Your appointment with <strong className="text-purple-300">{bookingAstrologer.name}</strong> is confirmed for <strong className="text-emerald-400">{selectedSlot}</strong>.
+                    Your appointment with <strong className="text-amber-300">{bookingAstrologer.name}</strong> is confirmed for <strong className="text-emerald-400">{selectedSlot}</strong>.
                   </p>
+                  {lastTransaction && (
+                    <div className="p-3 rounded-2xl bg-[#0B1220] border border-emerald-500/30 text-[10px] text-left space-y-1 text-slate-300">
+                      <div className="flex items-center justify-between text-emerald-400 font-bold border-b border-white/10 pb-1">
+                        <span>OwnPay Protocol Receipt</span>
+                        <span>Status: Verified</span>
+                      </div>
+                      <p><span className="text-slate-400">Payment ID:</span> <span className="text-white font-mono">{lastTransaction.paymentId}</span></p>
+                      <p className="truncate"><span className="text-slate-400">Tx Hash:</span> <span className="text-amber-300 font-mono">{lastTransaction.txHash}</span></p>
+                    </div>
+                  )}
+                  <button
+                    onClick={() => {
+                      setIsBooked(false);
+                      setBookingAstrologer(null);
+                    }}
+                    className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-mono font-bold cursor-pointer transition-all"
+                  >
+                    Done & Close
+                  </button>
                 </div>
               )}
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* OWNPAY PAYMENT MODAL PROTOCOL */}
+      {bookingAstrologer && (
+        <OwnPayPaymentModal
+          isOpen={showOwnPayModal}
+          onClose={() => setShowOwnPayModal(false)}
+          onPaymentSuccess={handleOwnPaySuccess}
+          bookingDetails={{
+            astrologerName: bookingAstrologer.name,
+            specialty: bookingAstrologer.specialty,
+            avatar: bookingAstrologer.avatar,
+            format: selectedFormat,
+            slot: selectedSlot,
+            feeAmount: parseInt(bookingAstrologer.fee.replace(/[^0-9]/g, '')) || 45,
+            feeCurrency: 'USD'
+          }}
+        />
+      )}
 
       {/* ASK QUESTION MODAL */}
       <AnimatePresence>
