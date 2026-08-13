@@ -59,6 +59,7 @@ import PanchangDeitiesEngine from './PanchangDeitiesEngine';
 import CosmicCompassVisualizer from './CosmicCompassVisualizer';
 import AstroCartographyMatrix from './AstroCartographyMatrix';
 import TarikIslamCosmicPassport from './TarikIslamCosmicPassport';
+import DashboardSidebar from './ui/DashboardSidebar';
 import { useGlobalConfig } from '../context/GlobalConfigContext';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
@@ -240,8 +241,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
   // Selected Planet for Detail Modal
   const [selectedPlanet, setSelectedPlanet] = useState<PlanetPosition | null>(null);
 
-  // Daily Horoscope Sign Selection State
-  const [selectedHoroscopeSign, setSelectedHoroscopeSign] = useState<string>('Leo');
+
+  const [activeCategory, setActiveCategory] = useState('overview');
+
+  // Local Component States
+  const [selectedHoroscopeSign, setSelectedHoroscopeSign] = useState<string>('Aries');
   const selectedHoroscopeInsight = useMemo(() => DAILY_HOROSCOPE_DICTIONARY[selectedHoroscopeSign] || DAILY_HOROSCOPE_DICTIONARY['Leo'], [selectedHoroscopeSign]);
 
   // Global Search State
@@ -557,343 +561,951 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
     return { sun, moon, jupiter };
   }, [planetPositions]);
 
+  // Interactive Recent Activity Log
+  const recentActivities = [
+    { 
+      id: 1, 
+      text: `Kundli Ephemeris Recalculated for ${targetProfile.name}`, 
+      time: 'Just now', 
+      type: 'calc', 
+      tab: 'birth-chart',
+      badge: 'Active Target' 
+    },
+    { 
+      id: 2, 
+      text: `Abhijit Muhurta Window Synchronized (${panchang.abhijitMuhurta})`, 
+      time: 'Today', 
+      type: 'panchang', 
+      tab: 'horoscope',
+      badge: 'Panchang' 
+    },
+    { 
+      id: 3, 
+      text: `Active Dasha Phase Verified (${dashaInfo.mahadasha} - ${dashaInfo.antardasha})`, 
+      time: 'Today', 
+      type: 'dasha', 
+      tab: 'live-diagnostics',
+      badge: 'Dasha Sync' 
+    },
+    { 
+      id: 4, 
+      text: 'Ashta Koota 36-Guna Compatibility Engine Standby', 
+      time: '2h ago', 
+      type: 'love', 
+      tab: 'compatibility',
+      badge: 'Ready' 
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-[#09090b] text-[#fafafa] font-sans overflow-hidden flex relative selection:bg-blue-500/30">
+    <div className="flex h-screen w-full relative">
+      <DashboardSidebar activeCategory={activeCategory} onSelectCategory={setActiveCategory} />
+      <motion.div 
+        initial="hidden"
+        animate="show"
+        variants={staggerContainer}
+        className="flex-1 bg-[#0B1220] text-[#F8FAFC] font-sans overflow-y-auto custom-scrollbar p-4 sm:p-8 lg:p-12 pb-28 text-left relative transform-gpu"
+      >
+        {/* 🌌 INTERACTIVE CANVAS PARTICLE STARFIELD */}
       <CosmicParticleBackground />
 
-      {/* SIDEBAR NAVIGATION (TypeUI Style) */}
-      <nav className="hidden md:flex w-64 h-screen flex-col bg-[#09090b]/80 backdrop-blur-2xl border-r border-white/5 p-4 z-20 relative shadow-2xl">
-        <div className="flex items-center gap-3 mb-10 px-2 mt-4">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 border border-white/10">
-            <Compass className="w-4 h-4 text-white" />
-          </div>
+      <div className="max-w-7xl mx-auto space-y-6 relative z-10">
+
+        {/* SECTION 1: GLOBAL HEADER WITH SEARCH & ACCURATE LOCAL TIME */}
+        <motion.div variants={staggerItem} className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 p-4 sm:p-6 rounded-3xl bg-[#111827] border border-white/10 shadow-2xl backdrop-blur-xl">
           <div>
-            <h1 className="text-sm font-bold tracking-tight text-white leading-tight">ASTRO360</h1>
-            <span className="text-[10px] text-zinc-500 font-mono tracking-widest uppercase">System Omni</span>
-          </div>
-        </div>
-
-        <div className="flex-1 overflow-y-auto no-scrollbar space-y-6">
-          <div className="space-y-1">
-            <h2 className="text-[10px] font-semibold text-zinc-500 uppercase tracking-widest px-2 mb-2">Core Tools</h2>
-            {[
-              { id: 'birth-chart', title: 'Birth Chart', icon: <Compass className="w-4 h-4" /> },
-              { id: 'horoscope', title: 'Horoscope', icon: <Sun className="w-4 h-4" /> },
-              { id: 'compatibility', title: 'Compatibility', icon: <Heart className="w-4 h-4" /> },
-              { id: 'chat', title: 'AI Oracle', icon: <Bot className="w-4 h-4" /> },
-              { id: 'tools-catalog', title: 'Catalog (150+)', icon: <Layers className="w-4 h-4" /> },
-            ].map((tool) => (
-              <button
-                key={tool.id}
-                onClick={() => onNavigate(tool.id)}
-                className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer"
-              >
-                {tool.icon}
-                {tool.title}
-              </button>
-            ))}
-          </div>
-
-          <div className="space-y-1">
-            <h2 className="text-[10px] font-semibold text-zinc-500 uppercase tracking-widest px-2 mb-2">Intelligence</h2>
-            {[
-              { id: 'islamic-suite', title: 'Islamic Hub', icon: <Moon className="w-4 h-4" /> },
-              { id: 'dream-interpreter', title: 'Dream Engine', icon: <CloudMoon className="w-4 h-4" /> },
-              { id: 'remedies', title: 'Remedies', icon: <Award className="w-4 h-4" /> },
-              { id: 'live-diagnostics', title: 'Diagnostics', icon: <Activity className="w-4 h-4" /> },
-              { id: 'report-generator', title: 'Dossier Report', icon: <FileText className="w-4 h-4" /> },
-            ].map((tool) => (
-              <button
-                key={tool.id}
-                onClick={() => onNavigate(tool.id)}
-                className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer"
-              >
-                {tool.icon}
-                {tool.title}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="pt-4 border-t border-white/5 mt-auto">
-          <button
-            onClick={() => onNavigate('consultation-hub')}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-zinc-100 hover:bg-white text-black text-xs font-bold rounded-xl transition-colors cursor-pointer"
-          >
-            <Users className="w-4 h-4" />
-            Book Consultation
-          </button>
-        </div>
-      </nav>
-
-      {/* MAIN CONTENT AREA */}
-      <main className="flex-1 h-screen overflow-y-auto custom-scrollbar relative z-10 p-4 md:p-8 lg:p-10 pb-24">
-        <div className="max-w-6xl mx-auto space-y-6">
-          
-          {/* TOP BAR: PROFILE, SEARCH, TIME */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-3xl bg-[#09090b]/40 backdrop-blur-xl border border-white/10">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center text-zinc-400">
-                <User className="w-5 h-5" />
-              </div>
-              <div>
-                <h2 className="text-sm font-bold text-white tracking-tight">{targetProfile.name}</h2>
-                <p className="text-[10px] text-zinc-500 font-mono flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                  System Active • {currentTimeStr} {timeZoneAbbr}
-                </p>
-              </div>
+            <div className="flex items-center gap-2.5">
+              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+                <Compass className="w-6 h-6 text-[#2563EB]" /> ASTRO360 OMNI
+              </h1>
+              <span className="text-[10px] font-mono text-[#22C55E] bg-[#22C55E]/10 px-2.5 py-0.5 rounded-full border border-[#22C55E]/30 font-semibold flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] animate-pulse" />
+                SYSTEM ACTIVE
+              </span>
             </div>
+            <p className="text-xs text-[#94A3B8] font-mono pt-1">
+              {todayDateStr} • <span className="text-[#06B6D4] font-semibold">{currentTimeStr || '12:00:00 PM'}</span> <span className="text-white font-bold">{timeZoneAbbr}</span>
+            </p>
+          </div>
 
-            <div className="relative w-full md:w-80">
-              <Search className="w-4 h-4 text-zinc-500 absolute left-3 top-2.5" />
+          {/* GLOBAL SEARCH WITH KEYBOARD NAV & EMPTY STATE */}
+          <div className="relative w-full lg:w-96">
+            <div className="relative">
+              <Search className="w-4 h-4 text-[#94A3B8] absolute left-3.5 top-3" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
-                onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
+                onBlur={() => setTimeout(() => setIsSearchFocused(false), 250)}
                 onKeyDown={handleSearchKeyDown}
-                placeholder="Search tools, charts, remedies..."
-                className="w-full pl-9 pr-4 py-2 rounded-xl bg-black/50 border border-white/10 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/50 transition-all"
+                placeholder="Search 150+ tools, charts, remedies..."
+                className="w-full pl-10 pr-16 py-2.5 rounded-2xl bg-[#0B1220] border border-white/10 text-xs text-[#F8FAFC] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] transition-all"
               />
-              {isSearchFocused && searchQuery.trim().length > 0 && (
-                <div className="absolute top-11 left-0 right-0 z-50 rounded-xl bg-[#09090b] border border-white/10 shadow-2xl p-1 overflow-hidden backdrop-blur-3xl">
-                  {SEARCH_RESULTS.length > 0 ? (
-                    SEARCH_RESULTS.map((res, i) => (
+              <div className="absolute right-3 top-2.5 flex items-center gap-1">
+                <kbd className="text-[9px] font-mono text-[#94A3B8] bg-white/10 px-1.5 py-0.5 rounded border border-white/10">ESC</kbd>
+              </div>
+            </div>
+
+            {/* FIX 5 & 6: SEARCH DROPDOWN & EMPTY STATE */}
+            {isSearchFocused && searchQuery.trim().length > 0 && (
+              <div className="absolute top-12 left-0 right-0 z-50 rounded-2xl bg-[#111827] border border-white/10 shadow-2xl overflow-hidden p-2 space-y-1 backdrop-blur-2xl">
+                {SEARCH_RESULTS.length > 0 ? (
+                  <>
+                    <div className="px-3 py-1.5 text-[10px] font-mono text-[#94A3B8] flex items-center justify-between border-b border-white/10">
+                      <span>Matching Tools ({SEARCH_RESULTS.length})</span>
+                      <span className="text-[#06B6D4]">Press Enter ↵ to Jump</span>
+                    </div>
+                    {SEARCH_RESULTS.map((res, i) => (
                       <button
                         key={i}
                         onClick={() => { onNavigate(res.tab); setSearchQuery(''); setIsSearchFocused(false); }}
-                        className="w-full p-2 rounded-lg hover:bg-white/5 flex items-center justify-between text-left cursor-pointer transition-colors"
+                        className={`w-full p-2.5 rounded-xl hover:bg-white/10 flex items-center justify-between text-xs text-left cursor-pointer transition-colors ${i === 0 ? 'bg-white/5 border border-white/10' : ''}`}
                       >
-                        <span className="text-xs text-white font-medium">{res.title}</span>
-                        <span className="text-[9px] text-zinc-500 font-mono uppercase">{res.cat}</span>
+                        <div>
+                          <span className="font-semibold text-[#F8FAFC] block">{res.title}</span>
+                          <span className="text-[10px] text-[#94A3B8]">{res.desc}</span>
+                        </div>
+                        <span className="text-[10px] font-mono text-[#06B6D4] bg-[#06B6D4]/10 px-2 py-0.5 rounded-md border border-[#06B6D4]/20 shrink-0">
+                          {res.cat}
+                        </span>
                       </button>
-                    ))
-                  ) : (
-                    <div className="p-3 text-center text-xs text-zinc-500">No results found.</div>
-                  )}
-                </div>
-              )}
+                    ))}
+                  </>
+                ) : (
+                  <div className="p-6 text-center space-y-3">
+                    <AlertTriangle className="w-6 h-6 text-[#F59E0B] mx-auto" />
+                    <p className="text-xs text-[#94A3B8]">
+                      No tools found matching "<span className="text-white font-semibold">{searchQuery}</span>"
+                    </p>
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="px-4 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-mono text-white cursor-pointer transition-colors"
+                    >
+                      Clear Search
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* READINGS BUTTON */}
+          <div className="flex items-center gap-3 w-full lg:w-auto justify-end flex-wrap sm:flex-nowrap">
+            <ShimmerButton
+              onClick={() => onNavigate('chat')}
+              shimmerColor="#06B6D4"
+              background="rgba(37, 99, 235, 0.9)"
+            >
+              <Bot className="w-4 h-4 text-cyan-200" /> AI Oracle
+            </ShimmerButton>
+          </div>
+        </motion.div>
+
+        {/* 🔮 FIRST & PROMINENT SECTION: DAILY HOROSCOPE & ZODIAC PREDICTIONS */}
+        <motion.div variants={staggerItem} className="p-6 sm:p-8 rounded-[2rem] bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_0_rgba(255,255,255,0.05)] space-y-5 text-left relative overflow-hidden ring-1 ring-white/5 hover:border-amber-500/30 hover:shadow-[0_8px_32px_0_rgba(245,158,11,0.15)] transition-all duration-500 group">
+          {/* Subtle animated background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+          
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4 relative z-10">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/10 border border-amber-500/40 flex items-center justify-center shadow-[0_0_20px_rgba(245,158,11,0.2)] group-hover:scale-105 transition-transform duration-500">
+                <Sun className="w-6 h-6 text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
+              </div>
+              <div>
+                <h2 className="text-lg sm:text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-300 tracking-tight flex items-center gap-2">
+                  Daily Cosmic Intelligence
+                </h2>
+                <p className="text-xs text-amber-300/80 font-mono font-medium tracking-wide">
+                  Real-time Ephemeris Telemetry • {todayDateStr}
+                </p>
+              </div>
             </div>
-            
-            <div className="flex items-center gap-2">
-              <GlobalLanguageSelector />
+
+            <div className="flex items-center gap-3 shrink-0">
+              <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-full border border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.1)]">
+                Score: {selectedHoroscopeInsight.overallScore}% Excellent
+              </span>
+              <button
+                onClick={() => onNavigate('horoscope')}
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500/10 to-purple-500/10 hover:from-amber-500/20 hover:to-purple-500/20 text-amber-300 border border-amber-500/30 hover:border-amber-400 text-xs font-mono font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 shadow-lg hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:-translate-y-0.5 active:translate-y-0"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Unlock Full Forecast
+              </button>
             </div>
           </div>
 
-          {/* BENTO GRID LAYOUT */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[minmax(180px,_auto)]">
-            
-            {/* HERO CARD: DAILY SYNTHESIS (Spans 2 columns) */}
-            <div className="lg:col-span-2 p-6 rounded-3xl bg-gradient-to-br from-black to-zinc-900 border border-white/10 shadow-2xl relative overflow-hidden group">
-              <BorderBeam size={300} duration={12} delay={0} colorFrom="#3b82f6" colorTo="#8b5cf6" />
-              <div className="relative z-10 space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5" /> Daily Synthesis
-                  </span>
-                  <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded border border-emerald-500/20">
-                    Score: {cosmicScoreData.score}
-                  </span>
+          {/* 12 ZODIAC SIGN SELECTOR DOCK */}
+          <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-2 relative z-10">
+            {[
+              { sign: 'Aries', symbol: '♈' },
+              { sign: 'Taurus', symbol: '♉' },
+              { sign: 'Gemini', symbol: '♊' },
+              { sign: 'Cancer', symbol: '♋' },
+              { sign: 'Leo', symbol: '♌' },
+              { sign: 'Virgo', symbol: '♍' },
+              { sign: 'Libra', symbol: '♎' },
+              { sign: 'Scorpio', symbol: '♏' },
+              { sign: 'Sagittarius', symbol: '♐' },
+              { sign: 'Capricorn', symbol: '♑' },
+              { sign: 'Aquarius', symbol: '♒' },
+              { sign: 'Pisces', symbol: '♓' },
+            ].map((z) => {
+              const isSelected = selectedHoroscopeSign === z.sign;
+              return (
+                <button
+                  key={z.sign}
+                  onClick={() => setSelectedHoroscopeSign(z.sign)}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 shrink-0 border ${
+                    isSelected
+                      ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-slate-950 border-transparent shadow-[0_4px_15px_rgba(245,158,11,0.4)] scale-105'
+                      : 'bg-white/5 text-slate-400 border-white/10 hover:text-white hover:border-white/30 hover:bg-white/10'
+                  }`}
+                >
+                  <span className="text-sm drop-shadow-sm">{z.symbol}</span>
+                  <span>{z.sign}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* HOROSCOPE INSIGHT BODY */}
+          <div className="p-5 rounded-[1.25rem] bg-black/30 backdrop-blur-md border border-white/5 space-y-4 relative z-10 group/body hover:border-white/10 transition-colors duration-500">
+            <p className="text-sm sm:text-base text-white leading-relaxed font-medium flex items-start gap-2.5">
+              <Sparkles className="w-5 h-5 text-amber-400 shrink-0 mt-0.5 animate-pulse" />
+              <span>{selectedHoroscopeInsight.theme}</span>
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+              <div className="p-4 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/5 hover:border-cyan-500/30 transition-colors duration-300 space-y-1.5 text-xs group/card">
+                <div className="flex items-center gap-1.5 text-cyan-400 font-mono font-bold group-hover/card:text-cyan-300">
+                  <Briefcase className="w-4 h-4" /> CAREER & FINANCE
                 </div>
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
-                    {selectedHoroscopeInsight.theme}
-                  </h3>
-                  <p className="text-xs text-zinc-400 mt-2 leading-relaxed max-w-xl">
-                    Sun in <strong className="text-zinc-200">{keyPlanetsHighlight.sun?.sign}</strong> ({keyPlanetsHighlight.sun?.house}). 
-                    Moon transiting <strong className="text-zinc-200">{panchang.nakshatra}</strong>. 
-                    {dashaInfo.mahadasha} Mahadasha is active. Maximize focus during <strong className="text-emerald-400">{panchang.abhijitMuhurta}</strong>.
-                  </p>
+                <p className="text-slate-300 text-[11.5px] leading-relaxed group-hover/card:text-white transition-colors">{selectedHoroscopeInsight.career}</p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/5 hover:border-rose-500/30 transition-colors duration-300 space-y-1.5 text-xs group/card">
+                <div className="flex items-center gap-1.5 text-rose-400 font-mono font-bold group-hover/card:text-rose-300">
+                  <Heart className="w-4 h-4" /> LOVE & HARMONY
                 </div>
-                
-                <div className="pt-2 flex flex-wrap gap-2">
-                  <button onClick={() => onNavigate('horoscope')} className="px-4 py-2 rounded-xl bg-white text-black text-xs font-bold hover:bg-zinc-200 transition-colors cursor-pointer">
-                    View Full Forecast
-                  </button>
-                  <button onClick={() => onNavigate('report-generator')} className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-medium hover:bg-white/10 transition-colors cursor-pointer">
-                    Generate Dossier
-                  </button>
+                <p className="text-slate-300 text-[11.5px] leading-relaxed group-hover/card:text-white transition-colors">{selectedHoroscopeInsight.love}</p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/5 hover:border-emerald-500/30 transition-colors duration-300 space-y-1.5 text-xs group/card">
+                <div className="flex items-center gap-1.5 text-emerald-400 font-mono font-bold group-hover/card:text-emerald-300">
+                  <Brain className="w-4 h-4" /> HEALTH & VITALITY
                 </div>
+                <p className="text-slate-300 text-[11.5px] leading-relaxed group-hover/card:text-white transition-colors">{selectedHoroscopeInsight.health}</p>
               </div>
             </div>
 
-            {/* DIAGNOSTICS & REMEDIES BENTO */}
-            <div className="p-5 rounded-3xl bg-[#09090b] border border-red-500/30 flex flex-col justify-between shadow-xl">
-              <div className="space-y-3">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-red-400 flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5" /> Live Diagnostic
-                </span>
-                <p className="text-xs text-zinc-300 font-medium leading-relaxed">
-                  {dynamicDiagnostics.what}
+            <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+              <div className="flex items-center gap-4">
+                <span className="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg">Lucky Number: <strong className="text-amber-300 font-bold text-xs">{selectedHoroscopeInsight.luckyNumber}</strong></span>
+                <span className="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg">Lucky Color: <strong className="text-amber-300 font-bold text-xs">{selectedHoroscopeInsight.luckyColor}</strong></span>
+              </div>
+              <span className="flex items-center gap-1.5 bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 px-2.5 py-1 rounded-lg">Transit Energy: <strong className="font-bold text-xs">Sun in {keyPlanetsHighlight.sun?.sign || 'Leo'}</strong></span>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* 👑 TARIK ISLAM COSMIC PASSPORT & PERSONALIZED IDENTITY HEADER */}
+        <motion.div variants={staggerItem}>
+          <TarikIslamCosmicPassport userProfile={userProfile} onEditProfile={() => setIsTargetModalOpen(true)} />
+        </motion.div>
+
+        <AstrologyTargetProfileModal
+          isOpen={isTargetModalOpen}
+          onClose={() => setIsTargetModalOpen(false)}
+          onSaveProfile={(prof) => {
+            setTargetProfile(prof);
+            if (onUpdateProfile) {
+              onUpdateProfile({
+                ...userProfile,
+                name: prof.name,
+                dob: prof.dob,
+                time: prof.time,
+                location: prof.location,
+              });
+            }
+          }}
+          currentProfile={userProfile}
+        />
+
+        {/* 🌐 RELIGION PERSPECTIVE & LANGUAGE SELECTOR BAR */}
+        <motion.div variants={staggerItem} className="p-4 sm:p-5 rounded-3xl bg-[#111827] border border-white/10 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs font-sans">
+          {/* Religion View Selector */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+            <span className="font-bold text-amber-400 font-mono flex items-center gap-1.5 shrink-0">
+              <Globe2 className="w-4 h-4 text-amber-400" /> {i18n.viewByReligion}
+            </span>
+            <div className="flex overflow-x-auto no-scrollbar pb-1 sm:pb-0 gap-1.5 max-w-full">
+              {[
+                { id: 'universal', label: '🌐 All Systems', badge: 'Multi-Faith' },
+                { id: 'islamic', label: '🕌 Islamic (النُّجوم)', badge: 'Sunnah' },
+                { id: 'vedic', label: '🕉️ Vedic (ज्योतिष)', badge: 'Sidereal' },
+                { id: 'western', label: '⭐ Western', badge: 'Tropical' },
+                { id: 'chinese', label: '☯️ BaZi (八字)', badge: 'Wu Xing' },
+                { id: 'kabbalah', label: '✡️ Kabbalah', badge: 'Sephirot' },
+              ].map((rel) => (
+                <button
+                  key={rel.id}
+                  onClick={() => setSelectedReligionView(rel.id as any)}
+                  className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap ${
+                    selectedReligionView === rel.id
+                      ? 'bg-amber-500/25 text-amber-300 border border-amber-500/50 shadow-md shadow-amber-500/10'
+                      : 'bg-white/5 text-slate-400 hover:text-white border border-white/5'
+                  }`}
+                >
+                  <span>{rel.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Language Selector */}
+          <div className="flex items-center gap-2 shrink-0 border-t md:border-t-0 pt-2 md:pt-0 border-white/10">
+            <span className="font-bold text-cyan-400 font-mono">{i18n.languageSelect}</span>
+            <GlobalLanguageSelector />
+          </div>
+        </motion.div>
+
+        {/* 📈 ENTERPRISE COSMIC ANALYTICS KPI BAR */}
+        <motion.div variants={staggerItem}>
+          <CosmicAnalyticsKPI
+            score={cosmicScoreData.score}
+            exaltedCount={cosmicScoreData.exaltedCount}
+            ownSignCount={cosmicScoreData.ownSignCount}
+            retrogradeCount={cosmicScoreData.retrogradeCount}
+          />
+        </motion.div>
+
+        {/* 🪄 MAGIC UI INFINITE MARQUEE COSMIC TICKER */}
+        <motion.div variants={staggerItem} className="rounded-2xl bg-[#111827]/90 border border-cyan-500/30 shadow-xl overflow-hidden py-1.5 backdrop-blur-xl">
+          <Marquee pauseOnHover repeat={4} className="[--duration:28s]">
+            <span className="text-xs font-mono text-cyan-300 font-bold px-4 flex items-center gap-1.5 shrink-0">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Tithi: <strong className="text-white">{panchang.tithi}</strong>
+            </span>
+            <span className="text-xs font-mono text-emerald-300 font-bold px-4 flex items-center gap-1.5 shrink-0">
+              <Moon className="w-3.5 h-3.5 text-emerald-400" /> Nakshatra: <strong className="text-white">{panchang.nakshatra}</strong>
+            </span>
+            <span className="text-xs font-mono text-amber-300 font-bold px-4 flex items-center gap-1.5 shrink-0">
+              <Sun className="w-3.5 h-3.5 text-amber-400" /> Golden Window: <strong className="text-white">{panchang.abhijitMuhurta}</strong>
+            </span>
+            <span className="text-xs font-mono text-purple-300 font-bold px-4 flex items-center gap-1.5 shrink-0">
+              <Clock className="w-3.5 h-3.5 text-purple-400" /> Active Dasha: <strong className="text-white">{dashaInfo.mahadasha} - {dashaInfo.antardasha}</strong>
+            </span>
+            <span className="text-xs font-mono text-rose-300 font-bold px-4 flex items-center gap-1.5 shrink-0">
+              <Activity className="w-3.5 h-3.5 text-rose-400" /> Rahu Kalam: <strong className="text-white">{panchang.rahuKalam}</strong>
+            </span>
+          </Marquee>
+        </motion.div>
+
+        {/* 🌟 TODAY'S COSMIC WHY & PRESCRIBED SOLUTION CARD */}
+        <motion.div variants={staggerItem} className="p-6 rounded-3xl bg-gradient-to-br from-[#111827] via-[#0B1220] to-[#1E1B4B] border border-amber-500/50 shadow-2xl space-y-4 text-left relative overflow-hidden">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center shadow-lg shadow-amber-500/10">
+                <Sparkles className="w-5 h-5 text-amber-400 animate-pulse" />
+              </div>
+              <div>
+                <h3 className="text-base sm:text-lg font-bold text-white font-mono flex items-center gap-2">
+                  Today's Cosmic Why & Prescribed Solution
+                </h3>
+                <p className="text-xs text-slate-300 font-mono">
+                  Root-Cause Astronomical Transit Analysis & Immediate Actionable Remedies
                 </p>
-                <div className="p-3 rounded-2xl bg-zinc-900 border border-zinc-800">
-                  <p className="text-[10px] text-emerald-400 font-mono leading-relaxed">
-                    <strong>Remedy:</strong> {dynamicDiagnostics.solution}
-                  </p>
-                </div>
               </div>
-              <button onClick={() => onNavigate('live-diagnostics')} className="w-full mt-4 py-2 rounded-xl bg-red-500/10 text-red-400 text-xs font-bold hover:bg-red-500/20 transition-colors cursor-pointer">
-                Resolve Now
-              </button>
+            </div>
+            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30 font-bold">
+              Live Diagnostic Active
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+            {/* TODAY'S WHY */}
+            <div className="p-4 rounded-2xl bg-black/50 border border-amber-500/30 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-amber-400 font-bold uppercase text-[11px] flex items-center gap-1.5">
+                  <HelpCircle className="w-4 h-4 text-amber-400" /> Today's Cosmic WHY (Root Cause):
+                </span>
+                <span className="text-[10px] text-slate-400">{panchang.tithi} • {panchang.nakshatra}</span>
+              </div>
+              <p className="text-slate-200 leading-relaxed text-[11px]">
+                {dashaInfo.mahadasha} Mahadasha is active while Sun in {keyPlanetsHighlight.sun?.sign || 'Leo'} illuminates your 1st House of self-drive. Moon transiting {panchang.nakshatra} creates high mental activity, requiring steady focus during {panchang.rahuKalam} Rahu Kalam.
+              </p>
             </div>
 
-            {/* EPHEMERIS GRID (Spans full width) */}
-            <div className="lg:col-span-3 p-5 rounded-3xl bg-zinc-950 border border-white/5 shadow-lg overflow-x-auto no-scrollbar">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Live Ephemeris</span>
-                <span className="text-[10px] font-mono text-zinc-600">Lahiri Ayanamsha</span>
+            {/* TODAY'S PRESCRIBED SOLUTION */}
+            <div className="p-4 rounded-2xl bg-emerald-950/50 border border-emerald-500/40 space-y-2 text-emerald-300">
+              <div className="flex items-center justify-between">
+                <span className="text-emerald-400 font-bold uppercase text-[11px] flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Today's PRESCRIBED SOLUTION & Remedy:
+                </span>
+                <span className="text-[10px] text-emerald-300 font-bold bg-emerald-500/20 px-2 py-0.5 rounded">Golden Muhurta</span>
               </div>
-              <div className="flex gap-2 min-w-max pb-2">
-                {planetPositions.map((p, i) => (
-                  <button 
-                    key={i}
+              <div className="space-y-1.5 text-[11px] text-slate-200">
+                <p><strong className="text-amber-300">1. Sacred Recitation:</strong> Mahagayatri Mantra (Solar Illumination) / Ayatul Kursi (Verse of Protection)</p>
+                <p><strong className="text-cyan-300">2. Solfeggio Acoustic Frequency:</strong> 528 Hz (Solar Transformation & DNA Repair)</p>
+                <p><strong className="text-emerald-300">3. Gemstone & Rudraksha:</strong> Yellow Sapphire (Pukhraj) / 5 Mukhi Rudraksha</p>
+                <p><strong className="text-purple-300">4. Best Execution Window:</strong> Abhijit Muhurta ({panchang.abhijitMuhurta})</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            <button
+              onClick={() => onNavigate('mantra-soundboard')}
+              className="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5"
+            >
+              <Activity className="w-3.5 h-3.5 text-amber-400" /> Open Soundboard & Tones
+            </button>
+
+            <button
+              onClick={() => onNavigate('report-generator')}
+              className="px-4 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5"
+            >
+              <FileText className="w-3.5 h-3.5 text-cyan-400" /> Printable Executive PDF Dossier
+            </button>
+
+            <button
+              onClick={() => onNavigate('consultation-hub')}
+              className="px-4 py-2 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/40 hover:bg-purple-500/30 text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5"
+            >
+              <Users className="w-3.5 h-3.5 text-purple-400" /> 1-on-1 Scholar Consultation (OwnPay)
+            </button>
+          </div>
+        </motion.div>
+
+        {/* SECTION 2: HERO AI DAILY SUMMARY & COMPUTED PLANETARY POSITIONS GRID */}
+        <motion.div variants={staggerItem} className="relative rounded-3xl overflow-hidden bg-[#111827] border border-white/10 shadow-2xl p-6 sm:p-8">
+          {/* Magic UI Border Beam */}
+          <BorderBeam size={250} duration={12} delay={0} colorFrom="#06B6D4" colorTo="#3B82F6" />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            {/* LEFT: PERSONALIZED COSMIC SYNTHESIS & DYNAMIC SCORE */}
+            <div className="lg:col-span-6 space-y-4">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#2563EB]/10 border border-[#2563EB]/30 text-[#06B6D4] text-xs font-mono font-semibold">
+                <Sparkles className="w-3.5 h-3.5 text-[#06B6D4]" />
+                <span>Today's Dynamic Cosmic Synthesis</span>
+              </div>
+
+              <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#F8FAFC]">
+                Welcome Back, <span className="text-[#2563EB]">{targetProfile.name}</span>
+              </h2>
+
+              <div className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 space-y-2 text-xs text-[#CBD5E1]">
+                <p className="font-semibold text-[#D4AF37] flex items-center gap-1.5 font-mono">
+                  <Activity className="w-4 h-4 text-[#D4AF37]" /> Astronomical Alignment Summary:
+                </p>
+                <p className="leading-relaxed">
+                  Sun in <strong className="text-white">{keyPlanetsHighlight.sun?.sign}</strong> illuminates your <strong className="text-white">{keyPlanetsHighlight.sun?.house}</strong>. 
+                  Moon in <strong className="text-white">{keyPlanetsHighlight.moon?.sign}</strong> ({keyPlanetsHighlight.moon?.nakshatra}) provides intuitive clarity during <strong className="text-[#22C55E]">{panchang.abhijitMuhurta}</strong>.
+                </p>
+              </div>
+
+              {/* FIX 3: DYNAMIC COSMIC SCORE BADGES */}
+              <div className="flex items-center gap-3 pt-1 flex-wrap">
+                <span className="px-3.5 py-2 rounded-2xl bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-[#D4AF37] text-xs font-mono font-semibold flex items-center gap-1.5 shadow-md">
+                  <Award className="w-4 h-4 text-[#D4AF37]" />
+                  Cosmic Score: <NumberTicker value={cosmicScoreData.score} className="text-[#D4AF37] font-bold" />/100
+                </span>
+                <span className="px-3 py-1.5 rounded-xl bg-[#22C55E]/10 border border-[#22C55E]/20 text-[#22C55E] text-xs font-mono font-semibold">
+                  Exalted: {cosmicScoreData.exaltedCount}
+                </span>
+                <span className="px-3 py-1.5 rounded-xl bg-[#06B6D4]/10 border border-[#06B6D4]/20 text-[#06B6D4] text-xs font-mono font-semibold">
+                  Own Sign: {cosmicScoreData.ownSignCount}
+                </span>
+                <span className="px-3 py-1.5 rounded-xl bg-[#2563EB]/10 border border-[#2563EB]/20 text-[#2563EB] text-xs font-mono font-semibold">
+                  Abhijit: {panchang.abhijitMuhurta}
+                </span>
+              </div>
+
+              {/* 🪐 ANIMATED CELESTIAL ZODIAC ORBIT VISUALIZER */}
+              <div className="pt-2">
+                <div className="p-4 rounded-2xl bg-[#0B1220] border border-cyan-500/30 space-y-2 shadow-2xl overflow-hidden relative">
+                  <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                    <span className="text-xs font-mono font-bold text-amber-300 flex items-center gap-1.5">
+                      <Sparkles className="w-4 h-4 text-amber-400" /> Animated Zodiac Orbit & Ephemeris Wheel
+                    </span>
+                    <span className="text-[9px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30">Interactive 3D Rings</span>
+                  </div>
+                  <CelestialZodiacOrbit planetPositions={planetPositions} onSelectPlanet={(p) => setSelectedPlanet(p)} />
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT: DYNAMIC REAL-TIME 9 PLANETS POSITIONS GRID */}
+            <div className="lg:col-span-6 p-5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-3">
+              <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                <span className="text-xs font-mono font-semibold text-[#06B6D4] flex items-center gap-1.5">
+                  <Globe2 className="w-4 h-4 text-[#06B6D4]" /> Live Ephemeris Positions (Computed)
+                </span>
+                <span className="text-[10px] font-mono text-[#94A3B8]">Lahiri Ayanamsha</span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2">
+                {planetPositions.map((p, idx) => (
+                  <motion.button
+                    key={idx}
                     onClick={() => setSelectedPlanet(p)}
-                    className="p-3 rounded-2xl bg-[#09090b] border border-white/5 hover:border-white/20 transition-colors text-left min-w-[120px] cursor-pointer"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.96 }}
+                    className={`p-2.5 rounded-xl bg-[#111827] border ${p.border} text-left space-y-0.5 hover:bg-[#1E293B] hover:border-cyan-500/40 hover:shadow-[0_0_15px_rgba(6,182,212,0.2)] transition-all cursor-pointer group`}
                   >
-                    <div className="flex justify-between items-center mb-1">
-                      <span className={`text-[10px] font-bold ${p.color}`}>{p.symbol} {p.name}</span>
-                      {p.retrograde && <span className="text-[8px] text-red-500 font-mono">Rx</span>}
+                    <div className="flex items-center justify-between">
+                      <span className={`text-xs font-bold ${p.color}`}>{p.symbol} {p.name}</span>
+                      {p.retrograde && <span className="text-[9px] font-mono text-[#EF4444] font-bold animate-pulse">Rx</span>}
                     </div>
-                    <span className="block text-xs font-semibold text-white">{p.sign}</span>
-                    <span className="block text-[9px] text-zinc-500 font-mono">{p.degree}</span>
-                  </button>
+                    <span className="text-[11px] font-semibold text-white block truncate">{p.sign}</span>
+                    <span className="text-[10px] font-mono text-[#94A3B8] block">{p.degree}</span>
+                  </motion.button>
                 ))}
               </div>
-            </div>
 
-            {/* DYNAMIC PLANETARY ORBIT COMPONENT */}
-            <div className="lg:col-span-2 rounded-3xl bg-black border border-white/10 overflow-hidden relative min-h-[300px]">
-              <div className="absolute top-4 left-4 z-10">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 bg-black/50 backdrop-blur-md px-2 py-1 rounded-lg border border-white/10">
-                  Zodiac Orbit
-                </span>
-              </div>
-              <div className="w-full h-full transform scale-[0.8] origin-top">
-                <CelestialZodiacOrbit planetPositions={planetPositions} onSelectPlanet={(p) => setSelectedPlanet(p)} />
-              </div>
-            </div>
+              {/* 📊 ELEMENTAL BALANCE TELEMETRY & RECHARTS RADAR */}
+              <div className="pt-2 border-t border-white/10 space-y-2">
+                <div className="flex items-center justify-between text-[11px] font-mono">
+                  <span className="text-amber-400 font-bold flex items-center gap-1">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Elemental Balance Radar (Recharts):
+                  </span>
+                  <span className="text-[#94A3B8]">4 Elements Breakdown</span>
+                </div>
 
-            {/* ACTIVE DASHA TIMELINE */}
-            <div className="p-5 rounded-3xl bg-zinc-950 border border-white/5 flex flex-col">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-purple-400 flex items-center gap-1.5 mb-3">
-                <Clock className="w-3.5 h-3.5" /> Vimshottari Dasha
-              </span>
-              <div className="flex-1 flex flex-col justify-center">
-                <div className="text-center space-y-1 mb-4">
-                  <span className="text-2xl font-bold text-white">{dashaInfo.mahadasha}</span>
-                  <span className="block text-xs text-zinc-500">Current Mahadasha</span>
+                {/* Recharts Radar Visualization */}
+                <div className="h-40 w-full bg-[#111827]/80 rounded-2xl border border-white/10 p-1 flex items-center justify-center">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
+                      <PolarGrid stroke="#334155" />
+                      <PolarAngleAxis dataKey="subject" stroke="#94A3B8" tick={{ fontSize: 9, fill: '#CBD5E1' }} />
+                      <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#475569" tick={{ fontSize: 8 }} />
+                      <Radar name="Elemental Strength" dataKey="A" stroke="#06B6D4" fill="#06B6D4" fillOpacity={0.4} />
+                    </RadarChart>
+                  </ResponsiveContainer>
                 </div>
-                <div className="w-full bg-zinc-900 rounded-full h-2 mb-2 overflow-hidden border border-white/5">
-                  <div className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full" style={{ width: `${dashaInfo.progressPercent}%` }}></div>
-                </div>
-                <div className="flex justify-between text-[9px] text-zinc-500 font-mono">
-                  <span>{dashaInfo.startDate}</span>
-                  <span>{dashaInfo.endDate}</span>
+
+                <div className="grid grid-cols-4 gap-2 text-center text-[10px] font-mono">
+                  <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300">
+                    <span className="font-bold block">🔥 Fire</span>
+                    <span>{elementalBalance.firePct}%</span>
+                  </div>
+                  <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
+                    <span className="font-bold block">🌍 Earth</span>
+                    <span>{elementalBalance.earthPct}%</span>
+                  </div>
+                  <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-300">
+                    <span className="font-bold block">💨 Air</span>
+                    <span>{elementalBalance.airPct}%</span>
+                  </div>
+                  <div className="p-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-300">
+                    <span className="font-bold block">🌊 Water</span>
+                    <span>{elementalBalance.waterPct}%</span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* MOON PHASE VISUALIZER */}
-            <div className="lg:col-span-1 rounded-3xl bg-zinc-950 border border-white/5 overflow-hidden">
-               <div className="p-4 border-b border-white/5">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Lunar Phase</span>
-               </div>
-               <div className="p-4 transform scale-90 origin-top">
-                 <MoonPhaseVisual panchang={panchang} />
-               </div>
-            </div>
-            
-            {/* PANCHANG TICKER TAPE */}
-            <div className="lg:col-span-2 rounded-3xl bg-[#09090b] border border-white/10 flex items-center overflow-hidden">
-              <Marquee pauseOnHover className="[--duration:20s] py-4">
-                <span className="px-4 text-[10px] font-mono text-zinc-400 uppercase"><strong className="text-blue-400">Tithi:</strong> {panchang.tithi}</span>
-                <span className="px-4 text-[10px] font-mono text-zinc-400 uppercase"><strong className="text-emerald-400">Nakshatra:</strong> {panchang.nakshatra}</span>
-                <span className="px-4 text-[10px] font-mono text-zinc-400 uppercase"><strong className="text-amber-400">Muhurta:</strong> {panchang.abhijitMuhurta}</span>
-                <span className="px-4 text-[10px] font-mono text-zinc-400 uppercase"><strong className="text-red-400">Rahu:</strong> {panchang.rahuKalam}</span>
-              </Marquee>
+              {/* ⏰ CURRENT PLANETARY HORA (HOUR) WIDGET */}
+              <div className="p-3 rounded-xl bg-[#111827] border border-cyan-500/30 flex items-center justify-between text-xs font-mono">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-cyan-400 animate-pulse" />
+                  <div>
+                    <span className="font-bold text-white">Active Hora: <strong className="text-cyan-300">{currentHora.name} Hour</strong></span>
+                    <span className="text-[10px] text-slate-400 block">{currentHora.desc}</span>
+                  </div>
+                </div>
+                <span className="text-[9px] font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30 shrink-0">Live Hora</span>
+              </div>
             </div>
 
           </div>
-          
-          {/* ALL TOOLS SECTION RESTORED (Rendered as independent modules) */}
-          <div className="pt-10 space-y-10">
-            <TarikIslamCosmicPassport userProfile={userProfile} onEditProfile={() => setIsTargetModalOpen(true)} />
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="rounded-3xl border border-white/5 overflow-hidden bg-zinc-950/50"><PlanetaryAspectGraph planetPositions={planetPositions} /></div>
-              <div className="rounded-3xl border border-white/5 overflow-hidden bg-zinc-950/50"><CosmicTransitCalendar /></div>
-            </div>
-            
-            <DailyMuhurtaPlanner />
-            <LunarMansionsWheel />
-            <SynastryOverlayChart personAPositions={planetPositions} />
-            <AstrologicalMindMap />
-            <CosmicChartAnalytics />
-            <DivisionalChartsSuite planetPositions={planetPositions} />
-            <AstrologyLearningHub />
-            <ExecutiveReportGenerator />
-            <CommunityConsultationHub />
-            
-            <BirthTimeRectificationSuite />
-            <GemstoneRudrakshaSuite />
-            <NumerologyNameSuite />
-            <TarotIChingSuite />
-            <TimeHorizonForecastSuite userProfile={userProfile} />
-            <DoshaRemedyEngine planetPositions={planetPositions} userProfile={userProfile} />
-            <CosmicBiorhythmTracker userProfile={userProfile} />
-            <SacredChakraAlignment planetPositions={planetPositions} />
-          </div>
+        </motion.div>
 
-          <div className="pt-10 pb-6 text-center text-[10px] font-mono text-zinc-600">
-            ASTRO360 Omni System • {new Date().getFullYear()}
-          </div>
-        </div>
-      </main>
-
-      {/* PLANET MODAL */}
-      <AnimatePresence>
-        {selectedPlanet && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
-          >
+        {/* PLANET DETAIL MODAL */}
+        <AnimatePresence>
+          {selectedPlanet && (
             <motion.div
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.95 }}
-              className="max-w-md w-full rounded-2xl bg-[#09090b] border border-white/10 p-6 shadow-2xl relative"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
             >
-              <button
-                onClick={() => setSelectedPlanet(null)}
-                className="absolute top-4 right-4 p-2 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 cursor-pointer"
+              <motion.div
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.95 }}
+                className="max-w-lg w-full rounded-3xl bg-[#111827] border border-white/10 p-6 space-y-4 shadow-2xl relative text-left"
               >
-                <X className="w-4 h-4" />
-              </button>
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-3xl font-bold">{selectedPlanet.symbol}</span>
+                <button
+                  onClick={() => setSelectedPlanet(null)}
+                  className="absolute top-4 right-4 p-2 rounded-full bg-white/5 hover:bg-white/10 text-[#94A3B8] hover:text-white cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+
+                <div className="flex items-center gap-3 border-b border-white/10 pb-3">
+                  <span className="text-2xl font-bold">{selectedPlanet.symbol}</span>
+                  <div>
+                    <h3 className={`text-lg font-semibold ${selectedPlanet.color}`}>{selectedPlanet.name} Overview & Remedies</h3>
+                    <p className="text-xs text-[#94A3B8]">{selectedPlanet.sign} • {selectedPlanet.house}</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 text-xs font-mono">
+                  <div className="p-3 rounded-xl bg-[#0B1220] border border-white/10">
+                    <span className="text-[10px] text-[#94A3B8] block">Longitudinal Position</span>
+                    <span className="font-semibold text-white">{selectedPlanet.degree}</span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-[#0B1220] border border-white/10">
+                    <span className="text-[10px] text-[#94A3B8] block">Daily Speed</span>
+                    <span className="font-semibold text-white">{selectedPlanet.speed}</span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-[#0B1220] border border-white/10">
+                    <span className="text-[10px] text-[#94A3B8] block">Elemental Dominance</span>
+                    <span className="font-semibold text-[#06B6D4]">{selectedPlanet.element}</span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-[#0B1220] border border-white/10">
+                    <span className="text-[10px] text-[#94A3B8] block">Nakshatra Station</span>
+                    <span className="font-semibold text-[#22C55E]">{selectedPlanet.nakshatra} (Pada {selectedPlanet.pada})</span>
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-xl bg-[#0B1220] border border-white/10 space-y-1">
+                  <span className="text-xs font-semibold text-[#D4AF37] font-mono block">Astrological Dignity / Strength:</span>
+                  <p className="text-xs text-white font-semibold">{selectedPlanet.strength}</p>
+                </div>
+
+                <div className="p-3 rounded-xl bg-[#0B1220] border border-white/10 space-y-1">
+                  <span className="text-xs font-semibold text-[#D4AF37] font-mono block">Vedic Astrological Remedies:</span>
+                  <p className="text-xs text-[#CBD5E1]">{selectedPlanet.remedies}</p>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* SECTION 3: QUICK ACTIONS GRID (9 ESSENTIAL CORE TOOLS) */}
+        <motion.div variants={staggerItem} className="space-y-4 text-left">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
+              <Compass className="w-5 h-5 text-[#2563EB]" /> Essential Quick Actions
+            </h3>
+            <span className="text-xs font-mono text-[#94A3B8]">9 Core Astrological Tools</span>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-3">
+            {[
+              { id: 'birth-chart', title: 'Birth Chart', desc: 'Natal Kundli', icon: <Compass className="w-5 h-5 text-[#2563EB]" /> },
+              { id: 'horoscope', title: 'Horoscope', desc: 'Transits & energy', icon: <Sun className="w-5 h-5 text-[#F59E0B]" /> },
+              { id: 'compatibility', title: 'Compatibility', desc: '36-Guna match', icon: <Heart className="w-5 h-5 text-[#EC4899]" /> },
+              { id: 'consultation-hub', title: 'Consultations', desc: 'Book Scholars', icon: <User className="w-5 h-5 text-purple-400" />, isComingSoon: true },
+              { id: 'islamic-suite', title: 'Islamic Hub', desc: 'Qur\'an & Hadith', icon: <Moon className="w-5 h-5 text-[#22C55E]" /> },
+              { id: 'dream-interpreter', title: 'Dream Engine', desc: 'Symbol analysis', icon: <CloudMoon className="w-5 h-5 text-[#7C3AED]" /> },
+              { id: 'remedies', title: 'Remedies', desc: 'Gemstones & Yantras', icon: <Award className="w-5 h-5 text-[#D4AF37]" /> },
+              { id: 'live-diagnostics', title: 'Diagnostics', desc: 'What & Solution', icon: <Activity className="w-5 h-5 text-[#EF4444]" /> },
+              { id: 'tools-catalog', title: '150+ Tools', desc: 'Full Directory', icon: <Layers className="w-5 h-5 text-[#06B6D4]" /> },
+            ].map((tool) => (
+              <motion.button
+                key={tool.id}
+                onClick={() => onNavigate(tool.id)}
+                whileHover={{ scale: 1.05, y: -3 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-3.5 rounded-2xl bg-[#111827]/90 border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_25px_rgba(37,99,235,0.25)] transition-all duration-300 text-left space-y-2 group cursor-pointer shadow-lg backdrop-blur-xl relative overflow-hidden flex flex-col justify-between"
+              >
+                {tool.isComingSoon && (
+                  <span className="absolute top-1.5 right-1.5 text-[8px] font-mono font-bold text-amber-300 bg-amber-500/20 px-1.5 py-0.5 rounded border border-amber-500/30">
+                    Soon
+                  </span>
+                )}
+                <div className="p-2 rounded-xl bg-[#0B1220] border border-white/10 w-fit group-hover:border-blue-400/40 group-hover:scale-110 transition-all duration-300">
+                  {tool.icon}
+                </div>
                 <div>
-                  <h3 className={`text-base font-bold ${selectedPlanet.color}`}>{selectedPlanet.name}</h3>
-                  <p className="text-[10px] font-mono text-zinc-500">{selectedPlanet.sign} • {selectedPlanet.degree}</p>
+                  <h4 className="text-xs font-bold text-white group-hover:text-blue-400 transition-colors leading-tight">{tool.title}</h4>
+                  <p className="text-[9px] text-[#94A3B8] pt-0.5 truncate">{tool.desc}</p>
+                </div>
+              </motion.button>
+            ))}
+          </div>
+        </motion.div>
+
+        {activeCategory === 'charts' && (
+          <div className="space-y-6">
+            <motion.div variants={staggerItem}><PlanetaryAspectGraph planetPositions={planetPositions} /></motion.div>
+            <motion.div variants={staggerItem}><LunarMansionsWheel /></motion.div>
+            <motion.div variants={staggerItem}><SynastryOverlayChart personAPositions={planetPositions} /></motion.div>
+            <motion.div variants={staggerItem}><AstrologicalMindMap /></motion.div>
+            <motion.div variants={staggerItem}><CosmicChartAnalytics /></motion.div>
+            <motion.div variants={staggerItem}><DivisionalChartsSuite planetPositions={planetPositions} /></motion.div>
+            <motion.div variants={staggerItem}><CosmicCompassVisualizer userProfile={userProfile} /></motion.div>
+            <motion.div variants={staggerItem}><AstroCartographyMatrix userProfile={userProfile} /></motion.div>
+          </div>
+        )}
+
+        {activeCategory === 'timing' && (
+          <div className="space-y-6">
+            <motion.div variants={staggerItem}><CosmicTransitCalendar /></motion.div>
+            <motion.div variants={staggerItem}><DailyMuhurtaPlanner /></motion.div>
+            <motion.div variants={staggerItem}><BirthTimeRectificationSuite /></motion.div>
+            <motion.div variants={staggerItem}><TimeHorizonForecastSuite userProfile={userProfile} /></motion.div>
+            <motion.div variants={staggerItem}><CosmicBiorhythmTracker userProfile={userProfile} /></motion.div>
+            <motion.div variants={staggerItem}><ElectionalMuhurtaEngine /></motion.div>
+            <motion.div variants={staggerItem}><PlanetaryHorasTracker /></motion.div>
+            <motion.div variants={staggerItem}><PlanetaryTransitRadar /></motion.div>
+            <motion.div variants={staggerItem}><EphemerisDataTable planetPositions={planetPositions} /></motion.div>
+          </div>
+        )}
+
+        {activeCategory === 'remedies' && (
+          <div className="space-y-6">
+            <motion.div variants={staggerItem}><GemstoneRudrakshaSuite /></motion.div>
+            <motion.div variants={staggerItem}><DoshaRemedyEngine planetPositions={planetPositions} userProfile={userProfile} /></motion.div>
+            <motion.div variants={staggerItem}><SacredChakraAlignment planetPositions={planetPositions} /></motion.div>
+            <motion.div variants={staggerItem}><CosmicFengShuiMatrix userProfile={userProfile} /></motion.div>
+            <motion.div variants={staggerItem}><SacredMantraSoundboard /></motion.div>
+          </div>
+        )}
+
+        {activeCategory === 'profile' && (
+          <div className="space-y-6">
+            <motion.div variants={staggerItem}><TarikIslamCosmicPassport userProfile={userProfile} /></motion.div>
+            <motion.div variants={staggerItem}><NumerologyNameSuite /></motion.div>
+          </div>
+        )}
+
+        {activeCategory === 'reports' && (
+          <div className="space-y-6">
+            <motion.div variants={staggerItem}><AstrologyLearningHub /></motion.div>
+            <motion.div variants={staggerItem}><ExecutiveReportGenerator /></motion.div>
+            <motion.div variants={staggerItem}><CommunityConsultationHub /></motion.div>
+            <motion.div variants={staggerItem}><TarotIChingSuite /></motion.div>
+            <motion.div variants={staggerItem}><PanchangDeitiesEngine /></motion.div>
+          </div>
+        )}
+
+        {activeCategory === 'overview' && (
+          <div className="space-y-6">
+            {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}
+            <motion.div variants={staggerItem} className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
+              <div className="lg:col-span-7 p-6 rounded-3xl bg-[#111827] border border-white/10 space-y-4 shadow-2xl">
+                <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                  <h3 className="text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
+                    <Sun className="w-4 h-4 text-[#F59E0B]" /> Live Panchang Ephemeris Snapshot
+                  </h3>
+                  <span className="text-[10px] font-mono text-[#F59E0B] bg-[#F59E0B]/10 px-2.5 py-0.5 rounded-full border border-[#F59E0B]/30 font-semibold">
+                    Lahiri UTC Sync
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs font-mono">
+                  <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                    <span className="text-[10px] text-[#94A3B8] block">Tithi (Lunar Day Phase)</span>
+                    <span className="font-semibold text-[#F59E0B]">{panchang.tithi}</span>
+                  </div>
+                  <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                    <span className="text-[10px] text-[#94A3B8] block">Nakshatra (Lunar Mansion)</span>
+                    <span className="font-semibold text-[#22C55E]">{panchang.nakshatra}</span>
+                  </div>
+                  <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                    <span className="text-[10px] text-[#94A3B8] block">Yoga (Sol-Lunar Harmony)</span>
+                    <span className="font-semibold text-[#06B6D4]">{panchang.yoga}</span>
+                  </div>
+                  <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                    <span className="text-[10px] text-[#94A3B8] block">Golden Window (Abhijit)</span>
+                    <span className="font-semibold text-[#22C55E]">{panchang.abhijitMuhurta}</span>
+                  </div>
+                  <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                    <span className="text-[10px] text-[#94A3B8] block">Friction Hours (Rahu Kalam)</span>
+                    <span className="font-semibold text-[#EF4444]">{panchang.rahuKalam}</span>
+                  </div>
+                  <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                    <span className="text-[10px] text-[#94A3B8] block">Karana (Action Energy)</span>
+                    <span className="font-semibold text-[#CBD5E1]">{panchang.karana}</span>
+                  </div>
                 </div>
               </div>
-              <div className="space-y-3 text-xs">
-                <div className="p-3 rounded-xl bg-zinc-900 border border-white/5">
-                  <span className="text-zinc-500 block mb-1">Dignity</span>
-                  <span className="font-semibold text-white">{selectedPlanet.strength}</span>
+
+              <div className="lg:col-span-5 p-6 rounded-3xl bg-[#111827] border border-white/10 space-y-4 shadow-2xl flex flex-col justify-between">
+                <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                  <h3 className="text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
+                    <Moon className="w-4 h-4 text-[#06B6D4]" /> Lunar Phase Visualizer
+                  </h3>
+                  <span className="text-[10px] font-mono text-[#06B6D4] bg-[#06B6D4]/10 px-2.5 py-0.5 rounded-full border border-[#06B6D4]/30 font-semibold">
+                    Real-Time Graphic
+                  </span>
                 </div>
-                <div className="p-3 rounded-xl bg-zinc-900 border border-white/5">
-                  <span className="text-zinc-500 block mb-1">Remedies</span>
-                  <span className="text-zinc-300 leading-relaxed">{selectedPlanet.remedies}</span>
+                <MoonPhaseVisual panchang={panchang} />
+              </div>
+            </motion.div>
+
+            {/* SECTION 5: ACTIVE DASHA & LIVE DIAGNOSTICS PREVIEW */}
+            <motion.div variants={staggerItem} className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
+              <div className="lg:col-span-6 p-6 rounded-3xl bg-[#111827] border border-white/10 space-y-4 shadow-2xl">
+                <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                  <h3 className="text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-[#7C3AED]" /> Active Dasha Period
+                  </h3>
+                  <span className="text-[10px] font-mono text-[#7C3AED] bg-[#7C3AED]/10 px-2.5 py-0.5 rounded-full border border-[#7C3AED]/30 font-semibold">
+                    {dashaInfo.mahadasha} Mahadasha
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <span className="text-[#7C3AED] font-semibold">{dashaInfo.mahadasha} → {dashaInfo.antardasha} Sub-Period</span>
+                    <span className="text-[#94A3B8]">Timeline: {dashaInfo.startDate} to {dashaInfo.endDate}</span>
+                  </div>
+                  <div className="w-full h-3 rounded-full bg-[#0B1220] border border-white/10 overflow-hidden p-0.5">
+                    <div className="h-full bg-gradient-to-r from-[#2563EB] to-[#7C3AED] rounded-full transition-all duration-500" style={{ width: `${dashaInfo.progressPercent}%` }} />
+                  </div>
+                  <div className="flex items-center justify-between text-[10px] font-mono text-[#94A3B8]">
+                    <span>Progress: {dashaInfo.progressPercent}%</span>
+                    <span>Vimshottari Timeline</span>
+                  </div>
+                  <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/10 text-xs text-[#CBD5E1]">
+                    <p className="font-semibold text-[#7C3AED] font-mono">Astrological Insight:</p>
+                    <p className="text-[11px] leading-relaxed pt-0.5">
+                      {dashaInfo.interpretation}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="lg:col-span-6 p-6 rounded-3xl bg-[#111827] border border-[#EF4444]/40 shadow-2xl space-y-4 flex flex-col justify-between relative overflow-hidden">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
+                  <div>
+                    <div className="flex items-center gap-2 text-[#EF4444] text-xs font-mono font-semibold mb-1">
+                      <Activity className="w-4 h-4 text-[#EF4444] animate-pulse" />
+                      <span>Today's Cosmic Diagnostic & Solution</span>
+                    </div>
+                    <h3 className="text-base font-bold text-[#F8FAFC]">Active Life Transits: What, Why & Multi-Religious Solutions</h3>
+                  </div>
+                  <button
+                    onClick={() => onNavigate('live-diagnostics')}
+                    className="px-3.5 py-1.5 rounded-xl bg-[#EF4444]/20 hover:bg-[#EF4444]/30 text-rose-200 border border-[#EF4444]/40 text-xs font-mono font-semibold flex items-center gap-1 cursor-pointer transition-colors shrink-0"
+                  >
+                    <span>Full Diagnostics</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 gap-3 text-xs">
+                  <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-[#2563EB]/40 space-y-1">
+                    <span className="text-xs font-mono font-bold text-[#2563EB] uppercase tracking-wider block flex items-center gap-1.5">
+                      <Activity className="w-3.5 h-3.5 text-[#2563EB]" /> 1. What is Happening Today
+                    </span>
+                    <p className="text-[#CBD5E1] leading-relaxed text-[11px]">{dynamicDiagnostics.what}</p>
+                  </div>
+                  <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-[#F59E0B]/40 space-y-1">
+                    <span className="text-xs font-mono font-bold text-[#F59E0B] uppercase tracking-wider block flex items-center gap-1.5">
+                      <Compass className="w-3.5 h-3.5 text-[#F59E0B]" /> 2. Why it is Happening (Root Cause)
+                    </span>
+                    <p className="text-[#CBD5E1] leading-relaxed text-[11px]">{dynamicDiagnostics.why}</p>
+                  </div>
+                  <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-[#22C55E]/40 space-y-1.5">
+                    <span className="text-xs font-mono font-bold text-[#22C55E] uppercase tracking-wider block flex items-center gap-1.5">
+                      <ShieldCheck className="w-3.5 h-3.5 text-[#22C55E]" /> 3. Prescribed Solution & Multi-Religious Remedy
+                    </span>
+                    <p className="text-[#22C55E] leading-relaxed text-[11px] font-medium">{dynamicDiagnostics.solution}</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1 font-mono text-[10px]">
+                      <div className="p-2 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300">
+                        <span className="font-bold block">🕌 Islamic:</span><span>Recite Ayatul Kursi & Give Sadaqah</span>
+                      </div>
+                      <div className="p-2 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-300">
+                        <span className="font-bold block">🕉️ Vedic:</span><span>Surya Arghya & Yellow Sapphire</span>
+                      </div>
+                      <div className="p-2 rounded-xl bg-indigo-950/40 border border-indigo-500/30 text-indigo-300">
+                        <span className="font-bold block">🧠 CBT:</span><span>4-7-8 Breathwork & Task Audit</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
-          </motion.div>
+
+            {/* SECTION 6: RECENT ACTIVITY FEED & DAILY COSMIC WISDOM CARD */}
+            <motion.div variants={staggerItem} className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
+              <div className="lg:col-span-6 p-6 rounded-3xl bg-[#111827] border border-white/10 space-y-4 shadow-2xl">
+                <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                  <h3 className="text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
+                    <RotateCcw className="w-4 h-4 text-[#06B6D4]" /> Recent System Calculations
+                  </h3>
+                  <span className="text-[10px] font-mono text-[#94A3B8]">Interactive Feed</span>
+                </div>
+                <div className="space-y-2.5">
+                  {recentActivities.map((act) => (
+                    <button
+                      key={act.id}
+                      onClick={() => onNavigate(act.tab)}
+                      className="w-full p-3 rounded-2xl bg-[#0B1220] border border-white/10 hover:border-white/20 transition-all flex items-center justify-between text-left cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-2 h-2 rounded-full bg-[#22C55E] animate-pulse shrink-0" />
+                        <div>
+                          <p className="text-xs font-semibold text-white group-hover:text-[#2563EB] transition-colors">{act.text}</p>
+                          <span className="text-[10px] font-mono text-[#94A3B8]">{act.time}</span>
+                        </div>
+                      </div>
+                      <span className="text-[10px] font-mono text-[#06B6D4] bg-[#06B6D4]/10 px-2 py-0.5 rounded-full border border-[#06B6D4]/20 shrink-0 flex items-center gap-1">
+                        {act.badge}
+                        <ArrowUpRight className="w-3 h-3" />
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="lg:col-span-6 p-6 rounded-3xl bg-[#111827] border border-white/10 space-y-4 shadow-2xl flex flex-col justify-between">
+                <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                  <h3 className="text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
+                    <BookOpen className="w-4 h-4 text-[#D4AF37]" /> Daily Cosmic Wisdom & Tip
+                  </h3>
+                  <span className="text-[10px] font-mono text-[#D4AF37] bg-[#D4AF37]/10 px-2.5 py-0.5 rounded-full border border-[#D4AF37]/30 font-semibold">
+                    Vedic Principle
+                  </span>
+                </div>
+                <div className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 space-y-2">
+                  <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#D4AF37]">
+                    <Zap className="w-4 h-4 text-[#D4AF37]" />
+                    <span>Karma Bhava & Solar Timing Principle</span>
+                  </div>
+                  <p className="text-xs text-[#CBD5E1] leading-relaxed">
+                    When the Sun transits Kendra houses (1st, 4th, 7th, 10th), executive focus and leadership output peak. 
+                    Utilize morning solar hours for critical decisions, strategic communications, and initiating long-term endeavors.
+                  </p>
+                </div>
+                <div className="pt-2 flex items-center justify-between">
+                  <span className="text-[11px] font-mono text-[#94A3B8]">Learn natal chart dignities & remedies</span>
+                  <button
+                    onClick={() => onNavigate('tools-catalog')}
+                    className="px-4 py-2 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-mono font-semibold flex items-center gap-1.5 cursor-pointer transition-colors shadow-md"
+                  >
+                    <span>Explore Catalog</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         )}
-      </AnimatePresence>
+
+        {/* KEYBOARD SHORTCUT FOOTER HINTS */}
+        <motion.div variants={staggerItem} className="p-3 rounded-2xl bg-[#111827]/80 border border-white/10 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-[#94A3B8]">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1.5">
+              <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white text-[10px]">Enter ↵</kbd> Jump Search
+            </span>
+            <span className="flex items-center gap-1.5">
+              <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white text-[10px]">ESC</kbd> Close Search
+            </span>
+            <span className="flex items-center gap-1.5">
+              <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white text-[10px]">Click</kbd> Planet Details
+            </span>
+          </div>
+          <span>ASTRO360 Mission Control v3.0</span>
+        </motion.div>
+
+      </div>
 
       {/* FLOATING AI ASSISTANT BUTTON */}
       <button
@@ -903,6 +1515,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
       >
         <Bot className="w-6 h-6" />
       </button>
+      </motion.div>
     </div>
   );
 }
