@@ -2,15 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   ShieldCheck, CheckCircle2, Lock, CreditCard, QrCode, 
-  ExternalLink, Copy, Check, Clock, AlertCircle, Sparkles, RefreshCw, Zap
+  ExternalLink, Copy, Check, Clock, AlertCircle, Sparkles, RefreshCw, Zap, Wrench, Building, ArrowRight
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { 
   createOwnPayPaymentIntent, 
   verifyOwnPayTransaction, 
+  getMerchantPayoutSettings,
+  saveMerchantPayoutSettings,
   DEFAULT_OWNPAY_CONFIG, 
   type OwnPayPaymentRequest, 
-  type OwnPayTransaction 
+  type OwnPayTransaction,
+  type MerchantPayoutSettings
 } from '../lib/ownpayEngine';
 
 interface OwnPayPaymentModalProps {
@@ -41,6 +44,11 @@ export default function OwnPayPaymentModal({
   const [isCopied, setIsCopied] = useState<boolean>(false);
   const [timeLeft, setTimeLeft] = useState<number>(900); // 15 minutes in seconds
 
+  // Merchant Settings & Edit Panel State
+  const [merchantSettings, setMerchantSettings] = useState<MerchantPayoutSettings>(getMerchantPayoutSettings());
+  const [showConfigPanel, setShowConfigPanel] = useState<boolean>(false);
+  const [editSettings, setEditSettings] = useState<MerchantPayoutSettings>(merchantSettings);
+
   // Card form state
   const [cardNumber, setCardNumber] = useState<string>('');
   const [cardExpiry, setCardExpiry] = useState<string>('');
@@ -50,6 +58,10 @@ export default function OwnPayPaymentModal({
   // Initialize OwnPay Payment Intent on modal open
   useEffect(() => {
     if (isOpen) {
+      const activeSettings = getMerchantPayoutSettings();
+      setMerchantSettings(activeSettings);
+      setEditSettings(activeSettings);
+
       const initPayment = async () => {
         const req: OwnPayPaymentRequest = {
           title: `1-on-1 Astrological Consultation with ${bookingDetails.astrologerName}`,
@@ -83,14 +95,26 @@ export default function OwnPayPaymentModal({
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const handleSaveMerchantConfig = (e: React.FormEvent) => {
+    e.preventDefault();
+    const updated = saveMerchantPayoutSettings(editSettings);
+    setMerchantSettings(updated);
+    setShowConfigPanel(false);
+    toast.success('Merchant Payout Settings Saved Successfully!');
+  };
+
+  const getDestinationWallet = () => {
+    if (selectedCurrency === 'BTC') return merchantSettings.payoutBtc;
+    if (selectedCurrency === 'ETH') return merchantSettings.payoutEth;
+    if (selectedCurrency === 'SOL') return merchantSettings.payoutSol;
+    return merchantSettings.payoutUsdtTrc20;
+  };
+
   const handleCopyAddress = () => {
-    if (!transaction) return;
-    const walletAddress = selectedCurrency === 'BTC' 
-      ? 'bc1q9v8z7y6x5w4v3u2t1s0r9q8p7o6n5m4l3k2j1' 
-      : '0x71C7656EC7ab88b098defB751B7401B5f6d8976F';
-    navigator.clipboard.writeText(walletAddress);
+    const addr = getDestinationWallet();
+    navigator.clipboard.writeText(addr);
     setIsCopied(true);
-    toast.success('OwnPay Wallet Address Copied!');
+    toast.success('Destination Wallet Address Copied!');
     setTimeout(() => setIsCopied(false), 2000);
   };
 
@@ -103,7 +127,8 @@ export default function OwnPayPaymentModal({
       const completedTx: OwnPayTransaction = {
         ...transaction,
         status: 'completed',
-        txHash: verification.txHash
+        txHash: verification.txHash,
+        destinationAddress: getDestinationWallet()
       };
       setIsProcessing(false);
       onPaymentSuccess(completedTx);
@@ -120,7 +145,7 @@ export default function OwnPayPaymentModal({
           initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
-          className="max-w-lg w-full rounded-3xl bg-[#111827] border border-amber-500/40 p-6 space-y-5 shadow-2xl relative text-left text-xs font-sans my-8"
+          className="max-w-xl w-full rounded-3xl bg-[#111827] border border-amber-500/40 p-6 space-y-5 shadow-2xl relative text-left text-xs font-sans my-8"
         >
           {/* Header */}
           <div className="flex items-center justify-between border-b border-white/10 pb-3">
@@ -140,12 +165,113 @@ export default function OwnPayPaymentModal({
                 </p>
               </div>
             </div>
-            <button 
-              onClick={onClose} 
-              className="text-slate-400 hover:text-white p-1 rounded-full cursor-pointer hover:bg-white/10 transition-colors"
-            >
-              ✕
-            </button>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setShowConfigPanel(!showConfigPanel)}
+                className="px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20 font-mono text-[10px] font-bold flex items-center gap-1 cursor-pointer transition-all"
+              >
+                <Wrench className="w-3 h-3 text-amber-400" /> Merchant Setup
+              </button>
+
+              <button 
+                onClick={onClose} 
+                className="text-slate-400 hover:text-white p-1 rounded-full cursor-pointer hover:bg-white/10 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+
+          {/* EDIT MERCHANT PAYOUT CONFIGURATION DRAWER */}
+          {showConfigPanel && (
+            <form onSubmit={handleSaveMerchantConfig} className="p-4 rounded-2xl bg-amber-950/40 border border-amber-500/40 space-y-3 font-mono text-xs">
+              <div className="flex items-center justify-between border-b border-amber-500/30 pb-2">
+                <span className="font-bold text-amber-300 flex items-center gap-1.5">
+                  <Building className="w-4 h-4 text-amber-400" /> Customise Merchant Payout Addresses & Gateway
+                </span>
+                <span className="text-[9px] text-slate-400">Direct Settlement Destination</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-[10px] text-slate-300 font-bold block">USDT (TRC20 Wallet Address)</label>
+                  <input
+                    type="text"
+                    value={editSettings.payoutUsdtTrc20}
+                    onChange={(e) => setEditSettings({ ...editSettings, payoutUsdtTrc20: e.target.value })}
+                    className="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-white/10 text-[11px] text-white font-mono"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] text-slate-300 font-bold block">Bitcoin (BTC Wallet Address)</label>
+                  <input
+                    type="text"
+                    value={editSettings.payoutBtc}
+                    onChange={(e) => setEditSettings({ ...editSettings, payoutBtc: e.target.value })}
+                    className="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-white/10 text-[11px] text-white font-mono"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] text-slate-300 font-bold block">Ethereum / USDT (ERC20 Address)</label>
+                  <input
+                    type="text"
+                    value={editSettings.payoutEth}
+                    onChange={(e) => setEditSettings({ ...editSettings, payoutEth: e.target.value, payoutUsdtErc20: e.target.value })}
+                    className="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-white/10 text-[11px] text-white font-mono"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] text-slate-300 font-bold block">Solana (SOL Wallet Address)</label>
+                  <input
+                    type="text"
+                    value={editSettings.payoutSol}
+                    onChange={(e) => setEditSettings({ ...editSettings, payoutSol: e.target.value })}
+                    className="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-white/10 text-[11px] text-white font-mono"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-amber-500/20">
+                <button
+                  type="button"
+                  onClick={() => setShowConfigPanel(false)}
+                  className="px-3 py-1 rounded-lg bg-white/5 text-slate-300 hover:text-white text-[11px]"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold text-[11px] hover:bg-amber-400 cursor-pointer shadow"
+                >
+                  Save Merchant Payout Settings
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* 🏦 WHERE & WHEN PAYMENT IS RECEIVED LEDGER */}
+          <div className="p-3.5 rounded-2xl bg-amber-950/40 border border-amber-500/30 space-y-1.5 text-[11px] font-mono">
+            <div className="flex items-center justify-between border-b border-amber-500/20 pb-1">
+              <span className="text-amber-400 font-bold flex items-center gap-1.5">
+                <Building className="w-3.5 h-3.5 text-amber-400" /> WHERE PAYMENT WILL BE RECEIVED:
+              </span>
+              <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+                Direct Merchant Payout
+              </span>
+            </div>
+            <p className="text-slate-200 text-[10px] font-mono truncate">
+              Destination Wallet ({selectedCurrency}): <strong className="text-amber-300 font-mono">{getDestinationWallet()}</strong>
+            </p>
+            <div className="flex items-center justify-between text-[10px] text-slate-300 pt-0.5">
+              <span>WHEN PAYMENT IS RECEIVED:</span>
+              <span className="text-emerald-300 font-bold">
+                Instant (&lt; 60 sec upon 1-block confirmation)
+              </span>
+            </div>
           </div>
 
           {/* Consultation Summary Card */}
@@ -237,7 +363,7 @@ export default function OwnPayPaymentModal({
                 </div>
                 <div className="flex items-center justify-between bg-black/40 p-2 rounded-lg border border-white/10">
                   <span className="text-[11px] text-slate-200 truncate pr-2 font-mono">
-                    {selectedCurrency === 'BTC' ? 'bc1q9v8z7y6x5w4v3u2t1s0r9q8p7o6n5m4l3k2j1' : '0x71C7656EC7ab88b098defB751B7401B5f6d8976F'}
+                    {getDestinationWallet()}
                   </span>
                   <button
                     onClick={handleCopyAddress}

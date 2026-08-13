@@ -1,0 +1,28 @@
+{
+  "version": "1.0.0",
+  "ayanamsha": "Lahiri",
+  "ayanamshaValue": 24.2216,
+  "goldenTestCases": [
+    {
+      "id": "mecca-baseline-1998",
+      "name": "Tarik Islam Baseline Chart",
+      "birthDate": "1998-06-15",
+      "birthTime": "12:00",
+      "location": "Mecca, Saudi Arabia",
+      "latitude": 21.4225,
+      "longitude": 39.8262,
+      "expectedPositions": {
+        "Sun": { "sign": "Gemini", "approxDegree": 0.5 },
+        "Moon": { "sign": "Aquarius", "approxDegree": 15.2 },
+        "Mars": { "sign": "Taurus", "approxDegree": 22.1 },
+        "Mercury": { "sign": "Gemini", "approxDegree": 12.4 },
+        "Jupiter": { "sign": "Pisces", "approxDegree": 3.8 },
+        "Venus": { "sign": "Taurus", "approxDegree": 18.9 },
+        "Saturn": { "sign": "Aries", "approxDegree": 5.1 },
+        "Rahu": { "sign": "Leo", "approxDegree": 11.3 },
+        "Ketu": { "sign": "Aquarius", "approxDegree": 11.3 }
+      },
+      "expectedMahadasha": "Rahu"
+    }
+  ]
+}

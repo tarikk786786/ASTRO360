@@ -36,8 +36,8 @@ export function calculateVimshottariDasha(
   const fractionElapsed = nakshatraDegreeElapsed / 13.333333;
 
   // Nakshatra Lord index (27 Nakshatras repeat 9 lords 3 times)
-  const lordIndex = nakshatraIndex % 9;
-  const initialLord = DASHA_LORDS[lordIndex];
+  const lordIndex = (Math.abs(Math.floor(nakshatraIndex)) % 9) || 0;
+  const initialLord = DASHA_LORDS[lordIndex] || DASHA_LORDS[0];
 
   // Fraction remaining in first Mahadasha
   const firstMahadashaYearsRemaining = initialLord.years * (1 - fractionElapsed);

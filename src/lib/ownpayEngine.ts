@@ -13,6 +13,64 @@ export interface OwnPayConfig {
   apiEndpoint: string;
 }
 
+export interface MerchantPayoutSettings {
+  merchantName: string;
+  merchantEmail: string;
+  payoutUsdtTrc20: string;
+  payoutUsdtErc20: string;
+  payoutBtc: string;
+  payoutEth: string;
+  payoutSol: string;
+  payoutBankIban: string;
+  stripeApiKey: string;
+  payoutSchedule: 'instant' | 'daily' | 'weekly';
+  chatRateUsd: number;
+  videoRateUsd: number;
+  dossierRateUsd: number;
+  autoConfirmOnChain: boolean;
+}
+
+export const DEFAULT_PAYOUT_SETTINGS: MerchantPayoutSettings = {
+  merchantName: 'ASTRO360 Omni Global Platform',
+  merchantEmail: 'tarik@astro360.omni',
+  payoutUsdtTrc20: 'T9xZ8yQ2mK4vW7nL3pJ1rS5uT8aB6cD4eF',
+  payoutUsdtErc20: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
+  payoutBtc: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
+  payoutEth: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
+  payoutSol: '7vWzX9yQ2mK4vW7nL3pJ1rS5uT8aB6cD4eF9xZ8yQ2mK',
+  payoutBankIban: 'SA0380000000608010167519',
+  stripeApiKey: 'pk_live_51M0...ASTRO360',
+  payoutSchedule: 'instant',
+  chatRateUsd: 49,
+  videoRateUsd: 99,
+  dossierRateUsd: 149,
+  autoConfirmOnChain: true
+};
+
+export const PAYOUT_STORAGE_KEY = 'astro360_ownpay_merchant_settings';
+
+export function getMerchantPayoutSettings(): MerchantPayoutSettings {
+  try {
+    const saved = localStorage.getItem(PAYOUT_STORAGE_KEY);
+    if (saved) {
+      return { ...DEFAULT_PAYOUT_SETTINGS, ...JSON.parse(saved) };
+    }
+  } catch (e) {
+    console.error('Failed to load merchant settings', e);
+  }
+  return DEFAULT_PAYOUT_SETTINGS;
+}
+
+export function saveMerchantPayoutSettings(settings: Partial<MerchantPayoutSettings>): MerchantPayoutSettings {
+  const updated = { ...getMerchantPayoutSettings(), ...settings };
+  try {
+    localStorage.setItem(PAYOUT_STORAGE_KEY, JSON.stringify(updated));
+  } catch (e) {
+    console.error('Failed to save merchant settings', e);
+  }
+  return updated;
+}
+
 export interface OwnPayPaymentRequest {
   title: string;
   amount: number;
@@ -34,6 +92,8 @@ export interface OwnPayTransaction {
   expiresAt: string;
   amount: number;
   currency: string;
+  destinationAddress: string;
+  settlementTime: string;
 }
 
 export const DEFAULT_OWNPAY_CONFIG: OwnPayConfig = {
@@ -51,12 +111,19 @@ export async function createOwnPayPaymentIntent(
   req: OwnPayPaymentRequest,
   config: OwnPayConfig = DEFAULT_OWNPAY_CONFIG
 ): Promise<OwnPayTransaction> {
+  const merchantSettings = getMerchantPayoutSettings();
   const paymentId = `op_pay_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
   const now = new Date();
   const expires = new Date(now.getTime() + 15 * 60 * 1000); // 15 min expiry
 
-  // Mock checkout URL / QR generation adhering to OwnPay standard
-  const checkoutUrl = `https://checkout.ownpay.org/pay/${paymentId}?merchant=${config.merchantId}&amount=${req.amount}&currency=${req.currency}`;
+  // Resolve target wallet address by requested currency
+  let destAddress = merchantSettings.payoutUsdtTrc20;
+  if (req.currency === 'BTC') destAddress = merchantSettings.payoutBtc;
+  else if (req.currency === 'ETH') destAddress = merchantSettings.payoutEth;
+  else if (req.currency === 'SOL') destAddress = merchantSettings.payoutSol;
+  else if (req.currency === 'USD' || req.currency === 'EUR') destAddress = `Stripe / Bank (${merchantSettings.payoutBankIban.slice(0, 8)}...)`;
+
+  const checkoutUrl = `https://checkout.ownpay.org/pay/${paymentId}?merchant=${config.merchantId}&amount=${req.amount}&currency=${req.currency}&dest=${destAddress}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(checkoutUrl)}`;
 
   return {
@@ -67,7 +134,9 @@ export async function createOwnPayPaymentIntent(
     createdAt: now.toISOString(),
     expiresAt: expires.toISOString(),
     amount: req.amount,
-    currency: req.currency
+    currency: req.currency,
+    destinationAddress: destAddress,
+    settlementTime: merchantSettings.payoutSchedule === 'instant' ? 'Instant (< 60 seconds)' : 'End of Day (Daily Batch)'
   };
 }
 

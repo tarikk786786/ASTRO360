@@ -884,17 +884,29 @@ export default function AppContent() {
             {/* GLOBAL LANGUAGE SELECTOR */}
             <GlobalLanguageSelector />
 
+            {/* ASTROLOGER CONSULTATION OWNPAY BUTTON */}
+            <button
+              onClick={() => navigateTo('consultation-hub')}
+              className="text-[10px] font-mono text-amber-300 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 px-3 py-1 rounded-full font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+            >
+              <Users className="w-3.5 h-3.5 text-amber-400" />
+              <span>Astrologer Consultation (OwnPay)</span>
+            </button>
+
+            {/* CUSTOMISATION CONTROL CENTER BUTTON */}
             <button
               onClick={() => navigateTo('control-center')}
-              className="text-[10px] font-mono text-amber-300 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 px-2.5 py-1 rounded-full font-bold transition-all flex items-center gap-1 cursor-pointer"
+              className="text-[10px] font-mono text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 hover:bg-cyan-500/20 px-2.5 py-1 rounded-full font-bold transition-all flex items-center gap-1 cursor-pointer"
             >
-              ⚙️ Customisation Control Center
+              <Wrench className="w-3.5 h-3.5 text-cyan-400" /> Customisation
             </button>
+
+            {/* SEEKER PROFILE BUTTON */}
             <button
-              onClick={() => setIsAuthModalOpen(true)}
+              onClick={() => setIsProfileModalOpen(true)}
               className="text-[10px] font-mono text-purple-300 bg-purple-500/10 border border-purple-500/30 hover:bg-purple-500/20 px-2.5 py-1 rounded-full font-bold transition-all flex items-center gap-1 cursor-pointer"
             >
-              🔐 Sign In / Sync
+              <User className="w-3.5 h-3.5 text-purple-400" /> Seeker Profile
             </button>
             <a
               href="https://tarikislam.in"

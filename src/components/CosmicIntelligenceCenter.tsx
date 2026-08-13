@@ -2,8 +2,9 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence, type Variants } from 'motion/react';
 import { 
   Sparkles, Sun, Moon, Compass, CloudMoon, Bot, Clock, Activity,
-  Search, ShieldCheck, Heart, Award, User, X, ChevronRight, Globe2, Layers,
-  BookOpen, ArrowUpRight, CheckCircle2, RotateCcw, Zap, HelpCircle, AlertTriangle
+  Search, ShieldCheck, Heart, Award, User, Users, Wrench, X, ChevronRight, Globe2, Layers,
+  BookOpen, ArrowUpRight, CheckCircle2, RotateCcw, Zap, HelpCircle, AlertTriangle,
+  Briefcase, Brain
 } from 'lucide-react';
 import { type UserProfile } from '../types';
 import AstrologyTargetProfileModal, { type AstrologyTargetProfile } from './AstrologyTargetProfileModal';
@@ -40,7 +41,7 @@ import DivisionalChartsSuite from './DivisionalChartsSuite';
 import AstrologyLearningHub from './AstrologyLearningHub';
 import ExecutiveReportGenerator from './ExecutiveReportGenerator';
 import CommunityConsultationHub from './CommunityConsultationHub';
-import AdminAnalyticsDashboard from './AdminAnalyticsDashboard';
+
 import BirthTimeRectificationSuite from './BirthTimeRectificationSuite';
 import GemstoneRudrakshaSuite from './GemstoneRudrakshaSuite';
 import NumerologyNameSuite from './NumerologyNameSuite';
@@ -138,6 +139,21 @@ const MAHADASHA_DIAGNOSTICS: Record<string, string> = {
   Ketu: "Ketu Mahadasha encourages deep analytical research, spiritual detachment, and intuitive breakthroughs."
 };
 
+const DAILY_HOROSCOPE_DICTIONARY: Record<string, { theme: string; career: string; love: string; health: string; luckyNumber: number; luckyColor: string; overallScore: number }> = {
+  'Aries': { theme: 'Bold action brings unexpected rewards today. Mars fuels your ambition.', career: 'A leadership opportunity may present itself. Speak up in meetings.', love: 'Passion runs high — express your feelings directly.', health: 'High energy; channel it through vigorous exercise.', luckyNumber: 9, luckyColor: 'Red', overallScore: 85 },
+  'Taurus': { theme: 'Stability meets transformation. Venus brings comfort and beauty.', career: 'Financial matters favor careful planning and long-term investments.', love: 'Sensual energy surrounds you — plan a romantic evening.', health: 'Focus on nourishing foods and grounding activities.', luckyNumber: 6, luckyColor: 'Emerald', overallScore: 78 },
+  'Gemini': { theme: 'Communication channels open wide. Mercury sharpens your intellect.', career: 'Networking pays dividends today. Make those connections.', love: 'Stimulating conversations lead to deeper bonds.', health: 'Mental stimulation is key — try puzzles or reading.', luckyNumber: 5, luckyColor: 'Yellow', overallScore: 82 },
+  'Cancer': { theme: 'Emotional depth brings wisdom. The Moon illuminates your inner world.', career: 'Trust your intuition about a work decision.', love: 'Nurturing energy draws others to you naturally.', health: 'Water-based activities restore your energy.', luckyNumber: 2, luckyColor: 'Silver', overallScore: 75 },
+  'Leo': { theme: 'Your radiance attracts abundance. The Sun crowns your endeavors.', career: 'Creative projects receive recognition. Step into the spotlight.', love: 'Generosity in love returns tenfold today.', health: 'Heart-centered activities and golden sunlight energize you.', luckyNumber: 1, luckyColor: 'Gold', overallScore: 92 },
+  'Virgo': { theme: 'Precision and service create opportunities. Mercury refines your vision.', career: 'Detail-oriented work wins praise from superiors.', love: 'Acts of service speak louder than words today.', health: 'Digestive health benefits from mindful eating.', luckyNumber: 7, luckyColor: 'Forest Green', overallScore: 80 },
+  'Libra': { theme: 'Harmony and justice guide your path. Venus bestows grace.', career: 'Diplomatic skills resolve a lingering workplace tension.', love: 'Partnership energy is strong — collaborate and co-create.', health: 'Balance active and rest periods equally today.', luckyNumber: 6, luckyColor: 'Rose', overallScore: 83 },
+  'Scorpio': { theme: 'Transformation deepens your power. Pluto reveals hidden truths.', career: 'Research and investigation lead to breakthrough insights.', love: 'Vulnerability creates true intimacy — let walls down.', health: 'Detox and renewal practices restore vitality.', luckyNumber: 8, luckyColor: 'Crimson', overallScore: 88 },
+  'Sagittarius': { theme: 'Adventure calls your spirit. Jupiter expands horizons.', career: 'International connections or higher learning opportunities arise.', love: 'Shared adventures strengthen romantic bonds.', health: 'Outdoor activities and travel invigorate body and soul.', luckyNumber: 3, luckyColor: 'Purple', overallScore: 86 },
+  'Capricorn': { theme: 'Discipline builds lasting legacy. Saturn rewards patience.', career: 'Long-term planning today yields compound returns tomorrow.', love: 'Commitment and reliability deepen trust in relationships.', health: 'Bone and joint care; structured exercise routines help.', luckyNumber: 4, luckyColor: 'Charcoal', overallScore: 77 },
+  'Aquarius': { theme: 'Innovation disrupts the ordinary. Uranus sparks genius.', career: 'Unconventional approaches solve problems others can\'t.', love: 'Intellectual connection matters more than tradition today.', health: 'Circulation and nervous system benefit from meditation.', luckyNumber: 11, luckyColor: 'Electric Blue', overallScore: 84 },
+  'Pisces': { theme: 'Intuition flows like water. Neptune deepens spiritual sight.', career: 'Creative and artistic pursuits are especially favored.', love: 'Empathic connections create soulful moments.', health: 'Swimming and water therapy restore energetic balance.', luckyNumber: 12, luckyColor: 'Sea Green', overallScore: 79 },
+};
+
 /**
  * CSS-Animated Moon Phase Graphic Component
  */
@@ -223,6 +239,10 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
 
   // Selected Planet for Detail Modal
   const [selectedPlanet, setSelectedPlanet] = useState<PlanetPosition | null>(null);
+
+  // Daily Horoscope Sign Selection State
+  const [selectedHoroscopeSign, setSelectedHoroscopeSign] = useState<string>('Leo');
+  const selectedHoroscopeInsight = useMemo(() => DAILY_HOROSCOPE_DICTIONARY[selectedHoroscopeSign] || DAILY_HOROSCOPE_DICTIONARY['Leo'], [selectedHoroscopeSign]);
 
   // Global Search State
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -676,6 +696,113 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
           </div>
         </motion.div>
 
+        {/* 🔮 FIRST & PROMINENT SECTION: DAILY HOROSCOPE & ZODIAC PREDICTIONS */}
+        <motion.div variants={staggerItem} className="p-6 sm:p-8 rounded-[2rem] bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_0_rgba(255,255,255,0.05)] space-y-5 text-left relative overflow-hidden ring-1 ring-white/5 hover:border-amber-500/30 hover:shadow-[0_8px_32px_0_rgba(245,158,11,0.15)] transition-all duration-500 group">
+          {/* Subtle animated background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+          
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4 relative z-10">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/10 border border-amber-500/40 flex items-center justify-center shadow-[0_0_20px_rgba(245,158,11,0.2)] group-hover:scale-105 transition-transform duration-500">
+                <Sun className="w-6 h-6 text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
+              </div>
+              <div>
+                <h2 className="text-lg sm:text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-300 tracking-tight flex items-center gap-2">
+                  Daily Cosmic Intelligence
+                </h2>
+                <p className="text-xs text-amber-300/80 font-mono font-medium tracking-wide">
+                  Real-time Ephemeris Telemetry • {todayDateStr}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0">
+              <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-full border border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.1)]">
+                Score: {selectedHoroscopeInsight.overallScore}% Excellent
+              </span>
+              <button
+                onClick={() => onNavigate('horoscope')}
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500/10 to-purple-500/10 hover:from-amber-500/20 hover:to-purple-500/20 text-amber-300 border border-amber-500/30 hover:border-amber-400 text-xs font-mono font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 shadow-lg hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:-translate-y-0.5 active:translate-y-0"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Unlock Full Forecast
+              </button>
+            </div>
+          </div>
+
+          {/* 12 ZODIAC SIGN SELECTOR DOCK */}
+          <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-2 relative z-10">
+            {[
+              { sign: 'Aries', symbol: '♈' },
+              { sign: 'Taurus', symbol: '♉' },
+              { sign: 'Gemini', symbol: '♊' },
+              { sign: 'Cancer', symbol: '♋' },
+              { sign: 'Leo', symbol: '♌' },
+              { sign: 'Virgo', symbol: '♍' },
+              { sign: 'Libra', symbol: '♎' },
+              { sign: 'Scorpio', symbol: '♏' },
+              { sign: 'Sagittarius', symbol: '♐' },
+              { sign: 'Capricorn', symbol: '♑' },
+              { sign: 'Aquarius', symbol: '♒' },
+              { sign: 'Pisces', symbol: '♓' },
+            ].map((z) => {
+              const isSelected = selectedHoroscopeSign === z.sign;
+              return (
+                <button
+                  key={z.sign}
+                  onClick={() => setSelectedHoroscopeSign(z.sign)}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 shrink-0 border ${
+                    isSelected
+                      ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-slate-950 border-transparent shadow-[0_4px_15px_rgba(245,158,11,0.4)] scale-105'
+                      : 'bg-white/5 text-slate-400 border-white/10 hover:text-white hover:border-white/30 hover:bg-white/10'
+                  }`}
+                >
+                  <span className="text-sm drop-shadow-sm">{z.symbol}</span>
+                  <span>{z.sign}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* HOROSCOPE INSIGHT BODY */}
+          <div className="p-5 rounded-[1.25rem] bg-black/30 backdrop-blur-md border border-white/5 space-y-4 relative z-10 group/body hover:border-white/10 transition-colors duration-500">
+            <p className="text-sm sm:text-base text-white leading-relaxed font-medium flex items-start gap-2.5">
+              <Sparkles className="w-5 h-5 text-amber-400 shrink-0 mt-0.5 animate-pulse" />
+              <span>{selectedHoroscopeInsight.theme}</span>
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+              <div className="p-4 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/5 hover:border-cyan-500/30 transition-colors duration-300 space-y-1.5 text-xs group/card">
+                <div className="flex items-center gap-1.5 text-cyan-400 font-mono font-bold group-hover/card:text-cyan-300">
+                  <Briefcase className="w-4 h-4" /> CAREER & FINANCE
+                </div>
+                <p className="text-slate-300 text-[11.5px] leading-relaxed group-hover/card:text-white transition-colors">{selectedHoroscopeInsight.career}</p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/5 hover:border-rose-500/30 transition-colors duration-300 space-y-1.5 text-xs group/card">
+                <div className="flex items-center gap-1.5 text-rose-400 font-mono font-bold group-hover/card:text-rose-300">
+                  <Heart className="w-4 h-4" /> LOVE & HARMONY
+                </div>
+                <p className="text-slate-300 text-[11.5px] leading-relaxed group-hover/card:text-white transition-colors">{selectedHoroscopeInsight.love}</p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/5 hover:border-emerald-500/30 transition-colors duration-300 space-y-1.5 text-xs group/card">
+                <div className="flex items-center gap-1.5 text-emerald-400 font-mono font-bold group-hover/card:text-emerald-300">
+                  <Brain className="w-4 h-4" /> HEALTH & VITALITY
+                </div>
+                <p className="text-slate-300 text-[11.5px] leading-relaxed group-hover/card:text-white transition-colors">{selectedHoroscopeInsight.health}</p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+              <div className="flex items-center gap-4">
+                <span className="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg">Lucky Number: <strong className="text-amber-300 font-bold text-xs">{selectedHoroscopeInsight.luckyNumber}</strong></span>
+                <span className="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg">Lucky Color: <strong className="text-amber-300 font-bold text-xs">{selectedHoroscopeInsight.luckyColor}</strong></span>
+              </div>
+              <span className="flex items-center gap-1.5 bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 px-2.5 py-1 rounded-lg">Transit Energy: <strong className="font-bold text-xs">Sun in {keyPlanetsHighlight.sun?.sign || 'Leo'}</strong></span>
+            </div>
+          </div>
+        </motion.div>
+
         {/* 👑 TARIK ISLAM COSMIC PASSPORT & PERSONALIZED IDENTITY HEADER */}
         <motion.div variants={staggerItem}>
           <TarikIslamCosmicPassport userProfile={userProfile} onEditProfile={() => setIsTargetModalOpen(true)} />
@@ -733,19 +860,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
           {/* Language Selector */}
           <div className="flex items-center gap-2 shrink-0 border-t md:border-t-0 pt-2 md:pt-0 border-white/10">
             <span className="font-bold text-cyan-400 font-mono">{i18n.languageSelect}</span>
-            <select
-              value={selectedLanguage}
-              onChange={(e) => setSelectedLanguage(e.target.value as any)}
-              className="bg-[#0B1220] border border-white/10 text-white rounded-xl px-3 py-1.5 font-bold focus:outline-none focus:border-cyan-500 cursor-pointer"
-            >
-              <option value="en">🇺🇸 English</option>
-              <option value="ar">🇸🇦 العربية (Arabic)</option>
-              <option value="hi">🇮🇳 हिन्दी (Hindi)</option>
-              <option value="ur">🇵🇰 اردو (Urdu)</option>
-              <option value="es">🇪🇸 Español (Spanish)</option>
-              <option value="fr">🇫🇷 Français (French)</option>
-              <option value="zh">🇨🇳 中文 (Chinese)</option>
-            </select>
+            <GlobalLanguageSelector />
           </div>
         </motion.div>
 
@@ -778,6 +893,82 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
               <Activity className="w-3.5 h-3.5 text-rose-400" /> Rahu Kalam: <strong className="text-white">{panchang.rahuKalam}</strong>
             </span>
           </Marquee>
+        </motion.div>
+
+        {/* 🌟 TODAY'S COSMIC WHY & PRESCRIBED SOLUTION CARD */}
+        <motion.div variants={staggerItem} className="p-6 rounded-3xl bg-gradient-to-br from-[#111827] via-[#0B1220] to-[#1E1B4B] border border-amber-500/50 shadow-2xl space-y-4 text-left relative overflow-hidden">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center shadow-lg shadow-amber-500/10">
+                <Sparkles className="w-5 h-5 text-amber-400 animate-pulse" />
+              </div>
+              <div>
+                <h3 className="text-base sm:text-lg font-bold text-white font-mono flex items-center gap-2">
+                  Today's Cosmic Why & Prescribed Solution
+                </h3>
+                <p className="text-xs text-slate-300 font-mono">
+                  Root-Cause Astronomical Transit Analysis & Immediate Actionable Remedies
+                </p>
+              </div>
+            </div>
+            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30 font-bold">
+              Live Diagnostic Active
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+            {/* TODAY'S WHY */}
+            <div className="p-4 rounded-2xl bg-black/50 border border-amber-500/30 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-amber-400 font-bold uppercase text-[11px] flex items-center gap-1.5">
+                  <HelpCircle className="w-4 h-4 text-amber-400" /> Today's Cosmic WHY (Root Cause):
+                </span>
+                <span className="text-[10px] text-slate-400">{panchang.tithi} • {panchang.nakshatra}</span>
+              </div>
+              <p className="text-slate-200 leading-relaxed text-[11px]">
+                {dashaInfo.mahadasha} Mahadasha is active while Sun in {keyPlanetsHighlight.sun?.sign || 'Leo'} illuminates your 1st House of self-drive. Moon transiting {panchang.nakshatra} creates high mental activity, requiring steady focus during {panchang.rahuKalam} Rahu Kalam.
+              </p>
+            </div>
+
+            {/* TODAY'S PRESCRIBED SOLUTION */}
+            <div className="p-4 rounded-2xl bg-emerald-950/50 border border-emerald-500/40 space-y-2 text-emerald-300">
+              <div className="flex items-center justify-between">
+                <span className="text-emerald-400 font-bold uppercase text-[11px] flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Today's PRESCRIBED SOLUTION & Remedy:
+                </span>
+                <span className="text-[10px] text-emerald-300 font-bold bg-emerald-500/20 px-2 py-0.5 rounded">Golden Muhurta</span>
+              </div>
+              <div className="space-y-1.5 text-[11px] text-slate-200">
+                <p><strong className="text-amber-300">1. Sacred Recitation:</strong> Mahagayatri Mantra (Solar Illumination) / Ayatul Kursi (Verse of Protection)</p>
+                <p><strong className="text-cyan-300">2. Solfeggio Acoustic Frequency:</strong> 528 Hz (Solar Transformation & DNA Repair)</p>
+                <p><strong className="text-emerald-300">3. Gemstone & Rudraksha:</strong> Yellow Sapphire (Pukhraj) / 5 Mukhi Rudraksha</p>
+                <p><strong className="text-purple-300">4. Best Execution Window:</strong> Abhijit Muhurta ({panchang.abhijitMuhurta})</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            <button
+              onClick={() => onNavigate('mantra-soundboard')}
+              className="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5"
+            >
+              <Activity className="w-3.5 h-3.5 text-amber-400" /> Open Soundboard & Tones
+            </button>
+
+            <button
+              onClick={() => onNavigate('report-generator')}
+              className="px-4 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5"
+            >
+              <FileText className="w-3.5 h-3.5 text-cyan-400" /> Printable Executive PDF Dossier
+            </button>
+
+            <button
+              onClick={() => onNavigate('consultation-hub')}
+              className="px-4 py-2 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/40 hover:bg-purple-500/30 text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5"
+            >
+              <Users className="w-3.5 h-3.5 text-purple-400" /> 1-on-1 Scholar Consultation (OwnPay)
+            </button>
+          </div>
         </motion.div>
 
         {/* SECTION 2: HERO AI DAILY SUMMARY & COMPUTED PLANETARY POSITIONS GRID */}
@@ -1087,10 +1278,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
           <CommunityConsultationHub />
         </motion.div>
 
-        {/* 🛡️ ADMIN ANALYTICS & AI OBSERVABILITY PANEL */}
-        <motion.div variants={staggerItem}>
-          <AdminAnalyticsDashboard />
-        </motion.div>
+
 
         {/* 👑 TARIK ISLAM COSMIC PASSPORT & PERSONALIZED IDENTITY HEADER */}
         <motion.div variants={staggerItem}>

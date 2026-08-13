@@ -238,23 +238,41 @@ export function calculatePanchang(date = new Date()): PanchangInfo {
 /**
  * Computes Vimshottari Dasha details based on Moon Nakshatra.
  */
-export function calculateVimshottariDasha(moonNakshatraIndex = 3, birthDateStr = '1998-06-15'): VimshottariDashaInfo {
-  const dashaLordIndex = moonNakshatraIndex % 9;
-  const mainLord = DASHA_LORDS[dashaLordIndex] || DASHA_LORDS[6];
-  const subLord = DASHA_LORDS[(dashaLordIndex + 3) % 9];
+export function calculateVimshottariDasha(moonNakshatraIndexOrDob: number | string = 3, birthDateStr = '1998-06-15'): VimshottariDashaInfo {
+  let moonNakshatraIndex = 3;
+  let dobStr = '1998-06-15';
 
-  const birthDate = new Date(birthDateStr);
+  if (typeof moonNakshatraIndexOrDob === 'string') {
+    dobStr = moonNakshatraIndexOrDob;
+    moonNakshatraIndex = 3;
+  } else if (typeof moonNakshatraIndexOrDob === 'number') {
+    moonNakshatraIndex = moonNakshatraIndexOrDob;
+    if (birthDateStr) dobStr = birthDateStr;
+  }
+
+  const dashaLordIndex = Math.abs(Math.floor(Number(moonNakshatraIndex) || 3)) % 9;
+  const mainLord = DASHA_LORDS[dashaLordIndex] || DASHA_LORDS[6] || DASHA_LORDS[0];
+  const subLord = DASHA_LORDS[(dashaLordIndex + 3) % 9] || DASHA_LORDS[0];
+
+  const birthDate = new Date(dobStr);
+  const isValidDate = !isNaN(birthDate.getTime());
+  const effectiveBirthDate = isValidDate ? birthDate : new Date('1998-06-15');
+
   const now = new Date();
-  const elapsedYears = (now.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
-  const progressPercent = Math.min(Math.max(Math.round((elapsedYears % mainLord.years) / mainLord.years * 100), 15), 90);
+  const elapsedYears = (now.getTime() - effectiveBirthDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
+  const years = mainLord?.years || 16;
+  const progressPercent = Math.min(Math.max(Math.round(((elapsedYears % years) + years) % years / years * 100), 15), 90);
+
+  const mLord = mainLord?.lord || 'Jupiter';
+  const sLord = subLord?.lord || 'Mercury';
 
   return {
-    mahadasha: mainLord.lord,
-    antardasha: subLord.lord,
+    mahadasha: mLord,
+    antardasha: sLord,
     startDate: '2023-04-12',
     endDate: '2039-04-12',
     progressPercent,
-    interpretation: `${mainLord.lord} Mahadasha activates your ${mainLord.lord === 'Jupiter' ? '10th House of Career' : '1st House of Self'}, while ${subLord.lord} Antardasha sharpens strategic output and focus.`
+    interpretation: `${mLord} Mahadasha activates your ${mLord === 'Jupiter' ? '10th House of Career' : '1st House of Self'}, while ${sLord} Antardasha sharpens strategic output and focus.`
   };
 }
 

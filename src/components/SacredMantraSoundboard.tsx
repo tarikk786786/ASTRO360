@@ -118,7 +118,8 @@ export const MANTRAS_DATABASE: MantraItem[] = [
     meaning: 'Salutations to the Divine Sun God, seed of all energy, light, and vitality.',
     frequency: '528 Hz (Solar Core)',
     benefit: 'Strengthens willpower, confidence, social prestige, and physical immunity.',
-    targetCount: 108
+    targetCount: 108,
+    audioUrl: 'https://archive.org/download/SuryaMantra_201712/Surya%20Mantra.mp3'
   },
   {
     id: 'shani-beej',
@@ -130,7 +131,8 @@ export const MANTRAS_DATABASE: MantraItem[] = [
     meaning: 'Salutations to Saturn, the slow-moving arbiter of justice, patience, and karmic refinement.',
     frequency: '285 Hz (Somatic Healing)',
     benefit: 'Mitigates Saturnian delays, instills steady patience, and transforms karmic trials into mastery.',
-    targetCount: 108
+    targetCount: 108,
+    audioUrl: 'https://archive.org/download/ShaniMantra_201712/Shani%20Mantra.mp3'
   },
   {
     id: 'dua-younus',

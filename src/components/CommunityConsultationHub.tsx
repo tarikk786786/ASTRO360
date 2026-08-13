@@ -66,7 +66,13 @@ const INITIAL_THREADS: ForumThread[] = [
 ];
 
 import OwnPayPaymentModal from './OwnPayPaymentModal';
-import type { OwnPayTransaction } from '../lib/ownpayEngine';
+import { 
+  createOwnPayPaymentIntent, 
+  getMerchantPayoutSettings, 
+  saveMerchantPayoutSettings, 
+  type OwnPayTransaction, 
+  type MerchantPayoutSettings 
+} from '../lib/ownpayEngine';
 
 export default function CommunityConsultationHub() {
   const [activeTab, setActiveTab] = useState<'astrologers' | 'forum'>('astrologers');
@@ -76,6 +82,11 @@ export default function CommunityConsultationHub() {
   const [isBooked, setIsBooked] = useState<boolean>(false);
   const [showOwnPayModal, setShowOwnPayModal] = useState<boolean>(false);
   const [lastTransaction, setLastTransaction] = useState<OwnPayTransaction | null>(null);
+
+  // Merchant Gateway Payout Settings State
+  const [merchantSettings, setMerchantSettings] = useState<MerchantPayoutSettings>(getMerchantPayoutSettings());
+  const [showMerchantConfigModal, setShowMerchantConfigModal] = useState<boolean>(false);
+  const [editSettings, setEditSettings] = useState<MerchantPayoutSettings>(merchantSettings);
 
   // New Question State
   const [showQuestionModal, setShowQuestionModal] = useState<boolean>(false);
@@ -90,6 +101,14 @@ export default function CommunityConsultationHub() {
     setLastTransaction(tx);
     setShowOwnPayModal(false);
     setIsBooked(true);
+  };
+
+  const handleSaveMerchantConfig = (e: React.FormEvent) => {
+    e.preventDefault();
+    const updated = saveMerchantPayoutSettings(editSettings);
+    setMerchantSettings(updated);
+    setShowMerchantConfigModal(false);
+    toast.success('Merchant Gateway Settings Saved!');
   };
 
   const handlePostQuestion = (e: React.FormEvent) => {
@@ -124,28 +143,69 @@ export default function CommunityConsultationHub() {
           </p>
         </div>
 
-        {/* Tab Switcher */}
-        <div className="flex items-center gap-1.5 bg-[#0B1220] p-1 rounded-2xl border border-white/10">
+        <div className="flex items-center gap-2">
+          {/* MERCHANT GATEWAY CUSTOMISATION BUTTON */}
           <button
-            onClick={() => setActiveTab('astrologers')}
-            className={`px-3 py-1 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1 ${
-              activeTab === 'astrologers'
-                ? 'bg-purple-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-white'
-            }`}
+            onClick={() => {
+              setEditSettings(merchantSettings);
+              setShowMerchantConfigModal(true);
+            }}
+            className="px-3 py-1 rounded-xl bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20 text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5"
           >
-            <Users className="w-3.5 h-3.5" /> Certified Scholars
+            <Clock className="w-3.5 h-3.5 text-amber-400" /> Customise Gateway & Rates
           </button>
-          <button
-            onClick={() => setActiveTab('forum')}
-            className={`px-3 py-1 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1 ${
-              activeTab === 'forum'
-                ? 'bg-purple-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <MessageSquare className="w-3.5 h-3.5" /> Q&A Forum
-          </button>
+
+          {/* Tab Switcher */}
+          <div className="flex items-center gap-1.5 bg-[#0B1220] p-1 rounded-2xl border border-white/10">
+            <button
+              onClick={() => setActiveTab('astrologers')}
+              className={`px-3 py-1 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                activeTab === 'astrologers'
+                  ? 'bg-purple-600 text-white shadow-md'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Users className="w-3.5 h-3.5" /> Certified Scholars
+            </button>
+            <button
+              onClick={() => setActiveTab('forum')}
+              className={`px-3 py-1 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                activeTab === 'forum'
+                  ? 'bg-purple-600 text-white shadow-md'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <MessageSquare className="w-3.5 h-3.5" /> Q&A Forum
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* 🏦 WHERE & WHEN PAYMENT IS RECEIVED TELEMETRY BANNER */}
+      <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-950/50 via-[#0B1220] to-purple-950/40 border border-amber-500/30 space-y-2 text-xs font-mono">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-500/20 pb-2">
+          <span className="font-bold text-amber-300 flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-amber-400" /> OwnPay Gateway Settlement Status & Payout Ledger
+          </span>
+          <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30 font-bold">
+            Live Settlement Active
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[11px]">
+          <div className="p-2.5 rounded-xl bg-black/40 border border-white/10 space-y-1">
+            <span className="text-amber-400 font-bold block">📍 WHERE PAYMENTS ARE RECEIVED:</span>
+            <p className="text-slate-300 text-[10px]">
+              Direct to Merchant Payout Wallets: <strong className="text-amber-300 font-mono">USDT ({merchantSettings.payoutUsdtTrc20.slice(0, 10)}...)</strong>, BTC, ETH, SOL, or Bank IBAN (<strong className="text-cyan-300 font-mono">{merchantSettings.payoutBankIban.slice(0, 10)}...</strong>).
+            </p>
+          </div>
+
+          <div className="p-2.5 rounded-xl bg-black/40 border border-white/10 space-y-1">
+            <span className="text-emerald-400 font-bold block">⚡ WHEN PAYMENTS ARE RECEIVED:</span>
+            <p className="text-slate-300 text-[10px]">
+              <strong className="text-emerald-300">Instant (&lt; 60 seconds)</strong> upon 1-block blockchain transaction receipt or card authorization, unlocking scholar consultation immediately.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -165,22 +225,43 @@ export default function CommunityConsultationHub() {
                 </span>
               </div>
 
-              <div className="space-y-2 pt-1">
-                <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">{astro.avatar}</span>
+              <div className="space-y-3 pt-1">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-purple-900/40 flex items-center justify-center text-xl border border-purple-500/30 shadow-inner">
+                      {astro.avatar}
+                    </div>
                     <div>
-                      <h4 className="text-xs font-bold text-white group-hover:text-purple-300 transition-colors">{astro.name}</h4>
-                      <span className="text-[10px] font-mono text-purple-400 block">{astro.specialty}</span>
+                      <h4 className="text-sm font-bold text-white group-hover:text-purple-300 transition-colors flex items-center gap-1">
+                        {astro.name} 
+                        <Award className="w-3.5 h-3.5 text-amber-400" />
+                      </h4>
+                      <span className="text-[10px] font-mono text-purple-300/80 block">{astro.specialty}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-[10px] font-mono text-slate-300">
-                  <span className="flex items-center gap-1 text-amber-400 font-bold">
-                    <Star className="w-3 h-3 fill-amber-400" /> {astro.rating} ({astro.reviews} reviews)
-                  </span>
-                  <span className="font-bold text-emerald-400">{astro.fee}</span>
+                <div className="flex flex-col gap-1.5 border-y border-white/5 py-2">
+                  <div className="flex items-center justify-between text-[10px] font-mono">
+                    <span className="text-slate-400">Client Satisfaction</span>
+                    <span className="flex items-center gap-1 text-amber-400 font-bold bg-amber-500/10 px-1.5 py-0.5 rounded">
+                      <Star className="w-3 h-3 fill-amber-400" /> {astro.rating} 
+                      <span className="text-amber-400/70 font-normal">({astro.reviews} Verified)</span>
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-[10px] font-mono">
+                    <span className="text-slate-400">Lineage & Experience</span>
+                    <span className="text-emerald-400/90 bg-emerald-500/10 px-1.5 py-0.5 rounded font-medium">{astro.experience}</span>
+                  </div>
+                </div>
+
+                <div className="flex items-end justify-between pt-1">
+                  <div className="flex flex-col">
+                    <span className="text-[9px] font-mono text-slate-500 uppercase tracking-wider">Fixed Fee (No hidden costs)</span>
+                    <span className="font-bold text-lg text-emerald-400">
+                      {astro.fee.split('/')[0]}<span className="text-[10px] text-emerald-400/60 font-normal">/{astro.fee.split('/')[1]}</span>
+                    </span>
+                  </div>
                 </div>
               </div>
 
@@ -399,6 +480,105 @@ export default function CommunityConsultationHub() {
                   className="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-mono font-bold flex items-center justify-center gap-2 cursor-pointer transition-all shadow-lg"
                 >
                   <Send className="w-4 h-4" /> Broadcast Question to Scholars
+                </button>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* MERCHANT PAYOUT GATEWAY CONFIGURATION MODAL */}
+      <AnimatePresence>
+        {showMerchantConfigModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
+          >
+            <motion.div
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.95 }}
+              className="max-w-lg w-full rounded-3xl bg-[#111827] border border-amber-500/40 p-6 space-y-4 shadow-2xl relative text-left text-xs font-mono"
+            >
+              <div className="flex items-center justify-between border-b border-amber-500/30 pb-3">
+                <div>
+                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-amber-400" /> Payment Gateway & Merchant Payout Control Panel
+                  </h3>
+                  <p className="text-[10px] text-slate-400">Configure Payout Wallet Addresses, Settlement Speed & Consultation Rates</p>
+                </div>
+                <button onClick={() => setShowMerchantConfigModal(false)} className="text-slate-400 hover:text-white">✕</button>
+              </div>
+
+              <form onSubmit={handleSaveMerchantConfig} className="space-y-3">
+                <div className="p-3 rounded-2xl bg-black/40 border border-white/10 space-y-2">
+                  <span className="text-amber-400 font-bold text-[11px] block">📍 Where Payments Will Be Received:</span>
+                  
+                  <div className="space-y-2">
+                    <div>
+                      <label className="text-[10px] text-slate-400 block">USDT (TRC20 Wallet Address)</label>
+                      <input
+                        type="text"
+                        value={editSettings.payoutUsdtTrc20}
+                        onChange={(e) => setEditSettings({ ...editSettings, payoutUsdtTrc20: e.target.value })}
+                        className="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-white/10 text-white font-mono text-[10px]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] text-slate-400 block">Bitcoin (BTC Wallet Address)</label>
+                      <input
+                        type="text"
+                        value={editSettings.payoutBtc}
+                        onChange={(e) => setEditSettings({ ...editSettings, payoutBtc: e.target.value })}
+                        className="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-white/10 text-white font-mono text-[10px]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] text-slate-400 block">Ethereum / USDT (ERC20 Address)</label>
+                      <input
+                        type="text"
+                        value={editSettings.payoutEth}
+                        onChange={(e) => setEditSettings({ ...editSettings, payoutEth: e.target.value })}
+                        className="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-white/10 text-white font-mono text-[10px]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] text-slate-400 block">Bank IBAN / SWIFT Payout Account</label>
+                      <input
+                        type="text"
+                        value={editSettings.payoutBankIban}
+                        onChange={(e) => setEditSettings({ ...editSettings, payoutBankIban: e.target.value })}
+                        className="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-white/10 text-white font-mono text-[10px]"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-3 rounded-2xl bg-black/40 border border-white/10 space-y-2">
+                  <span className="text-emerald-400 font-bold text-[11px] block">⚡ When Payments Will Be Received:</span>
+                  <div className="flex items-center justify-between text-[10px] text-slate-300">
+                    <span>Settlement Mode:</span>
+                    <select
+                      value={editSettings.payoutSchedule}
+                      onChange={(e) => setEditSettings({ ...editSettings, payoutSchedule: e.target.value as any })}
+                      className="bg-slate-900 border border-white/10 text-amber-300 rounded px-2 py-1 font-bold"
+                    >
+                      <option value="instant">Instant (&lt; 60 sec upon 1-block receipt)</option>
+                      <option value="daily">End of Day (Daily Batch)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-lg"
+                >
+                  Save Payment Gateway Payout Configuration
                 </button>
               </form>
             </motion.div>
