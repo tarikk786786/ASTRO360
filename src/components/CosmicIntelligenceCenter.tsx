@@ -4,7 +4,7 @@ import {
   Sparkles, Sun, Moon, Compass, CloudMoon, Bot, Clock, Activity,
   Search, ShieldCheck, Heart, Award, User, Users, Wrench, X, ChevronRight, Globe2, Layers,
   BookOpen, ArrowUpRight, CheckCircle2, RotateCcw, Zap, HelpCircle, AlertTriangle,
-  Briefcase, Brain
+  Briefcase, Brain, FileText
 } from 'lucide-react';
 import { type UserProfile } from '../types';
 import AstrologyTargetProfileModal, { type AstrologyTargetProfile } from './AstrologyTargetProfileModal';
