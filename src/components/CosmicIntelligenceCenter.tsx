@@ -26,6 +26,10 @@ import { SplitText } from './reactbits/SplitText';
 import { SpotlightCard } from './reactbits/SpotlightCard';
 import { MagnetButton } from './reactbits/MagnetButton';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
+import { ErrorBoundary } from 'react-error-boundary';
+
+import DashboardSubNav from './ui/DashboardSubNav';
+
 import CosmicParticleBackground from './CosmicParticleBackground';
 import PlanetaryAspectGraph from './PlanetaryAspectGraph';
 import CosmicAnalyticsKPI from './CosmicAnalyticsKPI';
@@ -598,14 +602,15 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
   ];
 
   return (
-    <div className="flex h-screen w-full relative">
-      <DashboardSidebar activeCategory={activeCategory} onSelectCategory={setActiveCategory} />
+    <div className="flex h-screen w-full relative bg-[#0B1220]">
       <motion.div 
         initial="hidden"
         animate="show"
         variants={staggerContainer}
-        className="flex-1 bg-[#0B1220] text-[#F8FAFC] font-sans overflow-y-auto custom-scrollbar p-4 sm:p-8 lg:p-12 pb-28 text-left relative transform-gpu"
+        className="flex-1 text-[#F8FAFC] font-sans overflow-y-auto custom-scrollbar text-left relative transform-gpu flex flex-col"
       >
+        <DashboardSubNav activeCategory={activeCategory} onSelectCategory={setActiveCategory} />
+        <div className="flex-1 p-4 sm:p-8 lg:p-12 pb-28 relative">
         {/* 🌌 INTERACTIVE CANVAS PARTICLE STARFIELD */}
       <CosmicParticleBackground />
 
@@ -1515,6 +1520,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
       >
         <Bot className="w-6 h-6" />
       </button>
+        </div>
       </motion.div>
     </div>
   );
