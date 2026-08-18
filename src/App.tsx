@@ -66,13 +66,33 @@ import { Toaster, toast } from 'sonner';
 const STORAGE_KEY = 'astroverse_profile';
 const TAB_KEY = 'astroverse_tab';
 
+const EMPTY_PROFILE: UserProfile = {
+  name: '',
+  email: '',
+  phone: '',
+  gender: 'universal',
+  dob: '',
+  time: '12:00',
+  location: '',
+  preferredSystem: 'vedic',
+  careerGoal: 'Personal Growth & Prosperity',
+  relationshipStatus: 'Seeking Harmony',
+  primaryLifeFocus: 'Cosmic Alignment & Purpose',
+};
+
 function loadProfile(): UserProfile {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? { ...DEFAULT_PROFILE, ...JSON.parse(saved) } : DEFAULT_PROFILE;
-  } catch {
-    return DEFAULT_PROFILE;
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed && typeof parsed.name === 'string' && parsed.name.trim().length > 0) {
+        return { ...EMPTY_PROFILE, ...parsed };
+      }
+    }
+  } catch (e) {
+    console.warn("localStorage read error", e);
   }
+  return EMPTY_PROFILE;
 }
 
 function saveProfile(profile: UserProfile): void {
@@ -83,24 +103,21 @@ function saveProfile(profile: UserProfile): void {
   }
 }
 
-const DEFAULT_PROFILE: UserProfile = {
-  name: 'Tarik Islam',
-  email: 'princetarikislam@gmail.com',
-  phone: '',
-  gender: 'universal',
-  dob: '1998-06-15',
-  time: '12:00',
-  location: 'Mecca, Saudi Arabia',
-  preferredSystem: 'western',
-  careerGoal: 'Business Growth & Prosperity',
-  relationshipStatus: 'Seeking Harmony',
-  primaryLifeFocus: 'Wealth, Purpose & Protection',
-};
-
 export default function AppContent() {
   const { config, updateConfig } = useGlobalConfig();
   const [userProfile, setUserProfile] = useState<UserProfile>(loadProfile);
-  const [hasOnboarded, setHasOnboarded] = useState<boolean>(true);
+  const [hasOnboarded, setHasOnboarded] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return Boolean(parsed && typeof parsed.name === 'string' && parsed.name.trim().length > 0 && parsed.dob);
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  });
   
   const [activeTab, setActiveTab] = useState<string>(() => {
     try {

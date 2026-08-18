@@ -9,17 +9,17 @@ interface TarikIslamCosmicPassportProps {
 }
 
 export default function TarikIslamCosmicPassport({ userProfile, onEditProfile }: TarikIslamCosmicPassportProps) {
-  const name = userProfile?.name || 'Tarik Islam';
-  const email = userProfile?.email || 'apnix7@gmail.com';
-  const location = userProfile?.location || 'Balasore, Odisha, India';
-  const focus = userProfile?.primaryLifeFocus || 'Wealth & Purpose';
-  const ayanamsha = userProfile?.ayanamsha || 'Lahiri (24.21°)';
+  const name = userProfile?.name || 'Personal Seeker';
+  const email = userProfile?.email || 'seeker@astro360.internal';
+  const location = userProfile?.location || 'Birth Location Not Set';
+  const focus = userProfile?.primaryLifeFocus || 'Cosmic Alignment & Purpose';
+  const ayanamsha = userProfile?.ayanamsha || 'Lahiri Sidereal';
 
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-6 rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#1E1B4B] to-[#0F172A] border border-amber-500/40 shadow-2xl space-y-4 text-left relative overflow-hidden"
+      className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#1E1B4B] to-[#0F172A] border border-amber-500/40 shadow-2xl space-y-4 text-left relative overflow-hidden"
     >
       {/* BACKGROUND GLOW ACCENT */}
       <div className="absolute -top-12 -right-12 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -35,14 +35,18 @@ export default function TarikIslamCosmicPassport({ userProfile, onEditProfile }:
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <h2 className="text-xl font-bold text-white tracking-tight">{name}</h2>
+              <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">{name}</h2>
               <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30 font-bold flex items-center gap-1">
                 <UserCheck className="w-3 h-3" /> VERIFIED SEEKER PROFILE
               </span>
             </div>
             <p className="text-xs text-slate-300 font-mono flex items-center gap-2 mt-0.5 flex-wrap">
-              <Mail className="w-3.5 h-3.5 text-cyan-400" /> {email}
-              <span className="text-slate-500">•</span>
+              {userProfile?.email && (
+                <>
+                  <Mail className="w-3.5 h-3.5 text-cyan-400" /> {email}
+                  <span className="text-slate-500">•</span>
+                </>
+              )}
               <MapPin className="w-3.5 h-3.5 text-amber-400" /> {location}
             </p>
           </div>
@@ -59,7 +63,7 @@ export default function TarikIslamCosmicPassport({ userProfile, onEditProfile }:
               className="px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer transition-all shrink-0"
               title="Edit Profile, Date of Birth, Time, Location & Customisations"
             >
-              <Settings className="w-3.5 h-3.5 text-amber-400" /> Edit Profile & Parameters ⚙️
+              <Settings className="w-3.5 h-3.5 text-amber-400" /> Edit Profile & Birth Data ⚙️
             </button>
           )}
         </div>

@@ -29,13 +29,13 @@ export function Onboarding({ onComplete }: OnboardingProps) {
     email: '',
     phone: '',
     gender: 'universal',
-    dob: '1998-06-15',
+    dob: '',
     time: '12:00',
-    location: 'Global',
-    preferredSystem: 'western',
-    careerGoal: 'Business Growth & Prosperity',
+    location: '',
+    preferredSystem: 'vedic',
+    careerGoal: 'Personal Growth & Prosperity',
     relationshipStatus: 'Seeking Harmony',
-    primaryLifeFocus: 'Wealth, Purpose & Protection',
+    primaryLifeFocus: 'Cosmic Alignment & Purpose',
   });
 
   const nextStep = () => {
@@ -128,7 +128,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                     type="text"
                     required
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 text-white placeholder-slate-500 transition-all text-sm"
-                    placeholder="e.g. Tarik Islam"
+                    placeholder="Enter your full name"
                     value={profile.name}
                     onChange={(e) => handleInput('name', e.target.value)}
                   />
@@ -136,17 +136,16 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
                 <div>
                   <label className="flex items-center text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">
-                    <Mail className="w-3.5 h-3.5 mr-1.5 text-amber-400" /> Alert Email Address *
+                    <Mail className="w-3.5 h-3.5 mr-1.5 text-amber-400" /> Alert Email Address
                   </label>
                   <input
                     type="email"
-                    required
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 text-white placeholder-slate-500 transition-all text-sm"
-                    placeholder="e.g. princetarikislam@gmail.com"
+                    placeholder="your.email@example.com (optional)"
                     value={profile.email}
                     onChange={(e) => handleInput('email', e.target.value)}
                   />
-                  <p className="text-[11px] text-slate-400 mt-1">🚨 Emergency cosmic warning & remedy alerts will be sent here.</p>
+                  <p className="text-[11px] text-slate-400 mt-1">Emergency cosmic warning & remedy alerts will be sent here.</p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -157,7 +156,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                     <input
                       type="tel"
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white placeholder-slate-500 text-sm"
-                      placeholder="+91 9876543210"
+                      placeholder="+1 (555) 000-0000"
                       value={profile.phone}
                       onChange={(e) => handleInput('phone', e.target.value)}
                     />
@@ -345,15 +344,15 @@ export function Onboarding({ onComplete }: OnboardingProps) {
               type="button"
               onClick={nextStep}
               disabled={
-                (step === 1 && (!profile.name?.trim() || !profile.email?.trim() || !profile.gender)) ||
-                (step === 2 && (!profile.dob || !profile.time || !profile.location?.trim())) ||
-                (step === 3 && (!profile.careerGoal || !profile.relationshipStatus || !profile.preferredSystem))
+                (step === 1 && !profile.name?.trim()) ||
+                (step === 2 && (!profile.dob || !profile.location?.trim())) ||
+                (step === 3 && (!profile.careerGoal || !profile.preferredSystem))
               }
               className={`flex-1 py-3.5 rounded-xl font-semibold text-sm flex items-center justify-center transition-all ${
                 step === 3 
                   ? 'bg-gradient-to-r from-amber-500 via-indigo-500 to-emerald-500 hover:shadow-lg hover:shadow-amber-500/25 text-white' 
                   : 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:bg-indigo-600 text-white'
-              } disabled:opacity-50 disabled:cursor-not-allowed group shadow-lg`}
+              } disabled:opacity-50 disabled:cursor-not-allowed group shadow-lg cursor-pointer`}
             >
               {step === 3 ? (
                 <>

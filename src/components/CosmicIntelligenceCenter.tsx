@@ -233,14 +233,26 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
   const [isTargetModalOpen, setIsTargetModalOpen] = useState<boolean>(false);
   const [targetProfile, setTargetProfile] = useState<AstrologyTargetProfile>({
     targetType: 'self',
-    name: userProfile.name || 'Tarik Islam',
-    gender: 'universal',
-    dob: userProfile.dob || '1998-06-15',
+    name: userProfile.name || 'Seeker',
+    gender: userProfile.gender || 'universal',
+    dob: userProfile.dob || '2000-01-01',
     time: userProfile.time || '12:00',
-    location: userProfile.location || 'Mecca, Saudi Arabia',
+    location: userProfile.location || 'Local Birth Coordinates',
     preferredSystem: 'vedic',
     predictionFocus: 'wealth'
   });
+
+  useEffect(() => {
+    if (userProfile && userProfile.name) {
+      setTargetProfile(prev => ({
+        ...prev,
+        name: userProfile.name,
+        dob: userProfile.dob || prev.dob,
+        time: userProfile.time || prev.time,
+        location: userProfile.location || prev.location
+      }));
+    }
+  }, [userProfile]);
 
   // Selected Planet for Detail Modal
   const [selectedPlanet, setSelectedPlanet] = useState<PlanetPosition | null>(null);

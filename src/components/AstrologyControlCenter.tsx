@@ -222,22 +222,49 @@ export default function AstrologyControlCenter() {
   const [saveSuccess, setSaveSuccess] = useState<boolean>(false);
   
   // Local state for extended parameters not persisted in core GlobalConfig
-  const [localState, setLocalState] = useState<any>({
-    profileName: 'Tarik Islam',
-    birthTime: '1998-06-15T12:00',
-    birthLocation: 'Mecca, Saudi Arabia',
-    birthAccuracy: 'exact',
-    gender: 'universal',
-    calendarLocale: 'en-US',
-    chartStyle: 'north_indian',
-    bhavaMadhya: true,
-    trueNode: true,
-    midpointAnalysis: true,
-    choghadiyaRules: 'standard',
-    lunarReckoning: 'amanta',
-    samvatEra: 'vikram',
-    nakshatraDivision: '27',
-    subLordCalculation: true,
+  const [localState, setLocalState] = useState<any>(() => {
+    try {
+      const savedProfile = localStorage.getItem('astroverse_profile');
+      const p = savedProfile ? JSON.parse(savedProfile) : {};
+      return {
+        profileName: p.name || '',
+        birthTime: p.dob ? `${p.dob}T${p.time || '12:00'}` : '',
+        birthLocation: p.location || '',
+        birthAccuracy: 'exact',
+        gender: p.gender || 'universal',
+        calendarLocale: 'en-US',
+        chartStyle: 'north_indian',
+        bhavaMadhya: true,
+        trueNode: true,
+        midpointAnalysis: true,
+        choghadiyaRules: 'standard',
+        lunarReckoning: 'amanta',
+        samvatEra: 'vikram',
+        nakshatraDivision: '27',
+        subLordCalculation: true,
+      };
+    } catch {
+      return {
+        profileName: '',
+        birthTime: '',
+        birthLocation: '',
+        birthAccuracy: 'exact',
+        gender: 'universal',
+        calendarLocale: 'en-US',
+        chartStyle: 'north_indian',
+        bhavaMadhya: true,
+        trueNode: true,
+        midpointAnalysis: true,
+        choghadiyaRules: 'standard',
+        lunarReckoning: 'amanta',
+        samvatEra: 'vikram',
+        nakshatraDivision: '27',
+        subLordCalculation: true,
+      };
+    }
+  }); 
+  
+  const [extendedState, setExtendedState] = useState<any>({
     abhijitInclusion: true,
     dashaDepth: '3',
     dashaBalance: 'exact',
@@ -643,9 +670,9 @@ export default function AstrologyControlCenter() {
               {/* 1. Profile & Birth Data */}
               {activeSection === 'profile' && (
                 <>
-                  <InputControl label="Seeker Full Name" value={localState.profileName} onChange={(v:any) => updateLocal('profileName', v)} placeholder="e.g. Tarik Islam" />
+                  <InputControl label="Seeker Full Name" value={localState.profileName} onChange={(v:any) => updateLocal('profileName', v)} placeholder="Enter full name" />
                   <InputControl label="Date & Time of Birth" value={localState.birthTime} onChange={(v:any) => updateLocal('birthTime', v)} type="datetime-local" />
-                  <InputControl label="Birth City & Location" value={localState.birthLocation} onChange={(v:any) => updateLocal('birthLocation', v)} placeholder="City, Country" />
+                  <InputControl label="Birth City & Location" value={localState.birthLocation} onChange={(v:any) => updateLocal('birthLocation', v)} placeholder="City, Country (e.g. London, UK)" />
                   <SelectControl label="Birth Time Accuracy" value={localState.birthAccuracy} onChange={(v:any) => updateLocal('birthAccuracy', v)} options={[
                     {label: 'Exact (Hospital Record <1 min)', value: 'exact'},
                     {label: 'Approximate (+/- 15 mins)', value: 'approx'},

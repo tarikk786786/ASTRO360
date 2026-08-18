@@ -31,27 +31,27 @@ export default function AstrologyTargetProfileModal({
 }: AstrologyTargetProfileModalProps) {
 
   const [targetType, setTargetType] = useState<AstrologyTargetType>('self');
-  const [name, setName] = useState<string>(currentProfile.name || 'Tarik Islam');
+  const [name, setName] = useState<string>(currentProfile.name || '');
   const [gender, setGender] = useState<'male' | 'female' | 'universal'>('universal');
-  const [dob, setDob] = useState<string>(currentProfile.dob || '1998-06-15');
+  const [dob, setDob] = useState<string>(currentProfile.dob || '');
   const [time, setTime] = useState<string>(currentProfile.time || '12:00');
-  const [location, setLocation] = useState<string>(currentProfile.location || 'Mecca, Saudi Arabia');
+  const [location, setLocation] = useState<string>(currentProfile.location || '');
   const [preferredSystem, setPreferredSystem] = useState<'vedic' | 'western' | 'chinese' | 'islamic' | 'mayan' | 'scientific'>('vedic');
   const [predictionFocus, setPredictionFocus] = useState<'wealth' | 'love' | 'career' | 'health' | 'spiritual' | 'general'>('wealth');
 
   useEffect(() => {
     if (isOpen && currentProfile) {
-      setName(currentProfile.name || 'Tarik Islam');
-      setDob(currentProfile.dob || '1998-06-15');
+      setName(currentProfile.name || '');
+      setDob(currentProfile.dob || '');
       setTime(currentProfile.time || '12:00');
-      setLocation(currentProfile.location || 'Mecca, Saudi Arabia');
+      setLocation(currentProfile.location || '');
     }
   }, [isOpen, currentProfile]);
 
   const handleSelectTargetType = (type: AstrologyTargetType) => {
     setTargetType(type);
     if (type === 'self') {
-      setName(currentProfile.name || 'Tarik Islam');
+      setName(currentProfile.name || '');
     } else if (type === 'partner') {
       setName('Partner / Spouse');
     } else if (type === 'child') {
@@ -158,7 +158,7 @@ export default function AstrologyTargetProfileModal({
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. Tarik Islam"
+                  placeholder="Enter full name"
                   className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-[#0B1220] border border-white/10 text-white placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB]"
                 />
               </div>
@@ -173,12 +173,12 @@ export default function AstrologyTargetProfileModal({
               >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
-                <option value="universal">Universal / Non-Binary</option>
+                <option value="universal">Universal</option>
               </select>
             </div>
 
             <div>
-              <label className="text-[11px] text-[#CBD5E1] block mb-1 font-medium">Date of Birth (YYYY-MM-DD)</label>
+              <label className="text-[11px] text-[#CBD5E1] block mb-1 font-medium">Date of Birth</label>
               <div className="relative">
                 <Calendar className="w-4 h-4 text-[#94A3B8] absolute left-3 top-3" />
                 <input
@@ -191,7 +191,7 @@ export default function AstrologyTargetProfileModal({
             </div>
 
             <div>
-              <label className="text-[11px] text-[#CBD5E1] block mb-1 font-medium">Time of Birth (HH:MM)</label>
+              <label className="text-[11px] text-[#CBD5E1] block mb-1 font-medium">Time of Birth</label>
               <div className="relative">
                 <Clock className="w-4 h-4 text-[#94A3B8] absolute left-3 top-3" />
                 <input
@@ -203,15 +203,15 @@ export default function AstrologyTargetProfileModal({
               </div>
             </div>
 
-            <div className="sm:col-span-2">
-              <label className="text-[11px] text-[#CBD5E1] block mb-1 font-medium">Birth City & Country (GPS Coordinates)</label>
+            <div className="col-span-2">
+              <label className="text-[11px] text-[#CBD5E1] block mb-1 font-medium">Location of Birth (City, Country)</label>
               <div className="relative">
                 <MapPin className="w-4 h-4 text-[#94A3B8] absolute left-3 top-3" />
                 <input
                   type="text"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  placeholder="e.g. Mecca, Saudi Arabia or London, UK"
+                  placeholder="e.g. London, UK / New York, USA / Tokyo, Japan"
                   className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-[#0B1220] border border-white/10 text-white placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB]"
                 />
               </div>
