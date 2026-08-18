@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles, Sun, Moon, Info, ShieldCheck, Compass, Activity, Eye, Layers } from 'lucide-react';
+import { Sparkles, Sun, Moon, Info, ShieldCheck, Compass, Activity, Eye, Layers, Volume2, VolumeX } from 'lucide-react';
 import type { PlanetPosition } from '../lib/astroCalculations';
+import { playSolfeggioTone, stopSolfeggioTone } from '../lib/audioResonator';
 
 interface CelestialZodiacOrbitProps {
   planetPositions: PlanetPosition[];
@@ -29,32 +30,86 @@ const SIGN_BASE_DEGREES: Record<string, number> = {
   'Sagittarius': 240, 'Capricorn': 270, 'Aquarius': 300, 'Pisces': 330
 };
 
+const PLANET_FREQUENCIES: Record<string, number> = {
+  'Sun': 528,
+  'Moon': 432,
+  'Jupiter': 639,
+  'Venus': 741,
+  'Mars': 396,
+  'Mercury': 417,
+  'Saturn': 852,
+  'Rahu': 963,
+  'Ketu': 174,
+};
+
 export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }: CelestialZodiacOrbitProps) {
   const [hoveredPlanet, setHoveredPlanet] = useState<PlanetPosition | null>(null);
   const [is3DMode, setIs3DMode] = useState<boolean>(false);
+  const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
+  const [activeFrequency, setActiveFrequency] = useState<number | null>(null);
 
   // Parse numeric degree from string e.g. "14° 22'" -> 14.36
   const getDegreeValue = (degStr: string): number => {
-    const match = degStr.match(/(\d+)°/);
+    const match = degStr?.match(/(\d+)°/);
     return match ? parseInt(match[1], 10) : 15;
+  };
+
+  const planetNodes = useMemo(() => {
+    return planetPositions.map((p, idx) => {
+      const baseDeg = SIGN_BASE_DEGREES[p.sign] ?? (idx * 40);
+      const inSignDeg = getDegreeValue(p.degree);
+      const totalDeg = (baseDeg + inSignDeg - 90) * (Math.PI / 180);
+      const orbitRadius = 118 - ((idx % 3) * 16);
+      const x = orbitRadius * Math.cos(totalDeg);
+      const y = orbitRadius * Math.sin(totalDeg);
+      return { ...p, x, y, totalDeg, orbitRadius };
+    });
+  }, [planetPositions]);
+
+  const handlePlanetClick = (planet: PlanetPosition) => {
+    onSelectPlanet?.(planet);
+    const freq = PLANET_FREQUENCIES[planet.name] || 528;
+    setActiveFrequency(freq);
+    setIsPlayingAudio(true);
+    playSolfeggioTone(freq, 0.2, 'binaural', 5.0);
+    setTimeout(() => {
+      stopSolfeggioTone();
+      setIsPlayingAudio(false);
+      setActiveFrequency(null);
+    }, 2800);
   };
 
   return (
     <div 
       role="img"
       aria-label="360-Degree Animated Zodiac Orbit and Ephemeris Wheel showing real-time planetary positions"
-      className="relative w-full aspect-square max-w-[380px] mx-auto flex items-center justify-center p-2 sm:p-4 text-left group"
+      className="relative w-full aspect-square max-w-[390px] mx-auto flex items-center justify-center p-2 sm:p-4 text-left group select-none"
     >
       {/* 3D PERSPECTIVE TILT TOGGLE BUTTON */}
-      <button
-        onClick={() => setIs3DMode(!is3DMode)}
-        className="absolute top-2 right-2 z-40 px-2.5 py-1 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-[10px] font-mono font-bold flex items-center gap-1 border border-white/10 cursor-pointer transition-all shadow-md"
-      >
-        <Layers className="w-3 h-3 text-cyan-400" />
-        {is3DMode ? '2D View' : '3D Orbit View'}
-      </button>
+      <div className="absolute top-2 right-2 z-40 flex items-center gap-1.5">
+        <button
+          onClick={() => setIs3DMode(!is3DMode)}
+          className="px-2.5 py-1 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-[10px] font-mono font-bold flex items-center gap-1 border border-white/10 cursor-pointer transition-all shadow-md active:scale-95"
+        >
+          <Layers className="w-3 h-3 text-cyan-400" />
+          {is3DMode ? '2D View' : '3D Orbit View'}
+        </button>
+      </div>
 
-      {/* Radiant Glowing Nebula Backdrop (Static Crisp Glow) */}
+      {/* AUDIO RESONANCE STATUS BADGE */}
+      {isPlayingAudio && activeFrequency && (
+        <motion.div
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          className="absolute top-2 left-2 z-40 px-2.5 py-1 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-mono font-bold flex items-center gap-1.5 shadow-lg"
+        >
+          <Volume2 className="w-3.5 h-3.5 animate-pulse text-amber-400" />
+          <span>Resonating {activeFrequency} Hz</span>
+        </motion.div>
+      )}
+
+      {/* Radiant Glowing Nebula Backdrop */}
       <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600/15 via-purple-600/20 to-amber-500/15 blur-2xl pointer-events-none" />
 
       {/* MAIN CONTAINER WITH 3D PERSPECTIVE TRANSFORM */}
@@ -65,7 +120,32 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
         }}
         className="relative w-full h-full flex items-center justify-center pointer-events-auto"
       >
-        {/* Outer Zodiac Belt Ring (Steady & Crisp) */}
+        {/* SVG ASPECT RAYS (Interconnecting Aspect Lines) */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="-195 -195 390 390">
+          {/* Subtle connecting trines & sextiles */}
+          {planetNodes.length >= 2 && (
+            <>
+              <line 
+                x1={planetNodes[0].x} y1={planetNodes[0].y} 
+                x2={planetNodes[1].x} y2={planetNodes[1].y} 
+                stroke="rgba(6, 182, 212, 0.25)" 
+                strokeWidth="1.2" 
+                strokeDasharray="3 3" 
+              />
+              {planetNodes[2] && (
+                <line 
+                  x1={planetNodes[1].x} y1={planetNodes[1].y} 
+                  x2={planetNodes[2].x} y2={planetNodes[2].y} 
+                  stroke="rgba(212, 175, 55, 0.25)" 
+                  strokeWidth="1.2" 
+                  strokeDasharray="4 4" 
+                />
+              )}
+            </>
+          )}
+        </svg>
+
+        {/* Outer Zodiac Belt Ring */}
         <div className="absolute inset-2 rounded-full border border-blue-500/25 flex items-center justify-center pointer-events-none">
           {ZODIAC_SIGNS.map((z, idx) => {
             const angleRad = (z.deg - 90) * (Math.PI / 180);
@@ -90,15 +170,15 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
         {/* Inner Orbit Track */}
         <div className="absolute inset-20 rounded-full border border-purple-500/30 flex items-center justify-center pointer-events-none" />
 
-        {/* Central Solar Core (Steady Solar Core with Soft Breathing Aura) */}
+        {/* Central Solar Core */}
         <motion.div 
-          animate={{ opacity: [0.85, 1, 0.85] }}
+          animate={{ opacity: [0.85, 1, 0.85], scale: [0.98, 1.02, 0.98] }}
           transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           className="w-20 h-20 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 p-0.5 shadow-[0_0_35px_rgba(245,158,11,0.5)] flex items-center justify-center z-10 cursor-pointer"
         >
           <div className="w-full h-full rounded-full bg-[#0B1220] flex flex-col items-center justify-center text-center p-1 border border-white/20">
             <div className="flex items-center gap-1">
-              <Sun className="w-4 h-4 text-amber-400" />
+              <Sun className="w-4 h-4 text-amber-400 animate-spin" style={{ animationDuration: '30s' }} />
               <Moon className="w-4 h-4 text-cyan-400" />
             </div>
             <span className="text-[9px] font-mono font-bold text-amber-300 pt-0.5">CORE SOL</span>
@@ -106,30 +186,20 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
         </motion.div>
 
         {/* Dynamic 9 Planets Nodes Computed on Real Longitude Angle */}
-        {planetPositions.map((p, idx) => {
-          // Calculate real angle: Sign base + planet degree within sign
-          const baseDeg = SIGN_BASE_DEGREES[p.sign] ?? (idx * 40);
-          const inSignDeg = getDegreeValue(p.degree);
-          const totalDeg = (baseDeg + inSignDeg - 90) * (Math.PI / 180);
-          
-          // Vary orbit radius slightly for visual separation
-          const orbitRadius = 118 - ((idx % 3) * 16);
-          const px = orbitRadius * Math.cos(totalDeg);
-          const py = orbitRadius * Math.sin(totalDeg);
-
+        {planetNodes.map((p, idx) => {
           const isExalted = p.strength?.toLowerCase().includes('exalt');
           const isOwnSign = p.strength?.toLowerCase().includes('own');
 
           return (
             <motion.button
               key={idx}
-              onClick={() => onSelectPlanet?.(p)}
+              onClick={() => handlePlanetClick(p)}
               onMouseEnter={() => setHoveredPlanet(p)}
               onMouseLeave={() => setHoveredPlanet(null)}
               whileHover={{ scale: 1.25, zIndex: 40 }}
               whileTap={{ scale: 0.95 }}
-              style={{ transform: `translate(${px}px, ${py}px)` }}
-              className={`absolute z-20 p-1.5 sm:p-2 rounded-2xl bg-[#111827]/95 border ${p.border} shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:border-cyan-400 cursor-pointer group flex flex-col items-center justify-center space-y-0.5 backdrop-blur-md`}
+              style={{ transform: `translate(${p.x}px, ${p.y}px)` }}
+              className={`absolute z-20 p-1.5 sm:p-2 rounded-2xl bg-[#111827]/95 border ${p.border} shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:border-cyan-400 cursor-pointer group flex flex-col items-center justify-center space-y-0.5 backdrop-blur-md transition-shadow`}
             >
               <div className="flex items-center gap-1">
                 <span className={`text-xs sm:text-sm font-bold ${p.color}`}>{p.symbol}</span>
@@ -189,8 +259,11 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
               </div>
             </div>
 
-            <div className="text-[10px] text-slate-300 leading-tight bg-slate-900/80 p-1.5 rounded-lg border border-white/5">
-              <strong className="text-emerald-400">Dignity:</strong> {hoveredPlanet.strength}
+            <div className="text-[10px] text-slate-300 leading-tight bg-slate-900/80 p-1.5 rounded-lg border border-white/5 flex items-center justify-between">
+              <div><strong className="text-emerald-400">Dignity:</strong> {hoveredPlanet.strength}</div>
+              <div className="text-[9px] text-amber-300 font-mono flex items-center gap-1">
+                <Volume2 className="w-3 h-3 text-amber-400" /> Tap for {PLANET_FREQUENCIES[hoveredPlanet.name] || 528} Hz
+              </div>
             </div>
           </motion.div>
         )}
