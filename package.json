@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@replit/connectors-sdk": "^0.4.1",
+    "ai": "^7.0.66",
+    "dotenv": "^17.4.2",
     "motion": "^12.43.0",
     "nodemailer": "^9.0.5",
-    "react-markdown": "^10.1.0"
+    "react-markdown": "^10.1.0",
+    "tsx": "catalog:"
   },
   "devDependencies": {
     "@hookform/resolvers": "^3.10.0",
