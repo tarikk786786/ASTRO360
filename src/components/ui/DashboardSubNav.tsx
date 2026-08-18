@@ -31,6 +31,8 @@ export default function DashboardSubNav({ activeCategory, onSelectCategory }: Da
         left: btnRect.left - containerRect.left + container.scrollLeft,
         width: btnRect.width,
       });
+      // Scroll into view on mobile
+      activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     }
   }, [activeCategory]);
 

@@ -418,11 +418,66 @@ export default function AstrologyControlCenter() {
         </div>
       </motion.div>
 
-      {/* 🚀 MAIN 2-COLUMN CONTROL CENTER LAYOUT */}
+      {/* 🚀 MAIN CONTROL CENTER LAYOUT (Desktop 2-Col + Mobile Fluid Navigation) */}
+      
+      {/* 📱 MOBILE QUICK CATEGORY & MODULE SELECTOR (Visible on Mobile/Tablet) */}
+      <div className="lg:hidden space-y-3">
+        {/* Horizontal Category Chips */}
+        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+          {CONTROL_CENTER_GROUPS.map((grp) => {
+            const Icon = grp.icon;
+            const isCurrent = activeGroup === grp.id;
+            return (
+              <button
+                key={grp.id}
+                onClick={() => {
+                  setActiveGroup(grp.id);
+                  const firstInGroup = CONTROL_CENTER_SECTIONS.find(s => s.group === grp.id);
+                  if (firstInGroup) setActiveSection(firstInGroup.id);
+                }}
+                className={`px-3 py-2 rounded-xl text-xs font-mono font-bold whitespace-nowrap flex items-center gap-1.5 shrink-0 border transition-all cursor-pointer ${
+                  isCurrent 
+                    ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white border-cyan-400 shadow-md' 
+                    : 'bg-[#111827] border-white/10 text-slate-400'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                <span>{grp.name}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Mobile Module Dropdown Select */}
+        <div className="p-3 rounded-2xl bg-[#111827] border border-white/10 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 font-bold truncate">
+            <currentSectionMeta.icon className="w-4 h-4 shrink-0" />
+            <span className="truncate">{currentSectionMeta.name}</span>
+          </div>
+          <select
+            value={activeSection}
+            onChange={(e) => {
+              const sec = CONTROL_CENTER_SECTIONS.find(s => s.id === e.target.value);
+              if (sec) {
+                setActiveSection(sec.id);
+                setActiveGroup(sec.group);
+              }
+            }}
+            className="bg-[#0B1220] border border-white/10 text-white text-xs font-mono py-1.5 px-2.5 rounded-xl focus:outline-none focus:border-cyan-400 max-w-[140px] truncate"
+          >
+            {CONTROL_CENTER_SECTIONS.map(s => (
+              <option key={s.id} value={s.id} className="bg-[#111827] text-white">
+                {s.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        {/* ================= LEFT SIDEBAR (MODULE EXPLORER) ================= */}
-        <div className="lg:col-span-4 space-y-4">
+        {/* ================= LEFT SIDEBAR (Desktop Explorer) ================= */}
+        <div className="hidden lg:block lg:col-span-4 space-y-4">
           
           {/* SEARCH MODULES INPUT */}
           <div className="relative">
