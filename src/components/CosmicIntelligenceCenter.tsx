@@ -1198,36 +1198,36 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
             <span className="text-xs font-mono text-[#94A3B8]">9 Core Astrological Tools</span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-3">
+          <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2.5 sm:gap-3">
             {[
-              { id: 'birth-chart', title: 'Birth Chart', desc: 'Natal Kundli', icon: <Compass className="w-5 h-5 text-[#2563EB]" /> },
-              { id: 'horoscope', title: 'Horoscope', desc: 'Transits & energy', icon: <Sun className="w-5 h-5 text-[#F59E0B]" /> },
-              { id: 'compatibility', title: 'Compatibility', desc: '36-Guna match', icon: <Heart className="w-5 h-5 text-[#EC4899]" /> },
-              { id: 'consultation-hub', title: 'Consultations', desc: 'Book Scholars', icon: <User className="w-5 h-5 text-purple-400" />, isComingSoon: true },
-              { id: 'islamic-suite', title: 'Islamic Hub', desc: 'Qur\'an & Hadith', icon: <Moon className="w-5 h-5 text-[#22C55E]" /> },
-              { id: 'dream-interpreter', title: 'Dream Engine', desc: 'Symbol analysis', icon: <CloudMoon className="w-5 h-5 text-[#7C3AED]" /> },
-              { id: 'remedies', title: 'Remedies', desc: 'Gemstones & Yantras', icon: <Award className="w-5 h-5 text-[#D4AF37]" /> },
-              { id: 'live-diagnostics', title: 'Diagnostics', desc: 'What & Solution', icon: <Activity className="w-5 h-5 text-[#EF4444]" /> },
-              { id: 'tools-catalog', title: '150+ Tools', desc: 'Full Directory', icon: <Layers className="w-5 h-5 text-[#06B6D4]" /> },
+              { id: 'birth-chart', title: 'Birth Chart', desc: 'Natal Kundli', icon: <Compass className="w-4 h-4 sm:w-5 sm:h-5 text-[#2563EB]" /> },
+              { id: 'horoscope', title: 'Horoscope', desc: 'Transits & energy', icon: <Sun className="w-4 h-4 sm:w-5 sm:h-5 text-[#F59E0B]" /> },
+              { id: 'compatibility', title: 'Compatibility', desc: '36-Guna match', icon: <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-[#EC4899]" /> },
+              { id: 'consultation-hub', title: 'Consultations', desc: 'Book Scholars', icon: <User className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />, isComingSoon: true },
+              { id: 'islamic-suite', title: 'Islamic Hub', desc: 'Qur\'an & Hadith', icon: <Moon className="w-4 h-4 sm:w-5 sm:h-5 text-[#22C55E]" /> },
+              { id: 'dream-interpreter', title: 'Dream Engine', desc: 'Symbol analysis', icon: <CloudMoon className="w-4 h-4 sm:w-5 sm:h-5 text-[#7C3AED]" /> },
+              { id: 'remedies', title: 'Remedies', desc: 'Gemstones & Yantras', icon: <Award className="w-4 h-4 sm:w-5 sm:h-5 text-[#D4AF37]" /> },
+              { id: 'live-diagnostics', title: 'Diagnostics', desc: 'What & Solution', icon: <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-[#EF4444]" /> },
+              { id: 'tools-catalog', title: '150+ Tools', desc: 'Full Directory', icon: <Layers className="w-4 h-4 sm:w-5 sm:h-5 text-[#06B6D4]" /> },
             ].map((tool) => (
               <motion.button
                 key={tool.id}
                 onClick={() => onNavigate(tool.id)}
-                whileHover={{ scale: 1.05, y: -3 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-3.5 rounded-2xl bg-[#111827]/90 border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_25px_rgba(37,99,235,0.25)] transition-all duration-300 text-left space-y-2 group cursor-pointer shadow-lg backdrop-blur-xl relative overflow-hidden flex flex-col justify-between"
+                whileHover={{ scale: 1.04, y: -3 }}
+                whileTap={{ scale: 0.94 }}
+                className="p-2.5 sm:p-3.5 rounded-2xl bg-[#111827]/90 border border-white/10 hover:border-cyan-500/40 hover:shadow-[0_0_20px_rgba(6,182,212,0.2)] transition-all duration-300 text-left space-y-1.5 sm:space-y-2 group cursor-pointer shadow-md backdrop-blur-xl relative overflow-hidden flex flex-col justify-between"
               >
                 {tool.isComingSoon && (
                   <span className="absolute top-1.5 right-1.5 text-[8px] font-mono font-bold text-amber-300 bg-amber-500/20 px-1.5 py-0.5 rounded border border-amber-500/30">
                     Soon
                   </span>
                 )}
-                <div className="p-2 rounded-xl bg-[#0B1220] border border-white/10 w-fit group-hover:border-blue-400/40 group-hover:scale-110 transition-all duration-300">
+                <div className="p-1.5 sm:p-2 rounded-xl bg-[#0B1220] border border-white/10 w-fit group-hover:border-cyan-400/40 group-hover:scale-110 transition-all duration-300">
                   {tool.icon}
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-white group-hover:text-blue-400 transition-colors leading-tight">{tool.title}</h4>
-                  <p className="text-[9px] text-[#94A3B8] pt-0.5 truncate">{tool.desc}</p>
+                  <h4 className="text-[11px] sm:text-xs font-bold text-white group-hover:text-cyan-300 transition-colors leading-tight truncate">{tool.title}</h4>
+                  <p className="text-[8.5px] sm:text-[9px] text-[#94A3B8] pt-0.5 truncate">{tool.desc}</p>
                 </div>
               </motion.button>
             ))}
@@ -1512,14 +1512,16 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
 
       </div>
 
-      {/* FLOATING AI ASSISTANT BUTTON */}
-      <button
+      {/* 🔮 FLOATING AI ORACLE BUTTON (Mobile Safe & Animated) */}
+      <motion.button
         onClick={() => onNavigate('chat')}
-        className="fixed bottom-6 right-6 p-4 rounded-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white shadow-2xl transition-transform hover:scale-110 cursor-pointer border border-white/20 flex items-center justify-center group z-40"
-        title="Open AI Oracle"
+        whileHover={{ scale: 1.1, rotate: 5 }}
+        whileTap={{ scale: 0.9 }}
+        className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 p-3.5 sm:p-4 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white shadow-[0_0_25px_rgba(6,182,212,0.45)] cursor-pointer border border-white/20 flex items-center justify-center group z-40"
+        title="Open AI Oracle Consultation"
       >
-        <Bot className="w-6 h-6" />
-      </button>
+        <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-white drop-shadow-sm" />
+      </motion.button>
         </div>
       </motion.div>
     </div>

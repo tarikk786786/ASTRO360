@@ -475,21 +475,21 @@ export default function AppContent() {
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-auto custom-scrollbar pb-16 md:pb-0">
-          <div className="max-w-7xl mx-auto h-full">
+        <div className="flex-1 overflow-auto custom-scrollbar pb-24 md:pb-6">
+          <div className="max-w-7xl mx-auto h-full px-2 sm:px-4 lg:px-6">
             <Suspense fallback={
               <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-                <div className="w-12 h-12 rounded-full border-2 border-blue-500/30 border-t-blue-500 animate-spin" />
-                <p className="text-xs font-mono text-slate-400">Loading Cosmic Intelligence Engine...</p>
+                <div className="w-12 h-12 rounded-full border-2 border-cyan-500/30 border-t-cyan-400 animate-spin" />
+                <p className="text-xs font-mono text-cyan-300">Synchronizing Cosmic Intelligence Engines...</p>
               </div>
             }>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeTab}
-                  initial={{ opacity: 0, y: 8 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.2, ease: 'easeOut' }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.25, ease: [0.25, 1, 0.5, 1] }}
                   className="h-full"
                 >
                 <ErrorBoundary>
@@ -576,28 +576,41 @@ export default function AppContent() {
           </div>
         </div>
 
-      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#090d16]/95 backdrop-blur-2xl border-t border-white/[0.04] z-40 px-2 flex items-center justify-around">
+      {/* 📱 MOBILE BOTTOM NAVIGATION DOCK (Glassmorphic + Active Micro-Interactions) */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#090d16]/95 backdrop-blur-3xl border-t border-white/[0.08] z-40 px-3 flex items-center justify-around shadow-[0_-8px_30px_rgba(0,0,0,0.5)]">
         {[
-          { id: 'dashboard', icon: LayoutDashboard, label: 'Home', color: 'cyan' },
+          { id: 'dashboard', icon: LayoutDashboard, label: 'Overview', color: 'cyan' },
           { id: 'live-diagnostics', icon: Activity, label: 'Diagnose', color: 'amber' },
-          { id: 'birth-chart', icon: Compass, label: 'Chart', color: 'purple' },
+          { id: 'birth-chart', icon: Compass, label: 'Kundli', color: 'purple' },
           { id: 'tools-catalog', icon: Sparkles, label: 'Tools', color: 'emerald' },
           { id: 'chat', icon: MessageCircle, label: 'Oracle', color: 'blue' },
-        ].map(({ id, icon: Icon, label, color }) => (
-          <button
-            key={id}
-            onClick={() => navigateTo(id)}
-            className={`flex flex-col items-center justify-center w-full h-full py-1 transition-all duration-200 ${
-              activeTab === id ? `text-${color}-400 font-semibold` : 'text-slate-500 hover:text-slate-300'
-            }`}
-          >
-            <Icon className={`w-5 h-5 transition-all ${activeTab === id ? `text-${color}-400 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]` : ''}`} />
-            <span className="text-[10px] mt-0.5 tracking-tight">{label}</span>
-            {activeTab === id && <div className={`w-1 h-1 rounded-full bg-${color}-400 mt-0.5`} />}
-          </button>
-        ))}
+        ].map(({ id, icon: Icon, label, color }) => {
+          const isActive = activeTab === id;
+          return (
+            <motion.button
+              key={id}
+              onClick={() => navigateTo(id)}
+              whileTap={{ scale: 0.9 }}
+              className={`flex flex-col items-center justify-center w-full h-full py-1 transition-all duration-200 cursor-pointer ${
+                isActive ? `text-${color}-400 font-bold` : 'text-slate-500 hover:text-slate-300'
+              }`}
+            >
+              <div className="relative">
+                <Icon className={`w-5 h-5 transition-transform ${isActive ? `text-${color}-400 drop-shadow-[0_0_10px_rgba(6,182,212,0.6)] scale-110` : ''}`} />
+                {isActive && (
+                  <motion.div 
+                    layoutId="mobileActiveDot"
+                    className={`w-1 h-1 rounded-full bg-${color}-400 mx-auto mt-0.5 shadow-[0_0_6px_currentColor]`} 
+                  />
+                )}
+              </div>
+              <span className={`text-[10.5px] mt-0.5 tracking-tight ${isActive ? 'font-bold' : 'font-medium'}`}>{label}</span>
+            </motion.button>
+          );
+        })}
       </div>
       </main>
+
 
       {/* AUTH MODAL DIALOG */}
       <AnimatePresence>
