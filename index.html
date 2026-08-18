@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="background-color: #090d16; color: #f8fafc;">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
@@ -9,11 +9,60 @@
     <meta property="og:title" content="ASTRO360 OMNI — Universal Cosmic Intelligence & Multi-Faith Engine" />
     <meta property="og:description" content="Universal multi-faith astrology platform uniting 6 world traditions. Created by Tarik Islam (tarikislam.in)." />
     <meta property="og:type" content="website" />
-    <meta name="theme-color" content="#0b1220" />
+    <meta name="theme-color" content="#090d16" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+    <style>
+      html, body {
+        background-color: #090d16 !important;
+        color: #f8fafc !important;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+      }
+      #root:empty::before {
+        content: 'Loading Cosmos OMNI...';
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        font-family: monospace;
+        font-size: 14px;
+        color: #06b6d4;
+      }
+    </style>
+
+    <!-- Cache Busting & Auto-Recovery Script -->
+    <script>
+      // Clear stale service worker caches if new build deployed
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for (var registration of registrations) {
+            registration.update();
+          }
+        });
+      }
+      // Catch stale script loading errors and reload
+      window.addEventListener('error', function(e) {
+        if (e.target && (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK')) {
+          if (!sessionStorage.getItem('reloaded_for_stale_cache')) {
+            sessionStorage.setItem('reloaded_for_stale_cache', 'true');
+            if ('caches' in window) {
+              caches.keys().then(function(names) {
+                return Promise.all(names.map(function(name) { return caches.delete(name); }));
+              }).then(function() {
+                window.location.reload();
+              });
+            } else {
+              window.location.reload();
+            }
+          }
+        }
+      }, true);
+    </script>
 
     <!-- JSON-LD Structured Data Schema -->
     <script type="application/ld+json">
@@ -39,15 +88,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="manifest" href="/manifest.json" />
   </head>
-  <body>
+  <body style="background-color: #090d16; color: #f8fafc;">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js').catch(() => {});
-        });
-      }
-    </script>
   </body>
 </html>
