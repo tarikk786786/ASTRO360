@@ -5,7 +5,10 @@
 
 import { AyanamsaMode, ZodiacSystem, HouseSystem } from './astronomyEngine';
 
-export type SupportedLanguage = 'en' | 'ar' | 'hi' | 'ur' | 'bn' | 'es' | 'fr' | 'zh';
+export type SupportedLanguage = 
+  | 'en' | 'hi' | 'bn' | 'ta' | 'te' | 'mr' | 'gu' | 'kn' | 'ml' | 'pa' 
+  | 'ur' | 'ar' | 'es' | 'fr' | 'de' | 'pt' | 'ru' | 'zh' | 'ja' | 'ko' 
+  | string;
 export type AstrologySystemMode = 'vedic' | 'western' | 'islamic' | 'chinese';
 export type DateFormatMode = 'YYYY-MM-DD' | 'DD/MM/YYYY' | 'MM/DD/YYYY';
 export type AsrJuristicMethod = 'standard' | 'hanafi';

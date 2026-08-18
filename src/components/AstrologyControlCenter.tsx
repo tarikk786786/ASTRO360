@@ -603,14 +603,26 @@ export default function AstrologyControlCenter() {
               {activeSection === 'language' && (
                 <>
                   <SelectControl label="System Language" value={config.language} onChange={(v:any) => updateConfig({ language: v })} options={[
-                    {label: 'English (US/UK)', value: 'en'},
-                    {label: 'العربية (Arabic - Ilm al-Falak)', value: 'ar'},
-                    {label: 'हिन्दी (Hindi - Vedic Jyotish)', value: 'hi'},
-                    {label: 'اردو (Urdu - Najoom)', value: 'ur'},
-                    {label: 'বাংলা (Bengali - Jyotish)', value: 'bn'},
-                    {label: 'Español (Spanish)', value: 'es'},
-                    {label: 'Français (French)', value: 'fr'},
-                    {label: '中文 (Chinese BaZi)', value: 'zh'}
+                    {label: '🇺🇸 English (US/UK)', value: 'en'},
+                    {label: '🇮🇳 हिन्दी (Hindi)', value: 'hi'},
+                    {label: '🇧🇩 বাংলা (Bengali)', value: 'bn'},
+                    {label: '🇮🇳 தமிழ் (Tamil)', value: 'ta'},
+                    {label: '🇮🇳 తెలుగు (Telugu)', value: 'te'},
+                    {label: '🇮🇳 मराठी (Marathi)', value: 'mr'},
+                    {label: '🇮🇳 ગુજરાતી (Gujarati)', value: 'gu'},
+                    {label: '🇮🇳 ಕನ್ನಡ (Kannada)', value: 'kn'},
+                    {label: '🇮🇳 മലയാളം (Malayalam)', value: 'ml'},
+                    {label: '🇮🇳 ਪੰਜਾਬੀ (Punjabi)', value: 'pa'},
+                    {label: '🇵🇰 اردو (Urdu)', value: 'ur'},
+                    {label: '🇸🇦 العربية (Arabic)', value: 'ar'},
+                    {label: '🇪🇸 Español (Spanish)', value: 'es'},
+                    {label: '🇫🇷 Français (French)', value: 'fr'},
+                    {label: '🇩🇪 Deutsch (German)', value: 'de'},
+                    {label: '🇧🇷 Português (Portuguese)', value: 'pt'},
+                    {label: '🇷🇺 Русский (Russian)', value: 'ru'},
+                    {label: '🇨🇳 中文 (Chinese BaZi)', value: 'zh'},
+                    {label: '🇯🇵 日本語 (Japanese)', value: 'ja'},
+                    {label: '🇰🇷 한국어 (Korean)', value: 'ko'}
                   ]} />
                   <SelectControl label="Date Presentation Format" value={config.dateFormat} onChange={(v:any) => updateConfig({ dateFormat: v })} options={[
                     {label: 'YYYY-MM-DD (ISO International)', value: 'YYYY-MM-DD'},

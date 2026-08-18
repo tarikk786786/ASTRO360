@@ -335,9 +335,59 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
         quickActions: "核心快捷操作",
         viewByReligion: "按信仰/传统过滤仪表板视角：",
         languageSelect: "语言 / Language:"
+      },
+      bn: {
+        welcome: "স্বাগতম",
+        systemActive: "সিস্টেম সক্রিয়",
+        todaysDiagnostics: "আজকের কসমিক নির্ণয় এবং প্রতিকার",
+        ephemerisPositions: "লাইভ গ্রহের অবস্থান (গণনা করা)",
+        activeDasha: "সক্রিয় দশা সময়কাল",
+        quickActions: "প্রয়োজনীয় সরঞ্জাম",
+        viewByReligion: "ধর্ম ও ঐতিহ্য অনুযায়ী ড্যাশবোর্ড ফিল্টার করুন:",
+        languageSelect: "ভাষা / Language:"
+      },
+      ta: {
+        welcome: "மீண்டும் வருக",
+        systemActive: "அமைப்பு செயலில் உள்ளது",
+        todaysDiagnostics: "இன்றைய கிரக நிலை மற்றும் தீர்வுகள்",
+        ephemerisPositions: "நிகழ்நேர கிரக நிலைகள்",
+        activeDasha: "தற்போதைய தசா காலம்",
+        quickActions: "முக்கிய கருவிகள்",
+        viewByReligion: "பாரம்பரியத்தின்படி வடிகட்டவும்:",
+        languageSelect: "மொழி / Language:"
+      },
+      de: {
+        welcome: "Willkommen zurück",
+        systemActive: "SYSTEM AKTIV",
+        todaysDiagnostics: "Heutige kosmische Diagnose & Lösung",
+        ephemerisPositions: "Live-Ephemeridenpositionen (Berechnet)",
+        activeDasha: "Aktive Dasha-Periode",
+        quickActions: "Wichtige Schnellaktionen",
+        viewByReligion: "Dashboard-Perspektive nach Glauben / Tradition filtern:",
+        languageSelect: "Sprache / Language:"
+      },
+      ru: {
+        welcome: "С возвращением",
+        systemActive: "СИСТЕМА АКТИВНА",
+        todaysDiagnostics: "Космическая диагностика и решения на сегодня",
+        ephemerisPositions: "Текущие эфемеридные позиции (расчетные)",
+        activeDasha: "Активный период Даша",
+        quickActions: "Основные быстрые действия",
+        viewByReligion: "Фильтр панели по духовным традициям:",
+        languageSelect: "Язык / Language:"
+      },
+      ja: {
+        welcome: "おかえりなさい",
+        systemActive: "システム稼働中",
+        todaysDiagnostics: "本日の宇宙診断と解決策",
+        ephemerisPositions: "リアルタイム天体位置（計算値）",
+        activeDasha: "現在のアクティブなダシャー周期",
+        quickActions: "クイックアクション",
+        viewByReligion: "信仰・伝統別にダッシュボードを絞り込む:",
+        languageSelect: "言語 / Language:"
       }
     };
-    return dict[selectedLanguage] || dict['en'];
+    return (dict as any)[selectedLanguage] || dict['en'];
   }, [selectedLanguage]);
 
   // Accurate Local Time Telemetry with Timezone Abbreviation
