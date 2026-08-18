@@ -241,7 +241,9 @@ export default function AppContent() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed md:relative top-0 left-0 h-full w-64 bg-[#090d16]/95 md:bg-transparent backdrop-blur-3xl md:backdrop-blur-none border-r border-white/[0.04] flex flex-col z-50 transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
+        className={`fixed inset-y-0 left-0 md:static h-full w-64 bg-[#090d16]/98 md:bg-[#090d16]/60 backdrop-blur-3xl border-r border-white/[0.04] flex flex-col z-50 transition-transform duration-300 ease-out md:translate-x-0 shrink-0 ${
+          isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'
+        } ${!isSidebarOpen ? 'max-md:pointer-events-none max-md:hidden md:flex' : 'flex'}`}
       >
         {/* Logo area */}
         <div className="h-14 flex items-center justify-between px-5 border-b border-white/[0.04] flex-shrink-0">
@@ -433,7 +435,7 @@ export default function AppContent() {
       </aside>
 
               {/* Main Content */}
-      <main className="flex-1 relative z-10 flex flex-col h-[100dvh] overflow-hidden">
+      <main className="flex-1 min-w-0 w-full relative z-10 flex flex-col h-[100dvh] overflow-hidden">
         {/* Top Bar */}
         <header className="h-14 border-b border-white/[0.04] bg-[#090d16]/90 backdrop-blur-2xl flex items-center justify-between px-3 sm:px-5 flex-shrink-0">
           <div className="flex items-center gap-2.5 min-w-0">
@@ -477,8 +479,8 @@ export default function AppContent() {
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-auto custom-scrollbar pb-24 md:pb-6">
-          <div className="max-w-7xl mx-auto h-full px-2 sm:px-4 lg:px-6">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar pb-24 md:pb-6 w-full">
+          <div className="max-w-7xl mx-auto h-full px-2.5 sm:px-4 lg:px-6 w-full">
             <Suspense fallback={
               <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
                 <div className="w-12 h-12 rounded-full border-2 border-cyan-500/30 border-t-cyan-400 animate-spin" />

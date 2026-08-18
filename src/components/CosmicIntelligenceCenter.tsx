@@ -652,19 +652,19 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
   ];
 
   return (
-    <div className="flex h-screen w-full relative bg-[#0B1220]">
+    <div className="w-full relative bg-[#0B1220] min-h-full">
       <motion.div 
         initial="hidden"
         animate="show"
         variants={staggerContainer}
-        className="flex-1 text-[#F8FAFC] font-sans overflow-y-auto custom-scrollbar text-left relative transform-gpu flex flex-col"
+        className="w-full text-[#F8FAFC] font-sans text-left relative transform-gpu flex flex-col"
       >
         <DashboardSubNav activeCategory={activeCategory} onSelectCategory={setActiveCategory} />
-        <div className="flex-1 p-4 sm:p-8 lg:p-12 pb-28 relative">
-        {/* 🌌 INTERACTIVE CANVAS PARTICLE STARFIELD */}
-      <CosmicParticleBackground />
+        <div className="w-full py-3 sm:py-6 relative">
+          {/* 🌌 INTERACTIVE CANVAS PARTICLE STARFIELD */}
+          <CosmicParticleBackground />
 
-      <div className="max-w-7xl mx-auto space-y-6 relative z-10">
+          <div className="w-full max-w-7xl mx-auto space-y-6 relative z-10">
 
         {/* SECTION 1: GLOBAL HEADER WITH SEARCH & ACCURATE LOCAL TIME */}
         <motion.div variants={staggerItem} className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 p-4 sm:p-6 rounded-3xl bg-[#111827] border border-white/10 shadow-2xl backdrop-blur-xl">
