@@ -34,6 +34,41 @@
   --color-slate-800: #1E293B;
   --color-slate-400: #94A3B8;
   --color-slate-300: #CBD5E1;
+
+  --color-cosmic-50: #ecfeff;
+  --color-cosmic-100: #cffafe;
+  --color-cosmic-200: #a5f3fc;
+  --color-cosmic-300: #67e8f9;
+  --color-cosmic-400: #22d3ee;
+  --color-cosmic-500: #06b6d4;
+  --color-cosmic-600: #0891b2;
+  --color-cosmic-700: #0e7490;
+  --color-cosmic-800: #155e75;
+  --color-cosmic-900: #164e63;
+  --color-cosmic-950: #083344;
+  
+  --color-nebula-50: #faf5ff;
+  --color-nebula-100: #f3e8ff;
+  --color-nebula-200: #e9d5ff;
+  --color-nebula-300: #d8b4fe;
+  --color-nebula-400: #c084fc;
+  --color-nebula-500: #a855f7;
+  --color-nebula-600: #9333ea;
+  --color-nebula-700: #7c3aed;
+  --color-nebula-800: #6d28d9;
+  --color-nebula-900: #581c87;
+  --color-nebula-950: #3b0764;
+  
+  --shadow-glow-cyan: 0 0 20px rgba(6,182,212,0.15), 0 0 40px rgba(6,182,212,0.05);
+  --shadow-glow-blue: 0 0 20px rgba(37,99,235,0.15), 0 0 40px rgba(37,99,235,0.05);
+  --shadow-glow-gold: 0 0 20px rgba(212,175,55,0.15), 0 0 40px rgba(212,175,55,0.05);
+  --shadow-glow-emerald: 0 0 20px rgba(16,185,129,0.15), 0 0 40px rgba(16,185,129,0.05);
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
 }
 
 html {
@@ -251,4 +286,136 @@ body {
     box-shadow: none !important;
     backdrop-filter: none !important;
   }
+}
+
+/* Bento Card Surface */
+.bento-card {
+  background: linear-gradient(135deg, rgba(17,24,39,0.8) 0%, rgba(15,23,42,0.6) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.bento-card:hover {
+  border-color: rgba(6,182,212,0.2);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3), 0 0 20px rgba(6,182,212,0.08), inset 0 1px 0 rgba(255,255,255,0.06);
+  transform: translateY(-2px);
+}
+
+/* Section Header */
+.section-header {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #64748b;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  border: 1px solid transparent;
+}
+.status-badge-active {
+  color: #22c55e;
+  background: rgba(34,197,94,0.1);
+  border-color: rgba(34,197,94,0.25);
+}
+.status-badge-warning {
+  color: #f59e0b;
+  background: rgba(245,158,11,0.1);
+  border-color: rgba(245,158,11,0.25);
+}
+
+/* Tool Card */
+.tool-card {
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(17,24,39,0.7);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+.tool-card:hover {
+  background: rgba(17,24,39,0.9);
+  border-color: rgba(37,99,235,0.3);
+  box-shadow: 0 0 20px rgba(37,99,235,0.1);
+  transform: translateY(-2px);
+}
+
+/* Sidebar styles */
+.sidebar-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #475569;
+  padding: 0 12px;
+  margin-bottom: 4px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #94a3b8;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+  position: relative;
+}
+.sidebar-item:hover {
+  color: #e2e8f0;
+  background: rgba(255,255,255,0.04);
+}
+.sidebar-item-active {
+  color: #22d3ee;
+  background: linear-gradient(135deg, rgba(6,182,212,0.12) 0%, rgba(37,99,235,0.08) 100%);
+  border-color: rgba(6,182,212,0.2);
+  box-shadow: 0 0 12px rgba(6,182,212,0.08);
+}
+.sidebar-item-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(180deg, #06b6d4 0%, #2563eb 100%);
+}
+
+/* Animated underline for tab nav */
+.tab-underline {
+  position: relative;
+}
+.tab-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg, #06b6d4, #2563eb);
+  border-radius: 1px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tab-underline:hover::after,
+.tab-underline-active::after {
+  transform: translateX(-50%) scaleX(1);
 }

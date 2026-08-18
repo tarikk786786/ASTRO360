@@ -156,10 +156,12 @@ export default function AppContent() {
   }, {} as Record<TraditionGroup, CategoryInfo[]>);
 
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
-    'Asian & Eastern': true,
-    'Western & European': true,
-    'Middle Eastern & Semitic': true,
-    'Indigenous & Ancient': true
+    'tools': false,
+    'standalone': false,
+    'Asian & Eastern': false,
+    'Western & European': false,
+    'Middle Eastern & Semitic': false,
+    'Indigenous & Ancient': false
   });
 
   const toggleGroup = (group: string) => {
@@ -238,563 +240,149 @@ export default function AppContent() {
       </AnimatePresence>
 
       {/* Sidebar */}
-      <aside 
-        className={`w-72 border-r border-white/[0.08] bg-[#090d16]/95 backdrop-blur-2xl z-50 flex-shrink-0 fixed md:relative inset-y-0 left-0 h-full flex flex-col transition-transform duration-300 ease-out shadow-2xl ${
-          isSidebarOpen || !isMobile ? 'translate-x-0' : '-translate-x-full'
-        }`}
+      <aside
+        className={`fixed md:relative top-0 left-0 h-full w-64 bg-[#090d16]/95 md:bg-transparent backdrop-blur-3xl md:backdrop-blur-none border-r border-white/[0.04] flex flex-col z-50 transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
       >
-        {/* Logo */}
-        <div className="p-5 flex items-center justify-between shrink-0 border-b border-white/[0.06]">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cosmic-500 to-nebula-500 flex items-center justify-center shadow-lg shadow-cosmic-500/20">
-              <Sparkles className="text-white w-5 h-5" />
+        {/* Logo area */}
+        <div className="h-14 flex items-center justify-between px-5 border-b border-white/[0.04] flex-shrink-0">
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigateTo('dashboard')}>
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-cosmic-500/20 to-nebula-500/20 border border-cosmic-500/30 flex items-center justify-center">
+              <Compass className="w-4 h-4 text-cosmic-400" />
             </div>
-            <div>
-              <span className="font-bold text-xl tracking-tight gradient-text block leading-tight font-display">
-                Cosmos
-              </span>
-              <span className="text-[9px] uppercase tracking-[0.15em] text-amber-400 font-semibold">Free & Perfect Universal Engine</span>
-            </div>
+            <span className="font-bold text-sm tracking-wide text-slate-200">
+              COSMOS <span className="text-cosmic-400 font-light">OMNI</span>
+            </span>
           </div>
-          <button className="md:hidden text-slate-400 hover:text-white p-1" onClick={() => setIsSidebarOpen(false)}>
-            <X className="w-5 h-5" />
+          <button className="md:hidden p-1 text-slate-500 hover:text-white" onClick={() => setIsSidebarOpen(false)}>
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1 custom-scrollbar">
-          {/* Quick Command Palette Search Button */}
-          <button
-            onClick={() => setIsCommandPaletteOpen(true)}
-            className="w-full flex items-center justify-between px-3 py-2 mb-3 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:border-cosmic-500/40 text-slate-400 hover:text-white transition-all text-xs font-sans cursor-pointer focus-ring"
-            aria-label="Open Search Command Palette"
-          >
-            <span className="flex items-center gap-2">
-              <Search className="w-3.5 h-3.5 text-cosmic-400" />
-              <span>Search Tools...</span>
-            </span>
-            <span className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-mono text-slate-300 flex items-center gap-0.5">
-              <Command className="w-2.5 h-2.5" />K
-            </span>
-          </button>
-
-          {/* Main Nav */}
-          <button 
-            onClick={() => navigateTo('dashboard')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-              activeTab === 'dashboard' 
-                ? 'bg-cosmic-500/15 text-cosmic-300 border border-cosmic-500/25 shadow-sm shadow-cosmic-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <LayoutDashboard className="w-5 h-5" />
-            <span className="font-medium text-sm">Dashboard</span>
-          </button>
-          
-          <button 
-            onClick={() => navigateTo('live-diagnostics')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-              activeTab === 'live-diagnostics' 
-                ? 'bg-amber-500/15 text-amber-300 border border-amber-500/25 shadow-sm shadow-amber-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <Activity className="w-5 h-5" />
-            <span className="font-medium text-sm">Live Diagnostics (What & Solution)</span>
-          </button>
-
-          <button 
-            onClick={() => navigateTo('advisor')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-              activeTab === 'advisor' 
-                ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/25 shadow-sm shadow-emerald-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <ShieldCheck className="w-5 h-5" />
-            <span className="font-medium text-sm">Holistic Life Advisor</span>
-          </button>
-
-          <button 
-            onClick={() => navigateTo('remedies')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-              activeTab === 'remedies' 
-                ? 'bg-yellow-500/15 text-yellow-300 border border-yellow-500/25 shadow-sm shadow-yellow-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <Gem className="w-5 h-5" />
-            <span className="font-medium text-sm">Remedial Gemstones & Yantras</span>
-          </button>
-
-          <button 
-            onClick={() => navigateTo('custom-remedies')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-              activeTab === 'custom-remedies' 
-                ? 'bg-amber-500/15 text-amber-300 border border-amber-500/25 shadow-sm shadow-amber-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <HeartHandshake className="w-5 h-5" />
-            <span className="font-medium text-sm">Problem & Solution (By Medium)</span>
-          </button>
-
-          <button 
-            onClick={() => navigateTo('synastry')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-              activeTab === 'synastry' 
-                ? 'bg-pink-500/15 text-pink-300 border border-pink-500/25 shadow-sm shadow-pink-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <Sparkles className="w-5 h-5 text-pink-400" />
-            <span className="font-medium text-sm">Synastry & Team Matcher</span>
-          </button>
-
-          <button 
-            onClick={() => navigateTo('global-suite')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-              activeTab === 'global-suite' 
-                ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/25 shadow-sm shadow-cyan-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <Globe className="w-5 h-5" />
-            <span className="font-medium text-sm">Global Universal Wisdom Suite</span>
-          </button>
-
-          <button 
-            onClick={() => navigateTo('tools-catalog')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-              activeTab === 'tools-catalog' 
-                ? 'bg-amber-500/15 text-amber-300 border border-amber-500/25 shadow-sm shadow-amber-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <Sparkles className="w-5 h-5 text-amber-400" />
-            <span className="font-medium text-sm font-bold">150+ Astro Tools Suite</span>
-          </button>
-
-          <button 
-            onClick={() => navigateTo('birth-chart')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-              activeTab === 'birth-chart' 
-                ? 'bg-purple-500/15 text-purple-300 border border-purple-500/25 shadow-sm shadow-purple-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <Sparkles className="w-5 h-5" />
-            <span className="font-medium text-sm">Birth Chart (Kundli)</span>
-          </button>
-
-          <button 
-            onClick={() => navigateTo('master-chart')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-              activeTab === 'master-chart' 
-                ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/25 shadow-sm shadow-indigo-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <Compass className="w-5 h-5" />
-            <span className="font-medium text-sm">Master Overall Chart</span>
-          </button>
-
-          <button 
-            onClick={() => navigateTo('islamic-suite')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer ${
-              activeTab === 'islamic-suite' || activeTab === 'islamic-astrology'
-                ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/25 shadow-sm shadow-emerald-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <Moon className="w-5 h-5 text-emerald-400" />
-            <span className="font-medium text-sm font-bold">Islamic Guidance & Ilm al-Nujum</span>
-          </button>
-          
-          <button 
-            onClick={() => navigateTo('chat')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-              activeTab === 'chat' 
-                ? 'bg-purple-500/15 text-purple-300 border border-purple-500/25 shadow-sm shadow-purple-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <MessageCircle className="w-5 h-5" />
-            <span className="font-medium text-sm">Astrologer Consultation</span>
-          </button>
-
-          <button 
-            onClick={() => navigateTo('dream-interpreter')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer ${
-              activeTab === 'dream-interpreter' 
-                ? 'bg-purple-500/15 text-purple-300 border border-purple-500/25 shadow-sm shadow-purple-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <CloudMoon className="w-5 h-5 text-purple-400" />
-            <span className="font-medium text-sm font-bold">Dream Interpretation Suite</span>
-          </button>
-
-          <button 
-            onClick={() => navigateTo('problem-solver')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer ${
-              activeTab === 'problem-solver' 
-                ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/25 shadow-sm shadow-cyan-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <Zap className="w-5 h-5 text-amber-400" />
-            <span className="font-medium text-sm font-bold text-cyan-300">Interactive Problem Tools</span>
-          </button>
-
-          <button 
-            onClick={() => navigateTo('spiritual-traditions')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer ${
-              activeTab === 'spiritual-traditions' 
-                ? 'bg-amber-500/15 text-amber-300 border border-amber-500/25 shadow-sm shadow-amber-500/10' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
-            }`}
-          >
-            <ShieldCheck className="w-5 h-5 text-amber-400" />
-            <span className="font-medium text-sm font-bold text-amber-300">Spiritual & Cultural Beliefs</span>
-          </button>
-
-          {/* Astrologer Consultation & Community Q&A Hub Side Option */}
-          <button 
-            onClick={() => navigateTo('consultation-hub')}
-            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer border ${
-              activeTab === 'consultation-hub' 
-                ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30 shadow-sm' 
-                : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border-transparent'
-            }`}
-          >
-            <div className="flex items-center gap-3">
-              <Users className="w-5 h-5 text-cyan-400" />
-              <span className="font-medium text-sm font-bold text-cyan-300">Astrologer Consultations</span>
-            </div>
-            <span className="text-[9px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/30">
-              Active
-            </span>
-          </button>
-
-          {/* DEDICATED ASTROLOGICAL TOOLS SUITE (SIDEBAR NAV) */}
-          <div className="pt-3 pb-1 border-t border-white/10 my-2">
-            <div className="px-4 text-[10px] font-mono font-bold text-cyan-400 tracking-wider uppercase mb-2 flex items-center gap-1.5">
-              <Wrench className="w-3.5 h-3.5 text-cyan-400" /> Standalone Astro Tools
-            </div>
-
-            <div className="space-y-1 pl-1">
-              {/* 🤝 ASTROLOGER CONSULTATION & COMMUNITY Q&A HUB */}
-              <button 
-                onClick={() => navigateTo('consultation-hub')}
-                className={`w-full text-left p-3 rounded-2xl transition-all cursor-pointer border mb-2 ${
-                  activeTab === 'consultation-hub' 
-                    ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 shadow-lg' 
-                    : 'bg-white/5 text-slate-300 hover:bg-white/10 border-white/10'
-                }`}
-              >
-                <div className="flex items-center gap-2 font-bold text-xs">
-                  <span>🤝</span>
-                  <span className="text-white font-mono">Astrologer Consultations & Q&A</span>
-                  <span className="text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-1.5 py-0.2 rounded font-mono font-bold ml-auto">Active</span>
-                </div>
-                <p className="text-[10px] text-slate-400 font-mono mt-1 leading-snug">
-                  Book 1-on-1 Consultations with Certified Scholars & Engage in Sacred Q&A Forums
-                </p>
-              </button>
-
-              <button 
-                onClick={() => navigateTo('divisional-charts')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'divisional-charts' ? 'bg-blue-500/15 text-blue-300 border border-blue-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>🪐</span> D1–D60 Divisional Charts
-              </button>
-
-              <button 
-                onClick={() => navigateTo('btr-suite')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'btr-suite' ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>⏱️</span> Birth Time Rectification
-              </button>
-
-              <button 
-                onClick={() => navigateTo('gemstone-suite')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'gemstone-suite' ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>💎</span> Gemstone & Rudraksha
-              </button>
-
-              <button 
-                onClick={() => navigateTo('numerology-suite')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'numerology-suite' ? 'bg-purple-500/15 text-purple-300 border border-purple-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>🔢</span> Numerology & Name Vibration
-              </button>
-
-              <button 
-                onClick={() => navigateTo('tarot-iching')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'tarot-iching' ? 'bg-pink-500/15 text-pink-300 border border-pink-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>🎴</span> Tarot & 64 I Ching Oracle
-              </button>
-
-              <button 
-                onClick={() => navigateTo('time-horizon')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'time-horizon' ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>⏳</span> Time Horizon Forecast
-              </button>
-
-              <button 
-                onClick={() => navigateTo('dosha-engine')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'dosha-engine' ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>🔥</span> Sade Sati & Dosha Engine
-              </button>
-
-              <button 
-                onClick={() => navigateTo('biorhythm-tracker')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'biorhythm-tracker' ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>🌊</span> Biorhythm Energy Tracker
-              </button>
-
-              <button 
-                onClick={() => navigateTo('chakra-alignment')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'chakra-alignment' ? 'bg-purple-500/15 text-purple-300 border border-purple-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>🕉️</span> 7-Chakra Solfeggio Alignment
-              </button>
-
-              <button 
-                onClick={() => navigateTo('bhagavad-gita')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'bhagavad-gita' ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>📜</span> Bhagavad Gita Wisdom Suite
-              </button>
-
-              <button 
-                onClick={() => navigateTo('fengshui-matrix')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'fengshui-matrix' ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>🧭</span> Cosmic Feng Shui Matrix
-              </button>
-
-              <button 
-                onClick={() => navigateTo('electional-muhurta')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'electional-muhurta' ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>⏰</span> Shubh Muhurta Time Engine
-              </button>
-
-              <button 
-                onClick={() => navigateTo('planetary-horas')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'planetary-horas' ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>☀️</span> Planetary Horas Real-Time Tracker
-              </button>
-
-              <button 
-                onClick={() => navigateTo('mantra-soundboard')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'mantra-soundboard' ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>📻</span> Sacred Mantra Soundboard
-              </button>
-
-              <button 
-                onClick={() => navigateTo('transit-radar')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'transit-radar' ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>🛰️</span> Planetary Transit Ingress Radar
-              </button>
-
-              <button 
-                onClick={() => navigateTo('panchang-deities')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'panchang-deities' ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>🌙</span> Panchang Tithi Deities & Vrats
-              </button>
-
-              <button 
-                onClick={() => navigateTo('cosmic-compass')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'cosmic-compass' ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>🧭</span> 360° Sidereal Ephemeris Compass
-              </button>
-
-              <button 
-                onClick={() => navigateTo('astro-cartography')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'astro-cartography' ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>🌐</span> Astro-Cartography Relocation Matrix
-              </button>
-
-              <button 
-                onClick={() => navigateTo('pdf-dossier')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'pdf-dossier' ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>📜</span> Executive PDF Dossier Report
-              </button>
-
-              <button 
-                onClick={() => navigateTo('transit-calendar')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'transit-calendar' ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>📅</span> Cosmic Transit Calendar
-              </button>
-
-              <button 
-                onClick={() => navigateTo('synastry-overlay')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'synastry-overlay' ? 'bg-pink-500/15 text-pink-300 border border-pink-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>💞</span> Synastry Dual-Ring Overlay
-              </button>
-
-              <button 
-                onClick={() => navigateTo('mind-map')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'mind-map' ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>🕸️</span> Astrological Mind Map
-              </button>
-
-              <button 
-                onClick={() => navigateTo('chart-analytics')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'chart-analytics' ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>📊</span> Shadbala & Element Analytics
-              </button>
-
-              <button 
-                onClick={() => navigateTo('learning-hub')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'learning-hub' ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>📚</span> Astrology Encyclopedia
-              </button>
-
-              <button 
-                onClick={() => navigateTo('report-generator')}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                  activeTab === 'report-generator' ? 'bg-rose-500/15 text-rose-300 border border-rose-500/30' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>📑</span> Executive PDF Dossier
-              </button>
-
-              <button 
-                onClick={() => navigateTo('admin-dashboard')}
-                className={`w-full text-left p-3 rounded-2xl transition-all cursor-pointer border mt-2 ${
-                  activeTab === 'admin-dashboard' 
-                    ? 'bg-rose-500/20 text-rose-300 border-rose-500/50 shadow-lg' 
-                    : 'bg-white/5 text-slate-300 hover:bg-white/10 border-white/10'
-                }`}
-              >
-                <div className="flex items-center gap-2 font-bold text-xs">
-                  <span>🛡️</span>
-                  <span className="text-white font-mono">Admin Analytics & AI Tracing</span>
-                  <span className="text-[9px] bg-rose-500/20 text-rose-300 border border-rose-500/40 px-1.5 py-0.2 rounded font-mono font-bold ml-auto">Admin</span>
-                </div>
-                <p className="text-[10px] text-slate-400 font-mono mt-1 leading-snug">
-                  User Management, Subscription Metrics, AI Token Tracing (Langfuse) & Audit Logs
-                </p>
-              </button>
-            </div>
+        <nav className="flex-1 overflow-y-auto custom-scrollbar px-3 py-4 space-y-5">
+          {/* PRIMARY HUB */}
+          <div className="space-y-0.5">
+            <button onClick={() => navigateTo('dashboard')} className={`sidebar-item ${activeTab === 'dashboard' ? 'sidebar-item-active' : ''}`}>
+              <LayoutDashboard className="w-4 h-4" />
+              <span>Dashboard</span>
+            </button>
+            <button onClick={() => navigateTo('live-diagnostics')} className={`sidebar-item ${activeTab === 'live-diagnostics' ? 'sidebar-item-active' : ''}`}>
+              <Activity className="w-4 h-4" />
+              <span>Live Diagnostics</span>
+            </button>
+            <button onClick={() => navigateTo('advisor')} className={`sidebar-item ${activeTab === 'advisor' ? 'sidebar-item-active' : ''}`}>
+              <ShieldCheck className="w-4 h-4" />
+              <span>Life Advisor</span>
+            </button>
+            <button onClick={() => navigateTo('birth-chart')} className={`sidebar-item ${activeTab === 'birth-chart' ? 'sidebar-item-active' : ''}`}>
+              <Compass className="w-4 h-4" />
+              <span>Birth Chart</span>
+            </button>
+            <button onClick={() => navigateTo('chat')} className={`sidebar-item ${activeTab === 'chat' ? 'sidebar-item-active' : ''}`}>
+              <MessageCircle className="w-4 h-4" />
+              <span>AI Oracle</span>
+            </button>
           </div>
 
-          {/* Traditions Section */}
-          <div className="pt-5 pb-2 px-2">
-            <div className="flex items-center gap-2">
-              <Globe2 className="w-3.5 h-3.5 text-slate-600" />
-              <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-[0.15em]">Global Systems</span>
-            </div>
+          {/* TOOLS & ENGINES */}
+          <div className="mt-4">
+            <button onClick={() => toggleGroup('tools')} className="w-full flex items-center justify-between px-3 py-2 group">
+              <span className="sidebar-section-label">Tools & Engines</span>
+              <motion.div animate={{ rotate: expandedGroups['tools'] ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                <ChevronDown className="w-3.5 h-3.5 text-slate-600" />
+              </motion.div>
+            </button>
+            <AnimatePresence>
+              {expandedGroups['tools'] && (
+                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} className="overflow-hidden space-y-0.5 mt-1">
+                  <button onClick={() => navigateTo('remedies')} className={`sidebar-item ${activeTab === 'remedies' ? 'sidebar-item-active' : ''}`}><Gem className="w-4 h-4" /><span>Gemstone Remedies</span></button>
+                  <button onClick={() => navigateTo('custom-remedies')} className={`sidebar-item ${activeTab === 'custom-remedies' ? 'sidebar-item-active' : ''}`}><HeartHandshake className="w-4 h-4" /><span>Problem Solver</span></button>
+                  <button onClick={() => navigateTo('synastry')} className={`sidebar-item ${activeTab === 'synastry' ? 'sidebar-item-active' : ''}`}><Sparkles className="w-4 h-4" /><span>Synastry Matcher</span></button>
+                  <button onClick={() => navigateTo('global-suite')} className={`sidebar-item ${activeTab === 'global-suite' ? 'sidebar-item-active' : ''}`}><Globe className="w-4 h-4" /><span>Global Wisdom</span></button>
+                  <button onClick={() => navigateTo('tools-catalog')} className={`sidebar-item ${activeTab === 'tools-catalog' ? 'sidebar-item-active' : ''}`}><Sparkles className="w-4 h-4" /><span>150+ Tools</span></button>
+                  <button onClick={() => navigateTo('master-chart')} className={`sidebar-item ${activeTab === 'master-chart' ? 'sidebar-item-active' : ''}`}><Compass className="w-4 h-4" /><span>Master Chart</span></button>
+                  <button onClick={() => navigateTo('islamic-astrology')} className={`sidebar-item ${activeTab === 'islamic-astrology' ? 'sidebar-item-active' : ''}`}><Moon className="w-4 h-4" /><span>Islamic Sciences</span></button>
+                  <button onClick={() => navigateTo('dream-interpreter')} className={`sidebar-item ${activeTab === 'dream-interpreter' ? 'sidebar-item-active' : ''}`}><CloudMoon className="w-4 h-4" /><span>Dream Engine</span></button>
+                  <button onClick={() => navigateTo('problem-solver')} className={`sidebar-item ${activeTab === 'problem-solver' ? 'sidebar-item-active' : ''}`}><Zap className="w-4 h-4" /><span>Interactive Tools</span></button>
+                  <button onClick={() => navigateTo('spiritual-traditions')} className={`sidebar-item ${activeTab === 'spiritual-traditions' ? 'sidebar-item-active' : ''}`}><ShieldCheck className="w-4 h-4" /><span>Spiritual Beliefs</span></button>
+                  <button onClick={() => navigateTo('consultation-hub')} className={`sidebar-item ${activeTab === 'consultation-hub' ? 'sidebar-item-active' : ''}`}><Users className="w-4 h-4" /><span>Consultations</span></button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-          
-          {Object.entries(groupedTraditions).map(([group, traditions]) => (
-            <div key={group} className="mb-1">
+
+          {/* STANDALONE TOOLS */}
+          <div className="mt-4">
+            <button onClick={() => toggleGroup('standalone')} className="w-full flex items-center justify-between px-3 py-2 group">
+              <span className="sidebar-section-label">Standalone Tools</span>
+              <motion.div animate={{ rotate: expandedGroups['standalone'] ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                <ChevronDown className="w-3.5 h-3.5 text-slate-600" />
+              </motion.div>
+            </button>
+            <AnimatePresence>
+              {expandedGroups['standalone'] && (
+                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} className="overflow-hidden space-y-0.5 mt-1">
+                  <button onClick={() => navigateTo('divisional-charts')} className={`sidebar-item ${activeTab === 'divisional-charts' ? 'sidebar-item-active' : ''}`}><Compass className="w-4 h-4" /><span>Divisional Charts</span></button>
+                  <button onClick={() => navigateTo('btr-suite')} className={`sidebar-item ${activeTab === 'btr-suite' ? 'sidebar-item-active' : ''}`}><Clock className="w-4 h-4" /><span>Birth Time Rectification</span></button>
+                  <button onClick={() => navigateTo('gemstone-suite')} className={`sidebar-item ${activeTab === 'gemstone-suite' ? 'sidebar-item-active' : ''}`}><Gem className="w-4 h-4" /><span>Gemstones</span></button>
+                  <button onClick={() => navigateTo('numerology-suite')} className={`sidebar-item ${activeTab === 'numerology-suite' ? 'sidebar-item-active' : ''}`}><Hash className="w-4 h-4" /><span>Numerology</span></button>
+                  <button onClick={() => navigateTo('tarot-iching')} className={`sidebar-item ${activeTab === 'tarot-iching' ? 'sidebar-item-active' : ''}`}><Eye className="w-4 h-4" /><span>Tarot & I Ching</span></button>
+                  <button onClick={() => navigateTo('time-horizon')} className={`sidebar-item ${activeTab === 'time-horizon' ? 'sidebar-item-active' : ''}`}><Calendar className="w-4 h-4" /><span>Time Horizon</span></button>
+                  <button onClick={() => navigateTo('dosha-engine')} className={`sidebar-item ${activeTab === 'dosha-engine' ? 'sidebar-item-active' : ''}`}><AlertTriangle className="w-4 h-4" /><span>Dosha Engine</span></button>
+                  <button onClick={() => navigateTo('biorhythm-tracker')} className={`sidebar-item ${activeTab === 'biorhythm-tracker' ? 'sidebar-item-active' : ''}`}><Activity className="w-4 h-4" /><span>Biorhythm Tracker</span></button>
+                  <button onClick={() => navigateTo('chakra-alignment')} className={`sidebar-item ${activeTab === 'chakra-alignment' ? 'sidebar-item-active' : ''}`}><Sunrise className="w-4 h-4" /><span>Chakra Alignment</span></button>
+                  <button onClick={() => navigateTo('fengshui-matrix')} className={`sidebar-item ${activeTab === 'fengshui-matrix' ? 'sidebar-item-active' : ''}`}><Map className="w-4 h-4" /><span>Feng Shui Matrix</span></button>
+                  <button onClick={() => navigateTo('electional-muhurta')} className={`sidebar-item ${activeTab === 'electional-muhurta' ? 'sidebar-item-active' : ''}`}><Clock className="w-4 h-4" /><span>Electional Muhurta</span></button>
+                  <button onClick={() => navigateTo('planetary-horas')} className={`sidebar-item ${activeTab === 'planetary-horas' ? 'sidebar-item-active' : ''}`}><Sun className="w-4 h-4" /><span>Planetary Horas</span></button>
+                  <button onClick={() => navigateTo('mantra-soundboard')} className={`sidebar-item ${activeTab === 'mantra-soundboard' ? 'sidebar-item-active' : ''}`}><Music className="w-4 h-4" /><span>Mantra Soundboard</span></button>
+                  <button onClick={() => navigateTo('transit-radar')} className={`sidebar-item ${activeTab === 'transit-radar' ? 'sidebar-item-active' : ''}`}><Radar className="w-4 h-4" /><span>Transit Radar</span></button>
+                  <button onClick={() => navigateTo('panchang-deities')} className={`sidebar-item ${activeTab === 'panchang-deities' ? 'sidebar-item-active' : ''}`}><Calendar className="w-4 h-4" /><span>Panchang & Deities</span></button>
+                  <button onClick={() => navigateTo('cosmic-compass')} className={`sidebar-item ${activeTab === 'cosmic-compass' ? 'sidebar-item-active' : ''}`}><Compass className="w-4 h-4" /><span>Cosmic Compass</span></button>
+                  <button onClick={() => navigateTo('astro-cartography')} className={`sidebar-item ${activeTab === 'astro-cartography' ? 'sidebar-item-active' : ''}`}><MapPin className="w-4 h-4" /><span>Astro-Cartography</span></button>
+                  <button onClick={() => navigateTo('transit-calendar')} className={`sidebar-item ${activeTab === 'transit-calendar' ? 'sidebar-item-active' : ''}`}><Calendar className="w-4 h-4" /><span>Transit Calendar</span></button>
+                  <button onClick={() => navigateTo('synastry-overlay')} className={`sidebar-item ${activeTab === 'synastry-overlay' ? 'sidebar-item-active' : ''}`}><Sparkles className="w-4 h-4" /><span>Synastry Overlay</span></button>
+                  <button onClick={() => navigateTo('mind-map')} className={`sidebar-item ${activeTab === 'mind-map' ? 'sidebar-item-active' : ''}`}><Network className="w-4 h-4" /><span>Mind Map</span></button>
+                  <button onClick={() => navigateTo('chart-analytics')} className={`sidebar-item ${activeTab === 'chart-analytics' ? 'sidebar-item-active' : ''}`}><BarChart2 className="w-4 h-4" /><span>Chart Analytics</span></button>
+                  <button onClick={() => navigateTo('learning-hub')} className={`sidebar-item ${activeTab === 'learning-hub' ? 'sidebar-item-active' : ''}`}><BookOpen className="w-4 h-4" /><span>Learning Hub</span></button>
+                  <button onClick={() => navigateTo('report-generator')} className={`sidebar-item ${activeTab === 'report-generator' ? 'sidebar-item-active' : ''}`}><FileText className="w-4 h-4" /><span>Report Generator</span></button>
+                  <button onClick={() => navigateTo('admin-dashboard')} className={`sidebar-item ${activeTab === 'admin-dashboard' ? 'sidebar-item-active' : ''}`}><Shield className="w-4 h-4" /><span>Admin Dashboard</span></button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* GLOBAL SYSTEMS */}
+          {Object.entries(groupedTraditions).map(([groupName, traditions]) => (
+            <div key={groupName} className="mt-4">
               <button
-                onClick={() => toggleGroup(group)}
-                className="w-full flex items-center justify-between px-3 py-2.5 text-sm text-slate-400 hover:text-slate-200 transition-colors rounded-lg hover:bg-white/[0.03]"
+                onClick={() => toggleGroup(groupName)}
+                className="w-full flex items-center justify-between px-3 py-2 group"
               >
-                <span className="flex items-center gap-2">
-                  <span className="text-base">{GROUP_ICONS[group as TraditionGroup]}</span>
-                  <span className="font-medium text-xs">{group}</span>
-                </span>
-                <motion.div animate={{ rotate: expandedGroups[group] ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                  <ChevronDown className="w-3.5 h-3.5" />
+                <span className="sidebar-section-label">{groupName}</span>
+                <motion.div
+                  animate={{ rotate: expandedGroups[groupName] ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-600" />
                 </motion.div>
               </button>
-              
               <AnimatePresence>
-                {expandedGroups[group] && (
+                {expandedGroups[groupName] && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2, ease: 'easeInOut' }}
+                    transition={{ duration: 0.2 }}
                     className="overflow-hidden"
                   >
-                    <div className="space-y-0.5 pl-3 border-l border-white/[0.05] ml-4 mt-1 mb-2">
+                    <div className="space-y-0.5 mt-1">
                       {traditions.map((tradition) => (
                         <button
                           key={tradition.id}
                           onClick={() => navigateTo(tradition.id)}
-                          className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-150 text-left ${
-                            activeTab === tradition.id 
-                              ? 'bg-white/[0.08] text-white' 
-                              : 'text-slate-500 hover:text-slate-300 hover:bg-white/[0.03]'
-                          }`}
+                          className={`sidebar-item ${activeTab === tradition.id ? 'sidebar-item-active' : ''}`}
                         >
-                          <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                            activeTab === tradition.id ? 'bg-cosmic-400' : 'bg-slate-700'
-                          }`} />
-                          <span className="font-medium text-[13px] truncate">{tradition.name}</span>
+                          <span className="text-sm mr-2.5 opacity-80">{tradition.icon}</span>
+                          <span>{tradition.name}</span>
                         </button>
                       ))}
                     </div>
@@ -805,11 +393,11 @@ export default function AppContent() {
           ))}
         </nav>
 
-        {/* User Profile Card & Professional Engineering Verification */}
-        <div className="p-3 border-t border-white/[0.06] space-y-2">
-          <div className="rounded-xl p-2.5 bg-white/[0.03] border border-white/[0.06] space-y-2">
+        {/* Bottom area */}
+        <div className="p-3 border-t border-white/[0.04] space-y-2">
+          <div className="rounded-xl p-2.5 bg-white/[0.02] border border-white/[0.04] space-y-2">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cosmic-500/30 to-nebula-500/30 text-cosmic-300 flex items-center justify-center shrink-0 text-xs font-bold ring-1 ring-cosmic-500/20">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cosmic-500/30 to-nebula-500/30 text-cosmic-300 flex items-center justify-center shrink-0 text-xs font-bold ring-1 ring-white/10">
                 {userProfile.name?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
               </div>
               <div className="overflow-hidden flex-1">
@@ -817,40 +405,37 @@ export default function AppContent() {
                 <p className="text-[10px] text-slate-400 truncate capitalize">{userProfile.preferredSystem || 'Western'} • {userProfile.dob || '1998-06-15'}</p>
               </div>
             </div>
-
             <div className="grid grid-cols-2 gap-1.5 pt-1">
               <button
                 onClick={() => setIsProfileModalOpen(true)}
-                className="py-1.5 px-2 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-mono font-bold transition-all cursor-pointer truncate"
+                className="py-1.5 px-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] text-slate-300 border border-white/[0.06] text-[10px] font-medium transition-all truncate"
               >
-                ⚙️ Customise
+                Customise
               </button>
               <button
                 onClick={() => setIsAuthModalOpen(true)}
-                className="py-1.5 px-2 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 text-[10px] font-mono font-bold transition-all cursor-pointer truncate"
+                className="py-1.5 px-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] text-slate-300 border border-white/[0.06] text-[10px] font-medium transition-all truncate"
               >
-                🔐 Sign In
+                Sign In
               </button>
             </div>
           </div>
-
-          {/* Senior Developer & Master Astrologer Verification Badge */}
-          <div className="p-2.5 rounded-xl bg-slate-900/90 border border-amber-500/20 text-[10px] space-y-1">
-            <div className="flex items-center gap-1.5 text-amber-400 font-bold uppercase tracking-wider">
-              <ShieldCheck className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-              <span>Verified Pro Engineering</span>
+          <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.04] text-[10px] space-y-1">
+            <div className="flex items-center gap-1.5 text-slate-300 font-medium">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <span>Verified System</span>
             </div>
-            <p className="text-slate-400 leading-tight">
-              Built by Senior Astronomical Systems Engineers & Master Astrologers. 100% Math Verified.
+            <p className="text-slate-500 leading-tight">
+              Engineered for absolute accuracy.
             </p>
           </div>
         </div>
       </aside>
 
-      {/* Main Content */}
+              {/* Main Content */}
       <main className="flex-1 relative z-10 flex flex-col h-screen overflow-hidden">
         {/* Top Bar */}
-        <header className="h-14 border-b border-white/[0.06] bg-black/30 backdrop-blur-xl flex items-center justify-between px-5 flex-shrink-0">
+        <header className="h-14 border-b border-white/[0.04] bg-[#090d16]/90 backdrop-blur-2xl flex items-center justify-between px-5 flex-shrink-0">
           <div className="flex items-center gap-3">
             <button 
               className="md:hidden text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" 
@@ -858,67 +443,34 @@ export default function AppContent() {
             >
               <Menu className="w-5 h-5" />
             </button>
-            <h1 className="text-base font-semibold text-slate-200">
-              {getPageTitle()}
-            </h1>
-          </div>
-          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-            {/* FAITH / TRADITION PERSPECTIVE FILTER */}
-            <div className="flex items-center gap-1.5 bg-slate-900/90 border border-blue-500/30 px-2.5 py-1 rounded-full text-xs font-mono">
-              <span className="text-[10px] text-slate-400 font-bold hidden lg:inline">Filter Perspective:</span>
-              <select
-                value={config.faithPerspective || 'all'}
-                onChange={(e) => updateConfig({ faithPerspective: e.target.value as any })}
-                className="bg-transparent text-[11px] font-bold text-blue-300 focus:outline-none cursor-pointer"
-              >
-                <option value="all" className="bg-slate-900 text-white">🌐 All Global Traditions</option>
-                <option value="vedic" className="bg-slate-900 text-amber-300">🕉️ Vedic / Sanatana Dharma</option>
-                <option value="islamic" className="bg-slate-900 text-emerald-300">☪️ Islamic / Hijri / Sufi</option>
-                <option value="western" className="bg-slate-900 text-blue-300">✝️ Western Hermetic</option>
-                <option value="kabbalah" className="bg-slate-900 text-purple-300">✡️ Kabbalah / Tree of Life</option>
-                <option value="taoist" className="bg-slate-900 text-cyan-300">☯️ Eastern / Taoist I Ching</option>
-                <option value="buddhist" className="bg-slate-900 text-yellow-300">☸️ Buddhist / Mindfulness</option>
-              </select>
+            <div className="flex items-center gap-2">
+              <h1 className="text-sm font-semibold text-slate-200 tracking-tight">
+                {getPageTitle()}
+              </h1>
             </div>
-
-            {/* GLOBAL LANGUAGE SELECTOR */}
-            <GlobalLanguageSelector />
-
-            {/* ASTROLOGER CONSULTATION OWNPAY BUTTON */}
+          </div>
+          <div className="flex items-center gap-2">
             <button
-              onClick={() => navigateTo('consultation-hub')}
-              className="text-[10px] font-mono text-amber-300 bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 px-3 py-1 rounded-full font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+              onClick={() => setIsCommandPaletteOpen(true)}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-slate-400 hover:text-white hover:border-white/[0.12] transition-all text-xs"
             >
-              <Users className="w-3.5 h-3.5 text-amber-400" />
-              <span>Astrologer Consultation (OwnPay)</span>
+              <Search className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Search</span>
+              <kbd className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-mono text-slate-400">⌘K</kbd>
             </button>
-
-            {/* CUSTOMISATION CONTROL CENTER BUTTON */}
             <button
               onClick={() => navigateTo('control-center')}
-              className="text-[10px] font-mono text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 hover:bg-cyan-500/20 px-2.5 py-1 rounded-full font-bold transition-all flex items-center gap-1 cursor-pointer"
+              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors"
+              title="Settings"
             >
-              <Wrench className="w-3.5 h-3.5 text-cyan-400" /> Customisation
+              <Wrench className="w-4 h-4" />
             </button>
-
-            {/* SEEKER PROFILE BUTTON */}
             <button
               onClick={() => setIsProfileModalOpen(true)}
-              className="text-[10px] font-mono text-purple-300 bg-purple-500/10 border border-purple-500/30 hover:bg-purple-500/20 px-2.5 py-1 rounded-full font-bold transition-all flex items-center gap-1 cursor-pointer"
+              className="w-8 h-8 rounded-full bg-gradient-to-br from-cosmic-500/30 to-nebula-500/30 text-cosmic-300 flex items-center justify-center text-xs font-bold ring-1 ring-white/10 hover:ring-cosmic-500/30 transition-all"
             >
-              <User className="w-3.5 h-3.5 text-purple-400" /> Seeker Profile
+              {userProfile.name?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
             </button>
-            <a
-              href="https://tarikislam.in"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[10px] font-mono text-[#06B6D4] bg-[#06B6D4]/10 border border-[#06B6D4]/30 hover:bg-[#06B6D4]/20 px-2.5 py-1 rounded-full font-bold transition-all flex items-center gap-1 hidden sm:flex"
-            >
-              <span>By Tarik Islam (tarikislam.in) ↗</span>
-            </a>
-            <span className="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full hidden sm:flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live Telemetry
-            </span>
           </div>
         </header>
 
@@ -1024,58 +576,27 @@ export default function AppContent() {
           </div>
         </div>
 
-        {/* 📱 MOBILE BOTTOM NAVIGATION BAR (Ultra-Responsive & Animated for Smartphones) */}
-        <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#090d16]/95 backdrop-blur-2xl border-t border-white/10 z-40 px-1 flex items-center justify-around shadow-2xl">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#090d16]/95 backdrop-blur-2xl border-t border-white/[0.04] z-40 px-2 flex items-center justify-around">
+        {[
+          { id: 'dashboard', icon: LayoutDashboard, label: 'Home', color: 'cyan' },
+          { id: 'live-diagnostics', icon: Activity, label: 'Diagnose', color: 'amber' },
+          { id: 'birth-chart', icon: Compass, label: 'Chart', color: 'purple' },
+          { id: 'tools-catalog', icon: Sparkles, label: 'Tools', color: 'emerald' },
+          { id: 'chat', icon: MessageCircle, label: 'Oracle', color: 'blue' },
+        ].map(({ id, icon: Icon, label, color }) => (
           <button
-            onClick={() => navigateTo('dashboard')}
-            className={`flex flex-col items-center justify-center w-full h-full py-1 transition-all duration-200 relative ${
-              activeTab === 'dashboard' ? 'text-amber-400 font-bold scale-110 mobile-active-glow' : 'text-slate-400 hover:text-slate-200'
+            key={id}
+            onClick={() => navigateTo(id)}
+            className={`flex flex-col items-center justify-center w-full h-full py-1 transition-all duration-200 ${
+              activeTab === id ? `text-${color}-400 font-semibold` : 'text-slate-500 hover:text-slate-300'
             }`}
           >
-            <LayoutDashboard className={`w-5 h-5 transition-transform ${activeTab === 'dashboard' ? 'drop-shadow-[0_0_8px_rgba(245,158,11,0.6)]' : ''}`} />
-            <span className="text-[10px] mt-0.5 font-medium tracking-tight">Home</span>
+            <Icon className={`w-5 h-5 transition-all ${activeTab === id ? `text-${color}-400 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]` : ''}`} />
+            <span className="text-[10px] mt-0.5 tracking-tight">{label}</span>
+            {activeTab === id && <div className={`w-1 h-1 rounded-full bg-${color}-400 mt-0.5`} />}
           </button>
-
-          <button
-            onClick={() => navigateTo('global-suite')}
-            className={`flex flex-col items-center justify-center w-full h-full py-1 transition-all duration-200 relative ${
-              activeTab === 'global-suite' ? 'text-cyan-400 font-bold scale-110 mobile-active-glow' : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <Globe className={`w-5 h-5 text-cyan-400 transition-transform ${activeTab === 'global-suite' ? 'drop-shadow-[0_0_8px_rgba(6,182,212,0.6)]' : ''}`} />
-            <span className="text-[10px] mt-0.5 font-medium tracking-tight">Global</span>
-          </button>
-
-          <button
-            onClick={() => navigateTo('live-diagnostics')}
-            className={`flex flex-col items-center justify-center w-full h-full py-1 transition-all duration-200 relative ${
-              activeTab === 'live-diagnostics' ? 'text-amber-300 font-bold scale-110 mobile-active-glow' : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <Activity className={`w-5 h-5 transition-transform ${activeTab === 'live-diagnostics' ? 'drop-shadow-[0_0_8px_rgba(245,158,11,0.6)]' : ''}`} />
-            <span className="text-[10px] mt-0.5 font-medium tracking-tight">Solution</span>
-          </button>
-
-          <button
-            onClick={() => navigateTo('birth-chart')}
-            className={`flex flex-col items-center justify-center w-full h-full py-1 transition-all duration-200 relative ${
-              activeTab === 'birth-chart' ? 'text-purple-400 font-bold scale-110 mobile-active-glow' : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <Sparkles className={`w-5 h-5 transition-transform ${activeTab === 'birth-chart' ? 'drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]' : ''}`} />
-            <span className="text-[10px] mt-0.5 font-medium tracking-tight">Kundli</span>
-          </button>
-
-          <button
-            onClick={() => navigateTo('chat')}
-            className={`flex flex-col items-center justify-center w-full h-full py-1 transition-all duration-200 relative ${
-              activeTab === 'chat' ? 'text-indigo-400 font-bold scale-110 mobile-active-glow' : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <MessageCircle className={`w-5 h-5 transition-transform ${activeTab === 'chat' ? 'drop-shadow-[0_0_8px_rgba(99,102,241,0.6)]' : ''}`} />
-            <span className="text-[10px] mt-0.5 font-medium tracking-tight">Chat</span>
-          </button>
-        </div>
+        ))}
+      </div>
       </main>
 
       {/* AUTH MODAL DIALOG */}
