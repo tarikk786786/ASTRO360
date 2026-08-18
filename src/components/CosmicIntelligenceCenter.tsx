@@ -673,9 +673,6 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
       >
         <DashboardSubNav activeCategory={activeCategory} onSelectCategory={setActiveCategory} />
         <div className="w-full py-3 sm:py-6 relative">
-          {/* 🌌 INTERACTIVE CANVAS PARTICLE STARFIELD */}
-          <CosmicParticleBackground />
-
           <div className="w-full max-w-7xl mx-auto space-y-6 relative z-10">
 
         {/* SECTION 1: GLOBAL HEADER WITH SEARCH & ACCURATE LOCAL TIME */}

@@ -58,6 +58,7 @@ import AstrologyLearningHub from './components/AstrologyLearningHub';
 import ExecutiveReportGenerator from './components/ExecutiveReportGenerator';
 import AdminAnalyticsDashboard from './components/AdminAnalyticsDashboard';
 import CosmicLeafletMap from './components/CosmicLeafletMap';
+import CosmicParticleBackground from './components/CosmicParticleBackground';
 import ErrorBoundary from './components/ErrorBoundary';
 import GlobalLanguageSelector from './components/GlobalLanguageSelector';
 import { useGlobalConfig } from './context/GlobalConfigContext';
@@ -240,8 +241,8 @@ export default function AppContent() {
 
   return (
     <div className="relative min-h-screen bg-[#090d16] text-slate-100 flex overflow-hidden font-sans">
-      {/* Clean Static Professional Dark Background */}
-      <div className="fixed inset-0 z-0 pointer-events-none bg-[#090d16] bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-slate-900 via-[#090d16] to-[#090d16]" />
+      {/* 🌌 High-Resolution Animated Cosmic Background (Ken Burns Nebula + Twinkling Stars + Meteors) */}
+      <CosmicParticleBackground />
 
       {/* Mobile Sidebar Overlay */}
       <AnimatePresence>
