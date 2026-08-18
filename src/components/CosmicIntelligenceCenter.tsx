@@ -664,7 +664,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
   ];
 
   return (
-    <div className="w-full relative bg-[#0B1220] min-h-full">
+    <div className="w-full relative bg-transparent min-h-full">
       <motion.div 
         initial="hidden"
         animate="show"
@@ -676,7 +676,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
           <div className="w-full max-w-7xl mx-auto space-y-6 relative z-10">
 
         {/* SECTION 1: GLOBAL HEADER WITH SEARCH & ACCURATE LOCAL TIME */}
-        <motion.div variants={staggerItem} className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 p-4 sm:p-6 rounded-3xl bg-[#111827] border border-white/10 shadow-2xl backdrop-blur-xl">
+        <motion.div variants={staggerItem} className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 p-4 sm:p-6 rounded-3xl glass-card border border-white/10 shadow-2xl backdrop-blur-2xl">
           <div>
             <div className="flex items-center gap-2.5">
               <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
@@ -907,7 +907,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
               />
 
               {/* 🌐 RELIGION PERSPECTIVE & LANGUAGE SELECTOR BAR */}
-              <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-[#111827] border border-white/10 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs font-sans">
+              <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl glass-card border border-white/10 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs font-sans">
                 {/* Religion View Selector */}
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                   <span className="font-bold text-amber-400 font-mono flex items-center gap-1.5 shrink-0">
@@ -1048,7 +1048,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
               </div>
 
               {/* SECTION 2: HERO AI DAILY SUMMARY & COMPUTED PLANETARY POSITIONS GRID */}
-              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-[#111827] border border-white/10 shadow-2xl p-4 sm:p-8">
+              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden glass-card border border-white/10 shadow-2xl p-4 sm:p-8">
                 <BorderBeam size={250} duration={12} delay={0} colorFrom="#06B6D4" colorTo="#3B82F6" />
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -1323,7 +1323,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
 
               {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
-                <div className="lg:col-span-7 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#111827] border border-white/10 space-y-4 shadow-2xl">
+                <div className="lg:col-span-7 p-4 sm:p-6 rounded-2xl sm:rounded-3xl glass-card border border-white/10 space-y-4 shadow-2xl">
                   <div className="flex items-center justify-between border-b border-white/10 pb-3">
                     <h3 className="text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
                       <Sun className="w-4 h-4 text-[#F59E0B]" /> Live Panchang Ephemeris Snapshot
@@ -1334,34 +1334,34 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3 text-xs font-mono">
-                    <div className="p-3 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                    <div className="p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
                       <span className="text-[10px] text-[#94A3B8] block">Tithi (Lunar Day Phase)</span>
                       <span className="font-semibold text-[#F59E0B]">{panchang.tithi}</span>
                     </div>
-                    <div className="p-3 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                    <div className="p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
                       <span className="text-[10px] text-[#94A3B8] block">Nakshatra (Lunar Mansion)</span>
                       <span className="font-semibold text-[#22C55E]">{panchang.nakshatra}</span>
                     </div>
-                    <div className="p-3 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                    <div className="p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
                       <span className="text-[10px] text-[#94A3B8] block">Yoga (Sol-Lunar Harmony)</span>
                       <span className="font-semibold text-[#06B6D4]">{panchang.yoga}</span>
                     </div>
-                    <div className="p-3 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                    <div className="p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
                       <span className="text-[10px] text-[#94A3B8] block">Golden Window (Abhijit)</span>
                       <span className="font-semibold text-[#22C55E]">{panchang.abhijitMuhurta}</span>
                     </div>
-                    <div className="p-3 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                    <div className="p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
                       <span className="text-[10px] text-[#94A3B8] block">Friction Hours (Rahu Kalam)</span>
                       <span className="font-semibold text-[#EF4444]">{panchang.rahuKalam}</span>
                     </div>
-                    <div className="p-3 rounded-2xl bg-[#0B1220] border border-white/10 space-y-0.5">
+                    <div className="p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
                       <span className="text-[10px] text-[#94A3B8] block">Karana (Action Energy)</span>
                       <span className="font-semibold text-[#CBD5E1]">{panchang.karana}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="lg:col-span-5 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#111827] border border-white/10 space-y-4 shadow-2xl flex flex-col justify-between">
+                <div className="lg:col-span-5 p-4 sm:p-6 rounded-2xl sm:rounded-3xl glass-card border border-white/10 space-y-4 shadow-2xl flex flex-col justify-between">
                   <div className="flex items-center justify-between border-b border-white/10 pb-3">
                     <h3 className="text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
                       <Moon className="w-4 h-4 text-[#06B6D4]" /> Lunar Phase Visualizer
@@ -1376,7 +1376,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
 
               {/* SECTION 5: ACTIVE DASHA & LIVE DIAGNOSTICS PREVIEW */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
-                <div className="lg:col-span-6 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#111827] border border-white/10 space-y-4 shadow-2xl">
+                <div className="lg:col-span-6 p-4 sm:p-6 rounded-2xl sm:rounded-3xl glass-card border border-white/10 space-y-4 shadow-2xl">
                   <div className="flex items-center justify-between border-b border-white/10 pb-3">
                     <h3 className="text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
                       <Clock className="w-4 h-4 text-[#7C3AED]" /> Active Dasha Period
@@ -1392,20 +1392,20 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                       <span className="text-cyan-400 font-bold">{dashaInfo.progressPercent}% Elapsed</span>
                     </div>
 
-                    <div className="w-full bg-[#0B1220] h-2.5 rounded-full overflow-hidden p-0.5 border border-white/10">
+                    <div className="w-full bg-[#0B1220]/60 h-2.5 rounded-full overflow-hidden p-0.5 border border-white/10">
                       <div
                         className="h-full bg-gradient-to-r from-[#2563EB] to-[#06B6D4] rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(6,182,212,0.5)]"
                         style={{ width: `${dashaInfo.progressPercent}%` }}
                       />
                     </div>
 
-                    <p className="text-xs text-slate-300 leading-relaxed bg-[#0B1220] p-3 rounded-xl border border-white/5">
+                    <p className="text-xs text-slate-300 leading-relaxed bg-[#0B1220]/60 p-3 rounded-xl border border-white/5">
                       {dashaInfo.interpretation}
                     </p>
                   </div>
                 </div>
 
-                <div className="lg:col-span-6 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#111827] border border-white/10 space-y-4 shadow-2xl">
+                <div className="lg:col-span-6 p-4 sm:p-6 rounded-2xl sm:rounded-3xl glass-card border border-white/10 space-y-4 shadow-2xl">
                   <div className="flex items-center justify-between border-b border-white/10 pb-3">
                     <h3 className="text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
                       <Activity className="w-4 h-4 text-emerald-400" /> Daily Ephemeris Alignment
