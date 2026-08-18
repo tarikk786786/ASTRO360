@@ -60,33 +60,34 @@ export default function CosmicAnalyticsKPI({
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 text-left">
       {kpis.map((kpi, idx) => (
         <motion.div
           key={idx}
           whileHover={{ scale: 1.02, y: -2 }}
-          className={`p-5 rounded-3xl bg-gradient-to-br ${kpi.color} border shadow-xl backdrop-blur-xl space-y-3 relative overflow-hidden group`}
+          whileTap={{ scale: 0.98 }}
+          className={`p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl bg-gradient-to-br ${kpi.color} border shadow-lg backdrop-blur-xl space-y-2 sm:space-y-3 relative overflow-hidden group`}
         >
           <div className="flex items-center justify-between">
-            <div className="p-2.5 rounded-2xl bg-[#0B1220] border border-white/10 shrink-0">
+            <div className="p-1.5 sm:p-2.5 rounded-xl sm:rounded-2xl bg-[#0B1220] border border-white/10 shrink-0">
               {kpi.icon}
             </div>
-            <span className={`text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full border ${kpi.badgeColor}`}>
+            <span className={`text-[8.5px] sm:text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border truncate max-w-[90px] ${kpi.badgeColor}`}>
               {kpi.badge}
             </span>
           </div>
 
           <div className="space-y-0.5">
-            <span className="text-xs font-mono text-slate-400 block">{kpi.title}</span>
-            <div className="text-2xl font-bold text-white font-mono flex items-baseline gap-1">
+            <span className="text-[10.5px] sm:text-xs font-mono text-slate-400 block truncate">{kpi.title}</span>
+            <div className="text-lg sm:text-2xl font-bold text-white font-mono flex items-baseline gap-1">
               <NumberTicker value={kpi.value} className="text-white" />
-              <span className="text-xs font-semibold text-slate-400">{kpi.suffix}</span>
+              <span className="text-[10px] sm:text-xs font-semibold text-slate-400">{kpi.suffix}</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-1 text-[10px] font-mono text-emerald-400 border-t border-white/10 pt-2">
-            <TrendingUp className="w-3.5 h-3.5" />
-            <span>{kpi.change}</span>
+          <div className="flex items-center gap-1 text-[9px] sm:text-[10px] font-mono text-emerald-400 border-t border-white/10 pt-1.5 sm:pt-2 truncate">
+            <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+            <span className="truncate">{kpi.change}</span>
           </div>
         </motion.div>
       ))}

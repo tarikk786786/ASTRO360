@@ -433,41 +433,43 @@ export default function AppContent() {
       </aside>
 
               {/* Main Content */}
-      <main className="flex-1 relative z-10 flex flex-col h-screen overflow-hidden">
+      <main className="flex-1 relative z-10 flex flex-col h-[100dvh] overflow-hidden">
         {/* Top Bar */}
-        <header className="h-14 border-b border-white/[0.04] bg-[#090d16]/90 backdrop-blur-2xl flex items-center justify-between px-5 flex-shrink-0">
-          <div className="flex items-center gap-3">
+        <header className="h-14 border-b border-white/[0.04] bg-[#090d16]/90 backdrop-blur-2xl flex items-center justify-between px-3 sm:px-5 flex-shrink-0">
+          <div className="flex items-center gap-2.5 min-w-0">
             <button 
-              className="md:hidden text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-white/[0.05] transition-colors" 
+              className="md:hidden text-slate-400 hover:text-white p-2 rounded-xl hover:bg-white/[0.05] transition-colors shrink-0" 
               onClick={() => setIsSidebarOpen(true)}
+              aria-label="Open Navigation Sidebar"
             >
               <Menu className="w-5 h-5" />
             </button>
-            <div className="flex items-center gap-2">
-              <h1 className="text-sm font-semibold text-slate-200 tracking-tight">
+            <div className="flex items-center gap-2 min-w-0">
+              <h1 className="text-xs sm:text-sm font-semibold text-slate-200 tracking-tight truncate max-w-[130px] sm:max-w-xs md:max-w-md">
                 {getPageTitle()}
               </h1>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <button
               onClick={() => setIsCommandPaletteOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-slate-400 hover:text-white hover:border-white/[0.12] transition-all text-xs"
+              className="flex items-center gap-2 p-2 sm:px-3 sm:py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-slate-400 hover:text-white hover:border-white/[0.12] transition-all text-xs"
+              title="Search Tools"
             >
               <Search className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Search</span>
-              <kbd className="bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-mono text-slate-400">⌘K</kbd>
+              <kbd className="hidden sm:inline-block bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-mono text-slate-400">⌘K</kbd>
             </button>
             <button
               onClick={() => navigateTo('control-center')}
-              className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors"
+              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors"
               title="Settings"
             >
               <Wrench className="w-4 h-4" />
             </button>
             <button
               onClick={() => setIsProfileModalOpen(true)}
-              className="w-8 h-8 rounded-full bg-gradient-to-br from-cosmic-500/30 to-nebula-500/30 text-cosmic-300 flex items-center justify-center text-xs font-bold ring-1 ring-white/10 hover:ring-cosmic-500/30 transition-all"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-cosmic-500/30 to-nebula-500/30 text-cosmic-300 flex items-center justify-center text-xs font-bold ring-1 ring-white/10 hover:ring-cosmic-500/30 transition-all cursor-pointer"
             >
               {userProfile.name?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
             </button>
