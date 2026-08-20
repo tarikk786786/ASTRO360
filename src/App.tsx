@@ -34,6 +34,7 @@ import CommunityConsultationHub from './components/CommunityConsultationHub';
 import ExecutivePDFDossier from './components/ExecutivePDFDossier';
 import Footer from './components/Footer';
 import AuthScreen from './components/AuthScreen';
+import CashfreePaymentModal from './components/CashfreePaymentModal';
 import DivisionalChartsSuite from './components/DivisionalChartsSuite';
 import BirthTimeRectificationSuite from './components/BirthTimeRectificationSuite';
 import GemstoneRudrakshaSuite from './components/GemstoneRudrakshaSuite';
@@ -133,6 +134,7 @@ export default function AppContent() {
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [landingPreset, setLandingPreset] = useState<Partial<UserProfile> | undefined>(undefined);
 
@@ -500,6 +502,14 @@ export default function AppContent() {
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <button
+              onClick={() => setIsPaymentModalOpen(true)}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-[#C9A86A]/20 to-[#DFBF7A]/20 hover:from-[#C9A86A]/30 hover:to-[#DFBF7A]/30 border border-[#C9A86A]/40 text-[#C9A86A] text-xs font-semibold shadow-[0_0_12px_rgba(201,168,106,0.15)] transition-all cursor-pointer active:scale-95"
+              title="Cosmic Store & Pricing"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Store</span>
+            </button>
+            <button
               onClick={() => setIsCommandPaletteOpen(true)}
               className="flex items-center gap-2 p-2 sm:px-3 sm:py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-slate-400 hover:text-white hover:border-white/[0.12] transition-all text-xs active:scale-95"
               title="Search Tools"
@@ -813,6 +823,13 @@ export default function AppContent() {
         isOpen={isCommandPaletteOpen}
         onClose={() => setIsCommandPaletteOpen(false)}
         onNavigate={navigateTo}
+      />
+
+      {/* Cashfree Cosmic Store & Payment Modal */}
+      <CashfreePaymentModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        userProfile={userProfile}
       />
 
       {/* Sonner Toast Provider */}

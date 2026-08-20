@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LandingNavbar from './LandingNavbar';
 import HeroSection from './HeroSection';
 import TrustSection from './TrustSection';
@@ -16,6 +16,7 @@ import PricingSection from './PricingSection';
 import FAQSection from './FAQSection';
 import FinalCTASection from './FinalCTASection';
 import LandingFooter from './LandingFooter';
+import CashfreePaymentModal from '../CashfreePaymentModal';
 import { UserProfile } from '../../types';
 
 interface LandingPageProps {
@@ -30,6 +31,8 @@ export default function LandingPage({
   userProfile,
 }: LandingPageProps) {
   const hasProfile = Boolean(userProfile?.name && userProfile?.dob);
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  const [paymentCategory, setPaymentCategory] = useState<'subscription' | 'report' | 'consultation'>('subscription');
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -56,6 +59,11 @@ export default function LandingPage({
     });
   };
 
+  const openPaymentWith = (cat: 'subscription' | 'report' | 'consultation') => {
+    setPaymentCategory(cat);
+    setIsPaymentOpen(true);
+  };
+
   return (
     <div className="relative min-h-screen bg-[#070A12] text-slate-100 font-sans selection:bg-[#C9A86A]/30 selection:text-white">
       
@@ -67,7 +75,7 @@ export default function LandingPage({
         hasProfile={hasProfile}
       />
 
-      {/* 2. Hero Section with Live Rotating Birth Chart Wheel */}
+      {/* 2. Hero Section with Live 3D Birth Chart Wheel */}
       <HeroSection
         onGetStarted={handleGetStarted}
         onExploreHoroscope={() => scrollToSection('horoscope-section')}
@@ -104,13 +112,15 @@ export default function LandingPage({
       <TestimonialsSection />
 
       {/* 13. Verified 1-on-1 Astrologer Consultations */}
-      <AstrologerSection onBookAstrologer={() => onNavigateToTab('consultation-hub')} />
+      <AstrologerSection onBookAstrologer={() => openPaymentWith('consultation')} />
 
-      {/* 14. Transparent Pricing Plans */}
+      {/* 14. Transparent Pricing Plans (Direct Cashfree Trigger) */}
       <PricingSection
         onSelectPlan={(plan) => {
           if (plan === 'consultation') {
-            onNavigateToTab('consultation-hub');
+            openPaymentWith('consultation');
+          } else if (plan === 'premium') {
+            openPaymentWith('subscription');
           } else {
             handleGetStarted();
           }
@@ -128,6 +138,14 @@ export default function LandingPage({
 
       {/* 17. Brand & Legal Footer */}
       <LandingFooter onNavigateTab={(tab) => onNavigateToTab(tab)} />
+
+      {/* 💳 Cashfree Direct Checkout Modal */}
+      <CashfreePaymentModal
+        isOpen={isPaymentOpen}
+        onClose={() => setIsPaymentOpen(false)}
+        initialCategory={paymentCategory}
+        userProfile={userProfile}
+      />
     </div>
   );
 }
