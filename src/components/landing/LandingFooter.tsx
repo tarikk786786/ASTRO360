@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Compass, ShieldCheck, Heart, Sparkles } from 'lucide-react';
+import LegalPolicyModal, { PolicyType } from '../LegalPolicyModal';
 
 interface LandingFooterProps {
   onNavigateTab: (tabId: string) => void;
 }
 
 export default function LandingFooter({ onNavigateTab }: LandingFooterProps) {
+  const [isLegalOpen, setIsLegalOpen] = useState(false);
+  const [selectedPolicy, setSelectedPolicy] = useState<PolicyType>('privacy');
+
+  const openLegal = (policy: PolicyType) => {
+    setSelectedPolicy(policy);
+    setIsLegalOpen(true);
+  };
   return (
     <footer className="relative bg-[#050810] border-t border-white/[0.06] text-slate-400 text-xs py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -102,14 +110,34 @@ export default function LandingFooter({ onNavigateTab }: LandingFooterProps) {
           {/* Legal & Company */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold text-white uppercase font-mono tracking-wider">
-              Legal & Privacy
+              Legal & Compliance
             </h4>
             <ul className="space-y-2 text-slate-400">
-              <li>Privacy Policy</li>
-              <li>Terms of Service</li>
-              <li>Disclaimer Policy</li>
-              <li>Security & Data Deletion</li>
-              <li>Consultation Guidelines</li>
+              <li>
+                <button onClick={() => openLegal('privacy')} className="hover:text-[#C9A86A] transition-colors cursor-pointer text-left">
+                  Privacy Policy
+                </button>
+              </li>
+              <li>
+                <button onClick={() => openLegal('terms')} className="hover:text-[#C9A86A] transition-colors cursor-pointer text-left">
+                  Terms of Service
+                </button>
+              </li>
+              <li>
+                <button onClick={() => openLegal('refund')} className="hover:text-[#C9A86A] transition-colors cursor-pointer text-left">
+                  Refund & Cancellation Policy
+                </button>
+              </li>
+              <li>
+                <button onClick={() => openLegal('shipping')} className="hover:text-[#C9A86A] transition-colors cursor-pointer text-left">
+                  Delivery & Shipping Policy
+                </button>
+              </li>
+              <li>
+                <button onClick={() => openLegal('contact')} className="hover:text-[#C9A86A] transition-colors cursor-pointer text-left">
+                  Contact Us & Grievances
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -123,6 +151,13 @@ export default function LandingFooter({ onNavigateTab }: LandingFooterProps) {
           </p>
         </div>
       </div>
+
+      {/* Compliance Policy Modal */}
+      <LegalPolicyModal
+        isOpen={isLegalOpen}
+        onClose={() => setIsLegalOpen(false)}
+        initialPolicy={selectedPolicy}
+      />
     </footer>
   );
 }
