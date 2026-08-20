@@ -102,6 +102,7 @@ export default function CashfreePaymentModal({
   const [verifying, setVerifying] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [confirmedOrderId, setConfirmedOrderId] = useState('');
+  const [verifyError, setVerifyError] = useState<string | null>(null);
   const [copiedCrypto, setCopiedCrypto] = useState(false);
   const [copiedUpi, setCopiedUpi] = useState(false);
 
@@ -120,8 +121,6 @@ export default function CashfreePaymentModal({
   // Real NPCI UPI URI string
   const upiPayUri = `upi://pay?pa=tarikislam786@okaxis&pn=ASTRO360%20Omni&am=${selectedItem.priceInr}&cu=INR&tn=ASTRO360_${selectedItem.id}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=${encodeURIComponent(upiPayUri)}`;
-
-  const [verifyError, setVerifyError] = useState<string | null>(null);
 
   // Strict Verification Handler (Requires Valid UTR or Real Gateway Callback)
   const handleVerifyAndConfirm = async () => {
