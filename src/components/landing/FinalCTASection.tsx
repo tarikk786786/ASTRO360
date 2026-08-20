@@ -11,8 +11,8 @@ export default function FinalCTASection({ onCreateChart, onExploreHoroscope }: F
   return (
     <section className="relative py-28 px-4 sm:px-6 lg:px-8 border-t border-white/[0.05] overflow-hidden bg-[#070A12]/95">
       
-      {/* Background Subtle Radial Glow & Rotating Zodiac Circle */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] sm:w-[650px] aspect-square rounded-full border border-[#C9A86A]/15 animate-[spin_90s_linear_infinite] pointer-events-none opacity-40">
+      {/* Background Subtle Radial Glow & Celestial Zodiac Circle */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] sm:w-[650px] aspect-square rounded-full border border-[#C9A86A]/15 pointer-events-none opacity-40">
         <div className="absolute inset-8 rounded-full border border-dashed border-[#C9A86A]/20" />
         <div className="absolute inset-16 rounded-full border border-white/[0.04]" />
       </div>

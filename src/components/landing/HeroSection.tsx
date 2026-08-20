@@ -137,8 +137,8 @@ export default function HeroSection({ onGetStarted, onExploreHoroscope }: HeroSe
             {/* Central Interactive Wheel */}
             <div className="relative w-full aspect-square flex items-center justify-center my-2">
               
-              {/* Outer Rotating Zodiac Ring */}
-              <div className="absolute inset-2 rounded-full border border-dashed border-[#C9A86A]/25 animate-[spin_120s_linear_infinite]" />
+              {/* Outer Zodiac Ring */}
+              <div className="absolute inset-2 rounded-full border border-dashed border-[#C9A86A]/25" />
               
               {/* Inner Concentric Rings */}
               <div className="absolute inset-8 rounded-full border border-white/[0.06]" />
