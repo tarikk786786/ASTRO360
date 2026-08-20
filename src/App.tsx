@@ -8,6 +8,7 @@ import { Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, U
 import { motion, AnimatePresence } from 'motion/react';
 import { TRADITIONS, CategoryInfo, TraditionGroup, UserProfile, GROUP_ICONS } from './types';
 import CosmicIntelligenceCenter from './components/CosmicIntelligenceCenter';
+import LandingPage from './components/landing/LandingPage';
 import AstrologyChat from './components/AstrologyChat';
 import TraditionView from './components/TraditionView';
 import Onboarding from './components/Onboarding';
@@ -132,6 +133,8 @@ export default function AppContent() {
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [landingPreset, setLandingPreset] = useState<Partial<UserProfile> | undefined>(undefined);
 
   // Global Cmd+K / Ctrl+K keyboard shortcut listener
   useEffect(() => {
@@ -231,12 +234,33 @@ export default function AppContent() {
     if (activeTab === 'report-generator') return 'Executive Report Generator';
     if (activeTab === 'admin-dashboard') return 'Admin Analytics & AI Tracing';
     if (activeTab === 'consultation-hub') return 'Astrologer Consultations & Community Q&A';
+    if (activeTab === 'landing') return 'Product Overview & Free Birth Chart';
     if (TRADITIONS[activeTab]) return TRADITIONS[activeTab].name;
     return 'Cosmos OMNI';
   };
 
   if (!hasOnboarded) {
-    return <Onboarding onComplete={handleOnboardingComplete} />;
+    if (showOnboarding) {
+      return (
+        <Onboarding
+          initialProfile={landingPreset}
+          onComplete={handleOnboardingComplete}
+        />
+      );
+    }
+    return (
+      <LandingPage
+        onStartOnboarding={(preset) => {
+          setLandingPreset(preset);
+          setShowOnboarding(true);
+        }}
+        onNavigateToTab={(tab) => {
+          setActiveTab(tab);
+          setHasOnboarded(true);
+        }}
+        userProfile={userProfile}
+      />
+    );
   }
 
   return (
@@ -300,6 +324,10 @@ export default function AppContent() {
             <button onClick={() => navigateTo('chat')} className={`sidebar-item ${activeTab === 'chat' ? 'sidebar-item-active' : ''}`}>
               <MessageCircle className="w-4 h-4" />
               <span>AI Oracle</span>
+            </button>
+            <button onClick={() => navigateTo('landing')} className={`sidebar-item ${activeTab === 'landing' ? 'sidebar-item-active' : ''}`}>
+              <Globe className="w-4 h-4" />
+              <span>Product Overview</span>
             </button>
           </div>
 
@@ -515,6 +543,16 @@ export default function AppContent() {
                   className="h-full"
                 >
                 <ErrorBoundary>
+                  {activeTab === 'landing' && (
+                    <LandingPage
+                      onStartOnboarding={(preset) => {
+                        setLandingPreset(preset);
+                        setShowOnboarding(true);
+                      }}
+                      onNavigateToTab={(tab) => navigateTo(tab)}
+                      userProfile={userProfile}
+                    />
+                  )}
                   {activeTab === 'dashboard' && <CosmicIntelligenceCenter onNavigate={navigateTo} userProfile={userProfile} onUpdateProfile={(updated) => { setUserProfile(updated); saveProfile(updated); }} />}
                   {activeTab === 'live-diagnostics' && <LiveCosmicDiagnostics userProfile={userProfile} />}
                   {activeTab === 'advisor' && <HolisticAdvisor userProfile={userProfile} />}

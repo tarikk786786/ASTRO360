@@ -5,6 +5,7 @@ import type { UserProfile } from '../types';
 
 interface OnboardingProps {
   onComplete: (profile: UserProfile) => void;
+  initialProfile?: Partial<UserProfile>;
 }
 
 function getZodiacSign(month: number, day: number): { sign: string; emoji: string } {
@@ -22,20 +23,20 @@ function getZodiacSign(month: number, day: number): { sign: string; emoji: strin
   return{sign:'Pisces',emoji:'♓'};
 }
 
-export function Onboarding({ onComplete }: OnboardingProps) {
+export function Onboarding({ onComplete, initialProfile }: OnboardingProps) {
   const [step, setStep] = useState(1);
   const [profile, setProfile] = useState<UserProfile>({
-    name: '',
-    email: '',
-    phone: '',
-    gender: 'universal',
-    dob: '',
-    time: '12:00',
-    location: '',
-    preferredSystem: 'vedic',
-    careerGoal: 'Personal Growth & Prosperity',
-    relationshipStatus: 'Seeking Harmony',
-    primaryLifeFocus: 'Cosmic Alignment & Purpose',
+    name: initialProfile?.name || '',
+    email: initialProfile?.email || '',
+    phone: initialProfile?.phone || '',
+    gender: initialProfile?.gender || 'universal',
+    dob: initialProfile?.dob || '',
+    time: initialProfile?.time || '12:00',
+    location: initialProfile?.location || '',
+    preferredSystem: initialProfile?.preferredSystem || 'vedic',
+    careerGoal: initialProfile?.careerGoal || 'Personal Growth & Prosperity',
+    relationshipStatus: initialProfile?.relationshipStatus || 'Seeking Harmony',
+    primaryLifeFocus: initialProfile?.primaryLifeFocus || 'Cosmic Alignment & Purpose',
   });
 
   const nextStep = () => {
