@@ -72,6 +72,7 @@ export default function LandingPage({
         onGetStarted={handleGetStarted}
         onNavigateSection={scrollToSection}
         onOpenDashboard={() => onNavigateToTab('dashboard')}
+        onOpenStore={() => openPaymentWith('subscription')}
         hasProfile={hasProfile}
       />
 

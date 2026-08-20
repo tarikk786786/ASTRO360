@@ -6,6 +6,7 @@ interface LandingNavbarProps {
   onGetStarted: () => void;
   onNavigateSection: (sectionId: string) => void;
   onOpenDashboard: () => void;
+  onOpenStore?: () => void;
   hasProfile?: boolean;
 }
 
@@ -13,6 +14,7 @@ export default function LandingNavbar({
   onGetStarted,
   onNavigateSection,
   onOpenDashboard,
+  onOpenStore,
   hasProfile,
 }: LandingNavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -83,6 +85,16 @@ export default function LandingNavbar({
 
         {/* Action Buttons */}
         <div className="hidden md:flex items-center gap-3">
+          {onOpenStore && (
+            <button
+              onClick={onOpenStore}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C9A86A]/15 hover:bg-[#C9A86A]/25 border border-[#C9A86A]/35 text-[#C9A86A] text-xs font-semibold transition-all cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Store</span>
+            </button>
+          )}
+
           {hasProfile ? (
             <button
               onClick={onOpenDashboard}
