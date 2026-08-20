@@ -1,6 +1,10 @@
 /**
  * Cashfree Payments Serverless Gateway Endpoint
- * Securely creates Cashfree orders, returns payment_session_id for UPI/Cards/NetBanking, and verifies transactions.
+ * Supports:
+ * - Direct Orders (`/pg/orders`)
+ * - Shareable Payment Links (`/pg/links`)
+ * - Payment Verification (`/pg/orders/:id`)
+ * - Earnings & Settlement Telemetry
  */
 
 export default async function handler(req: any, res: any) {
@@ -27,18 +31,74 @@ export default async function handler(req: any, res: any) {
     : 'https://api.cashfree.com/pg';
 
   try {
-    // 1. Order Creation
+    // 1. POST Actions
     if (req.method === 'POST') {
       const { 
+        action = 'create_order',
         planId = 'cosmic-pro-monthly',
         amount = 299,
         customerName = 'Seeker',
-        customerEmail = 'seeker@astroverse.in',
+        customerEmail = 'seeker@astro.tarikislam.in',
         customerPhone = '9876543210',
         orderNote = 'ASTRO360 Cosmic Pro Upgrade',
+        linkPurpose = 'Astrological Consultation & Kundli Report',
         returnUrl
       } = req.body || {};
 
+      // Action A: Create Shareable Payment Link (/pg/links)
+      if (action === 'create_payment_link') {
+        const linkId = `link_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+        const linkPayload = {
+          link_id: linkId,
+          link_amount: Number(amount),
+          link_currency: 'INR',
+          link_purpose: linkPurpose || orderNote,
+          customer_details: {
+            customer_name: customerName || 'Cosmic Seeker',
+            customer_email: customerEmail || 'seeker@astro.tarikislam.in',
+            customer_phone: customerPhone && customerPhone.length >= 10 ? customerPhone : '9876543210',
+          },
+          link_meta: {
+            return_url: returnUrl || 'https://astro.tarikislam.in/?link_payment_success=true',
+            notify_url: 'https://astro.tarikislam.in/api/payment?action=webhook',
+          },
+          link_notify: {
+            send_sms: true,
+            send_email: true,
+          },
+        };
+
+        const linkRes = await fetch(`${baseUrl}/links`, {
+          method: 'POST',
+          headers: {
+            'x-client-id': appId,
+            'x-client-secret': secretKey,
+            'x-api-version': '2023-08-01',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(linkPayload),
+        });
+
+        const linkData = await linkRes.json();
+        if (!linkRes.ok) {
+          return res.status(linkRes.status).json({
+            success: false,
+            error: linkData?.message || 'Failed to create Cashfree payment link',
+            details: linkData,
+          });
+        }
+
+        return res.status(200).json({
+          success: true,
+          linkId: linkData.link_id,
+          linkUrl: linkData.link_url,
+          linkQrCode: linkData.link_qrcode,
+          linkAmount: linkData.link_amount,
+          linkStatus: linkData.link_status,
+        });
+      }
+
+      // Action B: Create Direct Checkout Order (/pg/orders)
       const cleanOrderId = `order_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
       const cleanCustomerId = `cust_${Date.now()}`;
 
@@ -96,26 +156,41 @@ export default async function handler(req: any, res: any) {
       });
     }
 
-    // 2. Order Verification (GET /api/payment?order_id=...)
+    // 2. GET Actions (Verification or Status)
     if (req.method === 'GET') {
-      const { order_id } = req.query || {};
-      if (!order_id) {
-        return res.status(400).json({ error: 'order_id parameter is required' });
+      const { order_id, link_id } = req.query || {};
+
+      if (link_id) {
+        const linkRes = await fetch(`${baseUrl}/links/${link_id}`, {
+          method: 'GET',
+          headers: {
+            'x-client-id': appId,
+            'x-client-secret': secretKey,
+            'x-api-version': '2023-08-01',
+          },
+        });
+        const linkData = await linkRes.json();
+        return res.status(linkRes.status).json({ success: linkRes.ok, link: linkData });
       }
 
-      const response = await fetch(`${baseUrl}/orders/${order_id}`, {
-        method: 'GET',
-        headers: {
-          'x-client-id': appId,
-          'x-client-secret': secretKey,
-          'x-api-version': '2023-08-01',
-        },
-      });
+      if (order_id) {
+        const response = await fetch(`${baseUrl}/orders/${order_id}`, {
+          method: 'GET',
+          headers: {
+            'x-client-id': appId,
+            'x-client-secret': secretKey,
+            'x-api-version': '2023-08-01',
+          },
+        });
+        const data = await response.json();
+        return res.status(response.status).json({ success: response.ok, order: data });
+      }
 
-      const data = await response.json();
-      return res.status(response.status).json({
-        success: response.ok,
-        order: data,
+      return res.status(200).json({
+        status: 'active',
+        gateway: 'Cashfree Payments Production PG',
+        apiVersion: '2023-08-01',
+        environment: cashfreeEnv,
       });
     }
 

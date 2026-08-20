@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
-import { Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, Users, Globe2, Bell, Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon, Zap, Wrench } from 'lucide-react';
+import { Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, Users, Globe2, Bell, Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon, Zap, Wrench, DollarSign } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TRADITIONS, CategoryInfo, TraditionGroup, UserProfile, GROUP_ICONS } from './types';
 import CosmicIntelligenceCenter from './components/CosmicIntelligenceCenter';
@@ -32,6 +32,7 @@ import BhagavadGitaSuite from './components/BhagavadGitaSuite';
 import AstrologyControlCenter from './components/AstrologyControlCenter';
 import CommunityConsultationHub from './components/CommunityConsultationHub';
 import ExecutivePDFDossier from './components/ExecutivePDFDossier';
+import AstrologyEarningsHub from './components/AstrologyEarningsHub';
 import Footer from './components/Footer';
 import AuthScreen from './components/AuthScreen';
 import CashfreePaymentModal from './components/CashfreePaymentModal';
@@ -236,6 +237,7 @@ export default function AppContent() {
     if (activeTab === 'report-generator') return 'Executive Report Generator';
     if (activeTab === 'admin-dashboard') return 'Admin Analytics & AI Tracing';
     if (activeTab === 'consultation-hub') return 'Astrologer Consultations & Community Q&A';
+    if (activeTab === 'earnings-hub' || activeTab === 'monetization') return 'Astrology Business & Revenue Hub (Cashfree PG)';
     if (activeTab === 'landing') return 'Product Overview & Free Birth Chart';
     if (TRADITIONS[activeTab]) return TRADITIONS[activeTab].name;
     return 'Cosmos OMNI';
@@ -355,6 +357,7 @@ export default function AppContent() {
                   <button onClick={() => navigateTo('problem-solver')} className={`sidebar-item ${activeTab === 'problem-solver' ? 'sidebar-item-active' : ''}`}><Zap className="w-4 h-4" /><span>Interactive Tools</span></button>
                   <button onClick={() => navigateTo('spiritual-traditions')} className={`sidebar-item ${activeTab === 'spiritual-traditions' ? 'sidebar-item-active' : ''}`}><ShieldCheck className="w-4 h-4" /><span>Spiritual Beliefs</span></button>
                   <button onClick={() => navigateTo('consultation-hub')} className={`sidebar-item ${activeTab === 'consultation-hub' ? 'sidebar-item-active' : ''}`}><Users className="w-4 h-4" /><span>Consultations</span></button>
+                  <button onClick={() => navigateTo('earnings-hub')} className={`sidebar-item ${activeTab === 'earnings-hub' ? 'sidebar-item-active' : ''}`}><DollarSign className="w-4 h-4 text-emerald-400" /><span>Business & Earnings</span></button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -579,6 +582,7 @@ export default function AppContent() {
                   {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
                   {activeTab === 'spiritual-traditions' && <SpiritualTraditionsSuite userProfile={userProfile} />}
                   {activeTab === 'consultation-hub' && <CommunityConsultationHub />}
+                  {(activeTab === 'earnings-hub' || activeTab === 'monetization') && <AstrologyEarningsHub userProfile={userProfile} />}
                   {activeTab === 'divisional-charts' && <DivisionalChartsSuite planetPositions={[]} />}
                   {activeTab === 'btr-suite' && <BirthTimeRectificationSuite />}
                   {activeTab === 'gemstone-suite' && <GemstoneRudrakshaSuite />}
