@@ -176,22 +176,31 @@ export default async function handler(req: any, res: any) {
               orderCurrency: data.order_currency,
               environment: cashfreeEnv,
             });
+          } else {
+            console.warn('Cashfree Order Response:', data);
+            return res.status(200).json({
+              success: false,
+              orderId: cleanOrderId,
+              error: data?.message || 'Cashfree payment session initialization pending',
+              upiUri: `upi://pay?pa=tarikislam786@okaxis&pn=ASTRO360%20Omni&am=${amount}&cu=INR&tn=ASTRO360_${planId}`,
+            });
           }
-        } catch (apiErr) {
-          console.warn('Cashfree API error, falling back to seamless UPI session:', apiErr);
+        } catch (apiErr: any) {
+          console.warn('Cashfree API error:', apiErr);
+          return res.status(200).json({
+            success: false,
+            orderId: cleanOrderId,
+            error: apiErr?.message || 'Cashfree connection error',
+            upiUri: `upi://pay?pa=tarikislam786@okaxis&pn=ASTRO360%20Omni&am=${amount}&cu=INR&tn=ASTRO360_${planId}`,
+          });
         }
       }
 
-      // Seamless Direct UPI & Card Session Fallback
       return res.status(200).json({
-        success: true,
+        success: false,
         orderId: cleanOrderId,
-        paymentSessionId: `session_fallback_${cleanOrderId}`,
-        orderStatus: 'ACTIVE',
-        orderAmount: Number(amount),
-        orderCurrency: 'INR',
+        error: 'Cashfree credentials not configured',
         upiUri: `upi://pay?pa=tarikislam786@okaxis&pn=ASTRO360%20Omni&am=${amount}&cu=INR&tn=ASTRO360_${planId}`,
-        environment: 'production',
       });
     }
 
