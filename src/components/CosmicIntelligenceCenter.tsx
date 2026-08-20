@@ -676,18 +676,18 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
           <div className="w-full max-w-7xl mx-auto space-y-6 relative z-10">
 
         {/* SECTION 1: GLOBAL HEADER WITH SEARCH & ACCURATE LOCAL TIME */}
-        <motion.div variants={staggerItem} className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 p-4 sm:p-6 rounded-3xl glass-card border border-white/10 shadow-2xl backdrop-blur-2xl">
-          <div>
+        <motion.div variants={staggerItem} className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3.5 sm:gap-4 p-3.5 sm:p-6 rounded-2xl sm:rounded-3xl glass-card border border-white/10 shadow-2xl backdrop-blur-2xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between lg:justify-start gap-2 sm:gap-4">
             <div className="flex items-center gap-2.5">
-              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-                <Compass className="w-6 h-6 text-[#2563EB]" /> ASTRO360 OMNI
+              <h1 className="text-lg sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+                <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-[#2563EB]" /> ASTRO360 OMNI
               </h1>
-              <span className="text-[10px] font-mono text-[#22C55E] bg-[#22C55E]/10 px-2.5 py-0.5 rounded-full border border-[#22C55E]/30 font-semibold flex items-center gap-1">
+              <span className="text-[10px] font-mono text-[#22C55E] bg-[#22C55E]/10 px-2 sm:px-2.5 py-0.5 rounded-full border border-[#22C55E]/30 font-semibold flex items-center gap-1 shrink-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] animate-pulse" />
                 SYSTEM ACTIVE
               </span>
             </div>
-            <p className="text-xs text-[#94A3B8] font-mono pt-1">
+            <p className="text-[11px] sm:text-xs text-[#94A3B8] font-mono">
               {todayDateStr} • <span className="text-[#06B6D4] font-semibold">{currentTimeStr || '12:00:00 PM'}</span> <span className="text-white font-bold">{timeZoneAbbr}</span>
             </p>
           </div>
@@ -704,16 +704,16 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                 onBlur={() => setTimeout(() => setIsSearchFocused(false), 250)}
                 onKeyDown={handleSearchKeyDown}
                 placeholder="Search 150+ tools, charts, remedies..."
-                className="w-full pl-10 pr-16 py-2.5 rounded-2xl bg-[#0B1220] border border-white/10 text-xs text-[#F8FAFC] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] transition-all"
+                className="w-full pl-10 pr-16 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-[#0B1220] border border-white/10 text-xs text-[#F8FAFC] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] transition-all"
               />
-              <div className="absolute right-3 top-2.5 flex items-center gap-1">
+              <div className="absolute right-3 top-2.5 sm:top-3 flex items-center gap-1">
                 <kbd className="text-[9px] font-mono text-[#94A3B8] bg-white/10 px-1.5 py-0.5 rounded border border-white/10">ESC</kbd>
               </div>
             </div>
 
             {/* FIX 5 & 6: SEARCH DROPDOWN & EMPTY STATE */}
             {isSearchFocused && searchQuery.trim().length > 0 && (
-              <div className="absolute top-12 left-0 right-0 z-50 rounded-2xl bg-[#111827] border border-white/10 shadow-2xl overflow-hidden p-2 space-y-1 backdrop-blur-2xl">
+              <div className="absolute top-12 sm:top-14 left-0 right-0 z-50 rounded-2xl bg-[#111827] border border-white/10 shadow-2xl overflow-hidden p-2 space-y-1 backdrop-blur-2xl">
                 {SEARCH_RESULTS.length > 0 ? (
                   <>
                     <div className="px-3 py-1.5 text-[10px] font-mono text-[#94A3B8] flex items-center justify-between border-b border-white/10">
@@ -755,14 +755,17 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
           </div>
 
           {/* READINGS BUTTON */}
-          <div className="flex items-center gap-3 w-full lg:w-auto justify-end flex-wrap sm:flex-nowrap">
-            <ShimmerButton
-              onClick={() => onNavigate('chat')}
-              shimmerColor="#06B6D4"
-              background="rgba(37, 99, 235, 0.9)"
-            >
-              <Bot className="w-4 h-4 text-cyan-200" /> AI Oracle
-            </ShimmerButton>
+          <div className="flex items-center gap-3 w-full lg:w-auto justify-end">
+            <div className="w-full sm:w-auto">
+              <ShimmerButton
+                onClick={() => onNavigate('chat')}
+                shimmerColor="#06B6D4"
+                background="rgba(37, 99, 235, 0.9)"
+                className="w-full sm:w-auto justify-center"
+              >
+                <Bot className="w-4 h-4 text-cyan-200" /> AI Oracle Consultation
+              </ShimmerButton>
+            </div>
           </div>
         </motion.div>
 
@@ -775,42 +778,42 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.25 }}
-              className="space-y-6"
+              className="space-y-4 sm:space-y-6"
             >
               {/* 🔮 FIRST & PROMINENT SECTION: DAILY HOROSCOPE & ZODIAC PREDICTIONS */}
               <div className="p-4 sm:p-8 rounded-2xl sm:rounded-[2rem] bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_0_rgba(255,255,255,0.05)] space-y-4 sm:space-y-5 text-left relative overflow-hidden ring-1 ring-white/5 hover:border-amber-500/30 hover:shadow-[0_8px_32px_0_rgba(245,158,11,0.15)] transition-all duration-500 group">
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                 
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4 relative z-10">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/10 border border-amber-500/40 flex items-center justify-center shadow-[0_0_20px_rgba(245,158,11,0.2)] group-hover:scale-105 transition-transform duration-500">
-                      <Sun className="w-6 h-6 text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-white/10 pb-4 relative z-10">
+                  <div className="flex items-center gap-3.5 sm:gap-4">
+                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/10 border border-amber-500/40 flex items-center justify-center shadow-[0_0_20px_rgba(245,158,11,0.2)] group-hover:scale-105 transition-transform duration-500 shrink-0">
+                      <Sun className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
                     </div>
                     <div>
-                      <h2 className="text-lg sm:text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-300 tracking-tight flex items-center gap-2">
+                      <h2 className="text-base sm:text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-300 tracking-tight flex items-center gap-2">
                         Daily Cosmic Intelligence
                       </h2>
-                      <p className="text-xs text-amber-300/80 font-mono font-medium tracking-wide">
+                      <p className="text-[11px] sm:text-xs text-amber-300/80 font-mono font-medium tracking-wide">
                         Real-time Ephemeris Telemetry • {todayDateStr}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3 shrink-0">
-                    <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-full border border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.1)]">
+                  <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-3 shrink-0">
+                    <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.1)]">
                       Score: {selectedHoroscopeInsight.overallScore}% Excellent
                     </span>
                     <button
                       onClick={() => onNavigate('horoscope')}
-                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500/10 to-purple-500/10 hover:from-amber-500/20 hover:to-purple-500/20 text-amber-300 border border-amber-500/30 hover:border-amber-400 text-xs font-mono font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 shadow-lg hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:-translate-y-0.5 active:translate-y-0"
+                      className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-gradient-to-r from-amber-500/10 to-purple-500/10 hover:from-amber-500/20 hover:to-purple-500/20 text-amber-300 border border-amber-500/30 hover:border-amber-400 text-[11px] sm:text-xs font-mono font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 shadow-lg active:scale-95"
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Unlock Full Forecast
+                      <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" /> Full Forecast
                     </button>
                   </div>
                 </div>
 
                 {/* 12 ZODIAC SIGN SELECTOR DOCK */}
-                <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-2 relative z-10">
+                <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto no-scrollbar pb-2 relative z-10 scroll-smooth" style={{ scrollSnapType: 'x mandatory' }}>
                   {[
                     { sign: 'Aries', symbol: '♈' },
                     { sign: 'Taurus', symbol: '♉' },
@@ -830,7 +833,8 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                       <button
                         key={z.sign}
                         onClick={() => setSelectedHoroscopeSign(z.sign)}
-                        className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 shrink-0 border ${
+                        style={{ scrollSnapAlign: 'start' }}
+                        className={`min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all duration-300 cursor-pointer flex items-center gap-1.5 shrink-0 border select-none active:scale-95 ${
                           isSelected
                             ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-slate-950 border-transparent shadow-[0_4px_15px_rgba(245,158,11,0.4)] scale-105'
                             : 'bg-white/5 text-slate-400 border-white/10 hover:text-white hover:border-white/30 hover:bg-white/10'
@@ -844,28 +848,28 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                 </div>
 
                 {/* HOROSCOPE INSIGHT BODY */}
-                <div className="p-5 rounded-[1.25rem] bg-black/30 backdrop-blur-md border border-white/5 space-y-4 relative z-10 group/body hover:border-white/10 transition-colors duration-500">
-                  <p className="text-sm sm:text-base text-white leading-relaxed font-medium flex items-start gap-2.5">
-                    <Sparkles className="w-5 h-5 text-amber-400 shrink-0 mt-0.5 animate-pulse" />
+                <div className="p-4 sm:p-5 rounded-[1.25rem] bg-black/30 backdrop-blur-md border border-white/5 space-y-4 relative z-10 group/body hover:border-white/10 transition-colors duration-500">
+                  <p className="text-xs sm:text-sm text-white leading-relaxed font-medium flex items-start gap-2.5">
+                    <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 shrink-0 mt-0.5 animate-pulse" />
                     <span>{selectedHoroscopeInsight.theme}</span>
                   </p>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                    <div className="p-4 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/5 hover:border-cyan-500/30 transition-colors duration-300 space-y-1.5 text-xs group/card">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 pt-1">
+                    <div className="p-3.5 sm:p-4 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/5 hover:border-cyan-500/30 transition-colors duration-300 space-y-1.5 text-xs group/card">
                       <div className="flex items-center gap-1.5 text-cyan-400 font-mono font-bold group-hover/card:text-cyan-300">
                         <Briefcase className="w-4 h-4" /> CAREER & FINANCE
                       </div>
                       <p className="text-slate-300 text-[11.5px] leading-relaxed group-hover/card:text-white transition-colors">{selectedHoroscopeInsight.career}</p>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/5 hover:border-rose-500/30 transition-colors duration-300 space-y-1.5 text-xs group/card">
+                    <div className="p-3.5 sm:p-4 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/5 hover:border-rose-500/30 transition-colors duration-300 space-y-1.5 text-xs group/card">
                       <div className="flex items-center gap-1.5 text-rose-400 font-mono font-bold group-hover/card:text-rose-300">
                         <Heart className="w-4 h-4" /> LOVE & HARMONY
                       </div>
                       <p className="text-slate-300 text-[11.5px] leading-relaxed group-hover/card:text-white transition-colors">{selectedHoroscopeInsight.love}</p>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/5 hover:border-emerald-500/30 transition-colors duration-300 space-y-1.5 text-xs group/card">
+                    <div className="p-3.5 sm:p-4 rounded-xl bg-gradient-to-br from-white/5 to-transparent border border-white/5 hover:border-emerald-500/30 transition-colors duration-300 space-y-1.5 text-xs group/card">
                       <div className="flex items-center gap-1.5 text-emerald-400 font-mono font-bold group-hover/card:text-emerald-300">
                         <Brain className="w-4 h-4" /> HEALTH & VITALITY
                       </div>
@@ -873,12 +877,12 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
-                    <div className="flex items-center gap-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+                    <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
                       <span className="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg">Lucky Number: <strong className="text-amber-300 font-bold text-xs">{selectedHoroscopeInsight.luckyNumber}</strong></span>
                       <span className="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg">Lucky Color: <strong className="text-amber-300 font-bold text-xs">{selectedHoroscopeInsight.luckyColor}</strong></span>
                     </div>
-                    <span className="flex items-center gap-1.5 bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 px-2.5 py-1 rounded-lg">Transit Energy: <strong className="font-bold text-xs">Sun in {keyPlanetsHighlight.sun?.sign || 'Leo'}</strong></span>
+                    <span className="flex items-center gap-1.5 bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 px-2.5 py-1 rounded-lg w-fit">Transit: <strong className="font-bold text-xs">Sun in {keyPlanetsHighlight.sun?.sign || 'Leo'}</strong></span>
                   </div>
                 </div>
               </div>
@@ -907,13 +911,13 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
               />
 
               {/* 🌐 RELIGION PERSPECTIVE & LANGUAGE SELECTOR BAR */}
-              <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl glass-card border border-white/10 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs font-sans">
+              <div className="p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl glass-card border border-white/10 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 text-xs font-sans">
                 {/* Religion View Selector */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                  <span className="font-bold text-amber-400 font-mono flex items-center gap-1.5 shrink-0">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-3">
+                  <span className="font-bold text-amber-400 font-mono flex items-center gap-1.5 shrink-0 text-xs">
                     <Globe2 className="w-4 h-4 text-amber-400" /> {i18n.viewByReligion}
                   </span>
-                  <div className="flex overflow-x-auto no-scrollbar pb-1 sm:pb-0 gap-1.5 max-w-full">
+                  <div className="flex overflow-x-auto no-scrollbar pb-1 sm:pb-0 gap-1.5 max-w-full scroll-smooth" style={{ scrollSnapType: 'x mandatory' }}>
                     {[
                       { id: 'universal', label: '🌐 All Systems', badge: 'Multi-Faith' },
                       { id: 'islamic', label: '🕌 Islamic (النُّجوم)', badge: 'Sunnah' },
@@ -925,7 +929,8 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                       <button
                         key={rel.id}
                         onClick={() => setSelectedReligionView(rel.id as any)}
-                        className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap ${
+                        style={{ scrollSnapAlign: 'start' }}
+                        className={`min-h-[36px] px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap active:scale-95 select-none ${
                           selectedReligionView === rel.id
                             ? 'bg-amber-500/25 text-amber-300 border border-amber-500/50 shadow-md shadow-amber-500/10'
                             : 'bg-white/5 text-slate-400 hover:text-white border border-white/5'
@@ -938,8 +943,8 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                 </div>
 
                 {/* Language Selector */}
-                <div className="flex items-center gap-2 shrink-0 border-t md:border-t-0 pt-2 md:pt-0 border-white/10">
-                  <span className="font-bold text-cyan-400 font-mono">{i18n.languageSelect}</span>
+                <div className="flex items-center gap-2 shrink-0 border-t md:border-t-0 pt-2.5 md:pt-0 border-white/10">
+                  <span className="font-bold text-cyan-400 font-mono text-xs">{i18n.languageSelect}</span>
                   <GlobalLanguageSelector />
                 </div>
               </div>
@@ -983,7 +988,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                       <Sparkles className="w-4 h-4 text-amber-400" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-bold text-white font-mono">Today's Cosmic Diagnostic & Prescribed Solution</h3>
+                      <h3 className="text-xs sm:text-sm font-bold text-white font-mono">Today's Cosmic Diagnostic & Prescribed Solution</h3>
                       <span className="text-[10px] text-slate-400 font-mono">Universal Root Cause & Practical Action Strategy</span>
                     </div>
                   </div>
@@ -992,14 +997,14 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 text-xs font-mono">
                   {/* TODAY'S WHY */}
-                  <div className="p-4 rounded-2xl bg-black/50 border border-amber-500/30 space-y-2">
+                  <div className="p-3.5 sm:p-4 rounded-2xl bg-black/50 border border-amber-500/30 space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-amber-400 font-bold uppercase text-[11px] flex items-center gap-1.5">
-                        <HelpCircle className="w-4 h-4 text-amber-400" /> Today's Cosmic WHY (Root Cause):
+                        <HelpCircle className="w-4 h-4 text-amber-400" /> Today's Cosmic WHY:
                       </span>
-                      <span className="text-[10px] text-slate-400">{panchang.tithi} • {panchang.nakshatra}</span>
+                      <span className="text-[10px] text-slate-400">{panchang.tithi}</span>
                     </div>
                     <p className="text-slate-200 leading-relaxed text-[11px]">
                       {dashaInfo.mahadasha} Mahadasha is active while Sun in {keyPlanetsHighlight.sun?.sign || 'Leo'} illuminates your 1st House of self-drive. Moon transiting {panchang.nakshatra} creates high mental activity, requiring steady focus during {panchang.rahuKalam} Rahu Kalam.
@@ -1007,42 +1012,42 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                   </div>
 
                   {/* TODAY'S PRESCRIBED SOLUTION */}
-                  <div className="p-4 rounded-2xl bg-emerald-950/50 border border-emerald-500/40 space-y-2 text-emerald-300">
+                  <div className="p-3.5 sm:p-4 rounded-2xl bg-emerald-950/50 border border-emerald-500/40 space-y-2 text-emerald-300">
                     <div className="flex items-center justify-between">
                       <span className="text-emerald-400 font-bold uppercase text-[11px] flex items-center gap-1.5">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Today's PRESCRIBED SOLUTION & Remedy:
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Prescribed Solution & Remedy:
                       </span>
                       <span className="text-[10px] text-emerald-300 font-bold bg-emerald-500/20 px-2 py-0.5 rounded">Golden Muhurta</span>
                     </div>
                     <div className="space-y-1.5 text-[11px] text-slate-200">
-                      <p><strong className="text-amber-300">1. Sacred Recitation:</strong> Mahagayatri Mantra (Solar Illumination) / Ayatul Kursi (Verse of Protection)</p>
-                      <p><strong className="text-cyan-300">2. Solfeggio Acoustic Frequency:</strong> 528 Hz (Solar Transformation & DNA Repair)</p>
-                      <p><strong className="text-emerald-300">3. Gemstone & Rudraksha:</strong> Yellow Sapphire (Pukhraj) / 5 Mukhi Rudraksha</p>
-                      <p><strong className="text-purple-300">4. Best Execution Window:</strong> Abhijit Muhurta ({panchang.abhijitMuhurta})</p>
+                      <p><strong className="text-amber-300">1. Sacred Recitation:</strong> Mahagayatri Mantra / Ayatul Kursi</p>
+                      <p><strong className="text-cyan-300">2. Acoustic Frequency:</strong> 528 Hz (Solar Repair)</p>
+                      <p><strong className="text-emerald-300">3. Gemstone & Rudraksha:</strong> Yellow Sapphire / 5 Mukhi</p>
+                      <p><strong className="text-purple-300">4. Best Execution Window:</strong> {panchang.abhijitMuhurta}</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2 pt-1">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
                   <button
                     onClick={() => onNavigate('mantra-soundboard')}
-                    className="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5"
+                    className="min-h-[40px] px-3.5 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 text-xs font-mono font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 active:scale-95"
                   >
-                    <Activity className="w-3.5 h-3.5 text-amber-400" /> Open Soundboard & Tones
+                    <Activity className="w-3.5 h-3.5 text-amber-400 shrink-0" /> Soundboard & Tones
                   </button>
 
                   <button
                     onClick={() => onNavigate('report-generator')}
-                    className="px-4 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5"
+                    className="min-h-[40px] px-3.5 py-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 hover:bg-cyan-500/30 text-xs font-mono font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 active:scale-95"
                   >
-                    <FileText className="w-3.5 h-3.5 text-cyan-400" /> Printable Executive PDF Dossier
+                    <FileText className="w-3.5 h-3.5 text-cyan-400 shrink-0" /> Executive PDF Dossier
                   </button>
 
                   <button
                     onClick={() => onNavigate('consultation-hub')}
-                    className="px-4 py-2 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/40 hover:bg-purple-500/30 text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5"
+                    className="min-h-[40px] px-3.5 py-2 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/40 hover:bg-purple-500/30 text-xs font-mono font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 active:scale-95"
                   >
-                    <Users className="w-3.5 h-3.5 text-purple-400" /> 1-on-1 Scholar Consultation (OwnPay)
+                    <Users className="w-3.5 h-3.5 text-purple-400 shrink-0" /> Scholar Consultation
                   </button>
                 </div>
               </div>
@@ -1051,7 +1056,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
               <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden glass-card border border-white/10 shadow-2xl p-4 sm:p-8">
                 <BorderBeam size={250} duration={12} delay={0} colorFrom="#06B6D4" colorTo="#3B82F6" />
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
                   {/* LEFT: PERSONALIZED COSMIC SYNTHESIS & DYNAMIC SCORE */}
                   <div className="lg:col-span-6 space-y-4">
                     <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#2563EB]/10 border border-[#2563EB]/30 text-[#06B6D4] text-xs font-mono font-semibold">
@@ -1059,11 +1064,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                       <span>Today's Dynamic Cosmic Synthesis</span>
                     </div>
 
-                    <h2 className="text-2xl sm:text-4xl font-semibold tracking-tight text-[#F8FAFC]">
+                    <h2 className="text-xl sm:text-4xl font-semibold tracking-tight text-[#F8FAFC]">
                       Welcome Back, <span className="text-[#2563EB]">{targetProfile.name}</span>
                     </h2>
 
-                    <div className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 space-y-2 text-xs text-[#CBD5E1]">
+                    <div className="p-3.5 sm:p-4 rounded-2xl bg-[#0B1220] border border-white/10 space-y-2 text-xs text-[#CBD5E1]">
                       <p className="font-semibold text-[#D4AF37] flex items-center gap-1.5 font-mono">
                         <Activity className="w-4 h-4 text-[#D4AF37]" /> Astronomical Alignment Summary:
                       </p>
@@ -1074,17 +1079,17 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                     </div>
 
                     <div className="flex items-center gap-2 sm:gap-3 pt-1 flex-wrap">
-                      <span className="px-3.5 py-2 rounded-2xl bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-[#D4AF37] text-xs font-mono font-semibold flex items-center gap-1.5 shadow-md">
+                      <span className="px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-2xl bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-[#D4AF37] text-xs font-mono font-semibold flex items-center gap-1.5 shadow-md">
                         <Award className="w-4 h-4 text-[#D4AF37]" />
-                        Cosmic Score: <NumberTicker value={cosmicScoreData.score} className="text-[#D4AF37] font-bold" />/100
+                        Score: <NumberTicker value={cosmicScoreData.score} className="text-[#D4AF37] font-bold" />/100
                       </span>
-                      <span className="px-3 py-1.5 rounded-xl bg-[#22C55E]/10 border border-[#22C55E]/20 text-[#22C55E] text-xs font-mono font-semibold">
+                      <span className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-[#22C55E]/10 border border-[#22C55E]/20 text-[#22C55E] text-xs font-mono font-semibold">
                         Exalted: {cosmicScoreData.exaltedCount}
                       </span>
-                      <span className="px-3 py-1.5 rounded-xl bg-[#06B6D4]/10 border border-[#06B6D4]/20 text-[#06B6D4] text-xs font-mono font-semibold">
+                      <span className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-[#06B6D4]/10 border border-[#06B6D4]/20 text-[#06B6D4] text-xs font-mono font-semibold">
                         Own Sign: {cosmicScoreData.ownSignCount}
                       </span>
-                      <span className="px-3 py-1.5 rounded-xl bg-[#2563EB]/10 border border-[#2563EB]/20 text-[#2563EB] text-xs font-mono font-semibold">
+                      <span className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-[#2563EB]/10 border border-[#2563EB]/20 text-[#2563EB] text-xs font-mono font-semibold">
                         Abhijit: {panchang.abhijitMuhurta}
                       </span>
                     </div>
@@ -1104,7 +1109,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                   </div>
 
                   {/* RIGHT: DYNAMIC REAL-TIME 9 PLANETS POSITIONS GRID */}
-                  <div className="lg:col-span-6 p-4 sm:p-5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-3">
+                  <div className="lg:col-span-6 p-3.5 sm:p-5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-3">
                     <div className="flex items-center justify-between border-b border-white/10 pb-2">
                       <span className="text-xs font-mono font-semibold text-[#06B6D4] flex items-center gap-1.5">
                         <Globe2 className="w-4 h-4 text-[#06B6D4]" /> Live Ephemeris Positions (Computed)
@@ -1112,14 +1117,14 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                       <span className="text-[10px] font-mono text-[#94A3B8]">Lahiri Ayanamsha</span>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
                       {planetPositions.map((p, idx) => (
                         <motion.button
                           key={idx}
                           onClick={() => setSelectedPlanet(p)}
-                          whileHover={{ scale: 1.05, y: -2 }}
-                          whileTap={{ scale: 0.96 }}
-                          className={`p-2 sm:p-2.5 rounded-xl bg-[#111827] border ${p.border} text-left space-y-0.5 hover:bg-[#1E293B] hover:border-cyan-500/40 hover:shadow-[0_0_15px_rgba(6,182,212,0.2)] transition-all cursor-pointer group`}
+                          whileHover={{ scale: 1.03, y: -2 }}
+                          whileTap={{ scale: 0.95 }}
+                          className={`min-h-[64px] p-2 sm:p-2.5 rounded-xl bg-[#111827] border ${p.border} text-left space-y-0.5 hover:bg-[#1E293B] hover:border-cyan-500/40 hover:shadow-[0_0_15px_rgba(6,182,212,0.2)] transition-all cursor-pointer group`}
                         >
                           <div className="flex items-center justify-between">
                             <span className={`text-[11px] sm:text-xs font-bold ${p.color}`}>{p.symbol} {p.name}</span>
@@ -1140,7 +1145,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                         <span className="text-[#94A3B8]">4 Elements</span>
                       </div>
 
-                      <div className="h-36 sm:h-40 w-full bg-[#111827]/80 rounded-2xl border border-white/10 p-1 flex items-center justify-center">
+                      <div className="h-44 sm:h-48 w-full bg-[#111827]/80 rounded-2xl border border-white/10 p-1 flex items-center justify-center">
                         <ResponsiveContainer width="100%" height="100%">
                           <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
                             <PolarGrid stroke="#334155" />
@@ -1193,11 +1198,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+                    className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md"
                     onClick={() => setSelectedPlanet(null)}
                   >
                     <div
-                      className="w-full max-w-lg p-6 rounded-3xl bg-[#111827] border border-cyan-500/40 shadow-2xl space-y-4 text-left relative overflow-hidden"
+                      className="w-full max-w-lg p-5 sm:p-6 rounded-3xl bg-[#111827] border border-cyan-500/40 shadow-2xl space-y-4 text-left relative overflow-hidden max-h-[90vh] overflow-y-auto custom-scrollbar"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <div className="flex items-center justify-between border-b border-white/10 pb-3">
@@ -1206,11 +1211,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                             {selectedPlanet.symbol}
                           </div>
                           <div>
-                            <h3 className="text-lg font-bold text-white font-mono flex items-center gap-2">
-                              {selectedPlanet.name} Planetary Telemetry
+                            <h3 className="text-base sm:text-lg font-bold text-white font-mono flex items-center gap-2">
+                              {selectedPlanet.name} Telemetry
                               {selectedPlanet.retrograde && (
                                 <span className="text-[10px] font-mono text-red-400 bg-red-500/10 px-2 py-0.5 rounded border border-red-500/30 font-bold animate-pulse">
-                                  Rx Retrograde
+                                  Rx
                                 </span>
                               )}
                             </h3>
@@ -1219,7 +1224,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                         </div>
                         <button
                           onClick={() => setSelectedPlanet(null)}
-                          className="p-1 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer text-xs font-mono px-2 py-1"
+                          className="p-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer text-xs font-mono px-2.5 py-1"
                         >
                           ✕ Close
                         </button>
@@ -1260,7 +1265,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                       </div>
 
                       <div className="pt-1 flex items-center justify-between">
-                        <span className="text-[10px] font-mono text-slate-400">Calculated via Lahiri Ephemeris Engine</span>
+                        <span className="text-[10px] font-mono text-slate-400">Lahiri Ephemeris</span>
                         <button
                           onClick={() => {
                             setSelectedPlanet(null);
@@ -1302,7 +1307,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                       onClick={() => onNavigate(tool.id)}
                       whileHover={{ scale: 1.04, y: -3 }}
                       whileTap={{ scale: 0.94 }}
-                      className="p-2 sm:p-3 rounded-2xl bg-[#111827]/90 border border-white/10 hover:border-cyan-500/40 hover:shadow-[0_0_20px_rgba(6,182,212,0.2)] transition-all duration-300 text-left space-y-1 sm:space-y-1.5 group cursor-pointer shadow-md backdrop-blur-xl relative overflow-hidden flex flex-col justify-between"
+                      className="min-h-[84px] sm:min-h-[96px] p-2.5 sm:p-3 rounded-2xl bg-[#111827]/90 border border-white/10 hover:border-cyan-500/40 hover:shadow-[0_0_20px_rgba(6,182,212,0.2)] transition-all duration-300 text-left space-y-1 sm:space-y-1.5 group cursor-pointer shadow-md backdrop-blur-xl relative overflow-hidden flex flex-col justify-between"
                     >
                       {tool.isComingSoon && (
                         <span className="absolute top-1 right-1 text-[7px] font-mono font-bold text-amber-300 bg-amber-500/20 px-1 py-0.2 rounded border border-amber-500/30">
@@ -1313,8 +1318,8 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                         {tool.icon}
                       </div>
                       <div>
-                        <h4 className="text-[10px] sm:text-xs font-bold text-white group-hover:text-cyan-300 transition-colors leading-tight truncate">{tool.title}</h4>
-                        <p className="text-[8px] sm:text-[9px] text-[#94A3B8] pt-0.5 truncate">{tool.desc}</p>
+                        <h4 className="text-[10.5px] sm:text-xs font-bold text-white group-hover:text-cyan-300 transition-colors leading-tight truncate">{tool.title}</h4>
+                        <p className="text-[8.5px] sm:text-[9px] text-[#94A3B8] pt-0.5 truncate">{tool.desc}</p>
                       </div>
                     </motion.button>
                   ))}
@@ -1322,10 +1327,10 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
               </div>
 
               {/* SECTION 4: LIVE PANCHANG SNAPSHOT & ANIMATED MOON PHASE VISUAL */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 text-left">
                 <div className="lg:col-span-7 p-4 sm:p-6 rounded-2xl sm:rounded-3xl glass-card border border-white/10 space-y-4 shadow-2xl">
                   <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                    <h3 className="text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
+                    <h3 className="text-sm sm:text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
                       <Sun className="w-4 h-4 text-[#F59E0B]" /> Live Panchang Ephemeris Snapshot
                     </h3>
                     <span className="text-[10px] font-mono text-[#F59E0B] bg-[#F59E0B]/10 px-2.5 py-0.5 rounded-full border border-[#F59E0B]/30 font-semibold">
@@ -1334,36 +1339,36 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3 text-xs font-mono">
-                    <div className="p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
-                      <span className="text-[10px] text-[#94A3B8] block">Tithi (Lunar Day Phase)</span>
-                      <span className="font-semibold text-[#F59E0B]">{panchang.tithi}</span>
+                    <div className="p-2.5 sm:p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
+                      <span className="text-[10px] text-[#94A3B8] block">Tithi (Lunar Day)</span>
+                      <span className="font-semibold text-[#F59E0B] truncate block">{panchang.tithi}</span>
                     </div>
-                    <div className="p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
-                      <span className="text-[10px] text-[#94A3B8] block">Nakshatra (Lunar Mansion)</span>
-                      <span className="font-semibold text-[#22C55E]">{panchang.nakshatra}</span>
+                    <div className="p-2.5 sm:p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
+                      <span className="text-[10px] text-[#94A3B8] block">Nakshatra</span>
+                      <span className="font-semibold text-[#22C55E] truncate block">{panchang.nakshatra}</span>
                     </div>
-                    <div className="p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
-                      <span className="text-[10px] text-[#94A3B8] block">Yoga (Sol-Lunar Harmony)</span>
-                      <span className="font-semibold text-[#06B6D4]">{panchang.yoga}</span>
+                    <div className="p-2.5 sm:p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
+                      <span className="text-[10px] text-[#94A3B8] block">Yoga (Harmony)</span>
+                      <span className="font-semibold text-[#06B6D4] truncate block">{panchang.yoga}</span>
                     </div>
-                    <div className="p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
-                      <span className="text-[10px] text-[#94A3B8] block">Golden Window (Abhijit)</span>
-                      <span className="font-semibold text-[#22C55E]">{panchang.abhijitMuhurta}</span>
+                    <div className="p-2.5 sm:p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
+                      <span className="text-[10px] text-[#94A3B8] block">Golden Window</span>
+                      <span className="font-semibold text-[#22C55E] truncate block">{panchang.abhijitMuhurta}</span>
                     </div>
-                    <div className="p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
-                      <span className="text-[10px] text-[#94A3B8] block">Friction Hours (Rahu Kalam)</span>
-                      <span className="font-semibold text-[#EF4444]">{panchang.rahuKalam}</span>
+                    <div className="p-2.5 sm:p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
+                      <span className="text-[10px] text-[#94A3B8] block">Rahu Kalam</span>
+                      <span className="font-semibold text-[#EF4444] truncate block">{panchang.rahuKalam}</span>
                     </div>
-                    <div className="p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
-                      <span className="text-[10px] text-[#94A3B8] block">Karana (Action Energy)</span>
-                      <span className="font-semibold text-[#CBD5E1]">{panchang.karana}</span>
+                    <div className="p-2.5 sm:p-3 rounded-2xl bg-[#0B1220]/60 border border-white/10 space-y-0.5">
+                      <span className="text-[10px] text-[#94A3B8] block">Karana</span>
+                      <span className="font-semibold text-[#CBD5E1] truncate block">{panchang.karana}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="lg:col-span-5 p-4 sm:p-6 rounded-2xl sm:rounded-3xl glass-card border border-white/10 space-y-4 shadow-2xl flex flex-col justify-between">
                   <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                    <h3 className="text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
+                    <h3 className="text-sm sm:text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
                       <Moon className="w-4 h-4 text-[#06B6D4]" /> Lunar Phase Visualizer
                     </h3>
                     <span className="text-[10px] font-mono text-[#06B6D4] bg-[#06B6D4]/10 px-2.5 py-0.5 rounded-full border border-[#06B6D4]/30 font-semibold">
@@ -1375,10 +1380,10 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
               </div>
 
               {/* SECTION 5: ACTIVE DASHA & LIVE DIAGNOSTICS PREVIEW */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 text-left">
                 <div className="lg:col-span-6 p-4 sm:p-6 rounded-2xl sm:rounded-3xl glass-card border border-white/10 space-y-4 shadow-2xl">
                   <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                    <h3 className="text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
+                    <h3 className="text-sm sm:text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
                       <Clock className="w-4 h-4 text-[#7C3AED]" /> Active Dasha Period
                     </h3>
                     <span className="text-[10px] font-mono text-[#7C3AED] bg-[#7C3AED]/10 px-2.5 py-0.5 rounded-full border border-[#7C3AED]/30 font-semibold">
@@ -1407,12 +1412,12 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
 
                 <div className="lg:col-span-6 p-4 sm:p-6 rounded-2xl sm:rounded-3xl glass-card border border-white/10 space-y-4 shadow-2xl">
                   <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                    <h3 className="text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
+                    <h3 className="text-sm sm:text-base font-semibold text-[#F8FAFC] flex items-center gap-2">
                       <Activity className="w-4 h-4 text-emerald-400" /> Daily Ephemeris Alignment
                     </h3>
                     <button
                       onClick={() => onNavigate('live-diagnostics')}
-                      className="px-3 py-1 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-mono font-semibold flex items-center gap-1 cursor-pointer transition-colors"
+                      className="px-3 py-1 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-mono font-semibold flex items-center gap-1 cursor-pointer transition-colors active:scale-95"
                     >
                       <span>Full Diagnostics</span>
                       <ChevronRight className="w-3.5 h-3.5" />
@@ -1445,11 +1450,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.25 }}
-              className="space-y-6 text-left"
+              className="space-y-4 sm:space-y-6 text-left"
             >
-              <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-blue-950/50 via-[#111827] to-cyan-950/50 border border-cyan-500/30 flex items-center justify-between shadow-2xl">
+              <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-blue-950/50 via-[#111827] to-cyan-950/50 border border-cyan-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xl">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-2xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">
+                  <div className="p-2.5 rounded-2xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 shrink-0">
                     <LineChart className="w-5 h-5" />
                   </div>
                   <div>
@@ -1476,11 +1481,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.25 }}
-              className="space-y-6 text-left"
+              className="space-y-4 sm:space-y-6 text-left"
             >
-              <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-purple-950/50 via-[#111827] to-indigo-950/50 border border-purple-500/30 flex items-center justify-between shadow-2xl">
+              <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-purple-950/50 via-[#111827] to-indigo-950/50 border border-purple-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xl">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-2xl bg-purple-500/20 text-purple-400 border border-purple-500/40">
+                  <div className="p-2.5 rounded-2xl bg-purple-500/20 text-purple-400 border border-purple-500/40 shrink-0">
                     <Clock className="w-5 h-5" />
                   </div>
                   <div>
@@ -1508,11 +1513,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.25 }}
-              className="space-y-6 text-left"
+              className="space-y-4 sm:space-y-6 text-left"
             >
-              <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-amber-950/50 via-[#111827] to-emerald-950/50 border border-amber-500/30 flex items-center justify-between shadow-2xl">
+              <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-amber-950/50 via-[#111827] to-emerald-950/50 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xl">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/40">
+                  <div className="p-2.5 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/40 shrink-0">
                     <Sparkles className="w-5 h-5" />
                   </div>
                   <div>
@@ -1536,11 +1541,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.25 }}
-              className="space-y-6 text-left"
+              className="space-y-4 sm:space-y-6 text-left"
             >
-              <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-cyan-950/50 via-[#111827] to-blue-950/50 border border-cyan-500/30 flex items-center justify-between shadow-2xl">
+              <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-cyan-950/50 via-[#111827] to-blue-950/50 border border-cyan-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xl">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-2xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">
+                  <div className="p-2.5 rounded-2xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 shrink-0">
                     <UserCircle className="w-5 h-5" />
                   </div>
                   <div>
@@ -1561,11 +1566,11 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.25 }}
-              className="space-y-6 text-left"
+              className="space-y-4 sm:space-y-6 text-left"
             >
-              <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-950/50 via-[#111827] to-teal-950/50 border border-emerald-500/30 flex items-center justify-between shadow-2xl">
+              <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-emerald-950/50 via-[#111827] to-teal-950/50 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xl">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                  <div className="p-2.5 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shrink-0">
                     <BookOpen className="w-5 h-5" />
                   </div>
                   <div>
@@ -1585,18 +1590,18 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
 
         {/* KEYBOARD SHORTCUT FOOTER HINTS */}
         <motion.div variants={staggerItem} className="p-3 rounded-2xl bg-[#111827]/80 border border-white/10 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono text-[#94A3B8]">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
             <span className="flex items-center gap-1.5">
-              <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white text-[10px]">Enter ↵</kbd> Jump Search
+              <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white text-[10px]">Enter ↵</kbd> Search
             </span>
             <span className="flex items-center gap-1.5">
-              <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white text-[10px]">ESC</kbd> Close Search
+              <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white text-[10px]">ESC</kbd> Close
             </span>
             <span className="flex items-center gap-1.5">
-              <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white text-[10px]">Click</kbd> Planet Details
+              <kbd className="px-1.5 py-0.5 rounded bg-white/10 border border-white/10 text-white text-[10px]">Click</kbd> Planet
             </span>
           </div>
-          <span>ASTRO360 Mission Control v3.0</span>
+          <span className="text-[10px]">ASTRO360 Mission Control v3.0</span>
         </motion.div>
 
       </div>
@@ -1606,7 +1611,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
         onClick={() => onNavigate('chat')}
         whileHover={{ scale: 1.1, rotate: 5 }}
         whileTap={{ scale: 0.9 }}
-        className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 p-3.5 sm:p-4 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white shadow-[0_0_25px_rgba(6,182,212,0.45)] cursor-pointer border border-white/20 flex items-center justify-center group z-40"
+        className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 p-3.5 sm:p-4 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white shadow-[0_0_25px_rgba(6,182,212,0.5)] cursor-pointer border border-white/20 flex items-center justify-center group z-40"
         title="Open AI Oracle Consultation"
       >
         <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-white drop-shadow-sm" />

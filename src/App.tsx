@@ -452,20 +452,20 @@ export default function AppContent() {
         </div>
       </aside>
 
-              {/* Main Content */}
+      {/* Main Content */}
       <main className="flex-1 min-w-0 w-full relative z-10 flex flex-col h-[100dvh] overflow-hidden">
         {/* Top Bar */}
         <header className="h-14 border-b border-white/[0.04] bg-[#090d16]/90 backdrop-blur-2xl flex items-center justify-between px-3 sm:px-5 flex-shrink-0">
           <div className="flex items-center gap-2.5 min-w-0">
             <button 
-              className="md:hidden text-slate-400 hover:text-white p-2 rounded-xl hover:bg-white/[0.05] transition-colors shrink-0" 
+              className="md:hidden text-slate-400 hover:text-white p-2 rounded-xl hover:bg-white/[0.05] transition-colors shrink-0 active:scale-95" 
               onClick={() => setIsSidebarOpen(true)}
               aria-label="Open Navigation Sidebar"
             >
               <Menu className="w-5 h-5" />
             </button>
             <div className="flex items-center gap-2 min-w-0">
-              <h1 className="text-xs sm:text-sm font-semibold text-slate-200 tracking-tight truncate max-w-[130px] sm:max-w-xs md:max-w-md">
+              <h1 className="text-xs sm:text-sm font-semibold text-slate-200 tracking-tight truncate max-w-[180px] sm:max-w-xs md:max-w-md">
                 {getPageTitle()}
               </h1>
             </div>
@@ -473,7 +473,7 @@ export default function AppContent() {
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <button
               onClick={() => setIsCommandPaletteOpen(true)}
-              className="flex items-center gap-2 p-2 sm:px-3 sm:py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-slate-400 hover:text-white hover:border-white/[0.12] transition-all text-xs"
+              className="flex items-center gap-2 p-2 sm:px-3 sm:py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-slate-400 hover:text-white hover:border-white/[0.12] transition-all text-xs active:scale-95"
               title="Search Tools"
             >
               <Search className="w-3.5 h-3.5" />
@@ -482,14 +482,14 @@ export default function AppContent() {
             </button>
             <button
               onClick={() => navigateTo('control-center')}
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors"
+              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors active:scale-95"
               title="Settings"
             >
               <Wrench className="w-4 h-4" />
             </button>
             <button
               onClick={() => setIsProfileModalOpen(true)}
-              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-cosmic-500/30 to-nebula-500/30 text-cosmic-300 flex items-center justify-center text-xs font-bold ring-1 ring-white/10 hover:ring-cosmic-500/30 transition-all cursor-pointer"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-cosmic-500/30 to-nebula-500/30 text-cosmic-300 flex items-center justify-center text-xs font-bold ring-1 ring-white/10 hover:ring-cosmic-500/30 transition-all cursor-pointer active:scale-95"
             >
               {userProfile.name?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
             </button>
@@ -529,23 +529,17 @@ export default function AppContent() {
                   {activeTab === 'chat' && <AstrologyChat />}
                   {(activeTab === 'dream-interpreter' || activeTab === 'dream') && <DreamInterpretationEngine userProfile={userProfile} />}
                   {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
-                  {activeTab === 'spiritual-traditions' && <SpiritualTraditionsModule userProfile={userProfile} />}
-                  {(activeTab === 'bhagavad-gita' || activeTab === 'gita') && <BhagavadGitaSuite />}
-                  {(activeTab === 'control-center' || activeTab === 'settings' || activeTab === 'config') && <AstrologyControlCenter />}
-                  {(activeTab === 'consultation-hub' || activeTab === 'astrologers' || activeTab === 'community-consultation') && <CommunityConsultationHub />}
-                  {activeTab === 'pdf-dossier' && <ExecutivePDFDossier userProfile={userProfile} />}
-                  {(activeTab === 'horoscope' || activeTab === 'transits' || activeTab === 'panchang') && <PremiumHoroscopeEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
-                  {(activeTab === 'reports' || activeTab === 'gemstone' || activeTab === 'muhurta' || activeTab === 'learning') && <Astro150ToolsCatalog userProfile={userProfile} onNavigate={navigateTo} activeCategory={activeTab} initialCategory={activeTab} />}
-                  {/* === 24 STANDALONE TOOL ROUTES === */}
-                  {activeTab === 'divisional-charts' && <DivisionalChartsSuite />}
+                  {activeTab === 'spiritual-traditions' && <SpiritualTraditionsSuite userProfile={userProfile} />}
+                  {activeTab === 'consultation-hub' && <CommunityConsultationHub />}
+                  {activeTab === 'divisional-charts' && <DivisionalChartsSuite planetPositions={[]} />}
                   {activeTab === 'btr-suite' && <BirthTimeRectificationSuite />}
                   {activeTab === 'gemstone-suite' && <GemstoneRudrakshaSuite />}
                   {activeTab === 'numerology-suite' && <NumerologyNameSuite />}
                   {activeTab === 'tarot-iching' && <TarotIChingSuite />}
-                  {activeTab === 'time-horizon' && <TimeHorizonForecastSuite />}
-                  {activeTab === 'dosha-engine' && <DoshaRemedyEngine userProfile={userProfile} />}
+                  {activeTab === 'time-horizon' && <TimeHorizonForecastSuite userProfile={userProfile} />}
+                  {activeTab === 'dosha-engine' && <DoshaRemedyEngine planetPositions={[]} userProfile={userProfile} />}
                   {activeTab === 'biorhythm-tracker' && <CosmicBiorhythmTracker userProfile={userProfile} />}
-                  {activeTab === 'chakra-alignment' && <SacredChakraAlignment />}
+                  {activeTab === 'chakra-alignment' && <SacredChakraAlignment planetPositions={[]} />}
                   {activeTab === 'fengshui-matrix' && <CosmicFengShuiMatrix userProfile={userProfile} />}
                   {activeTab === 'electional-muhurta' && <ElectionalMuhurtaEngine />}
                   {activeTab === 'planetary-horas' && <PlanetaryHorasTracker />}
@@ -555,40 +549,25 @@ export default function AppContent() {
                   {activeTab === 'cosmic-compass' && <CosmicCompassVisualizer userProfile={userProfile} />}
                   {activeTab === 'astro-cartography' && <AstroCartographyMatrix userProfile={userProfile} />}
                   {activeTab === 'transit-calendar' && <CosmicTransitCalendar />}
-                  {activeTab === 'synastry-overlay' && <SynastryOverlayChart />}
+                  {activeTab === 'synastry-overlay' && <SynastryOverlayChart personAPositions={[]} />}
                   {activeTab === 'mind-map' && <AstrologicalMindMap />}
                   {activeTab === 'chart-analytics' && <CosmicChartAnalytics />}
                   {activeTab === 'learning-hub' && <AstrologyLearningHub />}
                   {activeTab === 'report-generator' && <ExecutiveReportGenerator />}
                   {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
-                  {activeTab === 'core-brain' && <AstroCoreBrainConsole />}
-                  {(activeTab === 'leaflet-map' || activeTab === 'location-picker') && (
-                    <CosmicLeafletMap
-                      initialCity={userProfile.location}
-                      onLocationSelect={(loc) => {
-                        const updated = { ...userProfile, location: `${loc.city}, ${loc.country}` };
-                        setUserProfile(updated);
-                        saveProfile(updated);
-                      }}
-                    />
-                  )}
-                  {(activeTab === 'auth' || activeTab === 'login') && (
-                    <AuthScreen
-                      userProfile={userProfile}
-                      onAuthSuccess={(updated) => {
-                        setUserProfile(updated);
-                        saveProfile(updated);
-                        navigateTo('dashboard');
-                        toast.success('Authentication synced!');
-                      }}
-                      onSkip={() => navigateTo('dashboard')}
-                    />
-                  )}
+                  {activeTab === 'control-center' && <AstrologyControlCenter />}
+                  {activeTab === 'horoscope' && <DailyHoroscopeTransitEngine userProfile={userProfile} />}
+                  {activeTab === 'compatibility' && <AstroSynastryMatchmaker userProfile={userProfile} />}
+                  {activeTab === 'islamic-suite' && <UnifiedIslamicSuite userProfile={userProfile} />}
+                  {activeTab === 'remedy' && <AstroMultiTraditionRemedySuite />}
+                  {activeTab === 'kundli' && <BirthChartGenerator userProfile={userProfile} />}
+                  {activeTab === 'dream' && <DreamInterpretationEngine userProfile={userProfile} />}
                   {TRADITIONS[activeTab] && (
-                    <TraditionView tradition={TRADITIONS[activeTab]} onNavigate={navigateTo} />
-                  )}
-                  {!['dashboard', 'live-diagnostics', 'advisor', 'remedies', 'remedy', 'custom-remedies', 'synastry', 'compatibility', 'match', 'global-suite', 'tools-catalog', 'birth-chart', 'kundli', 'master-chart', 'islamic-astrology', 'islamic-suite', 'islamic', 'chat', 'dream-interpreter', 'dream', 'problem-solver', 'spiritual-traditions', 'horoscope', 'transits', 'panchang', 'reports', 'gemstone', 'muhurta', 'learning', 'notifications', 'settings', 'pdf-dossier', 'consultation-hub', 'astrologers', 'community-consultation', 'divisional-charts', 'btr-suite', 'gemstone-suite', 'numerology-suite', 'tarot-iching', 'time-horizon', 'dosha-engine', 'biorhythm-tracker', 'chakra-alignment', 'fengshui-matrix', 'electional-muhurta', 'planetary-horas', 'mantra-soundboard', 'transit-radar', 'panchang-deities', 'cosmic-compass', 'astro-cartography', 'transit-calendar', 'synastry-overlay', 'mind-map', 'chart-analytics', 'learning-hub', 'report-generator', 'admin-dashboard', 'core-brain', 'auth', 'login', 'leaflet-map', 'location-picker', 'gmail-dashboard', 'email-automation'].includes(activeTab) && !TRADITIONS[activeTab] && (
-                    <CosmicIntelligenceCenter onNavigate={navigateTo} userProfile={userProfile} />
+                    <TraditionView
+                      category={TRADITIONS[activeTab]}
+                      userProfile={userProfile}
+                      onUpdateProfile={setUserProfile}
+                    />
                   )}
                 </ErrorBoundary>
                 <Footer />
@@ -599,7 +578,7 @@ export default function AppContent() {
         </div>
 
       {/* 📱 MOBILE BOTTOM NAVIGATION DOCK (Glassmorphic + Active Micro-Interactions) */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#090d16]/95 backdrop-blur-3xl border-t border-white/[0.08] z-40 px-3 flex items-center justify-around shadow-[0_-8px_30px_rgba(0,0,0,0.5)]">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 pb-safe bg-[#090d16]/95 backdrop-blur-3xl border-t border-white/[0.08] z-40 px-3 flex items-center justify-around shadow-[0_-8px_30px_rgba(0,0,0,0.5)] select-none">
         {[
           { id: 'dashboard', icon: LayoutDashboard, label: 'Overview', color: 'cyan' },
           { id: 'live-diagnostics', icon: Activity, label: 'Diagnose', color: 'amber' },
