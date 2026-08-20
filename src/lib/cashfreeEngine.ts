@@ -231,26 +231,39 @@ export async function initiateCashfreeCheckout({
       throw new Error(data.error || 'Failed to initialize Cashfree payment session');
     }
 
-    // 2. Load SDK & Launch Checkout
-    const Cashfree = await loadCashfreeSDK();
-    const cashfree = Cashfree({
-      mode: data.environment === 'sandbox' ? 'sandbox' : 'production',
-    });
+    // 2. Load SDK & Launch Checkout with seamless fallback
+    try {
+      const Cashfree = await loadCashfreeSDK();
+      const cashfree = Cashfree({
+        mode: data.environment === 'sandbox' ? 'sandbox' : 'production',
+      });
 
-    const checkoutOptions = {
-      paymentSessionId: data.paymentSessionId,
-      redirectTarget: '_modal', // Seamless embedded checkout modal
-    };
+      const checkoutOptions = {
+        paymentSessionId: data.paymentSessionId,
+        redirectTarget: '_modal', // Seamless embedded checkout modal
+      };
 
-    cashfree.checkout(checkoutOptions).then((result: any) => {
-      if (result.error) {
-        console.error('Cashfree Checkout Result Error:', result.error);
-        if (onFailure) onFailure(result.error);
+      cashfree.checkout(checkoutOptions).then((result: any) => {
+        if (result.error) {
+          console.warn('Cashfree modal error, fallback to paymentDetails:', result.error);
+          if (onFailure) onFailure(result.error);
+        }
+        if (result.paymentDetails || result.redirect) {
+          if (onSuccess) onSuccess(result.paymentDetails || { order_id: data.orderId });
+        }
+      }).catch((sdkErr: any) => {
+        console.warn('SDK checkout promise caught:', sdkErr);
+        // Fallback: direct window redirect to Cashfree payment session if modal fails
+        if (data.paymentSessionId) {
+          window.location.href = `https://payments.cashfree.com/order/#${data.paymentSessionId}`;
+        }
+      });
+    } catch (sdkLoadErr) {
+      console.warn('Cashfree SDK load fallback:', sdkLoadErr);
+      if (data.paymentSessionId) {
+        window.location.href = `https://payments.cashfree.com/order/#${data.paymentSessionId}`;
       }
-      if (result.paymentDetails) {
-        if (onSuccess) onSuccess(result.paymentDetails);
-      }
-    });
+    }
 
     return data;
   } catch (err: any) {

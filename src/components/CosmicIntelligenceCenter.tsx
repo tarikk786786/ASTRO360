@@ -681,7 +681,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                 <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-[#2563EB]" /> ASTRO360 OMNI
               </h1>
               <span className="text-[10px] font-mono text-[#22C55E] bg-[#22C55E]/10 px-2 sm:px-2.5 py-0.5 rounded-full border border-[#22C55E]/30 font-semibold flex items-center gap-1 shrink-0">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E]" />
                 SYSTEM ACTIVE
               </span>
             </div>
@@ -848,7 +848,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                 {/* HOROSCOPE INSIGHT BODY */}
                 <div className="p-4 sm:p-5 rounded-[1.25rem] bg-black/30 backdrop-blur-md border border-white/5 space-y-4 relative z-10 group/body hover:border-white/10 transition-colors duration-500">
                   <p className="text-xs sm:text-sm text-white leading-relaxed font-medium flex items-start gap-2.5">
-                    <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 shrink-0 mt-0.5 animate-pulse" />
+                    <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 shrink-0 mt-0.5" />
                     <span>{selectedHoroscopeInsight.theme}</span>
                   </p>
 
@@ -1126,7 +1126,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                         >
                           <div className="flex items-center justify-between">
                             <span className={`text-[11px] sm:text-xs font-bold ${p.color}`}>{p.symbol} {p.name}</span>
-                            {p.retrograde && <span className="text-[8px] font-mono text-[#EF4444] font-bold animate-pulse">Rx</span>}
+                            {p.retrograde && <span className="text-[8px] font-mono text-[#EF4444] font-bold">Rx</span>}
                           </div>
                           <span className="text-[10.5px] sm:text-[11px] font-semibold text-white block truncate">{p.sign}</span>
                           <span className="text-[9.5px] font-mono text-[#94A3B8] block">{p.degree}</span>
@@ -1177,7 +1177,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                     {/* ⏰ CURRENT PLANETARY HORA (HOUR) WIDGET */}
                     <div className="p-3 rounded-xl bg-[#111827] border border-cyan-500/30 flex items-center justify-between text-xs font-mono">
                       <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-cyan-400 animate-pulse" />
+                        <Clock className="w-4 h-4 text-cyan-400" />
                         <div>
                           <span className="font-bold text-white">Active Hora: <strong className="text-cyan-300">{currentHora.name} Hour</strong></span>
                           <span className="text-[10px] text-slate-400 block">{currentHora.desc}</span>
@@ -1212,7 +1212,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                             <h3 className="text-base sm:text-lg font-bold text-white font-mono flex items-center gap-2">
                               {selectedPlanet.name} Telemetry
                               {selectedPlanet.retrograde && (
-                                <span className="text-[10px] font-mono text-red-400 bg-red-500/10 px-2 py-0.5 rounded border border-red-500/30 font-bold animate-pulse">
+                                <span className="text-[10px] font-mono text-red-400 bg-red-500/10 px-2 py-0.5 rounded border border-red-500/30 font-bold">
                                   Rx
                                 </span>
                               )}
