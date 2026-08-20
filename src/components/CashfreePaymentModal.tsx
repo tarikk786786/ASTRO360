@@ -121,21 +121,30 @@ export default function CashfreePaymentModal({
   const upiPayUri = `upi://pay?pa=tarikislam786@okaxis&pn=ASTRO360%20Omni&am=${selectedItem.priceInr}&cu=INR&tn=ASTRO360_${selectedItem.id}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=${encodeURIComponent(upiPayUri)}`;
 
-  // Instant Verification & Fulfillment Handler
+  const [verifyError, setVerifyError] = useState<string | null>(null);
+
+  // Strict Verification Handler (Requires Valid UTR or Real Gateway Callback)
   const handleVerifyAndConfirm = async () => {
+    setVerifyError(null);
+    const cleanUtr = utrNumber.trim();
+
+    if (!cleanUtr || cleanUtr.length < 10) {
+      setVerifyError('⚠️ Please enter the 12-digit UPI Transaction / UTR Reference Number from your payment app (Google Pay, PhonePe, Paytm, or BHIM) to verify.');
+      return;
+    }
+
     setVerifying(true);
     const orderRef = `ORD_ASTRO_${Date.now()}_${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
 
     try {
-      // Call verification endpoint
-      await fetch('/api/payment', {
+      const res = await fetch('/api/payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'verify_utr',
           amount: selectedItem.priceInr,
           planId: selectedItem.id,
-          utrNumber: utrNumber || `UTR_${Date.now()}`,
+          utrNumber: cleanUtr,
           orderId: orderRef,
           customerName,
           customerEmail,
@@ -143,13 +152,13 @@ export default function CashfreePaymentModal({
         }),
       });
 
-      // Simulate 1 second bank ledger reconciliation
-      setTimeout(() => {
+      const data = await res.json();
+
+      if (data && data.success && data.status === 'PAID') {
         setConfirmedOrderId(orderRef);
         setPaymentSuccess(true);
         setVerifying(false);
 
-        // Store purchased item locally
         try {
           const purchased = JSON.parse(localStorage.getItem('astro360_purchased_items') || '[]');
           purchased.push({
@@ -159,24 +168,25 @@ export default function CashfreePaymentModal({
             amount: selectedItem.priceInr,
             date: new Date().toISOString(),
             orderId: orderRef,
-            utr: utrNumber || 'CONFIRMED',
+            utr: cleanUtr,
           });
           localStorage.setItem('astro360_purchased_items', JSON.stringify(purchased));
         } catch (e) {}
 
         if (onPaymentSuccess) onPaymentSuccess(selectedItem);
-      }, 1200);
+      } else {
+        setVerifyError(data?.message || 'Verification pending. Please check UTR number and retry.');
+        setVerifying(false);
+      }
     } catch (e) {
-      setConfirmedOrderId(orderRef);
-      setPaymentSuccess(true);
+      setVerifyError('Unable to connect to verification server. Please retry in a moment.');
       setVerifying(false);
-      if (onPaymentSuccess) onPaymentSuccess(selectedItem);
     }
   };
 
   const handleExecutePayment = async () => {
     setLoading(true);
-    const orderRef = `ORD_ASTRO_${Date.now()}_${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+    setVerifyError(null);
 
     try {
       const checkoutResult = await initiateCashfreeCheckout({
@@ -185,24 +195,31 @@ export default function CashfreePaymentModal({
         customerEmail: customerEmail || 'seeker@astro.tarikislam.in',
         customerPhone: customerPhone || '9876543210',
         onSuccess: (paymentDetails) => {
-          setConfirmedOrderId(paymentDetails?.order_id || orderRef);
-          setPaymentSuccess(true);
-          setLoading(false);
-          if (onPaymentSuccess) onPaymentSuccess(selectedItem);
+          if (paymentDetails?.order_status === 'PAID' || paymentDetails?.order_id) {
+            setConfirmedOrderId(paymentDetails?.order_id || `ORD_${Date.now()}`);
+            setPaymentSuccess(true);
+            setLoading(false);
+            if (onPaymentSuccess) onPaymentSuccess(selectedItem);
+          } else {
+            setLoading(false);
+            setVerifyError('Payment was not marked as PAID by Cashfree.');
+          }
         },
-        onFailure: () => {
-          // If popup blocked or network drop, transition smoothly to QR & manual verify view
+        onFailure: (err) => {
           setLoading(false);
+          // If Cashfree modal is closed or failed, switch to QR view with clean explanation
           setSelectedMethod('qr');
+          setVerifyError('Cashfree direct portal is currently unavailable or was cancelled. Please scan the UPI QR code below and enter your UTR to verify.');
         },
       });
 
       if (checkoutResult?.orderId) {
         setConfirmedOrderId(checkoutResult.orderId);
       }
-    } catch (err) {
+    } catch (err: any) {
       setLoading(false);
       setSelectedMethod('qr');
+      setVerifyError('Could not open Cashfree PG modal. Please scan the QR code below and enter your UTR.');
     }
   };
 
@@ -467,6 +484,15 @@ https://astro.tarikislam.in
                   );
                 })}
               </div>
+
+              {verifyError && (
+                <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-start gap-2.5">
+                  <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <div className="flex-1 leading-relaxed">
+                    <span>{verifyError}</span>
+                  </div>
+                </div>
+              )}
 
               {/* Dynamic Interactive Payment Method Panel */}
               <div className="p-4 sm:p-5 rounded-2xl bg-[#070A12]/90 border border-white/[0.06] space-y-4">
