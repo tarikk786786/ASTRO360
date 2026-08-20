@@ -29,8 +29,6 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Responsi
 import { ErrorBoundary } from 'react-error-boundary';
 
 import DashboardSubNav from './ui/DashboardSubNav';
-
-import CosmicParticleBackground from './CosmicParticleBackground';
 import PlanetaryAspectGraph from './PlanetaryAspectGraph';
 import CosmicAnalyticsKPI from './CosmicAnalyticsKPI';
 import EphemerisDataTable from './EphemerisDataTable';
