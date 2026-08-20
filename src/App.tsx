@@ -4,11 +4,13 @@
  */
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
-import { Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, Users, Globe2, Bell, Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon, Zap, Wrench, DollarSign } from 'lucide-react';
+import { Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, Users, Globe2, Bell, Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon, Zap, Wrench, DollarSign, Wallet } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TRADITIONS, CategoryInfo, TraditionGroup, UserProfile, GROUP_ICONS } from './types';
+import { useWalletStore } from './stores/walletStore';
 import CosmicIntelligenceCenter from './components/CosmicIntelligenceCenter';
 import LandingPage from './components/landing/LandingPage';
+import CosmicWalletModal from './components/CosmicWalletModal';
 import AstrologyChat from './components/AstrologyChat';
 import TraditionView from './components/TraditionView';
 import Onboarding from './components/Onboarding';
@@ -136,6 +138,8 @@ export default function AppContent() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
+  const { getFormattedBalance } = useWalletStore();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [landingPreset, setLandingPreset] = useState<Partial<UserProfile> | undefined>(undefined);
 
@@ -505,6 +509,15 @@ export default function AppContent() {
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <button
+              onClick={() => setIsWalletModalOpen(true)}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-semibold font-mono shadow-[0_0_10px_rgba(16,185,129,0.1)] transition-all cursor-pointer active:scale-95"
+              title="Cosmic Wallet & Credits"
+            >
+              <Wallet className="w-3.5 h-3.5" />
+              <span>{getFormattedBalance()}</span>
+              <span className="text-[10px] bg-emerald-500/20 px-1 rounded text-emerald-300 font-sans font-bold">+</span>
+            </button>
+            <button
               onClick={() => setIsPaymentModalOpen(true)}
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-[#C9A86A]/20 to-[#DFBF7A]/20 hover:from-[#C9A86A]/30 hover:to-[#DFBF7A]/30 border border-[#C9A86A]/40 text-[#C9A86A] text-xs font-semibold shadow-[0_0_12px_rgba(201,168,106,0.15)] transition-all cursor-pointer active:scale-95"
               title="Cosmic Store & Pricing"
@@ -833,6 +846,13 @@ export default function AppContent() {
       <CashfreePaymentModal
         isOpen={isPaymentModalOpen}
         onClose={() => setIsPaymentModalOpen(false)}
+        userProfile={userProfile}
+      />
+
+      {/* Cosmic Wallet & Recharge Modal */}
+      <CosmicWalletModal
+        isOpen={isWalletModalOpen}
+        onClose={() => setIsWalletModalOpen(false)}
         userProfile={userProfile}
       />
 
