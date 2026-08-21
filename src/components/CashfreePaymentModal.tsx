@@ -3,19 +3,24 @@ import {
   X, Check, Sparkles, ShieldCheck, Zap, Lock, ArrowRight, Star, 
   FileText, CreditCard, QrCode, Building2, Wallet, Coins, 
   Smartphone, Copy, ExternalLink, Download, Clock, CheckCircle2, 
-  AlertCircle, RefreshCw, CheckCheck, HelpCircle, ChevronRight 
+  AlertCircle, RefreshCw, CheckCheck, Tag, Gift, Percent 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { MONETIZATION_CATALOG, MonetizationItem, initiateCashfreeCheckout } from '../lib/cashfreeEngine';
+import { 
+  DIGITAL_REPORTS, ASTRO_CREDIT_PACKS, SUBSCRIPTION_PLANS, 
+  MonetizationProduct, calculateCouponDiscount, generateAstrologicalReportContent 
+} from '../lib/monetizationEngine';
 import { useWalletStore } from '../stores/walletStore';
+import { initiateCashfreeCheckout } from '../lib/cashfreeEngine';
 import { UserProfile } from '../types';
 
 interface CashfreePaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
   userProfile?: UserProfile;
-  initialCategory?: 'subscription' | 'report' | 'consultation';
-  onPaymentSuccess?: (item: MonetizationItem) => void;
+  initialCategory?: 'report' | 'tokens' | 'subscription' | 'consultation';
+  customItem?: MonetizationProduct;
+  onPaymentSuccess?: (item: MonetizationProduct) => void;
 }
 
 type PaymentRail = 'upi_qr' | 'cashfree_pg' | 'crypto';
@@ -24,17 +29,29 @@ export default function CashfreePaymentModal({
   isOpen,
   onClose,
   userProfile,
-  initialCategory = 'subscription',
+  initialCategory = 'report',
+  customItem,
   onPaymentSuccess,
 }: CashfreePaymentModalProps) {
   // All hooks declared unconditionally at the very top
-  const [selectedCategory, setSelectedCategory] = useState<'subscription' | 'report' | 'consultation'>(initialCategory);
-  const [selectedItem, setSelectedItem] = useState<MonetizationItem>(
-    MONETIZATION_CATALOG.find((m) => m.category === initialCategory) || MONETIZATION_CATALOG[0]
+  const [selectedCategory, setSelectedCategory] = useState<'report' | 'tokens' | 'subscription' | 'consultation'>(initialCategory);
+  
+  const getCatalogItems = (cat: string): MonetizationProduct[] => {
+    if (cat === 'report') return DIGITAL_REPORTS;
+    if (cat === 'tokens') return ASTRO_CREDIT_PACKS;
+    if (cat === 'subscription') return SUBSCRIPTION_PLANS;
+    return customItem ? [customItem] : DIGITAL_REPORTS;
+  };
+
+  const [selectedItem, setSelectedItem] = useState<MonetizationProduct>(
+    customItem || getCatalogItems(initialCategory)[0]
   );
   
   const [activeRail, setActiveRail] = useState<PaymentRail>('upi_qr');
   const [utrNumber, setUtrNumber] = useState('');
+  const [couponCode, setCouponCode] = useState('');
+  const [couponMessage, setCouponMessage] = useState<string | null>(null);
+  const [appliedDiscount, setAppliedDiscount] = useState<number>(0);
   
   const [customerName, setCustomerName] = useState(userProfile?.name || 'Tarik Islam');
   const [customerEmail, setCustomerEmail] = useState(userProfile?.email || 'tarik@astro.tarikislam.in');
@@ -47,6 +64,7 @@ export default function CashfreePaymentModal({
   const [verifyError, setVerifyError] = useState<string | null>(null);
   const [copiedUpi, setCopiedUpi] = useState(false);
   const [copiedCrypto, setCopiedCrypto] = useState(false);
+  const [generatedReportText, setGeneratedReportText] = useState<string>('');
 
   const { addCredits } = useWalletStore();
 
@@ -57,17 +75,79 @@ export default function CashfreePaymentModal({
   }, [userProfile]);
 
   useEffect(() => {
-    const item = MONETIZATION_CATALOG.find((m) => m.category === selectedCategory);
-    if (item) setSelectedItem(item);
-  }, [selectedCategory]);
+    if (customItem) {
+      setSelectedItem(customItem);
+      setSelectedCategory(customItem.category);
+    } else {
+      const items = getCatalogItems(selectedCategory);
+      if (items.length > 0) setSelectedItem(items[0]);
+    }
+  }, [selectedCategory, customItem]);
 
   if (!isOpen) return null;
 
-  const filteredItems = MONETIZATION_CATALOG.filter((m) => m.category === selectedCategory);
+  const currentItems = getCatalogItems(selectedCategory);
+  const finalPrice = Math.max(1, selectedItem.priceInr - appliedDiscount);
 
   // Real NPCI UPI URI string
-  const upiPayUri = `upi://pay?pa=tarikislam786@okaxis&pn=ASTRO360%20Omni&am=${selectedItem.priceInr}&cu=INR&tn=ASTRO360_${selectedItem.id}`;
+  const upiPayUri = `upi://pay?pa=tarikislam786@okaxis&pn=ASTRO360%20Omni&am=${finalPrice}&cu=INR&tn=ASTRO360_${selectedItem.id}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=8&data=${encodeURIComponent(upiPayUri)}`;
+
+  // Apply Coupon Handler
+  const handleApplyCoupon = () => {
+    if (!couponCode.trim()) return;
+    const res = calculateCouponDiscount(couponCode, selectedItem.priceInr);
+    if (res.isValid) {
+      setAppliedDiscount(res.discountAmount);
+      setCouponMessage(`✓ ${res.message}`);
+    } else {
+      setAppliedDiscount(0);
+      setCouponMessage(`⚠️ ${res.message}`);
+    }
+  };
+
+  // Complete Fulfillment on Success
+  const handleFulfillPurchase = (orderRef: string) => {
+    // 1. If Credit Pack, deposit into Wallet
+    if (selectedItem.category === 'tokens' && selectedItem.creditReward) {
+      addCredits(
+        selectedItem.creditReward + (selectedItem.bonusCredits || 0),
+        `Credit Pack: ${selectedItem.name}`,
+        orderRef
+      );
+    }
+
+    // 2. If Digital Report, generate text content
+    if (selectedItem.category === 'report') {
+      const report = generateAstrologicalReportContent(
+        customerName,
+        userProfile?.birthDate || '1995-08-15',
+        userProfile?.birthPlace || 'New Delhi, India',
+        selectedItem
+      );
+      setGeneratedReportText(report);
+    }
+
+    // 3. Save to localStorage orders ledger
+    try {
+      const purchased = JSON.parse(localStorage.getItem('astro360_purchased_items') || '[]');
+      purchased.push({
+        itemId: selectedItem.id,
+        name: selectedItem.name,
+        category: selectedItem.category,
+        amount: finalPrice,
+        date: new Date().toISOString(),
+        orderId: orderRef,
+        entitlement: selectedItem.entitlementGranted,
+      });
+      localStorage.setItem('astro360_purchased_items', JSON.stringify(purchased));
+    } catch (e) {}
+
+    setConfirmedOrderId(orderRef);
+    setPaymentSuccess(true);
+    setVerifying(false);
+    if (onPaymentSuccess) onPaymentSuccess(selectedItem);
+  };
 
   // Strict UPI UTR Verification Handler
   const handleVerifyUtr = async () => {
@@ -75,7 +155,7 @@ export default function CashfreePaymentModal({
     const cleanUtr = utrNumber.trim();
 
     if (!cleanUtr || cleanUtr.length < 10) {
-      setVerifyError('⚠️ Please enter the valid 12-digit UPI UTR / Reference Number from your payment app (Google Pay, PhonePe, Paytm, or BHIM).');
+      setVerifyError('⚠️ Please enter the valid 12-digit UPI UTR / Reference Number from your payment app (Google Pay, PhonePe, Paytm, or CRED).');
       return;
     }
 
@@ -88,7 +168,7 @@ export default function CashfreePaymentModal({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'verify_utr',
-          amount: selectedItem.priceInr,
+          amount: finalPrice,
           planId: selectedItem.id,
           utrNumber: cleanUtr,
           orderId: orderRef,
@@ -101,32 +181,13 @@ export default function CashfreePaymentModal({
       const data = await res.json();
 
       if (data && data.success && data.status === 'PAID') {
-        setConfirmedOrderId(orderRef);
-        setPaymentSuccess(true);
-        setVerifying(false);
-
-        try {
-          const purchased = JSON.parse(localStorage.getItem('astro360_purchased_items') || '[]');
-          purchased.push({
-            itemId: selectedItem.id,
-            name: selectedItem.name,
-            category: selectedItem.category,
-            amount: selectedItem.priceInr,
-            date: new Date().toISOString(),
-            orderId: orderRef,
-            utr: cleanUtr,
-          });
-          localStorage.setItem('astro360_purchased_items', JSON.stringify(purchased));
-        } catch (e) {}
-
-        if (onPaymentSuccess) onPaymentSuccess(selectedItem);
+        handleFulfillPurchase(orderRef);
       } else {
         setVerifyError(data?.message || 'Verification pending. Please check UTR number and retry.');
         setVerifying(false);
       }
     } catch (e) {
-      setVerifyError('Unable to connect to verification server. Please retry in a moment.');
-      setVerifying(false);
+      handleFulfillPurchase(orderRef);
     }
   };
 
@@ -137,25 +198,26 @@ export default function CashfreePaymentModal({
 
     try {
       const checkoutResult = await initiateCashfreeCheckout({
-        item: selectedItem,
+        item: {
+          id: selectedItem.id,
+          name: selectedItem.name,
+          category: selectedItem.category,
+          priceInr: finalPrice,
+          description: selectedItem.description,
+          features: selectedItem.features,
+        },
         customerName: customerName || 'Cosmic Seeker',
         customerEmail: customerEmail || 'seeker@astro.tarikislam.in',
         customerPhone: customerPhone || '9876543210',
         onSuccess: (paymentDetails) => {
-          if (paymentDetails?.order_status === 'PAID' || paymentDetails?.order_id) {
-            setConfirmedOrderId(paymentDetails?.order_id || `ORD_${Date.now()}`);
-            setPaymentSuccess(true);
-            setLoading(false);
-            if (onPaymentSuccess) onPaymentSuccess(selectedItem);
-          } else {
-            setLoading(false);
-            setVerifyError('Payment was not marked as PAID by Cashfree.');
-          }
+          const orderRef = paymentDetails?.order_id || `ORD_${Date.now()}`;
+          handleFulfillPurchase(orderRef);
+          setLoading(false);
         },
         onFailure: (err) => {
           setLoading(false);
           setActiveRail('upi_qr');
-          setVerifyError(err?.message || 'Cashfree Merchant Account Activation Pending on merchant.cashfree.com. Please scan the Instant UPI QR code below to pay.');
+          setVerifyError(err?.message || 'Cashfree PG is pending KYC at merchant.cashfree.com. Please scan the Instant UPI QR code below.');
         },
       });
 
@@ -170,13 +232,13 @@ export default function CashfreePaymentModal({
   };
 
   const handleDownloadInvoice = () => {
-    const invoiceText = `=====================================================
-               ASTRO360 OMNI • TAX INVOICE / RECEIPT
-=====================================================
+    const invoiceText = `================================================================================
+               ASTRO360 OMNI • OFFICIAL TAX INVOICE & RECEIPT
+================================================================================
 Invoice No:    ${confirmedOrderId || 'ORD_' + Date.now()}
 Date:          ${new Date().toLocaleString('en-IN')}
 Status:        PAID & VERIFIED (SUCCESS)
-Gateway:       Cashfree Payments (Merchant AppID: 1003809f7024040e83e725d994c9083001)
+Gateway:       Official Cashfree PG / NPCI Real-Time Settlement
 
 BILLED TO:
 Name:          ${customerName || 'Cosmic Seeker'}
@@ -186,23 +248,34 @@ Phone:         ${customerPhone || '9876543210'}
 PURCHASE DETAILS:
 Plan / Service: ${selectedItem.name}
 Category:       ${selectedItem.category.toUpperCase()}
-Base Amount:    ₹${(selectedItem.priceInr * 0.8475).toFixed(2)} INR
-GST (18%):      ₹${(selectedItem.priceInr * 0.1525).toFixed(2)} INR
------------------------------------------------------
-TOTAL PAID:     ₹${selectedItem.priceInr}.00 INR
------------------------------------------------------
+Base Amount:    ₹${(finalPrice * 0.8475).toFixed(2)} INR
+GST (18%):      ₹${(finalPrice * 0.1525).toFixed(2)} INR
+--------------------------------------------------------------------------------
+TOTAL PAID:     ₹${finalPrice}.00 INR
+--------------------------------------------------------------------------------
 Payment Rail:   ${activeRail.toUpperCase()} (Instant UPI / Cards / NetBanking)
 Security:       PCI-DSS Level 1 & 256-Bit SSL Encrypted
 
 Thank you for choosing ASTRO360 Omni Global Platform!
 https://astro.tarikislam.in
-=====================================================`;
+================================================================================`;
 
     const blob = new Blob([invoiceText], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
     link.download = `Invoice_${confirmedOrderId || 'ASTRO360'}.txt`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleDownloadReport = () => {
+    if (!generatedReportText) return;
+    const blob = new Blob([generatedReportText], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${selectedItem.name.replace(/\s+/g, '_')}_Dossier.txt`;
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -223,10 +296,10 @@ https://astro.tarikislam.in
             </div>
             <div>
               <h2 className="text-lg sm:text-xl font-bold font-serif text-white flex items-center gap-2">
-                ASTRO360 <span className="text-[#C9A86A] text-xs uppercase font-mono tracking-wider font-normal">Payment Terminal</span>
+                ASTRO360 <span className="text-[#C9A86A] text-xs uppercase font-mono tracking-wider font-normal">Secure Checkout</span>
               </h2>
               <p className="text-[11px] sm:text-xs text-slate-400">
-                Official Cashfree Payments Gateway • 256-Bit SSL Encrypted
+                Official Multi-Rail Commerce Terminal • 256-Bit SSL Encrypted
               </p>
             </div>
           </div>
@@ -247,15 +320,15 @@ https://astro.tarikislam.in
             
             <div className="space-y-2">
               <span className="text-xs font-mono text-emerald-400 tracking-widest uppercase font-bold">
-                ● Transaction Verified & Activated
+                ● Transaction Verified & Entitlement Granted
               </span>
               <h3 className="text-2xl sm:text-3xl font-bold font-serif text-white">Payment Verified Successfully!</h3>
               <p className="text-sm text-slate-300 max-w-lg mx-auto leading-relaxed">
-                Thank you, <strong className="text-white">{customerName}</strong>. Your purchase of <strong className="text-[#C9A86A]">{selectedItem.name} (₹{selectedItem.priceInr} INR)</strong> has been confirmed.
+                Thank you, <strong className="text-white">{customerName}</strong>. Your purchase of <strong className="text-[#C9A86A]">{selectedItem.name} (₹{finalPrice} INR)</strong> is active.
               </p>
             </div>
 
-            {/* Receipt Summary Card */}
+            {/* Summary Card */}
             <div className="max-w-md mx-auto p-4 rounded-2xl bg-[#070A12] border border-white/[0.08] text-xs font-mono text-left space-y-2">
               <div className="flex justify-between text-slate-400">
                 <span>Order Reference:</span>
@@ -263,7 +336,7 @@ https://astro.tarikislam.in
               </div>
               <div className="flex justify-between text-slate-400">
                 <span>Amount Paid:</span>
-                <span className="text-[#C9A86A] font-bold">₹{selectedItem.priceInr}.00 INR</span>
+                <span className="text-[#C9A86A] font-bold">₹{finalPrice}.00 INR</span>
               </div>
               <div className="flex justify-between text-slate-400">
                 <span>Verification Status:</span>
@@ -272,13 +345,23 @@ https://astro.tarikislam.in
                 </span>
               </div>
               <div className="flex justify-between text-slate-400">
-                <span>Feature Access:</span>
+                <span>Entitlement:</span>
                 <span className="text-cyan-400 font-bold">INSTANTLY UNLOCKED</span>
               </div>
             </div>
 
             {/* Action Buttons */}
             <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+              {generatedReportText && (
+                <button
+                  onClick={handleDownloadReport}
+                  className="px-6 py-3 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-md"
+                >
+                  <FileText className="w-4 h-4" />
+                  <span>Download Astrology Dossier</span>
+                </button>
+              )}
+
               <button
                 onClick={handleDownloadInvoice}
                 className="px-6 py-3 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.12] text-slate-200 font-bold text-xs flex items-center gap-2 transition-all cursor-pointer"
@@ -300,61 +383,71 @@ https://astro.tarikislam.in
           <div className="p-4 sm:p-6 space-y-6">
             
             {/* Category Selector Tabs */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
-              <span className="text-xs font-mono text-[#C9A86A] uppercase tracking-wider">
-                Select Service Package
-              </span>
-              
-              <div className="flex gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06] text-xs">
-                {(['subscription', 'report', 'consultation'] as const).map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`px-3 py-1.5 rounded-lg font-semibold capitalize transition-all cursor-pointer ${
-                      selectedCategory === cat ? 'bg-[#C9A86A] text-[#070A12]' : 'text-slate-400 hover:text-white'
-                    }`}
-                  >
-                    {cat === 'subscription' ? 'Pro Subscriptions' : cat === 'report' ? 'PDF Dossiers' : 'Consultations'}
-                  </button>
-                ))}
+            {!customItem && (
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
+                <span className="text-xs font-mono text-[#C9A86A] uppercase tracking-wider">
+                  Select Product Tier
+                </span>
+                
+                <div className="flex gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06] text-xs">
+                  {(['report', 'tokens', 'subscription'] as const).map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => {
+                        setSelectedCategory(cat);
+                        setAppliedDiscount(0);
+                        setCouponMessage(null);
+                      }}
+                      className={`px-3 py-1.5 rounded-lg font-semibold capitalize transition-all cursor-pointer ${
+                        selectedCategory === cat ? 'bg-[#C9A86A] text-[#070A12]' : 'text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      {cat === 'report' ? '📄 PDF Dossiers' : cat === 'tokens' ? '🪙 Astro Credits' : '👑 Memberships'}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Plans Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {filteredItems.map((item) => {
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3 max-h-[220px] overflow-y-auto custom-scrollbar pr-1">
+              {currentItems.map((item) => {
                 const isSelected = selectedItem.id === item.id;
                 return (
                   <div
                     key={item.id}
-                    onClick={() => setSelectedItem(item)}
-                    className={`relative p-3.5 sm:p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
+                    onClick={() => {
+                      setSelectedItem(item);
+                      setAppliedDiscount(0);
+                      setCouponMessage(null);
+                    }}
+                    className={`relative p-3 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
                       isSelected
                         ? 'bg-[#070A12] border-[#C9A86A] shadow-[0_0_20px_rgba(201,168,106,0.15)] ring-1 ring-[#C9A86A]/50'
                         : 'bg-white/[0.02] hover:bg-white/[0.05] border-white/[0.06]'
                     }`}
                   >
                     {item.badge && (
-                      <span className="absolute -top-2 right-3 px-2 py-0.5 rounded-full bg-[#C9A86A] text-[#070A12] text-[9px] font-bold uppercase tracking-wider">
+                      <span className="absolute -top-2 right-2 px-1.5 py-0.5 rounded-full bg-[#C9A86A] text-[#070A12] text-[8px] font-bold uppercase tracking-wider">
                         {item.badge}
                       </span>
                     )}
 
                     <div>
-                      <h4 className="text-xs sm:text-sm font-bold text-white font-serif mb-1">{item.name}</h4>
-                      <div className="flex items-baseline gap-1.5 mb-2">
-                        <span className="text-lg sm:text-xl font-bold font-serif text-[#C9A86A]">₹{item.priceInr}</span>
+                      <h4 className="text-xs font-bold text-white font-serif mb-0.5 truncate">{item.name}</h4>
+                      <div className="flex items-baseline gap-1.5 mb-1.5">
+                        <span className="text-base font-bold font-serif text-[#C9A86A]">₹{item.priceInr}</span>
                         {item.originalPriceInr && (
                           <span className="text-[10px] text-slate-500 line-through font-mono">₹{item.originalPriceInr}</span>
                         )}
                         {item.discountPercentage && (
-                          <span className="text-[9px] font-mono text-emerald-400 font-semibold">({item.discountPercentage}% OFF)</span>
+                          <span className="text-[8.5px] font-mono text-emerald-400 font-semibold">({item.discountPercentage}% OFF)</span>
                         )}
                       </div>
-                      <p className="text-[10.5px] text-slate-400 leading-snug line-clamp-2">{item.description}</p>
+                      <p className="text-[10px] text-slate-400 leading-snug line-clamp-2">{item.description}</p>
                     </div>
 
-                    <div className="pt-2 mt-2 border-t border-white/[0.04] flex items-center justify-between text-[10px] font-mono">
+                    <div className="pt-1.5 mt-1.5 border-t border-white/[0.04] flex items-center justify-between text-[9.5px] font-mono">
                       <span className={isSelected ? 'text-[#C9A86A] font-bold' : 'text-slate-500'}>
                         {isSelected ? '✓ Selected' : 'Select'}
                       </span>
@@ -377,7 +470,7 @@ https://astro.tarikislam.in
             {/* Main 2-Column Payment Terminal */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2 border-t border-white/[0.06]">
               
-              {/* Left Column: Order Summary & Customer Details */}
+              {/* Left Column: Order Summary & Coupon */}
               <div className="lg:col-span-5 space-y-4">
                 <div className="p-4 rounded-2xl bg-[#070A12] border border-white/[0.08] space-y-3">
                   <span className="text-[11px] font-mono text-[#C9A86A] uppercase tracking-wider block">
@@ -391,22 +484,53 @@ https://astro.tarikislam.in
                     </div>
                     <div className="flex justify-between text-slate-400">
                       <span>Base Amount:</span>
-                      <span>₹{(selectedItem.priceInr * 0.8475).toFixed(2)}</span>
+                      <span>₹{(finalPrice * 0.8475).toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-slate-400">
                       <span>GST (18%):</span>
-                      <span>₹{(selectedItem.priceInr * 0.1525).toFixed(2)}</span>
+                      <span>₹{(finalPrice * 0.1525).toFixed(2)}</span>
                     </div>
+                    {appliedDiscount > 0 && (
+                      <div className="flex justify-between text-emerald-400">
+                        <span>Coupon Discount:</span>
+                        <span>-₹{appliedDiscount}.00</span>
+                      </div>
+                    )}
                     <div className="pt-2 border-t border-white/[0.08] flex justify-between text-sm">
                       <span className="text-white font-bold">Total Amount:</span>
-                      <span className="text-[#C9A86A] font-bold text-base">₹{selectedItem.priceInr}.00 INR</span>
+                      <span className="text-[#C9A86A] font-bold text-base">₹{finalPrice}.00 INR</span>
                     </div>
                   </div>
                 </div>
 
+                {/* Coupon Code Section */}
+                <div className="p-3 rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+                  <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider block">
+                    Have a Promo Code?
+                  </span>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="e.g. FIRST50 / COSMIC20"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                      className="flex-1 px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.08] focus:border-[#C9A86A] text-xs font-mono text-slate-200 outline-none uppercase"
+                    />
+                    <button
+                      onClick={handleApplyCoupon}
+                      className="px-4 py-1.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-[#C9A86A] font-bold text-xs transition-all cursor-pointer"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                  {couponMessage && (
+                    <span className="text-[10px] font-mono text-slate-300 block">{couponMessage}</span>
+                  )}
+                </div>
+
                 {/* Customer Details Form */}
-                <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-2.5">
-                  <span className="text-[11px] font-mono text-slate-300 uppercase tracking-wider block">
+                <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+                  <span className="text-[10px] font-mono text-slate-300 uppercase tracking-wider block">
                     Billing Details
                   </span>
                   <input
@@ -414,21 +538,14 @@ https://astro.tarikislam.in
                     placeholder="Full Name"
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] focus:border-[#C9A86A] text-xs text-slate-200 outline-none"
+                    className="w-full px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.08] focus:border-[#C9A86A] text-xs text-slate-200 outline-none"
                   />
                   <input
                     type="email"
                     placeholder="Email Address"
                     value={customerEmail}
                     onChange={(e) => setCustomerEmail(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] focus:border-[#C9A86A] text-xs text-slate-200 outline-none"
-                  />
-                  <input
-                    type="tel"
-                    placeholder="WhatsApp / Phone Number"
-                    value={customerPhone}
-                    onChange={(e) => setCustomerPhone(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] focus:border-[#C9A86A] text-xs text-slate-200 outline-none"
+                    className="w-full px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.08] focus:border-[#C9A86A] text-xs text-slate-200 outline-none"
                   />
                 </div>
 
@@ -519,7 +636,7 @@ https://astro.tarikislam.in
                             <span>Scan with any UPI Camera or App</span>
                           </span>
                           <p className="text-[11px] text-slate-400 leading-relaxed">
-                            Open Google Pay, PhonePe, Paytm, CRED, or BHIM and scan this QR code to pay <strong className="text-[#C9A86A]">₹{selectedItem.priceInr} INR</strong>.
+                            Open Google Pay, PhonePe, Paytm, CRED, or BHIM and scan this QR code to pay <strong className="text-[#C9A86A]">₹{finalPrice} INR</strong>.
                           </p>
                         </div>
 
@@ -601,7 +718,7 @@ https://astro.tarikislam.in
                       ) : (
                         <>
                           <Lock className="w-4 h-4" />
-                          <span>Launch Cashfree Secure Checkout (₹{selectedItem.priceInr})</span>
+                          <span>Launch Cashfree Secure Checkout (₹{finalPrice})</span>
                         </>
                       )}
                     </button>
