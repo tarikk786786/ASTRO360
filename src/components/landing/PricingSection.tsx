@@ -1,5 +1,5 @@
 import React from 'react';
-import { Check, Sparkles, ArrowRight } from 'lucide-react';
+import { Check, Sparkles, ArrowRight, Zap, Gift, ShieldCheck } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface PricingSectionProps {
@@ -9,49 +9,56 @@ interface PricingSectionProps {
 const PLANS = [
   {
     id: 'free' as const,
-    name: 'Free Access',
+    name: 'Free Seeker',
     price: '₹0',
-    frequency: 'forever',
-    description: 'Essential daily transits, zodiac archetypes, and baseline birth chart calculation.',
+    frequency: 'forever free',
+    badge: 'Always Free',
+    description: 'Essential daily planetary transits, zodiac archetypes, and baseline birth chart calculations.',
     features: [
-      'Basic Natal Chart & Lagna calculation',
-      'Daily transit horoscope & lunar phase',
-      '12 Zodiac Sign profiles & elemental traits',
-      'Panchang & auspicious Tithi lookup',
+      'Precision Vedic Natal Chart (Kundli)',
+      'Daily transit horoscope & Moon nakshatra',
+      '12 Zodiac Sign deep traits & element breakdown',
+      'Panchang, Tithi & Abhijit Muhurta lookup',
+      'Instant interactive birth chart wheel',
     ],
-    cta: 'Start Free',
+    cta: 'Generate Free Chart',
     isPopular: false,
   },
   {
     id: 'premium' as const,
-    name: 'Cosmic Premium',
-    price: '₹499',
-    frequency: '/ month',
-    description: 'Comprehensive Vedic analytics, multi-year Dasha forecasts, and unlimited AI consultations.',
+    name: 'Cosmic Pro Suite',
+    price: '₹0',
+    originalPrice: '₹499',
+    frequency: 'free early access',
+    badge: '🎉 100% FREE TODAY',
+    description: 'All 16 Divisional Vargas, 120-Year Vimshottari Mahadashas, and complete PDF dossiers.',
     features: [
       'Full 16 Divisional Charts (D1 to D60 Vargas)',
       '120-Year Vimshottari Mahadasha timeline',
       '36-Guna Ashta Koota marriage compatibility',
-      '24/7 AI Astrological Oracle with memory',
       'Personalized Gemstone, Rudraksha & Mantra remedies',
-      'Executive PDF chart dossier downloads',
+      'Executive Astrological PDF dossier downloads',
+      'Zero credit card or payment required',
     ],
-    cta: 'Unlock Premium',
+    cta: 'Unlock Pro Suite Free',
     isPopular: true,
   },
   {
     id: 'consultation' as const,
-    name: '1-on-1 Consultation',
-    price: '₹799+',
-    frequency: '/ session',
-    description: 'Private 30–60 minute audio/video consultation with a verified senior Vedic scholar.',
+    name: 'AI Oracle & Consultations',
+    price: '₹0',
+    originalPrice: '₹799',
+    frequency: 'free community pass',
+    badge: 'Instant Access',
+    description: 'Conversational 24/7 Vedic AI Astrological Oracle for deep queries on career, love, and life.',
     features: [
-      'Direct 1-on-1 discussion with an experienced astrologer',
-      'In-depth Birth Time Rectification (BTR) assistance',
-      'Custom remedial roadmap for career, health & relationships',
-      'Private recording and written summary included',
+      '24/7 AI Astrological Oracle consultation',
+      'Career, promotion & business timing guidance',
+      'Relationship dynamics & karmic synastry',
+      'Vedic remedies & personalized astrological WHY',
+      'Complete privacy & instant instant replies',
     ],
-    cta: 'Book Astrologer',
+    cta: 'Start Free AI Consultation',
     isPopular: false,
   },
 ];
@@ -60,15 +67,24 @@ export default function PricingSection({ onSelectPlan }: PricingSectionProps) {
   return (
     <section id="pricing-section" className="relative py-20 px-4 sm:px-6 lg:px-8 border-t border-white/[0.05] bg-[#070A12]/90">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center max-w-xl mx-auto mb-16">
+        
+        {/* Banner */}
+        <div className="max-w-3xl mx-auto mb-10 p-3 sm:p-4 rounded-2xl bg-gradient-to-r from-[#C9A86A]/20 via-purple-900/30 to-[#C9A86A]/20 border border-[#C9A86A]/40 text-center shadow-[0_0_30px_rgba(201,168,106,0.15)]">
+          <div className="flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold text-[#C9A86A]">
+            <Gift className="w-4 h-4 animate-bounce" />
+            <span>SPECIAL EARLY ACCESS: All Pro Charts, AI Consultations & PDF Reports Are 100% FREE!</span>
+          </div>
+        </div>
+
+        <div className="text-center max-w-xl mx-auto mb-14">
           <span className="text-xs font-mono uppercase tracking-widest text-[#C9A86A] mb-2 inline-block">
-            Transparent Plans
+            Universal Access
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white font-serif">
-            Simple, honest pricing.
+            Free Vedic Wisdom for Everyone.
           </h2>
           <p className="text-sm text-slate-300 mt-2 font-normal">
-            Start with our full free foundation. Upgrade only when you are ready for deep multi-year forecasts and 1-on-1 guidance.
+            No paywalls, no hidden subscriptions, and no credit cards required. Explore your cosmic blueprint with full mathematical precision.
           </p>
         </div>
 
@@ -86,9 +102,11 @@ export default function PricingSection({ onSelectPlan }: PricingSectionProps) {
                   : 'bg-[#0D1220]/70 border border-white/[0.08]'
               }`}
             >
-              {plan.isPopular && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-[#C9A86A] text-[#070A12] text-[10.5px] font-bold uppercase tracking-wider shadow-md">
-                  Most Popular
+              {plan.badge && (
+                <div className={`absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full text-[10.5px] font-bold uppercase tracking-wider shadow-md ${
+                  plan.isPopular ? 'bg-[#C9A86A] text-[#070A12]' : 'bg-white/[0.1] text-[#C9A86A] border border-[#C9A86A]/30'
+                }`}>
+                  {plan.badge}
                 </div>
               )}
 
@@ -98,9 +116,12 @@ export default function PricingSection({ onSelectPlan }: PricingSectionProps) {
                   <p className="text-xs text-slate-400 mt-1">{plan.description}</p>
                 </div>
 
-                <div className="flex items-baseline gap-1 my-6">
+                <div className="flex items-baseline gap-2 my-6">
                   <span className="text-3xl sm:text-4xl font-bold text-white font-serif">{plan.price}</span>
-                  <span className="text-xs font-mono text-slate-400">{plan.frequency}</span>
+                  {plan.originalPrice && (
+                    <span className="text-sm line-through text-slate-500 font-mono">{plan.originalPrice}</span>
+                  )}
+                  <span className="text-xs font-mono text-[#C9A86A] uppercase font-bold">{plan.frequency}</span>
                 </div>
 
                 <ul className="space-y-3 text-xs text-slate-300">
@@ -128,6 +149,11 @@ export default function PricingSection({ onSelectPlan }: PricingSectionProps) {
               </div>
             </motion.div>
           ))}
+        </div>
+
+        <div className="mt-12 text-center text-xs font-mono text-slate-400 flex items-center justify-center gap-2">
+          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+          <span>100% Free & Open Access • No Payment or Login Required</span>
         </div>
       </div>
     </section>

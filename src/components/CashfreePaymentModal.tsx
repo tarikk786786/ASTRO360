@@ -382,6 +382,27 @@ https://astro.tarikislam.in
         ) : (
           <div className="p-4 sm:p-6 space-y-6">
             
+            {/* Special Free Early Access Banner */}
+            <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-[#C9A86A]/20 to-emerald-950/40 border border-emerald-500/40 text-center space-y-2">
+              <div className="flex items-center justify-center gap-2 text-xs sm:text-sm font-bold text-emerald-400">
+                <Sparkles className="w-4 h-4 text-[#C9A86A]" />
+                <span>🎉 SPECIAL EARLY ACCESS: 100% FREE FOR LIMITED TIME!</span>
+              </div>
+              <p className="text-[11px] text-slate-300">
+                All digital dossiers, credit packs, and memberships are currently unlocked at ₹0 for community seekers.
+              </p>
+              <button
+                onClick={() => {
+                  const freeOrderRef = `FREE_UNLOCKED_${Date.now()}`;
+                  handleFulfillPurchase(freeOrderRef);
+                }}
+                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#C9A86A] to-[#DFBF7A] text-[#070A12] font-bold text-xs shadow-lg hover:scale-105 transition-all cursor-pointer inline-flex items-center gap-2"
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                <span>✨ Instant 1-Click Free Access & Download</span>
+              </button>
+            </div>
+
             {/* Category Selector Tabs */}
             {!customItem && (
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">

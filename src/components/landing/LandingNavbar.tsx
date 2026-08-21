@@ -85,15 +85,13 @@ export default function LandingNavbar({
 
         {/* Action Buttons */}
         <div className="hidden md:flex items-center gap-3">
-          {onOpenStore && (
-            <button
-              onClick={onOpenStore}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C9A86A]/15 hover:bg-[#C9A86A]/25 border border-[#C9A86A]/35 text-[#C9A86A] text-xs font-semibold transition-all cursor-pointer"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Store</span>
-            </button>
-          )}
+          <button
+            onClick={onOpenDashboard}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C9A86A]/15 hover:bg-[#C9A86A]/25 border border-[#C9A86A]/35 text-[#C9A86A] text-xs font-semibold transition-all cursor-pointer shadow-sm"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>✨ 100% Free Pro Access</span>
+          </button>
 
           {hasProfile ? (
             <button
@@ -107,7 +105,7 @@ export default function LandingNavbar({
               onClick={onOpenDashboard}
               className="px-3.5 py-2 text-xs font-medium text-slate-300 hover:text-white transition-colors cursor-pointer"
             >
-              Log In
+              Explore Studio
             </button>
           )}
 

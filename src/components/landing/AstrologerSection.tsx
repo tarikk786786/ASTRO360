@@ -100,15 +100,15 @@ export default function AstrologerSection({ onBookAstrologer }: AstrologerSectio
 
               <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between">
                 <div>
-                  <div className="text-[10px] text-slate-400 font-mono">Session Rate</div>
-                  <div className="text-sm font-bold text-white font-serif">{scholar.price}</div>
+                  <div className="text-[10px] text-emerald-400 font-mono font-bold">🎉 Free Access</div>
+                  <div className="text-sm font-bold text-white font-serif">100% Free Consultation</div>
                 </div>
                 <button
                   onClick={() => onBookAstrologer(scholar.id)}
-                  className="px-4 py-2 rounded-xl bg-[#C9A86A] text-[#070A12] text-xs font-bold shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-1.5"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#C9A86A] to-[#DFBF7A] text-[#070A12] text-xs font-bold shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer inline-flex items-center gap-1.5"
                 >
                   <Calendar className="w-3.5 h-3.5" />
-                  <span>Book</span>
+                  <span>Start Free</span>
                 </button>
               </div>
             </motion.div>

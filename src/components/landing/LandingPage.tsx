@@ -113,15 +113,15 @@ export default function LandingPage({
       <TestimonialsSection />
 
       {/* 13. Verified 1-on-1 Astrologer Consultations */}
-      <AstrologerSection onBookAstrologer={() => openPaymentWith('consultation')} />
+      <AstrologerSection onBookAstrologer={() => onNavigateToTab('chat')} />
 
-      {/* 14. Transparent Pricing Plans (Direct Cashfree Trigger) */}
+      {/* 14. Transparent Pricing Plans (100% Free Access Direct Router) */}
       <PricingSection
         onSelectPlan={(plan) => {
           if (plan === 'consultation') {
-            openPaymentWith('consultation');
+            onNavigateToTab('chat');
           } else if (plan === 'premium') {
-            openPaymentWith('subscription');
+            onNavigateToTab('birth-chart');
           } else {
             handleGetStarted();
           }
