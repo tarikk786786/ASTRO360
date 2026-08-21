@@ -152,10 +152,10 @@ export default function CashfreePaymentModal({
             setVerifyError('Payment was not marked as PAID by Cashfree.');
           }
         },
-        onFailure: () => {
+        onFailure: (err) => {
           setLoading(false);
           setActiveRail('upi_qr');
-          setVerifyError('Cashfree direct portal is currently unavailable. Please use the Instant UPI QR code to complete your payment.');
+          setVerifyError(err?.message || 'Cashfree Merchant Account Activation Pending on merchant.cashfree.com. Please scan the Instant UPI QR code below to pay.');
         },
       });
 
@@ -165,7 +165,7 @@ export default function CashfreePaymentModal({
     } catch (err: any) {
       setLoading(false);
       setActiveRail('upi_qr');
-      setVerifyError('Could not open Cashfree PG modal. Please scan the UPI QR code to pay.');
+      setVerifyError(err?.message || 'Cashfree PG is pending account activation. Please use the Instant UPI QR code to complete payment.');
     }
   };
 

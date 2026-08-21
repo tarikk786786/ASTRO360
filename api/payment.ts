@@ -178,10 +178,15 @@ export default async function handler(req: any, res: any) {
             });
           } else {
             console.warn('Cashfree Order Response:', data);
+            const userFriendlyMsg = data?.message?.includes('not enabled')
+              ? 'Cashfree Merchant Activation Pending: Transactions are not yet enabled for this AppID in merchant.cashfree.com. Please use the Instant UPI / QR Code tab to pay directly via Google Pay / PhonePe / Paytm.'
+              : (data?.message || 'Cashfree payment initialization pending');
+
             return res.status(200).json({
               success: false,
               orderId: cleanOrderId,
-              error: data?.message || 'Cashfree payment session initialization pending',
+              error: userFriendlyMsg,
+              rawCashfreeError: data?.message,
               upiUri: `upi://pay?pa=tarikislam786@okaxis&pn=ASTRO360%20Omni&am=${amount}&cu=INR&tn=ASTRO360_${planId}`,
             });
           }
