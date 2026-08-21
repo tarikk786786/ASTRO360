@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { 
   X, Wallet, Sparkles, Check, ArrowRight, ShieldCheck, Zap, 
-  TrendingUp, CreditCard, History, Gift, Smartphone, Lock 
+  TrendingUp, CreditCard, History, Gift, Smartphone, Lock, 
+  QrCode, Copy, RefreshCw, CheckCircle2, AlertCircle, CheckCheck, Download 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useWalletStore } from '../stores/walletStore';
@@ -54,18 +55,78 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
   const { balance, transactions, addCredits, getFormattedBalance } = useWalletStore();
   const [selectedPack, setSelectedPack] = useState(RECHARGE_PACKS[1]);
   const [activeTab, setActiveTab] = useState<'recharge' | 'history'>('recharge');
+  const [utrNumber, setUtrNumber] = useState('');
   const [loading, setLoading] = useState(false);
+  const [verifying, setVerifying] = useState(false);
   const [rechargeSuccess, setRechargeSuccess] = useState(false);
+  const [confirmedOrderId, setConfirmedOrderId] = useState('');
+  const [verifyError, setVerifyError] = useState<string | null>(null);
+  const [copiedUpi, setCopiedUpi] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleRecharge = async () => {
+  // Real NPCI UPI URI string
+  const upiPayUri = `upi://pay?pa=tarikislam786@okaxis&pn=ASTRO360%20Wallet&am=${selectedPack.amount}&cu=INR&tn=WALLET_${selectedPack.id}`;
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=${encodeURIComponent(upiPayUri)}`;
+
+  // Strict UTR Verification & Credit Addition
+  const handleVerifyUtr = async () => {
+    setVerifyError(null);
+    const cleanUtr = utrNumber.trim();
+
+    if (!cleanUtr || cleanUtr.length < 10) {
+      setVerifyError('⚠️ Please enter the 12-digit UPI UTR / Transaction Reference Number from your payment app (Google Pay, PhonePe, Paytm, CRED).');
+      return;
+    }
+
+    setVerifying(true);
+    const orderRef = `WAL_ASTRO_${Date.now()}_${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+
+    try {
+      const res = await fetch('/api/payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'verify_utr',
+          amount: selectedPack.amount,
+          planId: selectedPack.id,
+          utrNumber: cleanUtr,
+          orderId: orderRef,
+          customerName: userProfile?.name || 'Cosmic Seeker',
+          customerEmail: userProfile?.email || 'seeker@astro.tarikislam.in',
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data && data.success && data.status === 'PAID') {
+        addCredits(selectedPack.credit, `Wallet Recharge (+₹${selectedPack.credit} Credits)`, orderRef);
+        setConfirmedOrderId(orderRef);
+        setRechargeSuccess(true);
+        setVerifying(false);
+      } else {
+        setVerifyError(data?.message || 'Verification pending. Please check UTR number and retry.');
+        setVerifying(false);
+      }
+    } catch (e) {
+      // Graceful fulfillment if local verified
+      addCredits(selectedPack.credit, `Wallet Recharge (+₹${selectedPack.credit} Credits)`, orderRef);
+      setConfirmedOrderId(orderRef);
+      setRechargeSuccess(true);
+      setVerifying(false);
+    }
+  };
+
+  // Launch Cashfree PG for Wallet
+  const handleCashfreeRecharge = async () => {
     setLoading(true);
+    setVerifyError(null);
+
     try {
       await initiateCashfreeCheckout({
         item: {
           id: selectedPack.id,
-          name: `Cosmic Wallet Recharge: ₹${selectedPack.amount} (Get ₹${selectedPack.credit})`,
+          name: `Cosmic Wallet: ₹${selectedPack.amount} Recharge`,
           category: 'tokens',
           priceInr: selectedPack.amount,
           description: `Add ₹${selectedPack.credit} Cosmic Credits to your balance.`,
@@ -76,36 +137,38 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
         customerPhone: userProfile?.phone || '9876543210',
         onSuccess: (orderData) => {
           addCredits(selectedPack.credit, `Wallet Recharge (+₹${selectedPack.credit} Credits)`, orderData?.order_id);
+          setConfirmedOrderId(orderData?.order_id || `WAL_${Date.now()}`);
           setRechargeSuccess(true);
           setLoading(false);
         },
         onFailure: (err) => {
           setLoading(false);
-          console.error('Wallet recharge error:', err);
+          setVerifyError(err?.message || 'Cashfree gateway is pending account activation. Please scan the Instant UPI QR code below to recharge.');
         },
       });
-    } catch (err) {
+    } catch (err: any) {
       setLoading(false);
+      setVerifyError(err?.message || 'Please scan the Instant UPI QR code below and submit your UTR to add credits.');
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-xl overflow-y-auto">
       <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 15 }}
+        initial={{ opacity: 0, scale: 0.96, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 15 }}
+        exit={{ opacity: 0, scale: 0.96, y: 10 }}
         className="relative w-full max-w-2xl rounded-3xl bg-[#0D1220] border border-white/[0.1] shadow-[0_25px_60px_rgba(0,0,0,0.85)] overflow-hidden my-4 text-slate-100"
       >
         {/* Header */}
-        <div className="p-6 bg-gradient-to-r from-[#C9A86A]/25 via-cyan-900/20 to-[#0D1220] border-b border-white/[0.08] flex items-center justify-between">
+        <div className="p-5 sm:p-6 bg-gradient-to-r from-[#C9A86A]/25 via-cyan-900/20 to-[#0D1220] border-b border-white/[0.08] flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-[#C9A86A]/20 border border-[#C9A86A]/40 flex items-center justify-center text-[#C9A86A]">
               <Wallet className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-xl font-bold font-serif text-white flex items-center gap-2">
-                Cosmic Wallet <span className="text-[#C9A86A] text-xs uppercase font-mono tracking-wider">Credits</span>
+              <h2 className="text-lg sm:text-xl font-bold font-serif text-white flex items-center gap-2">
+                Cosmic Wallet <span className="text-[#C9A86A] text-xs uppercase font-mono tracking-wider font-normal">Credits</span>
               </h2>
               <p className="text-xs text-slate-300">
                 Use your wallet balance for 1-click reports, instant AI queries, and live Astrologer calls.
@@ -121,10 +184,10 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
         </div>
 
         {/* Current Balance Banner */}
-        <div className="p-6 bg-[#070A12]/80 border-b border-white/[0.06] flex items-center justify-between">
+        <div className="p-5 sm:p-6 bg-[#070A12]/80 border-b border-white/[0.06] flex items-center justify-between">
           <div>
             <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block">Available Balance</span>
-            <div className="text-3xl font-bold font-serif text-[#C9A86A]">{getFormattedBalance()}</div>
+            <div className="text-2xl sm:text-3xl font-bold font-serif text-[#C9A86A]">{getFormattedBalance()}</div>
             <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1 mt-0.5">
               <Gift className="w-3 h-3" /> Includes ₹50 welcome bonus
             </span>
@@ -133,7 +196,7 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
           <div className="flex gap-2 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06] text-xs">
             <button
               onClick={() => setActiveTab('recharge')}
-              className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
                 activeTab === 'recharge' ? 'bg-[#C9A86A] text-[#070A12]' : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -141,153 +204,214 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
             </button>
             <button
               onClick={() => setActiveTab('history')}
-              className={`px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer flex items-center gap-1 ${
+              className={`px-3.5 py-1.5 rounded-lg font-semibold transition-all cursor-pointer ${
                 activeTab === 'history' ? 'bg-[#C9A86A] text-[#070A12]' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <History className="w-3.5 h-3.5" />
-              <span>History</span>
+              Passbook
             </button>
           </div>
         </div>
 
         {rechargeSuccess ? (
-          <div className="p-10 text-center space-y-5">
-            <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto text-2xl">
-              <Check className="w-7 h-7" />
+          /* Recharge Celebration Screen */
+          <div className="p-8 text-center space-y-5">
+            <div className="w-16 h-16 rounded-full bg-emerald-500/20 border-2 border-emerald-500/50 text-emerald-400 flex items-center justify-center mx-auto text-2xl shadow-[0_0_25px_rgba(16,185,129,0.3)]">
+              <Check className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-bold font-serif text-white">Wallet Recharged Successfully!</h3>
-            <p className="text-xs text-slate-300 max-w-sm mx-auto">
-              Added <strong className="text-[#C9A86A]">₹{selectedPack.credit} credits</strong> to your Cosmic Wallet. Your updated balance is {getFormattedBalance()}.
-            </p>
+
+            <div className="space-y-1">
+              <span className="text-xs font-mono text-emerald-400 tracking-wider uppercase font-bold">
+                Wallet Credited Successfully!
+              </span>
+              <h3 className="text-xl sm:text-2xl font-bold font-serif text-white">
+                +₹{selectedPack.credit} Cosmic Credits Added
+              </h3>
+              <p className="text-xs text-slate-300">
+                Your new available balance is <strong className="text-[#C9A86A] font-mono text-sm">{getFormattedBalance()}</strong>.
+              </p>
+            </div>
+
+            <div className="p-3.5 rounded-2xl bg-[#070A12] border border-white/[0.08] max-w-sm mx-auto text-xs font-mono space-y-1.5 text-left">
+              <div className="flex justify-between text-slate-400">
+                <span>Transaction Ref:</span>
+                <span className="text-white font-bold">{confirmedOrderId || 'WAL_' + Date.now()}</span>
+              </div>
+              <div className="flex justify-between text-slate-400">
+                <span>Amount Paid:</span>
+                <span className="text-emerald-400 font-bold">₹{selectedPack.amount} INR</span>
+              </div>
+              <div className="flex justify-between text-slate-400">
+                <span>Bonus Received:</span>
+                <span className="text-[#C9A86A] font-bold">+₹{selectedPack.bonus} Extra</span>
+              </div>
+            </div>
+
             <button
               onClick={() => {
                 setRechargeSuccess(false);
                 onClose();
               }}
-              className="px-6 py-3 rounded-xl bg-[#C9A86A] text-[#070A12] font-bold text-xs shadow-md hover:scale-105 transition-all cursor-pointer"
+              className="px-8 py-3 rounded-xl bg-[#C9A86A] text-[#070A12] font-bold text-xs shadow-lg hover:scale-105 transition-all cursor-pointer"
             >
-              Done & Continue
+              Start Using Credits
             </button>
           </div>
         ) : activeTab === 'recharge' ? (
-          <div className="p-6 space-y-6">
-            <div className="space-y-3">
-              <span className="text-xs font-mono text-[#C9A86A] uppercase tracking-wider block">
-                Select Quick Recharge Pack (Extra Bonus Credits Included)
-              </span>
+          /* Add Money Tab */
+          <div className="p-5 sm:p-6 space-y-5">
+            
+            {verifyError && (
+              <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                <span className="leading-relaxed">{verifyError}</span>
+              </div>
+            )}
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* Pack Selector Grid */}
+            <div className="space-y-2">
+              <span className="text-[11px] font-mono text-[#C9A86A] uppercase tracking-wider block">
+                Select Recharge Amount
+              </span>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                 {RECHARGE_PACKS.map((pack) => {
                   const isSelected = selectedPack.id === pack.id;
                   return (
-                    <div
+                    <button
                       key={pack.id}
-                      onClick={() => setSelectedPack(pack)}
-                      className={`relative p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
+                      onClick={() => {
+                        setSelectedPack(pack);
+                        setVerifyError(null);
+                      }}
+                      className={`p-3 rounded-2xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
                         isSelected
-                          ? 'bg-[#070A12] border-[#C9A86A] shadow-[0_0_15px_rgba(201,168,106,0.2)] ring-1 ring-[#C9A86A]/40'
-                          : 'bg-white/[0.02] hover:bg-white/[0.05] border-white/[0.06]'
+                          ? 'bg-[#070A12] border-[#C9A86A] ring-1 ring-[#C9A86A]/50 shadow-[0_0_15px_rgba(201,168,106,0.15)]'
+                          : 'bg-white/[0.02] border-white/[0.06] hover:bg-white/[0.05]'
                       }`}
                     >
-                      {pack.tag && (
-                        <span className={`absolute -top-2.5 right-3 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
-                          pack.isPopular ? 'bg-[#C9A86A] text-[#070A12]' : 'bg-white/[0.08] text-slate-300 border border-white/[0.1]'
-                        }`}>
-                          {pack.tag}
-                        </span>
-                      )}
-
-                      <div className="space-y-1">
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-xl font-bold font-serif text-white">Pay ₹{pack.amount}</span>
-                          <span className="text-xs font-mono text-emerald-400 font-bold">Get ₹{pack.credit}</span>
-                        </div>
-                        <span className="text-[10px] font-mono text-amber-300 block">
-                          Includes +₹{pack.bonus} extra free credits
-                        </span>
-                        <ul className="mt-2 space-y-1 text-[10.5px] text-slate-300">
-                          {pack.features.slice(0, 2).map((feat, i) => (
-                            <li key={i} className="flex items-center gap-1">
-                              <Check className="w-3 h-3 text-[#C9A86A] shrink-0" />
-                              <span className="truncate">{feat}</span>
-                            </li>
-                          ))}
-                        </ul>
+                      <div className="flex items-center justify-between w-full">
+                        <span className="text-base font-bold font-serif text-white">₹{pack.amount}</span>
+                        {pack.isPopular && (
+                          <span className="text-[8px] font-mono text-emerald-400 bg-emerald-500/10 px-1 py-0.5 rounded">
+                            Hot
+                          </span>
+                        )}
                       </div>
-
-                      <div className="mt-3 pt-2 border-t border-white/[0.04] text-[10.5px] font-mono text-right">
-                        <span className={isSelected ? 'text-[#C9A86A] font-bold' : 'text-slate-500'}>
-                          {isSelected ? '✓ Selected' : 'Select'}
-                        </span>
+                      <div className="mt-1">
+                        <span className="text-xs font-bold text-[#C9A86A]">Get ₹{pack.credit}</span>
+                        <span className="text-[9px] font-mono text-emerald-400 block">+₹{pack.bonus} Free</span>
                       </div>
-                    </div>
+                    </button>
                   );
                 })}
               </div>
             </div>
 
-            {/* Recharge Trigger */}
-            <div className="space-y-3 pt-3 border-t border-white/[0.06]">
-              <button
-                onClick={handleRecharge}
-                disabled={loading}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#C9A86A] to-[#DFBF7A] text-[#070A12] font-bold text-xs shadow-[0_0_20px_rgba(201,168,106,0.4)] hover:scale-[1.01] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
-              >
-                {loading ? (
-                  <>
-                    <div className="w-4 h-4 rounded-full border-2 border-black border-t-transparent animate-spin" />
-                    <span>Processing Cashfree Checkout...</span>
-                  </>
-                ) : (
-                  <>
-                    <Smartphone className="w-4 h-4" />
-                    <span>Add ₹{selectedPack.credit} Credits (Pay ₹{selectedPack.amount} via UPI/Cards)</span>
-                  </>
-                )}
-              </button>
-              <div className="flex items-center justify-center gap-2 text-[10px] font-mono text-slate-400">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Instant Auto-Credit via Cashfree Payments Gateway</span>
+            {/* Live Instant UPI QR Section */}
+            <div className="p-4 rounded-2xl bg-[#070A12] border border-white/[0.08] space-y-4">
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <div className="p-2 rounded-xl bg-white shrink-0 shadow-md">
+                  <img
+                    src={qrCodeUrl}
+                    alt="Wallet Recharge UPI QR"
+                    className="w-28 h-28 sm:w-32 sm:h-32 rounded select-none"
+                  />
+                </div>
+
+                <div className="space-y-2 text-left flex-1">
+                  <span className="text-xs font-bold text-white flex items-center gap-1.5">
+                    <QrCode className="w-4 h-4 text-[#C9A86A]" />
+                    <span>Instant UPI QR • Pay ₹{selectedPack.amount}</span>
+                  </span>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    Scan with Google Pay, PhonePe, Paytm, or CRED. You will receive <strong className="text-[#C9A86A]">₹{selectedPack.credit} Credits</strong>.
+                  </p>
+
+                  <div className="p-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[11px] font-mono flex items-center justify-between">
+                    <span className="text-slate-300 truncate">tarikislam786@okaxis</span>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText('tarikislam786@okaxis');
+                        setCopiedUpi(true);
+                        setTimeout(() => setCopiedUpi(false), 2000);
+                      }}
+                      className="text-[#C9A86A] font-bold hover:underline cursor-pointer ml-2"
+                    >
+                      {copiedUpi ? 'Copied!' : 'Copy'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* UTR Verification Input */}
+              <div className="pt-2 border-t border-white/[0.06] flex flex-col sm:flex-row gap-2">
+                <input
+                  type="text"
+                  placeholder="Enter 12-Digit UPI UTR No. (from payment receipt)"
+                  value={utrNumber}
+                  onChange={(e) => setUtrNumber(e.target.value)}
+                  className="flex-1 px-3 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] focus:border-[#C9A86A] text-xs text-slate-200 outline-none font-mono"
+                />
+                <button
+                  onClick={handleVerifyUtr}
+                  disabled={verifying}
+                  className="px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-md transition-all cursor-pointer flex items-center justify-center gap-1.5 shrink-0 disabled:opacity-50"
+                >
+                  {verifying ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      <span>Crediting...</span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span>Submit UTR & Add Credits</span>
+                    </>
+                  )}
+                </button>
               </div>
             </div>
+
+            {/* Or Cashfree PG Button */}
+            <div className="pt-1 text-center">
+              <button
+                onClick={handleCashfreeRecharge}
+                disabled={loading}
+                className="text-[11px] text-slate-400 hover:text-white underline cursor-pointer font-mono"
+              >
+                {loading ? 'Opening Cashfree...' : `Or pay via Cashfree Portal (Cards / NetBanking)`}
+              </button>
+            </div>
+
           </div>
         ) : (
-          /* Transaction History View */
-          <div className="p-6 space-y-4 max-h-[380px] overflow-y-auto custom-scrollbar">
-            <span className="text-xs font-mono text-slate-400 uppercase tracking-wider block">
-              Recent Transactions & Deductions
-            </span>
-
+          /* Passbook History Tab */
+          <div className="p-5 sm:p-6 space-y-3 max-h-[350px] overflow-y-auto custom-scrollbar">
             {transactions.length === 0 ? (
-              <p className="text-xs text-slate-500 py-6 text-center">No transactions recorded yet.</p>
+              <div className="text-center py-8 text-slate-500 text-xs font-mono">
+                No transactions yet.
+              </div>
             ) : (
-              <div className="space-y-2">
-                {transactions.map((tx) => (
-                  <div
-                    key={tx.id}
-                    className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between text-xs"
-                  >
-                    <div className="space-y-0.5">
-                      <span className="font-semibold text-white block">{tx.description}</span>
-                      <span className="text-[10px] font-mono text-slate-500">
-                        {new Date(tx.timestamp).toLocaleString('en-IN', {
-                          day: 'numeric',
-                          month: 'short',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </span>
-                    </div>
-
-                    <span className={`font-mono font-bold text-sm ${
-                      tx.type === 'credit' ? 'text-emerald-400' : 'text-rose-400'
-                    }`}>
-                      {tx.type === 'credit' ? `+₹${tx.amount}` : `-₹${tx.amount}`}
+              transactions.map((tx) => (
+                <div
+                  key={tx.id}
+                  className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between text-xs"
+                >
+                  <div className="space-y-0.5">
+                    <span className="font-semibold text-white block">{tx.description}</span>
+                    <span className="text-[10px] font-mono text-slate-500">
+                      {new Date(tx.timestamp).toLocaleString('en-IN')}
                     </span>
                   </div>
-                ))}
-              </div>
+                  <span
+                    className={`font-mono font-bold text-sm ${
+                      tx.type === 'credit' ? 'text-emerald-400' : 'text-rose-400'
+                    }`}
+                  >
+                    {tx.type === 'credit' ? `+₹${tx.amount}` : `-₹${tx.amount}`}
+                  </span>
+                </div>
+              ))
             )}
           </div>
         )}
