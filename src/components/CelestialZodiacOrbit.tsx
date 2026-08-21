@@ -171,19 +171,17 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
         <div className="absolute inset-20 rounded-full border border-purple-500/30 flex items-center justify-center pointer-events-none" />
 
         {/* Central Solar Core */}
-        <motion.div 
-          animate={{ opacity: [0.85, 1, 0.85], scale: [0.98, 1.02, 0.98] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-          className="w-20 h-20 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 p-0.5 shadow-[0_0_35px_rgba(245,158,11,0.5)] flex items-center justify-center z-10 cursor-pointer"
+        <div 
+          className="w-20 h-20 rounded-full bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 p-0.5 shadow-[0_0_25px_rgba(245,158,11,0.4)] flex items-center justify-center z-10 cursor-pointer"
         >
           <div className="w-full h-full rounded-full bg-[#0B1220] flex flex-col items-center justify-center text-center p-1 border border-white/20">
             <div className="flex items-center gap-1">
-              <Sun className="w-4 h-4 text-amber-400 animate-spin" style={{ animationDuration: '30s' }} />
+              <Sun className="w-4 h-4 text-amber-400" />
               <Moon className="w-4 h-4 text-cyan-400" />
             </div>
             <span className="text-[9px] font-mono font-bold text-amber-300 pt-0.5">CORE SOL</span>
           </div>
-        </motion.div>
+        </div>
 
         {/* Dynamic 9 Planets Nodes Computed on Real Longitude Angle */}
         {planetNodes.map((p, idx) => {
@@ -191,37 +189,35 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
           const isOwnSign = p.strength?.toLowerCase().includes('own');
 
           return (
-            <motion.button
+            <button
               key={idx}
               onClick={() => handlePlanetClick(p)}
               onMouseEnter={() => setHoveredPlanet(p)}
               onMouseLeave={() => setHoveredPlanet(null)}
-              whileHover={{ scale: 1.25, zIndex: 40 }}
-              whileTap={{ scale: 0.95 }}
               style={{ transform: `translate(${p.x}px, ${p.y}px)` }}
-              className={`absolute z-20 p-1.5 sm:p-2 rounded-2xl bg-[#111827]/95 border ${p.border} shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:border-cyan-400 cursor-pointer group flex flex-col items-center justify-center space-y-0.5 backdrop-blur-md transition-shadow`}
+              className={`absolute z-20 p-1.5 sm:p-2 rounded-2xl bg-[#111827]/95 border ${p.border} shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:border-cyan-400 hover:scale-110 hover:z-40 active:scale-95 cursor-pointer group flex flex-col items-center justify-center space-y-0.5 backdrop-blur-md transition-all duration-150`}
             >
               <div className="flex items-center gap-1">
                 <span className={`text-xs sm:text-sm font-bold ${p.color}`}>{p.symbol}</span>
-                {p.retrograde && <span className="text-[8px] font-mono text-red-400 font-bold animate-pulse">Rx</span>}
+                {p.retrograde && <span className="text-[8px] font-mono text-red-400 font-bold">Rx</span>}
                 {isExalted && <span className="text-[8px] text-amber-300">👑</span>}
                 {isOwnSign && <span className="text-[8px] text-emerald-300">🏠</span>}
               </div>
               <span className="text-[9px] font-mono text-white font-semibold block leading-tight">{p.name}</span>
               <span className="text-[8px] font-mono text-slate-400 block">{p.degree}</span>
-            </motion.button>
+            </button>
           );
         })}
       </div>
 
-      {/* Floating Shimmer Star Particles */}
-      <div className="absolute top-4 left-6 pointer-events-none animate-pulse">
+      {/* Floating Star Accents (Static) */}
+      <div className="absolute top-4 left-6 pointer-events-none opacity-60">
         <Sparkles className="w-3.5 h-3.5 text-amber-300" />
       </div>
-      <div className="absolute bottom-6 right-8 pointer-events-none animate-pulse delay-500">
+      <div className="absolute bottom-6 right-8 pointer-events-none opacity-60">
         <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
       </div>
-      <div className="absolute top-10 right-10 pointer-events-none animate-pulse delay-1000">
+      <div className="absolute top-10 right-10 pointer-events-none opacity-60">
         <Sparkles className="w-3.5 h-3.5 text-purple-300" />
       </div>
 
