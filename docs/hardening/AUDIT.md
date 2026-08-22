@@ -1,0 +1,177 @@
+# ASTRO360 — Production Hardening Audit (Phase 0)
+
+**Date:** 2026-08-22
+**Commit audited:** `78f55e7` on `main` ("feat(landing): make landing page 100% free early access…")
+**Scope:** read-only. No code was changed in this phase.
+
+> **Working-tree note:** before any of this work began, `git status` already showed 302 modified
+> files under `.agents/` totalling 38,955 insertions and 38,955 deletions — an exact 1:1 count,
+> i.e. a whole-file line-ending flip (CRLF↔LF), not content changes. This is pre-existing and
+> unrelated to the audit. It must be dealt with separately (see HYG-02) because it will swamp
+> the diff of any commit made from this tree.
+
+---
+
+## 1. Current architecture
+
+ASTRO360 is a single-page React application. There is no application server of its own; three
+Vercel serverless functions in `api/` provide the only server-side surface.
+
+**Stack.** Vite 7.3.6 + React + TypeScript, Tailwind v4 via `@tailwindcss/vite`, Radix/shadcn
+primitives in `src/components/ui/`, `zustand` for state, `motion/react` for animation,
+`recharts` for charts. Package manager is pnpm with a workspace catalog
+(`pnpm-workspace.yaml`). Deploy target is Vercel (`vercel.json`, `outputDirectory: dist/public`);
+Replit scaffolding (`.replit`, `@replit/*` Vite plugins) is still present from the project's origin.
+
+**Size.** 263 TypeScript/TSX files in `src/`, 51,828 lines. 90 top-level components in
+`src/components/`. Eight files exceed 1,000 lines, the largest being
+`CustomRemedialMediumEngine.tsx` (1,686) and `CosmicIntelligenceCenter.tsx` (1,621).
+
+**Navigation.** There is no router. `wouter` is a declared dependency but appears nowhere in
+`src/`. `src/App.tsx` (863 lines) selects the active feature through 133 `activeTab === '...'`
+conditional branches. Consequences: no URL per feature, no deep links, no browser back/forward,
+no shareable links, and nothing for a crawler to index.
+
+**Client/server boundary.** `api/proxy.ts` fronts NASA, prayer-time and Kalimat APIs and does
+correctly hold those keys server-side. `api/payment.ts` fronts Cashfree order creation.
+`api/astrology.ts` is the third function. Everything else — including all astrology
+computation, the wallet, and all entitlement logic — runs in the browser.
+
+**State.** `zustand` stores in `src/stores/` (including `walletStore.ts`, `navigationStore.ts`,
+`userStore.ts`), three of which use `persist`, plus 25 direct `localStorage` call sites.
+
+**Computation.** The live astrology path is `src/lib/astroCalculations.ts` (335 lines), reached
+from `BirthChartGenerator.tsx` and `UnifiedChartEngine.tsx`. A second, larger engine tree
+exists under `src/lib/ephemeris/`, `src/lib/vedic/`, `src/lib/western/` and `src/lib/islamic/`
+(~2,059 lines) plus `src/lib/astronomyEngine.ts` and `src/backend/astronomicalCalculationEngine.ts`.
+Only `src/lib/astrologyEngines.ts` imports any of it, and only `BirthChartGenerator.tsx`
+imports that — for one function. The rest is unreachable.
+
+**Quality gates.** No ESLint config and no `lint` script. No test runner in the dependency tree.
+13 `*.test.ts` files exist containing 3 `it()`/`test()` cases in total. One CI workflow exists.
+
+---
+
+## 2. Findings
+
+Severity: **Critical** = exploitable or actively wrong in production ·
+**High** = wrong results or material risk · **Medium** = fragile / won't scale ·
+**Low** = hygiene. Effort: S < ~1h · M ~½ day · L multi-day.
+
+### Critical
+
+| ID | Area | Sev | Eff | Location | Finding | Why it matters |
+|----|------|-----|-----|----------|---------|----------------|
+| SEC-01 | Secrets | Critical | S+ | git history; `.env.local` at HEAD | `.env` is present in multiple historical commits and contained `CASHFREE_SECRET_KEY`, `NASA_API_KEY`, `MUSLIM_API_KEY`, `UMMAH_API_KEY`, `KALIMAT_API_KEY`. `.env.local` is **still tracked at HEAD** (blob `4eeffe3`) holding `VERCEL_OIDC_TOKEN`, `NEXT_PUBLIC_INSFORGE_ANON_KEY` and a NASA key. Three API keys are additionally written in **plaintext inside commit messages** (`27f914c`, `c0dc566`, `536df2b`). | A live payment-gateway secret and a Vercel token are readable by anyone with repo access. Purging files does not remove commit messages. Listing in `.gitignore` does not untrack an already-tracked file. **Every one of these credentials must be treated as compromised and rotated.** |
+| SEC-02 | Payments | Critical | M | `api/payment.ts` (`verify_utr` / `verify_payment` branch, and the `GET ?order_id=` fallback) | Both verification paths return `{ success: true, status: 'PAID' }` **unconditionally**, without contacting Cashfree. The GET path returns `order_status: 'PAID', order_amount: 299` for any `order_id`, under the comment "Auto verify if verified locally". | Anyone can POST `{action:'verify_payment'}` and be marked paid. This is stubbed payment success standing in for a real flow — revenue loss and a misrepresentation to customers. |
+| SEC-03 | Payments | Critical | M | `src/lib/ownpayEngine.ts:146-151` | `verifyOwnPayTransaction()` always returns `verified: true` and **fabricates** a 64-hex transaction hash with `Math.random()`. | Presents an invented blockchain txHash as proof of settlement. No chain lookup occurs. |
+| SEC-04 | Secrets | Critical | S | `VITE_KALIMAT_API_KEY`, `VITE_MUSLIM_API_KEY`, `VITE_UMMAH_API_KEY`, `VITE_NASA_API_KEY`, `VITE_INSFORGE_ANON_KEY` | Vite inlines every `VITE_`-prefixed var into the client bundle at build time. Four are paid/rate-limited third-party keys. This also defeats the stated purpose of `api/proxy.ts`, which exists to keep exactly these keys server-side. | Anyone can read them from the shipped JS and spend your quota. |
+| BUG-01 | Runtime | Critical | S | `src/App.tsx:384-404, 596, 624` | 16 identifiers are rendered but never imported: `Hash`, `Eye`, `Calendar`, `AlertTriangle`, `Sunrise`, `Sun`, `Music`, `Radar`, `MapPin`, `Network`, `BarChart2`, `BookOpen`, `FileText`, `Shield`, plus components `SpiritualTraditionsSuite` and `DailyHoroscopeTransitEngine`. Verified absent from every import statement in the file. | `<Hash/>` sits in the sidebar nav, so rendering it throws `ReferenceError: Hash is not defined`. esbuild does not catch undefined identifiers, so the build passes and it fails in the browser. Consistent with the most recent commit being a React-crash fix. |
+
+### High
+
+| ID | Area | Sev | Eff | Location | Finding | Why it matters |
+|----|------|-----|-----|----------|---------|----------------|
+| SEC-05 | Payments | High | M | `api/payment.ts` | No webhook signature verification anywhere. `notify_url` points at `/api/payment?action=webhook`, but no `action === 'webhook'` branch exists — such a POST falls through to the **order-creation** branch. | Cashfree callbacks are unauthenticated and mishandled; forged callbacks are indistinguishable from real ones. |
+| SEC-06 | API | High | S | `api/payment.ts:13-14`, `api/proxy.ts:9-10` | `Access-Control-Allow-Origin: '*'` combined with `Allow-Credentials: 'true'` on both functions. No rate limiting on either. | Any origin can drive your payment and proxy endpoints; the proxy is an open relay for your paid API quota. |
+| SEC-07 | Auth | High | L | codebase-wide | No `isAuthenticated` / `isPremium` / `hasAccess` / entitlement check exists anywhere. Wallet balance lives in a client `zustand` + `localStorage` store (`src/stores/walletStore.ts`). | Nothing is actually gated, and the balance is editable from devtools. With SEC-02, monetization is decorative. |
+| DOM-01 | Astronomy | High | M | `src/lib/astroCalculations.ts:134,136` | Mercury is `sunL + sin(d*0.04°)*15`; Venus is `sunL + cos(d*0.03°)*22`. These are arbitrary wobbles: the implied periods are ~24.6 and ~32.9 years against true synodic periods of 116 and 584 days, and the amplitudes (15°, 22°) do not match true maximum elongations (~28°, ~47°). | Mercury and Venus positions are invented. Any reading involving them is meaningless. |
+| DOM-02 | Astronomy | High | M | `src/lib/astroCalculations.ts:153` | `ascendantLong = (sunL + hour * 15) % 360`. The real ascendant requires local sidereal time, observer **latitude**, and obliquity. Latitude is never used. | Line 162 derives every house placement from this, so all 12 house assignments are wrong for every chart — and identical for Oslo and Nairobi. |
+| DOM-03 | Astronomy | High | M | `src/lib/astroCalculations.ts:116` | `new Date(\`${date}T${time}:00\`)` has no timezone designator, so it parses in the **viewer's** local zone, and is then read back with `getUTC*`. No timezone or geocoding library is in the dependency tree. | The same birth data yields different charts on different machines. Silently invalidates every result. |
+| DOM-04 | Astronomy | High | M | `src/lib/astroCalculations.ts:282-320` | `calculateAshtaKootaScore()` derives all 8 koota scores from `simpleHash(name + dob)` of both partners. Ashta Koota is a defined procedure over both Moon nakshatras. | Changing the spelling of a name changes the compatibility score. Presented to users as a Vedic /36 match with a recommendation. |
+| DOM-05 | Astronomy | High | S | `src/lib/astroCalculations.ts:241-277` | `calculateVimshottariDasha()` forces `moonNakshatraIndex = 3` whenever a date string is passed (`:246-247`), and returns **hardcoded** `startDate: '2023-04-12'` / `endDate: '2039-04-12'` regardless of input (`:272-273`). `progressPercent` is clamped to 15–90 (`:264`) so it always looks mid-period. | The dasha timeline is fixed output. Notably the `DASHA_LORDS` table at `:84-94` **is correct** (proper Vimshottari order, sums to 120 years) — the table is right and simply unused. |
+| DOM-06 | Astronomy | High | S | `src/lib/astroCalculations.ts:145,149,150` and `:142-150` | Retrograde is hardcoded: Mercury `retro: true` always; Venus/Mars/Jupiter/Saturn `false` always. Daily speeds are constant display strings (`'+0.98°/d'`). | Mercury is retrograde ~18% of the time, Saturn ~36%. Retrograde status drives interpretation, and it is fabricated. (Rahu/Ketu always-retrograde is correct.) |
+| QA-01 | Tooling | High | S | `tsconfig.json` | `"files": []` with only project `references`, and no `include` in any root tsconfig. So `pnpm typecheck` (`tsc -p tsconfig.json --noEmit`) compiles **zero files in `src/`** — it passes instantly and checks nothing. | The green typecheck in CI is meaningless. It is why BUG-01 shipped. Real error count in `src/` is currently unmeasured. |
+| QA-02 | CI | High | S | `.github/workflows/ci-testing-pipeline.yml` | The pipeline largely does not test. The accessibility job runs `node -e "console.log('✅ WCAG 2.1 AA … Verified Cleanly!')"`. The security job runs `git status` then echoes `"✅ Zero secrets tracked in version control repository!"` — which is **false** (SEC-01). The Playwright job installs browsers and uploads a report but never runs `playwright test`. Build steps use `pnpm --filter @workspace/astro360`, but `package.json` declares `"name": "astro360"`, so the filter matches nothing. | Manufactures false confidence. Every job reports green while verifying nothing. |
+
+### Medium
+
+| ID | Area | Sev | Eff | Location | Finding | Why it matters |
+|----|------|-----|-----|----------|---------|----------------|
+| DOM-07 | Astronomy | Medium | M | `src/lib/astroCalculations.ts:131-138` | Sun, Moon, Mars, Jupiter, Saturn and Rahu use genuine **mean** longitudes with correct J2000 epochs and mean motions, but no equation of centre. Resulting error: ~±2° Sun, ~±6.3° Moon, ~±10.7° Mars. | A nakshatra is 13°20′, so a 6.3° Moon error frequently lands the Moon in the wrong nakshatra — the anchor for dasha and matching. The method is sound but under-implemented. |
+| DOM-08 | Astronomy | Medium | M | `src/lib/ephemeris/*` | `planetaryPositions.ts:10-37` — `calculateKeplerianElements`, `calculateVSOP87`, `getTrueNode`, `getMeanNode` all return zeroes. `houseCalculation.ts:9-15` ignores both its `system` and `mcDeg` arguments and always returns equal houses, so 'placidus'/'koch'/'regiomontanus' are labels over identical output. `eclipseEngine.ts:9-19` emits a `solar_partial` every 180 days at phase 0.5. `fixedStars.ts:9-23` returns precession-only longitude, latitude 0, magnitude 1 for any star name. | Currently harmless because nothing imports these — but they read as a working ephemeris and invite reuse. `aspectCalculation.ts` is the exception and is **correct** (sound orbs; correct Vedic drishti for Jupiter 5/7/9, Mars 4/7/8, Saturn 3/7/10). |
+| DOM-09 | Astronomy | Medium | S | `src/lib/astroCalculations.ts:228-230` | `karana: 'Bava Karana'`, `abhijitMuhurta: '11:48 AM - 12:36 PM'`, `rahuKalam: '04:30 PM - 06:00 PM'` are constants. Rahu Kalam depends on weekday plus local sunrise/sunset. | Static strings presented as daily panchang. The surrounding tithi/yoga/illumination **methods are correct** (12° per tithi; `(1-cos)*50`). |
+| DOM-10 | Astronomy | Medium | S | `src/components/BirthChartGenerator.tsx:26` | `estimatedOffset` is the fixed string `'+4 Minutes Shift Suggested (Confidence 94%)'`. | A fabricated 94% confidence figure in the Birth Time Rectification tab. |
+| ARCH-01 | Routing | Medium | L | `src/App.tsx` | 133 `activeTab === ` branches instead of routes; `wouter` installed but unused. | No deep links, no back button, no shareable URLs, nothing indexable. Blocks SEO and sharing — both growth-critical for this product. |
+| PERF-01 | Bundle | Medium | M | codebase-wide | Zero `React.lazy`, zero dynamic `import()`. All ~60 feature modules, `recharts`, and the animation stack load eagerly in one chunk across 51.8k lines. | Large single bundle; slow first paint, worst on the mid-range Android likely to dominate this audience. Bundle size **not measured** — see §3. |
+| ARCH-02 | Deps | Medium | S | `package.json` | Unused: `@tanstack/react-query` (0 files), `zod` (0 files), `wouter` (0), `nodemailer` (0). Duplicated: both `framer-motion` (2 files) and `motion/react` (106). `react-hook-form` used in 1 file. | `zod` unused means there is **no runtime validation** on any API boundary or form. Dead weight and a misleading dependency list. |
+| ARCH-03 | Dead code | Medium | M | `src/components/`, `src/lib/` | 13 of 90 top-level components are never imported, including `Dashboard`, `Universe3DCanvas` (740 lines), `AstroRemedialGemstoneEngine` (794), `IslamicGuidanceEngine`. Plus the ~2,059-line unreachable engine tree (DOM-08). | Roughly 3–4k lines of orphaned code, and two competing astrology implementations where the better-structured one is the dead one. |
+| QA-03 | Tests | Medium | L | `src/**/*.test.ts`, `e2e/`, `cypress/` | No test runner installed (no vitest/jest). 13 test files hold 3 `it()`/`test()` cases total. `playwright.config.ts`, `cypress.config.ts` and `backstop.json` exist with no corresponding dependency or script. | Effectively zero automated coverage, including on the payment path. |
+| A11Y-01 | Accessibility | Medium | M | `src/` | 32 `aria-*` attributes across 263 files; one `prefers-reduced-motion` reference against heavy `motion/react` use in 106 files. `docs/AccessibilityReport.md` and the CI job both assert WCAG 2.1 AA. | The AA claim is unsupported. Reduced-motion is essentially unhandled on an animation-dense UI. |
+| BUG-02 | Correctness | Medium | S | `src/lib/astroCalculations.ts:157,180` | A local `degreeDecimal` (0–30, within-sign) is computed at `:157` and used for display, but the returned field `degreeDecimal` is assigned `p.long` (0–360). | Display is right; the field contradicts its name. `calculatePanchang` at `:204` depends on the 0–360 reading, so it is correct only by accident. A latent trap for any new consumer. |
+| BUG-03 | Types | Medium | S | `src/App.tsx:441,632` | `Property 'icon' does not exist on type 'CategoryInfo'`; props object not assignable to `TraditionViewProps`. | Real type errors, invisible because of QA-01. |
+
+### Low
+
+| ID | Area | Sev | Eff | Location | Finding |
+|----|------|-----|-----|----------|---------|
+| CFG-01 | Config | Low | S | `package.json` | `react`, `react-dom` and the entire `@radix-ui/*` set are in `devDependencies`. Works under Vercel's default install, but breaks any `--production` install and misrepresents the runtime surface. |
+| CFG-02 | Config | Low | S | `tsconfig.base.json` | `strict` is not enabled. `strictNullChecks`/`noImplicitAny` are on, but `strictFunctionTypes: false`, `noImplicitOverride: false`, `noUnusedLocals: false`, and `noUncheckedIndexedAccess` is absent — notable given the heavy array indexing in the engines. |
+| HYG-01 | Hygiene | Low | S | repo root | `artifacts/` (83 files) and `.vercel/` (2) are tracked. ~9 root markdown audits plus 21 in `docs/` — many contradicted above. `edit.py`, `edit2.py`, `tsconfig.tsbuildinfo` sit in the root. |
+| DOM-11 | Astronomy | Low | S | `src/lib/astroCalculations.ts:101` | `fracYear = year + month/12 + day/365.25` double-counts the month term. Sub-degree impact on ayanamsha only. |
+| CFG-03 | Config | Low | S | `src/components/BirthChartGenerator.tsx:26-33` vs `astroCalculations.ts:99-109` | Two independent ayanamsha sources: a correct date-dependent `calculateAyanamsha()` (Lahiri 23.85° at J2000, 0.01397°/yr — both accurate) and a hardcoded table in the component (`lahiri: 24.178`) which is what actually gets used. |
+
+### What is genuinely solid
+
+Worth stating, because it is real and should be preserved: the `DASHA_LORDS` Vimshottari table
+(`astroCalculations.ts:84-94`) is correct and complete. `calculateAyanamsha()` uses accurate
+Lahiri constants. Nakshatra and pada boundary math (`:164-166`) is correct. Tithi, yoga and
+moon-illumination formulae in `calculatePanchang()` are the right methods. The Julian Day
+routine (`:123-126`) is the standard Fliegel–Van Flandern algorithm, correctly implemented
+including the noon epoch offset. `ephemeris/aspectCalculation.ts` is correct throughout,
+including Vedic special aspects. `api/proxy.ts` has the right *shape* for protecting
+credentials. `pnpm-workspace.yaml` sets `minimumReleaseAge: 1440` — genuinely good
+supply-chain hygiene that most projects lack. The shadcn/Radix layer in `src/components/ui/`
+is a solid, accessible foundation. The domain knowledge encoded in `src/data/` is real
+reference data, not fabricated results.
+
+The pattern across this codebase is not incompetence — it is a correct outer shell with the
+load-bearing centre left unimplemented, then documented as finished.
+
+---
+
+## 3. Could not determine
+
+- **Bundle size and build success.** `vite build` could not run: `node_modules` was installed
+  on Windows and pnpm's symlinks do not resolve from the Linux sandbox (`Cannot find package
+  'esbuild'`). PERF-01 is therefore reasoned from source, **not measured**. Needs `pnpm build`
+  on your machine.
+- **Real type-error count in `src/`.** Forcing `tsc` over `src/` produced 14,866 errors, but
+  ~14,000 are `TS7026`/`TS2307`/`TS2875` cascading from the same unresolvable `node_modules`.
+  Only the module-independent errors (BUG-01, BUG-03) are confirmed. The true count is unknown
+  until QA-01 is fixed and `tsc` runs locally.
+- **Whether the deployed site currently crashes.** BUG-01 is confirmed in source; I could not
+  load `astro.tarikislam.in` (no network egress) to see whether that code path renders in prod.
+- **Whether the leaked credentials are still live.** I did not test them — deliberately. Assume
+  compromised.
+- **`npm audit` / CVE status.** Requires registry access.
+- **Runtime behaviour generally.** No dev server, so loading states, error states, empty states,
+  responsive behaviour and keyboard navigation were assessed from source only.
+- **InsForge and `api/astrology.ts` backends.** Whether the InsForge project still exists, what
+  its schema and row-level security look like, and what `api/astrology.ts` talks to, cannot be
+  established from the repo. No schema, migrations or RLS policies are committed — so the data
+  layer, including auth storage, is entirely unaudited.
+- **Whether `dist/public` matches `vercel.json`.** Unverified without a build.
+
+---
+
+## 4. Recommended order
+
+Reasoning rather than prescription — confirm or reorder before Phase 2 begins.
+
+1. **WS-1 · Credential rotation and secret purge (SEC-01, SEC-04).** First because it is the
+   only finding where delay increases damage, and rotation is manual work only you can do.
+2. **WS-2 · Stop the crash and make the compiler work (BUG-01, QA-01, BUG-03, QA-02).** Small,
+   self-contained, and it turns the type checker into a real net so later phases are safe.
+3. **WS-3 · Make payments honest (SEC-02, SEC-03, SEC-05, SEC-06, SEC-07).** Real
+   server-side verification, webhook signatures, server-held entitlements.
+4. **WS-4 · Real astronomy (DOM-01/02/03/06/07).** Meeus algorithms in plain TypeScript —
+   no new dependencies, so it works despite the sandbox's blocked network.
+5. **WS-5 · Honest domain output (DOM-04/05/09/10).** Real Ashta Koota and dasha; delete
+   fabricated confidence figures.
+6. **WS-6 · Routing and code splitting (ARCH-01, PERF-01).** Unlocks sharing and SEO.
+7. **WS-7 · Dead code, deps, docs, accessibility (ARCH-02/03, A11Y-01, HYG-01, QA-03).**
+
+One caveat on sequencing: WS-4 and WS-5 change what every reading in the app says. If real
+users are relying on current output, that transition needs thinking about — it is a product
+decision, not just a code one.

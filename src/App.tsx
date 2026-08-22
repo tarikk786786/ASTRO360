@@ -10,7 +10,6 @@ import { TRADITIONS, CategoryInfo, TraditionGroup, UserProfile, GROUP_ICONS } fr
 import { useWalletStore } from './stores/walletStore';
 import CosmicIntelligenceCenter from './components/CosmicIntelligenceCenter';
 import LandingPage from './components/landing/LandingPage';
-import CosmicWalletModal from './components/CosmicWalletModal';
 import AstrologyChat from './components/AstrologyChat';
 import TraditionView from './components/TraditionView';
 import Onboarding from './components/Onboarding';
@@ -34,10 +33,8 @@ import BhagavadGitaSuite from './components/BhagavadGitaSuite';
 import AstrologyControlCenter from './components/AstrologyControlCenter';
 import CommunityConsultationHub from './components/CommunityConsultationHub';
 import ExecutivePDFDossier from './components/ExecutivePDFDossier';
-import AstrologyEarningsHub from './components/AstrologyEarningsHub';
 import Footer from './components/Footer';
 import AuthScreen from './components/AuthScreen';
-import CashfreePaymentModal from './components/CashfreePaymentModal';
 import DivisionalChartsSuite from './components/DivisionalChartsSuite';
 import BirthTimeRectificationSuite from './components/BirthTimeRectificationSuite';
 import GemstoneRudrakshaSuite from './components/GemstoneRudrakshaSuite';
@@ -137,9 +134,6 @@ export default function AppContent() {
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
-  const { getFormattedBalance } = useWalletStore();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [landingPreset, setLandingPreset] = useState<Partial<UserProfile> | undefined>(undefined);
 
@@ -361,7 +355,6 @@ export default function AppContent() {
                   <button onClick={() => navigateTo('problem-solver')} className={`sidebar-item ${activeTab === 'problem-solver' ? 'sidebar-item-active' : ''}`}><Zap className="w-4 h-4" /><span>Interactive Tools</span></button>
                   <button onClick={() => navigateTo('spiritual-traditions')} className={`sidebar-item ${activeTab === 'spiritual-traditions' ? 'sidebar-item-active' : ''}`}><ShieldCheck className="w-4 h-4" /><span>Spiritual Beliefs</span></button>
                   <button onClick={() => navigateTo('consultation-hub')} className={`sidebar-item ${activeTab === 'consultation-hub' ? 'sidebar-item-active' : ''}`}><Users className="w-4 h-4" /><span>Consultations</span></button>
-                  <button onClick={() => navigateTo('earnings-hub')} className={`sidebar-item ${activeTab === 'earnings-hub' ? 'sidebar-item-active' : ''}`}><DollarSign className="w-4 h-4 text-emerald-400" /><span>Business & Earnings</span></button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -508,23 +501,11 @@ export default function AppContent() {
             </div>
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <button
-              onClick={() => setIsWalletModalOpen(true)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-semibold font-mono shadow-[0_0_10px_rgba(16,185,129,0.1)] transition-all cursor-pointer active:scale-95"
-              title="Cosmic Wallet & Credits"
-            >
-              <Wallet className="w-3.5 h-3.5" />
-              <span>{getFormattedBalance()}</span>
-              <span className="text-[10px] bg-emerald-500/20 px-1 rounded text-emerald-300 font-sans font-bold">+</span>
-            </button>
-            <button
-              onClick={() => setIsPaymentModalOpen(true)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-[#C9A86A]/20 to-[#DFBF7A]/20 hover:from-[#C9A86A]/30 hover:to-[#DFBF7A]/30 border border-[#C9A86A]/40 text-[#C9A86A] text-xs font-semibold shadow-[0_0_12px_rgba(201,168,106,0.15)] transition-all cursor-pointer active:scale-95"
-              title="Cosmic Store & Pricing"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Store</span>
-            </button>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold font-mono shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-[#C9A86A]" />
+              <span className="hidden sm:inline">100% Free Pro Access</span>
+              <span className="sm:hidden">Free</span>
+            </div>
             <button
               onClick={() => setIsCommandPaletteOpen(true)}
               className="flex items-center gap-2 p-2 sm:px-3 sm:py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-slate-400 hover:text-white hover:border-white/[0.12] transition-all text-xs active:scale-95"
@@ -595,7 +576,6 @@ export default function AppContent() {
                   {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
                   {activeTab === 'spiritual-traditions' && <SpiritualTraditionsSuite userProfile={userProfile} />}
                   {activeTab === 'consultation-hub' && <CommunityConsultationHub />}
-                  {(activeTab === 'earnings-hub' || activeTab === 'monetization') && <AstrologyEarningsHub userProfile={userProfile} />}
                   {activeTab === 'divisional-charts' && <DivisionalChartsSuite planetPositions={[]} />}
                   {activeTab === 'btr-suite' && <BirthTimeRectificationSuite />}
                   {activeTab === 'gemstone-suite' && <GemstoneRudrakshaSuite />}
@@ -840,20 +820,6 @@ export default function AppContent() {
         isOpen={isCommandPaletteOpen}
         onClose={() => setIsCommandPaletteOpen(false)}
         onNavigate={navigateTo}
-      />
-
-      {/* Cashfree Cosmic Store & Payment Modal */}
-      <CashfreePaymentModal
-        isOpen={isPaymentModalOpen}
-        onClose={() => setIsPaymentModalOpen(false)}
-        userProfile={userProfile}
-      />
-
-      {/* Cosmic Wallet & Recharge Modal */}
-      <CosmicWalletModal
-        isOpen={isWalletModalOpen}
-        onClose={() => setIsWalletModalOpen(false)}
-        userProfile={userProfile}
       />
 
       {/* Sonner Toast Provider */}
