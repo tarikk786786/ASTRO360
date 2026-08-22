@@ -1,0 +1,31 @@
+{
+  // Type-checks the actual application: src/ (browser) and api/ (serverless).
+  //
+  // WHY THIS FILE EXISTS: the root tsconfig.json declares `"files": []` with only
+  // project references and no `include`. That is correct for a solution-style root
+  // config, but it means `tsc -p tsconfig.json` compiles ZERO files under src/.
+  // The `typecheck` script therefore passed instantly while checking nothing —
+  // which is how 16 undefined identifiers in App.tsx reached production.
+  //
+  // Strictness is deliberately left at the tsconfig.base.json level rather than
+  // being raised here. Turning on `strict`, `noUncheckedIndexedAccess` and
+  // `strictFunctionTypes` at the same time as enabling checking at all would bury
+  // the real errors under thousands of new ones. Tighten incrementally once this
+  // config reports clean — see docs/hardening/PLAN.md.
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "lib": ["es2022", "dom", "dom.iterable"],
+    // vite/client supplies import.meta.env typing; node supplies process.env for api/.
+    "types": ["node", "vite/client"],
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts", "api/**/*.ts"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
+}
