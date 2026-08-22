@@ -68,6 +68,7 @@ import CosmicChartAnalytics from './components/CosmicChartAnalytics';
 import AstrologyLearningHub from './components/AstrologyLearningHub';
 import ExecutiveReportGenerator from './components/ExecutiveReportGenerator';
 import AdminAnalyticsDashboard from './components/AdminAnalyticsDashboard';
+import CosmicStudioSuite from './components/CosmicStudioSuite';
 import CosmicLeafletMap from './components/CosmicLeafletMap';
 import CosmicParticleBackground from './components/CosmicParticleBackground';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -350,6 +351,10 @@ export default function AppContent() {
             <button onClick={() => navigateTo('birth-chart')} className={`sidebar-item ${activeTab === 'birth-chart' ? 'sidebar-item-active' : ''}`}>
               <Compass className="w-4 h-4" />
               <span>Birth Chart</span>
+            </button>
+            <button onClick={() => navigateTo('studio')} className={`sidebar-item ${activeTab === 'studio' ? 'sidebar-item-active' : ''}`}>
+              <Sparkles className="w-4 h-4 text-[#C9A86A]" />
+              <span className="font-semibold text-[#C9A86A]">Cosmic Studio</span>
             </button>
             <button onClick={() => navigateTo('chat')} className={`sidebar-item ${activeTab === 'chat' ? 'sidebar-item-active' : ''}`}>
               <MessageCircle className="w-4 h-4" />
@@ -674,6 +679,7 @@ export default function AppContent() {
                   {activeTab === 'report-generator' && <ExecutiveReportGenerator />}
                   {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
                   {activeTab === 'control-center' && <AstrologyControlCenter />}
+                  {activeTab === 'studio' && <CosmicStudioSuite userProfile={userProfile} />}
                   {activeTab === 'horoscope' && <PremiumHoroscopeEngine userProfile={userProfile} />}
                   {(activeTab === 'compatibility' || activeTab === 'ashta-koota') && <AstroSynastryMatchmaker userProfile={userProfile} />}
                   {activeTab === 'islamic-suite' && <UnifiedIslamicSuite userProfile={userProfile} />}

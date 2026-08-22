@@ -21,13 +21,30 @@ function runAstroCalculationsTests() {
   }
 
   positions.forEach(p => {
+    // `degreeDecimal` is a FULL zodiacal longitude in [0, 360) — not degrees within
+    // the sign, despite the name. All 12 consumers (chart-wheel angles, aspect
+    // separations, nakshatra division) depend on the 0–360 range, so this is the
+    // intended semantic. The `degree` string carries the within-sign value.
+    //
     // `!(x >= 0 && x < 360)` rather than `x < 0 || x >= 360`: every comparison
     // against NaN is false, so the original form let NaN through as a pass.
     if (!(p.degreeDecimal >= 0 && p.degreeDecimal < 360)) {
-      throw new Error(`Test 2 Failed: Invalid planet degree ${p.degreeDecimal} for ${p.name}`);
+      throw new Error(`Test 2 Failed: Invalid planet longitude ${p.degreeDecimal} for ${p.name}`);
     }
-    if (!Number.isFinite(p.long)) {
-      throw new Error(`Test 2 Failed: non-finite longitude ${p.long} for ${p.name}`);
+
+    // Invariant: the human-readable `degree` string must agree with `degreeDecimal`
+    // reduced into its sign. This is what actually catches a drift between the two.
+    const m = /^(\d+)°\s*(\d+)'$/.exec(p.degree);
+    if (!m) {
+      throw new Error(`Test 2 Failed: unparseable degree string "${p.degree}" for ${p.name}`);
+    }
+    const fromString = Number(m[1]) + Number(m[2]) / 60;
+    const withinSign = p.degreeDecimal % 30;
+    if (Math.abs(fromString - withinSign) > 1 / 60) {
+      throw new Error(
+        `Test 2 Failed: ${p.name} degree string "${p.degree}" (${fromString.toFixed(4)}°) ` +
+        `disagrees with degreeDecimal % 30 (${withinSign.toFixed(4)}°)`
+      );
     }
   });
 
