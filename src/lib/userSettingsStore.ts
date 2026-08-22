@@ -42,13 +42,13 @@ export class UserSettingsStore {
     try {
       const config = GlobalConfigManager.getConfig();
       return {
-        zodiacSystem: config.zodiacSystem,
-        ayanamsaMode: config.ayanamsaMode,
-        houseSystem: config.houseSystem,
+        zodiacSystem: config.zodiacSystem as any,
+        ayanamsaMode: config.ayanamsaMode as any,
+        houseSystem: config.houseSystem as any,
         aspectMaxOrb: config.aspectMaxOrb,
-        dashaSystem: config.dashaSystem,
+        dashaSystem: config.dashaSystem as any,
         preferredLanguage: config.language,
-        themeMode: config.themeMode,
+        themeMode: config.themeMode as any,
       };
     } catch {
       return DEFAULT_USER_SETTINGS;

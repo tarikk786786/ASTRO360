@@ -12,6 +12,9 @@ interface PrayerTimings {
   Isha: string;
   Imsak: string;
   Midnight: string;
+  Sunset?: string;
+  Firstthird?: string;
+  Lastthird?: string;
 }
 
 interface HijriDate {

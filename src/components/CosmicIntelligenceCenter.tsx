@@ -61,7 +61,6 @@ import PanchangDeitiesEngine from './PanchangDeitiesEngine';
 import CosmicCompassVisualizer from './CosmicCompassVisualizer';
 import AstroCartographyMatrix from './AstroCartographyMatrix';
 import TarikIslamCosmicPassport from './TarikIslamCosmicPassport';
-import DashboardSidebar from './ui/DashboardSidebar';
 import { useGlobalConfig } from '../context/GlobalConfigContext';
 import { fadeInUp, staggerContainer, staggerItem, scaleIn, cardHoverProps, buttonPressProps } from '../lib/animationPresets';
 
@@ -232,7 +231,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
   const [targetProfile, setTargetProfile] = useState<AstrologyTargetProfile>({
     targetType: 'self',
     name: userProfile.name || 'Seeker',
-    gender: userProfile.gender || 'universal',
+    gender: (userProfile.gender as any) || 'universal',
     dob: userProfile.dob || '2000-01-01',
     time: userProfile.time || '12:00',
     location: userProfile.location || 'Local Birth Coordinates',
@@ -560,17 +559,18 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
     const houseData = SUN_HOUSE_DIAGNOSTICS[sunHouseNum] || SUN_HOUSE_DIAGNOSTICS[1];
     const mahadashaDesc = MAHADASHA_DIAGNOSTICS[dashaInfo.mahadasha] || MAHADASHA_DIAGNOSTICS['Jupiter'];
 
+    const religionViewStr = String(selectedReligionView);
     let religionSolution = `${houseData.solution} Maintain daily solar discipline and align actions with ${dashaInfo.mahadasha} energy.`;
     
-    if (selectedReligionView === 'islamic') {
+    if (religionViewStr === 'islamic') {
       religionSolution = `🕌 Islamic Guidance: Recite Ayatul Kursi & Surah Ash-Sharh for clarity. Give Sadaqah on Friday and maintain morning Adhkar for divine protection and Barakah in income.`;
-    } else if (selectedReligionView === 'vedic') {
+    } else if (religionViewStr === 'vedic') {
       religionSolution = `🕉️ Vedic Remedy: Offer Surya Arghya at sunrise with copper vessel. Wear Yellow Sapphire (Pukhraj) / Ruby based on Lagna Lord, and chant ${dashaInfo.mahadasha} Gayatri Mantra (108x).`;
-    } else if (selectedReligionView === 'western') {
+    } else if (religionViewStr === 'western') {
       religionSolution = `⭐ Western Insight: Invoke Archangel Michael for spiritual courage. Work with Golden Citrine crystal to amplify solar 10th house executive focus and alignment.`;
-    } else if (selectedReligionView === 'chinese') {
+    } else if (religionViewStr === 'chinese') {
       religionSolution = `☯️ BaZi & Feng Shui: Balance Fire (火) and Earth (土) elements in South-East sector. Place Wu Lou or jade ornament to harmonize Qi and stimulate career luck.`;
-    } else if (selectedReligionView === 'kabbalah') {
+    } else if (religionViewStr === 'kabbalah') {
       religionSolution = `✡️ Kabbalistic Focus: Align with Tiphereth (Heart Sun Center). Recite Psalm 91 and meditate on YHVH Eloah Va-Daath for spiritual elevation and peace.`;
     }
 

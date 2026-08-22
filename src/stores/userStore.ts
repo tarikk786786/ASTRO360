@@ -13,11 +13,12 @@ interface UserState {
 const DEFAULT_PROFILE: UserProfile = {
   name: '',
   email: '',
+  gender: 'universal',
   dob: '',
   time: '',
   location: '',
   preferredSystem: 'Vedic',
-  experienceMode: 'explorer',
+  experienceMode: 'normal',
   careerGoal: '',
   relationshipStatus: 'Single',
   primaryLifeFocus: 'Spiritual Growth',

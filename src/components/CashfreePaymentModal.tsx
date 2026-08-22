@@ -121,8 +121,8 @@ export default function CashfreePaymentModal({
     if (selectedItem.category === 'report') {
       const report = generateAstrologicalReportContent(
         customerName,
-        userProfile?.birthDate || '1995-08-15',
-        userProfile?.birthPlace || 'New Delhi, India',
+        userProfile?.dob || '1995-08-15',
+        userProfile?.location || 'New Delhi, India',
         selectedItem
       );
       setGeneratedReportText(report);
