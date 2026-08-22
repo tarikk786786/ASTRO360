@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
-import { Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, Users, Globe2, Bell, Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon, Zap, Wrench, DollarSign, Wallet } from 'lucide-react';
+import { Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, Users, Globe2, Bell, Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon, Zap, Wrench, DollarSign, Wallet, ArrowLeft, Home } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TRADITIONS, CategoryInfo, TraditionGroup, UserProfile, GROUP_ICONS } from './types';
 import { useWalletStore } from './stores/walletStore';
@@ -307,6 +307,23 @@ export default function AppContent() {
         </div>
 
         <nav className="flex-1 overflow-y-auto custom-scrollbar px-3 py-4 space-y-5">
+          {/* Back to Home / Landing Button */}
+          <div className="pb-1">
+            <button
+              onClick={() => navigateTo('landing')}
+              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
+                activeTab === 'landing'
+                  ? 'bg-[#C9A86A] text-[#070A12] border-[#C9A86A] shadow-md'
+                  : 'bg-white/[0.04] text-[#C9A86A] border-[#C9A86A]/30 hover:bg-[#C9A86A] hover:text-[#070A12]'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Home className="w-4 h-4" />
+                <span>← Back to Landing Page</span>
+              </div>
+            </button>
+          </div>
+
           {/* PRIMARY HUB */}
           <div className="space-y-0.5">
             <button onClick={() => navigateTo('dashboard')} className={`sidebar-item ${activeTab === 'dashboard' ? 'sidebar-item-active' : ''}`}>
@@ -328,10 +345,6 @@ export default function AppContent() {
             <button onClick={() => navigateTo('chat')} className={`sidebar-item ${activeTab === 'chat' ? 'sidebar-item-active' : ''}`}>
               <MessageCircle className="w-4 h-4" />
               <span>AI Oracle</span>
-            </button>
-            <button onClick={() => navigateTo('landing')} className={`sidebar-item ${activeTab === 'landing' ? 'sidebar-item-active' : ''}`}>
-              <Globe className="w-4 h-4" />
-              <span>Product Overview</span>
             </button>
           </div>
 
@@ -488,16 +501,50 @@ export default function AppContent() {
       <main className="flex-1 min-w-0 w-full relative z-10 flex flex-col h-[100dvh] overflow-hidden">
         {/* Top Bar */}
         <header className="h-14 border-b border-white/[0.04] bg-[#090d16]/90 backdrop-blur-2xl flex items-center justify-between px-3 sm:px-5 flex-shrink-0">
-          <div className="flex items-center gap-2.5 min-w-0">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <button 
-              className="md:hidden text-slate-400 hover:text-white p-2 rounded-xl hover:bg-white/[0.05] transition-colors shrink-0 active:scale-95" 
+              className="md:hidden text-slate-400 hover:text-white p-2 rounded-xl hover:bg-white/[0.05] transition-colors shrink-0 active:scale-95 cursor-pointer" 
               onClick={() => setIsSidebarOpen(true)}
               aria-label="Open Navigation Sidebar"
             >
               <Menu className="w-5 h-5" />
             </button>
+
+            {/* Prominent Back to Home / Landing Button */}
+            {activeTab !== 'landing' ? (
+              <button
+                onClick={() => navigateTo('landing')}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#C9A86A]/10 hover:bg-[#C9A86A] text-[#C9A86A] hover:text-[#070A12] border border-[#C9A86A]/30 hover:border-[#C9A86A] transition-all text-xs font-bold shrink-0 cursor-pointer shadow-sm active:scale-95"
+                title="Return to Landing Page"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Home</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => navigateTo('dashboard')}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-[#C9A86A] text-slate-300 hover:text-[#070A12] border border-white/[0.08] hover:border-[#C9A86A] transition-all text-xs font-semibold shrink-0 cursor-pointer shadow-sm active:scale-95"
+                title="Enter Studio Dashboard"
+              >
+                <LayoutDashboard className="w-3.5 h-3.5 text-[#C9A86A]" />
+                <span>Dashboard</span>
+              </button>
+            )}
+
+            {/* Jump to Dashboard button when deep in other tools */}
+            {activeTab !== 'landing' && activeTab !== 'dashboard' && (
+              <button
+                onClick={() => navigateTo('dashboard')}
+                className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.06] transition-all text-xs font-medium shrink-0 cursor-pointer"
+                title="Jump to Dashboard"
+              >
+                <LayoutDashboard className="w-3.5 h-3.5 text-slate-400" />
+                <span>Dashboard</span>
+              </button>
+            )}
+
             <div className="flex items-center gap-2 min-w-0">
-              <h1 className="text-xs sm:text-sm font-semibold text-slate-200 tracking-tight truncate max-w-[180px] sm:max-w-xs md:max-w-md">
+              <h1 className="text-xs sm:text-sm font-semibold text-slate-200 tracking-tight truncate max-w-[130px] sm:max-w-xs md:max-w-md">
                 {getPageTitle()}
               </h1>
             </div>
