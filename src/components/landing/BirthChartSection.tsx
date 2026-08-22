@@ -35,27 +35,24 @@ export default function BirthChartSection({ onExploreFullReading }: BirthChartSe
     e.preventDefault();
     if (!formData.dob || !formData.name) return;
 
-    setLoading(true);
-    setTimeout(() => {
-      // Perform genuine astronomical calculations
-      const dateObj = new Date(formData.dob);
-      const planets = calculatePlanetaryPositions(dateObj);
-      const panchang = calculatePanchang(dateObj);
+    // Perform genuine astronomical calculations immediately
+    const dateObj = new Date(formData.dob);
+    const planets = calculatePlanetaryPositions(dateObj);
+    const panchang = calculatePanchang(dateObj);
 
-      const sun = planets.find((p) => p.name === 'Sun');
-      const moon = planets.find((p) => p.name === 'Moon');
-      const asc = planets.find((p) => p.name === 'Ascendant') || sun;
+    const sun = planets.find((p) => p.name === 'Sun');
+    const moon = planets.find((p) => p.name === 'Moon');
+    const asc = planets.find((p) => p.name === 'Ascendant') || sun;
 
-      setChartResult({
-        sunSign: sun ? `${sun.sign} (${sun.degrees.toFixed(1)}°)` : 'Aries 14.2°',
-        moonSign: moon ? `${moon.sign} (${moon.degrees.toFixed(1)}°)` : 'Taurus 08.4°',
-        ascendant: asc ? `${asc.sign} (${asc.degrees.toFixed(1)}°)` : 'Leo 02.1°',
-        nakshatra: panchang?.nakshatra?.name || 'Rohini',
-        element: 'Fire & Water Harmonic',
-      });
-      setIsCalculated(true);
-      setLoading(false);
-    }, 600);
+    setChartResult({
+      sunSign: sun ? `${sun.sign} (${sun.degrees.toFixed(1)}°)` : 'Aries 14.2°',
+      moonSign: moon ? `${moon.sign} (${moon.degrees.toFixed(1)}°)` : 'Taurus 08.4°',
+      ascendant: asc ? `${asc.sign} (${asc.degrees.toFixed(1)}°)` : 'Leo 02.1°',
+      nakshatra: panchang?.nakshatra?.name || 'Rohini',
+      element: 'Fire & Water Harmonic',
+    });
+    setIsCalculated(true);
+    setLoading(false);
   };
 
   return (

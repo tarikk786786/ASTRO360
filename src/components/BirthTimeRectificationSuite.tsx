@@ -35,18 +35,14 @@ export default function BirthTimeRectificationSuite() {
   };
 
   const handleRunRectification = () => {
-    setIsCalculating(true);
-    setTimeout(() => {
-      // Calculate rectified time based on Tattva Shodhana algorithm
-      const [h, m] = givenTime.split(':').map(Number);
-      const rectifiedMinutes = (m + 4) % 60;
-      const rectifiedSeconds = 18;
-      const formatted = `${String(h).padStart(2, '0')}:${String(rectifiedMinutes).padStart(2, '0')}:${String(rectifiedSeconds).padStart(2, '0')}`;
-      
-      setRectifiedTime(formatted);
-      setConfidenceScore(98.4);
-      setIsCalculating(false);
-    }, 1200);
+    const [h, m] = givenTime.split(':').map(Number);
+    const rectifiedMinutes = (m + 4) % 60;
+    const rectifiedSeconds = 18;
+    const formatted = `${String(h).padStart(2, '0')}:${String(rectifiedMinutes).padStart(2, '0')}:${String(rectifiedSeconds).padStart(2, '0')}`;
+    
+    setRectifiedTime(formatted);
+    setConfidenceScore(98.4);
+    setIsCalculating(false);
   };
 
   return (

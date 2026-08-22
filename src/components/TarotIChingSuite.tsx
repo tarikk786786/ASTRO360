@@ -38,17 +38,14 @@ export default function TarotIChingSuite() {
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
 
   const handleDrawSpread = () => {
-    setIsDrawing(true);
-    setTimeout(() => {
-      const drawn: TarotCard[] = [
-        { ...TAROT_DECK[0], position: 'Past' },
-        { ...TAROT_DECK[1], position: 'Present' },
-        { ...TAROT_DECK[2], position: 'Future' }
-      ];
-      setSpread(drawn);
-      setHexagram(ICHING_HEXAGRAMS[Math.floor(Math.random() * ICHING_HEXAGRAMS.length)]);
-      setIsDrawing(false);
-    }, 1000);
+    const drawn: TarotCard[] = [
+      { ...TAROT_DECK[0], position: 'Past' },
+      { ...TAROT_DECK[1], position: 'Present' },
+      { ...TAROT_DECK[2], position: 'Future' }
+    ];
+    setSpread(drawn);
+    setHexagram(ICHING_HEXAGRAMS[Math.floor(Math.random() * ICHING_HEXAGRAMS.length)]);
+    setIsDrawing(false);
   };
 
   return (

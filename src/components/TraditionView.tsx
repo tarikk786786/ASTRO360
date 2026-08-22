@@ -44,11 +44,8 @@ export default function TraditionView({
   const concepts = getConcepts(traditionGroup);
 
   const handleGenerateReport = () => {
-    setIsGenerating(true);
-    setTimeout(() => {
-      setGeneratedReport(`## Personalized ${traditionName} Report\n\n**Cosmic Group:** ${traditionGroup}\n\n### 1. Planetary & Archetypal Alignments\nYour birth signature resonates with the foundational tenets of ${traditionName}. Key planetary dynamics indicate high intuitive clarity and strong structural focus.\n\n### 2. Core Philosophy & Growth Guidance\n- **Primary Focus:** Harmonizing ${concepts[0]} with daily routine.\n- **Growth Axis:** Cultivating ${concepts[1]} to unlock long-term abundance.\n- **Spiritual Alignment:** Grounding in ${concepts[2]}.\n\n### 3. Practical Remedy & Action Plan\nFocus 20 minutes daily on quiet reflection, align major decisions with morning power hours, and practice conscious gratitude.`);
-      setIsGenerating(false);
-    }, 600);
+    setGeneratedReport(`## Personalized ${traditionName} Report\n\n**Cosmic Group:** ${traditionGroup}\n\n### 1. Planetary & Archetypal Alignments\nYour birth signature resonates with the foundational tenets of ${traditionName}. Key planetary dynamics indicate high intuitive clarity and strong structural focus.\n\n### 2. Core Philosophy & Growth Guidance\n- **Primary Focus:** Harmonizing ${concepts[0]} with daily routine.\n- **Growth Axis:** Cultivating ${concepts[1]} to unlock long-term abundance.\n- **Spiritual Alignment:** Grounding in ${concepts[2]}.\n\n### 3. Practical Remedy & Action Plan\nFocus 20 minutes daily on quiet reflection, align major decisions with morning power hours, and practice conscious gratitude.`);
+    setIsGenerating(false);
   };
 
   const handleAction = (tab: string) => {

@@ -79,15 +79,13 @@ export default function ExecutiveReportGenerator() {
   };
 
   const handleDownloadMD = () => {
-    setIsGenerating(true);
-    setTimeout(() => {
-      setIsGenerating(false);
-      const text = `# ASTRO360 OMNI — ${selectedReport.name.toUpperCase()}\n` +
-        `Subject: ${seekerName} | Location: ${seekerLocation} | Date: ${new Date().toLocaleDateString()}\n` +
-        `Sidereal Lahiri Ayanamsha: 24.2216° | Report Length: ${selectedReport.pages} Pages\n\n` +
-        `---\n\n` +
-        `## 1. EXECUTIVE SUMMARY & BLUEPRINT\n` +
-        `${selectedReport.description}\n\n` +
+    setIsGenerating(false);
+    const text = `# ASTRO360 OMNI — ${selectedReport.name.toUpperCase()}\n` +
+      `Subject: ${seekerName} | Location: ${seekerLocation} | Date: ${new Date().toLocaleDateString()}\n` +
+      `Sidereal Lahiri Ayanamsha: 24.2216° | Report Length: ${selectedReport.pages} Pages\n\n` +
+      `---\n\n` +
+      `## 1. EXECUTIVE SUMMARY & BLUEPRINT\n` +
+      `${selectedReport.description}\n\n` +
         `## 2. REPORT STRUCTURE & SECTIONS\n` +
         selectedReport.sections.map(s => `- ${s}`).join('\n') + `\n\n` +
         `## 3. PRESCRIBED SACRED REMEDIAL PROTOCOL\n` +
@@ -95,14 +93,13 @@ export default function ExecutiveReportGenerator() {
         `---\n` +
         `Verified by ASTRO360 Astronomical Engine • 100% Confidential Seeker Dossier`;
 
-      const blob = new Blob([text], { type: 'text/markdown' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `ASTRO360_${selectedReport.id.toUpperCase()}_Dossier.md`;
-      a.click();
-      toast.success(`Exported ${selectedReport.name} Dossier!`);
-    }, 800);
+    const blob = new Blob([text], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ASTRO360_${selectedReport.id.toUpperCase()}_Dossier.md`;
+    a.click();
+    toast.success(`Exported ${selectedReport.name} Dossier!`);
   };
 
   return (
