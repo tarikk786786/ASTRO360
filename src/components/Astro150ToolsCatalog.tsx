@@ -65,78 +65,77 @@ export default function Astro150ToolsCatalog({ userProfile, onNavigate, activeCa
 
   const handleRunLiveCalculation = () => {
     if (!selectedTool) return;
-    setIsLiveExecuting(true);
-    setTimeout(() => {
-      setIsLiveExecuting(false);
-      const toolId = selectedTool.id;
-      const cat = selectedTool.cat;
+    setIsLiveExecuting(false);
+    const toolId = selectedTool.id;
+    const cat = selectedTool.cat;
 
-      // Base default ephemeris data
-      let summaryText = `Exact calculation completed for ${selectedTool.name} under ${selectedAyanamsha.toUpperCase()} Ayanamsha for ${subjectName}. Planetary longitudes reflect strong alignment with active Dasa transits.`;
-      let remedyText = remedyPreference === 'gemstone'
-        ? 'Wear Natural Yellow Sapphire (5.25 Carat) or Pearl in Silver ring on Thursday morning.'
-        : remedyPreference === 'mantra'
-        ? 'Recite Vishnu Sahasranama or Om Namah Shivaya 108 times daily during Sunrise.'
-        : 'Perform Dana (Charity) of yellow grains / legumes on Thursdays and maintain positive intention.';
+    // Base default ephemeris data
+    let summaryText = `Exact calculation completed for ${selectedTool.name} under ${selectedAyanamsha.toUpperCase()} Ayanamsha for ${subjectName}. Planetary longitudes reflect strong alignment with active Dasa transits.`;
+    let remedyText = remedyPreference === 'gemstone'
+      ? 'Wear Natural Yellow Sapphire (5.25 Carat) or Pearl in Silver ring on Thursday morning.'
+      : remedyPreference === 'mantra'
+      ? 'Recite Vishnu Sahasranama or Om Namah Shivaya 108 times daily during Sunrise.'
+      : 'Perform Dana (Charity) of yellow grains / legumes on Thursdays and maintain positive intention.';
 
-      if (toolId === 'navamsa-d9') {
-        summaryText = `Navamsa D9 Spiritual & Soul Dignity Chart generated under ${selectedAyanamsha.toUpperCase()} Ayanamsha for ${subjectName}. Venus is Vargottama in Taurus D9, Jupiter is Exalted in Cancer D9 (11th House). Soul Dignity: Exceptional (92% Marital & Spiritual Harmony Index).`;
-        remedyText = 'Wear Natural Diamond/Zircon or White Sapphire on Friday morning during Venus Hora for marital grace.';
-      } else if (toolId === 'dasamsa-d10') {
-        summaryText = `Dasamsa D10 Executive Leadership & Career Chart computed under ${selectedHouseSystem.toUpperCase()} House System for ${subjectName}. 10th Lord Sun is placed in 1st House D10 with Mercury forming Budhaditya Yoga. Executive Power Index: 94% (Public Recognition & Business Authority Favored).`;
-        remedyText = 'Offer Surya Arghya daily at sunrise with a copper vessel and recite Aditya Hrudayam Stotram for career elevation.';
-      } else if (toolId.includes('stock') || toolId.includes('financial')) {
-        summaryText = `Financial & Market Astrology Transit Matrix evaluated for ${subjectName}. Bullish Market Correlation Score: 88%. Key Transit Aspect: Jupiter Trine Midheaven + Mercury Direct Motion favoring Tech & Metals.`;
-      } else if (toolId.includes('vastu') || toolId.includes('feng')) {
-        summaryText = `16-Zone Vastu Energy Compass Grid computed for ${subjectName}'s location. Northeast (Ishanya) Zone: 96% Harmonious. Southeast (Agneya Fire) Zone: Active (88% Balance).`;
-      }
+    if (toolId === 'navamsa-d9') {
+      summaryText = `Navamsa D9 Spiritual & Soul Dignity Chart generated under ${selectedAyanamsha.toUpperCase()} Ayanamsha for ${subjectName}. Venus is Vargottama in Taurus D9, Jupiter is Exalted in Cancer D9 (11th House). Soul Dignity: Exceptional (92% Marital & Spiritual Harmony Index).`;
+      remedyText = 'Wear Natural Diamond/Zircon or White Sapphire on Friday morning during Venus Hora for marital grace.';
+    } else if (toolId === 'dasamsa-d10') {
+      summaryText = `Dasamsa D10 Executive Leadership & Career Chart computed under ${selectedHouseSystem.toUpperCase()} House System for ${subjectName}. 10th Lord Sun is placed in 1st House D10 with Mercury forming Budhaditya Yoga. Executive Power Index: 94% (Public Recognition & Business Authority Favored).`;
+      remedyText = 'Offer Surya Arghya daily at sunrise with a copper vessel and recite Aditya Hrudayam Stotram for career elevation.';
+    } else if (toolId.includes('stock') || toolId.includes('financial')) {
+      summaryText = `Financial & Market Astrology Transit Matrix evaluated for ${subjectName}. Bullish Market Correlation Score: 88%. Key Transit Aspect: Jupiter Trine Midheaven + Mercury Direct Motion favoring Tech & Metals.`;
+    } else if (toolId.includes('vastu') || toolId.includes('feng')) {
+      summaryText = `16-Zone Vastu Energy Compass Grid computed for ${subjectName}'s location. Northeast (Ishanya) Zone: 96% Harmonious. Southeast (Agneya Fire) Zone: Active (88% Balance).`;
+    }
 
-      // Deterministic Astronomical Accuracy Calculation derived from name & ayanamsha
-      const nameCode = subjectName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-      const ayanamshaBonus = selectedAyanamsha === 'lahiri' ? 5 : selectedAyanamsha === 'kp' ? 4 : 3;
-      const calculatedAccuracy = 91 + (nameCode % 8) + (ayanamshaBonus % 2);
+    // Deterministic Astronomical Accuracy Calculation derived from name & ayanamsha
+    const nameCode = subjectName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const ayanamshaBonus = selectedAyanamsha === 'lahiri' ? 5 : selectedAyanamsha === 'kp' ? 4 : 3;
+    const calculatedAccuracy = 91 + (nameCode % 8) + (ayanamshaBonus % 2);
 
-      setLiveEngineOutput({
-        accuracy: Math.min(calculatedAccuracy, 99),
-        ascendant: 'Virgo (Kanya) 18° 42\'',
-        moonSign: 'Aquarius (Kumbha) 14° 12\'',
-        nakshatra: 'Shatabhisha (Pada 3)',
-        dasaPeriod: 'Jupiter-Saturn Dasa (Active)',
-        planets: [
-          { name: 'Sun ☉', pos: '00° 24\' Gemini', nak: 'Mrigashira', house: 10, status: 'Strong Dignity' },
-          { name: 'Moon ☽', pos: '14° 12\' Aquarius', nak: 'Shatabhisha', house: 6, status: 'Friendly' },
-          { name: 'Mars ♂', pos: '22° 15\' Aries', nak: 'Bharani', house: 8, status: 'Own House (Moolatrikona)' },
-          { name: 'Mercury ☿', pos: '11° 04\' Gemini', nak: 'Ardra', house: 10, status: 'Exalted / Swakshetra' },
-          { name: 'Jupiter ♃', pos: '05° 40\' Cancer', nak: 'Pushya', house: 11, status: 'Exalted' },
-          { name: 'Venus ♀', pos: '19° 50\' Taurus', nak: 'Rohini', house: 9, status: 'Own House' },
-          { name: 'Saturn ♄', pos: '02° 30\' Aquarius', nak: 'Dhanishta', house: 6, status: 'Own House' },
-        ],
-        summary: summaryText,
-        remedy: remedyText,
-        tarotCards: [
-          { title: 'The Star XVII', orientation: 'Upright', desc: 'Hope, inspiration, and divine guidance illuminative pathway.', icon: '⭐' },
-          { title: 'Wheel of Fortune X', orientation: 'Upright', desc: 'Karmic cycle shift toward unexpected prosperity.', icon: '☸️' },
-          { title: 'The Sun XIX', orientation: 'Upright', desc: 'Joy, radiant success, and absolute clarity of purpose.', icon: '☀️' }
-        ],
-        baziPillars: [
-          { pillar: 'Year Pillar', stem: 'Yang Earth (戊)', branch: 'Tiger (寅)', element: 'Wood / Earth' },
-          { pillar: 'Month Pillar', stem: 'Yin Metal (辛)', branch: 'Rooster (酉)', element: 'Metal' },
-          { pillar: 'Day Pillar (Self)', stem: 'Yang Water (壬)', branch: 'Dragon (辰)', element: 'Water / Earth' },
-          { pillar: 'Hour Pillar', stem: 'Yang Fire (丙)', branch: 'Horse (午)', element: 'Fire' }
-        ],
-        financialTrend: {
-          bullishScore: 88,
-          favorableSectors: ['Technology & AI', 'Precious Metals (Gold/Silver)', 'Renewable Energy'],
-          transitAspect: 'Jupiter Trine Midheaven + Mercury Direct Motion'
-        },
-        vastuZones: [
-          { zone: 'Northeast (Ishanya)', element: 'Water / Spirit', balance: 96, remedy: 'Keep clean, place water fountain or crystal pyramid.' },
-          { zone: 'Southeast (Agneya)', element: 'Fire (Agni)', balance: 88, remedy: 'Place electrical appliances or red candle.' },
-          { zone: 'Southwest (Nairitya)', element: 'Earth / Stability', balance: 92, remedy: 'Keep heavy furniture, master bedroom anchor.' },
-          { zone: 'Northwest (Vayavya)', element: 'Air / Motion', balance: 90, remedy: 'Ideal for guest room or trade inventory storage.' }
-        ]
-      });
-    }, 600);
+    setLiveEngineOutput({
+      accuracy: Math.min(calculatedAccuracy, 99),
+      ascendant: 'Virgo (Kanya) 18° 42\'',
+      moonSign: 'Aquarius (Kumbha) 14° 12\'',
+      nakshatra: 'Shatabhisha (Pada 3)',
+      dasaPeriod: 'Jupiter-Saturn Dasa (Active)',
+      planets: [
+        { name: 'Sun ☉', pos: '00° 24\' Gemini', nak: 'Mrigashira', house: 10, status: 'Strong Dignity' },
+        { name: 'Moon ☽', pos: '14° 12\' Aquarius', nak: 'Shatabhisha', house: 6, status: 'Friendly' },
+        { name: 'Mars ♂', pos: '22° 15\' Aries', nak: 'Bharani', house: 8, status: 'Own House (Moolatrikona)' },
+        { name: 'Mercury ☿', pos: '11° 04\' Gemini', nak: 'Ardra', house: 10, status: 'Exalted / Swakshetra' },
+        { name: 'Jupiter ♃', pos: '05° 40\' Cancer', nak: 'Pushya', house: 11, status: 'Exalted' },
+        { name: 'Venus ♀', pos: '28° 50\' Taurus', nak: 'Mrigashira', house: 9, status: 'Own House (Dhana Yoga)' },
+        { name: 'Saturn ♄', pos: '19° 33\' Aquarius', nak: 'Shatabhisha', house: 6, status: 'Moolatrikona (Sasa Yoga)' },
+        { name: 'Rahu ☊', pos: '04° 12\' Pisces', nak: 'Uttarabhadra', house: 7, status: 'Karmic Axis' },
+        { name: 'Ketu ☋', pos: '04° 12\' Virgo', nak: 'Uttaraphalguni', house: 1, status: 'Moksha Node' }
+      ],
+      summary: summaryText,
+      remedy: remedyText,
+      tarotCards: [
+        { title: 'The Star (XVII)', orientation: 'Upright', desc: 'Divine inspiration, spiritual hope and deep cosmic renewal.', icon: '⭐' },
+        { title: 'The Sun (XIX)', orientation: 'Upright', desc: 'Radiant vitality, breakthrough success and clear discernment.', icon: '☀️' },
+        { title: 'Wheel of Fortune (X)', orientation: 'Upright', desc: 'Auspicious karmic rotation and positive synchronicity.', icon: '☸️' }
+      ],
+      baziPillars: [
+        { pillar: 'Year Pillar', stem: 'Yang Wood (Jia)', branch: 'Dragon (Chen)', element: 'Wood / Earth' },
+        { pillar: 'Month Pillar', stem: 'Yin Fire (Ding)', branch: 'Horse (Wu)', element: 'Fire / Fire' },
+        { pillar: 'Day Master', stem: 'Yang Earth (Wu)', branch: 'Monkey (Shen)', element: 'Earth / Metal' },
+        { pillar: 'Hour Pillar', stem: 'Yin Metal (Xin)', branch: 'Ox (Chou)', element: 'Metal / Earth' }
+      ],
+      financialTrend: {
+        bullishScore: 88,
+        favorableSectors: ['AI & Semiconductors', 'Precious Metals', 'Renewable Energy', 'FinTech'],
+        transitAspect: 'Jupiter Trine Midheaven + Mercury Direct Motion'
+      },
+      vastuZones: [
+        { zone: 'Northeast (Ishanya)', element: 'Water / Spirit', balance: 96, remedy: 'Keep clean, place water fountain or crystal pyramid.' },
+        { zone: 'Southeast (Agneya)', element: 'Fire (Agni)', balance: 88, remedy: 'Place electrical appliances or red candle.' },
+        { zone: 'Southwest (Nairitya)', element: 'Earth / Stability', balance: 92, remedy: 'Keep heavy furniture, master bedroom anchor.' },
+        { zone: 'Northwest (Vayavya)', element: 'Air / Motion', balance: 90, remedy: 'Ideal for guest room or trade inventory storage.' }
+      ]
+    });
   };
 
   const toolCategories = [
