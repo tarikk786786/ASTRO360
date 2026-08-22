@@ -169,11 +169,13 @@ export default function AppContent() {
   }, [isMobile]);
 
   // Group traditions by TraditionGroup
-  const groupedTraditions = Object.values(TRADITIONS).reduce((acc, tradition) => {
-    if (!acc[tradition.group]) {
-      acc[tradition.group] = [];
+  const groupedTraditions = Object.values(TRADITIONS || {}).reduce((acc, tradition) => {
+    if (tradition && tradition.group) {
+      if (!acc[tradition.group]) {
+        acc[tradition.group] = [];
+      }
+      acc[tradition.group].push(tradition);
     }
-    acc[tradition.group].push(tradition);
     return acc;
   }, {} as Record<TraditionGroup, CategoryInfo[]>);
 
@@ -613,7 +615,9 @@ export default function AppContent() {
                   {activeTab === 'dream' && <DreamInterpretationEngine userProfile={userProfile} />}
                   {TRADITIONS[activeTab] && (
                     <TraditionView
+                      tradition={TRADITIONS[activeTab]}
                       category={TRADITIONS[activeTab]}
+                      onNavigate={navigateTo}
                       userProfile={userProfile}
                       onUpdateProfile={setUserProfile}
                     />

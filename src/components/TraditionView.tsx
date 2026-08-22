@@ -4,15 +4,30 @@ import { BookOpen, Star, Sparkles, MessageCircle, FileText, Compass, Globe2 } fr
 import type { CategoryInfo } from '../types';
 
 interface TraditionViewProps {
-  tradition: CategoryInfo;
+  tradition?: CategoryInfo;
+  category?: CategoryInfo;
   onNavigate?: (tab: string) => void;
+  userProfile?: any;
+  onUpdateProfile?: (profile: any) => void;
 }
 
-export default function TraditionView({ tradition, onNavigate }: TraditionViewProps) {
+export default function TraditionView({
+  tradition: traditionProp,
+  category: categoryProp,
+  onNavigate,
+}: TraditionViewProps) {
+  const tradition = traditionProp || categoryProp || {
+    id: 'vedic',
+    name: 'Vedic Jyotish',
+    group: 'Asian & Eastern',
+    description: 'Ancient Indian system of astrology focusing on karma, nakshatras, and planetary dashas.',
+    systems: ['D1-D60 Vargas', 'Vimshottari Dasha', 'Ashta Koota', 'Yogas & Remedies'],
+  };
+
   const [generatedReport, setGeneratedReport] = React.useState<string | null>(null);
   const [isGenerating, setIsGenerating] = React.useState(false);
 
-  const getConcepts = (group: string) => {
+  const getConcepts = (group?: string) => {
     switch (group) {
       case 'Asian & Eastern': return ['Karma & Rebirth', 'Elemental Balance', 'Cyclical Time'];
       case 'Western & European': return ['Planetary Influence', 'House System', 'Aspect Geometry'];
@@ -24,12 +39,14 @@ export default function TraditionView({ tradition, onNavigate }: TraditionViewPr
     }
   };
 
-  const concepts = getConcepts(tradition.group);
+  const traditionGroup = tradition?.group || 'Universal Astronomy';
+  const traditionName = tradition?.name || 'Cosmic Tradition';
+  const concepts = getConcepts(traditionGroup);
 
   const handleGenerateReport = () => {
     setIsGenerating(true);
     setTimeout(() => {
-      setGeneratedReport(`## Personalized ${tradition.name} Report\n\n**Cosmic Group:** ${tradition.group}\n\n### 1. Planetary & Archetypal Alignments\nYour birth signature resonates with the foundational tenets of ${tradition.name}. Key planetary dynamics indicate high intuitive clarity and strong structural focus.\n\n### 2. Core Philosophy & Growth Guidance\n- **Primary Focus:** Harmonizing ${concepts[0]} with daily routine.\n- **Growth Axis:** Cultivating ${concepts[1]} to unlock long-term abundance.\n- **Spiritual Alignment:** Grounding in ${concepts[2]}.\n\n### 3. Practical Remedy & Action Plan\nFocus 20 minutes daily on quiet reflection, align major decisions with morning power hours, and practice conscious gratitude.`);
+      setGeneratedReport(`## Personalized ${traditionName} Report\n\n**Cosmic Group:** ${traditionGroup}\n\n### 1. Planetary & Archetypal Alignments\nYour birth signature resonates with the foundational tenets of ${traditionName}. Key planetary dynamics indicate high intuitive clarity and strong structural focus.\n\n### 2. Core Philosophy & Growth Guidance\n- **Primary Focus:** Harmonizing ${concepts[0]} with daily routine.\n- **Growth Axis:** Cultivating ${concepts[1]} to unlock long-term abundance.\n- **Spiritual Alignment:** Grounding in ${concepts[2]}.\n\n### 3. Practical Remedy & Action Plan\nFocus 20 minutes daily on quiet reflection, align major decisions with morning power hours, and practice conscious gratitude.`);
       setIsGenerating(false);
     }, 600);
   };
@@ -55,11 +72,11 @@ export default function TraditionView({ tradition, onNavigate }: TraditionViewPr
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card border border-purple-500/30 text-purple-300 text-sm font-medium"
         >
           <Globe2 className="w-4 h-4" />
-          {tradition.group}
+          {traditionGroup}
         </motion.div>
         
         <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold gradient-text tracking-tight">
-          {tradition.name}
+          {traditionName}
         </h1>
         
         <p className="max-w-2xl mx-auto text-lg text-white/70 leading-relaxed">
