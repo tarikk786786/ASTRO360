@@ -34,6 +34,14 @@ export interface CategoryInfo {
   group: TraditionGroup;
   description: string;
   systems: string[];
+  /**
+   * Optional per-tradition glyph. Declared optional because it reflects reality: no
+   * entry in TRADITIONS currently sets one, and App.tsx read `tradition.icon` against
+   * a type that did not declare it (BUG-03). The sidebar now renders this only when
+   * present, so adding icons later needs no further change. Group-level glyphs live in
+   * GROUP_ICONS.
+   */
+  icon?: string;
 }
 
 export interface ChatMessage {

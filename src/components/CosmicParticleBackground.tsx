@@ -1,283 +1,304 @@
-﻿import React, { useEffect, useRef, useState, useCallback } from 'react';
-
-interface Star {
-  x: number;
-  y: number;
-  z: number;
-  size: number;
-  color: string;
-  twinkleSpeed: number;
-  twinkleOffset: number;
-}
-
-interface Planet {
-  name: string;
-  distance: number;
-  radius: number;
-  speed: number;
-  color: string;
-  glowColor: string;
-  angle: number;
-  hasRings?: boolean;
-  hasMoon?: boolean;
-  ringsRadius?: number;
-}
-
-const ZODIAC_CONSTELLATIONS = [
-  { name: 'Aries', stars: [[-180, -120], [-130, -90], [-90, -110], [-60, -80]] },
-  { name: 'Taurus', stars: [[-120, 80], [-80, 50], [-40, 70], [-20, 100], [20, 90]] },
-  { name: 'Gemini', stars: [[100, -140], [140, -120], [160, -80], [130, -60], [100, -80]] },
-  { name: 'Cancer', stars: [[180, 40], [150, 70], [120, 60], [130, 90]] },
-  { name: 'Leo', stars: [[-220, 150], [-190, 170], [-150, 140], [-120, 180], [-80, 150]] },
-  { name: 'Virgo', stars: [[-40, 200], [0, 180], [30, 220], [70, 200], [110, 240]] },
-  { name: 'Libra', stars: [[140, 160], [180, 140], [200, 180], [160, 210]] },
-  { name: 'Scorpio', stars: [[220, -60], [250, -40], [270, -80], [260, -120], [230, -140]] },
-  { name: 'Sagittarius', stars: [[60, -220], [100, -190], [130, -230], [90, -260]] },
-  { name: 'Capricorn', stars: [[-60, -240], [-20, -210], [20, -230], [0, -260]] },
-  { name: 'Aquarius', stars: [[-160, -200], [-120, -180], [-80, -210], [-100, -240]] },
-  { name: 'Pisces', stars: [[-240, -40], [-210, -10], [-180, -30], [-190, -70]] }
-];
+﻿import React, { useEffect, useRef } from 'react';
+import * as THREE from 'three';
 
 export default function CosmicParticleBackground() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  
-  // Interactive View Modes
-  const [viewMode, setViewMode] = useState<'all' | 'solar' | 'stars'>('all');
-  const [isHoveredPlanet, setIsHoveredPlanet] = useState<string | null>(null);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  // Mouse Parallax
-  const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Check reduced motion
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
-  }, []);
+    const container = containerRef.current;
+    if (!container) return;
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    // Check prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    let animationFrameId: number;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
+    // 1. Scene & Camera
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x040711, 0.0008);
 
-    // Resize Listener
-    const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
+    const camera = new THREE.PerspectiveCamera(
+      55,
+      window.innerWidth / window.innerHeight,
+      1,
+      3000
+    );
+    camera.position.set(0, 180, 480);
+    camera.lookAt(0, 0, 0);
 
-    // Mouse Move for Parallax
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current.targetX = (e.clientX - width / 2) * 0.05;
-      mouseRef.current.targetY = (e.clientY - height / 2) * 0.05;
-    };
-    window.addEventListener('mousemove', handleMouseMove);
+    // 2. WebGL Renderer
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      powerPreference: 'high-performance'
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+    container.appendChild(renderer.domElement);
 
-    // 1. Generate Star Field with 3D Depth
-    const isMobile = width < 768;
-    const starCount = isMobile ? 350 : 800;
-    const stars: Star[] = [];
-    const starColors = ['#FFFFFF', '#C9A86A', '#38BDF8', '#818CF8', '#E2E8F0', '#FDE047'];
+    // 3. Lighting
+    const ambientLight = new THREE.AmbientLight(0x334155, 0.6);
+    scene.add(ambientLight);
 
-    for (let i = 0; i < starCount; i++) {
-      stars.push({
-        x: (Math.random() - 0.5) * width * 2,
-        y: (Math.random() - 0.5) * height * 2,
-        z: Math.random() * 1000 + 100,
-        size: Math.random() * 1.6 + 0.4,
-        color: starColors[Math.floor(Math.random() * starColors.length)],
-        twinkleSpeed: Math.random() * 0.02 + 0.005,
-        twinkleOffset: Math.random() * Math.PI * 2,
-      });
-    }
+    const sunLight = new THREE.PointLight(0xfff1b8, 2.5, 1200, 1.2);
+    sunLight.position.set(0, 0, 0);
+    scene.add(sunLight);
 
-    // 2. Solar System Planets Configuration
-    const planets: Planet[] = [
-      { name: 'Mercury', distance: 65, radius: 2.2, speed: 0.018, color: '#A3A3A3', glowColor: 'rgba(163,163,163,0.4)', angle: 0.8 },
-      { name: 'Venus', distance: 95, radius: 3.5, speed: 0.013, color: '#EAB308', glowColor: 'rgba(234,179,8,0.4)', angle: 2.1 },
-      { name: 'Earth', distance: 135, radius: 3.8, speed: 0.01, color: '#38BDF8', glowColor: 'rgba(56,189,248,0.4)', angle: 3.6, hasMoon: true },
-      { name: 'Mars', distance: 175, radius: 2.8, speed: 0.008, color: '#F87171', glowColor: 'rgba(248,113,113,0.4)', angle: 5.2 },
-      { name: 'Jupiter', distance: 235, radius: 7.2, speed: 0.005, color: '#FDBA74', glowColor: 'rgba(253,186,116,0.4)', angle: 1.4 },
-      { name: 'Saturn', distance: 295, radius: 5.8, speed: 0.0035, color: '#FDE047', glowColor: 'rgba(253,224,71,0.4)', angle: 4.1, hasRings: true, ringsRadius: 11 },
-      { name: 'Uranus', distance: 350, radius: 4.5, speed: 0.0025, color: '#2DD4BF', glowColor: 'rgba(45,212,191,0.4)', angle: 0.3 },
-      { name: 'Neptune', distance: 400, radius: 4.2, speed: 0.0018, color: '#60A5FA', glowColor: 'rgba(96,165,250,0.4)', angle: 2.8 }
+    // 4. Central Sun with Corona Glow
+    const sunGroup = new THREE.Group();
+    scene.add(sunGroup);
+
+    const sunGeo = new THREE.SphereGeometry(18, 32, 32);
+    const sunMat = new THREE.MeshBasicMaterial({
+      color: 0xffe885,
+    });
+    const sunMesh = new THREE.Mesh(sunGeo, sunMat);
+    sunGroup.add(sunMesh);
+
+    // Outer Corona Glow Sphere
+    const coronaGeo = new THREE.SphereGeometry(24, 32, 32);
+    const coronaMat = new THREE.MeshBasicMaterial({
+      color: 0xc9a86a,
+      transparent: true,
+      opacity: 0.25,
+      side: THREE.BackSide,
+      blending: THREE.AdditiveBlending
+    });
+    const coronaMesh = new THREE.Mesh(coronaGeo, coronaMat);
+    sunGroup.add(coronaMesh);
+
+    // 5. Deep Space Milky Way Starfield
+    const starCount = window.innerWidth < 768 ? 1500 : 4000;
+    const starGeometry = new THREE.BufferGeometry();
+    const starPositions = new Float32Array(starCount * 3);
+    const starColors = new Float32Array(starCount * 3);
+
+    const colorPalette = [
+      new THREE.Color(0xffffff),
+      new THREE.Color(0xc9a86a), // Gold
+      new THREE.Color(0x38bdf8), // Sky Blue
+      new THREE.Color(0x818cf8), // Indigo
+      new THREE.Color(0xfef08a), // Warm Yellow
     ];
 
-    let time = 0;
+    for (let i = 0; i < starCount; i++) {
+      const radius = THREE.MathUtils.randFloat(200, 1800);
+      const theta = THREE.MathUtils.randFloat(0, Math.PI * 2);
+      const phi = THREE.MathUtils.randFloat(0, Math.PI);
 
-    // 3. Render Loop
-    const render = () => {
-      time += 0.015;
+      starPositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+      starPositions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+      starPositions[i * 3 + 2] = radius * Math.cos(phi);
 
-      // Smooth mouse parallax easing
-      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
-      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
+      const color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+      starColors[i * 3] = color.r;
+      starColors[i * 3 + 1] = color.g;
+      starColors[i * 3 + 2] = color.b;
+    }
 
-      ctx.clearRect(0, 0, width, height);
+    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    starGeometry.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
 
-      const centerX = width / 2 + mouseRef.current.x;
-      const centerY = height / 2 + mouseRef.current.y;
+    const starMaterial = new THREE.PointsMaterial({
+      size: 1.8,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.85,
+      blending: THREE.AdditiveBlending
+    });
+    const starField = new THREE.Points(starGeometry, starMaterial);
+    scene.add(starField);
 
-      // A. Draw 3D Perspective Starfield
-      for (let i = 0; i < stars.length; i++) {
-        const star = stars[i];
-        
-        // Move star forward slowly
-        if (!prefersReducedMotion) {
-          star.z -= 0.3;
-          if (star.z <= 0) star.z = 1000;
-        }
+    // 6. Solar System Planetary Spheres & Orbits
+    interface PlanetData {
+      name: string;
+      dist: number;
+      size: number;
+      color: number;
+      speed: number;
+      mesh?: THREE.Mesh;
+      group?: THREE.Group;
+      hasRings?: boolean;
+    }
 
-        const k = 400 / star.z;
-        const px = star.x * k + centerX;
-        const py = star.y * k + centerY;
+    const planetsData: PlanetData[] = [
+      { name: 'Mercury', dist: 45, size: 2.2, color: 0xa3a3a3, speed: 0.015 },
+      { name: 'Venus', dist: 70, size: 3.6, color: 0xeab308, speed: 0.011 },
+      { name: 'Earth', dist: 105, size: 4.0, color: 0x38bdf8, speed: 0.008 },
+      { name: 'Mars', dist: 140, size: 3.0, color: 0xf87171, speed: 0.006 },
+      { name: 'Jupiter', dist: 195, size: 9.0, color: 0xfdba74, speed: 0.0035 },
+      { name: 'Saturn', dist: 255, size: 7.5, color: 0xfde047, speed: 0.0025, hasRings: true },
+      { name: 'Uranus', dist: 315, size: 5.5, color: 0x2dd4bf, speed: 0.0018 },
+      { name: 'Neptune', dist: 370, size: 5.2, color: 0x60a5fa, speed: 0.0012 }
+    ];
 
-        if (px >= 0 && px <= width && py >= 0 && py <= height) {
-          const alpha = prefersReducedMotion 
-            ? 0.7 
-            : 0.3 + 0.7 * Math.sin(time * star.twinkleSpeed * 10 + star.twinkleOffset);
-          
-          ctx.beginPath();
-          ctx.arc(px, py, star.size * k, 0, Math.PI * 2);
-          ctx.fillStyle = star.color;
-          ctx.globalAlpha = Math.max(0.1, Math.min(1, alpha * (1 - star.z / 1100)));
-          ctx.fill();
-        }
-      }
-      ctx.globalAlpha = 1.0;
+    const planetMeshes: { group: THREE.Group; speed: number; angle: number; dist: number }[] = [];
 
-      // B. Draw Subtle Zodiac Constellations in Background
-      if (viewMode !== 'solar') {
-        ctx.save();
-        ctx.strokeStyle = 'rgba(201, 168, 106, 0.12)';
-        ctx.lineWidth = 1;
-        ctx.fillStyle = 'rgba(201, 168, 106, 0.4)';
+    planetsData.forEach((p) => {
+      // Orbit Line Geometry
+      const orbitGeo = new THREE.RingGeometry(p.dist - 0.4, p.dist + 0.4, 96);
+      const orbitMat = new THREE.MeshBasicMaterial({
+        color: 0xc9a86a,
+        transparent: true,
+        opacity: 0.08,
+        side: THREE.DoubleSide
+      });
+      const orbitMesh = new THREE.Mesh(orbitGeo, orbitMat);
+      orbitMesh.rotation.x = Math.PI / 2;
+      scene.add(orbitMesh);
 
-        ZODIAC_CONSTELLATIONS.forEach((c) => {
-          ctx.beginPath();
-          c.stars.forEach(([sx, sy], idx) => {
-            const cx = centerX + sx * 1.8;
-            const cy = centerY + sy * 1.8;
-            if (idx === 0) ctx.moveTo(cx, cy);
-            else ctx.lineTo(cx, cy);
-          });
-          ctx.stroke();
+      // Planet Orbit Pivot Group
+      const pivotGroup = new THREE.Group();
+      scene.add(pivotGroup);
 
-          // Draw constellation star nodes
-          c.stars.forEach(([sx, sy]) => {
-            const cx = centerX + sx * 1.8;
-            const cy = centerY + sy * 1.8;
-            ctx.beginPath();
-            ctx.arc(cx, cy, 1.8, 0, Math.PI * 2);
-            ctx.fill();
-          });
+      // Planet Mesh
+      const pGeo = new THREE.SphereGeometry(p.size, 24, 24);
+      const pMat = new THREE.MeshStandardMaterial({
+        color: p.color,
+        roughness: 0.6,
+        metalness: 0.2,
+        emissive: p.color,
+        emissiveIntensity: 0.12
+      });
+      const pMesh = new THREE.Mesh(pGeo, pMat);
+      pMesh.position.set(p.dist, 0, 0);
+      pivotGroup.add(pMesh);
+
+      // Saturn Rings
+      if (p.hasRings) {
+        const ringGeo = new THREE.RingGeometry(p.size * 1.4, p.size * 2.3, 48);
+        const ringMat = new THREE.MeshBasicMaterial({
+          color: 0xfde047,
+          transparent: true,
+          opacity: 0.35,
+          side: THREE.DoubleSide
         });
-        ctx.restore();
+        const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+        ringMesh.rotation.x = Math.PI / 3;
+        pMesh.add(ringMesh);
       }
 
-      // C. Draw 3D Solar System
-      if (viewMode !== 'stars') {
-        const tilt = 0.35; // 3D Elliptical tilt ratio
+      const initialAngle = Math.random() * Math.PI * 2;
+      pivotGroup.rotation.y = initialAngle;
 
-        // 1. Central Luminous Sun
-        const sunRadius = isMobile ? 12 : 16;
-        const sunGlow = ctx.createRadialGradient(centerX, centerY, 2, centerX, centerY, sunRadius * 3.5);
-        sunGlow.addColorStop(0, 'rgba(255, 235, 150, 0.9)');
-        sunGlow.addColorStop(0.3, 'rgba(201, 168, 106, 0.5)');
-        sunGlow.addColorStop(0.7, 'rgba(234, 88, 12, 0.15)');
-        sunGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      planetMeshes.push({
+        group: pivotGroup,
+        speed: p.speed,
+        angle: initialAngle,
+        dist: p.dist
+      });
+    });
 
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, sunRadius * 3.5, 0, Math.PI * 2);
-        ctx.fillStyle = sunGlow;
-        ctx.fill();
+    // 7. Zodiac Constellation Geometry Layer
+    const zodiacGroup = new THREE.Group();
+    scene.add(zodiacGroup);
 
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, sunRadius, 0, Math.PI * 2);
-        ctx.fillStyle = '#FEF08A';
-        ctx.shadowColor = '#F59E0B';
-        ctx.shadowBlur = 18;
-        ctx.fill();
-        ctx.shadowBlur = 0;
+    const zodiacSigns = 12;
+    const zodiacRadius = 460;
+    for (let i = 0; i < zodiacSigns; i++) {
+      const angle = (i / zodiacSigns) * Math.PI * 2;
+      const x = Math.cos(angle) * zodiacRadius;
+      const z = Math.sin(angle) * zodiacRadius;
 
-        // 2. Planets and Orbits
-        planets.forEach((p) => {
-          if (!prefersReducedMotion) {
-            p.angle += p.speed * 0.7;
-          }
+      // Constellation Star Node
+      const nodeGeo = new THREE.SphereGeometry(1.5, 8, 8);
+      const nodeMat = new THREE.MeshBasicMaterial({ color: 0xc9a86a });
+      const nodeMesh = new THREE.Mesh(nodeGeo, nodeMat);
+      nodeMesh.position.set(x, 0, z);
+      zodiacGroup.add(nodeMesh);
 
-          const scale = isMobile ? 0.75 : 1.0;
-          const dist = p.distance * scale;
-          const px = centerX + Math.cos(p.angle) * dist;
-          const py = centerY + Math.sin(p.angle) * (dist * tilt);
+      // Connect to Next Node with Subtle Chord
+      const nextAngle = ((i + 1) / zodiacSigns) * Math.PI * 2;
+      const nextX = Math.cos(nextAngle) * zodiacRadius;
+      const nextZ = Math.sin(nextAngle) * zodiacRadius;
 
-          // Orbit Line
-          ctx.beginPath();
-          ctx.ellipse(centerX, centerY, dist, dist * tilt, 0, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
+      const lineGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(x, 0, z),
+        new THREE.Vector3(nextX, 0, nextZ)
+      ]);
+      const lineMat = new THREE.LineBasicMaterial({
+        color: 0xc9a86a,
+        transparent: true,
+        opacity: 0.08
+      });
+      const line = new THREE.Line(lineGeo, lineMat);
+      zodiacGroup.add(line);
+    }
 
-          // Planet Body
-          ctx.beginPath();
-          ctx.arc(px, py, p.radius * scale, 0, Math.PI * 2);
-          ctx.fillStyle = p.color;
-          ctx.shadowColor = p.glowColor;
-          ctx.shadowBlur = 6;
-          ctx.fill();
-          ctx.shadowBlur = 0;
+    // 8. Mouse Parallax Easing
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetCameraX = 0;
+    let targetCameraY = 180;
 
-          // Saturn Rings
-          if (p.hasRings && p.ringsRadius) {
-            ctx.beginPath();
-            ctx.ellipse(px, py, p.ringsRadius * scale, (p.ringsRadius * scale) * 0.35, Math.PI / 6, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(253, 224, 71, 0.45)';
-            ctx.lineWidth = 1.6;
-            ctx.stroke();
-          }
+    const onMouseMove = (e: MouseEvent) => {
+      mouseX = (e.clientX - window.innerWidth / 2) * 0.15;
+      mouseY = (e.clientY - window.innerHeight / 2) * 0.1;
+      targetCameraX = mouseX;
+      targetCameraY = 180 - mouseY;
+    };
+    window.addEventListener('mousemove', onMouseMove);
 
-          // Earth's Moon
-          if (p.hasMoon) {
-            const moonAngle = time * 2;
-            const mx = px + Math.cos(moonAngle) * 9;
-            const my = py + Math.sin(moonAngle) * 9 * tilt;
-            ctx.beginPath();
-            ctx.arc(mx, my, 1, 0, Math.PI * 2);
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fill();
-          }
+    // 9. Resize Handler
+    const onResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener('resize', onResize);
+
+    // 10. Animation Loop
+    let animationId: number;
+
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+
+      // Smooth Camera Parallax Easing
+      camera.position.x += (targetCameraX - camera.position.x) * 0.02;
+      camera.position.y += (targetCameraY - camera.position.y) * 0.02;
+      camera.lookAt(0, 0, 0);
+
+      if (!prefersReducedMotion) {
+        // Slow Cosmic Starfield Rotation
+        starField.rotation.y += 0.0002;
+        starField.rotation.x += 0.0001;
+
+        // Rotate Zodiac Ring
+        zodiacGroup.rotation.y += 0.0003;
+
+        // Sun Corona Pulse
+        sunGroup.rotation.y += 0.002;
+
+        // Orbit Planets
+        planetMeshes.forEach((p) => {
+          p.group.rotation.y += p.speed * 0.35;
         });
       }
 
-      animationFrameId = requestAnimationFrame(render);
+      renderer.render(scene, camera);
     };
 
-    render();
+    animate();
 
+    // Cleanup
     return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(animationFrameId);
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('resize', onResize);
+      if (container.contains(renderer.domElement)) {
+        container.removeChild(renderer.domElement);
+      }
+      renderer.dispose();
     };
-  }, [viewMode, prefersReducedMotion]);
+  }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none" aria-hidden="true">
-      {/* 🌌 High-Performance 3D Celestial Canvas */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full block" />
+      {/* 🌌 Three.js Hyper-Realistic WebGL Canvas */}
+      <div ref={containerRef} className="absolute inset-0 w-full h-full" />
 
-      {/* Volumetric Dark Atmosphere Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#040711]/90 via-[#070b19]/75 to-[#040711]/90 pointer-events-none" />
+      {/* Volumetric Dark Vignette for High Text Contrast */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#040711]/85 via-[#070b19]/70 to-[#040711]/90 pointer-events-none" />
     </div>
   );
 }

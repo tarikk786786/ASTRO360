@@ -436,7 +436,12 @@ export default function AppContent() {
                 onClick={() => toggleGroup(groupName)}
                 className="w-full flex items-center justify-between px-3 py-2 group"
               >
-                <span className="sidebar-section-label">{groupName}</span>
+                <span className="sidebar-section-label">
+                  {/* GROUP_ICONS was imported but never referenced — the group glyph it
+                      exists to supply was missing from the UI entirely. */}
+                  <span className="mr-1.5 opacity-80">{GROUP_ICONS[groupName as TraditionGroup]}</span>
+                  {groupName}
+                </span>
                 <motion.div
                   animate={{ rotate: expandedGroups[groupName] ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
@@ -460,7 +465,9 @@ export default function AppContent() {
                           onClick={() => navigateTo(tradition.id)}
                           className={`sidebar-item ${activeTab === tradition.id ? 'sidebar-item-active' : ''}`}
                         >
-                          <span className="text-sm mr-2.5 opacity-80">{tradition.icon}</span>
+                          {tradition.icon && (
+                            <span className="text-sm mr-2.5 opacity-80">{tradition.icon}</span>
+                          )}
                           <span>{tradition.name}</span>
                         </button>
                       ))}
