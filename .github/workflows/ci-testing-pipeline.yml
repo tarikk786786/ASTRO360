@@ -143,26 +143,47 @@ jobs:
 
       # Assertion 1: no environment file is tracked. `.gitignore` does not untrack a
       # file that was already added — which is exactly how .env.local was committed.
+      # Template files (.env.example / .sample / .template) are meant to be tracked.
       - name: Assert no env files are tracked
         run: |
-          if git ls-files | grep -E '(^|/)\.env($|\.)' ; then
+          tracked=$(git ls-files | grep -E '(^|/)\.env(\.|$)' | grep -vE '\.(example|sample|template)$' || true)
+          if [ -n "$tracked" ]; then
+            echo "$tracked"
             echo "::error::An environment file is tracked in git. Untrack it with 'git rm --cached <file>' and rotate every credential it contained."
             exit 1
           fi
-          echo "OK: no tracked .env files"
+          echo "OK: no tracked .env files (templates excluded)"
 
-      # Assertion 2: no long key-shaped literal assigned in source. This catches the
+      # Assertion 2: no long key-shaped literal in source. This catches the
       # `|| 'the-key'` fallback pattern that put five live keys into the client bundle.
-      # Narrow by design: it looks for a quoted 24+ char token assigned to something
-      # whose name contains KEY/TOKEN/SECRET/PASSWORD, which is the shape that leaked.
+      # Matches a line carrying a KEY/TOKEN/SECRET/PASSWORD identifier together with a
+      # quoted 24+ character token anywhere on that line.
+      #
+      # An earlier, tighter version of this pattern required the quote to follow the `=`
+      # directly. Tested against a reintroduced leak, it caught
+      #   UMMAH_API_KEY = 'umh_…'
+      # but MISSED
+      #   const NASA_API_KEY = process.env.NASA_API_KEY || 'AbC…'
+      # which is the exact form five of the leaked keys took. Hence the looser pattern.
+      # Measured cost on this repo: one false positive, already allowlisted.
+      #
+      # Matches are diffed against .github/secret-scan-allowlist.txt so that known-safe
+      # hits (e.g. a localStorage key name) do not block, while anything NEW fails. The
+      # allowlist is the reviewed exception list — adding to it is a deliberate act.
       - name: Assert no hardcoded credential literals
         run: |
-          if grep -rInE "(KEY|TOKEN|SECRET|PASSWORD)[A-Za-z_]*['\"]?\s*[:=]\s*['\"][A-Za-z0-9_\-]{24,}['\"]" \
-               src api 2>/dev/null; then
-            echo "::error::A credential-shaped literal is hardcoded above. Move it to an env var read server-side in api/, and rotate the exposed value."
+          allow=.github/secret-scan-allowlist.txt
+          [ -f "$allow" ] || : > "$allow"
+          hits=$(grep -rhoIE "(KEY|TOKEN|SECRET|PASSWORD)[A-Za-z_]*.*['\"][A-Za-z0-9_-]{24,}['\"]" \
+                   src api 2>/dev/null | sort -u || true)
+          new=$(comm -23 <(printf '%s\n' "$hits" | sed '/^$/d') \
+                         <(grep -vE '^\s*(#|$)' "$allow" | sort -u))
+          if [ -n "$new" ]; then
+            echo "$new"
+            echo "::error::A credential-shaped literal is hardcoded above. Move it to an env var read server-side in api/, and rotate the exposed value. If it is genuinely not a secret, add the exact line to $allow with a comment saying why."
             exit 1
           fi
-          echo "OK: no hardcoded credential literals"
+          echo "OK: no unreviewed hardcoded credential literals"
 
       # Assertion 3: no secret-looking name carries the VITE_ prefix. Vite inlines every
       # VITE_-prefixed variable into the browser bundle, so such a name is a published
@@ -181,17 +202,34 @@ jobs:
           fi
           echo "OK: no server secrets carry a VITE_ prefix"
 
-      # Assertion 4: no credential value in a commit message. Three keys reached the
-      # public repo this way, and history rewriting does not remove commit messages.
-      - name: Assert no credentials in commit messages
+      # Assertion 4: no credential value in a NEW commit message. Three keys reached the
+      # public repo this way (commits 27f914c, c0dc566, 536df2b).
+      #
+      # Scoped to the incoming range, not `--all`, deliberately. Commit messages cannot be
+      # scrubbed from published history — `git filter-repo` rewrites file contents, and even
+      # rewriting messages does not recall existing clones or GitHub's cached views. Those
+      # three keys are handled by rotation (docs/hardening/ROTATION.md), which makes the
+      # published values dead. Scanning `--all` would therefore fail forever on values that
+      # are no longer secret, and a check that can never pass gets disabled — which is how
+      # the fake jobs this file replaced came to be tolerated in the first place.
+      - name: Assert no credentials in new commit messages
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
         run: |
-          if git log --all --pretty=%B \
-               | grep -InE "[A-Za-z0-9_\-]{32,}" \
-               | grep -iE "key|token|secret|api" ; then
-            echo "::error::A commit message appears to contain a credential. Rotate it — rewriting history does not recall published commit messages."
+          # A new branch reports an all-zero base; fall back to the tip commit only.
+          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then
+            range="-1 $HEAD_SHA"
+          else
+            range="$BASE..$HEAD_SHA"
+          fi
+          echo "Scanning commit messages in: $range"
+          msgs=$(git log $range --pretty=%B || true)
+          if printf '%s' "$msgs" | grep -oIE "[A-Za-z0-9_-]{32,}" | grep -iE "key|token|secret|api"; then
+            echo "::error::A new commit message appears to contain a credential. Rotate it immediately — rewriting history does not recall published commit messages."
             exit 1
           fi
-          echo "OK: no credential-shaped strings in commit messages"
+          echo "OK: no credential-shaped strings in new commit messages"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

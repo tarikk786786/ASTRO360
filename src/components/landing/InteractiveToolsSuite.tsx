@@ -68,7 +68,7 @@ export default function InteractiveToolsSuite({ onNavigateToTab }: InteractiveTo
   ] as const;
 
   return (
-    <section id="interactive-tools-suite" className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#070A12] via-[#0B101E] to-[#070A12] border-t border-white/[0.06]">
+    <section id="panchang-section" className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#070A12] via-[#0B101E] to-[#070A12] border-t border-white/[0.06]">
       <div className="max-w-6xl mx-auto">
         
         {/* Header */}

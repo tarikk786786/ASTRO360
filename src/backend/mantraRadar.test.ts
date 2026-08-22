@@ -5,7 +5,7 @@
  * asserts facts about those literals, so it passes unconditionally and would keep
  * passing if (no implementation module exists for this feature) were deleted outright.
  *
- * It is therefore excluded from the CI test job — see .github/workflows/ci.yml and
+ * It is therefore excluded from the CI test job — see .github/workflows/ci-testing-pipeline.yml and
  * finding QA-04 in docs/hardening/AUDIT.md. It is kept on disk, not deleted, so the
  * original intent is preserved.
  *

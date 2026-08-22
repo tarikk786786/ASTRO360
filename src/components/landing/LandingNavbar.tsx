@@ -29,13 +29,13 @@ export default function LandingNavbar({
   }, []);
 
   const navLinks = [
-    { label: 'Birth Chart', id: 'birth-chart-section' },
-    { label: 'Horoscope', id: 'horoscope-section' },
-    { label: 'Compatibility', id: 'compatibility-section' },
-    { label: 'Features', id: 'features-section' },
-    { label: 'Astrologers', id: 'astrologers-section' },
-    { label: 'Pricing', id: 'pricing-section' },
-    { label: 'FAQ', id: 'faq-section' },
+    { label: 'Kundli (Birth Chart)', id: 'birth-chart-section' },
+    { label: 'Panchang (Almanac)', id: 'panchang-section' },
+    { label: 'Horoscope (Rashifal)', id: 'horoscope-section' },
+    { label: 'Nakshatra Matrix', id: 'nakshatra-section' },
+    { label: 'Kundli Milan (Match)', id: 'compatibility-section' },
+    { label: 'Vimshottari Dasha', id: 'dasha-section' },
+    { label: 'Astrologer Consult', id: 'astrologers-section' },
   ];
 
   const handleLinkClick = (id: string) => {
@@ -47,36 +47,36 @@ export default function LandingNavbar({
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-[#070A12]/85 backdrop-blur-xl border-b border-white/[0.06] shadow-[0_8px_30px_rgba(0,0,0,0.5)]'
-          : 'bg-transparent border-b border-transparent'
+          ? 'bg-[#090D16]/95 backdrop-blur-xl border-b border-[#C9A86A]/20 shadow-[0_8px_30px_rgba(0,0,0,0.6)]'
+          : 'bg-[#090D16]/70 border-b border-white/[0.04]'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
-        {/* Logo */}
+        {/* Logo with Vedic Jyotish Heritage */}
         <div
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="flex items-center gap-2.5 cursor-pointer group select-none"
+          className="flex items-center gap-3 cursor-pointer group select-none"
         >
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#C9A86A]/20 via-cyan-500/15 to-purple-500/20 border border-[#C9A86A]/30 flex items-center justify-center shadow-[0_0_15px_rgba(201,168,106,0.2)] group-hover:scale-105 transition-transform">
-            <Compass className="w-5 h-5 text-[#C9A86A]" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#C9A86A]/25 to-[#936A26]/30 border border-[#C9A86A]/40 flex items-center justify-center shadow-[0_0_15px_rgba(201,168,106,0.25)] group-hover:scale-105 transition-transform">
+            <span className="text-base text-[#C9A86A] font-serif font-bold">ॐ</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-base font-bold tracking-tight text-white flex items-center gap-1.5">
-              COSMOS <span className="text-[#C9A86A] font-serif italic text-xs tracking-wider">OMNI</span>
+            <span className="text-base font-bold tracking-wider text-white font-serif flex items-center gap-1.5">
+              ASTRO<span className="text-[#C9A86A] font-sans font-extrabold text-sm tracking-normal">360</span>
             </span>
-            <span className="text-[9px] uppercase tracking-[0.18em] text-slate-400 font-mono">
-              Vedic • AI Studio
+            <span className="text-[9px] tracking-[0.16em] text-[#C9A86A]/80 font-mono">
+              ज्योतिष • SWISS EPHEMERIS
             </span>
           </div>
         </div>
 
         {/* Desktop Links */}
-        <nav className="hidden lg:flex items-center gap-7 text-xs font-medium text-slate-300">
+        <nav className="hidden lg:flex items-center gap-6 text-xs font-medium text-slate-300 font-sans">
           {navLinks.map((link) => (
             <button
               key={link.id}
               onClick={() => handleLinkClick(link.id)}
-              className="hover:text-[#C9A86A] transition-colors cursor-pointer"
+              className="hover:text-[#C9A86A] transition-colors cursor-pointer text-slate-300"
             >
               {link.label}
             </button>
@@ -86,11 +86,11 @@ export default function LandingNavbar({
         {/* Action Buttons */}
         <div className="hidden md:flex items-center gap-3">
           <button
-            onClick={onOpenDashboard}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C9A86A]/15 hover:bg-[#C9A86A]/25 border border-[#C9A86A]/35 text-[#C9A86A] text-xs font-semibold transition-all cursor-pointer shadow-sm"
+            onClick={onGetStarted}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-[#C9A86A] to-[#B8934A] text-[#090D16] text-xs font-bold font-serif shadow-[0_0_20px_rgba(201,168,106,0.35)] hover:scale-105 transition-all cursor-pointer"
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>✨ 100% Free Pro Access</span>
+            <span>Create Kundli</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </button>
 
           {hasProfile ? (
