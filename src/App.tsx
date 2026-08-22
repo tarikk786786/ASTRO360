@@ -4,7 +4,16 @@
  */
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
-import { Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, Users, Globe2, Bell, Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon, Zap, Wrench, DollarSign, Wallet, ArrowLeft, Home } from 'lucide-react';
+import {
+  Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, Users, Globe2, Bell,
+  Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon,
+  Zap, Wrench, DollarSign, Wallet, ArrowLeft, Home,
+  // Previously rendered in the sidebar but never imported — each one threw
+  // ReferenceError as soon as the nav mounted. esbuild does not flag undefined
+  // identifiers, which is why the build stayed green while the app crashed.
+  AlertTriangle, BarChart2, BookOpen, Calendar, Clock, Eye, FileText, Hash, Map, MapPin,
+  Music, Network, Radar, Shield, Sun, Sunrise,
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TRADITIONS, CategoryInfo, TraditionGroup, UserProfile, GROUP_ICONS } from './types';
 import { useWalletStore } from './stores/walletStore';
@@ -638,7 +647,7 @@ export default function AppContent() {
                   {activeTab === 'chat' && <AstrologyChat />}
                   {(activeTab === 'dream-interpreter' || activeTab === 'dream') && <DreamInterpretationEngine userProfile={userProfile} />}
                   {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
-                  {activeTab === 'spiritual-traditions' && <SpiritualTraditionsSuite userProfile={userProfile} />}
+                  {activeTab === 'spiritual-traditions' && <SpiritualTraditionsModule userProfile={userProfile} />}
                   {activeTab === 'consultation-hub' && <CommunityConsultationHub />}
                   {activeTab === 'divisional-charts' && <DivisionalChartsSuite planetPositions={[]} />}
                   {activeTab === 'btr-suite' && <BirthTimeRectificationSuite />}

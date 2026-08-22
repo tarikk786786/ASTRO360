@@ -4,6 +4,7 @@ import HeroSection from './HeroSection';
 import TrustSection from './TrustSection';
 import BirthChartSection from './BirthChartSection';
 import FeatureGridSection from './FeatureGridSection';
+import InteractiveToolsSuite from './InteractiveToolsSuite';
 import ChartExplorationSection from './ChartExplorationSection';
 import HowItWorksSection from './HowItWorksSection';
 import AIAstrologySection from './AIAstrologySection';
@@ -79,10 +80,13 @@ export default function LandingPage({
       {/* 4. Instant Interactive Birth Chart Generator */}
       <BirthChartSection onExploreFullReading={handleBirthChartGenerated} />
 
-      {/* 5. 8-Core Astrology Feature Suite Grid */}
+      {/* 5. 12-Core Astrology Feature Suite Grid */}
       <FeatureGridSection onSelectFeature={(tab) => onNavigateToTab(tab)} />
 
-      {/* 6. Signature Interactive "What Does Your Chart Say?" */}
+      {/* 6. Live Interactive Mini-Tools Suite */}
+      <InteractiveToolsSuite onNavigateToTab={(tab) => onNavigateToTab(tab)} />
+
+      {/* 7. Signature Interactive "What Does Your Chart Say?" */}
       <ChartExplorationSection onReadFullChart={() => onNavigateToTab('birth-chart')} />
 
       {/* 7. 3-Step "How It Works" Timeline */}
