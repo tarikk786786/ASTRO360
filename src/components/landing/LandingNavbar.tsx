@@ -161,7 +161,7 @@ export default function LandingNavbar({
                 onClick={onOpenDashboard}
                 className="flex-1 py-2.5 text-center text-xs font-medium text-slate-200 bg-white/[0.05] rounded-lg"
               >
-                {hasProfile ? 'Dashboard' : 'Sign In'}
+                {hasProfile ? 'Dashboard' : 'Explore Studio'}
               </button>
               <button
                 onClick={onGetStarted}

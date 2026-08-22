@@ -602,10 +602,14 @@ export default function AppContent() {
                   {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
                   {activeTab === 'control-center' && <AstrologyControlCenter />}
                   {activeTab === 'horoscope' && <DailyHoroscopeTransitEngine userProfile={userProfile} />}
-                  {activeTab === 'compatibility' && <AstroSynastryMatchmaker userProfile={userProfile} />}
+                  {(activeTab === 'compatibility' || activeTab === 'ashta-koota') && <AstroSynastryMatchmaker userProfile={userProfile} />}
                   {activeTab === 'islamic-suite' && <UnifiedIslamicSuite userProfile={userProfile} />}
                   {activeTab === 'remedy' && <AstroMultiTraditionRemedySuite />}
-                  {activeTab === 'kundli' && <BirthChartGenerator userProfile={userProfile} />}
+                  {(activeTab === 'kundli' || activeTab === 'nakshatra') && <BirthChartGenerator userProfile={userProfile} />}
+                  {activeTab === 'dasha' && <UnifiedChartEngine userProfile={userProfile} activeTab="dasha" initialTab="dasha" />}
+                  {activeTab === 'career' && <TimeHorizonForecastSuite userProfile={userProfile} />}
+                  {activeTab === 'muhurta' && <ElectionalMuhurtaEngine />}
+                  {activeTab === 'panchang' && <PanchangDeitiesEngine />}
                   {activeTab === 'dream' && <DreamInterpretationEngine userProfile={userProfile} />}
                   {TRADITIONS[activeTab] && (
                     <TraditionView

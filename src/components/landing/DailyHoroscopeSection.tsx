@@ -142,7 +142,17 @@ export default function DailyHoroscopeSection({ onReadFullHoroscope }: DailyHoro
                   </div>
                 </div>
 
-                <div className="pt-2 text-[10px] font-mono text-slate-500 text-center">
+                <div className="pt-2">
+                  <button
+                    onClick={() => onReadFullHoroscope(selectedSign.name)}
+                    className="w-full py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.1] text-xs font-semibold text-white flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  >
+                    <span>Read Full {selectedSign.name} Horoscope & Transits</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-[#C9A86A]" />
+                  </button>
+                </div>
+
+                <div className="pt-1 text-[10px] font-mono text-slate-500 text-center">
                   Updated every sunrise based on sidereal planetary ingress.
                 </div>
               </div>

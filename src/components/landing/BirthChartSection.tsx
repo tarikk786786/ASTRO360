@@ -14,8 +14,8 @@ interface BirthChartSectionProps {
 
 export default function BirthChartSection({ onExploreFullReading }: BirthChartSectionProps) {
   const [formData, setFormData] = useState({
-    name: '',
-    dob: '',
+    name: 'Tarik Islam',
+    dob: '1995-08-15',
     time: '12:00',
     location: 'New Delhi, India',
   });
