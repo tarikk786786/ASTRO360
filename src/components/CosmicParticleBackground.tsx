@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 // Procedural Radial Soft Star Texture (No Square Box Points)
@@ -12,8 +12,8 @@ function createStarTexture() {
   const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
   gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
   gradient.addColorStop(0.15, 'rgba(255, 255, 255, 0.85)');
-  gradient.addColorStop(0.4, 'rgba(201, 168, 106, 0.35)');
-  gradient.addColorStop(0.7, 'rgba(56, 189, 248, 0.08)');
+  gradient.addColorStop(0.4, 'rgba(212, 175, 55, 0.4)'); // Richer gold
+  gradient.addColorStop(0.7, 'rgba(56, 189, 248, 0.1)');
   gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
   ctx.fillStyle = gradient;
@@ -36,8 +36,8 @@ function createBrightStarTexture() {
   // Core Glow
   const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
   gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-  gradient.addColorStop(0.2, 'rgba(255, 245, 210, 0.7)');
-  gradient.addColorStop(0.5, 'rgba(201, 168, 106, 0.2)');
+  gradient.addColorStop(0.15, 'rgba(255, 245, 210, 0.85)');
+  gradient.addColorStop(0.4, 'rgba(212, 175, 55, 0.3)');
   gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
   ctx.fillStyle = gradient;
@@ -46,13 +46,13 @@ function createBrightStarTexture() {
   ctx.fill();
 
   // 4 Subtle Diffraction Spikes
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-  ctx.lineWidth = 1;
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+  ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.moveTo(64, 16);
-  ctx.lineTo(64, 112);
-  ctx.moveTo(16, 64);
-  ctx.lineTo(112, 64);
+  ctx.moveTo(64, 12);
+  ctx.lineTo(64, 116);
+  ctx.moveTo(12, 64);
+  ctx.lineTo(116, 64);
   ctx.stroke();
 
   const texture = new THREE.CanvasTexture(canvas);
@@ -71,7 +71,7 @@ export default function CosmicParticleBackground() {
 
     // 1. Scene & Camera
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x040711, 0.0007);
+    scene.fog = new THREE.FogExp2(0x02040a, 0.0008); // Deeper space fog
 
     const camera = new THREE.PerspectiveCamera(
       55,
@@ -79,7 +79,7 @@ export default function CosmicParticleBackground() {
       1,
       3000
     );
-    camera.position.set(0, 180, 480);
+    camera.position.set(0, 160, 420); // Closer and slightly lower angle
     camera.lookAt(0, 0, 0);
 
     // 2. WebGL Renderer
@@ -91,14 +91,14 @@ export default function CosmicParticleBackground() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.25; // Slightly more cinematic pop
     container.appendChild(renderer.domElement);
 
     // 3. Lighting
-    const ambientLight = new THREE.AmbientLight(0x334155, 0.6);
+    const ambientLight = new THREE.AmbientLight(0x1a2035, 0.8); // Richer indigo/slate ambient
     scene.add(ambientLight);
 
-    const sunLight = new THREE.PointLight(0xfff1b8, 2.5, 1200, 1.2);
+    const sunLight = new THREE.PointLight(0xfff5d6, 3.5, 1400, 1.4);
     sunLight.position.set(0, 0, 0);
     scene.add(sunLight);
 
@@ -106,19 +106,31 @@ export default function CosmicParticleBackground() {
     const sunGroup = new THREE.Group();
     scene.add(sunGroup);
 
-    const sunGeo = new THREE.SphereGeometry(18, 32, 32);
+    const sunGeo = new THREE.SphereGeometry(18, 48, 48);
     const sunMat = new THREE.MeshBasicMaterial({
-      color: 0xffe885,
+      color: 0xfff0b3,
     });
     const sunMesh = new THREE.Mesh(sunGeo, sunMat);
     sunGroup.add(sunMesh);
 
-    // Outer Corona Glow Sphere
-    const coronaGeo = new THREE.SphereGeometry(24, 32, 32);
-    const coronaMat = new THREE.MeshBasicMaterial({
-      color: 0xc9a86a,
+    // Inner Corona Core
+    const coronaCoreGeo = new THREE.SphereGeometry(21, 32, 32);
+    const coronaCoreMat = new THREE.MeshBasicMaterial({
+      color: 0xffd700,
       transparent: true,
-      opacity: 0.25,
+      opacity: 0.35,
+      side: THREE.BackSide,
+      blending: THREE.AdditiveBlending
+    });
+    const coronaCoreMesh = new THREE.Mesh(coronaCoreGeo, coronaCoreMat);
+    sunGroup.add(coronaCoreMesh);
+
+    // Outer Corona Glow Sphere
+    const coronaGeo = new THREE.SphereGeometry(30, 32, 32);
+    const coronaMat = new THREE.MeshBasicMaterial({
+      color: 0xd4af37, // Rich Antique Gold
+      transparent: true,
+      opacity: 0.2,
       side: THREE.BackSide,
       blending: THREE.AdditiveBlending
     });
@@ -126,21 +138,22 @@ export default function CosmicParticleBackground() {
     sunGroup.add(coronaMesh);
 
     // 5. Real Radial Glowing Starfield (Deep Space)
-    const starCount = window.innerWidth < 768 ? 1200 : 3500;
+    const starCount = window.innerWidth < 768 ? 1500 : 4500;
     const starGeometry = new THREE.BufferGeometry();
     const starPositions = new Float32Array(starCount * 3);
     const starColors = new Float32Array(starCount * 3);
 
     const colorPalette = [
       new THREE.Color(0xffffff), // Pure white starlight
-      new THREE.Color(0xc9a86a), // Sacred Gold
-      new THREE.Color(0x7dd3fc), // Sirius Blue
-      new THREE.Color(0xa5b4fc), // Vega Indigo
+      new THREE.Color(0xd4af37), // Sacred Gold
+      new THREE.Color(0x38bdf8), // Vibrant Blue
+      new THREE.Color(0x818cf8), // Indigo
       new THREE.Color(0xfef08a), // Warm Yellow
+      new THREE.Color(0xfda4af), // Subtle Rose/Saffron hint
     ];
 
     for (let i = 0; i < starCount; i++) {
-      const radius = THREE.MathUtils.randFloat(250, 2000);
+      const radius = THREE.MathUtils.randFloat(200, 2200);
       const theta = THREE.MathUtils.randFloat(0, Math.PI * 2);
       const phi = THREE.MathUtils.randFloat(0, Math.PI);
 
@@ -159,11 +172,11 @@ export default function CosmicParticleBackground() {
 
     const starTexture = createStarTexture();
     const starMaterial = new THREE.PointsMaterial({
-      size: 14,
+      size: 16,
       map: starTexture,
       vertexColors: true,
       transparent: true,
-      opacity: 0.9,
+      opacity: 0.95,
       depthWrite: false,
       blending: THREE.AdditiveBlending
     });
@@ -171,12 +184,12 @@ export default function CosmicParticleBackground() {
     scene.add(starField);
 
     // 5B. Prominent Bright Navagraha / Pole Stars Layer
-    const brightCount = 60;
+    const brightCount = 75;
     const brightGeo = new THREE.BufferGeometry();
     const brightPositions = new Float32Array(brightCount * 3);
 
     for (let i = 0; i < brightCount; i++) {
-      const radius = THREE.MathUtils.randFloat(400, 1600);
+      const radius = THREE.MathUtils.randFloat(300, 1500);
       const theta = THREE.MathUtils.randFloat(0, Math.PI * 2);
       const phi = THREE.MathUtils.randFloat(0, Math.PI);
 
@@ -188,11 +201,11 @@ export default function CosmicParticleBackground() {
     brightGeo.setAttribute('position', new THREE.BufferAttribute(brightPositions, 3));
     const brightTexture = createBrightStarTexture();
     const brightMaterial = new THREE.PointsMaterial({
-      size: 28,
+      size: 36, // Larger diffraction spikes
       map: brightTexture,
-      color: 0xfff3c4,
+      color: 0xfff6d9,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.9,
       depthWrite: false,
       blending: THREE.AdditiveBlending
     });
@@ -210,26 +223,27 @@ export default function CosmicParticleBackground() {
     }
 
     const planetsData: PlanetData[] = [
-      { name: 'Mercury', dist: 45, size: 2.2, color: 0xa3a3a3, speed: 0.015 },
-      { name: 'Venus', dist: 70, size: 3.6, color: 0xeab308, speed: 0.011 },
-      { name: 'Earth', dist: 105, size: 4.0, color: 0x38bdf8, speed: 0.008 },
-      { name: 'Mars', dist: 140, size: 3.0, color: 0xf87171, speed: 0.006 },
-      { name: 'Jupiter', dist: 195, size: 9.0, color: 0xfdba74, speed: 0.0035 },
-      { name: 'Saturn', dist: 255, size: 7.5, color: 0xfde047, speed: 0.0025, hasRings: true },
-      { name: 'Uranus', dist: 315, size: 5.5, color: 0x2dd4bf, speed: 0.0018 },
-      { name: 'Neptune', dist: 370, size: 5.2, color: 0x60a5fa, speed: 0.0012 }
+      { name: 'Mercury', dist: 45, size: 2.2, color: 0xb5b5b5, speed: 0.015 },
+      { name: 'Venus', dist: 70, size: 3.6, color: 0xf59e0b, speed: 0.011 },
+      { name: 'Earth', dist: 105, size: 4.2, color: 0x0ea5e9, speed: 0.008 },
+      { name: 'Mars', dist: 140, size: 3.0, color: 0xef4444, speed: 0.006 },
+      { name: 'Jupiter', dist: 195, size: 9.5, color: 0xfb923c, speed: 0.0035 },
+      { name: 'Saturn', dist: 255, size: 8.0, color: 0xfacc15, speed: 0.0025, hasRings: true },
+      { name: 'Uranus', dist: 315, size: 5.8, color: 0x14b8a6, speed: 0.0018 },
+      { name: 'Neptune', dist: 370, size: 5.5, color: 0x3b82f6, speed: 0.0012 }
     ];
 
     const planetMeshes: { group: THREE.Group; speed: number; angle: number; dist: number }[] = [];
 
     planetsData.forEach((p) => {
       // Orbit Line Geometry
-      const orbitGeo = new THREE.RingGeometry(p.dist - 0.4, p.dist + 0.4, 96);
+      const orbitGeo = new THREE.RingGeometry(p.dist - 0.2, p.dist + 0.2, 128);
       const orbitMat = new THREE.MeshBasicMaterial({
-        color: 0xc9a86a,
+        color: 0xd4af37, // Golden orbits
         transparent: true,
-        opacity: 0.08,
-        side: THREE.DoubleSide
+        opacity: 0.12,
+        side: THREE.DoubleSide,
+        blending: THREE.AdditiveBlending
       });
       const orbitMesh = new THREE.Mesh(orbitGeo, orbitMat);
       orbitMesh.rotation.x = Math.PI / 2;
@@ -239,14 +253,16 @@ export default function CosmicParticleBackground() {
       const pivotGroup = new THREE.Group();
       scene.add(pivotGroup);
 
-      // Planet Mesh
-      const pGeo = new THREE.SphereGeometry(p.size, 24, 24);
-      const pMat = new THREE.MeshStandardMaterial({
+      // Planet Mesh (Using MeshPhysicalMaterial for premium glossy look)
+      const pGeo = new THREE.SphereGeometry(p.size, 32, 32);
+      const pMat = new THREE.MeshPhysicalMaterial({
         color: p.color,
-        roughness: 0.6,
-        metalness: 0.2,
+        roughness: 0.4,
+        metalness: 0.3,
+        clearcoat: 0.8,
+        clearcoatRoughness: 0.2,
         emissive: p.color,
-        emissiveIntensity: 0.12
+        emissiveIntensity: 0.15
       });
       const pMesh = new THREE.Mesh(pGeo, pMat);
       pMesh.position.set(p.dist, 0, 0);
@@ -254,16 +270,20 @@ export default function CosmicParticleBackground() {
 
       // Saturn Rings
       if (p.hasRings) {
-        const ringGeo = new THREE.RingGeometry(p.size * 1.4, p.size * 2.3, 48);
-        const ringMat = new THREE.MeshBasicMaterial({
+        const ringGeo = new THREE.RingGeometry(p.size * 1.5, p.size * 2.4, 64);
+        const ringMat = new THREE.MeshStandardMaterial({
           color: 0xfde047,
+          roughness: 0.6,
+          metalness: 0.4,
           transparent: true,
-          opacity: 0.35,
+          opacity: 0.6,
           side: THREE.DoubleSide
         });
         const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-        ringMesh.rotation.x = Math.PI / 3;
+        ringMesh.rotation.x = Math.PI / 2.8;
         pMesh.add(ringMesh);
+        
+        // Add subtle shadow casting/receiving capabilities in the future
       }
 
       const initialAngle = Math.random() * Math.PI * 2;
@@ -282,18 +302,30 @@ export default function CosmicParticleBackground() {
     scene.add(zodiacGroup);
 
     const zodiacSigns = 12;
-    const zodiacRadius = 460;
+    const zodiacRadius = 450;
     for (let i = 0; i < zodiacSigns; i++) {
       const angle = (i / zodiacSigns) * Math.PI * 2;
       const x = Math.cos(angle) * zodiacRadius;
       const z = Math.sin(angle) * zodiacRadius;
 
       // Constellation Star Node
-      const nodeGeo = new THREE.SphereGeometry(1.5, 8, 8);
-      const nodeMat = new THREE.MeshBasicMaterial({ color: 0xc9a86a });
+      const nodeGeo = new THREE.SphereGeometry(1.8, 16, 16);
+      const nodeMat = new THREE.MeshBasicMaterial({ color: 0xffdf80 });
       const nodeMesh = new THREE.Mesh(nodeGeo, nodeMat);
       nodeMesh.position.set(x, 0, z);
       zodiacGroup.add(nodeMesh);
+
+      // Outer glow for constellation node
+      const nodeGlowGeo = new THREE.SphereGeometry(4.0, 16, 16);
+      const nodeGlowMat = new THREE.MeshBasicMaterial({
+        color: 0xd4af37,
+        transparent: true,
+        opacity: 0.3,
+        blending: THREE.AdditiveBlending
+      });
+      const nodeGlowMesh = new THREE.Mesh(nodeGlowGeo, nodeGlowMat);
+      nodeGlowMesh.position.set(x, 0, z);
+      zodiacGroup.add(nodeGlowMesh);
 
       // Connect to Next Node with Subtle Chord
       const nextAngle = ((i + 1) / zodiacSigns) * Math.PI * 2;
@@ -305,9 +337,10 @@ export default function CosmicParticleBackground() {
         new THREE.Vector3(nextX, 0, nextZ)
       ]);
       const lineMat = new THREE.LineBasicMaterial({
-        color: 0xc9a86a,
+        color: 0xd4af37,
         transparent: true,
-        opacity: 0.08
+        opacity: 0.15,
+        blending: THREE.AdditiveBlending
       });
       const line = new THREE.Line(lineGeo, lineMat);
       zodiacGroup.add(line);
@@ -317,13 +350,13 @@ export default function CosmicParticleBackground() {
     let mouseX = 0;
     let mouseY = 0;
     let targetCameraX = 0;
-    let targetCameraY = 180;
+    let targetCameraY = 160;
 
     const onMouseMove = (e: MouseEvent) => {
       mouseX = (e.clientX - window.innerWidth / 2) * 0.15;
-      mouseY = (e.clientY - window.innerHeight / 2) * 0.1;
+      mouseY = (e.clientY - window.innerHeight / 2) * 0.12;
       targetCameraX = mouseX;
-      targetCameraY = 180 - mouseY;
+      targetCameraY = 160 - mouseY;
     };
     window.addEventListener('mousemove', onMouseMove);
 
@@ -348,15 +381,20 @@ export default function CosmicParticleBackground() {
 
       if (!prefersReducedMotion) {
         // Slow Cosmic Starfield Rotation
-        starField.rotation.y += 0.0002;
-        starField.rotation.x += 0.0001;
-        brightField.rotation.y += 0.0002;
+        starField.rotation.y += 0.00015;
+        starField.rotation.x += 0.00008;
+        brightField.rotation.y += 0.00015;
 
         // Rotate Zodiac Ring
-        zodiacGroup.rotation.y += 0.0003;
+        zodiacGroup.rotation.y += 0.00025;
 
         // Sun Corona Pulse
-        sunGroup.rotation.y += 0.002;
+        sunGroup.rotation.y += 0.0015;
+        
+        // Gentle pulsing effect on the outer corona scale
+        const time = Date.now() * 0.001;
+        const scale = 1.0 + Math.sin(time * 2) * 0.03;
+        coronaMesh.scale.set(scale, scale, scale);
 
         // Orbit Planets
         planetMeshes.forEach((p) => {
@@ -389,7 +427,11 @@ export default function CosmicParticleBackground() {
       <div ref={containerRef} className="absolute inset-0 w-full h-full" />
 
       {/* Volumetric Dark Vignette for High Text Contrast */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#040711]/85 via-[#070b19]/70 to-[#040711]/90 pointer-events-none" />
+      {/* Darker, richer vignette gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#02040a]/95 via-[#040711]/60 to-[#02040a]/95 pointer-events-none" />
+      
+      {/* Radial soft glow in center to enhance the 3D Sun */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.03)_0%,transparent_60%)] pointer-events-none" />
     </div>
   );
 }

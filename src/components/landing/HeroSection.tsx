@@ -170,12 +170,12 @@ export default function HeroSection({ onGetStarted, onExploreHoroscope }: HeroSe
           transition={{ duration: 0.7, delay: 0.2 }}
           className="lg:col-span-5 flex justify-center z-10"
         >
-          <div className="relative w-full max-w-[430px] aspect-square rounded-3xl p-5 bg-gradient-to-b from-[#0D1220]/90 to-[#070A12]/95 border border-[#C9A86A]/30 shadow-[0_16px_50px_rgba(0,0,0,0.6)] backdrop-blur-2xl flex flex-col justify-between select-none">
+          <div className="relative w-full max-w-[430px] aspect-square rounded-3xl p-5 bg-gradient-to-b from-[#0B101E]/95 to-[#04060C]/95 border border-[#d4af37]/25 shadow-[0_20px_60px_rgba(0,0,0,0.7)] backdrop-blur-3xl flex flex-col justify-between select-none">
             
             {/* Header Telemetry */}
             <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 border-b border-white/[0.06] pb-3">
-              <span className="flex items-center gap-1.5 text-[#C9A86A]">
-                <Sun className="w-3.5 h-3.5 text-amber-400" />
+              <span className="flex items-center gap-1.5 text-[#d4af37]">
+                <Sun className="w-3.5 h-3.5 text-[#d4af37]" />
                 Live Astronomical Wheel
               </span>
               <span className="text-emerald-400 font-mono flex items-center gap-1">
@@ -188,14 +188,14 @@ export default function HeroSection({ onGetStarted, onExploreHoroscope }: HeroSe
             <div className="relative w-full aspect-square flex items-center justify-center my-2">
               
               {/* Outer Zodiac Ring */}
-              <div className="absolute inset-2 rounded-full border border-dashed border-[#C9A86A]/30 animate-[spin_120s_linear_infinite]" />
+              <div className="absolute inset-2 rounded-full border border-dashed border-[#d4af37]/30 animate-[spin_120s_linear_infinite]" />
               
               {/* Inner Concentric Rings */}
-              <div className="absolute inset-8 rounded-full border border-white/[0.08]" />
-              <div className="absolute inset-16 rounded-full border border-[#C9A86A]/20 bg-white/[0.01]" />
+              <div className="absolute inset-8 rounded-full border border-white/[0.06]" />
+              <div className="absolute inset-16 rounded-full border border-[#d4af37]/15 bg-white/[0.01]" />
 
               {/* Diamond Vedic Kundli House Cross */}
-              <svg className="absolute inset-6 w-[calc(100%-48px)] h-[calc(100%-48px)] opacity-35 stroke-[#C9A86A]" viewBox="0 0 100 100" fill="none">
+              <svg className="absolute inset-6 w-[calc(100%-48px)] h-[calc(100%-48px)] opacity-35 stroke-[#d4af37]" viewBox="0 0 100 100" fill="none">
                 <rect x="15" y="15" width="70" height="70" strokeWidth="0.8" />
                 <line x1="15" y1="15" x2="85" y2="85" strokeWidth="0.6" />
                 <line x1="15" y1="85" x2="85" y2="15" strokeWidth="0.6" />
@@ -216,10 +216,10 @@ export default function HeroSection({ onGetStarted, onExploreHoroscope }: HeroSe
                     onMouseEnter={() => setHoveredZodiac(z.name)}
                     onMouseLeave={() => setHoveredZodiac(null)}
                     style={{ left: `${x}%`, top: `${y}%` }}
-                    className={`absolute -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center text-xs transition-all cursor-pointer ${
+                    className={`absolute -translate-x-1/2 -translate-y-1/2 w-7 h-7 rounded-full flex items-center justify-center text-xs transition-all cursor-pointer ${
                       isHovered
-                        ? 'bg-[#C9A86A] text-[#070A12] scale-125 shadow-[0_0_12px_rgba(201,168,106,0.8)] z-20 font-bold'
-                        : 'text-slate-400 hover:text-white bg-black/50 hover:bg-white/10'
+                        ? 'bg-[#d4af37] text-[#070A12] scale-125 shadow-[0_0_15px_rgba(212,175,55,0.7)] z-20 font-bold'
+                        : 'text-slate-400 hover:text-[#d4af37] bg-[#04060C]/60 hover:bg-[#111827]/80 backdrop-blur-sm border border-transparent hover:border-[#d4af37]/30'
                     }`}
                     title={`${z.name} (${z.element})`}
                   >
@@ -244,44 +244,47 @@ export default function HeroSection({ onGetStarted, onExploreHoroscope }: HeroSe
                     style={{ left: `${x}%`, top: `${y}%` }}
                     className={`absolute -translate-x-1/2 -translate-y-1/2 p-1.5 rounded-full cursor-pointer transition-all ${
                       isSelected
-                        ? 'bg-white text-black ring-4 ring-[#C9A86A]/40 shadow-[0_0_20px_rgba(201,168,106,0.9)] z-30 scale-110'
-                        : 'bg-black/80 border border-white/20 text-slate-300 hover:border-[#C9A86A] z-10'
+                        ? 'bg-white text-black ring-4 ring-[#d4af37]/50 shadow-[0_0_20px_rgba(212,175,55,0.8)] z-30 scale-110'
+                        : 'bg-[#04060C] border border-white/20 text-slate-300 hover:border-[#d4af37] shadow-[0_0_8px_rgba(0,0,0,0.5)] z-10'
                     }`}
                     title={`${planet.name} in ${planet.sign}`}
                   >
                     <div
-                      className="w-2.5 h-2.5 rounded-full"
-                      style={{ backgroundColor: planet.color || '#C9A86A' }}
+                      className="w-2.5 h-2.5 rounded-full shadow-inner"
+                      style={{ backgroundColor: planet.color || '#d4af37' }}
                     />
                   </motion.button>
                 );
               })}
 
               {/* Center Ascendant Core */}
-              <div className="z-10 text-center p-3 rounded-2xl bg-[#070A12]/95 border border-white/[0.1] shadow-xl backdrop-blur-md">
-                <div className="text-[10px] uppercase font-mono tracking-widest text-[#C9A86A]">Current Lagna</div>
-                <div className="text-sm font-bold text-white font-serif">{livePanchang.sunSign || 'Leo'} ♌</div>
-                <div className="text-[9px] text-cyan-300 font-mono">{livePanchang.nakshatra} Nakshatra</div>
+              <div className="z-10 text-center px-4 py-3 rounded-2xl bg-[#04060C]/90 border border-white/[0.08] shadow-[0_10px_30px_rgba(0,0,0,0.8)] backdrop-blur-xl">
+                <div className="text-[10px] uppercase font-mono tracking-widest text-[#d4af37] mb-1">Current Lagna</div>
+                <div className="text-[15px] font-bold text-white font-serif">{livePanchang.sunSign || 'Leo'} ♌</div>
+                <div className="text-[9px] text-cyan-300 font-mono mt-1 opacity-80">{livePanchang.nakshatra}</div>
               </div>
             </div>
 
             {/* Active Planetary Telemetry Card */}
             {activePlanet && (
-              <div className="mt-1 p-3 rounded-xl bg-white/[0.04] border border-[#C9A86A]/20 flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2.5">
-                  <div
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: activePlanet.color || '#C9A86A' }}
-                  />
+              <div className="mt-2 p-3.5 rounded-xl bg-[#111827]/40 border border-[#d4af37]/20 flex items-center justify-between text-xs backdrop-blur-md">
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <div className="absolute inset-0 rounded-full blur-sm" style={{ backgroundColor: activePlanet.color || '#d4af37', opacity: 0.5 }} />
+                    <div
+                      className="relative w-3.5 h-3.5 rounded-full border border-white/20"
+                      style={{ backgroundColor: activePlanet.color || '#d4af37' }}
+                    />
+                  </div>
                   <div>
-                    <div className="font-bold text-slate-100">{activePlanet.name} {activePlanet.symbol} in {activePlanet.sign}</div>
-                    <div className="text-[10.5px] text-slate-400 font-mono">
-                      {activePlanet.degree} • {activePlanet.nakshatra} (Pada {activePlanet.pada}) {activePlanet.retrograde ? '• [Retrograde ℞]' : ''}
+                    <div className="font-bold text-slate-50 text-[13px]">{activePlanet.name} {activePlanet.symbol} in {activePlanet.sign}</div>
+                    <div className="text-[10.5px] text-slate-400 font-mono mt-0.5">
+                      {activePlanet.degree} • {activePlanet.nakshatra} (Pada {activePlanet.pada}) {activePlanet.retrograde ? '• [℞]' : ''}
                     </div>
                   </div>
                 </div>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#C9A86A]/15 text-[#C9A86A] border border-[#C9A86A]/25">
-                  Live Coordinate
+                <span className="text-[9px] uppercase font-mono px-2 py-1 rounded bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/20">
+                  Live Coord
                 </span>
               </div>
             )}

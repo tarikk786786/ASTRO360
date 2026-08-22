@@ -87,7 +87,7 @@ export default function LandingNavbar({
         <div className="hidden md:flex items-center gap-3">
           <button
             onClick={onGetStarted}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-[#C9A86A] to-[#B8934A] text-[#090D16] text-xs font-bold font-serif shadow-[0_0_20px_rgba(201,168,106,0.35)] hover:scale-105 transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#C9A86A] to-[#B8934A] text-[#090D16] text-xs font-bold font-serif shadow-[0_0_20px_rgba(201,168,106,0.35)] hover:shadow-[0_0_25px_rgba(201,168,106,0.5)] hover:scale-105 transition-all cursor-pointer"
           >
             <span>Create Kundli</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -96,26 +96,18 @@ export default function LandingNavbar({
           {hasProfile ? (
             <button
               onClick={onOpenDashboard}
-              className="px-4 py-2 text-xs font-medium text-slate-200 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] rounded-lg transition-all cursor-pointer"
+              className="px-4 py-2.5 text-xs font-medium text-slate-200 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] rounded-xl transition-all cursor-pointer"
             >
               Enter Dashboard
             </button>
           ) : (
             <button
               onClick={onOpenDashboard}
-              className="px-3.5 py-2 text-xs font-medium text-slate-300 hover:text-white transition-colors cursor-pointer"
+              className="px-4 py-2.5 text-xs font-medium text-slate-300 hover:text-white transition-colors cursor-pointer"
             >
               Explore Studio
             </button>
           )}
-
-          <button
-            onClick={onGetStarted}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-[#C9A86A] to-[#DFBF7A] text-[#070A12] text-xs font-semibold shadow-[0_0_20px_rgba(201,168,106,0.3)] hover:shadow-[0_0_25px_rgba(201,168,106,0.5)] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer"
-          >
-            <span>Get Free Chart</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
         </div>
 
         {/* Mobile Hamburger Toggle */}
