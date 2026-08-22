@@ -4,6 +4,8 @@
  * Guardrails: No fabrication of verses/hadiths, no fatwa issuance, mandatory reference citations.
  */
 
+import { fetchQuranVerse, fetchAsmaAlHusna } from './apiProxy';
+
 export interface QuranAyah {
   id: number;
   verse_key: string;
@@ -39,8 +41,11 @@ export interface AsmaUlHusna {
 }
 
 export class IslamicKnowledgeEngine {
-  private static MUSLIM_API_KEY = import.meta.env.VITE_MUSLIM_API_KEY || 'IeQtuzn8OpWYX9aXQ0HCrBNE9I3KHJbbx2Ns2dGufFqt4jMi';
-  private static UMMAH_API_KEY = import.meta.env.VITE_UMMAH_API_KEY || 'umh_0b8d1fc3c742321a9f46ae5667ed238d8e5800f5';
+  // Note: two API keys (MuslimSalat, UmmahAPI) were previously declared here as
+  // hardcoded literals and never read by any method in this class. They were pure
+  // exposure with no function, so they are gone. The Quran and Aladhan endpoints
+  // below need no credential; they are routed via /api/proxy for caching and to
+  // keep all outbound calls in one auditable place.
 
   // Guardrail Verification: Ensure references exist
   public static verifyReference(type: 'quran' | 'hadith' | 'dua', refString: string): boolean {
@@ -50,33 +55,28 @@ export class IslamicKnowledgeEngine {
     return true;
   }
 
-  // 1. Fetch Ayah via Quran.com v4 or AlQuran.cloud API
+  // 1. Fetch Ayah via Quran.com v4, with AlQuran.cloud fallback (both server-side)
   public static async fetchAyah(surah: number, ayah: number): Promise<QuranAyah | null> {
     try {
-      const res = await fetch(`https://api.quran.com/api/v4/verses/by_key/${surah}:${ayah}?fields=text_uthmani&translations=131`);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.verse) {
-          return {
-            id: data.verse.id,
-            verse_key: data.verse.verse_key,
-            text_uthmani: data.verse.text_uthmani,
-            translations: data.verse.translations?.map((t: any) => ({ text: t.text, language_name: t.language_name || 'English' }))
-          };
-        }
+      const data = await fetchQuranVerse(surah, ayah);
+
+      // Quran.com v4 shape
+      if (data?.verse) {
+        return {
+          id: data.verse.id,
+          verse_key: data.verse.verse_key,
+          text_uthmani: data.verse.text_uthmani,
+          translations: data.verse.translations?.map((t: any) => ({ text: t.text, language_name: t.language_name || 'English' }))
+        };
       }
 
-      // AlQuran.cloud Fallback API
-      const fallbackRes = await fetch(`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}`);
-      if (fallbackRes.ok) {
-        const fbData = await fallbackRes.json();
-        if (fbData.data) {
-          return {
-            id: fbData.data.number,
-            verse_key: `${fbData.data.surah.number}:${fbData.data.numberInSurah}`,
-            text_uthmani: fbData.data.text,
-          };
-        }
+      // AlQuran.cloud fallback shape
+      if (data?.data?.surah) {
+        return {
+          id: data.data.number,
+          verse_key: `${data.data.surah.number}:${data.data.numberInSurah}`,
+          text_uthmani: data.data.text,
+        };
       }
     } catch (e) {
       console.warn('Failed to fetch Ayah from Quran API:', e);
@@ -87,17 +87,14 @@ export class IslamicKnowledgeEngine {
   // 2. Fetch 99 Names of Allah (Asma ul-Husna API)
   public static async fetchAsmaUlHusna(): Promise<AsmaUlHusna[]> {
     try {
-      const res = await fetch('https://api.aladhan.com/v1/asmaAlHusna');
-      if (res.ok) {
-        const data = await res.json();
-        if (data.data && Array.isArray(data.data)) {
-          return data.data.map((item: any) => ({
-            number: item.number,
-            name: item.name,
-            transliteration: item.transliteration,
-            enMeaning: item.en?.meaning || item.meaning || ''
-          }));
-        }
+      const data = await fetchAsmaAlHusna();
+      if (data?.data && Array.isArray(data.data)) {
+        return data.data.map((item: any) => ({
+          number: item.number,
+          name: item.name,
+          transliteration: item.transliteration,
+          enMeaning: item.en?.meaning || item.meaning || ''
+        }));
       }
     } catch (e) {
       console.warn('Asma ul-Husna API error:', e);
