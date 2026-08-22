@@ -21,8 +21,13 @@ function runAstroCalculationsTests() {
   }
 
   positions.forEach(p => {
-    if (p.degreeDecimal < 0 || p.degreeDecimal >= 360) {
+    // `!(x >= 0 && x < 360)` rather than `x < 0 || x >= 360`: every comparison
+    // against NaN is false, so the original form let NaN through as a pass.
+    if (!(p.degreeDecimal >= 0 && p.degreeDecimal < 360)) {
       throw new Error(`Test 2 Failed: Invalid planet degree ${p.degreeDecimal} for ${p.name}`);
+    }
+    if (!Number.isFinite(p.long)) {
+      throw new Error(`Test 2 Failed: non-finite longitude ${p.long} for ${p.name}`);
     }
   });
 
