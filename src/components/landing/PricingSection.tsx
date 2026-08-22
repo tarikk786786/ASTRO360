@@ -40,7 +40,7 @@ const PLANS = [
       'Executive Astrological PDF dossier downloads',
       'Zero credit card or payment required',
     ],
-    cta: 'Unlock Pro Suite Free',
+    cta: 'Explore Pro Suite',
     isPopular: true,
   },
   {
@@ -58,7 +58,7 @@ const PLANS = [
       'Vedic remedies & personalized astrological WHY',
       'Complete privacy & instant instant replies',
     ],
-    cta: 'Start Free AI Consultation',
+    cta: 'Start AI Consultation',
     isPopular: false,
   },
 ];

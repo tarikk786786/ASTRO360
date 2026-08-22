@@ -1,10 +1,14 @@
-import { calculatePlanetaryPositions, calculateLahiriAyanamsha } from './astroCalculations';
+// FIXED: this file imported `calculateLahiriAyanamsha`, which does not exist.
+// The real export is `calculateAyanamsha(date, mode)`. Node would have thrown
+// "does not provide an export named 'calculateLahiriAyanamsha'" at import time,
+// so this suite could never have run green in CI. See QA-04 in docs/hardening/AUDIT.md.
+import { calculatePlanetaryPositions, calculateAyanamsha } from './astroCalculations';
 
 function runAstroCalculationsTests() {
   console.log('🧪 Running Astronomical Engine Unit Verification...');
 
   // Test 1: Lahiri Ayanamsha Calculation (Expected ~24.21° for year 2026)
-  const ayanamsha = calculateLahiriAyanamsha(new Date('2026-08-06'));
+  const ayanamsha = calculateAyanamsha(new Date('2026-08-06'), 'lahiri');
   if (ayanamsha < 23.5 || ayanamsha > 25.0) {
     throw new Error(`Test 1 Failed: Expected Lahiri Ayanamsha ~24.21°, got ${ayanamsha}`);
   }
