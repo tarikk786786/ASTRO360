@@ -555,8 +555,23 @@ export default function AppContent() {
                   {activeTab === 'landing' && (
                     <LandingPage
                       onStartOnboarding={(preset) => {
-                        setLandingPreset(preset);
-                        setShowOnboarding(true);
+                        if (preset && preset.name && preset.dob) {
+                          const updated: UserProfile = {
+                            ...userProfile,
+                            ...preset,
+                            name: preset.name || userProfile.name,
+                            dob: preset.dob || userProfile.dob,
+                            time: preset.time || userProfile.time,
+                            location: preset.location || userProfile.location,
+                          };
+                          setUserProfile(updated);
+                          saveProfile(updated);
+                          setHasOnboarded(true);
+                          navigateTo('birth-chart');
+                        } else {
+                          setLandingPreset(preset);
+                          setShowOnboarding(true);
+                        }
                       }}
                       onNavigateToTab={(tab) => navigateTo(tab)}
                       userProfile={userProfile}
