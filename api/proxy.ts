@@ -11,7 +11,7 @@
  * file exists to close.
  */
 
-import { env, handlePreflight, rateLimit, num, int, str, fetchWithTimeout } from './_shared';
+import { env, handlePreflight, rateLimit, num, int, str, fetchWithTimeout } from './_shared.js';
 
 /** Services the proxy is willing to reach. Anything else is refused — this is not an open relay. */
 const SERVICES = [
