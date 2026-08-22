@@ -11,10 +11,12 @@
  *
  * To make it real: the logic under test currently lives inside
  *   src/lib/audioResonator.ts
- * A component cannot be unit-tested without a DOM test runner, and neither vitest
- * nor jsdom is installed. Two routes:
- *   1. Extract the pure calculation into src/lib/, then assert on it here (no new deps).
- *   2. Add vitest + jsdom and test the component directly (needs new deps + lockfile update).
+ * That module is importable, but every export routes through `window.AudioContext`
+ * or `window.speechSynthesis`, so it needs a DOM environment. Neither vitest nor
+ * jsdom is installed. Two routes:
+ *   1. Extract the pure parts (frequency tables, waveform/duration maths) into a
+ *      side-effect-free module and assert on those here (no new deps).
+ *   2. Add vitest + jsdom and stub AudioContext (needs new deps + lockfile update).
  */
 console.log("🧪 Running Web Audio Resonator & 14 Sacred Mantras Database Unit Verification...");
 

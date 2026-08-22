@@ -9,12 +9,12 @@
  * finding QA-04 in docs/hardening/AUDIT.md. It is kept on disk, not deleted, so the
  * original intent is preserved.
  *
- * To make it real: the logic under test currently lives inside
- *   (no implementation module exists for this feature)
- * A component cannot be unit-tested without a DOM test runner, and neither vitest
- * nor jsdom is installed. Two routes:
- *   1. Extract the pure calculation into src/lib/, then assert on it here (no new deps).
- *   2. Add vitest + jsdom and test the component directly (needs new deps + lockfile update).
+ * There is no implementation module for this feature anywhere in src/. The literals
+ * in this file are the only place the described behaviour exists, so there is nothing
+ * for a real test to call yet.
+ *
+ * To make it real: implement the feature as a pure module under src/lib/, then assert
+ * on its output here. Until then this file documents an intention, not a guarantee.
  */
 console.log("🧪 Running Tarik Islam Cosmic Passport Unit Verification...");
 
