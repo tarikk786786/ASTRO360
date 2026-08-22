@@ -1,12 +1,20 @@
-import { create } from 'zustand';
+﻿import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { UserProfile } from '../types';
+
+interface ApiKeys {
+  openai?: string;
+  gemini?: string;
+  anthropic?: string;
+}
 
 interface UserState {
   userProfile: UserProfile;
   isOnboarded: boolean;
+  apiKeys: ApiKeys;
   setUserProfile: (profile: Partial<UserProfile>) => void;
   setFullProfile: (profile: UserProfile) => void;
+  setApiKeys: (keys: Partial<ApiKeys>) => void;
   resetProfile: () => void;
 }
 
@@ -30,6 +38,7 @@ export const useUserStore = create<UserState>()(
     (set) => ({
       userProfile: DEFAULT_PROFILE,
       isOnboarded: false,
+      apiKeys: {},
       setUserProfile: (updates) =>
         set((state) => {
           const updated = { ...state.userProfile, ...updates };
@@ -41,10 +50,15 @@ export const useUserStore = create<UserState>()(
           userProfile: profile,
           isOnboarded: Boolean(profile.name && profile.dob && profile.location),
         })),
+      setApiKeys: (keys) =>
+        set((state) => ({
+          apiKeys: { ...state.apiKeys, ...keys },
+        })),
       resetProfile: () =>
         set(() => ({
           userProfile: DEFAULT_PROFILE,
           isOnboarded: false,
+          apiKeys: {},
         })),
     }),
     {

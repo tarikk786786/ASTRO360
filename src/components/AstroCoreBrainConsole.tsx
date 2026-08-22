@@ -1,27 +1,89 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Cpu, Sparkles, CheckCircle2, ShieldCheck, Activity, Layers, Terminal, BookOpen, Send, RefreshCw, ChevronDown, ChevronUp, Bot, Brain } from 'lucide-react';
+import { Cpu, Sparkles, CheckCircle2, ShieldCheck, Activity, Layers, Terminal, BookOpen, Send, RefreshCw, ChevronDown, ChevronUp, Bot, Brain, Key, AlertTriangle } from 'lucide-react';
 import { astroBrain, BrainExecutionResult } from '../lib/astroCoreBrain';
+import { useUserStore } from '../stores/userStore';
+import { calculatePlanetaryPositions } from '../lib/astroCalculations';
+import { generateCosmicReading } from '../lib/aiOrchestrator';
+import { parseISO } from 'date-fns';
 
-export default function AstroCoreBrainConsole() {
-  const [prompt, setPrompt] = useState<string>('Analyze my natal birth chart with Nakshatra alignment, NASA solar telemetry & Quranic astronomy references');
+export default function AstroCoreBrainConsole({ userProfile: propUserProfile }: { userProfile?: any }) {
+  const { userProfile: storeProfile, apiKeys, setApiKeys } = useUserStore();
+  const userProfile = propUserProfile || storeProfile;
+  
+  const [prompt, setPrompt] = useState<string>('Analyze my natal birth chart with Nakshatra alignment and tell me my life purpose.');
   const [selectedSystem, setSelectedSystem] = useState<'universal' | 'vedic' | 'western' | 'islamic'>('universal');
   const [result, setResult] = useState<BrainExecutionResult | null>(null);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [showPromptDoc, setShowPromptDoc] = useState<boolean>(false);
+  
+  // API Key state
+  const [showSettings, setShowSettings] = useState(false);
+  const [localGeminiKey, setLocalGeminiKey] = useState(apiKeys.gemini || '');
+  const hasKey = Boolean(apiKeys.gemini || apiKeys.openai);
 
-  const runPipeline = () => {
+  const runPipeline = async () => {
+    if (!hasKey) {
+      setShowSettings(true);
+      return;
+    }
+    
     setIsProcessing(true);
-    setTimeout(() => {
-      const res = astroBrain.executePipeline(prompt, selectedSystem);
-      setResult(res);
+    setResult(null);
+    
+    try {
+      // Create a simulated plan structure to keep the original UI looking busy/cool
+      const mockResult = astroBrain.executePipeline(prompt, selectedSystem);
+      
+      // Calculate real planetary positions
+      let dateObj = new Date();
+      if (userProfile?.dob) {
+        try {
+          dateObj = parseISO(`${userProfile.dob}T${userProfile.time || '12:00'}`);
+        } catch(e) {}
+      }
+      const positions = calculatePlanetaryPositions(
+        userProfile?.dob || new Date().toISOString().split('T')[0],
+        userProfile?.time || '12:00'
+      );
+
+      // Fetch real AI reading
+      const activeKey = apiKeys.gemini || apiKeys.openai;
+      const reading = await generateCosmicReading(
+        prompt,
+        userProfile || {},
+        positions,
+        activeKey as string,
+        apiKeys.gemini ? 'gemini' : 'openai'
+      );
+
+      // Inject the real reading into the mock structure
+      mockResult.finalReport.summary = "Real-time AI analysis complete based on precise mathematical ephemeris data.";
+      mockResult.finalReport.sections = [
+        {
+          heading: "Deep Neural Analysis",
+          body: reading
+        }
+      ];
+
+      setResult(mockResult);
+    } catch (e: any) {
+      const errorResult = astroBrain.executePipeline(prompt, selectedSystem);
+      errorResult.finalReport.title = "Neural Link Error";
+      errorResult.finalReport.summary = "Failed to connect to the LLM.";
+      errorResult.finalReport.sections = [
+        { heading: "Error Details", body: e.message || "Unknown error occurred" }
+      ];
+      setResult(errorResult);
+    } finally {
       setIsProcessing(false);
-    }, 600);
+    }
   };
 
-  React.useEffect(() => {
-    runPipeline();
-  }, []);
+  const handleSaveKeys = () => {
+    setApiKeys({ gemini: localGeminiKey });
+    setShowSettings(false);
+  };
 
   return (
     <div className="glass-card rounded-3xl p-6 sm:p-8 border border-purple-500/30 shadow-2xl space-y-8 text-left">
@@ -36,9 +98,17 @@ export default function AstroCoreBrainConsole() {
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="px-3 py-1 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-mono font-bold flex items-center gap-1.5">
-            <Cpu className="w-3.5 h-3.5 text-purple-400" /> Multi-Agent Orchestrator
-          </span>
+          <button 
+            onClick={() => setShowSettings(!showSettings)}
+            className={`px-3 py-1.5 rounded-xl border text-xs font-mono font-bold flex items-center gap-1.5 transition-colors ${
+              hasKey 
+                ? 'bg-purple-500/10 border-purple-500/30 text-purple-300 hover:bg-purple-500/30' 
+                : 'bg-red-500/10 border-red-500/30 text-red-400 hover:bg-red-500/30'
+            }`}
+          >
+            {hasKey ? <Cpu className="w-3.5 h-3.5" /> : <AlertTriangle className="w-3.5 h-3.5" />}
+            {hasKey ? 'Neural Link Active' : 'Connect Neural Link'}
+          </button>
 
           <select
             value={selectedSystem}
@@ -52,6 +122,46 @@ export default function AstroCoreBrainConsole() {
           </select>
         </div>
       </div>
+
+      {/* API KEY SETTINGS PANEL */}
+      <AnimatePresence>
+        {showSettings && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="p-5 rounded-2xl bg-slate-950 border border-purple-500/50 text-xs font-mono text-slate-300 space-y-4 mb-4"
+          >
+            <h4 className="text-purple-400 font-bold flex items-center gap-2">
+              <Key className="w-4 h-4" /> Configure Real AI Neural Link
+            </h4>
+            <p className="text-slate-400 text-[11px] leading-relaxed">
+              To power the Core Brain with real, profound predictions, provide a Google Gemini API key. Your key is stored locally in your browser and is never saved to a server.
+            </p>
+            <input 
+              type="password" 
+              value={localGeminiKey}
+              onChange={(e) => setLocalGeminiKey(e.target.value)}
+              placeholder="Enter Gemini API Key (AIzaSy...)"
+              className="w-full px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs font-mono focus:outline-none focus:border-purple-500"
+            />
+            <div className="flex gap-3 pt-2">
+              <button 
+                onClick={handleSaveKeys}
+                className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold"
+              >
+                Save & Connect
+              </button>
+              <button 
+                onClick={() => setShowSettings(false)}
+                className="px-4 py-2 rounded-xl border border-slate-700 text-slate-300 hover:text-white"
+              >
+                Close
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* INPUT PROMPT CONSOLE */}
       <div className="space-y-3">
@@ -193,8 +303,11 @@ Planner Agent | Birth Chart Agent | Planet Agent | House Agent | Nakshatra Agent
             <div className="space-y-3 pt-2">
               {result.finalReport.sections.map((sec, idx) => (
                 <div key={idx} className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-                  <h5 className="text-xs font-bold text-emerald-300 font-mono">{sec.heading}</h5>
-                  <p className="text-xs text-slate-200 leading-relaxed font-sans">{sec.body}</p>
+                  <h5 className="text-xs font-bold text-emerald-300 font-mono mb-2">{sec.heading}</h5>
+                  <div 
+                    className="text-xs text-slate-200 leading-relaxed font-sans prose prose-invert prose-sm"
+                    dangerouslySetInnerHTML={{ __html: sec.body.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br/>') }} 
+                  />
                 </div>
               ))}
             </div>
