@@ -64,25 +64,61 @@
       }, true);
     </script>
 
+    <!-- Canonical & SEO Metadata -->
+    <link rel="canonical" href="https://astro.tarikislam.in/" />
+    <meta property="og:url" content="https://astro.tarikislam.in/" />
+    <meta property="og:site_name" content="ASTRO360 OMNI" />
+
     <!-- JSON-LD Structured Data Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "ASTRO360 OMNI",
-      "url": "https://astro360.vercel.app",
-      "description": "Universal multi-faith astrological, astronomical, and spiritual intelligence platform.",
-      "applicationCategory": "LifestyleApplication",
-      "operatingSystem": "All",
-      "author": {
-        "@type": "Person",
-        "name": "Tarik Islam",
-        "url": "https://tarikislam.in"
-      }
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://astro.tarikislam.in/#website",
+          "url": "https://astro.tarikislam.in/",
+          "name": "ASTRO360 OMNI",
+          "description": "Universal multi-faith astrological, astronomical, and spiritual intelligence platform.",
+          "inLanguage": "en-US"
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://astro.tarikislam.in/#organization",
+          "name": "ASTRO360",
+          "url": "https://astro.tarikislam.in/",
+          "founder": {
+            "@type": "Person",
+            "name": "Tarik Islam",
+            "url": "https://tarikislam.in"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How accurate are the astronomical birth chart calculations?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "ASTRO360 utilizes high-precision Swiss Ephemeris mathematical models combined with high-precision Lahiri Sidereal Ayanamsha (24° 11' 14\") to compute exact planetary longitudes, house cusps, and dasha timelines."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is my birth data and personal consultation private?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. ASTRO360 operates with privacy-by-design standards. Personal birth details are securely stored and never shared with third parties."
+              }
+            }
+          ]
+        }
+      ]
     }
     </script>
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="COSMOS OMNI — Universal Cosmic Intelligence Platform" />
+    <meta name="twitter:title" content="ASTRO360 OMNI — Universal Cosmic Intelligence Platform" />
     <meta name="twitter:description" content="World's premier multi-faith astrology platform uniting 6 traditions. By Tarik Islam." />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />

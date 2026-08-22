@@ -7,6 +7,7 @@ export type TraditionGroup =
   | 'Spiritual & Astronomy';
 
 export interface UserProfile {
+  id?: string;
   name: string;
   email: string;
   phone?: string;
@@ -14,7 +15,12 @@ export interface UserProfile {
   dob: string;
   time: string;
   location: string;
+  latitude?: number;
+  longitude?: number;
+  timezone?: string;
+  relation?: 'self' | 'partner' | 'child' | 'parent' | 'friend' | 'other';
   preferredSystem: string;
+  chartStyle?: 'north' | 'south' | 'east';
   experienceMode?: 'normal' | 'astrologer';
   careerGoal?: string;
   relationshipStatus?: string;
