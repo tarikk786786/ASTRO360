@@ -674,7 +674,7 @@ export default function AppContent() {
                   {activeTab === 'report-generator' && <ExecutiveReportGenerator />}
                   {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
                   {activeTab === 'control-center' && <AstrologyControlCenter />}
-                  {activeTab === 'horoscope' && <DailyHoroscopeTransitEngine userProfile={userProfile} />}
+                  {activeTab === 'horoscope' && <PremiumHoroscopeEngine userProfile={userProfile} />}
                   {(activeTab === 'compatibility' || activeTab === 'ashta-koota') && <AstroSynastryMatchmaker userProfile={userProfile} />}
                   {activeTab === 'islamic-suite' && <UnifiedIslamicSuite userProfile={userProfile} />}
                   {activeTab === 'remedy' && <AstroMultiTraditionRemedySuite />}
