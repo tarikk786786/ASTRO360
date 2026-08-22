@@ -1,138 +1,202 @@
-name: ASTRO360 OMNI Production CI/CD Testing Pipeline
+name: ASTRO360 CI
+
+# Every step below runs a real command whose exit code decides the result.
+#
+# What was removed, and why (finding QA-02 in docs/hardening/AUDIT.md):
+#
+#   • "⚡ Lighthouse & Accessibility Audit (axe-core/Pa11y)" ran exactly one command:
+#       node -e "console.log('✅ WCAG 2.1 AA Accessibility & Color Contrast Verified Cleanly!')"
+#     It printed a pass claim. It did not load a page, run axe-core, or run Pa11y —
+#     neither is installed. Accessibility is currently UNVERIFIED (see A11Y-01).
+#
+#   • "🎭 Playwright E2E Multi-Browser Tests" installed browsers, built the app, and
+#     uploaded playwright-report/ — but never invoked `playwright test`. No spec files
+#     exist and playwright is not a dependency, so the uploaded artifact was always
+#     empty. End-to-end behaviour is currently UNVERIFIED.
+#
+#   • The secret-detection job ran `git status` and then unconditionally echoed
+#     "✅ Zero secrets tracked in version control repository!" — `git status` cannot
+#     fail, so the claim was never tested. It is replaced with real assertions below,
+#     which would have caught the keys found in WS-1.
+#
+# Both deleted jobs are worth rebuilding for real. Doing so needs new devDependencies
+# (axe-core or pa11y-ci; @playwright/test) plus a lockfile update, which is why they are
+# not stubbed back in here — a job that cannot fail is worse than no job.
 
 on:
   push:
-    branches: [ main, replit-build ]
+    branches: [main, replit-build]
   pull_request:
-    branches: [ main, replit-build ]
+    branches: [main, replit-build]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-and-typecheck:
     name: 🏗️ Build & Typecheck
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Codebase
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
+      # pnpm must be installed before setup-node so that `cache: pnpm` can find it.
+      - uses: pnpm/action-setup@v4
         with:
           version: 9
 
-      - name: Install Dependencies
-        run: pnpm install --no-frozen-lockfile
+      # Node 20 reached end-of-life in April 2026. Vite 7 requires ^20.19 || >=22.12.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
 
-      - name: Run Typecheck
+      # --frozen-lockfile, not --no-frozen-lockfile. The previous setting let CI silently
+      # resolve versions that differ from pnpm-lock.yaml, so CI was not testing what
+      # deploys. If this step fails, the lockfile is genuinely out of sync: run
+      # `pnpm install` locally and commit the updated pnpm-lock.yaml.
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Now meaningful. Previously `tsc -p tsconfig.json` compiled ZERO files, because
+      # the root config is solution-style ("files": [] + references only). The added
+      # tsconfig.app.json selects 263 files across src/ and api/. This is the check that
+      # would have caught the 16 undefined identifiers in App.tsx (BUG-01).
+      - name: Typecheck
         run: pnpm run typecheck
 
-      - name: Build Application
-        run: pnpm --filter @workspace/astro360 run build
+      # Was `pnpm --filter @workspace/astro360 run build`. No package is named
+      # @workspace/astro360 (package.json says "astro360") and this is not a workspace,
+      # so the filter matched nothing and pnpm exited without building.
+      - name: Build
+        run: pnpm run build
 
-  unit-and-integration-tests:
-    name: 🧪 Unit & Integration Tests (Vitest/TSX)
-    needs: build-and-typecheck
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Codebase
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9
-
-      - name: Install Dependencies
-        run: pnpm install --no-frozen-lockfile
-
-      - name: Execute Engine Unit Test Suites
+      - name: Report bundle size
         run: |
-          npx tsx src/lib/astroCalculations.test.ts
-          npx tsx src/backend/dashaEngine.test.ts
-          npx tsx src/backend/doshaEngine.test.ts
-          npx tsx src/backend/chakraFengshui.test.ts
-          npx tsx src/backend/planetaryHoras.test.ts
-          npx tsx src/backend/electionalMuhurta.test.ts
-          npx tsx src/backend/mantraRadar.test.ts
-          npx tsx src/backend/panchangDeities.test.ts
+          echo "### Bundle size" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          du -sh dist/public 2>/dev/null || du -sh dist
+          find dist -name '*.js' -printf '%10s  %p\n' 2>/dev/null \
+            | sort -rn | head -15 | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
 
-  e2e-playwright-tests:
-    name: 🎭 Playwright E2E Multi-Browser Tests
+  unit-tests:
+    name: 🧪 Engine Unit Tests
     needs: build-and-typecheck
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Codebase
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
         with:
           version: 9
 
-      - name: Install Dependencies
-        run: pnpm install --no-frozen-lockfile
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-
-      - name: Build Application for E2E
-        run: pnpm --filter @workspace/astro360 run build
-
-      - name: Upload Playwright Report
-        if: always()
-        uses: actions/upload-artifact@v4
+      - uses: actions/setup-node@v4
         with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 14
+          node-version: 22
+          cache: pnpm
 
-  lighthouse-and-accessibility:
-    name: ⚡ Lighthouse & Accessibility Audit (axe-core/Pa11y)
-    needs: build-and-typecheck
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Codebase
-        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: Setup Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9
-
-      - name: Install Dependencies
-        run: pnpm install --no-frozen-lockfile
-
-      - name: Verify Accessibility & HTML Semantics
-        run: node -e "console.log('✅ WCAG 2.1 AA Accessibility & Color Contrast Verified Cleanly!')"
-
-  security-audit:
-    name: 🛡️ Security SAST & Secret Detection
-    needs: build-and-typecheck
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Codebase
-        uses: actions/checkout@v4
-
-      - name: Verify Secret Exclusion & Sanitization
+      # Only the three suites that import and execute application code.
+      #
+      # Five of the eight suites previously listed here (chakraFengshui, planetaryHoras,
+      # electionalMuhurta, mantraRadar, panchangDeities) import nothing at all. They
+      # declare a local literal and assert about that literal — e.g.
+      #   const dubaiLine = "Jupiter (Wealth & Career)";
+      #   if (dubaiLine.includes("Jupiter")) { console.log("✅ Test 1 Passed") }
+      # which passes unconditionally and would still pass if the feature were deleted.
+      # They are marked as placeholders in-file and excluded here. See QA-04.
+      #
+      # `pnpm exec`, not `npx`: npx will silently fetch a package from the network if it
+      # is missing locally, so `npx tsx` can appear to work even when tsx is not a
+      # dependency. pnpm exec resolves only what the lockfile installed.
+      - name: Run unit tests
         run: |
-          git status
-          echo "✅ Zero secrets tracked in version control repository!"
+          set -e
+          pnpm exec tsx src/lib/astroCalculations.test.ts
+          pnpm exec tsx src/backend/dashaEngine.test.ts
+          pnpm exec tsx src/backend/doshaEngine.test.ts
+
+  secret-scan:
+    name: 🛡️ Secret & Dependency Audit
+    needs: build-and-typecheck
+    runs-on: ubuntu-latest
+    steps:
+      # fetch-depth: 0 so the history scan below sees every commit, not just the tip.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # Assertion 1: no environment file is tracked. `.gitignore` does not untrack a
+      # file that was already added — which is exactly how .env.local was committed.
+      - name: Assert no env files are tracked
+        run: |
+          if git ls-files | grep -E '(^|/)\.env($|\.)' ; then
+            echo "::error::An environment file is tracked in git. Untrack it with 'git rm --cached <file>' and rotate every credential it contained."
+            exit 1
+          fi
+          echo "OK: no tracked .env files"
+
+      # Assertion 2: no long key-shaped literal assigned in source. This catches the
+      # `|| 'the-key'` fallback pattern that put five live keys into the client bundle.
+      # Narrow by design: it looks for a quoted 24+ char token assigned to something
+      # whose name contains KEY/TOKEN/SECRET/PASSWORD, which is the shape that leaked.
+      - name: Assert no hardcoded credential literals
+        run: |
+          if grep -rInE "(KEY|TOKEN|SECRET|PASSWORD)[A-Za-z_]*['\"]?\s*[:=]\s*['\"][A-Za-z0-9_\-]{24,}['\"]" \
+               src api 2>/dev/null; then
+            echo "::error::A credential-shaped literal is hardcoded above. Move it to an env var read server-side in api/, and rotate the exposed value."
+            exit 1
+          fi
+          echo "OK: no hardcoded credential literals"
+
+      # Assertion 3: no secret-looking name carries the VITE_ prefix. Vite inlines every
+      # VITE_-prefixed variable into the browser bundle, so such a name is a published
+      # secret by construction. VITE_INSFORGE_ANON_KEY is allowed: an anon key is public
+      # by design, the same way a Supabase anon key is.
+      - name: Assert no server secrets are VITE_-prefixed
+        run: |
+          if grep -rInE "VITE_[A-Z0-9_]*(SECRET|PASSWORD|PRIVATE)" src api .env.example 2>/dev/null; then
+            echo "::error::A VITE_-prefixed variable looks like a server secret. Vite inlines these into the client bundle. Drop the prefix and read it in api/ via process.env."
+            exit 1
+          fi
+          if grep -rInE "VITE_[A-Z0-9_]*(API_KEY|TOKEN)" src api .env.example 2>/dev/null \
+               | grep -v "VITE_INSFORGE_ANON_KEY"; then
+            echo "::error::A VITE_-prefixed key was found. See the note above."
+            exit 1
+          fi
+          echo "OK: no server secrets carry a VITE_ prefix"
+
+      # Assertion 4: no credential value in a commit message. Three keys reached the
+      # public repo this way, and history rewriting does not remove commit messages.
+      - name: Assert no credentials in commit messages
+        run: |
+          if git log --all --pretty=%B \
+               | grep -InE "[A-Za-z0-9_\-]{32,}" \
+               | grep -iE "key|token|secret|api" ; then
+            echo "::error::A commit message appears to contain a credential. Rotate it — rewriting history does not recall published commit messages."
+            exit 1
+          fi
+          echo "OK: no credential-shaped strings in commit messages"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Real advisory check. Blocks on high and critical only, so a low-severity
+      # transitive advisory does not stop a deploy.
+      - name: Audit dependencies
+        run: pnpm audit --audit-level=high

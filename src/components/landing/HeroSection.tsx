@@ -105,11 +105,11 @@ export default function HeroSection({ onGetStarted, onExploreHoroscope }: HeroSe
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.12]"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.12] font-serif"
           >
-            Your birth chart has a story.{' '}
-            <span className="font-serif italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#C9A86A] via-[#E6D5AC] to-[#C9A86A]">
-              Discover yours.
+            What does the sky say about{' '}
+            <span className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-[#C9A86A] via-[#E6D5AC] to-[#C9A86A]">
+              your chart?
             </span>
           </motion.h1>
 
@@ -120,7 +120,7 @@ export default function HeroSection({ onGetStarted, onExploreHoroscope }: HeroSe
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal"
           >
-            Explore your personality, relationships, career, strengths, and life patterns through a personalized reading calculated with Swiss Ephemeris mathematical accuracy.
+            A precision astronomical calculation engine and multi-tradition astrological observatory. Enter your exact birth time and location to map your planetary positions, houses, dashas, and classical interpretations with Swiss Ephemeris accuracy.
           </motion.p>
 
           {/* CTA Group */}
@@ -134,7 +134,7 @@ export default function HeroSection({ onGetStarted, onExploreHoroscope }: HeroSe
               onClick={onGetStarted}
               className="w-full sm:w-auto px-7 py-4 rounded-xl bg-gradient-to-r from-[#C9A86A] to-[#DFBF7A] text-[#070A12] text-sm font-bold shadow-[0_0_25px_rgba(201,168,106,0.35)] hover:shadow-[0_0_35px_rgba(201,168,106,0.6)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2.5 cursor-pointer"
             >
-              <span>Get Your Free Birth Chart</span>
+              <span>Create Your Birth Chart</span>
               <ArrowRight className="w-4 h-4" />
             </button>
 
@@ -143,7 +143,7 @@ export default function HeroSection({ onGetStarted, onExploreHoroscope }: HeroSe
               className="w-full sm:w-auto px-6 py-4 rounded-xl bg-white/[0.05] hover:bg-white/[0.09] border border-white/[0.1] text-slate-200 hover:text-white text-sm font-medium transition-all flex items-center justify-center gap-2 cursor-pointer backdrop-blur-md"
             >
               <Compass className="w-4 h-4 text-[#C9A86A]" />
-              <span>Explore Live Tools Suite</span>
+              <span>Explore Astrology Tools</span>
             </button>
           </motion.div>
 
