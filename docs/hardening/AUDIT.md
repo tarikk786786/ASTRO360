@@ -103,7 +103,7 @@ Severity: **Critical** = exploitable or actively wrong in production ·
 | QA-03 | Tests | Medium | L | `src/**/*.test.ts`, `e2e/`, `cypress/` | No test runner installed (no vitest/jest). 13 test files hold 3 `it()`/`test()` cases total. `playwright.config.ts`, `cypress.config.ts` and `backstop.json` exist with no corresponding dependency or script. | Effectively zero automated coverage, including on the payment path. |
 | A11Y-01 | Accessibility | Medium | M | `src/` | 32 `aria-*` attributes across 263 files; one `prefers-reduced-motion` reference against heavy `motion/react` use in 106 files. `docs/AccessibilityReport.md` and the CI job both assert WCAG 2.1 AA. | The AA claim is unsupported. Reduced-motion is essentially unhandled on an animation-dense UI. |
 | BUG-02 | Naming | Low | S | `src/lib/astroCalculations.ts:157,180` | A local `degreeDecimal` (0–30, within-sign) is computed at `:157` and used to build the `degree` display string, while the returned field `degreeDecimal` is assigned `p.long` (0–360). **Correction to an earlier draft of this audit, which rated this Medium and called it a bug: it is not one.** I checked all 12 consumers. Every one requires the 0–360 reading — chart-wheel placement (`(p.degreeDecimal - 90) * Math.PI / 180` in `BirthChartGenerator.tsx:452`, `SynastryOverlayChart.tsx:89`, `HeroSection.tsx:233`), aspect separation (`Math.abs(p1.degreeDecimal - p2.degreeDecimal)` in `PlanetaryAspectGraph.tsx:34`), and nakshatra division (`CosmicIntelligenceCenter.tsx:466`). "Fixing" the field to within-sign degrees would silently break all of them. `calculatePanchang` at `:204` is therefore correct by design, not by accident. | The only real defect is that the name says "degree" while the value is a longitude, next to a sibling field `degree` holding the within-sign value. A naming trap, not a wrong number. Rename to `longitude` and add `degreeInSign` if the pair is ever tidied; do not change the numeric semantics. A regression test now pins the `degree` ↔ `degreeDecimal % 30` invariant. |
-| BUG-03 | Types | Medium | S | `src/App.tsx:441,632` | `Property 'icon' does not exist on type 'CategoryInfo'`; props object not assignable to `TraditionViewProps`. | Real type errors, invisible because of QA-01. |
+| BUG-03 | Types | Medium | S | `src/App.tsx` (sidebar tradition rows), `src/types.ts:31` | **First half confirmed by reading:** the sidebar rendered `{tradition.icon}`, but `CategoryInfo` declared no `icon` field and no entry in `TRADITIONS` sets one — so the span always rendered empty. Relatedly, `GROUP_ICONS` was imported in `App.tsx` and never referenced anywhere, so the group glyphs it exists to supply were absent from the UI entirely. **Second half not reproducible:** the earlier claim that the `<TraditionView>` props object is not assignable to `TraditionViewProps` does not hold against the current file. Every prop passed (`tradition`, `category`, `onNavigate`, `userProfile`, `onUpdateProfile`) is declared and optional; `navigateTo` is `(tab: string) => void` matching `onNavigate`, and `Dispatch<SetStateAction<UserProfile>>` is assignable to `(profile: any) => void`. That claim was carried into the audit without a successful `tsc` run behind it, and `App.tsx` has since changed (863 → 899 lines, with the cited lines moving). Treat it as stale unless `tsc` reproduces it. | Fixed: `icon?: string` added to `CategoryInfo` (optional, because that reflects reality), the sidebar span made conditional so no dead gap remains, and `GROUP_ICONS[group]` rendered on the group header. **Not verified by execution — `tsc` cannot run here (see §3).** |
 
 ### Low
 
@@ -149,6 +149,21 @@ load-bearing centre left unimplemented, then documented as finished.
   ~14,000 are `TS7026`/`TS2307`/`TS2875` cascading from the same unresolvable `node_modules`.
   Only the module-independent errors (BUG-01, BUG-03) are confirmed. The true count is unknown
   until QA-01 is fixed and `tsc` runs locally.
+- **Whether the WS-2 typecheck fix actually reports clean.** `node_modules` is not merely
+  partly broken — it is entirely unreadable from this sandbox. Every probe fails with an OS-level
+  `Input/output error`, including `node_modules/typescript/lib/tsc.js`, `react`, `@types/react`,
+  `@types/node` and `vite`. So the compiler binary itself cannot be loaded here, and **no claim
+  in this audit about `tsc` output is execution-verified.** What *was* verified by execution:
+  `tsc --listFilesOnly` (run before the mount degraded) showed the root config selecting **0**
+  files under `src/` versus **263** for the new `tsconfig.app.json` — that is the structural
+  finding behind QA-01, and it stands. Run `pnpm install && pnpm typecheck` on your own machine
+  to get the real error count; expect a first run to surface genuine errors that have been
+  invisible since the project began.
+- **Whether `pnpm-lock.yaml` is in sync.** The rewritten CI uses `--frozen-lockfile` instead of
+  `--no-frozen-lockfile`, so a stale lockfile will now fail loudly rather than silently resolving
+  different versions than production. I could not run `pnpm install` to check in advance. If that
+  step fails on your first push, run `pnpm install` locally and commit the updated lockfile —
+  that is the check working, not a regression.
 - **Whether the deployed site currently crashes.** BUG-01 is confirmed in source; I could not
   load `astro.tarikislam.in` (no network egress) to see whether that code path renders in prod.
 - **Whether the leaked credentials are still live.** I did not test them — deliberately. Assume

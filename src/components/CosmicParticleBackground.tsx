@@ -1,6 +1,64 @@
 ﻿import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
+// Procedural Radial Soft Star Texture (No Square Box Points)
+function createStarTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 64;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return new THREE.Texture();
+
+  const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+  gradient.addColorStop(0.15, 'rgba(255, 255, 255, 0.85)');
+  gradient.addColorStop(0.4, 'rgba(201, 168, 106, 0.35)');
+  gradient.addColorStop(0.7, 'rgba(56, 189, 248, 0.08)');
+  gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+  ctx.fillStyle = gradient;
+  ctx.beginPath();
+  ctx.arc(32, 32, 32, 0, Math.PI * 2);
+  ctx.fill();
+
+  const texture = new THREE.CanvasTexture(canvas);
+  return texture;
+}
+
+// Procedural Bright Star with Diffraction Cross Spikes
+function createBrightStarTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 128;
+  canvas.height = 128;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return new THREE.Texture();
+
+  // Core Glow
+  const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+  gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+  gradient.addColorStop(0.2, 'rgba(255, 245, 210, 0.7)');
+  gradient.addColorStop(0.5, 'rgba(201, 168, 106, 0.2)');
+  gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+  ctx.fillStyle = gradient;
+  ctx.beginPath();
+  ctx.arc(64, 64, 64, 0, Math.PI * 2);
+  ctx.fill();
+
+  // 4 Subtle Diffraction Spikes
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(64, 16);
+  ctx.lineTo(64, 112);
+  ctx.moveTo(16, 64);
+  ctx.lineTo(112, 64);
+  ctx.stroke();
+
+  const texture = new THREE.CanvasTexture(canvas);
+  return texture;
+}
+
 export default function CosmicParticleBackground() {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -13,7 +71,7 @@ export default function CosmicParticleBackground() {
 
     // 1. Scene & Camera
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x040711, 0.0008);
+    scene.fog = new THREE.FogExp2(0x040711, 0.0007);
 
     const camera = new THREE.PerspectiveCamera(
       55,
@@ -67,22 +125,22 @@ export default function CosmicParticleBackground() {
     const coronaMesh = new THREE.Mesh(coronaGeo, coronaMat);
     sunGroup.add(coronaMesh);
 
-    // 5. Deep Space Milky Way Starfield
-    const starCount = window.innerWidth < 768 ? 1500 : 4000;
+    // 5. Real Radial Glowing Starfield (Deep Space)
+    const starCount = window.innerWidth < 768 ? 1200 : 3500;
     const starGeometry = new THREE.BufferGeometry();
     const starPositions = new Float32Array(starCount * 3);
     const starColors = new Float32Array(starCount * 3);
 
     const colorPalette = [
-      new THREE.Color(0xffffff),
-      new THREE.Color(0xc9a86a), // Gold
-      new THREE.Color(0x38bdf8), // Sky Blue
-      new THREE.Color(0x818cf8), // Indigo
+      new THREE.Color(0xffffff), // Pure white starlight
+      new THREE.Color(0xc9a86a), // Sacred Gold
+      new THREE.Color(0x7dd3fc), // Sirius Blue
+      new THREE.Color(0xa5b4fc), // Vega Indigo
       new THREE.Color(0xfef08a), // Warm Yellow
     ];
 
     for (let i = 0; i < starCount; i++) {
-      const radius = THREE.MathUtils.randFloat(200, 1800);
+      const radius = THREE.MathUtils.randFloat(250, 2000);
       const theta = THREE.MathUtils.randFloat(0, Math.PI * 2);
       const phi = THREE.MathUtils.randFloat(0, Math.PI);
 
@@ -99,15 +157,47 @@ export default function CosmicParticleBackground() {
     starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
     starGeometry.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
 
+    const starTexture = createStarTexture();
     const starMaterial = new THREE.PointsMaterial({
-      size: 1.8,
+      size: 14,
+      map: starTexture,
       vertexColors: true,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.9,
+      depthWrite: false,
       blending: THREE.AdditiveBlending
     });
     const starField = new THREE.Points(starGeometry, starMaterial);
     scene.add(starField);
+
+    // 5B. Prominent Bright Navagraha / Pole Stars Layer
+    const brightCount = 60;
+    const brightGeo = new THREE.BufferGeometry();
+    const brightPositions = new Float32Array(brightCount * 3);
+
+    for (let i = 0; i < brightCount; i++) {
+      const radius = THREE.MathUtils.randFloat(400, 1600);
+      const theta = THREE.MathUtils.randFloat(0, Math.PI * 2);
+      const phi = THREE.MathUtils.randFloat(0, Math.PI);
+
+      brightPositions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+      brightPositions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+      brightPositions[i * 3 + 2] = radius * Math.cos(phi);
+    }
+
+    brightGeo.setAttribute('position', new THREE.BufferAttribute(brightPositions, 3));
+    const brightTexture = createBrightStarTexture();
+    const brightMaterial = new THREE.PointsMaterial({
+      size: 28,
+      map: brightTexture,
+      color: 0xfff3c4,
+      transparent: true,
+      opacity: 0.85,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
+    });
+    const brightField = new THREE.Points(brightGeo, brightMaterial);
+    scene.add(brightField);
 
     // 6. Solar System Planetary Spheres & Orbits
     interface PlanetData {
@@ -116,8 +206,6 @@ export default function CosmicParticleBackground() {
       size: number;
       color: number;
       speed: number;
-      mesh?: THREE.Mesh;
-      group?: THREE.Group;
       hasRings?: boolean;
     }
 
@@ -262,6 +350,7 @@ export default function CosmicParticleBackground() {
         // Slow Cosmic Starfield Rotation
         starField.rotation.y += 0.0002;
         starField.rotation.x += 0.0001;
+        brightField.rotation.y += 0.0002;
 
         // Rotate Zodiac Ring
         zodiacGroup.rotation.y += 0.0003;
@@ -288,13 +377,15 @@ export default function CosmicParticleBackground() {
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
+      starTexture.dispose();
+      brightTexture.dispose();
       renderer.dispose();
     };
   }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none" aria-hidden="true">
-      {/* 🌌 Three.js Hyper-Realistic WebGL Canvas */}
+      {/* 🌌 Three.js Hyper-Realistic WebGL Canvas with Real Circular Gaussian Stars */}
       <div ref={containerRef} className="absolute inset-0 w-full h-full" />
 
       {/* Volumetric Dark Vignette for High Text Contrast */}
