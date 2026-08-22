@@ -233,36 +233,11 @@ body {
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
-/* Premium Animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 5px rgba(6, 182, 212, 0.2); }
-  50% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.4), 0 0 40px rgba(6, 182, 212, 0.1); }
-}
-
-@keyframes border-flow {
-  0%, 100% { border-color: rgba(6, 182, 212, 0.3); }
-  33% { border-color: rgba(212, 175, 55, 0.4); }
-  66% { border-color: rgba(16, 185, 129, 0.4); }
-}
-
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.animate-float { animation: float 6s ease-in-out infinite; }
-.animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
-.animate-border-flow { animation: border-flow 6s ease-in-out infinite; }
-.animate-gradient-shift {
-  background-size: 200% 200%;
-  animation: gradient-shift 8s ease infinite;
-}
+/* Static Performance Rules */
+.animate-float { animation: none !important; }
+.animate-pulse-glow { animation: none !important; }
+.animate-border-flow { animation: none !important; }
+.animate-gradient-shift { animation: none !important; }
 
 /* Global Scrollbar Styling */
 ::-webkit-scrollbar { width: 6px; }
@@ -448,21 +423,8 @@ button, a, [role="button"] {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Glowing Pulse for Live Badges */
-@keyframes kinetic-pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.9;
-  }
-  50% {
-    transform: scale(1.04);
-    opacity: 1;
-    box-shadow: 0 0 25px rgba(6, 182, 212, 0.4);
-  }
-}
-
 .animate-kinetic-pulse {
-  animation: kinetic-pulse 3s infinite ease-in-out;
+  animation: none !important;
 }
 
 /* Mobile Active Bottom Tab Glow */

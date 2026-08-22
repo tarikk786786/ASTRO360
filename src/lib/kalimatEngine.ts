@@ -1,8 +1,13 @@
 /**
  * ASTRO360 Kalimat Arabic NLP & Quranic Analysis Engine
  * Official Integration for Kalimat Platform (https://api.kalimat.dev)
- * Key: 6c2fd11b-e07a-4e21-955e-1e887ed865fe
+ *
+ * The API key is NOT held here. Requests go through /api/proxy, which reads
+ * KALIMAT_API_KEY server-side. Do not reintroduce a key into this file — it is
+ * bundled and served to every visitor.
  */
+
+import { searchKalimat, analyzeKalimatMorphology } from './apiProxy';
 
 export interface KalimatSearchResult {
   query: string;
@@ -28,24 +33,13 @@ export interface KalimatMorphologyAnalysis {
 }
 
 export class KalimatEngine {
-  private static API_KEY = import.meta.env.VITE_KALIMAT_API_KEY || '6c2fd11b-e07a-4e21-955e-1e887ed865fe';
-  private static BASE_URL = 'https://api.kalimat.dev';
-
   /**
    * Search Quran text or Arabic roots via Kalimat API
    */
   public static async searchArabicText(query: string): Promise<KalimatSearchResult | null> {
     try {
-      const res = await fetch(`${this.BASE_URL}/search?q=${encodeURIComponent(query)}&apikey=${this.API_KEY}`, {
-        headers: {
-          'x-api-key': this.API_KEY,
-          'Authorization': `Bearer ${this.API_KEY}`,
-          'Accept': 'application/json',
-        },
-      });
-
-      if (res.ok) {
-        const data = await res.json();
+      const data = await searchKalimat(query);
+      if (data) {
         return {
           query,
           totalResults: data.total || data.count || (data.results ? data.results.length : 0),
@@ -71,16 +65,8 @@ export class KalimatEngine {
    */
   public static async analyzeMorphology(arabicText: string): Promise<KalimatMorphologyAnalysis | null> {
     try {
-      const res = await fetch(`${this.BASE_URL}/analyze?text=${encodeURIComponent(arabicText)}&apikey=${this.API_KEY}`, {
-        headers: {
-          'x-api-key': this.API_KEY,
-          'Authorization': `Bearer ${this.API_KEY}`,
-          'Accept': 'application/json',
-        },
-      });
-
-      if (res.ok) {
-        const data = await res.json();
+      const data = await analyzeKalimatMorphology(arabicText);
+      if (data) {
         return {
           word: arabicText,
           root: data.root || '',

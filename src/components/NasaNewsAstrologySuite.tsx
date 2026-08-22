@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { Newspaper, Flame, Zap, ShieldAlert, Sparkles, ExternalLink, RefreshCw, Radio, Compass } from 'lucide-react';
+import { fetchApod } from '../lib/apiProxy';
 
 interface NasaNewsItem {
   id: string;
@@ -28,15 +29,13 @@ export default function NasaNewsAstrologySuite() {
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const apiKey = import.meta.env.VITE_NASA_API_KEY || '5ZJ6IEqwsBVCOr32uuR0BSNAtaBakj8XSzSllJa8';
-
+  // No API key here by design — /api/proxy holds NASA_API_KEY server-side.
   const fetchNasaNews = async () => {
     setIsLoading(true);
     try {
       // Fetch live breaking news or generate curated NASA telemetry news feed
-      const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${apiKey}&count=4`);
-      if (response.ok) {
-        const data = await response.json();
+      const data = await fetchApod(4);
+      if (data.length > 0) {
         const formattedNews: NasaNewsItem[] = data.map((item: any, idx: number) => {
           const categories: ('Solar Flare' | 'Geomagnetic' | 'Planetary' | 'Deep Space')[] = [
             'Solar Flare', 'Geomagnetic', 'Planetary', 'Deep Space'

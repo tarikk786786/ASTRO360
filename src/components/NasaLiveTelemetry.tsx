@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, Globe, Zap, ExternalLink, RefreshCw, CheckCircle2, ShieldCheck, Telescope } from 'lucide-react';
+import { fetchApod } from '../lib/apiProxy';
 
 interface NasaApodData {
   title: string;
@@ -17,16 +18,14 @@ export default function NasaLiveTelemetry() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const apiKey = import.meta.env.VITE_NASA_API_KEY || '5ZJ6IEqwsBVCOr32uuR0BSNAtaBakj8XSzSllJa8';
-
+  // No API key here by design — /api/proxy holds NASA_API_KEY server-side.
   const fetchNasaApod = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${apiKey}`);
-      if (!res.ok) throw new Error('NASA API service error');
-      const data = await res.json();
-      setApodData(data);
+      const [data] = await fetchApod(1);
+      if (!data) throw new Error('NASA returned no imagery');
+      setApodData(data as NasaApodData);
     } catch (err: any) {
       setError(err?.message || 'Failed to fetch NASA telemetry');
     } finally {

@@ -11,30 +11,15 @@ export interface MarqueeProps {
 
 export function Marquee({
   className = '',
-  reverse = false,
-  pauseOnHover = false,
   children,
-  vertical = false,
-  repeat = 4,
 }: MarqueeProps) {
   return (
     <div
-      className={`group flex overflow-hidden p-2 [--duration:35s] [--gap:1rem] [gap:var(--gap)] ${
-        vertical ? 'flex-col' : 'flex-row'
-      } ${className}`}
+      className={`flex overflow-x-auto custom-scrollbar p-2 gap-4 items-center ${className}`}
     >
-      {Array.from({ length: repeat }).map((_, i) => (
-        <div
-          key={i}
-          className={`flex shrink-0 justify-around [gap:var(--gap)] ${
-            vertical ? 'flex-col' : 'flex-row'
-          } ${reverse ? 'animate-[marquee-reverse_35s_linear_infinite]' : 'animate-[marquee_35s_linear_infinite]'} ${
-            pauseOnHover ? 'group-hover:[animation-play-state:paused]' : ''
-          }`}
-        >
-          {children}
-        </div>
-      ))}
+      <div className="flex shrink-0 gap-4 items-center">
+        {children}
+      </div>
     </div>
   );
 }
