@@ -430,7 +430,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
       console.error("Failed to compute planet positions", e);
       return calculatePlanetaryPositions();
     }
-  }, [targetProfile.dob, targetProfile.time]);
+  }, [targetProfile.dob, targetProfile.time, config.astrologySystem, config.ayanamsaMode]);
 
   // Dynamic Panchang Calculation
   const panchang: PanchangInfo = useMemo(() => {
@@ -453,7 +453,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
         moonSign: 'Taurus ♉'
       };
     }
-  }, []);
+  }, [config.astrologySystem, config.ayanamsaMode]);
 
   // FIX 1: Correct Nakshatra Index (0-26) passed to calculateVimshottariDasha
   const moonNakshatraIdx = useMemo(() => {

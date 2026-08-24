@@ -114,7 +114,11 @@ export function calculateAyanamsha(date: Date = new Date(), mode: 'lahiri' | 'ra
  * Calculates planetary positions based on date/time.
  * Uses Julian Day calculations and planetary mean longitudes.
  */
-export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?: string, ayanamshaOffset = 23.85): PlanetPosition[] {
+import { GlobalConfigManager } from './globalConfig';
+
+export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?: string, customAyanamsha?: number): PlanetPosition[] {
+  const config = GlobalConfigManager.getConfig();
+  const ayanamshaOffset = customAyanamsha !== undefined ? customAyanamsha : (config.astrologySystem === 'western' ? 0 : (config.ayanamsaMode === 'raman' ? 22.42 : 23.85));
   const date = birthDateStr ? new Date(`${birthDateStr}T${birthTimeStr || '12:00'}:00Z`) : new Date();
   
   // Real Ecliptic Longitudes (Tropical)
