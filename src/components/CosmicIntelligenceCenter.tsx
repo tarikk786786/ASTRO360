@@ -1438,6 +1438,27 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                   </div>
                 </div>
               </div>
+
+              {/* 1-ON-1 PERSONALIZED CONSULTATIONS BANNER */}
+              <div className="mt-8 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-purple-900/40 via-[#111827] to-indigo-900/40 border border-purple-500/30 shadow-2xl relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10">
+                  <div className="flex flex-col gap-2 text-center sm:text-left">
+                    <div className="flex items-center justify-center sm:justify-start gap-2 text-purple-400 font-mono text-xs font-bold uppercase tracking-widest">
+                      <User className="w-4 h-4" />
+                      <span>Prefer talking to a person?</span>
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">1-on-1 Personalized Consultations</h3>
+                    <p className="text-slate-300 text-sm max-w-xl">
+                      Connect with seasoned, verified astrologers for private audio/video chart readings and deep life guidance.
+                    </p>
+                  </div>
+                  <button className="px-6 py-3 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/40 font-mono font-bold text-sm shrink-0 flex items-center gap-2 hover:bg-purple-500/30 transition-colors shadow-lg shadow-purple-500/10 cursor-not-allowed">
+                    <span className="text-[10px] uppercase tracking-wider text-purple-200/80 bg-purple-900/50 px-2 py-0.5 rounded mr-1 border border-purple-500/20">Coming Soon</span>
+                    <ChevronRight className="w-4 h-4 opacity-50" />
+                  </button>
+                </div>
+              </div>
             </motion.div>
           )}
 
