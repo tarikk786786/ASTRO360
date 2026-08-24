@@ -1,4 +1,4 @@
-import { Ecliptic } from 'astronomy-engine';
+import { Ecliptic, GeoVector, Body } from 'astronomy-engine';
 
 // ASTRO360 Ephemeris & Calculation Engine
 // Provides real astronomical position calculations, Nakshatra determination, Tithi, Dasha timelines, and Ashta Koota matching.
@@ -118,13 +118,13 @@ export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?
   const date = birthDateStr ? new Date(`${birthDateStr}T${birthTimeStr || '12:00'}:00Z`) : new Date();
   
   // Real Ecliptic Longitudes (Tropical)
-  const sunL = (Ecliptic('Sun', date).elon - ayanamshaOffset + 360) % 360;
-  const moonL = (Ecliptic('Moon', date).elon - ayanamshaOffset + 360) % 360;
-  const marsL = (Ecliptic('Mars', date).elon - ayanamshaOffset + 360) % 360;
-  const mercL = (Ecliptic('Mercury', date).elon - ayanamshaOffset + 360) % 360;
-  const jupL = (Ecliptic('Jupiter', date).elon - ayanamshaOffset + 360) % 360;
-  const venL = (Ecliptic('Venus', date).elon - ayanamshaOffset + 360) % 360;
-  const satL = (Ecliptic('Saturn', date).elon - ayanamshaOffset + 360) % 360;
+  const sunL = (Ecliptic(GeoVector(Body.Sun, date, true)).elon - ayanamshaOffset + 360) % 360;
+  const moonL = (Ecliptic(GeoVector(Body.Moon, date, true)).elon - ayanamshaOffset + 360) % 360;
+  const marsL = (Ecliptic(GeoVector(Body.Mars, date, true)).elon - ayanamshaOffset + 360) % 360;
+  const mercL = (Ecliptic(GeoVector(Body.Mercury, date, true)).elon - ayanamshaOffset + 360) % 360;
+  const jupL = (Ecliptic(GeoVector(Body.Jupiter, date, true)).elon - ayanamshaOffset + 360) % 360;
+  const venL = (Ecliptic(GeoVector(Body.Venus, date, true)).elon - ayanamshaOffset + 360) % 360;
+  const satL = (Ecliptic(GeoVector(Body.Saturn, date, true)).elon - ayanamshaOffset + 360) % 360;
   
   // Rahu/Ketu (Node) approximation as exact True Node is complex, we use mean node approximation based on date
   const hour = date.getUTCHours() + date.getUTCMinutes() / 60;
