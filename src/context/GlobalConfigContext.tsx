@@ -26,10 +26,10 @@ export const GlobalConfigProvider: React.FC<{ children: ReactNode }> = ({ childr
     }
     document.documentElement.lang = config.language;
     document.documentElement.setAttribute('data-theme', config.themeMode);
-    if (config.themeMode === 'light') {
-      document.documentElement.classList.remove('dark');
-    } else {
+    if (config.themeMode === 'dark' || config.themeMode === 'cosmic') {
       document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
     }
 
     const unsubscribe = GlobalConfigManager.subscribe((newConfig) => {

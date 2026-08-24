@@ -70,7 +70,7 @@ import ExecutiveReportGenerator from './components/ExecutiveReportGenerator';
 import AdminAnalyticsDashboard from './components/AdminAnalyticsDashboard';
 import CosmicStudioSuite from './components/CosmicStudioSuite';
 import CosmicLeafletMap from './components/CosmicLeafletMap';
-import CosmicParticleBackground from './components/CosmicParticleBackground';
+import UniverseCanvas from './components/3d/UniverseCanvas';
 import ErrorBoundary from './components/ErrorBoundary';
 import GlobalLanguageSelector from './components/GlobalLanguageSelector';
 import { useGlobalConfig } from './context/GlobalConfigContext';
@@ -279,8 +279,8 @@ export default function AppContent() {
 
   return (
     <div className="relative min-h-screen bg-[#090d16] text-slate-100 flex overflow-hidden font-sans">
-      {/* 🌌 High-Resolution Animated Cosmic Background (Ken Burns Nebula + Twinkling Stars + Meteors) */}
-      <CosmicParticleBackground />
+      {/* ✨ High-Resolution Animated Cosmic Background (React Three Fiber) */}
+      <UniverseCanvas />
 
       {/* Mobile Sidebar Overlay */}
       <AnimatePresence>

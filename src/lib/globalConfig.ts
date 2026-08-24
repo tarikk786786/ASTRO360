@@ -148,10 +148,10 @@ export class GlobalConfigManager {
     // 4. UI Theme & Motion Document Classes
     if (partial.themeMode !== undefined) {
       document.documentElement.setAttribute('data-theme', partial.themeMode);
-      if (partial.themeMode === 'light') {
-        document.documentElement.classList.remove('dark');
-      } else {
+      if (partial.themeMode === 'dark' || partial.themeMode === 'cosmic') {
         document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
       }
     }
     if (partial.reducedMotion !== undefined) {
