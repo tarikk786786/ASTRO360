@@ -602,7 +602,7 @@ export default function AppContent() {
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar pb-24 md:pb-6 w-full">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-6 w-full">
           <div className="max-w-7xl mx-auto h-full px-2.5 sm:px-4 lg:px-6 w-full">
             <Suspense fallback={
               <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">

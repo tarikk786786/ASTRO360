@@ -1115,7 +1115,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                       <span className="text-[10px] font-mono text-[#94A3B8]">Lahiri Ayanamsha</span>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5">
                       {planetPositions.map((p, idx) => (
                         <motion.button
                           key={idx}
@@ -1154,7 +1154,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                         </ResponsiveContainer>
                       </div>
 
-                      <div className="grid grid-cols-4 gap-1.5 sm:gap-2 text-center text-[9.5px] sm:text-[10px] font-mono">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 text-center text-[9.5px] sm:text-[10px] font-mono">
                         <div className="p-1.5 sm:p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300">
                           <span className="font-bold block">🔥 Fire</span>
                           <span>{elementalBalance.firePct}%</span>
@@ -1288,7 +1288,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                   <span className="text-xs font-mono text-[#94A3B8]">9 Core Astrological Engines</span>
                 </div>
 
-                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2 sm:gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2 sm:gap-3">
                   {[
                     { id: 'birth-chart', title: 'Birth Chart', desc: 'Natal Kundli', icon: <Compass className="w-4 h-4 sm:w-5 sm:h-5 text-[#2563EB]" /> },
                     { id: 'horoscope', title: 'Horoscope', desc: 'Transits & energy', icon: <Sun className="w-4 h-4 sm:w-5 sm:h-5 text-[#F59E0B]" /> },
