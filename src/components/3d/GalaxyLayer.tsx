@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 export default function GalaxyLayer() {
-  const pointsRef = useRef<THREE.Points>(null);
+  const pointsRef = useRef<any>(null);
   
   // Procedural Galaxy parameters - dynamically scale down for mobile performance
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;

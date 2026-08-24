@@ -119,7 +119,7 @@ import { GlobalConfigManager } from './globalConfig';
 export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?: string, customAyanamsha?: number): PlanetPosition[] {
   const config = GlobalConfigManager.getConfig();
   const ayanamshaOffset = customAyanamsha !== undefined ? customAyanamsha : (config.astrologySystem === 'western' ? 0 : (config.ayanamsaMode === 'raman' ? 22.42 : 23.85));
-  const date = birthDateStr ? new Date(`${birthDateStr}T${birthTimeStr || '12:00'}:00Z`) : new Date();
+  const date = birthDateStr ? new Date(`${birthDateStr}T${birthTimeStr || '12:00'}:00`) : new Date();
   
   // Real Ecliptic Longitudes (Tropical)
   const sunL = (Ecliptic(GeoVector(Body.Sun, date, true)).elon - ayanamshaOffset + 360) % 360;
@@ -130,26 +130,26 @@ export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?
   const venL = (Ecliptic(GeoVector(Body.Venus, date, true)).elon - ayanamshaOffset + 360) % 360;
   const satL = (Ecliptic(GeoVector(Body.Saturn, date, true)).elon - ayanamshaOffset + 360) % 360;
   
-  // Rahu/Ketu (Node) approximation as exact True Node is complex, we use mean node approximation based on date
-  const hour = date.getUTCHours() + date.getUTCMinutes() / 60;
+  const localHour = date.getHours() + date.getMinutes() / 60;
   const jd = (date.getTime() / 86400000.0) + 2440587.5;
   const d = jd - 2451545.0;
   const rahuL = (125.044 - 0.05295 * d - ayanamshaOffset + 360000) % 360;
   const ketuL = (rahuL + 180) % 360;
 
+  const ascendantLong = (sunL + ((localHour - 6) * 15) + 360) % 360;
+
   const rawPositions = [
-    { name: 'Sun', symbol: '☉', long: sunL, speed: '+0.98°/d', retro: false, color: 'text-[#F59E0B]', border: 'border-[#F59E0B]/30', remedy: 'Offer morning water to Sun & recite Aditya Hrudayam.' },
-    { name: 'Moon', symbol: '☽', long: moonL, speed: '+13.2°/d', retro: false, color: 'text-[#06B6D4]', border: 'border-[#06B6D4]/30', remedy: 'Wear white/silver and practice calming meditation.' },
-    { name: 'Mars', symbol: '♂', long: marsL, speed: '+0.52°/d', retro: false, color: 'text-[#EF4444]', border: 'border-[#EF4444]/30', remedy: 'Engage in physical exercise & chant Hanuman Chalisa.' },
-    { name: 'Mercury', symbol: '☿', long: mercL, speed: '+1.40°/d', retro: false, color: 'text-[#22C55E]', border: 'border-[#22C55E]/30', remedy: 'Verify written contracts & back up digital work.' },
+    { name: 'Ascendant', symbol: 'Asc', long: ascendantLong, speed: '+360°/d', retro: false, color: 'text-white', border: 'border-white/30', remedy: 'Maintain clear intentions.' },
+    { name: 'Sun', symbol: '☀️', long: sunL, speed: '+0.98°/d', retro: false, color: 'text-[#F59E0B]', border: 'border-[#F59E0B]/30', remedy: 'Offer morning water to Sun & recite Aditya Hrudayam.' },
+    { name: 'Moon', symbol: '🌙', long: moonL, speed: '+13.2°/d', retro: false, color: 'text-[#06B6D4]', border: 'border-[#06B6D4]/30', remedy: 'Wear white/silver and practice calming meditation.' },
+    { name: 'Mars', symbol: '♂️', long: marsL, speed: '+0.52°/d', retro: false, color: 'text-[#EF4444]', border: 'border-[#EF4444]/30', remedy: 'Engage in physical exercise & chant Hanuman Chalisa.' },
+    { name: 'Mercury', symbol: '☿️', long: mercL, speed: '+1.40°/d', retro: false, color: 'text-[#22C55E]', border: 'border-[#22C55E]/30', remedy: 'Verify written contracts & back up digital work.' },
     { name: 'Jupiter', symbol: '♃', long: jupL, speed: '+0.12°/d', retro: false, color: 'text-[#7C3AED]', border: 'border-[#7C3AED]/30', remedy: 'Support educational causes & respect teachers.' },
-    { name: 'Venus', symbol: '♀', long: venL, speed: '+1.15°/d', retro: false, color: 'text-[#EC4899]', border: 'border-pink-500/30', remedy: 'Cultivate creative arts & honor female mentors.' },
+    { name: 'Venus', symbol: '♀️', long: venL, speed: '+1.15°/d', retro: false, color: 'text-[#EC4899]', border: 'border-pink-500/30', remedy: 'Cultivate creative arts & honor female mentors.' },
     { name: 'Saturn', symbol: '♄', long: satL, speed: '+0.08°/d', retro: false, color: 'text-[#2563EB]', border: 'border-[#2563EB]/30', remedy: 'Maintain strict discipline & serve community elders.' },
     { name: 'Rahu', symbol: '☊', long: rahuL, speed: '-0.05°/d', retro: true, color: 'text-[#CBD5E1]', border: 'border-white/10', remedy: 'Practice Pranayama breathwork & avoid impulse decisions.' },
     { name: 'Ketu', symbol: '☋', long: ketuL, speed: '-0.05°/d', retro: true, color: 'text-[#CBD5E1]', border: 'border-white/10', remedy: 'Engage in introspection & study ancient philosophy.' },
   ];
-
-  const ascendantLong = (sunL + (hour * 15)) % 360;
 
   return rawPositions.map((p) => {
     const signIndex = Math.floor(p.long / 30);
