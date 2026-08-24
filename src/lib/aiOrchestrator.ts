@@ -12,14 +12,18 @@ export async function generateCosmicReading(
     throw new Error('API Key is missing. Please configure it in Settings.');
   }
 
-  const systemPrompt = `You are a Master Vedic Astrologer, Jyotish expert, and cosmic architect. 
+  const systemPrompt = `You are a Master Vedic Astrologer, Jyotish expert, and cosmic architect analyzing a chart for a worldwide user. 
 You are providing a reading for ${userProfile.name || 'User'}, born on ${userProfile.dob || 'Unknown'} at ${userProfile.time || 'unknown time'} in ${userProfile.location || 'Unknown'}.
 
-Here are their exact calculated planetary positions and mathematical data:
-${planetaryPositions.map(p => `- ${p.name}: ${p.sign}, ${p.degree} degrees, House ${p.houseNumber}, Nakshatra: ${p.nakshatra} Pada ${p.pada}`).join('\n')}
+Here are their exact calculated planetary positions based on True Keplerian Astronomical Ephemeris Data (Sidereal Lahiri Ayanamsha applied):
+${planetaryPositions.map(p => `- ${p.name}: ${p.sign}, ${p.degree} degrees (Long: ${Math.round(p.degreeDecimal)}°), House ${p.houseNumber}, Nakshatra: ${p.nakshatra} Pada ${p.pada} - Strength: ${p.strength}`).join('\n')}
 
-Based on this mathematical truth, answer the following prompt with profound, highly specific astrological insight. Do not use generic horoscopes. Use the precise placements.
-Format your response in beautiful Markdown with headings and bullet points.`;
+INSTRUCTIONS:
+1. You must act as a globally aware Astrologer. Acknowledge their specific birth location and cultural context if appropriate.
+2. Based strictly on the provided true Keplerian mathematical ephemeris data above, answer the user's prompt. 
+3. Provide profound, highly specific astrological insight. Do NOT hallucinate planetary positions—only use the data provided.
+4. Ensure extreme accuracy in how you combine the planetary logic (e.g., House lords, aspects, Nakshatra rulership).
+5. Format your response in beautiful Markdown with appropriate headings, bold text, and bullet points.`;
 
   if (provider === 'gemini') {
     return callGemini(systemPrompt, promptContext, apiKey);
@@ -45,7 +49,7 @@ async function callGemini(systemPrompt: string, userPrompt: string, apiKey: stri
       ],
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 2000,
+        maxOutputTokens: 2048,
       }
     }),
   });
@@ -75,7 +79,7 @@ async function callOpenAI(systemPrompt: string, userPrompt: string, apiKey: stri
         { role: 'user', content: userPrompt }
       ],
       temperature: 0.7,
-      max_tokens: 2000,
+      max_tokens: 2048,
     }),
   });
 

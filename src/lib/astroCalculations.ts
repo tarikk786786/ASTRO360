@@ -1,3 +1,5 @@
+import { Ecliptic } from 'astronomy-engine';
+
 // ASTRO360 Ephemeris & Calculation Engine
 // Provides real astronomical position calculations, Nakshatra determination, Tithi, Dasha timelines, and Ashta Koota matching.
 
@@ -113,28 +115,21 @@ export function calculateAyanamsha(date: Date = new Date(), mode: 'lahiri' | 'ra
  * Uses Julian Day calculations and planetary mean longitudes.
  */
 export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?: string, ayanamshaOffset = 23.85): PlanetPosition[] {
-  const date = birthDateStr ? new Date(`${birthDateStr}T${birthTimeStr || '12:00'}:00`) : new Date();
-  const year = date.getUTCFullYear();
-  const month = date.getUTCMonth() + 1;
-  const day = date.getUTCDate();
+  const date = birthDateStr ? new Date(`${birthDateStr}T${birthTimeStr || '12:00'}:00Z`) : new Date();
+  
+  // Real Ecliptic Longitudes (Tropical)
+  const sunL = (Ecliptic('Sun', date).elon - ayanamshaOffset + 360) % 360;
+  const moonL = (Ecliptic('Moon', date).elon - ayanamshaOffset + 360) % 360;
+  const marsL = (Ecliptic('Mars', date).elon - ayanamshaOffset + 360) % 360;
+  const mercL = (Ecliptic('Mercury', date).elon - ayanamshaOffset + 360) % 360;
+  const jupL = (Ecliptic('Jupiter', date).elon - ayanamshaOffset + 360) % 360;
+  const venL = (Ecliptic('Venus', date).elon - ayanamshaOffset + 360) % 360;
+  const satL = (Ecliptic('Saturn', date).elon - ayanamshaOffset + 360) % 360;
+  
+  // Rahu/Ketu (Node) approximation as exact True Node is complex, we use mean node approximation based on date
   const hour = date.getUTCHours() + date.getUTCMinutes() / 60;
-
-  // Julian Day Number calculation
-  let a = Math.floor((14 - month) / 12);
-  let y = year + 4800 - a;
-  let m = month + 12 * a - 3;
-  let jd = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045 + (hour - 12) / 24;
-
-  const d = jd - 2451545.0; // Days since J2000.0
-
-  // Mean longitudes (Tropical, adjusted with Ayanamsha for Sidereal Lahiri)
-  const sunL = (280.466 + 0.9856474 * d - ayanamshaOffset + 360000) % 360;
-  const moonL = (218.316 + 13.176396 * d - ayanamshaOffset + 360000) % 360;
-  const marsL = (355.433 + 0.524033 * d - ayanamshaOffset + 360000) % 360;
-  const mercL = (sunL + Math.sin((d * 0.04) * Math.PI / 180) * 15 + 360) % 360;
-  const jupL = (34.351 + 0.083091 * d - ayanamshaOffset + 360000) % 360;
-  const venL = (sunL + Math.cos((d * 0.03) * Math.PI / 180) * 22 + 360) % 360;
-  const satL = (50.077 + 0.033459 * d - ayanamshaOffset + 360000) % 360;
+  const jd = (date.getTime() / 86400000.0) + 2440587.5;
+  const d = jd - 2451545.0;
   const rahuL = (125.044 - 0.05295 * d - ayanamshaOffset + 360000) % 360;
   const ketuL = (rahuL + 180) % 360;
 
@@ -142,7 +137,7 @@ export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?
     { name: 'Sun', symbol: '☉', long: sunL, speed: '+0.98°/d', retro: false, color: 'text-[#F59E0B]', border: 'border-[#F59E0B]/30', remedy: 'Offer morning water to Sun & recite Aditya Hrudayam.' },
     { name: 'Moon', symbol: '☽', long: moonL, speed: '+13.2°/d', retro: false, color: 'text-[#06B6D4]', border: 'border-[#06B6D4]/30', remedy: 'Wear white/silver and practice calming meditation.' },
     { name: 'Mars', symbol: '♂', long: marsL, speed: '+0.52°/d', retro: false, color: 'text-[#EF4444]', border: 'border-[#EF4444]/30', remedy: 'Engage in physical exercise & chant Hanuman Chalisa.' },
-    { name: 'Mercury', symbol: '☿', long: mercL, speed: '-0.40°/d', retro: true, color: 'text-[#22C55E]', border: 'border-[#22C55E]/30', remedy: 'Verify written contracts & back up digital work.' },
+    { name: 'Mercury', symbol: '☿', long: mercL, speed: '+1.40°/d', retro: false, color: 'text-[#22C55E]', border: 'border-[#22C55E]/30', remedy: 'Verify written contracts & back up digital work.' },
     { name: 'Jupiter', symbol: '♃', long: jupL, speed: '+0.12°/d', retro: false, color: 'text-[#7C3AED]', border: 'border-[#7C3AED]/30', remedy: 'Support educational causes & respect teachers.' },
     { name: 'Venus', symbol: '♀', long: venL, speed: '+1.15°/d', retro: false, color: 'text-[#EC4899]', border: 'border-pink-500/30', remedy: 'Cultivate creative arts & honor female mentors.' },
     { name: 'Saturn', symbol: '♄', long: satL, speed: '+0.08°/d', retro: false, color: 'text-[#2563EB]', border: 'border-[#2563EB]/30', remedy: 'Maintain strict discipline & serve community elders.' },
@@ -178,7 +173,7 @@ export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?
       sign: `${signObj.name} ${signObj.symbol}`,
       degree: `${degInt}° ${minInt < 10 ? '0' : ''}${minInt}'`,
       degreeDecimal: p.long,
-      house: `${houseNum}${getOrdinal(houseNum)} House`,
+      house: `${houseNum}${houseNum === 1 ? 'st' : houseNum === 2 ? 'nd' : houseNum === 3 ? 'rd' : 'th'} House`,
       houseNumber: houseNum,
       speed: p.speed,
       retrograde: p.retro,

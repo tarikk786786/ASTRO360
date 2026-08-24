@@ -15,6 +15,7 @@
     "@replit/connectors-sdk": "^0.4.1",
     "@types/three": "^0.185.4",
     "ai": "^7.0.66",
+    "astronomy-engine": "^2.1.19",
     "dotenv": "^17.4.2",
     "motion": "^12.43.0",
     "nodemailer": "^9.0.5",

@@ -141,6 +141,9 @@ importers:
       ai:
         specifier: ^7.0.66
         version: 7.0.66(zod@3.25.76)
+      astronomy-engine:
+        specifier: ^2.1.19
+        version: 2.1.19
       dotenv:
         specifier: ^17.4.2
         version: 17.4.2
@@ -2007,6 +2010,9 @@ packages:
   aria-hidden@1.2.6:
     resolution: {integrity: sha512-ik3ZgC9dY/lYVVM++OISsaYDeg1tb0VtP5uL3ouh1koGOaUMDPpbFIei4JkFimWUFPn90sbMNMXQAIVOlnYKJA==}
     engines: {node: '>=10'}
+
+  astronomy-engine@2.1.19:
+    resolution: {integrity: sha512-8yWKNf7UeNbH458h3sAJ6ZgAjE5jTXp/mNNRFoC20j2SHwZIjAQeEsBB2Q3uCFRaTCCJRv33K2XhkhZQMXoX6w==}
 
   atomic-sleep@1.0.0:
     resolution: {integrity: sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==}
@@ -5221,6 +5227,8 @@ snapshots:
   aria-hidden@1.2.6:
     dependencies:
       tslib: 2.8.1
+
+  astronomy-engine@2.1.19: {}
 
   atomic-sleep@1.0.0: {}
 
