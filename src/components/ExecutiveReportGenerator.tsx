@@ -65,14 +65,23 @@ const REPORT_CATALOG: ReportModule[] = [
   }
 ];
 
-export default function ExecutiveReportGenerator() {
+interface ExecutiveReportGeneratorProps {
+  userProfile?: {
+    name?: string;
+    location?: string;
+    dob?: string;
+    time?: string;
+  };
+}
+
+export default function ExecutiveReportGenerator({ userProfile }: ExecutiveReportGeneratorProps) {
   const { config } = useGlobalConfig();
   const [selectedReport, setSelectedReport] = useState<ReportModule>(REPORT_CATALOG[0]);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
-  const seekerName = 'Tarik Islam';
-  const seekerLocation = 'Mecca, Saudi Arabia';
+  const seekerName = userProfile?.name || 'Cosmic Seeker';
+  const seekerLocation = userProfile?.location || 'Universal Meridian';
 
   const handlePrintPDF = () => {
     window.print();

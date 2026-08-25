@@ -150,7 +150,7 @@ export default function AstrologerMarketplaceModal({
 
                     <div className="text-right shrink-0 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-white/[0.06] flex sm:flex-col justify-between items-center sm:items-end">
                       <span className="text-xs text-slate-400">From</span>
-                      <div className="text-base font-bold font-serif text-[#C9A86A]">₹{astro.price15Min}</div>
+                      <div className="text-base font-bold font-serif text-[#C9A86A]">${astro.price15Min}</div>
                       <span className="text-[9px] font-mono text-emerald-400 font-semibold">15 Min Session</span>
                     </div>
                   </div>
@@ -224,7 +224,7 @@ export default function AstrologerMarketplaceModal({
                       }`}
                     >
                       <span className="text-xs font-bold text-white block">{d.min} Mins</span>
-                      <span className="text-xs font-serif text-[#C9A86A] font-bold">₹{d.price}</span>
+                      <span className="text-xs font-serif text-[#C9A86A] font-bold">${d.price}</span>
                     </button>
                   ))}
                 </div>
@@ -234,15 +234,15 @@ export default function AstrologerMarketplaceModal({
               <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-1.5 text-xs font-mono">
                 <div className="flex justify-between text-slate-400">
                   <span>Consultation Fee:</span>
-                  <span className="text-white font-bold">₹{currentPrice}.00 INR</span>
+                  <span className="text-white font-bold">${currentPrice}.00 USD</span>
                 </div>
                 <div className="flex justify-between text-slate-500 text-[10px]">
                   <span>Astrologer Share (75%):</span>
-                  <span>₹{payout.astrologerEarnings}</span>
+                  <span>${payout.astrologerEarnings}</span>
                 </div>
                 <div className="flex justify-between text-slate-500 text-[10px]">
                   <span>Platform Secure Host (25%):</span>
-                  <span>₹{payout.platformFee}</span>
+                  <span>${payout.platformFee}</span>
                 </div>
               </div>
 
@@ -252,7 +252,7 @@ export default function AstrologerMarketplaceModal({
                 className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#C9A86A] to-[#DFBF7A] text-[#070A12] font-bold text-xs shadow-[0_0_20px_rgba(201,168,106,0.35)] hover:scale-105 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Lock className="w-4 h-4" />
-                <span>Book Now for ₹{currentPrice} INR</span>
+                <span>Book Now for ${currentPrice} USD</span>
               </button>
 
               <div className="text-[10px] text-slate-500 text-center flex items-center justify-center gap-1">

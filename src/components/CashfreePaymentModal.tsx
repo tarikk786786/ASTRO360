@@ -90,7 +90,7 @@ export default function CashfreePaymentModal({
   const finalPrice = Math.max(1, selectedItem.priceInr - appliedDiscount);
 
   // Real NPCI UPI URI string
-  const upiPayUri = `upi://pay?pa=tarikislam786@okaxis&pn=ASTRO360%20Omni&am=${finalPrice}&cu=INR&tn=ASTRO360_${selectedItem.id}`;
+  const upiPayUri = `upi://pay?pa=tarikislam786@okaxis&pn=ASTRO360%20Omni&am=${finalPrice}&cu=USD&tn=ASTRO360_${selectedItem.id}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=8&data=${encodeURIComponent(upiPayUri)}`;
 
   // Apply Coupon Handler
@@ -248,10 +248,10 @@ Phone:         ${customerPhone || '9876543210'}
 PURCHASE DETAILS:
 Plan / Service: ${selectedItem.name}
 Category:       ${selectedItem.category.toUpperCase()}
-Base Amount:    ₹${(finalPrice * 0.8475).toFixed(2)} INR
-GST (18%):      ₹${(finalPrice * 0.1525).toFixed(2)} INR
+Base Amount:    $${(finalPrice * 0.8475).toFixed(2)} USD
+GST (18%):      $${(finalPrice * 0.1525).toFixed(2)} USD
 --------------------------------------------------------------------------------
-TOTAL PAID:     ₹${finalPrice}.00 INR
+TOTAL PAID:     $${finalPrice}.00 USD
 --------------------------------------------------------------------------------
 Payment Rail:   ${activeRail.toUpperCase()} (Instant UPI / Cards / NetBanking)
 Security:       PCI-DSS Level 1 & 256-Bit SSL Encrypted
@@ -324,7 +324,7 @@ https://astro.tarikislam.in
               </span>
               <h3 className="text-2xl sm:text-3xl font-bold font-serif text-white">Payment Verified Successfully!</h3>
               <p className="text-sm text-slate-300 max-w-lg mx-auto leading-relaxed">
-                Thank you, <strong className="text-white">{customerName}</strong>. Your purchase of <strong className="text-[#C9A86A]">{selectedItem.name} (₹{finalPrice} INR)</strong> is active.
+                Thank you, <strong className="text-white">{customerName}</strong>. Your purchase of <strong className="text-[#C9A86A]">{selectedItem.name} (${finalPrice} USD)</strong> is active.
               </p>
             </div>
 
@@ -336,7 +336,7 @@ https://astro.tarikislam.in
               </div>
               <div className="flex justify-between text-slate-400">
                 <span>Amount Paid:</span>
-                <span className="text-[#C9A86A] font-bold">₹{finalPrice}.00 INR</span>
+                <span className="text-[#C9A86A] font-bold">${finalPrice}.00 USD</span>
               </div>
               <div className="flex justify-between text-slate-400">
                 <span>Verification Status:</span>
@@ -389,7 +389,7 @@ https://astro.tarikislam.in
                 <span>🎉 SPECIAL EARLY ACCESS: 100% FREE FOR LIMITED TIME!</span>
               </div>
               <p className="text-[11px] text-slate-300">
-                All digital dossiers, credit packs, and memberships are currently unlocked at ₹0 for community seekers.
+                All digital dossiers, credit packs, and memberships are currently unlocked at $0 for community seekers.
               </p>
               <button
                 onClick={() => {
@@ -457,9 +457,9 @@ https://astro.tarikislam.in
                     <div>
                       <h4 className="text-xs font-bold text-white font-serif mb-0.5 truncate">{item.name}</h4>
                       <div className="flex items-baseline gap-1.5 mb-1.5">
-                        <span className="text-base font-bold font-serif text-[#C9A86A]">₹{item.priceInr}</span>
+                        <span className="text-base font-bold font-serif text-[#C9A86A]">${item.priceInr}</span>
                         {item.originalPriceInr && (
-                          <span className="text-[10px] text-slate-500 line-through font-mono">₹{item.originalPriceInr}</span>
+                          <span className="text-[10px] text-slate-500 line-through font-mono">${item.originalPriceInr}</span>
                         )}
                         {item.discountPercentage && (
                           <span className="text-[8.5px] font-mono text-emerald-400 font-semibold">({item.discountPercentage}% OFF)</span>
@@ -505,21 +505,21 @@ https://astro.tarikislam.in
                     </div>
                     <div className="flex justify-between text-slate-400">
                       <span>Base Amount:</span>
-                      <span>₹{(finalPrice * 0.8475).toFixed(2)}</span>
+                      <span>${(finalPrice * 0.8475).toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-slate-400">
                       <span>GST (18%):</span>
-                      <span>₹{(finalPrice * 0.1525).toFixed(2)}</span>
+                      <span>${(finalPrice * 0.1525).toFixed(2)}</span>
                     </div>
                     {appliedDiscount > 0 && (
                       <div className="flex justify-between text-emerald-400">
                         <span>Coupon Discount:</span>
-                        <span>-₹{appliedDiscount}.00</span>
+                        <span>-${appliedDiscount}.00</span>
                       </div>
                     )}
                     <div className="pt-2 border-t border-white/[0.08] flex justify-between text-sm">
                       <span className="text-white font-bold">Total Amount:</span>
-                      <span className="text-[#C9A86A] font-bold text-base">₹{finalPrice}.00 INR</span>
+                      <span className="text-[#C9A86A] font-bold text-base">${finalPrice}.00 USD</span>
                     </div>
                   </div>
                 </div>
@@ -657,7 +657,7 @@ https://astro.tarikislam.in
                             <span>Scan with any UPI Camera or App</span>
                           </span>
                           <p className="text-[11px] text-slate-400 leading-relaxed">
-                            Open Google Pay, PhonePe, Paytm, CRED, or BHIM and scan this QR code to pay <strong className="text-[#C9A86A]">₹{finalPrice} INR</strong>.
+                            Open Google Pay, PhonePe, Paytm, CRED, or BHIM and scan this QR code to pay <strong className="text-[#C9A86A]">${finalPrice} USD</strong>.
                           </p>
                         </div>
 
@@ -739,7 +739,7 @@ https://astro.tarikislam.in
                       ) : (
                         <>
                           <Lock className="w-4 h-4" />
-                          <span>Launch Cashfree Secure Checkout (₹{finalPrice})</span>
+                          <span>Launch Cashfree Secure Checkout (${finalPrice})</span>
                         </>
                       )}
                     </button>

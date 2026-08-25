@@ -121,10 +121,10 @@ export default function AdminFinanceCenter({ isOpen, onClose }: AdminFinanceCent
               {/* KPI Cards Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
                 {[
-                  { label: 'Gross Revenue (MTD)', val: '₹2,48,590', change: '+28.4%', isPositive: true, sub: 'All payment rails' },
-                  { label: 'Net Platform Profit', val: '₹1,31,219', change: '+31.2%', isPositive: true, sub: 'Post 25% commission' },
-                  { label: 'Monthly Recurring (MRR)', val: '₹68,400', change: '+18.7%', isPositive: true, sub: '428 Active Pro Users' },
-                  { label: 'Avg Order Value (AOV)', val: '₹312', change: '+8.1%', isPositive: true, sub: '₹299 Median' },
+                  { label: 'Gross Revenue (MTD)', val: '$2,48,590', change: '+28.4%', isPositive: true, sub: 'All payment rails' },
+                  { label: 'Net Platform Profit', val: '$1,31,219', change: '+31.2%', isPositive: true, sub: 'Post 25% commission' },
+                  { label: 'Monthly Recurring (MRR)', val: '$68,400', change: '+18.7%', isPositive: true, sub: '428 Active Pro Users' },
+                  { label: 'Avg Order Value (AOV)', val: '$312', change: '+8.1%', isPositive: true, sub: '$299 Median' },
                 ].map((kpi, i) => (
                   <div key={i} className="p-4 rounded-2xl bg-[#070A12] border border-white/[0.08] space-y-1">
                     <span className="text-[10.5px] font-mono text-slate-400 block">{kpi.label}</span>
@@ -145,7 +145,7 @@ export default function AdminFinanceCenter({ isOpen, onClose }: AdminFinanceCent
                   <span className="text-xs font-bold text-white font-serif flex items-center gap-2">
                     <FileText className="w-4 h-4 text-cyan-400" /> Digital PDF Dossiers
                   </span>
-                  <div className="text-2xl font-bold font-serif text-[#C9A86A]">₹98,450</div>
+                  <div className="text-2xl font-bold font-serif text-[#C9A86A]">$98,450</div>
                   <p className="text-[11px] text-slate-400">Career & Life Reports constitute 62% of one-time purchases.</p>
                 </div>
 
@@ -153,15 +153,15 @@ export default function AdminFinanceCenter({ isOpen, onClose }: AdminFinanceCent
                   <span className="text-xs font-bold text-white font-serif flex items-center gap-2">
                     <Award className="w-4 h-4 text-purple-400" /> Astrologer Consultations
                   </span>
-                  <div className="text-2xl font-bold font-serif text-purple-300">₹81,740</div>
-                  <p className="text-[11px] text-slate-400">Platform retained ₹20,435 in 25% hosting commissions.</p>
+                  <div className="text-2xl font-bold font-serif text-purple-300">$81,740</div>
+                  <p className="text-[11px] text-slate-400">Platform retained $20,435 in 25% hosting commissions.</p>
                 </div>
 
                 <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] space-y-3">
                   <span className="text-xs font-bold text-white font-serif flex items-center gap-2">
                     <Users className="w-4 h-4 text-emerald-400" /> Pro Subscriptions
                   </span>
-                  <div className="text-2xl font-bold font-serif text-emerald-400">₹68,400</div>
+                  <div className="text-2xl font-bold font-serif text-emerald-400">$68,400</div>
                   <p className="text-[11px] text-slate-400">Annual retention rate: 94.2% with 2.1% low churn.</p>
                 </div>
               </div>
@@ -190,7 +190,7 @@ export default function AdminFinanceCenter({ isOpen, onClose }: AdminFinanceCent
                         <td className="p-2 text-[#C9A86A] font-bold">{ord.id}</td>
                         <td className="p-2 text-white">{ord.customer}</td>
                         <td className="p-2 text-slate-300 truncate max-w-[200px]">{ord.product}</td>
-                        <td className="p-2 text-emerald-400 font-bold">₹{ord.amount}</td>
+                        <td className="p-2 text-emerald-400 font-bold">${ord.amount}</td>
                         <td className="p-2 text-slate-400">{ord.gateway}</td>
                         <td className="p-2">
                           <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px]">
@@ -233,9 +233,9 @@ export default function AdminFinanceCenter({ isOpen, onClose }: AdminFinanceCent
                       <tr key={p.id} className="hover:bg-white/[0.02]">
                         <td className="p-2 text-white font-bold">{p.astrologer}</td>
                         <td className="p-2 text-slate-300">{p.sessions} Calls</td>
-                        <td className="p-2 text-slate-400">₹{p.gross}</td>
-                        <td className="p-2 text-[#C9A86A] font-bold">₹{p.platformFee}</td>
-                        <td className="p-2 text-emerald-400 font-bold">₹{p.netPayout}</td>
+                        <td className="p-2 text-slate-400">${p.gross}</td>
+                        <td className="p-2 text-[#C9A86A] font-bold">${p.platformFee}</td>
+                        <td className="p-2 text-emerald-400 font-bold">${p.netPayout}</td>
                         <td className="p-2">
                           <span className={`px-2 py-0.5 rounded-full text-[10px] ${
                             p.status === 'SETTLED' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'
@@ -286,7 +286,7 @@ export default function AdminFinanceCenter({ isOpen, onClose }: AdminFinanceCent
                   </div>
                   <p className="text-xs text-slate-300">{coupon.description}</p>
                   <div className="text-[10px] text-slate-500 pt-2 border-t border-white/[0.04]">
-                    Min Order: ₹{coupon.minOrderAmount} INR
+                    Min Order: ${coupon.minOrderAmount} USD
                   </div>
                 </div>
               ))}
@@ -301,7 +301,7 @@ export default function AdminFinanceCenter({ isOpen, onClose }: AdminFinanceCent
             <div className="p-6 rounded-3xl bg-[#0D1220] border border-white/[0.1] max-w-sm w-full space-y-4 text-center font-mono">
               <h3 className="text-base font-bold text-white">Process Order Refund</h3>
               <p className="text-xs text-slate-400">
-                Refund <strong className="text-white">₹{refundModalOrder.amount}</strong> to <strong className="text-white">{refundModalOrder.customer}</strong>?
+                Refund <strong className="text-white">${refundModalOrder.amount}</strong> to <strong className="text-white">{refundModalOrder.customer}</strong>?
               </p>
               {refundSuccess ? (
                 <div className="text-emerald-400 text-xs font-bold">✓ Refund Processed Successfully!</div>

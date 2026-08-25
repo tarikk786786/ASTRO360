@@ -7,12 +7,21 @@ import {
 } from 'recharts';
 import { calculatePlanetaryPositions, type PlanetPosition } from '../lib/astroCalculations';
 
-export default function CosmicChartAnalytics({ planetPositions = [] }: { planetPositions?: PlanetPosition[] }) {
-  // Use provided positions or fallback to default ephemeris positions
+export default function CosmicChartAnalytics({
+  planetPositions = [],
+  userProfile
+}: {
+  planetPositions?: PlanetPosition[];
+  userProfile?: { dob?: string; time?: string };
+}) {
+  // Use provided positions or fallback to user profile ephemeris positions
   const activePositions = useMemo(() => {
     if (planetPositions && planetPositions.length > 0) return planetPositions;
-    return calculatePlanetaryPositions('1995-05-15', '14:30');
-  }, [planetPositions]);
+    return calculatePlanetaryPositions(
+      userProfile?.dob || '1998-06-15',
+      userProfile?.time || '12:00'
+    );
+  }, [planetPositions, userProfile]);
 
   // Dynamically compute 5-Element Balance from Planet Signs
   const elementData = useMemo(() => {

@@ -25,7 +25,7 @@ interface WalletState {
 export const useWalletStore = create<WalletState>()(
   persist(
     (set, get) => ({
-      balance: 150, // Welcome bonus of ₹150 for new seekers
+      balance: 150, // Welcome bonus of $150 credits for new seekers
       bonusBalance: 50,
       transactions: [
         {
@@ -78,7 +78,7 @@ export const useWalletStore = create<WalletState>()(
       },
 
       getFormattedBalance: () => {
-        return `₹${get().balance.toLocaleString('en-IN')}`;
+        return `$${get().balance.toLocaleString('en-US')}`;
       },
     }),
     {

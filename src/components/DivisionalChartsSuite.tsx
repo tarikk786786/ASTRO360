@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'motion/react';
 import { Layers, Sparkles, Compass, CheckCircle2, ShieldCheck, ChevronRight } from 'lucide-react';
-import type { PlanetPosition } from '../lib/astroCalculations';
+import { calculatePlanetaryPositions, type PlanetPosition } from '../lib/astroCalculations';
 
 interface DivisionalChart {
   id: string;
@@ -27,7 +27,21 @@ const DIVISIONAL_CHARTS: DivisionalChart[] = [
   { id: 'd60', name: 'D60 — Shastiamsha Chart', varga: '60th Division', domain: 'Past Life Karma & Core Soul Blueprints', description: 'The ultimate refined chart explaining why specific past-life events manifest in this incarnation.', badgeColor: 'text-[#06B6D4] border-cyan-500/30' }
 ];
 
-export default function DivisionalChartsSuite({ planetPositions = [] }: { planetPositions?: PlanetPosition[] }) {
+export default function DivisionalChartsSuite({
+  planetPositions = [],
+  userProfile
+}: {
+  planetPositions?: PlanetPosition[];
+  userProfile?: { dob?: string; time?: string; name?: string };
+}) {
+  const activePositions = useMemo(() => {
+    if (planetPositions && planetPositions.length > 0) return planetPositions;
+    return calculatePlanetaryPositions(
+      userProfile?.dob || '1998-06-15',
+      userProfile?.time || '12:00'
+    );
+  }, [planetPositions, userProfile]);
+
   const [selectedChart, setSelectedChart] = useState<DivisionalChart>(DIVISIONAL_CHARTS[4]); // Default D9 Navamsha
 
   return (

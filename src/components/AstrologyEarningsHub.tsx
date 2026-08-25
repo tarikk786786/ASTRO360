@@ -158,7 +158,7 @@ export default function AstrologyEarningsHub({ userProfile }: AstrologyEarningsH
         <div className="p-5 rounded-2xl bg-[#0D1220]/90 border border-white/[0.06] flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider">Gross Platform GMV</span>
-            <div className="text-2xl font-bold font-serif text-white">₹2,48,590</div>
+            <div className="text-2xl font-bold font-serif text-white">$2,48,590</div>
             <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
               <TrendingUp className="w-3 h-3" /> +28.4% this month
             </span>
@@ -171,7 +171,7 @@ export default function AstrologyEarningsHub({ userProfile }: AstrologyEarningsH
         <div className="p-5 rounded-2xl bg-[#0D1220]/90 border border-white/[0.06] flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider">Monthly Recurring (MRR)</span>
-            <div className="text-2xl font-bold font-serif text-[#C9A86A]">₹68,400</div>
+            <div className="text-2xl font-bold font-serif text-[#C9A86A]">$68,400</div>
             <span className="text-[10px] font-mono text-slate-400">428 Pro Subscribers</span>
           </div>
           <div className="w-10 h-10 rounded-xl bg-[#C9A86A]/10 border border-[#C9A86A]/20 flex items-center justify-center text-[#C9A86A]">
@@ -182,7 +182,7 @@ export default function AstrologyEarningsHub({ userProfile }: AstrologyEarningsH
         <div className="p-5 rounded-2xl bg-[#0D1220]/90 border border-white/[0.06] flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider">Instant Dossier Sales</span>
-            <div className="text-2xl font-bold font-serif text-cyan-400">₹98,450</div>
+            <div className="text-2xl font-bold font-serif text-cyan-400">$98,450</div>
             <span className="text-[10px] font-mono text-slate-400">342 PDF Reports Sold</span>
           </div>
           <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
@@ -193,7 +193,7 @@ export default function AstrologyEarningsHub({ userProfile }: AstrologyEarningsH
         <div className="p-5 rounded-2xl bg-[#0D1220]/90 border border-white/[0.06] flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider">Astrologer Platform Share</span>
-            <div className="text-2xl font-bold font-serif text-purple-400">₹20,435</div>
+            <div className="text-2xl font-bold font-serif text-purple-400">$20,435</div>
             <span className="text-[10px] font-mono text-slate-400">25% Marketplace Cut</span>
           </div>
           <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
@@ -242,7 +242,7 @@ export default function AstrologyEarningsHub({ userProfile }: AstrologyEarningsH
                 />
               </div>
               <div>
-                <label className="block text-xs font-mono text-slate-300 mb-1">Amount (₹ INR)</label>
+                <label className="block text-xs font-mono text-slate-300 mb-1">Amount ($ USD)</label>
                 <input
                   type="number"
                   placeholder="499"
@@ -274,7 +274,7 @@ export default function AstrologyEarningsHub({ userProfile }: AstrologyEarningsH
               ) : (
                 <>
                   <PlusCircle className="w-4 h-4" />
-                  <span>Generate Payment Link (₹{customAmount} INR)</span>
+                  <span>Generate Payment Link (${customAmount} USD)</span>
                 </>
               )}
             </button>
@@ -283,7 +283,7 @@ export default function AstrologyEarningsHub({ userProfile }: AstrologyEarningsH
           {generatedLink && (
             <div className="p-4 rounded-2xl bg-[#070A12] border border-[#C9A86A]/40 space-y-3 animate-fade-in">
               <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-[#C9A86A] font-bold">Link Ready (₹{generatedLink.amount})</span>
+                <span className="text-[#C9A86A] font-bold">Link Ready (${generatedLink.amount})</span>
                 <span className="text-[10px] text-emerald-400">● Active</span>
               </div>
               
@@ -338,7 +338,7 @@ export default function AstrologyEarningsHub({ userProfile }: AstrologyEarningsH
                 onClick={() => openCheckout('report')}
                 className="px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-cyan-400 font-bold text-xs font-mono cursor-pointer"
               >
-                ₹49 – ₹299
+                $49 – $299
               </button>
             </div>
 
@@ -357,7 +357,7 @@ export default function AstrologyEarningsHub({ userProfile }: AstrologyEarningsH
                 onClick={() => setIsMarketplaceOpen(true)}
                 className="px-3 py-1.5 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 font-bold text-xs font-mono cursor-pointer"
               >
-                ₹299 – ₹1,199
+                $299 – $1,199
               </button>
             </div>
 
@@ -376,7 +376,7 @@ export default function AstrologyEarningsHub({ userProfile }: AstrologyEarningsH
                 onClick={() => openCheckout('subscription')}
                 className="px-3 py-1.5 rounded-xl bg-[#C9A86A]/20 hover:bg-[#C9A86A]/30 text-[#C9A86A] font-bold text-xs font-mono cursor-pointer"
               >
-                ₹199 / mo
+                $199 / mo
               </button>
             </div>
 
@@ -395,7 +395,7 @@ export default function AstrologyEarningsHub({ userProfile }: AstrologyEarningsH
                 onClick={() => openCheckout('tokens')}
                 className="px-3 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 font-bold text-xs font-mono cursor-pointer"
               >
-                ₹49 – ₹499
+                $49 – $499
               </button>
             </div>
 

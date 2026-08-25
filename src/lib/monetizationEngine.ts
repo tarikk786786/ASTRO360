@@ -227,7 +227,7 @@ export const SUBSCRIPTION_PLANS: MonetizationProduct[] = [
     discountPercentage: 60,
     badge: 'Recommended',
     description: '100 AI queries/mo, full Kundli Milan, 1 free monthly dossier, ad-free.',
-    features: ['100 AI Oracle Questions / Month', 'Full Kundli Milan Matching', '1 Free Monthly Dossier (₹149 Value)', '100% Ad-Free Experience', '10% Discount on Astrologer Calls'],
+    features: ['100 AI Oracle Questions / Month', 'Full Kundli Milan Matching', '1 Free Monthly Dossier ($149 Value)', '100% Ad-Free Experience', '10% Discount on Astrologer Calls'],
     entitlementGranted: 'PLAN_ASTRO_PLUS',
   },
   {
@@ -339,7 +339,7 @@ export const PROMO_COUPONS: CouponCode[] = [
     discountType: 'flat',
     discountValue: 50,
     minOrderAmount: 99,
-    description: '₹50 flat discount on your first order',
+    description: '$50 flat discount on your first order',
   },
   {
     code: 'COSMIC20',
@@ -353,7 +353,7 @@ export const PROMO_COUPONS: CouponCode[] = [
     discountType: 'flat',
     discountValue: 100,
     minOrderAmount: 299,
-    description: '₹100 flat discount on premium reports',
+    description: '$100 flat discount on premium reports',
   },
 ];
 
@@ -369,7 +369,7 @@ export function calculateCouponDiscount(code: string, orderAmount: number): { is
   }
 
   if (orderAmount < coupon.minOrderAmount) {
-    return { isValid: false, discountAmount: 0, finalAmount: orderAmount, message: `Minimum order amount for ${cleanCode} is ₹${coupon.minOrderAmount}.` };
+    return { isValid: false, discountAmount: 0, finalAmount: orderAmount, message: `Minimum order amount for ${cleanCode} is $${coupon.minOrderAmount}.` };
   }
 
   let discount = 0;
@@ -384,7 +384,7 @@ export function calculateCouponDiscount(code: string, orderAmount: number): { is
     isValid: true,
     discountAmount: discount,
     finalAmount,
-    message: `Coupon ${cleanCode} applied! Saved ₹${discount}.`,
+    message: `Coupon ${cleanCode} applied! Saved $${discount}.`,
   };
 }
 

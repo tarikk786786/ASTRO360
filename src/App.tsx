@@ -664,15 +664,15 @@ export default function AppContent() {
                   {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
                   {activeTab === 'spiritual-traditions' && <SpiritualTraditionsModule userProfile={userProfile} />}
                   {activeTab === 'consultation-hub' && <CommunityConsultationHub />}
-                  {activeTab === 'divisional-charts' && <DivisionalChartsSuite planetPositions={[]} />}
+                  {activeTab === 'divisional-charts' && <DivisionalChartsSuite userProfile={userProfile} />}
                   {activeTab === 'btr-suite' && <BirthTimeRectificationSuite />}
                   {activeTab === 'gemstone-suite' && <GemstoneRudrakshaSuite />}
                   {activeTab === 'numerology-suite' && <NumerologyNameSuite />}
                   {activeTab === 'tarot-iching' && <TarotIChingSuite />}
                   {activeTab === 'time-horizon' && <TimeHorizonForecastSuite userProfile={userProfile} />}
-                  {activeTab === 'dosha-engine' && <DoshaRemedyEngine planetPositions={[]} userProfile={userProfile} />}
+                  {activeTab === 'dosha-engine' && <DoshaRemedyEngine userProfile={userProfile} />}
                   {activeTab === 'biorhythm-tracker' && <CosmicBiorhythmTracker userProfile={userProfile} />}
-                  {activeTab === 'chakra-alignment' && <SacredChakraAlignment planetPositions={[]} />}
+                  {activeTab === 'chakra-alignment' && <SacredChakraAlignment />}
                   {activeTab === 'fengshui-matrix' && <CosmicFengShuiMatrix userProfile={userProfile} />}
                   {activeTab === 'electional-muhurta' && <ElectionalMuhurtaEngine />}
                   {activeTab === 'planetary-horas' && <PlanetaryHorasTracker />}
@@ -682,11 +682,11 @@ export default function AppContent() {
                   {activeTab === 'cosmic-compass' && <CosmicCompassVisualizer userProfile={userProfile} />}
                   {activeTab === 'astro-cartography' && <AstroCartographyMatrix userProfile={userProfile} />}
                   {activeTab === 'transit-calendar' && <CosmicTransitCalendar />}
-                  {activeTab === 'synastry-overlay' && <SynastryOverlayChart personAPositions={[]} />}
+                  {activeTab === 'synastry-overlay' && <SynastryOverlayChart userProfile={userProfile} />}
                   {activeTab === 'mind-map' && <AstrologicalMindMap />}
-                  {activeTab === 'chart-analytics' && <CosmicChartAnalytics />}
+                  {activeTab === 'chart-analytics' && <CosmicChartAnalytics userProfile={userProfile} />}
                   {activeTab === 'learning-hub' && <AstrologyLearningHub />}
-                  {activeTab === 'report-generator' && <ExecutiveReportGenerator />}
+                  {activeTab === 'report-generator' && <ExecutiveReportGenerator userProfile={userProfile} />}
                   {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
                   {activeTab === 'control-center' && <AstrologyControlCenter />}
                   {activeTab === 'studio' && <CosmicStudioSuite userProfile={userProfile} />}

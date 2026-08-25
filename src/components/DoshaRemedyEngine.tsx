@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { AlertTriangle, ShieldCheck, Flame, Moon, Compass, Sparkles, CheckCircle2, Info, ChevronRight, HelpCircle } from 'lucide-react';
-import type { PlanetPosition } from '../lib/astroCalculations';
+import { calculatePlanetaryPositions, type PlanetPosition } from '../lib/astroCalculations';
 import type { UserProfile } from '../types';
 
 interface DoshaRemedyEngineProps {
@@ -12,9 +12,17 @@ interface DoshaRemedyEngineProps {
 export default function DoshaRemedyEngine({ planetPositions = [], userProfile }: DoshaRemedyEngineProps) {
   const [activeTab, setActiveTab] = useState<'sadesati' | 'kalsarp' | 'manglik'>('sadesati');
 
+  const activePositions = useMemo(() => {
+    if (planetPositions && planetPositions.length > 0) return planetPositions;
+    return calculatePlanetaryPositions(
+      userProfile?.dob || '1998-06-15',
+      userProfile?.time || '12:00'
+    );
+  }, [planetPositions, userProfile]);
+
   // Sade Sati Calculation (Saturn in Pisces, Natal Moon sign)
   const sadeSatiData = useMemo(() => {
-    const moonPlanet = planetPositions.find(p => p.name === 'Moon');
+    const moonPlanet = activePositions.find(p => p.name === 'Moon');
     const moonSign = moonPlanet?.sign || 'Taurus';
     
     // Saturn currently in Pisces (330°)
@@ -42,13 +50,13 @@ export default function DoshaRemedyEngine({ planetPositions = [], userProfile }:
     }
 
     return { moonSign, isSadeSati, phase, impact, desc };
-  }, [planetPositions]);
+  }, [activePositions]);
 
   // Kalsarp Yoga Detection
   const kalsarpData = useMemo(() => {
     // Check if Rahu and Ketu hem all other planets
-    const rahu = planetPositions.find(p => p.name === 'Rahu');
-    const ketu = planetPositions.find(p => p.name === 'Ketu');
+    const rahu = activePositions.find(p => p.name === 'Rahu');
+    const ketu = activePositions.find(p => p.name === 'Ketu');
 
     let isKalsarp = false;
     let yogaName = 'No Kalsarp Yoga Detected';

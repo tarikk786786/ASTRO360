@@ -31,7 +31,7 @@ const RECHARGE_PACKS = [
     bonus: 101,
     tag: 'Most Popular 🔥',
     isPopular: true,
-    features: ['1 Full 2026 Executive Career Dossier', '15-min Astrologer chat credits', 'Bonus ₹101 extra credits'],
+    features: ['1 Full 2026 Executive Career Dossier', '15-min Astrologer chat credits', 'Bonus $101 extra credits'],
   },
   {
     id: 'pack-999',
@@ -39,7 +39,7 @@ const RECHARGE_PACKS = [
     credit: 1350,
     bonus: 351,
     tag: 'Best Value 💎',
-    features: ['2 Comprehensive Dossiers (PDF)', '30-min Astrologer audio call', 'Forensic BTR access', 'Bonus ₹351 extra'],
+    features: ['2 Comprehensive Dossiers (PDF)', '30-min Astrologer audio call', 'Forensic BTR access', 'Bonus $351 extra'],
   },
   {
     id: 'pack-2499',
@@ -47,7 +47,7 @@ const RECHARGE_PACKS = [
     credit: 3600,
     bonus: 1101,
     tag: 'VIP Scholar 👑',
-    features: ['Unlimited Executive Dossiers', '1 Free Live Video Astrologer Call', 'Lifetime Muhurta Calendar', 'Bonus ₹1,101 extra'],
+    features: ['Unlimited Executive Dossiers', '1 Free Live Video Astrologer Call', 'Lifetime Muhurta Calendar', 'Bonus $1,101 extra'],
   },
 ];
 
@@ -66,7 +66,7 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
   if (!isOpen) return null;
 
   // Real NPCI UPI URI string
-  const upiPayUri = `upi://pay?pa=tarikislam786@okaxis&pn=ASTRO360%20Wallet&am=${selectedPack.amount}&cu=INR&tn=WALLET_${selectedPack.id}`;
+  const upiPayUri = `upi://pay?pa=tarikislam786@okaxis&pn=ASTRO360%20Wallet&am=${selectedPack.amount}&cu=USD&tn=WALLET_${selectedPack.id}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=${encodeURIComponent(upiPayUri)}`;
 
   // Strict UTR Verification & Credit Addition
@@ -100,7 +100,7 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
       const data = await res.json();
 
       if (data && data.success && data.status === 'PAID') {
-        addCredits(selectedPack.credit, `Wallet Recharge (+₹${selectedPack.credit} Credits)`, orderRef);
+        addCredits(selectedPack.credit, `Wallet Recharge (+$${selectedPack.credit} Credits)`, orderRef);
         setConfirmedOrderId(orderRef);
         setRechargeSuccess(true);
         setVerifying(false);
@@ -110,7 +110,7 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
       }
     } catch (e) {
       // Graceful fulfillment if local verified
-      addCredits(selectedPack.credit, `Wallet Recharge (+₹${selectedPack.credit} Credits)`, orderRef);
+      addCredits(selectedPack.credit, `Wallet Recharge (+$${selectedPack.credit} Credits)`, orderRef);
       setConfirmedOrderId(orderRef);
       setRechargeSuccess(true);
       setVerifying(false);
@@ -126,17 +126,17 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
       await initiateCashfreeCheckout({
         item: {
           id: selectedPack.id,
-          name: `Cosmic Wallet: ₹${selectedPack.amount} Recharge`,
+          name: `Cosmic Wallet: $${selectedPack.amount} Recharge`,
           category: 'tokens',
           priceInr: selectedPack.amount,
-          description: `Add ₹${selectedPack.credit} Cosmic Credits to your balance.`,
+          description: `Add $${selectedPack.credit} Cosmic Credits to your balance.`,
           features: selectedPack.features,
         },
         customerName: userProfile?.name || 'Cosmic Seeker',
         customerEmail: userProfile?.email || 'seeker@astro.tarikislam.in',
         customerPhone: userProfile?.phone || '9876543210',
         onSuccess: (orderData) => {
-          addCredits(selectedPack.credit, `Wallet Recharge (+₹${selectedPack.credit} Credits)`, orderData?.order_id);
+          addCredits(selectedPack.credit, `Wallet Recharge (+$${selectedPack.credit} Credits)`, orderData?.order_id);
           setConfirmedOrderId(orderData?.order_id || `WAL_${Date.now()}`);
           setRechargeSuccess(true);
           setLoading(false);
@@ -189,7 +189,7 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
             <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block">Available Balance</span>
             <div className="text-2xl sm:text-3xl font-bold font-serif text-[#C9A86A]">{getFormattedBalance()}</div>
             <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1 mt-0.5">
-              <Gift className="w-3 h-3" /> Includes ₹50 welcome bonus
+              <Gift className="w-3 h-3" /> Includes $50 welcome bonus
             </span>
           </div>
 
@@ -225,7 +225,7 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
                 Wallet Credited Successfully!
               </span>
               <h3 className="text-xl sm:text-2xl font-bold font-serif text-white">
-                +₹{selectedPack.credit} Cosmic Credits Added
+                +${selectedPack.credit} Cosmic Credits Added
               </h3>
               <p className="text-xs text-slate-300">
                 Your new available balance is <strong className="text-[#C9A86A] font-mono text-sm">{getFormattedBalance()}</strong>.
@@ -239,11 +239,11 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
               </div>
               <div className="flex justify-between text-slate-400">
                 <span>Amount Paid:</span>
-                <span className="text-emerald-400 font-bold">₹{selectedPack.amount} INR</span>
+                <span className="text-emerald-400 font-bold">${selectedPack.amount} USD</span>
               </div>
               <div className="flex justify-between text-slate-400">
                 <span>Bonus Received:</span>
-                <span className="text-[#C9A86A] font-bold">+₹{selectedPack.bonus} Extra</span>
+                <span className="text-[#C9A86A] font-bold">+${selectedPack.bonus} Extra</span>
               </div>
             </div>
 
@@ -290,7 +290,7 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
                       }`}
                     >
                       <div className="flex items-center justify-between w-full">
-                        <span className="text-base font-bold font-serif text-white">₹{pack.amount}</span>
+                        <span className="text-base font-bold font-serif text-white">${pack.amount}</span>
                         {pack.isPopular && (
                           <span className="text-[8px] font-mono text-emerald-400 bg-emerald-500/10 px-1 py-0.5 rounded">
                             Hot
@@ -298,8 +298,8 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
                         )}
                       </div>
                       <div className="mt-1">
-                        <span className="text-xs font-bold text-[#C9A86A]">Get ₹{pack.credit}</span>
-                        <span className="text-[9px] font-mono text-emerald-400 block">+₹{pack.bonus} Free</span>
+                        <span className="text-xs font-bold text-[#C9A86A]">Get ${pack.credit}</span>
+                        <span className="text-[9px] font-mono text-emerald-400 block">+${pack.bonus} Free</span>
                       </div>
                     </button>
                   );
@@ -321,10 +321,10 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
                 <div className="space-y-2 text-left flex-1">
                   <span className="text-xs font-bold text-white flex items-center gap-1.5">
                     <QrCode className="w-4 h-4 text-[#C9A86A]" />
-                    <span>Instant UPI QR • Pay ₹{selectedPack.amount}</span>
+                    <span>Instant UPI QR • Pay ${selectedPack.amount}</span>
                   </span>
                   <p className="text-[11px] text-slate-400 leading-relaxed">
-                    Scan with Google Pay, PhonePe, Paytm, or CRED. You will receive <strong className="text-[#C9A86A]">₹{selectedPack.credit} Credits</strong>.
+                    Scan with Google Pay, PhonePe, Paytm, or CRED. You will receive <strong className="text-[#C9A86A]">${selectedPack.credit} Credits</strong>.
                   </p>
 
                   <div className="p-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[11px] font-mono flex items-center justify-between">
@@ -408,7 +408,7 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
                       tx.type === 'credit' ? 'text-emerald-400' : 'text-rose-400'
                     }`}
                   >
-                    {tx.type === 'credit' ? `+₹${tx.amount}` : `-₹${tx.amount}`}
+                    {tx.type === 'credit' ? `+$${tx.amount}` : `-$${tx.amount}`}
                   </span>
                 </div>
               ))

@@ -8,13 +8,15 @@ interface SynastryOverlayChartProps {
   personBPositions?: PlanetPosition[];
   personAName?: string;
   personBName?: string;
+  userProfile?: { name?: string; dob?: string; time?: string };
 }
 
 export default function SynastryOverlayChart({
-  personAPositions = calculatePlanetaryPositions('1998-06-15', '12:00'),
-  personBPositions = calculatePlanetaryPositions('1998-06-15', '12:00'),
-  personAName = 'Seeker',
-  personBName = 'Spouse / Partner'
+  personAPositions,
+  personBPositions,
+  personAName,
+  personBName = 'Spouse / Partner',
+  userProfile
 }: SynastryOverlayChartProps = {}) {
   const [selectedPlanet, setSelectedPlanet] = useState<PlanetPosition | null>(null);
   const [showPartnerModal, setShowPartnerModal] = useState<boolean>(false);
@@ -22,11 +24,26 @@ export default function SynastryOverlayChart({
   const [partnerDob, setPartnerDob] = useState<string>('2000-02-14');
   const [partnerTime, setPartnerTime] = useState<string>('14:30');
 
+  const activePersonA = useMemo(() => {
+    if (personAPositions && personAPositions.length > 0) return personAPositions;
+    return calculatePlanetaryPositions(
+      userProfile?.dob || '1998-06-15',
+      userProfile?.time || '12:00'
+    );
+  }, [personAPositions, userProfile]);
+
+  const activePersonB = useMemo(() => {
+    if (personBPositions && personBPositions.length > 0) return personBPositions;
+    return calculatePlanetaryPositions(partnerDob, partnerTime);
+  }, [personBPositions, partnerDob, partnerTime]);
+
+  const seekerName = personAName || userProfile?.name || 'Seeker';
+
   // Compute Dual Ring Aspect Overlaps
   const synastryScore = useMemo(() => {
     let score = 78;
-    personAPositions.forEach(pA => {
-      const pB = personBPositions.find(b => b.name === pA.name);
+    activePersonA.forEach(pA => {
+      const pB = activePersonB.find(b => b.name === pA.name);
       if (pB) {
         let diff = Math.abs(pA.degreeDecimal - pB.degreeDecimal);
         if (diff > 180) diff = 360 - diff;
@@ -45,7 +62,7 @@ export default function SynastryOverlayChart({
             <Heart className="w-5 h-5 text-pink-400" /> Synastry Dual-Ring Chart Overlay
           </h3>
           <p className="text-xs text-slate-400 font-mono pt-0.5">
-            Inter-Natal Chart Comparison: {personAName} vs {partnerName}
+            Inter-Natal Chart Comparison: {seekerName} vs {partnerName}
           </p>
         </div>
 
@@ -81,11 +98,11 @@ export default function SynastryOverlayChart({
             {/* Inner Ring: Person A */}
             <circle cx="170" cy="170" r="95" fill="none" stroke="#06B6D4" strokeWidth="2" strokeDasharray="4 4" opacity="0.6" />
             <text x="170" y="68" textAnchor="middle" fill="#06B6D4" fontSize="9" fontWeight="bold" fontFamily="monospace">
-              Inner Ring: {personAName}
+              Inner Ring: {seekerName}
             </text>
 
             {/* Person A Inner Ring Nodes */}
-            {personAPositions.map((pA, idx) => {
+            {activePersonA.map((pA, idx) => {
               const rad = ((pA.degreeDecimal - 90) * Math.PI) / 180;
               const x = 170 + 95 * Math.cos(rad);
               const y = 170 + 95 * Math.sin(rad);
@@ -101,7 +118,7 @@ export default function SynastryOverlayChart({
             })}
 
             {/* Person B Outer Ring Nodes */}
-            {personBPositions.map((pB, idx) => {
+            {activePersonB.map((pB, idx) => {
               const rad = ((pB.degreeDecimal - 90) * Math.PI) / 180;
               const x = 170 + 140 * Math.cos(rad);
               const y = 170 + 140 * Math.sin(rad);
@@ -125,7 +142,7 @@ export default function SynastryOverlayChart({
               <Users className="w-4 h-4 text-pink-400" /> Synastry Harmony & Inter-Aspect Analysis:
             </span>
             <p className="text-slate-300 leading-relaxed text-[11px]">
-              Strong elemental convergence between <strong className="text-cyan-300">{personAName}</strong> and <strong className="text-pink-300">{partnerName}</strong>. 
+              Strong elemental convergence between <strong className="text-cyan-300">{seekerName}</strong> and <strong className="text-pink-300">{partnerName}</strong>. 
               Sun & Moon house positions align in Kendra 4th/10th relationship, bringing mutual respect, financial co-growth, and emotional safety.
             </p>
           </div>
