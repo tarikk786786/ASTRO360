@@ -615,18 +615,20 @@ export default function AppContent() {
       {/* Main Content */}
       <main className="flex-1 min-w-0 w-full relative z-10 flex flex-col h-[100dvh] overflow-hidden">
         {/* Unified Modern Navigation (Desktop Glass Header & Mobile Expandable Drawer) */}
-        <OmniModernNav
-          activeTab={activeTab}
-          onNavigate={navigateTo}
-          userProfile={userProfile}
-          onOpenSearch={() => setIsCommandPaletteOpen(true)}
-          onToggleStudio={() => setIsSidebarOpen(!isSidebarOpen)}
-          isStudioOpen={isSidebarOpen}
-        />
+        {activeTab !== 'landing' && (
+          <OmniModernNav
+            activeTab={activeTab}
+            onNavigate={navigateTo}
+            userProfile={userProfile}
+            onOpenSearch={() => setIsCommandPaletteOpen(true)}
+            onToggleStudio={() => setIsSidebarOpen(!isSidebarOpen)}
+            isStudioOpen={isSidebarOpen}
+          />
+        )}
 
         {/* Page Content */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-6 w-full">
-          <div className="max-w-7xl mx-auto h-full px-2.5 sm:px-4 lg:px-6 w-full">
+        <div className={`flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar ${activeTab === 'landing' ? 'p-0' : 'pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-6'} w-full`}>
+          <div className={`${activeTab === 'landing' ? 'w-full' : 'max-w-7xl mx-auto px-2.5 sm:px-4 lg:px-6'} h-full w-full`}>
             <Suspense fallback={<CosmicCelestialLoader message="Synchronizing Celestial Intelligence" />}>
               <AnimatePresence mode="wait">
                 <motion.div
