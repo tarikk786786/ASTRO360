@@ -119,7 +119,16 @@ import { GlobalConfigManager } from './globalConfig';
 export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?: string, customAyanamsha?: number): PlanetPosition[] {
   const config = GlobalConfigManager.getConfig();
   const ayanamshaOffset = customAyanamsha !== undefined ? customAyanamsha : (config.astrologySystem === 'western' ? 0 : (config.ayanamsaMode === 'raman' ? 22.42 : 23.85));
-  const date = birthDateStr ? new Date(`${birthDateStr}T${birthTimeStr || '12:00'}:00`) : new Date();
+  
+  let date = new Date('1998-06-15T12:00:00');
+  if (birthDateStr && typeof birthDateStr === 'string' && birthDateStr.trim().length >= 4) {
+    const parsed = new Date(`${birthDateStr.trim()}T${birthTimeStr || '12:00'}:00`);
+    if (!isNaN(parsed.getTime())) {
+      date = parsed;
+    }
+  } else {
+    date = new Date();
+  }
   
   // Real Ecliptic Longitudes (Tropical)
   const sunL = (Ecliptic(GeoVector(Body.Sun, date, true)).elon - ayanamshaOffset + 360) % 360;
@@ -130,7 +139,7 @@ export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?
   const venL = (Ecliptic(GeoVector(Body.Venus, date, true)).elon - ayanamshaOffset + 360) % 360;
   const satL = (Ecliptic(GeoVector(Body.Saturn, date, true)).elon - ayanamshaOffset + 360) % 360;
   
-  const localHour = date.getHours() + date.getMinutes() / 60;
+  const localHour = (date.getHours() || 12) + (date.getMinutes() || 0) / 60;
   const jd = (date.getTime() / 86400000.0) + 2440587.5;
   const d = jd - 2451545.0;
   const rahuL = (125.044 - 0.05295 * d - ayanamshaOffset + 360000) % 360;
@@ -152,8 +161,9 @@ export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?
   ];
 
   return rawPositions.map((p) => {
-    const signIndex = Math.floor(p.long / 30);
-    const degreeDecimal = p.long % 30;
+    const rawLong = (p.long % 360 + 360) % 360;
+    const signIndex = Math.floor(rawLong / 30) % 12;
+    const degreeDecimal = rawLong % 30;
     const degInt = Math.floor(degreeDecimal);
     const minInt = Math.floor((degreeDecimal - degInt) * 60);
 

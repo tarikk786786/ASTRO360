@@ -16,8 +16,8 @@ function runAstroCalculationsTests() {
 
   // Test 2: Planet Longitudes & Signs output
   const positions = calculatePlanetaryPositions('1995-05-15', '14:30');
-  if (!positions || positions.length !== 9) {
-    throw new Error(`Test 2 Failed: Expected 9 planetary positions, got ${positions?.length}`);
+  if (!positions || positions.length !== 10) {
+    throw new Error(`Test 2 Failed: Expected 10 positions (Ascendant + 9 grahas), got ${positions?.length}`);
   }
 
   positions.forEach(p => {

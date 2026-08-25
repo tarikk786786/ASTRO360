@@ -96,10 +96,12 @@ export class GlobalConfigManager {
 
   private static loadFromStorage(): GlobalConfigState {
     try {
-      const stored = localStorage.getItem(this.STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        return { ...DEFAULT_GLOBAL_CONFIG, ...parsed };
+      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+        const stored = localStorage.getItem(this.STORAGE_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          return { ...DEFAULT_GLOBAL_CONFIG, ...parsed };
+        }
       }
     } catch (e) {
       console.warn('Failed to parse GlobalConfig from localStorage:', e);
@@ -119,11 +121,15 @@ export class GlobalConfigManager {
     let next = { ...this.currentConfig, ...partial, lastUpdated: new Date().toISOString() };
 
     // DEPENDENCY RESOLVER PIPELINE
+    const isClient = typeof document !== 'undefined';
+
     // 1. Language ➔ RTL resolution
     if (partial.language !== undefined) {
       next.isRtl = ['ar', 'ur'].includes(partial.language);
-      document.documentElement.dir = next.isRtl ? 'rtl' : 'ltr';
-      document.documentElement.lang = partial.language;
+      if (isClient) {
+        document.documentElement.dir = next.isRtl ? 'rtl' : 'ltr';
+        document.documentElement.lang = partial.language;
+      }
     }
 
     // 2. Astrology System ➔ Zodiac defaults
@@ -133,8 +139,7 @@ export class GlobalConfigManager {
         next.houseSystem = 'placidus';
       } else if (partial.astrologySystem === 'vedic') {
         next.zodiacSystem = 'sidereal';
-        next.houseSystem = 'wholesign';
-        next.ayanamsaMode = 'lahiri';
+        next.houseSystem = 'whole_sign';
       }
     }
 
@@ -146,7 +151,7 @@ export class GlobalConfigManager {
     }
 
     // 4. UI Theme & Motion Document Classes
-    if (partial.themeMode !== undefined) {
+    if (partial.themeMode !== undefined && isClient) {
       document.documentElement.setAttribute('data-theme', partial.themeMode);
       if (partial.themeMode === 'dark' || partial.themeMode === 'cosmic') {
         document.documentElement.classList.add('dark');
@@ -154,7 +159,7 @@ export class GlobalConfigManager {
         document.documentElement.classList.remove('dark');
       }
     }
-    if (partial.reducedMotion !== undefined) {
+    if (partial.reducedMotion !== undefined && isClient) {
       if (partial.reducedMotion) {
         document.documentElement.classList.add('reduce-motion');
       } else {
@@ -165,7 +170,9 @@ export class GlobalConfigManager {
     this.currentConfig = next;
 
     try {
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(next));
+      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(next));
+      }
     } catch (e) {
       console.warn('Failed to persist GlobalConfig to localStorage:', e);
     }
