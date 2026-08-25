@@ -15,7 +15,7 @@ interface OmniFreeToolsHubProps {
   userProfile?: UserProfile;
 }
 
-type ToolTab = 'nakshatra' | 'rising' | 'panchanga' | 'compatibility' | 'planets' | 'glossary';
+type ToolTab = 'nakshatra' | 'rising' | 'panchanga' | 'compatibility' | 'muhurta' | 'numerology' | 'planets' | 'glossary';
 
 export default function OmniFreeToolsHub({
   onStartOnboarding,
@@ -30,6 +30,10 @@ export default function OmniFreeToolsHub({
   const [calcDate, setCalcDate] = useState(userProfile?.dob || '1998-06-15');
   const [calcTime, setCalcTime] = useState(userProfile?.time || '12:00');
   const [calcCity, setCalcCity] = useState(userProfile?.location || 'London, UK');
+  const [userName, setUserName] = useState(userProfile?.name || 'Alexander');
+
+  // Muhurta Purpose
+  const [muhurtaPurpose, setMuhurtaPurpose] = useState<'business' | 'property' | 'signing' | 'travel' | 'ceremony'>('business');
 
   // Compatibility Form
   const [person1Sign, setPerson1Sign] = useState('Leo ♌');
@@ -37,6 +41,32 @@ export default function OmniFreeToolsHub({
 
   // Selected Planet for Explorer
   const [selectedPlanetName, setSelectedPlanetName] = useState('Jupiter');
+
+  // Numerology Life Path Calculation
+  const lifePathNumber = useMemo(() => {
+    const digits = calcDate.replace(/\D/g, '').split('').map(Number);
+    let sum = digits.reduce((a, b) => a + b, 0);
+    while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+      sum = sum.toString().split('').map(Number).reduce((a, b) => a + b, 0);
+    }
+    return sum;
+  }, [calcDate]);
+
+  const numerologyDetails: Record<number, { title: string; planet: string; traits: string; career: string }> = {
+    1: { title: "The Sovereign Pioneer", planet: "Sun ☉", traits: "Independent, trailblazing, autonomous drive", career: "Executive leadership, entrepreneurship, architecture" },
+    2: { title: "The Diplomatic Harmonizer", planet: "Moon ☽", traits: "Intuitive, peacemaking, sensitive partnership", career: "Counseling, diplomatic negotiation, psychology" },
+    3: { title: "The Creative Communicator", planet: "Jupiter ♃", traits: "Expressive, inspiring, visionary optimism", career: "Media, writing, performing arts, public speaking" },
+    4: { title: "The Master System Builder", planet: "Rahu ☊", traits: "Disciplined, pragmatic, structural endurance", career: "Engineering, financial management, institutional building" },
+    5: { title: "The Dynamic Visionary", planet: "Mercury ☿", traits: "Adaptable, adventurous, communicative agility", career: "Global trade, tech innovation, journalism, travel" },
+    6: { title: "The Nurturing Guardian", planet: "Venus ♀", traits: "Harmonious, protective, high aesthetic standard", career: "Design, healthcare, education, community leadership" },
+    7: { title: "The Deep Truth Seeker", planet: "Ketu ☋", traits: "Analytical, contemplative, spiritual researcher", career: "Data science, philosophy, investigation, esoteric research" },
+    8: { title: "The Executive Powerhouse", planet: "Saturn ♄", traits: "Authoritative, enduring, material manifestation", career: "Venture capital, corporate governance, large-scale enterprise" },
+    9: { title: "The Universal Philanthropist", planet: "Mars ♂", traits: "Compassionate, idealistic, transformative vision", career: "Humanitarian initiatives, law, creative direction" },
+    11: { title: "Master Intuitive Illuminator", planet: "Uranus / Moon", traits: "High psychic sensitivity, spiritual catalyst", career: "Transformative teaching, visionary philosophy" },
+    22: { title: "Master Architect of Reality", planet: "Pluto / Rahu", traits: "Massive scale practical manifestation", career: "Nation building, global engineering, mega projects" },
+    33: { title: "Master Avatar of Compassion", planet: "Neptune / Jupiter", traits: "Universal selfless service and devotion", career: "Spiritual mentorship, humanitarian legacy" },
+  };
+  const activeNumerology = numerologyDetails[lifePathNumber] || numerologyDetails[3];
 
   // Calculate planetary positions for the entered date/time
   const calculatedPositions = useMemo(() => {
@@ -131,7 +161,9 @@ export default function OmniFreeToolsHub({
           { id: 'nakshatra', label: 'Nakshatra Finder', icon: Moon },
           { id: 'rising', label: 'Rising Sign (Lagna)', icon: Compass },
           { id: 'panchanga', label: 'Live Panchanga', icon: Calendar },
-          { id: 'compatibility', label: 'Compatibility Checker', icon: Heart },
+          { id: 'compatibility', label: 'Compatibility', icon: Heart },
+          { id: 'muhurta', label: 'Auspicious Muhurta', icon: Clock },
+          { id: 'numerology', label: 'Life Path Numerology', icon: Sparkles },
           { id: 'planets', label: 'Planet Explorer', icon: Sun },
           { id: 'glossary', label: 'Astrology Glossary', icon: BookOpen },
         ].map((tab) => {
@@ -470,6 +502,179 @@ export default function OmniFreeToolsHub({
                 className="px-5 py-2.5 rounded-xl bg-pink-500 hover:bg-pink-400 text-white font-bold text-xs font-mono flex items-center justify-center gap-1.5 shadow-md transition-all cursor-pointer shrink-0"
               >
                 <span>Full Relationship Analysis</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Tool: Auspicious Muhurta Timing Finder */}
+        {activeTool === 'muhurta' && (
+          <div className="space-y-6">
+            <div className="border-b border-white/10 pb-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+                <Clock className="w-6 h-6 text-amber-400" />
+                Auspicious Muhurta & Electional Timing Finder
+              </h2>
+              <p className="text-xs text-slate-400 font-mono pt-0.5">
+                Calculate favorable astrological windows for commercial launches, real estate, signings, and ceremonies.
+              </p>
+            </div>
+
+            {/* Purpose Selector */}
+            <div className="space-y-2">
+              <label className="text-[11px] font-mono text-slate-400 uppercase font-bold block">Select Planned Undertaking</label>
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                {[
+                  { id: 'business', label: '💼 Business Launch' },
+                  { id: 'property', label: '🏠 Real Estate' },
+                  { id: 'signing', label: '✍️ Contract Signing' },
+                  { id: 'travel', label: '✈️ Long Travel' },
+                  { id: 'ceremony', label: '💍 Sacred Union' },
+                ].map(p => (
+                  <button
+                    key={p.id}
+                    onClick={() => setMuhurtaPurpose(p.id as any)}
+                    className={`px-3 py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
+                      muhurtaPurpose === p.id
+                        ? 'bg-amber-400 text-slate-950 shadow-md'
+                        : 'bg-[#0F172A] text-slate-300 hover:text-white border border-white/10'
+                    }`}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Muhurta Output */}
+            <div className="p-5 rounded-2xl bg-[#0F172A] border border-amber-500/30 space-y-4">
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <span className="text-xs font-mono text-amber-400 font-bold uppercase">FAVORABLE ELECTIONAL WINDOW</span>
+                <span className="text-xs font-mono text-emerald-400 font-bold">Auspicious Shukla Paksha</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-0.5">
+                  <span className="text-[10px] text-slate-400 uppercase">Recommended Tithis</span>
+                  <div className="font-bold text-white">3rd, 5th, 10th, 13th</div>
+                  <span className="text-[10px] text-emerald-400">Jaya & Siddha Tithis</span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-0.5">
+                  <span className="text-[10px] text-slate-400 uppercase">Optimal Nakshatras</span>
+                  <div className="font-bold text-cyan-400">Pushya, Rohini, Uttara</div>
+                  <span className="text-[10px] text-slate-400">Dhruva (Fixed) Energies</span>
+                </div>
+                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-0.5">
+                  <span className="text-[10px] text-slate-400 uppercase">Best Planetary Horas</span>
+                  <div className="font-bold text-amber-400">Jupiter / Mercury / Sun</div>
+                  <span className="text-[10px] text-slate-400">Avoid Saturn / Rahu Horas</span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#080E1A] border border-white/10 text-xs text-slate-300">
+                <strong className="text-white">Classical Rule: </strong>
+                {muhurtaPurpose === 'business' && "Initiating trade under Mercury/Jupiter Hora during Pushya or Chitra Nakshatra aligns intellectual agility with material prosperity."}
+                {muhurtaPurpose === 'property' && "Acquisition under Rohini or Uttara Phalguni with Mars in an Upachaya house (3, 6, 11) solidifies real estate title."}
+                {muhurtaPurpose === 'signing' && "Agreements executed during Shukla Trayodashi (13th Tithi) with Jupiter aspecting Mercury ensure transparent execution."}
+                {muhurtaPurpose === 'travel' && "Commencing journeys under Ashwini, Mrigashira, or Revati with Moon unafflicted by Rahu ensures smooth transit."}
+                {muhurtaPurpose === 'ceremony' && "Auspicious unions during Rohini, Magha, or Anuradha during Jupiter's transit confer longevity and harmony."}
+              </div>
+            </div>
+
+            {/* Soft Conversion */}
+            <div className="p-5 rounded-2xl bg-[#0F172A] border border-white/15 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="space-y-0.5">
+                <h4 className="text-sm font-bold text-white">Need an exact hour-by-hour Muhurta timeline?</h4>
+                <p className="text-xs text-slate-400">Calculate custom electional charts with planetary dignity overlays.</p>
+              </div>
+              <button
+                onClick={() => onNavigate('muhurta')}
+                className="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs font-mono flex items-center justify-center gap-1.5 shadow-md transition-all cursor-pointer shrink-0"
+              >
+                <span>Full Muhurta Engine</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Tool: Life Path & Destiny Numerology */}
+        {activeTool === 'numerology' && (
+          <div className="space-y-6">
+            <div className="border-b border-white/10 pb-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+                <Sparkles className="w-6 h-6 text-purple-400" />
+                Life Path & Master Number Numerology Calculator
+              </h2>
+              <p className="text-xs text-slate-400 font-mono pt-0.5">
+                Calculate your vibrational life path, ruling planetary archetype, and innate talents from your birth date.
+              </p>
+            </div>
+
+            {/* Form */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="text-[11px] font-mono text-slate-400 uppercase font-bold block pb-1">Full Name</label>
+                <input
+                  type="text"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                  className="w-full bg-[#0F172A] border border-white/15 rounded-xl px-3.5 py-2.5 text-white text-xs font-mono focus:border-purple-400 outline-none"
+                />
+              </div>
+              <div>
+                <label className="text-[11px] font-mono text-slate-400 uppercase font-bold block pb-1">Birth Date</label>
+                <input
+                  type="date"
+                  value={calcDate}
+                  onChange={(e) => setCalcDate(e.target.value)}
+                  className="w-full bg-[#0F172A] border border-white/15 rounded-xl px-3.5 py-2.5 text-white text-xs font-mono focus:border-purple-400 outline-none"
+                />
+              </div>
+            </div>
+
+            {/* Numerology Result */}
+            <div className="p-6 rounded-2xl bg-[#0F172A] border border-purple-500/30 space-y-4">
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <span className="text-xs font-mono text-purple-400 font-bold uppercase">CALCULATED VIBRATIONAL FREQUENCY</span>
+                <span className="text-xs font-mono text-slate-400">Sum reduction: {calcDate}</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-0.5">
+                  <span className="text-[10px] font-mono text-slate-400 uppercase">Life Path Number</span>
+                  <div className="text-3xl font-black text-purple-400 font-mono">{lifePathNumber}</div>
+                  <span className="text-xs text-white font-bold">{activeNumerology.title}</span>
+                </div>
+                <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-0.5">
+                  <span className="text-[10px] font-mono text-slate-400 uppercase">Ruling Celestial Force</span>
+                  <div className="text-lg font-bold text-white">{activeNumerology.planet}</div>
+                  <span className="text-xs text-slate-400 font-mono">Governing Archetype</span>
+                </div>
+                <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-0.5">
+                  <span className="text-[10px] font-mono text-slate-400 uppercase">Core Vocation Alignment</span>
+                  <div className="text-xs font-bold text-emerald-400 leading-snug pt-1">{activeNumerology.career}</div>
+                </div>
+              </div>
+
+              <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                <strong className="text-white">Vibrational Signature: </strong>
+                Life Path <strong>{lifePathNumber}</strong> embodies <em>{activeNumerology.traits}</em>. Grounded in the cosmic rhythm of <strong>{activeNumerology.planet}</strong>, you excel when transforming abstract insights into durable value.
+              </p>
+            </div>
+
+            {/* Soft Conversion */}
+            <div className="p-5 rounded-2xl bg-[#0F172A] border border-white/15 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="space-y-0.5">
+                <h4 className="text-sm font-bold text-white">Explore your Chaldean & Pythagorean name matrix?</h4>
+                <p className="text-xs text-slate-400">Calculate expression, soul urge, and personality numbers.</p>
+              </div>
+              <button
+                onClick={() => onNavigate('numerology')}
+                className="px-5 py-2.5 rounded-xl bg-purple-500 hover:bg-purple-400 text-white font-bold text-xs font-mono flex items-center justify-center gap-1.5 shadow-md transition-all cursor-pointer shrink-0"
+              >
+                <span>Complete Numerology Suite</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
