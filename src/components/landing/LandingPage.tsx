@@ -57,14 +57,14 @@ export default function LandingPage({
           
           {/* Left Column: Headline, Copy & CTAs */}
           <div className="lg:col-span-7 text-center lg:text-left space-y-6">
-            {/* Eyebrow */}
+            {/* Limited-Time Launch Offer Eyebrow */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 font-mono text-xs font-bold tracking-wider uppercase"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-400/20 via-emerald-400/20 to-indigo-400/20 border border-amber-400/40 text-amber-300 font-mono text-xs font-bold tracking-wider uppercase shadow-md shadow-amber-400/10"
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              GLOBAL ASTROLOGY INTELLIGENCE
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>Limited-Time Launch: All Pro Features 100% Free</span>
             </motion.div>
 
             {/* Headline (Enterprise PRD Section 7) */}
@@ -87,7 +87,7 @@ export default function LandingPage({
               transition={{ delay: 0.2 }}
               className="text-sm sm:text-base lg:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-sans"
             >
-              Explore your chart, cycles, relationships, and important periods through multiple astrological traditions—brought together in one modern experience.
+              Explore your chart, cycles, relationships, and important periods through multiple astrological traditions. For a limited time, get full access to all deep timing & analysis tools at zero cost.
             </motion.p>
 
             {/* CTAs (Free Attraction PRD Section 2) */}
@@ -101,7 +101,8 @@ export default function LandingPage({
                 onClick={handleCreateChart}
                 className="px-6 py-3.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm flex items-center gap-2 shadow-xl shadow-amber-400/25 transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
-                <span>Create My Free Chart</span>
+                <Sparkles className="w-4 h-4" />
+                <span>Claim Free Pro Access</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
               <button
@@ -119,11 +120,11 @@ export default function LandingPage({
               transition={{ delay: 0.4 }}
               className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-1 text-[11px] sm:text-xs text-slate-400 font-mono pt-1"
             >
-              <span className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Free to explore</span>
+              <span className="flex items-center gap-1.5 text-emerald-400 font-bold"><ShieldCheck className="w-3.5 h-3.5" /> 100% Free Launch Tier</span>
               <span>•</span>
-              <span>No credit card required</span>
+              <span>No credit card needed</span>
               <span>•</span>
-              <span>Deterministic calculations</span>
+              <span>Instant full chart unlocking</span>
             </motion.div>
           </div>
 
@@ -194,16 +195,66 @@ export default function LandingPage({
 
       {/* 2.5 Start Free — See the Difference (Free PRD Section 12 & 44) */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14 text-left space-y-8 border-y border-white/5 bg-[#050811]">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        
+        {/* Unlocked Free Pro Capabilities Highlight */}
+        <div className="p-6 sm:p-7 rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#111C35] to-[#0F172A] border border-amber-500/30 shadow-xl space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-amber-400/20 text-amber-300">
+                <Sparkles className="w-4 h-4" />
+              </span>
+              <div>
+                <h3 className="text-sm sm:text-base font-bold text-white">Full ASTRO360 Pro Intelligence Unlocked Free</h3>
+                <span className="text-[11px] font-mono text-emerald-400 font-bold">Early Launch Access • $0 Forever for Early Users</span>
+              </div>
+            </div>
+            <button
+              onClick={handleCreateChart}
+              className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold font-mono text-xs flex items-center gap-1.5 shadow-md self-start sm:self-auto cursor-pointer"
+            >
+              <span>Unlock My Free Chart</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-xs font-mono">
+            <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+              <span className="text-emerald-400 font-bold flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Full 120y Dasha</span>
+              <p className="text-[10px] text-slate-400 leading-tight">Vimshottari Mahadasha, Antar & Pratyantar timing</p>
+            </div>
+            <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+              <span className="text-emerald-400 font-bold flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> 4 Forecast Horizons</span>
+              <p className="text-[10px] text-slate-400 leading-tight">7 Days, 30 Days, 12 Months & 5-Year timeline</p>
+            </div>
+            <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+              <span className="text-emerald-400 font-bold flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> 36-Point Synastry</span>
+              <p className="text-[10px] text-slate-400 leading-tight">Ashta Koota compatibility & communication chemistry</p>
+            </div>
+            <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+              <span className="text-emerald-400 font-bold flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Classical Citations</span>
+              <p className="text-[10px] text-slate-400 leading-tight">BPHS, Tetrabiblos & KP Sub-Lord evidence provenance</p>
+            </div>
+            <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+              <span className="text-emerald-400 font-bold flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Executive Dossier</span>
+              <p className="text-[10px] text-slate-400 leading-tight">Comprehensive high-res PDF summary export</p>
+            </div>
+            <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+              <span className="text-emerald-400 font-bold flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Ask ASTRO360</span>
+              <p className="text-[10px] text-slate-400 leading-tight">Natural-language answers backed by real planetary math</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-2">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-mono text-xs font-bold uppercase">
-              <Sparkles className="w-3.5 h-3.5" /> Free Attraction Layer
+              <Sparkles className="w-3.5 h-3.5" /> Instant Free Tools
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
               Start free. See the difference.
             </h2>
             <p className="text-xs sm:text-sm text-slate-400 font-sans max-w-xl">
-              No subscription needed to discover your birth chart, lunar Nakshatra, daily Panchanga, and compatibility.
+              No subscription needed to discover your birth chart, lunar Nakshatra, daily Panchanga, Muhurta, and compatibility.
             </p>
           </div>
           <button

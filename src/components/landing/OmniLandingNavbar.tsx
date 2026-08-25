@@ -28,14 +28,16 @@ export default function OmniLandingNavbar({
   return (
     <>
       {/* 1. Small Top Announcement Bar */}
-      <div className="w-full bg-[#080E1A] border-b border-white/5 py-1.5 px-4 text-center text-xs font-mono text-slate-400 flex items-center justify-center gap-2">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-        <span>Intelligence for the way you explore astrology</span>
+      <div className="w-full bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-indigo-500/10 border-b border-white/10 py-2 px-4 text-center text-xs font-mono text-slate-300 flex flex-wrap items-center justify-center gap-2">
+        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-[10px] font-bold uppercase tracking-wider border border-amber-400/30">
+          👑 Limited-Time Launch Pass
+        </span>
+        <span>Full Pro Intelligence & Deep Predictions are <strong>100% Free</strong> right now (No credit card needed).</span>
         <button
-          onClick={() => onNavigateSection('systems-section')}
-          className="text-slate-200 hover:text-white font-bold underline underline-offset-2 ml-1 cursor-pointer"
+          onClick={onCreateChart}
+          className="text-amber-400 hover:text-amber-300 font-bold underline underline-offset-2 ml-1 cursor-pointer"
         >
-          Explore Systems →
+          Claim Free Pro Chart →
         </button>
       </div>
 
@@ -111,9 +113,10 @@ export default function OmniLandingNavbar({
             )}
             <button
               onClick={onCreateChart}
-              className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs font-mono flex items-center gap-1.5 shadow-md transition-all cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs font-mono flex items-center gap-1.5 shadow-md shadow-amber-400/20 transition-all cursor-pointer hover:scale-[1.02]"
             >
-              <span>Create My Free Chart</span>
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Get Free Pro Chart</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>

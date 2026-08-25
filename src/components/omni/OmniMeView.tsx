@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { 
   User, Calendar, Clock, MapPin, ShieldCheck, FileText, 
@@ -75,6 +75,20 @@ export default function OmniMeView({
             <span className="text-[10px] text-slate-500 block">Location</span>
             <span className="font-bold text-white truncate block">{userProfile.location || 'London, UK'}</span>
           </div>
+        </div>
+
+        {/* Pro Membership Status */}
+        <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-indigo-500/10 border border-amber-400/30 flex items-center justify-between text-xs font-mono">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-amber-400" />
+            <div>
+              <span className="text-white font-bold block">ASTRO360 Pro — Lifetime Launch Access</span>
+              <span className="text-[10.5px] text-emerald-400">All 152+ engines & deep intelligence features unlocked free</span>
+            </div>
+          </div>
+          <span className="text-[10px] font-bold text-slate-950 bg-amber-400 px-2.5 py-1 rounded-lg uppercase">
+            Active ($0.00)
+          </span>
         </div>
       </div>
 

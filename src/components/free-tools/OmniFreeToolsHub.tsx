@@ -143,16 +143,30 @@ export default function OmniFreeToolsHub({
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16 text-left space-y-10">
       {/* 1. Hero */}
       <div className="space-y-3 text-center max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 font-mono text-xs font-bold uppercase tracking-wider">
-          <Sparkles className="w-3.5 h-3.5" />
-          100% Free · No Subscription Required
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-400/20 via-emerald-400/20 to-indigo-400/20 border border-amber-400/40 text-amber-300 font-mono text-xs font-bold uppercase tracking-wider shadow-md">
+          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          👑 Limited-Time Launch: All Pro Features 100% Free
         </div>
         <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
           Free Astrology Tools & Calculators
         </h1>
         <p className="text-sm sm:text-base text-slate-300 font-sans max-w-xl mx-auto leading-relaxed">
-          Explore your birth chart, lunar Nakshatra, rising sign, daily Panchanga, and compatibility instantly. No registration or credit card required.
+          Explore your birth chart, lunar Nakshatra, rising sign, daily Panchanga, Muhurta, and compatibility instantly. No registration or credit card required.
         </p>
+
+        {/* Free Pro Access Banner */}
+        <div className="p-4 rounded-2xl bg-[#0F172A] border border-amber-400/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-slate-300">
+          <span className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span><strong>Early Access Pass Active:</strong> Full 120-year Dasha hierarchy, 4-horizon predictive timelines, and Ashta Koota synastry are currently unlocked free.</span>
+          </span>
+          <button
+            onClick={() => onStartOnboarding({ dob: calcDate, time: calcTime, location: calcCity, name: userName })}
+            className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold shrink-0 shadow-md cursor-pointer transition-all"
+          >
+            Create My Full Pro Chart →
+          </button>
+        </div>
       </div>
 
       {/* 2. Tool Navigation Switcher */}
