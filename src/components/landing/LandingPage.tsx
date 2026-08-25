@@ -12,6 +12,7 @@ import OmniProductPreview from './OmniProductPreview';
 import AstroCelestialAnimation from './AstroCelestialAnimation';
 import OmniWhyShowcase from './OmniWhyShowcase';
 import OmniFAQSection from './OmniFAQSection';
+import OmniAudioBriefing from '../omni/OmniAudioBriefing';
 
 interface LandingPageProps {
   onStartOnboarding: (presetData?: Partial<UserProfile>) => void;
@@ -298,6 +299,11 @@ export default function LandingPage({
         userDob={userProfile?.dob}
         userTime={userProfile?.time}
       />
+
+      {/* 3.7 Interactive Live Audio Briefing Demo on Landing */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+        <OmniAudioBriefing userProfile={userProfile || { name: 'Visitor', birthDate: '1998-06-15' }} />
+      </section>
 
       {/* 4. Signature Brand Block (PRD Section 48 & 49) */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 text-center space-y-6">
