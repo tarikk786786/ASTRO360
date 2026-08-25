@@ -919,6 +919,22 @@ export default function LandingPage({
           </div>
         </div>
       </footer>
+
+      {/* 14. Mobile Floating Quick Action Dock (Sticky Bottom on small screens) */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#060A12]/95 backdrop-blur-xl border-t border-amber-400/30 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] flex items-center justify-between gap-2 shadow-2xl">
+        <div className="text-left">
+          <span className="text-[10px] font-mono text-amber-400 font-bold block leading-none">LIMITED LAUNCH</span>
+          <span className="text-xs font-bold text-white leading-tight block">100% Free Pro Chart</span>
+        </div>
+        <button
+          onClick={handleCreateChart}
+          className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 active:scale-95 text-slate-950 font-black text-xs font-mono flex items-center gap-1.5 shadow-lg shadow-amber-400/25 shrink-0"
+        >
+          <Sparkles className="w-3.5 h-3.5 fill-slate-950" />
+          <span>Get Free Chart</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </button>
+      </div>
     </div>
   );
 }

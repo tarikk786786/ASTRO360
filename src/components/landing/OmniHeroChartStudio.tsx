@@ -88,48 +88,48 @@ export default function OmniHeroChartStudio({ onCalculate, userProfile }: OmniHe
 
           <div className="space-y-2">
             <div className="relative">
-              <User className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-500" />
+              <User className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Your Name (e.g. Alexander)"
-                className="w-full bg-[#060A12] border border-white/15 rounded-xl pl-9 pr-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400 font-sans"
+                className="w-full bg-[#060A12] border border-white/15 rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs text-white focus:outline-none focus:border-amber-400 font-sans min-h-[42px]"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-2">
               <div className="relative">
-                <Calendar className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-500" />
+                <Calendar className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
                 <input
                   type="date"
                   value={dob}
                   onChange={(e) => setDob(e.target.value)}
-                  className="w-full bg-[#060A12] border border-white/15 rounded-xl pl-9 pr-2 py-2 text-xs text-white focus:outline-none focus:border-amber-400 font-mono"
+                  className="w-full bg-[#060A12] border border-white/15 rounded-xl pl-9 pr-2 py-2.5 sm:py-2 text-sm sm:text-xs text-white focus:outline-none focus:border-amber-400 font-mono min-h-[42px]"
                   required
                 />
               </div>
 
               <div className="relative">
-                <Clock className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-500" />
+                <Clock className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
                 <input
                   type="time"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
-                  className="w-full bg-[#060A12] border border-white/15 rounded-xl pl-9 pr-2 py-2 text-xs text-white focus:outline-none focus:border-amber-400 font-mono"
+                  className="w-full bg-[#060A12] border border-white/15 rounded-xl pl-9 pr-2 py-2.5 sm:py-2 text-sm sm:text-xs text-white focus:outline-none focus:border-amber-400 font-mono min-h-[42px]"
                   required
                 />
               </div>
             </div>
 
             <div className="relative">
-              <MapPin className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-500" />
+              <MapPin className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                placeholder="Birth City (e.g. London, UK or New York)"
-                className="w-full bg-[#060A12] border border-white/15 rounded-xl pl-9 pr-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400 font-sans"
+                placeholder="Birth City (e.g. London, UK)"
+                className="w-full bg-[#060A12] border border-white/15 rounded-xl pl-9 pr-3 py-2.5 sm:py-2 text-sm sm:text-xs text-white focus:outline-none focus:border-amber-400 font-sans min-h-[42px]"
                 required
               />
             </div>
@@ -137,7 +137,7 @@ export default function OmniHeroChartStudio({ onCalculate, userProfile }: OmniHe
 
           <button
             type="submit"
-            className="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-xs font-mono flex items-center justify-center gap-2 shadow-xl shadow-amber-500/20 active:scale-95 transition-all cursor-pointer"
+            className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-xs sm:text-sm font-mono flex items-center justify-center gap-2 shadow-xl shadow-amber-500/20 active:scale-95 transition-all cursor-pointer min-h-[48px]"
           >
             <Sparkles className="w-4 h-4 fill-slate-950" />
             <span>Calculate Full Natal Chart (100% Free)</span>
