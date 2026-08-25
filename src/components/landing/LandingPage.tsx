@@ -9,6 +9,7 @@ import {
 import { UserProfile } from '../../types';
 import OmniLandingNavbar from './OmniLandingNavbar';
 import OmniProductPreview from './OmniProductPreview';
+import AstroCelestialAnimation from './AstroCelestialAnimation';
 import OmniWhyShowcase from './OmniWhyShowcase';
 import OmniFAQSection from './OmniFAQSection';
 
@@ -239,6 +240,13 @@ export default function LandingPage({
 
       {/* 3. Product Preview Section (4 Interactive Tabs) */}
       <OmniProductPreview onExplore={handleCreateChart} />
+
+      {/* 3.5 ASTRO360 Celestial Engine (Real Data-Driven Astronomical Precision Instrument) */}
+      <AstroCelestialAnimation 
+        onExploreChart={handleCreateChart}
+        userDob={userProfile?.dob}
+        userTime={userProfile?.time}
+      />
 
       {/* 4. Signature Brand Block (PRD Section 48 & 49) */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 text-center space-y-6">
