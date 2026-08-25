@@ -369,14 +369,14 @@ export default function AppContent() {
       {/* ✨ High-Resolution Animated Cosmic Background (React Three Fiber) */}
       <UniverseCanvas />
 
-      {/* Mobile Sidebar Overlay */}
+      {/* Sidebar Overlay for Mobile & Desktop Drawer */}
       <AnimatePresence>
-        {isSidebarOpen && isMobile && (
+        {isSidebarOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 backdrop-blur-md z-40 md:hidden"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40"
             onClick={() => setIsSidebarOpen(false)}
           />
         )}
@@ -384,21 +384,21 @@ export default function AppContent() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 md:static h-full w-64 bg-[#090d16]/98 md:bg-[#090d16]/60 backdrop-blur-3xl border-r border-white/[0.04] flex flex-col z-50 transition-transform duration-300 ease-out md:translate-x-0 shrink-0 ${
-          isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'
-        } ${!isSidebarOpen ? 'max-md:pointer-events-none max-md:hidden md:flex' : 'flex'}`}
+        className={`fixed inset-y-0 left-0 ${!['home', 'forecast', 'ask', 'charts', 'me', 'free-tools'].includes(activeTab) ? 'md:static' : 'md:fixed'} h-full w-64 bg-[#090d16]/98 md:bg-[#090d16]/90 backdrop-blur-3xl border-r border-white/[0.04] flex flex-col z-50 transition-transform duration-300 ease-out shrink-0 ${
+          isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full ' + (!['home', 'forecast', 'ask', 'charts', 'me', 'free-tools'].includes(activeTab) ? 'md:translate-x-0' : '')
+        } ${!isSidebarOpen && ['home', 'forecast', 'ask', 'charts', 'me', 'free-tools'].includes(activeTab) ? 'pointer-events-none hidden' : 'flex'}`}
       >
         {/* Logo area */}
         <div className="h-14 flex items-center justify-between px-5 border-b border-white/[0.04] flex-shrink-0">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigateTo('dashboard')}>
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-cosmic-500/20 to-nebula-500/20 border border-cosmic-500/30 flex items-center justify-center">
-              <Compass className="w-4 h-4 text-cosmic-400" />
+          <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigateTo('home')}>
+            <div className="w-7 h-7 rounded-xl bg-slate-900 border border-white/15 flex items-center justify-center shadow-inner">
+              <div className="w-3.5 h-3.5 rounded-full border border-amber-400/80" />
             </div>
-            <span className="font-bold text-sm tracking-wide text-slate-200">
-              COSMOS <span className="text-cosmic-400 font-light">OMNI</span>
+            <span className="font-bold text-sm tracking-wide text-white">
+              ASTRO360 <span className="text-amber-400 font-light">OMNI</span>
             </span>
           </div>
-          <button className="md:hidden p-1 text-slate-500 hover:text-white" onClick={() => setIsSidebarOpen(false)}>
+          <button className="p-1 text-slate-500 hover:text-white cursor-pointer" onClick={() => setIsSidebarOpen(false)}>
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -634,22 +634,21 @@ export default function AppContent() {
               </button>
             )}
 
-            {/* Brand / Home Link */}
-            <button
+            {/* ASTRO360 Brand Orb / Home Link */}
+            <div
               onClick={() => navigateTo('home')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-all text-xs font-bold shrink-0 cursor-pointer shadow-sm active:scale-95 ${
-                activeTab === 'home'
-                  ? 'bg-amber-400 text-slate-950 border-amber-400'
-                  : 'bg-amber-400/10 hover:bg-amber-400 text-amber-400 hover:text-slate-950 border-amber-400/30 hover:border-amber-400'
-              }`}
-              title="Home"
+              className="flex items-center gap-2 cursor-pointer shrink-0 group mr-1"
             >
-              <Home className="w-3.5 h-3.5" />
-              <span>Home</span>
-            </button>
+              <div className="w-7 h-7 rounded-xl bg-slate-900 border border-white/15 flex items-center justify-center group-hover:border-amber-400/50 transition-colors shadow-inner">
+                <div className="w-3.5 h-3.5 rounded-full border border-amber-400/80" />
+              </div>
+              <span className="font-black text-xs tracking-tight text-white font-sans hidden sm:inline">
+                ASTRO360
+              </span>
+            </div>
 
             {/* Primary Desktop Nav Tabs (Ultra-Simple PRD: 4 destinations) */}
-            <div className="hidden lg:flex items-center gap-1 bg-[#0F172A] p-1 rounded-2xl border border-white/10 mx-2">
+            <div className="hidden lg:flex items-center gap-1 bg-[#0F172A] p-1 rounded-2xl border border-white/10 mx-1">
               {[
                 { id: 'home', label: 'Home', icon: Home },
                 { id: 'forecast', label: 'Forecast', icon: Calendar },
@@ -675,6 +674,16 @@ export default function AppContent() {
                 );
               })}
             </div>
+
+            {/* 152+ Tools Studio Drawer Button */}
+            <button
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-mono font-bold transition-all cursor-pointer ml-1"
+              title="Open 152+ Tools Studio Sidebar"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5 text-amber-400" />
+              <span>152+ Tools</span>
+            </button>
 
             <div className="flex items-center gap-2 min-w-0">
               <h1 className="text-xs sm:text-sm font-semibold text-slate-200 tracking-tight truncate max-w-[130px] sm:max-w-xs md:max-w-md">
