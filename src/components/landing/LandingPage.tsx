@@ -15,6 +15,7 @@ import OmniFAQSection from './OmniFAQSection';
 import OmniAudioBriefing from '../omni/OmniAudioBriefing';
 import OmniLiveSkyRadar from '../omni/OmniLiveSkyRadar';
 import OmniLiveZodiacRadar from './OmniLiveZodiacRadar';
+import OmniHeroChartStudio from './OmniHeroChartStudio';
 
 interface LandingPageProps {
   onStartOnboarding: (presetData?: Partial<UserProfile>) => void;
@@ -131,66 +132,12 @@ export default function LandingPage({
             </motion.div>
           </div>
 
-          {/* Right Column: Realistic ASTRO360 Product Preview (PRD Section 4) */}
+          {/* Right Column: Interactive Instant Hero Chart Calculator & Studio */}
           <div className="lg:col-span-5">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.7 }}
-              className="p-5 sm:p-7 rounded-3xl bg-[#0B1220] border border-white/15 shadow-2xl text-left space-y-4 relative overflow-hidden"
-            >
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold">
-                  ASTRO360 TODAY
-                </span>
-                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  Live Synthesis
-                </span>
-              </div>
-
-              <div className="space-y-1">
-                <span className="text-xs font-mono text-slate-400">Today's strongest theme</span>
-                <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-amber-400" /> Personal Growth
-                </h3>
-                <p className="text-xs text-slate-300 leading-snug">Mental drive and strategic clarity are elevated today.</p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2.5 text-xs font-mono pt-1">
-                <div className="p-3 rounded-2xl bg-white/5 border border-pink-500/25 space-y-0.5">
-                  <div className="text-pink-400 font-bold flex items-center gap-1">
-                    <Heart className="w-3.5 h-3.5" /> Love
-                  </div>
-                  <span className="text-white font-bold text-xs">Strong</span>
-                </div>
-                <div className="p-3 rounded-2xl bg-white/5 border border-cyan-500/25 space-y-0.5">
-                  <div className="text-cyan-400 font-bold flex items-center gap-1">
-                    <Briefcase className="w-3.5 h-3.5" /> Career
-                  </div>
-                  <span className="text-white font-bold text-xs">Elevated</span>
-                </div>
-                <div className="p-3 rounded-2xl bg-white/5 border border-emerald-500/25 space-y-0.5">
-                  <div className="text-emerald-400 font-bold flex items-center gap-1">
-                    <DollarSign className="w-3.5 h-3.5" /> Money
-                  </div>
-                  <span className="text-white font-bold text-xs">Balanced</span>
-                </div>
-                <div className="p-3 rounded-2xl bg-white/5 border border-purple-500/25 space-y-0.5">
-                  <div className="text-purple-400 font-bold flex items-center gap-1">
-                    <Compass className="w-3.5 h-3.5" /> Travel
-                  </div>
-                  <span className="text-white font-bold text-xs">Active</span>
-                </div>
-              </div>
-
-              <div className="p-3 rounded-2xl bg-[#080E1A] border border-amber-500/30 space-y-1 text-xs font-mono">
-                <div className="flex justify-between items-center text-slate-300">
-                  <span className="font-bold text-white">Next: 💼 Career</span>
-                  <span className="text-amber-400">Sep 12 – Oct 28</span>
-                </div>
-                <p className="text-[11px] text-slate-400">3 systems support this window.</p>
-              </div>
-            </motion.div>
+            <OmniHeroChartStudio
+              onCalculate={(data) => onStartOnboarding(data)}
+              userProfile={userProfile}
+            />
           </div>
 
         </div>
