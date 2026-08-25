@@ -1,4 +1,21 @@
 ﻿User-agent: *
 Allow: /
+Allow: /birth-chart
+Allow: /vedic-astrology
+Allow: /western-astrology
+Allow: /compatibility
+Allow: /panchanga
+Allow: /methodology
+Allow: /dasha
+Allow: /transits
+Allow: /astrocartography
+Allow: /muhurta
+Allow: /learn/
+
+# Block administrative, private, and internal API routes
+Disallow: /admin
+Disallow: /account
+Disallow: /api
+Disallow: /app/private
 
 Sitemap: https://astro.tarikislam.in/sitemap.xml

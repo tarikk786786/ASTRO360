@@ -80,6 +80,8 @@ import OmniAskAssistant from './components/omni/OmniAskAssistant';
 import OmniChartsView from './components/omni/OmniChartsView';
 import OmniMoreHub from './components/omni/OmniMoreHub';
 import OmniOnboardingWizard from './components/omni/OmniOnboardingWizard';
+import SEOTopicHub from './components/seo/SEOTopicHub';
+import { updatePageSEO } from './lib/seoManager';
 
 const STORAGE_KEY = 'astroverse_profile';
 const TAB_KEY = 'astroverse_tab';
@@ -187,9 +189,10 @@ export default function AppContent() {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  // Persist active tab
+  // Persist active tab and dynamically synchronize SEO Head tags & JSON-LD
   useEffect(() => {
     localStorage.setItem(TAB_KEY, activeTab);
+    updatePageSEO(activeTab);
   }, [activeTab]);
 
   // Navigate with full history tracking & browser URL sync
@@ -816,6 +819,14 @@ export default function AppContent() {
                   {activeTab === 'panchang-deities' && <PanchangDeitiesEngine />}
                   {activeTab === 'cosmic-compass' && <CosmicCompassVisualizer userProfile={userProfile} />}
                   {(activeTab === 'astrocartography' || activeTab === 'astro-cartography') && <AstroCartographyMatrix userProfile={userProfile} />}
+                  {(activeTab === 'vedic-astrology' || activeTab === 'western-astrology' || activeTab === 'panchanga' || activeTab === 'methodology') && (
+                    <SEOTopicHub
+                      hubId={activeTab as any}
+                      onStartChart={() => setShowOnboarding(true)}
+                      onNavigate={navigateTo}
+                      userProfile={userProfile}
+                    />
+                  )}
                   {activeTab === 'transit-calendar' && <CosmicTransitCalendar />}
                   {activeTab === 'synastry-overlay' && <SynastryOverlayChart userProfile={userProfile} />}
                   {activeTab === 'mind-map' && <AstrologicalMindMap />}
