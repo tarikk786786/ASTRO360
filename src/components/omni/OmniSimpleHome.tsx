@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import type { UserProfile } from '../../types';
 import OmniWhyDrawer, { type OmniWhyDrawerProps } from './OmniWhyDrawer';
+import OmniAudioBriefing from './OmniAudioBriefing';
+import OmniTransitAlertCenter from './OmniTransitAlertCenter';
 
 interface OmniSimpleHomeProps {
   userProfile: UserProfile;
@@ -133,6 +135,9 @@ export default function OmniSimpleHome({
           </div>
         </div>
       </motion.div>
+
+      {/* 2.5. Daily Audio Briefing Player */}
+      <OmniAudioBriefing userProfile={userProfile} />
 
       {/* 3. 4-Grid Key Area Themes */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -304,6 +309,9 @@ export default function OmniSimpleHome({
           </ul>
         </div>
       </div>
+
+      {/* 5.5. Live Planetary Transit Alert Stream */}
+      <OmniTransitAlertCenter userProfile={userProfile} />
 
       {/* 6. Ask ASTRO360 Quick Input */}
       <div 

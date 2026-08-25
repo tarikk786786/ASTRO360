@@ -84,6 +84,7 @@ import OmniOnboardingWizard from './components/omni/OmniOnboardingWizard';
 import OmniFreeToolsHub from './components/free-tools/OmniFreeToolsHub';
 import SEOTopicHub from './components/seo/SEOTopicHub';
 import OmniModernNav from './components/navigation/OmniModernNav';
+import OmniCompatibilityLab from './components/omni/OmniCompatibilityLab';
 import { updatePageSEO } from './lib/seoManager';
 import { warmCosmicProfileCache, prefetchRouteData } from './lib/prefetchEngine';
 
@@ -787,7 +788,7 @@ export default function AppContent() {
                   {activeTab === 'control-center' && <AstrologyControlCenter />}
                   {activeTab === 'studio' && <CosmicStudioSuite userProfile={userProfile} />}
                   {activeTab === 'horoscope' && <PremiumHoroscopeEngine userProfile={userProfile} />}
-                  {(activeTab === 'compatibility' || activeTab === 'ashta-koota') && <AstroSynastryMatchmaker userProfile={userProfile} />}
+                  {(activeTab === 'compatibility' || activeTab === 'ashta-koota') && <OmniCompatibilityLab userProfile={userProfile} />}
                   {activeTab === 'islamic-suite' && <UnifiedIslamicSuite userProfile={userProfile} />}
                   {activeTab === 'remedy' && <AstroMultiTraditionRemedySuite />}
                   {(activeTab === 'kundli' || activeTab === 'nakshatra') && <BirthChartGenerator userProfile={userProfile} />}
