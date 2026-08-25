@@ -139,11 +139,26 @@ export default function AppContent() {
   
   const [activeTab, setActiveTab] = useState<string>(() => {
     try {
-      return localStorage.getItem(TAB_KEY) || 'dashboard';
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tabParam = urlParams.get('tab');
+        if (tabParam) return tabParam;
+      }
+      return localStorage.getItem(TAB_KEY) || 'home';
     } catch {
-      return 'dashboard';
+      return 'home';
     }
   });
+
+  const [navigationHistory, setNavigationHistory] = useState<string[]>(() => {
+    try {
+      const initial = localStorage.getItem(TAB_KEY) || 'home';
+      return [initial];
+    } catch {
+      return ['home'];
+    }
+  });
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
@@ -177,11 +192,65 @@ export default function AppContent() {
     localStorage.setItem(TAB_KEY, activeTab);
   }, [activeTab]);
 
-  // Close sidebar on mobile when navigating
-  const navigateTo = useCallback((tab: string) => {
+  // Navigate with full history tracking & browser URL sync
+  const navigateTo = useCallback((tab: string, replace = false) => {
     setActiveTab(tab);
     if (isMobile) setIsSidebarOpen(false);
+    setNavigationHistory(prev => {
+      if (prev[prev.length - 1] === tab) return prev;
+      return replace ? [...prev.slice(0, -1), tab] : [...prev, tab];
+    });
+    try {
+      if (typeof window !== 'undefined' && window.history) {
+        window.history.pushState({ tab }, '', `?tab=${tab}`);
+      }
+    } catch (e) {
+      console.warn("history pushState error", e);
+    }
   }, [isMobile]);
+
+  // Dedicated Go Back action returning to previous screen or fallback to home
+  const goBack = useCallback(() => {
+    if (navigationHistory.length > 1) {
+      const newHistory = [...navigationHistory];
+      newHistory.pop(); // remove current
+      const previousTab = newHistory[newHistory.length - 1] || 'home';
+      setNavigationHistory(newHistory);
+      setActiveTab(previousTab);
+      try {
+        if (typeof window !== 'undefined' && window.history) {
+          window.history.pushState({ tab: previousTab }, '', `?tab=${previousTab}`);
+        }
+      } catch (e) {
+        console.warn("history pushState error", e);
+      }
+    } else {
+      setActiveTab('home');
+      setNavigationHistory(['home']);
+      try {
+        if (typeof window !== 'undefined' && window.history) {
+          window.history.pushState({ tab: 'home' }, '', `?tab=home`);
+        }
+      } catch (e) {
+        console.warn("history pushState error", e);
+      }
+    }
+  }, [navigationHistory]);
+
+  // Sync browser back/forward buttons (popstate)
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      if (e.state && e.state.tab) {
+        setActiveTab(e.state.tab);
+        setNavigationHistory(prev => {
+          const idx = prev.lastIndexOf(e.state.tab);
+          return idx !== -1 ? prev.slice(0, idx + 1) : [...prev, e.state.tab];
+        });
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Group traditions by TraditionGroup
   const groupedTraditions = Object.values(TRADITIONS || {}).reduce((acc, tradition) => {
@@ -540,10 +609,26 @@ export default function AppContent() {
               <Menu className="w-5 h-5" />
             </button>
 
+            {/* Back Button (Shown when not on Home/Landing) */}
+            {activeTab !== 'home' && activeTab !== 'landing' && (
+              <button
+                onClick={goBack}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-amber-400 text-slate-300 hover:text-slate-950 border border-white/10 hover:border-amber-400 transition-all text-xs font-mono font-bold shrink-0 cursor-pointer shadow-sm active:scale-95"
+                title="Go Back to Previous Screen"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>Back</span>
+              </button>
+            )}
+
             {/* Brand / Home Link */}
             <button
               onClick={() => navigateTo('home')}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400/10 hover:bg-amber-400 text-amber-400 hover:text-slate-950 border border-amber-400/30 hover:border-amber-400 transition-all text-xs font-bold shrink-0 cursor-pointer shadow-sm active:scale-95"
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-all text-xs font-bold shrink-0 cursor-pointer shadow-sm active:scale-95 ${
+                activeTab === 'home'
+                  ? 'bg-amber-400 text-slate-950 border-amber-400'
+                  : 'bg-amber-400/10 hover:bg-amber-400 text-amber-400 hover:text-slate-950 border-amber-400/30 hover:border-amber-400'
+              }`}
               title="Home"
             >
               <Home className="w-3.5 h-3.5" />
