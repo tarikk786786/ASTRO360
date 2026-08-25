@@ -13,6 +13,7 @@ import AstroCelestialAnimation from './AstroCelestialAnimation';
 import OmniWhyShowcase from './OmniWhyShowcase';
 import OmniFAQSection from './OmniFAQSection';
 import OmniAudioBriefing from '../omni/OmniAudioBriefing';
+import OmniLiveSkyRadar from '../omni/OmniLiveSkyRadar';
 
 interface LandingPageProps {
   onStartOnboarding: (presetData?: Partial<UserProfile>) => void;
@@ -288,6 +289,11 @@ export default function LandingPage({
             </div>
           ))}
         </div>
+      </section>
+
+      {/* 2.8 Real-Time Celestial Sky Radar (Live JPL DE440 Positions) */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
+        <OmniLiveSkyRadar />
       </section>
 
       {/* 3. Product Preview Section (4 Interactive Tabs) */}

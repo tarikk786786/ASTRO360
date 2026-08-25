@@ -6,6 +6,7 @@ import {
   CheckCircle2, ArrowRight, Eye, RefreshCw, HelpCircle 
 } from 'lucide-react';
 import { UserProfile } from '../../types';
+import OmniShareCardGenerator from './OmniShareCardGenerator';
 
 interface OmniMeViewProps {
   userProfile: UserProfile;
@@ -133,6 +134,9 @@ export default function OmniMeView({
           </div>
         </div>
       </div>
+
+      {/* 3.5. Social 9:16 Story Card Generator */}
+      <OmniShareCardGenerator userProfile={userProfile} />
 
       {/* 4. Preferences, Privacy & Settings */}
       <div className="p-5 rounded-3xl bg-[#0B1220] border border-white/10 space-y-3 text-xs font-mono">

@@ -9,6 +9,7 @@ import type { UserProfile } from '../../types';
 import OmniWhyDrawer, { type OmniWhyDrawerProps } from './OmniWhyDrawer';
 import OmniAudioBriefing from './OmniAudioBriefing';
 import OmniTransitAlertCenter from './OmniTransitAlertCenter';
+import OmniDailyVibeScore from './OmniDailyVibeScore';
 
 interface OmniSimpleHomeProps {
   userProfile: UserProfile;
@@ -138,6 +139,9 @@ export default function OmniSimpleHome({
 
       {/* 2.5. Daily Audio Briefing Player */}
       <OmniAudioBriefing userProfile={userProfile} />
+
+      {/* 2.7. Daily Cosmic Fortune & Aura Metrics */}
+      <OmniDailyVibeScore userProfile={userProfile} />
 
       {/* 3. 4-Grid Key Area Themes */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
