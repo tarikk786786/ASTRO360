@@ -319,8 +319,8 @@ export default function OmniLiveZodiacRadar({ onSelectSign }: { onSelectSign: (s
         </span>
       </div>
 
-      {/* 12-Zodiac Horizontal Pill Bar / Grid */}
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-2">
+      {/* 12-Zodiac Horizontal Swipeable Rail on Mobile / Grid on Desktop */}
+      <div className="flex sm:grid overflow-x-auto sm:overflow-x-visible pb-2 sm:pb-0 scrollbar-none snap-x sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-2">
         {ALL_12_ZODIAC.map((zodiac) => {
           const isSelected = selectedZodiac.id === zodiac.id;
           return (
@@ -328,7 +328,7 @@ export default function OmniLiveZodiacRadar({ onSelectSign }: { onSelectSign: (s
               key={zodiac.id}
               onClick={() => setSelectedZodiac(zodiac)}
               whileTap={{ scale: 0.94 }}
-              className={`p-2.5 rounded-2xl border transition-all flex flex-col items-center justify-center gap-1 cursor-pointer relative ${
+              className={`p-2.5 sm:p-2 rounded-2xl border transition-all flex flex-col items-center justify-center gap-1 cursor-pointer min-w-[78px] sm:min-w-0 shrink-0 sm:shrink snap-start relative ${
                 isSelected
                   ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-lg shadow-amber-400/20 font-black'
                   : 'bg-[#0B1220] hover:bg-[#0F182E] text-slate-300 hover:text-white border-white/10 hover:border-white/20'

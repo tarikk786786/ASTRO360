@@ -125,7 +125,7 @@ export default function AstroCelestialAnimation({
         </div>
 
         {/* View Mode Controls */}
-        <div className="flex flex-wrap items-center gap-2 font-mono text-xs shrink-0">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none snap-x text-xs font-mono">
           {[
             { id: 'sky', label: '01. Raw Sky' },
             { id: 'zodiac', label: '02. Zodiac' },
@@ -136,7 +136,7 @@ export default function AstroCelestialAnimation({
             <button
               key={s.id}
               onClick={() => setStage(s.id as ViewStage)}
-              className={`px-3 py-1.5 rounded-xl border transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl border transition-all cursor-pointer whitespace-nowrap snap-start ${
                 stage === s.id
                   ? 'bg-amber-400 text-slate-950 font-bold border-amber-400 shadow-md'
                   : 'bg-[#0B1220] text-slate-400 hover:text-white border-white/10 hover:border-white/20'
