@@ -66,30 +66,30 @@ export default function LandingPage({
               GLOBAL ASTROLOGY INTELLIGENCE
             </motion.div>
 
-            {/* Headline */}
+            {/* Headline (Enterprise PRD Section 7) */}
             <motion.h1 
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
               className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15]"
             >
-              Understand your astrology. <br />
+              A deeper way to understand <br />
               <span className="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-200 bg-clip-text text-transparent">
-                Across traditions.
+                your astrology. Across traditions.
               </span>
             </motion.h1>
 
-            {/* Supporting Copy */}
+            {/* Supporting Copy (Enterprise PRD Section 7) */}
             <motion.p 
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               className="text-sm sm:text-base lg:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-sans"
             >
-              Explore your birth chart, timing cycles, relationships, career themes and forecasts through multiple astrology traditions—clearly explained and transparently calculated.
+              Explore your chart, cycles, relationships, and important periods through multiple astrological traditions—brought together in one modern experience.
             </motion.p>
 
-            {/* CTAs */}
+            {/* CTAs (Enterprise PRD Section 8) */}
             <motion.div 
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -104,10 +104,10 @@ export default function LandingPage({
                 <ArrowRight className="w-4 h-4" />
               </button>
               <button
-                onClick={() => scrollToSection('methodology-section')}
+                onClick={() => onNavigateToTab('home')}
                 className="px-6 py-3.5 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] text-slate-300 hover:text-white border border-white/10 font-mono text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer"
               >
-                <span>See How It Works</span>
+                <span>Explore the Platform</span>
               </button>
             </motion.div>
 
@@ -194,10 +194,43 @@ export default function LandingPage({
       {/* 3. Product Preview Section (4 Interactive Tabs) */}
       <OmniProductPreview onExplore={handleCreateChart} />
 
-      {/* 4. Trust & Methodology Strip */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
-          <div className="p-5 rounded-3xl bg-[#0F172A] border border-white/10 space-y-2">
+      {/* 4. Signature Brand Block (PRD Section 48 & 49) */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 text-center space-y-6">
+        <div className="space-y-2 max-w-xl mx-auto">
+          <span className="text-xs font-mono font-bold tracking-widest uppercase text-slate-400 bg-white/5 px-3 py-1 rounded-full border border-white/10">
+            SYSTEM ARCHITECTURE
+          </span>
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Calculated first. Explained second.
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono">
+            ASTRO360 separates astronomical computation from interpretive reasoning.
+          </p>
+        </div>
+
+        {/* 4-Stage Horizontal Pipeline */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-left font-mono text-xs pt-2">
+          <div className="p-4 rounded-2xl bg-[#0F172A] border border-white/10 space-y-1">
+            <span className="text-amber-400 font-bold">01. Calculation</span>
+            <p className="text-[11px] text-slate-400">JPL Ephemeris coordinates & house boundaries</p>
+          </div>
+          <div className="p-4 rounded-2xl bg-[#0F172A] border border-white/10 space-y-1">
+            <span className="text-cyan-400 font-bold">02. Systems</span>
+            <p className="text-[11px] text-slate-400">Vedic, Western, KP, and BaZi engines</p>
+          </div>
+          <div className="p-4 rounded-2xl bg-[#0F172A] border border-white/10 space-y-1">
+            <span className="text-indigo-400 font-bold">03. Timing</span>
+            <p className="text-[11px] text-slate-400">Dashas, planetary horas, and transits</p>
+          </div>
+          <div className="p-4 rounded-2xl bg-[#0F172A] border border-white/10 space-y-1">
+            <span className="text-emerald-400 font-bold">04. Synthesis</span>
+            <p className="text-[11px] text-slate-400">Explainable, human-readable intelligence</p>
+          </div>
+        </div>
+
+        {/* 3 Foundation Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left pt-2">
+          <div className="p-5 rounded-3xl bg-[#0B1220] border border-white/10 space-y-2">
             <div className="w-8 h-8 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 font-bold">
               <Cpu className="w-4 h-4" />
             </div>
@@ -207,7 +240,7 @@ export default function LandingPage({
             </p>
           </div>
 
-          <div className="p-5 rounded-3xl bg-[#0F172A] border border-white/10 space-y-2">
+          <div className="p-5 rounded-3xl bg-[#0B1220] border border-white/10 space-y-2">
             <div className="w-8 h-8 rounded-xl bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-center text-cyan-400 font-bold">
               <Layers className="w-4 h-4" />
             </div>
@@ -217,7 +250,7 @@ export default function LandingPage({
             </p>
           </div>
 
-          <div className="p-5 rounded-3xl bg-[#0F172A] border border-white/10 space-y-2">
+          <div className="p-5 rounded-3xl bg-[#0B1220] border border-white/10 space-y-2">
             <div className="w-8 h-8 rounded-xl bg-emerald-400/10 border border-emerald-400/30 flex items-center justify-center text-emerald-400 font-bold">
               <Bot className="w-4 h-4" />
             </div>
@@ -373,16 +406,16 @@ export default function LandingPage({
       </section>
 
       {/* 8. Professional vs Everyone Capabilities */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-left space-y-8">
+      <section id="professional-section" className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-left space-y-8">
         <div className="space-y-2 text-center max-w-2xl mx-auto">
           <span className="text-xs font-mono font-bold tracking-widest uppercase text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
             DUAL-AUDIENCE ARCHITECTURE
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Deep enough for professionals. Simple enough for everyone.
+            Built for serious astrology work.
           </h2>
           <p className="text-xs sm:text-sm text-slate-400 font-mono">
-            A single unified engine with progressive disclosure: casual seekers get clean guidance; astrologers inspect exact mathematics.
+            A simpler interface for everyone. A deeper workspace for professionals.
           </p>
         </div>
 
@@ -448,7 +481,7 @@ export default function LandingPage({
             TRANSPARENT METHODOLOGY
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Built to be transparent.
+            Transparent by design.
           </h2>
           <p className="text-xs sm:text-sm text-slate-400 font-mono">
             AI explains the result. It doesn't make up the chart.
@@ -490,23 +523,30 @@ export default function LandingPage({
         </div>
       </section>
 
-      {/* 10. Technology Trust Section */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 text-center space-y-4">
-        <span className="text-xs font-mono text-slate-500 uppercase tracking-widest font-bold">
-          BUILT WITH SERIOUS OPEN-SOURCE & MODERN TECHNOLOGIES
-        </span>
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-xs font-mono text-slate-400 pt-2">
-          <span>React 19</span>
-          <span>•</span>
-          <span>TypeScript</span>
-          <span>•</span>
-          <span>JPL DE440 Ephemeris</span>
-          <span>•</span>
-          <span>OpenStreetMap</span>
-          <span>•</span>
-          <span>FastAPI</span>
-          <span>•</span>
-          <span>Tailwind CSS</span>
+      {/* 10. Security & Privacy (PRD Section 11 & 25) */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 py-10 text-left">
+        <div className="p-7 sm:p-8 rounded-3xl bg-[#0F172A] border border-white/10 space-y-4 shadow-xl">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="w-5 h-5 text-emerald-400" />
+            <h3 className="text-lg font-bold text-white">Your personal data should remain yours.</h3>
+          </div>
+          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+            Birth information is used solely to calculate planetary coordinates and timing cycles. We do not sell user charts, train public AI models on your private data, or share personal profiles with third parties.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 font-mono text-xs text-slate-400">
+            <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
+              <span className="font-bold text-white block pb-0.5">Encrypted Local Cache</span>
+              <span>Secure browser storage for instant return visits</span>
+            </div>
+            <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
+              <span className="font-bold text-white block pb-0.5">No Public URLs</span>
+              <span>Birth coordinates never exposed in query params</span>
+            </div>
+            <div className="p-3 rounded-2xl bg-white/5 border border-white/10">
+              <span className="font-bold text-white block pb-0.5">1-Tap Account Wipe</span>
+              <span>Full control to purge profile and history at any time</span>
+            </div>
+          </div>
         </div>
       </section>
 

@@ -28,14 +28,14 @@ export default function OmniLandingNavbar({
   return (
     <>
       {/* 1. Small Top Announcement Bar */}
-      <div className="w-full bg-[#0B1220] border-b border-white/5 py-1.5 px-4 text-center text-xs font-mono text-slate-400 flex items-center justify-center gap-2">
-        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-        <span>Now building a global multi-tradition astrology intelligence engine</span>
+      <div className="w-full bg-[#080E1A] border-b border-white/5 py-1.5 px-4 text-center text-xs font-mono text-slate-400 flex items-center justify-center gap-2">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+        <span>Intelligence for the way you explore astrology</span>
         <button
           onClick={() => onNavigateSection('systems-section')}
-          className="text-amber-400 hover:text-amber-300 font-bold underline underline-offset-2 ml-1 cursor-pointer"
+          className="text-slate-200 hover:text-white font-bold underline underline-offset-2 ml-1 cursor-pointer"
         >
-          Explore →
+          Explore Systems →
         </button>
       </div>
 
@@ -43,56 +43,52 @@ export default function OmniLandingNavbar({
       <header
         className={`sticky top-0 z-50 w-full transition-all duration-200 ${
           isScrolled
-            ? 'bg-[#080E1A]/95 backdrop-blur-md border-b border-white/10 shadow-xl py-2.5'
-            : 'bg-[#080E1A]/70 backdrop-blur-sm border-b border-white/5 py-3.5'
+            ? 'bg-[#060A12]/95 backdrop-blur-md border-b border-white/10 shadow-xl py-3'
+            : 'bg-[#060A12]/80 backdrop-blur-sm border-b border-white/5 py-4'
         }`}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-4">
-          {/* Logo */}
+          {/* Logo (Minimal 360° Orbital Wordmark) */}
           <div 
             onClick={() => onNavigateSection('hero')} 
-            className="flex items-center gap-2.5 cursor-pointer shrink-0"
+            className="flex items-center gap-3 cursor-pointer shrink-0 group"
           >
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center shadow-md shadow-amber-500/20">
-              <Sparkles className="w-4 h-4 text-slate-950" />
+            <div className="relative w-8 h-8 rounded-xl bg-slate-900 border border-white/15 flex items-center justify-center shadow-inner group-hover:border-amber-400/50 transition-colors">
+              {/* Abstract 360 Orbit Geometry */}
+              <div className="w-4 h-4 rounded-full border border-amber-400/80 group-hover:scale-105 transition-transform" />
+              <div className="absolute w-1.5 h-1.5 rounded-full bg-amber-400 top-1.5 right-1.5 shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
             </div>
             <div className="flex flex-col text-left">
-              <span className="font-extrabold text-base tracking-wider text-white">ASTRO360</span>
-              <span className="text-[8px] font-mono text-amber-400 tracking-widest leading-none">OMNI INTELLIGENCE</span>
+              <span className="font-extrabold text-base tracking-tight text-white font-sans">ASTRO360</span>
+              <span className="text-[9px] font-mono text-slate-400 tracking-widest leading-none">INTELLIGENCE</span>
             </div>
           </div>
 
-          {/* Desktop Nav Links (PRD Section 7) */}
-          <nav className="hidden md:flex items-center gap-6 text-xs font-mono text-slate-300">
-            <button
-              onClick={() => onNavigateSection('hero')}
-              className="hover:text-white transition-colors cursor-pointer"
-            >
-              Home
-            </button>
-            <button
-              onClick={() => onNavigateSection('forecast-section')}
-              className="hover:text-white transition-colors cursor-pointer"
-            >
-              Forecast
-            </button>
+          {/* Desktop Nav Links (PRD Section 9) */}
+          <nav className="hidden md:flex items-center gap-7 text-xs font-mono text-slate-300">
             <button
               onClick={() => onNavigateSection('product-preview')}
               className="hover:text-white transition-colors cursor-pointer"
             >
-              Ask
+              Product
             </button>
             <button
-              onClick={() => onNavigateSection('product-preview')}
+              onClick={() => onNavigateSection('systems-section')}
               className="hover:text-white transition-colors cursor-pointer"
             >
-              Charts
+              Systems
             </button>
             <button
               onClick={() => onNavigateSection('methodology-section')}
               className="hover:text-white transition-colors cursor-pointer"
             >
               Methodology
+            </button>
+            <button
+              onClick={() => onNavigateSection('professional-section')}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
+              Professionals
             </button>
           </nav>
 
@@ -101,14 +97,14 @@ export default function OmniLandingNavbar({
             {onOpenDashboard && (
               <button
                 onClick={onOpenDashboard}
-                className="px-3 py-1.5 rounded-xl text-xs font-mono text-slate-300 hover:text-white transition-colors cursor-pointer"
+                className="px-3.5 py-1.5 rounded-xl text-xs font-mono text-slate-300 hover:text-white transition-colors cursor-pointer"
               >
                 Sign In
               </button>
             )}
             <button
               onClick={onCreateChart}
-              className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs font-mono flex items-center gap-1.5 shadow-md shadow-amber-400/20 transition-all cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-white hover:bg-slate-200 text-slate-950 font-bold text-xs font-mono flex items-center gap-1.5 shadow-md transition-all cursor-pointer"
             >
               <span>Create My Chart</span>
               <ArrowRight className="w-3.5 h-3.5" />
