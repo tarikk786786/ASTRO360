@@ -85,6 +85,7 @@ import OmniFreeToolsHub from './components/free-tools/OmniFreeToolsHub';
 import SEOTopicHub from './components/seo/SEOTopicHub';
 import OmniModernNav from './components/navigation/OmniModernNav';
 import OmniCompatibilityLab from './components/omni/OmniCompatibilityLab';
+import CosmicCelestialLoader from './components/ui/CosmicCelestialLoader';
 import { updatePageSEO } from './lib/seoManager';
 import { warmCosmicProfileCache, prefetchRouteData } from './lib/prefetchEngine';
 
@@ -626,12 +627,7 @@ export default function AppContent() {
         {/* Page Content */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-6 w-full">
           <div className="max-w-7xl mx-auto h-full px-2.5 sm:px-4 lg:px-6 w-full">
-            <Suspense fallback={
-              <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
-                <div className="w-12 h-12 rounded-full border-2 border-cyan-500/30 border-t-cyan-400 animate-spin" />
-                <p className="text-xs font-mono text-cyan-300">Synchronizing Cosmic Intelligence Engines...</p>
-              </div>
-            }>
+            <Suspense fallback={<CosmicCelestialLoader message="Synchronizing Celestial Intelligence" />}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeTab}
