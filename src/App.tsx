@@ -83,6 +83,7 @@ import OmniMeView from './components/omni/OmniMeView';
 import OmniOnboardingWizard from './components/omni/OmniOnboardingWizard';
 import OmniFreeToolsHub from './components/free-tools/OmniFreeToolsHub';
 import SEOTopicHub from './components/seo/SEOTopicHub';
+import OmniModernNav from './components/navigation/OmniModernNav';
 import { updatePageSEO } from './lib/seoManager';
 import { warmCosmicProfileCache, prefetchRouteData } from './lib/prefetchEngine';
 
@@ -611,115 +612,15 @@ export default function AppContent() {
 
       {/* Main Content */}
       <main className="flex-1 min-w-0 w-full relative z-10 flex flex-col h-[100dvh] overflow-hidden">
-        {/* Top Bar */}
-        <header className="h-14 border-b border-white/[0.04] bg-[#090d16]/90 backdrop-blur-2xl flex items-center justify-between px-3 sm:px-5 flex-shrink-0">
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <button 
-              className="md:hidden text-slate-400 hover:text-white p-2 rounded-xl hover:bg-white/[0.05] transition-colors shrink-0 active:scale-95 cursor-pointer" 
-              onClick={() => setIsSidebarOpen(true)}
-              aria-label="Open Navigation Sidebar"
-            >
-              <Menu className="w-5 h-5" />
-            </button>
-
-            {/* Back Button (Shown when not on Home/Landing) */}
-            {activeTab !== 'home' && activeTab !== 'landing' && (
-              <button
-                onClick={goBack}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-amber-400 text-slate-300 hover:text-slate-950 border border-white/10 hover:border-amber-400 transition-all text-xs font-mono font-bold shrink-0 cursor-pointer shadow-sm active:scale-95"
-                title="Go Back to Previous Screen"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Back</span>
-              </button>
-            )}
-
-            {/* ASTRO360 Brand Orb / Home Link */}
-            <div
-              onClick={() => navigateTo('home')}
-              className="flex items-center gap-2 cursor-pointer shrink-0 group mr-1"
-            >
-              <div className="w-7 h-7 rounded-xl bg-slate-900 border border-white/15 flex items-center justify-center group-hover:border-amber-400/50 transition-colors shadow-inner">
-                <div className="w-3.5 h-3.5 rounded-full border border-amber-400/80" />
-              </div>
-              <span className="font-black text-xs tracking-tight text-white font-sans hidden sm:inline">
-                ASTRO360
-              </span>
-            </div>
-
-            {/* Primary Desktop Nav Tabs (Ultra-Simple PRD: 5 destinations) */}
-            <div className="hidden lg:flex items-center gap-1 bg-[#0F172A] p-1 rounded-2xl border border-white/10 mx-1">
-              {[
-                { id: 'home', label: 'Home', icon: Home },
-                { id: 'forecast', label: 'Forecast', icon: Calendar },
-                { id: 'ask', label: 'Ask', icon: Sparkles },
-                { id: 'charts', label: 'Charts', icon: Compass },
-                { id: 'free-tools', label: 'Free Tools', icon: Layers }
-              ].map((tab) => {
-                const Icon = tab.icon;
-                const isActive = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => navigateTo(tab.id)}
-                    onMouseEnter={() => prefetchRouteData(tab.id, userProfile)}
-                    className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
-                      isActive
-                        ? 'bg-amber-400 text-slate-950 shadow-md'
-                        : 'text-slate-400 hover:text-white hover:bg-white/5'
-                    }`}
-                  >
-                    <Icon className="w-3.5 h-3.5" />
-                    {tab.label}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* 152+ Tools Studio Drawer Button */}
-            <button
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-mono font-bold transition-all cursor-pointer ml-1"
-              title="Open 152+ Tools Studio Sidebar"
-            >
-              <LayoutDashboard className="w-3.5 h-3.5 text-amber-400" />
-              <span>152+ Tools</span>
-            </button>
-
-            <div className="flex items-center gap-2 min-w-0">
-              <h1 className="text-xs sm:text-sm font-semibold text-slate-200 tracking-tight truncate max-w-[130px] sm:max-w-xs md:max-w-md">
-                {getPageTitle()}
-              </h1>
-            </div>
-          </div>
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <button
-              onClick={() => setIsCommandPaletteOpen(true)}
-              className="flex items-center gap-2 p-2 sm:px-3 sm:py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-slate-400 hover:text-white hover:border-white/[0.12] transition-all text-xs active:scale-95"
-              title="Search"
-            >
-              <Search className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Search</span>
-              <kbd className="hidden sm:inline-block bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-mono text-slate-400">⌘K</kbd>
-            </button>
-            <button
-              onClick={() => navigateTo('me')}
-              className={`flex items-center gap-2 p-1.5 sm:px-3 sm:py-1.5 rounded-xl border transition-all text-xs font-mono font-bold active:scale-95 cursor-pointer ${
-                activeTab === 'me'
-                  ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md'
-                  : 'bg-white/[0.04] border-white/[0.06] text-slate-300 hover:text-white hover:border-white/[0.12]'
-              }`}
-              title="Me (Profile & Settings)"
-            >
-              <div className="w-5 h-5 rounded-lg bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-[10px] font-black text-amber-300">
-                {userProfile.name ? userProfile.name.charAt(0).toUpperCase() : 'U'}
-              </div>
-              <span className="hidden sm:inline truncate max-w-[80px]">
-                {userProfile.name || 'Me'}
-              </span>
-            </button>
-          </div>
-        </header>
+        {/* Unified Modern Navigation (Desktop Glass Header & Mobile Expandable Drawer) */}
+        <OmniModernNav
+          activeTab={activeTab}
+          onNavigate={navigateTo}
+          userProfile={userProfile}
+          onOpenSearch={() => setIsCommandPaletteOpen(true)}
+          onToggleStudio={() => setIsSidebarOpen(!isSidebarOpen)}
+          isStudioOpen={isSidebarOpen}
+        />
 
         {/* Page Content */}
         <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-6 w-full">
@@ -912,39 +813,7 @@ export default function AppContent() {
           </div>
         </div>
 
-      {/* 📱 MOBILE BOTTOM NAVIGATION DOCK */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 pb-safe bg-[#090d16]/95 backdrop-blur-3xl border-t border-white/[0.08] z-40 px-2 flex items-center justify-around shadow-[0_-8px_30px_rgba(0,0,0,0.5)] select-none">
-        {[
-          { id: 'home', icon: Home, label: 'Home', color: 'amber' },
-          { id: 'forecast', icon: Calendar, label: 'Forecast', color: 'blue' },
-          { id: 'ask', icon: Sparkles, label: 'Ask', color: 'indigo' },
-          { id: 'charts', icon: Compass, label: 'Charts', color: 'purple' },
-          { id: 'me', icon: User, label: 'Me', color: 'emerald' },
-        ].map(({ id, icon: Icon, label, color }) => {
-          const isActive = activeTab === id;
-          return (
-            <motion.button
-              key={id}
-              onClick={() => navigateTo(id)}
-              whileTap={{ scale: 0.9 }}
-              className={`flex flex-col items-center justify-center w-full h-full py-1 transition-all duration-200 cursor-pointer ${
-                isActive ? `text-${color}-400 font-bold` : 'text-slate-500 hover:text-slate-300'
-              }`}
-            >
-              <div className="relative">
-                <Icon className={`w-5 h-5 transition-transform ${isActive ? `text-${color}-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.6)] scale-110` : ''}`} />
-                {isActive && (
-                  <motion.div 
-                    layoutId="mobileActiveDot"
-                    className={`w-1 h-1 rounded-full bg-${color}-400 mx-auto mt-0.5 shadow-[0_0_6px_currentColor]`} 
-                  />
-                )}
-              </div>
-              <span className={`text-[10px] mt-0.5 tracking-tight ${isActive ? 'font-bold' : 'font-medium'}`}>{label}</span>
-            </motion.button>
-          );
-        })}
-      </div>
+
 
       {/* ✦ PERSISTENT FLOATING ASK BUTTON */}
       {activeTab !== 'ask' && activeTab !== 'landing' && (
