@@ -7,10 +7,7 @@ import { useState, useEffect, useCallback, Suspense } from 'react';
 import {
   Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, Users, Globe2, Bell,
   Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon,
-  Zap, Wrench, DollarSign, Wallet, ArrowLeft, Home,
-  // Previously rendered in the sidebar but never imported — each one threw
-  // ReferenceError as soon as the nav mounted. esbuild does not flag undefined
-  // identifiers, which is why the build stayed green while the app crashed.
+  Zap, Wrench, DollarSign, Wallet, ArrowLeft, Home, Cpu,
   AlertTriangle, BarChart2, BookOpen, Calendar, Clock, Eye, FileText, Hash, Map, MapPin,
   Music, Network, Radar, Shield, Sun, Sunrise,
 } from 'lucide-react';
@@ -73,6 +70,7 @@ import CosmicLeafletMap from './components/CosmicLeafletMap';
 import UniverseCanvas from './components/3d/UniverseCanvas';
 import ErrorBoundary from './components/ErrorBoundary';
 import GlobalLanguageSelector from './components/GlobalLanguageSelector';
+import { AstroOmniResearchSuite } from './components/AstroOmniResearchSuite';
 import { useGlobalConfig } from './context/GlobalConfigContext';
 import { Toaster, toast } from 'sonner';
 
@@ -248,6 +246,7 @@ export default function AppContent() {
     if (activeTab === 'admin-dashboard') return 'Admin Analytics & AI Tracing';
     if (activeTab === 'consultation-hub') return 'Astrologer Consultations & Community Q&A';
     if (activeTab === 'earnings-hub' || activeTab === 'monetization') return 'Astrology Business & Global Revenue Hub';
+    if (activeTab === 'omni-research' || activeTab === 'comparative-mode' || activeTab === 'consensus') return 'ASTRO360 OMNI • Research & Consensus Core';
     if (activeTab === 'landing') return 'Product Overview & Free Birth Chart';
     if (TRADITIONS[activeTab]) return TRADITIONS[activeTab].name;
     return 'Cosmos OMNI';
@@ -354,6 +353,10 @@ export default function AppContent() {
             <button onClick={() => navigateTo('studio')} className={`sidebar-item ${activeTab === 'studio' ? 'sidebar-item-active' : ''}`}>
               <Sparkles className="w-4 h-4 text-[#C9A86A]" />
               <span className="font-semibold text-[#C9A86A]">Cosmic Studio</span>
+            </button>
+            <button onClick={() => navigateTo('omni-research')} className={`sidebar-item ${activeTab === 'omni-research' || activeTab === 'comparative-mode' ? 'sidebar-item-active' : ''}`}>
+              <Cpu className="w-4 h-4 text-indigo-400" />
+              <span className="font-semibold text-indigo-300">OMNI Research Core</span>
             </button>
             <button onClick={() => navigateTo('chat')} className={`sidebar-item ${activeTab === 'chat' ? 'sidebar-item-active' : ''}`}>
               <MessageCircle className="w-4 h-4" />
@@ -651,6 +654,7 @@ export default function AppContent() {
                   {activeTab === 'custom-remedies' && <CustomRemedialMediumEngine userProfile={userProfile} />}
                   {(activeTab === 'synastry' || activeTab === 'compatibility' || activeTab === 'match') && <AstroSynastryMatchmaker userProfile={userProfile} />}
                   {activeTab === 'global-suite' && <GlobalWisdomSuite userProfile={userProfile} />}
+                  {(activeTab === 'omni-research' || activeTab === 'comparative-mode' || activeTab === 'consensus' || activeTab === 'research') && <AstroOmniResearchSuite userProfile={userProfile} />}
                   {activeTab === 'tools-catalog' && <Astro150ToolsCatalog userProfile={userProfile} onNavigate={navigateTo} activeCategory={activeTab} initialCategory={activeTab} />}
                   {(activeTab === 'birth-chart' || activeTab === 'kundli') && <BirthChartGenerator userProfile={userProfile} />}
                   {activeTab === 'master-chart' && <UnifiedChartEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
