@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Sparkles, CheckCircle2, AlertCircle, BookOpen, ShieldCheck, ChevronDown, ChevronUp, Layers } from 'lucide-react';
 
@@ -55,26 +55,29 @@ export default function OmniWhyDrawer({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 text-left">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 text-left">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/75 backdrop-blur-md"
+            className="absolute inset-0 bg-black/80 backdrop-blur-md"
           />
 
-          {/* Modal Card */}
+          {/* Bottom Sheet on Mobile / Centered Card on Desktop */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-lg bg-[#0F172A] border border-white/15 rounded-3xl p-6 sm:p-7 shadow-2xl space-y-5 text-white max-h-[90vh] overflow-y-auto"
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+            transition={{ type: 'spring', damping: 28, stiffness: 320 }}
+            className="relative w-full max-w-lg bg-[#0F172A] border-t sm:border border-white/15 rounded-t-[2rem] sm:rounded-3xl p-5 sm:p-7 shadow-2xl space-y-4 sm:space-y-5 text-white max-h-[85vh] sm:max-h-[90vh] overflow-y-auto pb-safe"
           >
+            {/* Mobile Drag Indicator */}
+            <div className="w-12 h-1.5 bg-white/20 rounded-full mx-auto mb-1 sm:hidden"></div>
+
             {/* Header */}
-            <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-4">
+            <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-3 sm:pb-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">

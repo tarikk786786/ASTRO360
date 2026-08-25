@@ -288,7 +288,25 @@ export default function OmniSimpleHome({
         </div>
       </div>
 
-      {/* 6. Master 152+ Universal Tools & Calculation Engines Hub */}
+      {/* 6. Ask ASTRO360 Quick Input */}
+      <div 
+        onClick={() => onNavigate('ask')}
+        className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-[#0F172A] to-[#1E293B] border border-amber-400/30 hover:border-amber-400/60 shadow-xl transition-all cursor-pointer space-y-3 group"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-amber-400 font-mono font-bold text-xs">
+            <Sparkles className="w-4 h-4" />
+            <span>ASK ASTRO360 ANYTHING</span>
+          </div>
+          <span className="text-[10px] font-mono text-slate-400">Multi-Tradition AI</span>
+        </div>
+        <div className="flex items-center justify-between gap-3 p-3 rounded-2xl bg-[#090D16] border border-white/10 text-slate-400 group-hover:text-slate-200 transition-colors text-xs font-mono">
+          <span className="truncate">Ask about love, career, timing, or chart placements...</span>
+          <ArrowRight className="w-4 h-4 text-amber-400 shrink-0 group-hover:translate-x-1 transition-transform" />
+        </div>
+      </div>
+
+      {/* 7. Master 152+ Universal Tools & Calculation Engines Hub */}
       <div className="space-y-4 pt-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
           <div>
