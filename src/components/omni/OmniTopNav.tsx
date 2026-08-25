@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { 
   Sparkles, Home, Calendar, Bot, Compass, Layers, 
   Search, Bell, User, Settings 
@@ -23,9 +23,8 @@ export default function OmniTopNav({
   const primaryTabs = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'forecast', label: 'Forecast', icon: Calendar },
-    { id: 'ask', label: 'Ask', icon: Bot },
-    { id: 'charts', label: 'Charts', icon: Compass },
-    { id: 'more', label: 'More', icon: Layers }
+    { id: 'ask', label: 'Ask', icon: Sparkles },
+    { id: 'charts', label: 'Charts', icon: Compass }
   ];
 
   return (

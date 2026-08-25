@@ -79,6 +79,7 @@ import OmniForecastView from './components/omni/OmniForecastView';
 import OmniAskAssistant from './components/omni/OmniAskAssistant';
 import OmniChartsView from './components/omni/OmniChartsView';
 import OmniMoreHub from './components/omni/OmniMoreHub';
+import OmniMeView from './components/omni/OmniMeView';
 import OmniOnboardingWizard from './components/omni/OmniOnboardingWizard';
 import SEOTopicHub from './components/seo/SEOTopicHub';
 import { updatePageSEO } from './lib/seoManager';
@@ -638,23 +639,21 @@ export default function AppContent() {
               <span>Home</span>
             </button>
 
-            {/* Primary Desktop Nav Tabs */}
+            {/* Primary Desktop Nav Tabs (Ultra-Simple PRD: 4 destinations) */}
             <div className="hidden lg:flex items-center gap-1 bg-[#0F172A] p-1 rounded-2xl border border-white/10 mx-2">
               {[
                 { id: 'home', label: 'Home', icon: Home },
-                { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
                 { id: 'forecast', label: 'Forecast', icon: Calendar },
-                { id: 'ask', label: 'Ask', icon: MessageCircle },
-                { id: 'charts', label: 'Charts', icon: Compass },
-                { id: 'more', label: 'More', icon: Layers }
+                { id: 'ask', label: 'Ask', icon: Sparkles },
+                { id: 'charts', label: 'Charts', icon: Compass }
               ].map((tab) => {
                 const Icon = tab.icon;
-                const isActive = activeTab === tab.id || (tab.id === 'dashboard' && (activeTab === 'pro-dashboard' || activeTab === 'overview'));
+                const isActive = activeTab === tab.id;
                 return (
                   <button
                     key={tab.id}
                     onClick={() => navigateTo(tab.id)}
-                    className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                    className={`px-4 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                       isActive
                         ? 'bg-amber-400 text-slate-950 shadow-md'
                         : 'text-slate-400 hover:text-white hover:bg-white/5'
@@ -674,32 +673,30 @@ export default function AppContent() {
             </div>
           </div>
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold font-mono shadow-sm">
-              <Sparkles className="w-3.5 h-3.5 text-[#C9A86A]" />
-              <span className="hidden sm:inline">100% Free Pro Access</span>
-              <span className="sm:hidden">Free</span>
-            </div>
             <button
               onClick={() => setIsCommandPaletteOpen(true)}
               className="flex items-center gap-2 p-2 sm:px-3 sm:py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-slate-400 hover:text-white hover:border-white/[0.12] transition-all text-xs active:scale-95"
-              title="Search Tools"
+              title="Search"
             >
               <Search className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Search</span>
               <kbd className="hidden sm:inline-block bg-white/10 px-1.5 py-0.5 rounded text-[10px] font-mono text-slate-400">⌘K</kbd>
             </button>
             <button
-              onClick={() => navigateTo('control-center')}
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/[0.04] transition-colors active:scale-95"
-              title="Settings"
+              onClick={() => navigateTo('me')}
+              className={`flex items-center gap-2 p-1.5 sm:px-3 sm:py-1.5 rounded-xl border transition-all text-xs font-mono font-bold active:scale-95 cursor-pointer ${
+                activeTab === 'me'
+                  ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md'
+                  : 'bg-white/[0.04] border-white/[0.06] text-slate-300 hover:text-white hover:border-white/[0.12]'
+              }`}
+              title="Me (Profile & Settings)"
             >
-              <Wrench className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setIsProfileModalOpen(true)}
-              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-cosmic-500/30 to-nebula-500/30 text-cosmic-300 flex items-center justify-center text-xs font-bold ring-1 ring-white/10 hover:ring-cosmic-500/30 transition-all cursor-pointer active:scale-95"
-            >
-              {userProfile.name?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
+              <div className="w-5 h-5 rounded-lg bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-[10px] font-black text-amber-300">
+                {userProfile.name ? userProfile.name.charAt(0).toUpperCase() : 'U'}
+              </div>
+              <span className="hidden sm:inline truncate max-w-[80px]">
+                {userProfile.name || 'Me'}
+              </span>
             </button>
           </div>
         </header>
@@ -782,6 +779,13 @@ export default function AppContent() {
                   )}
                   {activeTab === 'charts' && (
                     <OmniChartsView userProfile={userProfile} />
+                  )}
+                  {(activeTab === 'me' || activeTab === 'profile') && (
+                    <OmniMeView
+                      userProfile={userProfile}
+                      onEditProfile={() => setIsProfileModalOpen(true)}
+                      onNavigate={navigateTo}
+                    />
                   )}
                   {activeTab === 'more' && (
                     <OmniMoreHub onNavigate={navigateTo} userProfile={userProfile} />
@@ -867,13 +871,12 @@ export default function AppContent() {
       <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 pb-safe bg-[#090d16]/95 backdrop-blur-3xl border-t border-white/[0.08] z-40 px-2 flex items-center justify-around shadow-[0_-8px_30px_rgba(0,0,0,0.5)] select-none">
         {[
           { id: 'home', icon: Home, label: 'Home', color: 'amber' },
-          { id: 'dashboard', icon: LayoutDashboard, label: 'Studio', color: 'cyan' },
           { id: 'forecast', icon: Calendar, label: 'Forecast', color: 'blue' },
-          { id: 'ask', icon: MessageCircle, label: 'Ask', color: 'indigo' },
+          { id: 'ask', icon: Sparkles, label: 'Ask', color: 'indigo' },
           { id: 'charts', icon: Compass, label: 'Charts', color: 'purple' },
-          { id: 'more', icon: Layers, label: 'More', color: 'emerald' },
+          { id: 'me', icon: User, label: 'Me', color: 'emerald' },
         ].map(({ id, icon: Icon, label, color }) => {
-          const isActive = activeTab === id || (id === 'dashboard' && (activeTab === 'pro-dashboard' || activeTab === 'overview'));
+          const isActive = activeTab === id;
           return (
             <motion.button
               key={id}
@@ -884,7 +887,7 @@ export default function AppContent() {
               }`}
             >
               <div className="relative">
-                <Icon className={`w-5 h-5 transition-transform ${isActive ? `text-${color}-400 drop-shadow-[0_0_10px_rgba(6,182,212,0.6)] scale-110` : ''}`} />
+                <Icon className={`w-5 h-5 transition-transform ${isActive ? `text-${color}-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.6)] scale-110` : ''}`} />
                 {isActive && (
                   <motion.div 
                     layoutId="mobileActiveDot"
@@ -897,6 +900,18 @@ export default function AppContent() {
           );
         })}
       </div>
+
+      {/* ✦ PERSISTENT FLOATING ASK BUTTON */}
+      {activeTab !== 'ask' && activeTab !== 'landing' && (
+        <button
+          onClick={() => navigateTo('ask')}
+          className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-30 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-xs font-mono shadow-xl shadow-amber-500/25 border border-amber-300/40 transition-all active:scale-95 cursor-pointer"
+          title="Ask ASTRO360"
+        >
+          <Sparkles className="w-4 h-4 text-slate-950" />
+          <span>Ask ASTRO360</span>
+        </button>
+      )}
       </main>
 
 

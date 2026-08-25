@@ -1,5 +1,4 @@
-﻿import React from 'react';
-import { Home, Calendar, Bot, Compass, Layers } from 'lucide-react';
+import { Home, Calendar, Sparkles, Compass, User } from 'lucide-react';
 
 interface OmniBottomNavProps {
   activeTab: string;
@@ -10,9 +9,9 @@ export default function OmniBottomNav({ activeTab, onNavigate }: OmniBottomNavPr
   const tabs = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'forecast', label: 'Forecast', icon: Calendar },
-    { id: 'ask', label: 'Ask', icon: Bot },
+    { id: 'ask', label: 'Ask', icon: Sparkles },
     { id: 'charts', label: 'Charts', icon: Compass },
-    { id: 'more', label: 'More', icon: Layers }
+    { id: 'me', label: 'Me', icon: User }
   ];
 
   return (
