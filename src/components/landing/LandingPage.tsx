@@ -409,6 +409,228 @@ export default function LandingPage({
       {/* 6. "Why This Prediction?" Deep Dive */}
       <OmniWhyShowcase onExploreMethodology={() => scrollToSection('methodology-section')} />
 
+      {/* 6.5 Interactive Birth Chart Showcase (PRD Section 6 & 7) */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-left space-y-8">
+        <div className="space-y-2 text-center max-w-2xl mx-auto">
+          <span className="text-xs font-mono font-bold tracking-widest uppercase text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
+            START WITH YOUR CHART
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            Your birth chart is the foundation for everything.
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono">
+            Every planetary position, house cusp, and aspect connects to explainable life themes. Tap a placement to inspect.
+          </p>
+        </div>
+
+        <div className="p-6 sm:p-8 rounded-3xl bg-[#0B1220] border border-white/15 shadow-2xl space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            {/* Left: Placements Selector */}
+            <div className="lg:col-span-6 space-y-4">
+              <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                <span className="text-xs font-mono font-bold text-white uppercase">Natal Chart Key Placements</span>
+                <span className="text-xs font-mono text-emerald-400">JPL DE440</span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2.5 font-mono text-xs">
+                <div className="p-3 rounded-2xl bg-white/5 border border-amber-400/40 space-y-0.5">
+                  <span className="text-[10px] text-amber-400 uppercase font-bold">Sun</span>
+                  <div className="font-black text-white">Leo ♌</div>
+                  <span className="text-[10px] text-slate-400">22°14'</span>
+                </div>
+                <div className="p-3 rounded-2xl bg-white/5 border border-cyan-400/40 space-y-0.5">
+                  <span className="text-[10px] text-cyan-400 uppercase font-bold">Moon</span>
+                  <div className="font-black text-white">Taurus ♉</div>
+                  <span className="text-[10px] text-slate-400">14°08'</span>
+                </div>
+                <div className="p-3 rounded-2xl bg-white/5 border border-indigo-400/40 space-y-0.5">
+                  <span className="text-[10px] text-indigo-400 uppercase font-bold">Ascendant</span>
+                  <div className="font-black text-white">Sagittarius ♐</div>
+                  <span className="text-[10px] text-slate-400">08°45'</span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-[#0F172A] border border-white/10 text-xs font-mono text-slate-300 flex items-center justify-between">
+                <span>Selected Planet: <strong className="text-amber-400">♃ Jupiter (Guru)</strong></span>
+                <span className="text-emerald-400 text-[11px] bg-emerald-500/10 px-2 py-0.5 rounded">Active Focus</span>
+              </div>
+            </div>
+
+            {/* Right: Jupiter Tap Inspector (PRD Section 7) */}
+            <div className="lg:col-span-6 p-5 sm:p-6 rounded-2xl bg-[#0F172A] border border-amber-500/40 space-y-3 shadow-lg">
+              <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-300 font-bold text-xs">
+                    ♃
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white">Jupiter in Cancer ♋</h4>
+                    <span className="text-[10px] font-mono text-slate-400">18°24' • 10th House (Midheaven)</span>
+                  </div>
+                </div>
+                <span className="text-[10px] font-mono text-amber-400 font-bold bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/30">
+                  Exalted Placement
+                </span>
+              </div>
+
+              <p className="text-xs text-slate-300 leading-relaxed font-sans">
+                <strong className="text-white">Traditional Theme: </strong>
+                Growth • Mentorship • Philosophical Wisdom • Executive Expansion. Positioned in the 10th Kendra house, it signals natural authority, ethical governance, and public recognition during major Jupiter-ruled Dasha and transit cycles.
+              </p>
+
+              <div className="flex items-center justify-between pt-1 font-mono text-xs">
+                <button
+                  onClick={() => onNavigateToTab('ask')}
+                  className="text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1 cursor-pointer"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Ask ASTRO360 about Jupiter</span>
+                </button>
+                <button
+                  onClick={handleCreateChart}
+                  className="text-slate-400 hover:text-white flex items-center gap-1 cursor-pointer"
+                >
+                  <span>Explore My Chart →</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6.6 Birth-Time Intelligence & Rectification (PRD Section 13) */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 text-left space-y-8">
+        <div className="space-y-2 text-center max-w-2xl mx-auto">
+          <span className="text-xs font-mono font-bold tracking-widest uppercase text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">
+            UNCERTAINTY TOLERANCE
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            What happens when your birth time is uncertain?
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono">
+            ASTRO360 measures how sensitive every prediction is to time window drift so you never rely on fragile calculations.
+          </p>
+        </div>
+
+        <div className="p-6 sm:p-7 rounded-3xl bg-[#0B1220] border border-white/15 shadow-xl space-y-5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+            <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-white/10 space-y-1">
+              <span className="text-slate-400 text-[10px]">Test Window: 10:45 AM</span>
+              <div className="text-emerald-400 font-bold">Stable (96%)</div>
+              <span className="text-[10px] text-slate-400">Planetary Signs Solid</span>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-white/10 space-y-1">
+              <span className="text-slate-400 text-[10px]">Test Window: 10:50 AM</span>
+              <div className="text-emerald-400 font-bold">Stable (94%)</div>
+              <span className="text-[10px] text-slate-400">Dasha Periods Intact</span>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-amber-500/30 space-y-1">
+              <span className="text-slate-400 text-[10px]">Test Window: 10:55 AM</span>
+              <div className="text-amber-400 font-bold">Moderate (78%)</div>
+              <span className="text-[10px] text-slate-400">Sub-Lord Boundary Shifts</span>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-rose-500/30 space-y-1">
+              <span className="text-slate-400 text-[10px]">Test Window: 11:00 AM</span>
+              <div className="text-rose-400 font-bold">Sensitive (62%)</div>
+              <span className="text-[10px] text-slate-400">Ascendant Cusp Transition</span>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs text-slate-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono">
+            <span>Deterministic sensitivity analysis tests ±15 minute drift across D1–D60 charts.</span>
+            <button
+              onClick={handleCreateChart}
+              className="text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1 cursor-pointer shrink-0"
+            >
+              Explore Birth-Time Rectification (BTR) →
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* 6.7 Life Timeline & Prediction Journal (PRD Section 14 & 15) */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 text-left space-y-8">
+        <div className="space-y-2 text-center max-w-2xl mx-auto">
+          <span className="text-xs font-mono font-bold tracking-widest uppercase text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+            PERSONAL RESEARCH JOURNAL
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            See your astrology alongside your real life.
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono">
+            Track what was forecasted against what actually happened. Turn astrology into your personal empirical record.
+          </p>
+        </div>
+
+        <div className="p-6 sm:p-7 rounded-3xl bg-[#0B1220] border border-white/15 shadow-xl space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-5 gap-3 font-mono text-xs">
+            <div className="p-3 rounded-2xl bg-[#0F172A] border border-white/10 space-y-1">
+              <span className="text-slate-400 text-[10px]">2019 • Education</span>
+              <div className="font-bold text-white">Jupiter Dasha</div>
+              <span className="text-[10px] text-emerald-400">✓ Strong Match</span>
+            </div>
+            <div className="p-3 rounded-2xl bg-[#0F172A] border border-white/10 space-y-1">
+              <span className="text-slate-400 text-[10px]">2021 • Career</span>
+              <div className="font-bold text-white">Sun / Mars Kendra</div>
+              <span className="text-[10px] text-emerald-400">✓ Strong Match</span>
+            </div>
+            <div className="p-3 rounded-2xl bg-[#0F172A] border border-white/10 space-y-1">
+              <span className="text-slate-400 text-[10px]">2023 • Relocation</span>
+              <div className="font-bold text-white">4th House Transit</div>
+              <span className="text-[10px] text-cyan-400">✓ Partial Match</span>
+            </div>
+            <div className="p-3 rounded-2xl bg-[#0F172A] border border-white/10 space-y-1">
+              <span className="text-slate-400 text-[10px]">2025 • Partnership</span>
+              <div className="font-bold text-white">7th House Venus</div>
+              <span className="text-[10px] text-emerald-400">✓ Strong Match</span>
+            </div>
+            <div className="p-3 rounded-2xl bg-[#0F172A] border border-amber-500/40 space-y-1">
+              <span className="text-amber-400 text-[10px] font-bold">2027 • Forecast</span>
+              <div className="font-bold text-white">Major Pivot</div>
+              <span className="text-[10px] text-amber-400">Upcoming Cycle</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6.8 Accuracy & Validation: "Built to be Checked" (PRD Section 16) */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 text-center space-y-6">
+        <div className="space-y-2 max-w-xl mx-auto">
+          <span className="text-xs font-mono font-bold tracking-widest uppercase text-slate-400 bg-white/5 px-3 py-1 rounded-full border border-white/10">
+            EMPIRICAL RIGOR
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            Built to be checked.
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono">
+            We don't make claims like "99.9% accurate." We build verifiable systems you can inspect and reproduce.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-left font-mono text-xs">
+          <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-emerald-500/30 space-y-1">
+            <span className="text-emerald-400 font-bold block">✓ Deterministic</span>
+            <span className="text-[11px] text-slate-400">100% reproducible ephemeris math</span>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-emerald-500/30 space-y-1">
+            <span className="text-emerald-400 font-bold block">✓ Multi-System</span>
+            <span className="text-[11px] text-slate-400">Cross-verified against classical rules</span>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-emerald-500/30 space-y-1">
+            <span className="text-emerald-400 font-bold block">✓ Versioned</span>
+            <span className="text-[11px] text-slate-400">Timestamped calculation models</span>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-emerald-500/30 space-y-1">
+            <span className="text-emerald-400 font-bold block">✓ Rule Provenance</span>
+            <span className="text-[11px] text-slate-400">Cited classical scripture sources</span>
+          </div>
+          <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-emerald-500/30 space-y-1">
+            <span className="text-emerald-400 font-bold block">✓ Open Schema</span>
+            <span className="text-[11px] text-slate-400">Exportable Astro Schema JSON</span>
+          </div>
+        </div>
+      </section>
+
       {/* 7. "What Can ASTRO360 Explore?" 8-Card Clean Grid */}
       <section className="max-w-5xl mx-auto px-4 sm:px-6 py-12 text-left space-y-6">
         <div className="space-y-2 text-center max-w-2xl mx-auto">
