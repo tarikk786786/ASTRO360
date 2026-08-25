@@ -647,13 +647,14 @@ export default function AppContent() {
               </span>
             </div>
 
-            {/* Primary Desktop Nav Tabs (Ultra-Simple PRD: 4 destinations) */}
+            {/* Primary Desktop Nav Tabs (Ultra-Simple PRD: 5 destinations) */}
             <div className="hidden lg:flex items-center gap-1 bg-[#0F172A] p-1 rounded-2xl border border-white/10 mx-1">
               {[
                 { id: 'home', label: 'Home', icon: Home },
                 { id: 'forecast', label: 'Forecast', icon: Calendar },
                 { id: 'ask', label: 'Ask', icon: Sparkles },
-                { id: 'charts', label: 'Charts', icon: Compass }
+                { id: 'charts', label: 'Charts', icon: Compass },
+                { id: 'free-tools', label: 'Free Tools', icon: Layers }
               ].map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeTab === tab.id;
@@ -662,7 +663,7 @@ export default function AppContent() {
                     key={tab.id}
                     onClick={() => navigateTo(tab.id)}
                     onMouseEnter={() => prefetchRouteData(tab.id, userProfile)}
-                    className={`px-4 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                       isActive
                         ? 'bg-amber-400 text-slate-950 shadow-md'
                         : 'text-slate-400 hover:text-white hover:bg-white/5'

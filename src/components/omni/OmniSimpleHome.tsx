@@ -65,6 +65,25 @@ export default function OmniSimpleHome({
         </div>
       </div>
 
+      {/* Quick Action Navigation Jump Bar */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+        {[
+          { id: 'forecast', label: '🔮 Forecast & Timing' },
+          { id: 'ask', label: '💬 Ask ASTRO360' },
+          { id: 'charts', label: '🌌 My Birth Chart' },
+          { id: 'compatibility', label: '❤️ Compatibility' },
+          { id: 'free-tools', label: '✨ Free Tools Hub' },
+        ].map(item => (
+          <button
+            key={item.id}
+            onClick={() => onNavigate(item.id)}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-[#0B1220] hover:bg-[#0F172A] border border-white/10 hover:border-amber-400/40 text-xs font-mono font-bold text-slate-300 hover:text-white shrink-0 transition-all cursor-pointer shadow-sm active:scale-95"
+          >
+            <span>{item.label}</span>
+          </button>
+        ))}
+      </div>
+
       {/* 2. Hero: Strongest Theme Today */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
