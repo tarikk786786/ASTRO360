@@ -83,6 +83,7 @@ import OmniMeView from './components/omni/OmniMeView';
 import OmniOnboardingWizard from './components/omni/OmniOnboardingWizard';
 import SEOTopicHub from './components/seo/SEOTopicHub';
 import { updatePageSEO } from './lib/seoManager';
+import { warmCosmicProfileCache, prefetchRouteData } from './lib/prefetchEngine';
 
 const STORAGE_KEY = 'astroverse_profile';
 const TAB_KEY = 'astroverse_tab';
@@ -195,6 +196,13 @@ export default function AppContent() {
     localStorage.setItem(TAB_KEY, activeTab);
     updatePageSEO(activeTab);
   }, [activeTab]);
+
+  // Background Cache Warming: Precomputes natal coordinates & today's summary in idle time
+  useEffect(() => {
+    if (userProfile && userProfile.dob) {
+      warmCosmicProfileCache(userProfile);
+    }
+  }, [userProfile]);
 
   // Navigate with full history tracking & browser URL sync
   const navigateTo = useCallback((tab: string, replace = false) => {
@@ -653,6 +661,7 @@ export default function AppContent() {
                   <button
                     key={tab.id}
                     onClick={() => navigateTo(tab.id)}
+                    onMouseEnter={() => prefetchRouteData(tab.id, userProfile)}
                     className={`px-4 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                       isActive
                         ? 'bg-amber-400 text-slate-950 shadow-md'
