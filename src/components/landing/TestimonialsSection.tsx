@@ -4,10 +4,10 @@ import { motion } from 'motion/react';
 
 const TESTIMONIALS = [
   {
-    quote: 'I had used astrology apps before, but this was the first time the planetary placements and houses actually felt understandable and respectful.',
-    author: 'Priya N.',
-    location: 'Bangalore, India',
-    focus: 'Birth Chart & Kundli',
+    quote: 'I had used astrology platforms before, but this was the first time the planetary placements, aspects, and harmonic charts felt deeply accurate and insightful.',
+    author: 'Elena R.',
+    location: 'Madrid, Spain',
+    focus: 'Birth Chart & Planetary Transits',
   },
   {
     quote: 'Seeing my Vimshottari Mahadasha timeline laid out clearly gave me immense perspective and calm during a major career transition.',

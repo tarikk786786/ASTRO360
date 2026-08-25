@@ -1332,7 +1332,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                       <Sun className="w-4 h-4 text-[#F59E0B]" /> Live Panchang Ephemeris Snapshot
                     </h3>
                     <span className="text-[10px] font-mono text-[#F59E0B] bg-[#F59E0B]/10 px-2.5 py-0.5 rounded-full border border-[#F59E0B]/30 font-semibold">
-                      Lahiri UTC Sync
+                      Universal Ephemeris UTC Sync
                     </span>
                   </div>
 

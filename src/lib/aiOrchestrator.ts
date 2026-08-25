@@ -6,24 +6,38 @@ export async function generateCosmicReading(
   userProfile: UserProfile,
   planetaryPositions: PlanetPosition[],
   apiKey: string,
-  provider: 'gemini' | 'openai' = 'gemini'
+  provider: 'gemini' | 'openai' = 'gemini',
+  options?: {
+    language?: string;
+    tradition?: string;
+  }
 ): Promise<string> {
   if (!apiKey) {
     throw new Error('API Key is missing. Please configure it in Settings.');
   }
 
-  const systemPrompt = `You are a Master Vedic Astrologer, Jyotish expert, and cosmic architect analyzing a chart for a worldwide user. 
-You are providing a reading for ${userProfile.name || 'User'}, born on ${userProfile.dob || 'Unknown'} at ${userProfile.time || 'unknown time'} in ${userProfile.location || 'Unknown'}.
+  const preferredSystem = options?.tradition || userProfile.preferredSystem || 'Universal Holistic Astrological System';
+  const targetLanguage = options?.language || 'English';
 
-Here are their exact calculated planetary positions based on True Keplerian Astronomical Ephemeris Data (Sidereal Lahiri Ayanamsha applied):
-${planetaryPositions.map(p => `- ${p.name}: ${p.sign}, ${p.degree} degrees (Long: ${Math.round(p.degreeDecimal)}°), House ${p.houseNumber}, Nakshatra: ${p.nakshatra} Pada ${p.pada} - Strength: ${p.strength}`).join('\n')}
+  const systemPrompt = `You are a Master Universal Astrologer, Celestial Scholar, and Cosmic Intelligence AI specializing in worldwide astrological systems (Western Tropical, Vedic Jyotish, Hellenistic, Chinese BaZi, Islamic Ilm al-Falak, Celtic & Indigenous Traditions).
 
-INSTRUCTIONS:
-1. You must act as a globally aware Astrologer. Acknowledge their specific birth location and cultural context if appropriate.
-2. Based strictly on the provided true Keplerian mathematical ephemeris data above, answer the user's prompt. 
-3. Provide profound, highly specific astrological insight. Do NOT hallucinate planetary positions—only use the data provided.
-4. Ensure extreme accuracy in how you combine the planetary logic (e.g., House lords, aspects, Nakshatra rulership).
-5. Format your response in beautiful Markdown with appropriate headings, bold text, and bullet points.`;
+SEEKER PROFILE DETAILS (Mandatory Grounding):
+- Name: ${userProfile.name || 'Seeker'}
+- Date of Birth: ${userProfile.dob || 'Provided in natal data'}
+- Time of Birth: ${userProfile.time || 'Provided in natal data'}
+- Place of Birth / Location: ${userProfile.location || 'Universal Coordinates'}
+- Preferred Astrological Tradition: ${preferredSystem}
+- Primary Life Focus / Goal: ${userProfile.careerGoal || 'Holistic Life Path & Destiny'}
+
+EXACT ASTRONOMICAL EPHEMERIS PLANETARY POSITIONS (True Keplerian Math):
+${planetaryPositions.map(p => `- ${p.name}: ${p.sign}, ${p.degree} degrees (Longitude: ${Math.round(p.degreeDecimal)}°), House ${p.houseNumber}, Nakshatra: ${p.nakshatra} Pada ${p.pada} - Dignity/Strength: ${p.strength}`).join('\n')}
+
+INSTRUCTIONS FOR ACCURACY & WORLDWIDE EXCELLENCE:
+1. You must provide a personalized reading tailored specifically to ${userProfile.name || 'this Seeker'} using their exact birth data and planetary positions.
+2. Ground all insights directly in the calculated positions above. Do NOT hallucinate different signs or houses.
+3. Integrate insights harmoniously according to the seeker's preferred system (${preferredSystem}) while maintaining worldwide universal relevance.
+4. Output your entire analysis in ${targetLanguage}.
+5. Format your response cleanly in structured Markdown with clear thematic headings, bulleted takeaways, empowering life guidance, and practical remedies.`;
 
   if (provider === 'gemini') {
     return callGemini(systemPrompt, promptContext, apiKey);

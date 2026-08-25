@@ -110,12 +110,12 @@ export default function LegalPolicyModal({
           {activePolicy === 'terms' && (
             <div className="space-y-4">
               <h3 className="text-base font-bold text-white font-serif">Terms of Service</h3>
-              <p className="text-slate-400 text-[11px] font-mono">Governed under Indian Information Technology Act, 2000</p>
+              <p className="text-slate-400 text-[11px] font-mono">Governed under International Digital Services & Privacy Standards (GDPR, CCPA & Global E-Commerce Frameworks)</p>
 
               <div className="space-y-3">
                 <h4 className="font-bold text-white text-xs">1. Platform Services</h4>
                 <p>
-                  ASTRO360 provides computational astrological algorithms, divisional charts (D1–D60), dasha timelines, and consultation matching services.
+                  ASTRO360 provides computational astrological algorithms, divisional & harmonic charts (D1–D60), planetary dasha timelines, and global consultation matching services.
                 </p>
 
                 <h4 className="font-bold text-white text-xs">2. Astrological Disclaimer</h4>
@@ -125,7 +125,7 @@ export default function LegalPolicyModal({
 
                 <h4 className="font-bold text-white text-xs">3. Subscriptions & Billing</h4>
                 <p>
-                  Pro memberships renew at the selected cadence (Monthly ₹299 / Annual ₹1,999). You can cancel your subscription at any time with one click in your account settings.
+                  Pro memberships renew at the selected cadence (Monthly $4.99 / Annual $29.99). You can cancel your subscription at any time with one click in your account settings.
                 </p>
               </div>
             </div>
@@ -150,7 +150,7 @@ export default function LegalPolicyModal({
 
                 <h4 className="font-bold text-white text-xs">3. Refund Processing Time</h4>
                 <p>
-                  Approved refunds are automatically credited back to your original payment source (UPI / Bank / Card) within <strong>3 to 5 business days</strong> via Cashfree Payments.
+                  Approved refunds are automatically credited back to your original payment source (Card / Digital Wallet / Bank) within <strong>3 to 5 business days</strong> via our secure payment partners.
                 </p>
               </div>
             </div>
@@ -160,7 +160,7 @@ export default function LegalPolicyModal({
           {activePolicy === 'shipping' && (
             <div className="space-y-4">
               <h3 className="text-base font-bold text-white font-serif">Delivery & Fulfillment Policy</h3>
-              <p className="text-slate-400 text-[11px] font-mono">Digital Instant Access & Physical Shipping</p>
+              <p className="text-slate-400 text-[11px] font-mono">Digital Instant Access & Worldwide Physical Fulfillment</p>
 
               <div className="space-y-3">
                 <h4 className="font-bold text-white text-xs">1. Instant Digital Fulfillment (0-5 Minutes)</h4>
@@ -170,7 +170,7 @@ export default function LegalPolicyModal({
 
                 <h4 className="font-bold text-white text-xs">2. Physical Remedial Goods (Gemstones & Yantras)</h4>
                 <p>
-                  Physical items undergoing Vedic energization (Prana Pratishtha) are dispatched within 2 to 3 business days and delivered within 4 to 6 business days across India with tracking details sent via WhatsApp and SMS.
+                  Physical items undergoing ritual consecration and energization are dispatched within 2 to 3 business days and delivered with international worldwide express shipping (4 to 8 business days) with end-to-end tracking.
                 </p>
               </div>
             </div>
@@ -180,15 +180,15 @@ export default function LegalPolicyModal({
           {activePolicy === 'contact' && (
             <div className="space-y-4">
               <h3 className="text-base font-bold text-white font-serif">Contact & Merchant Details</h3>
-              <p className="text-slate-400 text-[11px] font-mono">Official Support & Grievance Officer</p>
+              <p className="text-slate-400 text-[11px] font-mono">Global Celestial Support & Member Services</p>
 
               <div className="p-4 rounded-2xl bg-[#070A12] border border-white/[0.08] space-y-3">
                 <div className="flex items-center gap-3">
                   <Mail className="w-4 h-4 text-[#C9A86A]" />
                   <div>
                     <span className="text-[10px] text-slate-400 block font-mono uppercase">Official Email</span>
-                    <a href="mailto:support@astro.tarikislam.in" className="text-white font-bold hover:underline">
-                      support@astro.tarikislam.in / tarikk786786@gmail.com
+                    <a href="mailto:support@astroverse.global" className="text-white font-bold hover:underline">
+                      support@astroverse.global / contact@astro360.space
                     </a>
                   </div>
                 </div>
@@ -196,16 +196,16 @@ export default function LegalPolicyModal({
                 <div className="flex items-center gap-3">
                   <Phone className="w-4 h-4 text-emerald-400" />
                   <div>
-                    <span className="text-[10px] text-slate-400 block font-mono uppercase">Support Helpline (WhatsApp)</span>
-                    <span className="text-white font-bold font-mono">+91 98765 43210 (Mon–Sat, 10:00 AM – 7:00 PM IST)</span>
+                    <span className="text-[10px] text-slate-400 block font-mono uppercase">Global Support Desk</span>
+                    <span className="text-white font-bold font-mono">Available 24/7 via Priority Ticket & Live Chat</span>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
                   <MapPin className="w-4 h-4 text-purple-400" />
                   <div>
-                    <span className="text-[10px] text-slate-400 block font-mono uppercase">Operating Office</span>
-                    <span className="text-white font-medium">ASTRO360 Omni Studio, Bengaluru & Kolkata, India</span>
+                    <span className="text-[10px] text-slate-400 block font-mono uppercase">Operating Studio</span>
+                    <span className="text-white font-medium">ASTRO360 Global Celestial Studio & International Research Labs</span>
                   </div>
                 </div>
               </div>

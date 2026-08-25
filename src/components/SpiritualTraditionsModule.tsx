@@ -76,14 +76,14 @@ export default function SpiritualTraditionsModule({ userProfile }: SpiritualTrad
       ethicalNotes: 'Adherence to Satya (truthfulness) and Ahimsa (non-harming); spiritual purification as a path to Moksha.'
     },
     {
-      id: 'indian',
-      region: 'Indian Folk Traditions',
+      id: 'eastern-folk',
+      region: 'Eastern & Asian Folk Traditions',
       icon: '🪔',
-      title: 'Indian Regional Folk Healing & Remedies',
-      summary: 'Employs regional folk practices such as lemon-and-chili totkas (Nazar Battu), salt/mustard seed cleansing (Nazar Utarna), and protective amulets across rural and urban communities.',
-      keyPractices: ['Nazar Utarna with Rock Salt', 'Hanging Lemon & 7 Green Chilies', 'Black Thread (Kala Dhaga) on Ankle', 'Kohl (Kajal) Mark behind Ear'],
-      historicalTexts: ['Local Vernacular Manuscripts', 'Folk Healing Songs', 'Ayurvedic Folk Practices'],
-      ethicalNotes: 'Folk traditions passed down orally across generations to provide emotional comfort and community solidarity.'
+      title: 'Eastern Folk Healing, Protective Symbols & Earth Remedies',
+      summary: 'Employs regional folk practices such as herbal warding, energetic salt cleanses, mineral protection, and protective amulets across traditional worldwide communities.',
+      keyPractices: ['Energetic Cleansing with Rock Salt & Herbs', 'Protective Mineral Amulets & Talismans', 'Sacred Protective Threads', 'Natural Botanical Herb Diffusions'],
+      historicalTexts: ['Traditional Pharmacopoeias', 'Regional Healing Epics', 'Ancient Herbal Compendiums'],
+      ethicalNotes: 'Ancestral folk traditions passed down through generations to cultivate domestic harmony and grounding.'
     },
     {
       id: 'buddhist',

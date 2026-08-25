@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Cpu, Sparkles, CheckCircle2, ShieldCheck, Activity, Layers, Terminal, BookOpen, Send, RefreshCw, ChevronDown, ChevronUp, Bot, Brain, Key, AlertTriangle } from 'lucide-react';
 import { astroBrain, BrainExecutionResult } from '../lib/astroCoreBrain';
@@ -7,11 +7,14 @@ import { calculatePlanetaryPositions } from '../lib/astroCalculations';
 import { generateCosmicReading } from '../lib/aiOrchestrator';
 import { parseISO } from 'date-fns';
 
+import { useGlobalConfig } from '../context/GlobalConfigContext';
+
 export default function AstroCoreBrainConsole({ userProfile: propUserProfile }: { userProfile?: any }) {
   const { userProfile: storeProfile, apiKeys, setApiKeys } = useUserStore();
+  const { config } = useGlobalConfig();
   const userProfile = propUserProfile || storeProfile;
   
-  const [prompt, setPrompt] = useState<string>('Analyze my natal birth chart with Nakshatra alignment and tell me my life purpose.');
+  const [prompt, setPrompt] = useState<string>('Analyze my natal birth chart with astronomical planetary alignments and reveal my life purpose.');
   const [selectedSystem, setSelectedSystem] = useState<'universal' | 'vedic' | 'western' | 'islamic'>('universal');
   const [result, setResult] = useState<BrainExecutionResult | null>(null);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
@@ -54,7 +57,11 @@ export default function AstroCoreBrainConsole({ userProfile: propUserProfile }: 
         userProfile || {},
         positions,
         activeKey as string,
-        apiKeys.gemini ? 'gemini' : 'openai'
+        apiKeys.gemini ? 'gemini' : 'openai',
+        {
+          language: config.language,
+          tradition: selectedSystem
+        }
       );
 
       // Inject the real reading into the mock structure

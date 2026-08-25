@@ -163,8 +163,8 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
           </h1>
           <p className="text-sm text-slate-400 mt-1 max-w-2xl">
             {experienceMode === 'astrologer'
-              ? `High-precision natal ephemeris calculation, North/South Indian & Western wheel rendering, Vimshottari Dasha timeline, and D1–D60 divisional charts for ${userProfile?.name || 'Tarik Islam'}.`
-              : `A clear, friendly, plain-English breakdown of your core life strengths, emotional tendencies, auspicious timing, and lucky life elements for ${userProfile?.name || 'Tarik Islam'}.`}
+              ? `High-precision natal ephemeris calculation, Universal Diamond, Fixed Zodiac Square & Western 360° Circular Wheel rendering, Dasha timeline, and D1–D60 divisional charts for ${userProfile?.name || 'Universal Seeker'}.`
+              : `A clear, friendly, plain-language breakdown of your core life strengths, emotional tendencies, auspicious timing, and lucky life elements for ${userProfile?.name || 'Universal Seeker'}.`}
           </p>
         </div>
 

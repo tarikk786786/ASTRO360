@@ -12,7 +12,7 @@ const FEATURES = [
   {
     id: 'birth-chart',
     category: 'Natal & Timing',
-    title: 'Vedic Kundli Generator',
+    title: 'Universal Birth Chart Engine',
     description: 'Understand your planetary placements, dignities, and the overarching patterns across your 12 houses.',
     icon: Compass,
     tag: 'Core Natal',
@@ -20,10 +20,10 @@ const FEATURES = [
   {
     id: 'master-chart',
     category: 'Natal & Timing',
-    title: 'D1 to D60 Vargas',
-    description: 'Explore your complete traditional Vedic divisional charts with North, South, and East Indian layout formats.',
+    title: 'D1 to D60 Harmonic Charts',
+    description: 'Explore your complete harmonic charts with Universal Diamond, Fixed Zodiac Square, and Western Wheel layouts.',
     icon: Sun,
-    tag: 'Divisional',
+    tag: 'Harmonics',
   },
   {
     id: 'nakshatra',

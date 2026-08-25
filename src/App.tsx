@@ -247,7 +247,7 @@ export default function AppContent() {
     if (activeTab === 'report-generator') return 'Executive Report Generator';
     if (activeTab === 'admin-dashboard') return 'Admin Analytics & AI Tracing';
     if (activeTab === 'consultation-hub') return 'Astrologer Consultations & Community Q&A';
-    if (activeTab === 'earnings-hub' || activeTab === 'monetization') return 'Astrology Business & Revenue Hub (Cashfree PG)';
+    if (activeTab === 'earnings-hub' || activeTab === 'monetization') return 'Astrology Business & Global Revenue Hub';
     if (activeTab === 'landing') return 'Product Overview & Free Birth Chart';
     if (TRADITIONS[activeTab]) return TRADITIONS[activeTab].name;
     return 'Cosmos OMNI';
@@ -262,19 +262,18 @@ export default function AppContent() {
         />
       );
     }
-    return (
-      <LandingPage
-        onStartOnboarding={(preset) => {
-          setLandingPreset(preset);
-          setShowOnboarding(true);
-        }}
-        onNavigateToTab={(tab) => {
-          setActiveTab(tab);
-          setHasOnboarded(true);
-        }}
-        userProfile={userProfile}
-      />
-    );
+      return (
+        <LandingPage
+          onStartOnboarding={(preset) => {
+            setLandingPreset(preset);
+            setShowOnboarding(true);
+          }}
+          onNavigateToTab={(tab) => {
+            setShowOnboarding(true);
+          }}
+          userProfile={userProfile}
+        />
+      );
   }
 
   return (

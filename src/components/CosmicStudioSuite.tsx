@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, Compass, Eye, Download, Printer, Play, Pause, 
@@ -22,10 +22,10 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
   const currentProfile = useMemo(() => {
     return profiles.find(p => p.id === activeProfileId) || userProfile || {
       name: 'Seeker',
-      dob: '1995-10-24',
-      time: '14:30',
-      location: 'New Delhi, India',
-      preferredSystem: 'vedic',
+      dob: '1998-06-15',
+      time: '12:00',
+      location: 'Greenwich, London, UK',
+      preferredSystem: 'universal',
     };
   }, [profiles, activeProfileId, userProfile]);
 

@@ -14,10 +14,10 @@ interface BirthChartSectionProps {
 
 export default function BirthChartSection({ onExploreFullReading }: BirthChartSectionProps) {
   const [formData, setFormData] = useState({
-    name: 'Tarik Islam',
-    dob: '1995-08-15',
+    name: 'Alex Rivera',
+    dob: '1998-06-15',
     time: '12:00',
-    location: 'New Delhi, India',
+    location: 'London, United Kingdom',
   });
 
   const computeChart = (details: { dob: string; time?: string }) => {

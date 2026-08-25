@@ -250,7 +250,7 @@ export function Onboarding({ onComplete, initialProfile }: OnboardingProps) {
                     type="text"
                     required
                     className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-white placeholder-slate-500 text-sm"
-                    placeholder="e.g. Mumbai, India / London, UK"
+                    placeholder="e.g. London, UK / New York, USA / Tokyo, Japan"
                     value={profile.location}
                     onChange={(e) => handleInput('location', e.target.value)}
                   />
