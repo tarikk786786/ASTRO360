@@ -7,7 +7,7 @@ import { useState, useEffect, useCallback, Suspense } from 'react';
 import {
   Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, Users, Globe2, Bell,
   Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon,
-  Zap, Wrench, DollarSign, Wallet, ArrowLeft, Home, Cpu,
+  Zap, Wrench, DollarSign, Wallet, ArrowLeft, Home, Cpu, Layers,
   AlertTriangle, BarChart2, BookOpen, Calendar, Clock, Eye, FileText, Hash, Map, MapPin,
   Music, Network, Radar, Shield, Sun, Sunrise,
 } from 'lucide-react';
