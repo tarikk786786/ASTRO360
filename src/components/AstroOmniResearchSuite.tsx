@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ASTRO360 OMNI - Research, Comparative & Explainability Suite
  * Implements PRD Section 17, 37-43, 74, 89, 108 ("Why?" Explainability),
  * and 109 ("Compare Systems" Consensus & Contradiction Matrix).
@@ -264,7 +264,7 @@ export const AstroOmniResearchSuite: React.FC<AstroOmniResearchSuiteProps> = ({ 
               </div>
               <div className="text-right">
                 <span className="text-2xl font-bold font-mono text-indigo-400">
-                  {(confidence.overallModelConfidence * 100).toFixed(0)}%
+                  {Number((confidence?.overallModelConfidence ?? 0) * 100).toFixed(0)}%
                 </span>
                 <span className="text-[10px] block font-mono text-slate-400">Calibrated Score</span>
               </div>
@@ -273,27 +273,27 @@ export const AstroOmniResearchSuite: React.FC<AstroOmniResearchSuiteProps> = ({ 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
               <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-center space-y-1">
                 <span className="text-[10px] font-mono text-slate-400">Input Quality</span>
-                <div className="text-sm font-bold font-mono text-emerald-400">{(confidence.inputQuality * 100).toFixed(0)}%</div>
+                <div className="text-sm font-bold font-mono text-emerald-400">{Number((confidence?.inputQuality ?? 0) * 100).toFixed(0)}%</div>
               </div>
               <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-center space-y-1">
                 <span className="text-[10px] font-mono text-slate-400">Astro Precision</span>
-                <div className="text-sm font-bold font-mono text-emerald-400">{(confidence.astronomicalPrecision * 100).toFixed(0)}%</div>
+                <div className="text-sm font-bold font-mono text-emerald-400">{Number((confidence?.astronomicalPrecision ?? 0) * 100).toFixed(0)}%</div>
               </div>
               <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-center space-y-1">
                 <span className="text-[10px] font-mono text-slate-400">Rule Reliability</span>
-                <div className="text-sm font-bold font-mono text-indigo-400">{(confidence.ruleReliability * 100).toFixed(0)}%</div>
+                <div className="text-sm font-bold font-mono text-indigo-400">{Number((confidence?.ruleReliability ?? 0) * 100).toFixed(0)}%</div>
               </div>
               <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-center space-y-1">
                 <span className="text-[10px] font-mono text-slate-400">Timing Precision</span>
-                <div className="text-sm font-bold font-mono text-indigo-400">{(confidence.timingPrecision * 100).toFixed(0)}%</div>
+                <div className="text-sm font-bold font-mono text-indigo-400">{Number((confidence?.timingPrecision ?? 0) * 100).toFixed(0)}%</div>
               </div>
               <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-center space-y-1">
                 <span className="text-[10px] font-mono text-slate-400">Consensus Agree</span>
-                <div className="text-sm font-bold font-mono text-emerald-400">{(confidence.crossSystemAgreement * 100).toFixed(0)}%</div>
+                <div className="text-sm font-bold font-mono text-emerald-400">{Number((confidence?.crossSystemAgreement ?? 0) * 100).toFixed(0)}%</div>
               </div>
               <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800 text-center space-y-1">
                 <span className="text-[10px] font-mono text-slate-400">Historical Val</span>
-                <div className="text-sm font-bold font-mono text-amber-400">{(confidence.historicalValidation * 100).toFixed(0)}%</div>
+                <div className="text-sm font-bold font-mono text-amber-400">{Number((confidence?.historicalValidation ?? 0) * 100).toFixed(0)}%</div>
               </div>
             </div>
 
@@ -333,7 +333,7 @@ export const AstroOmniResearchSuite: React.FC<AstroOmniResearchSuiteProps> = ({ 
                       </span>
                     </div>
                     <span className="text-xs font-mono text-emerald-400 font-bold">
-                      Weight: {(rule.weight * 100).toFixed(0)}%
+                      Weight: {Number((rule.weight ?? 0) * 100).toFixed(0)}%
                     </span>
                   </div>
 

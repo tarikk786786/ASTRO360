@@ -143,7 +143,7 @@ export default function AstroSynastryMatchmaker({ userProfile }: AstroSynastryMa
         maxScore,
         desc,
         color,
-        orb: `${delta.toFixed(1)}°`,
+        orb: `${Number(delta ?? 0).toFixed(1)}°`,
       };
     });
 

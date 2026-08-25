@@ -36,10 +36,11 @@ export function NumberTicker({
     () =>
       springValue.on('change', (latest) => {
         if (ref.current) {
+          const num = typeof latest === 'number' ? latest : parseFloat(String(latest)) || 0;
           ref.current.textContent = Intl.NumberFormat('en-US', {
             minimumFractionDigits: decimalPlaces,
             maximumFractionDigits: decimalPlaces,
-          }).format(Number(latest.toFixed(decimalPlaces)));
+          }).format(Number(num.toFixed(decimalPlaces)));
         }
       }),
     [springValue, decimalPlaces]

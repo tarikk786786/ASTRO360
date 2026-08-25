@@ -560,7 +560,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Exact Longitude:</span>
-                    <span className="font-mono text-cyan-300">{selectedPlanet.degreeDecimal.toFixed(4)}°</span>
+                    <span className="font-mono text-cyan-300">{Number(selectedPlanet.degreeDecimal ?? parseFloat(String(selectedPlanet.degree)) ?? 0).toFixed(4)}°</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Motional Status:</span>
