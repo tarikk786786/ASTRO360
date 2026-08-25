@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, ArrowRight, ShieldCheck, CheckCircle2, Compass, 
@@ -50,119 +50,145 @@ export default function LandingPage({
         onOpenDashboard={() => onNavigateToTab('home')}
       />
 
-      {/* 2. Hero Section */}
-      <section id="hero" className="max-w-5xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-12 text-center space-y-8">
-        {/* Eyebrow */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 font-mono text-xs font-bold tracking-wider uppercase"
-        >
-          <Sparkles className="w-3.5 h-3.5" />
-          GLOBAL ASTROLOGY INTELLIGENCE
-        </motion.div>
+      {/* 2. Hero Section (PRD Section 4 & 6) */}
+      <section id="hero" className="max-w-6xl mx-auto px-4 sm:px-6 pt-10 sm:pt-16 lg:pt-20 pb-12 sm:pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          
+          {/* Left Column: Headline, Copy & CTAs */}
+          <div className="lg:col-span-7 text-center lg:text-left space-y-6">
+            {/* Eyebrow */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 font-mono text-xs font-bold tracking-wider uppercase"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              GLOBAL ASTROLOGY INTELLIGENCE
+            </motion.div>
 
-        {/* Headline & Subtitle */}
-        <div className="space-y-4 max-w-3xl mx-auto">
-          <motion.h1 
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15]"
-          >
-            Understand your astrology. <br />
-            <span className="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-200 bg-clip-text text-transparent">
-              Across traditions.
-            </span>
-          </motion.h1>
+            {/* Headline */}
+            <motion.h1 
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15]"
+            >
+              Understand your astrology. <br />
+              <span className="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-200 bg-clip-text text-transparent">
+                Across traditions.
+              </span>
+            </motion.h1>
 
-          <motion.p 
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-sm sm:text-base lg:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed"
-          >
-            Explore your birth chart, timing cycles, relationships, career themes, and future periods through multiple astrological systems—explained clearly and transparently.
-          </motion.p>
+            {/* Supporting Copy */}
+            <motion.p 
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-sm sm:text-base lg:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-sans"
+            >
+              Explore your birth chart, timing cycles, relationships, career themes and forecasts through multiple astrology traditions—clearly explained and transparently calculated.
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div 
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-1"
+            >
+              <button
+                onClick={handleCreateChart}
+                className="px-6 py-3.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm flex items-center gap-2 shadow-xl shadow-amber-400/25 transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <span>Create My Chart</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => scrollToSection('methodology-section')}
+                className="px-6 py-3.5 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] text-slate-300 hover:text-white border border-white/10 font-mono text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer"
+              >
+                <span>See How It Works</span>
+              </button>
+            </motion.div>
+
+            {/* Micro-Trust Line */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-1 text-[11px] sm:text-xs text-slate-400 font-mono pt-1"
+            >
+              <span className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Deterministic calculations</span>
+              <span>•</span>
+              <span>Explainable interpretations</span>
+              <span>•</span>
+              <span>Multi-tradition analysis</span>
+            </motion.div>
+          </div>
+
+          {/* Right Column: Realistic ASTRO360 Product Preview (PRD Section 4) */}
+          <div className="lg:col-span-5">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.7 }}
+              className="p-5 sm:p-7 rounded-3xl bg-[#0B1220] border border-white/15 shadow-2xl text-left space-y-4 relative overflow-hidden"
+            >
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold">
+                  ASTRO360 TODAY
+                </span>
+                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                  Live Synthesis
+                </span>
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-xs font-mono text-slate-400">Today's strongest theme</span>
+                <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-amber-400" /> Personal Growth
+                </h3>
+                <p className="text-xs text-slate-300 leading-snug">Mental drive and strategic clarity are elevated today.</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2.5 text-xs font-mono pt-1">
+                <div className="p-3 rounded-2xl bg-white/5 border border-pink-500/25 space-y-0.5">
+                  <div className="text-pink-400 font-bold flex items-center gap-1">
+                    <Heart className="w-3.5 h-3.5" /> Love
+                  </div>
+                  <span className="text-white font-bold text-xs">Strong</span>
+                </div>
+                <div className="p-3 rounded-2xl bg-white/5 border border-cyan-500/25 space-y-0.5">
+                  <div className="text-cyan-400 font-bold flex items-center gap-1">
+                    <Briefcase className="w-3.5 h-3.5" /> Career
+                  </div>
+                  <span className="text-white font-bold text-xs">Elevated</span>
+                </div>
+                <div className="p-3 rounded-2xl bg-white/5 border border-emerald-500/25 space-y-0.5">
+                  <div className="text-emerald-400 font-bold flex items-center gap-1">
+                    <DollarSign className="w-3.5 h-3.5" /> Money
+                  </div>
+                  <span className="text-white font-bold text-xs">Balanced</span>
+                </div>
+                <div className="p-3 rounded-2xl bg-white/5 border border-purple-500/25 space-y-0.5">
+                  <div className="text-purple-400 font-bold flex items-center gap-1">
+                    <Compass className="w-3.5 h-3.5" /> Travel
+                  </div>
+                  <span className="text-white font-bold text-xs">Active</span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-2xl bg-[#080E1A] border border-amber-500/30 space-y-1 text-xs font-mono">
+                <div className="flex justify-between items-center text-slate-300">
+                  <span className="font-bold text-white">Next: 💼 Career</span>
+                  <span className="text-amber-400">Sep 12 – Oct 28</span>
+                </div>
+                <p className="text-[11px] text-slate-400">3 systems support this window.</p>
+              </div>
+            </motion.div>
+          </div>
+
         </div>
-
-        {/* CTAs */}
-        <motion.div 
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2"
-        >
-          <button
-            onClick={handleCreateChart}
-            className="px-6 py-3.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm flex items-center gap-2 shadow-xl shadow-amber-400/25 transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
-          >
-            <span>Create My Chart</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => scrollToSection('methodology-section')}
-            className="px-6 py-3.5 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] text-slate-300 hover:text-white border border-white/10 font-mono text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer"
-          >
-            <span>Explore How It Works</span>
-          </button>
-        </motion.div>
-
-        {/* Micro-Trust Line */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="text-[11px] sm:text-xs text-slate-400 font-mono pt-1"
-        >
-          Deterministic astronomical calculations · Explainable interpretations · No guaranteed-future claims
-        </motion.p>
-
-        {/* Hero Visual Mockup */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.7 }}
-          className="p-6 sm:p-8 rounded-3xl bg-[#0B1220] border border-white/15 shadow-2xl max-w-xl mx-auto text-left space-y-4 relative overflow-hidden"
-        >
-          <div className="flex items-center justify-between border-b border-white/10 pb-3">
-            <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold">
-              ASTRO360 INTELLIGENCE DASHBOARD
-            </span>
-            <span className="text-[10px] font-mono text-slate-400">Live Synthesis</span>
-          </div>
-
-          <div className="space-y-1">
-            <span className="text-xs font-mono text-slate-400">Your strongest theme</span>
-            <h3 className="text-xl font-bold text-white flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-amber-400" /> PERSONAL GROWTH
-            </h3>
-            <p className="text-xs text-slate-300">You may feel more motivated to finish something important today.</p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3 text-xs font-mono pt-1">
-            <div className="p-3 rounded-2xl bg-white/5 border border-pink-500/30">
-              <div className="text-pink-400 font-bold flex items-center gap-1">
-                <Heart className="w-3.5 h-3.5" /> Love
-              </div>
-              <span className="text-white font-bold text-sm">Positive Flow</span>
-            </div>
-            <div className="p-3 rounded-2xl bg-white/5 border border-cyan-500/30">
-              <div className="text-cyan-400 font-bold flex items-center gap-1">
-                <Briefcase className="w-3.5 h-3.5" /> Career
-              </div>
-              <span className="text-white font-bold text-sm">High Focus</span>
-            </div>
-          </div>
-
-          <div className="p-3.5 rounded-2xl bg-[#080E1A] border border-amber-500/30 space-y-1 text-xs font-mono">
-            <div className="flex justify-between items-center text-slate-300">
-              <span className="font-bold text-white">Next Major Period: Career Expansion</span>
-              <span className="text-amber-400">Sep 12 – Oct 28</span>
-            </div>
-            <p className="text-[11px] text-slate-400">3 independent systems support this period (Vedic, Western & KP).</p>
-          </div>
-        </motion.div>
       </section>
 
       {/* 3. Product Preview Section (4 Interactive Tabs) */}
@@ -217,8 +243,33 @@ export default function LandingPage({
           </p>
         </div>
 
-        <div className="p-6 sm:p-8 rounded-3xl bg-[#0B1220] border border-white/15 shadow-2xl space-y-6">
-          <div className="overflow-x-auto">
+        <div className="p-5 sm:p-8 rounded-3xl bg-[#0B1220] border border-white/15 shadow-2xl space-y-6">
+          {/* Mobile Stacked Cards (PRD Section 45) */}
+          <div className="grid grid-cols-2 gap-2.5 sm:hidden font-mono text-xs">
+            <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-emerald-500/30 space-y-1">
+              <span className="text-slate-400 text-[10px] uppercase">Vedic (Jyotish)</span>
+              <div className="font-bold text-emerald-400">Strong (88%)</div>
+              <p className="text-[10px] text-slate-400">10th House Kendra</p>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-emerald-500/30 space-y-1">
+              <span className="text-slate-400 text-[10px] uppercase">Western Tropical</span>
+              <div className="font-bold text-emerald-400">Strong (84%)</div>
+              <p className="text-[10px] text-slate-400">Sun trine Midheaven</p>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-cyan-500/30 space-y-1">
+              <span className="text-slate-400 text-[10px] uppercase">KP Astrology</span>
+              <div className="font-bold text-cyan-400">Moderate (72%)</div>
+              <p className="text-[10px] text-slate-400">10th Sub-Lord</p>
+            </div>
+            <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-emerald-500/30 space-y-1">
+              <span className="text-slate-400 text-[10px] uppercase">Chinese BaZi</span>
+              <div className="font-bold text-emerald-400">Strong (85%)</div>
+              <p className="text-[10px] text-slate-400">Yang Stem Support</p>
+            </div>
+          </div>
+
+          {/* Desktop Table View */}
+          <div className="hidden sm:block overflow-x-auto">
             <table className="w-full text-xs font-mono text-left">
               <thead>
                 <tr className="border-b border-white/10 text-slate-400">

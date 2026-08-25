@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sparkles, ArrowRight, Menu, X, ShieldCheck } from 'lucide-react';
 
 interface OmniLandingNavbarProps {
@@ -62,13 +62,13 @@ export default function OmniLandingNavbar({
             </div>
           </div>
 
-          {/* Desktop Nav Links */}
+          {/* Desktop Nav Links (PRD Section 7) */}
           <nav className="hidden md:flex items-center gap-6 text-xs font-mono text-slate-300">
             <button
-              onClick={() => onNavigateSection('product-preview')}
+              onClick={() => onNavigateSection('hero')}
               className="hover:text-white transition-colors cursor-pointer"
             >
-              Product
+              Home
             </button>
             <button
               onClick={() => onNavigateSection('forecast-section')}
@@ -77,22 +77,22 @@ export default function OmniLandingNavbar({
               Forecast
             </button>
             <button
-              onClick={() => onNavigateSection('systems-section')}
+              onClick={() => onNavigateSection('product-preview')}
               className="hover:text-white transition-colors cursor-pointer"
             >
-              Astrology Systems
+              Ask
+            </button>
+            <button
+              onClick={() => onNavigateSection('product-preview')}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
+              Charts
             </button>
             <button
               onClick={() => onNavigateSection('methodology-section')}
               className="hover:text-white transition-colors cursor-pointer"
             >
               Methodology
-            </button>
-            <button
-              onClick={() => onNavigateSection('faq-section')}
-              className="hover:text-white transition-colors cursor-pointer"
-            >
-              FAQ
             </button>
           </nav>
 
