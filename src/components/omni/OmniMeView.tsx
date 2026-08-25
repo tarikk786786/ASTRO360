@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { 
   User, Calendar, Clock, MapPin, ShieldCheck, FileText, 
   Settings, Bell, Lock, Cpu, Sparkles, ChevronRight, 
-  CheckCircle2, ArrowRight, Eye, RefreshCw, HelpCircle 
+  CheckCircle2, ArrowRight, Eye, RefreshCw, HelpCircle, Trash2 
 } from 'lucide-react';
 import { UserProfile } from '../../types';
 import OmniShareCardGenerator from './OmniShareCardGenerator';
@@ -12,12 +12,14 @@ interface OmniMeViewProps {
   userProfile: UserProfile;
   onEditProfile: () => void;
   onNavigate: (tab: string) => void;
+  onResetAllData?: () => void;
 }
 
 export default function OmniMeView({
   userProfile,
   onEditProfile,
-  onNavigate
+  onNavigate,
+  onResetAllData
 }: OmniMeViewProps) {
   const [expertMode, setExpertMode] = useState(false);
 
@@ -173,6 +175,28 @@ export default function OmniMeView({
               View →
             </button>
           </div>
+
+          {onResetAllData && (
+            <div className="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <Trash2 className="w-4 h-4 text-rose-400 shrink-0" />
+                <div>
+                  <span className="font-bold text-rose-300 block">Reset All Stored Data</span>
+                  <span className="text-[10.5px] text-slate-400 block">Clear cached birth profile on this device and start completely fresh.</span>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  if (window.confirm("Are you sure you want to reset all stored birth details on this device and return to the fresh start page?")) {
+                    onResetAllData();
+                  }
+                }}
+                className="px-3.5 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 hover:text-rose-200 border border-rose-500/40 text-xs font-bold font-mono transition-colors cursor-pointer shrink-0"
+              >
+                Reset & Start Fresh
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

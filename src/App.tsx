@@ -152,20 +152,51 @@ export default function AppContent() {
         const tabParam = urlParams.get('tab');
         if (tabParam) return tabParam;
       }
-      return localStorage.getItem(TAB_KEY) || 'home';
+      const savedProfile = localStorage.getItem(STORAGE_KEY);
+      if (savedProfile) {
+        const parsed = JSON.parse(savedProfile);
+        if (parsed && typeof parsed.name === 'string' && parsed.name.trim().length > 0 && parsed.dob) {
+          return localStorage.getItem(TAB_KEY) || 'home';
+        }
+      }
+      return 'landing';
     } catch {
-      return 'home';
+      return 'landing';
     }
   });
 
   const [navigationHistory, setNavigationHistory] = useState<string[]>(() => {
     try {
-      const initial = localStorage.getItem(TAB_KEY) || 'home';
-      return [initial];
+      const savedProfile = localStorage.getItem(STORAGE_KEY);
+      if (savedProfile) {
+        const parsed = JSON.parse(savedProfile);
+        if (parsed && typeof parsed.name === 'string' && parsed.name.trim().length > 0 && parsed.dob) {
+          const initial = localStorage.getItem(TAB_KEY) || 'home';
+          return [initial];
+        }
+      }
+      return ['landing'];
     } catch {
-      return ['home'];
+      return ['landing'];
     }
   });
+
+  const handleResetAllData = () => {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(TAB_KEY);
+      localStorage.clear();
+      sessionStorage.clear();
+    } catch (e) {
+      console.warn("Storage reset error", e);
+    }
+    setUserProfile(EMPTY_PROFILE);
+    setHasOnboarded(false);
+    setShowOnboarding(false);
+    setLandingPreset(undefined);
+    setActiveTab('landing');
+    setNavigationHistory(['landing']);
+  };
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -730,6 +761,7 @@ export default function AppContent() {
                       userProfile={userProfile}
                       onEditProfile={() => setIsProfileModalOpen(true)}
                       onNavigate={navigateTo}
+                      onResetAllData={handleResetAllData}
                     />
                   )}
                   {activeTab === 'more' && (
