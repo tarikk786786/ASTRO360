@@ -550,17 +550,18 @@ export default function AppContent() {
               <span>Home</span>
             </button>
 
-            {/* 5 Primary Desktop Nav Tabs */}
+            {/* Primary Desktop Nav Tabs */}
             <div className="hidden lg:flex items-center gap-1 bg-[#0F172A] p-1 rounded-2xl border border-white/10 mx-2">
               {[
                 { id: 'home', label: 'Home', icon: Home },
+                { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
                 { id: 'forecast', label: 'Forecast', icon: Calendar },
                 { id: 'ask', label: 'Ask', icon: MessageCircle },
                 { id: 'charts', label: 'Charts', icon: Compass },
                 { id: 'more', label: 'More', icon: Layers }
               ].map((tab) => {
                 const Icon = tab.icon;
-                const isActive = activeTab === tab.id || (tab.id === 'home' && (activeTab === 'dashboard' || activeTab === 'overview'));
+                const isActive = activeTab === tab.id || (tab.id === 'dashboard' && (activeTab === 'pro-dashboard' || activeTab === 'overview'));
                 return (
                   <button
                     key={tab.id}
@@ -671,14 +672,14 @@ export default function AppContent() {
                       userProfile={userProfile}
                     />
                   )}
-                  {(activeTab === 'home' || activeTab === 'dashboard' || activeTab === 'overview') && (
+                  {activeTab === 'home' && (
                     <OmniSimpleHome
                       userProfile={userProfile}
                       onNavigate={navigateTo}
                       onOpenProfile={() => setIsProfileModalOpen(true)}
                     />
                   )}
-                  {activeTab === 'pro-dashboard' && (
+                  {(activeTab === 'dashboard' || activeTab === 'pro-dashboard' || activeTab === 'overview') && (
                     <CosmicIntelligenceCenter
                       onNavigate={navigateTo}
                       userProfile={userProfile}
@@ -715,21 +716,21 @@ export default function AppContent() {
                   {activeTab === 'consultation-hub' && <CommunityConsultationHub />}
                   {activeTab === 'divisional-charts' && <DivisionalChartsSuite userProfile={userProfile} />}
                   {activeTab === 'btr-suite' && <BirthTimeRectificationSuite />}
-                  {activeTab === 'gemstone-suite' && <GemstoneRudrakshaSuite />}
-                  {activeTab === 'numerology-suite' && <NumerologyNameSuite />}
-                  {activeTab === 'tarot-iching' && <TarotIChingSuite />}
+                  {(activeTab === 'gemstone-suite' || activeTab === 'gemstones') && <GemstoneRudrakshaSuite />}
+                  {(activeTab === 'numerology' || activeTab === 'numerology-suite') && <NumerologyNameSuite />}
+                  {(activeTab === 'tarot-iching' || activeTab === 'tarot') && <TarotIChingSuite />}
                   {activeTab === 'time-horizon' && <TimeHorizonForecastSuite userProfile={userProfile} />}
                   {activeTab === 'dosha-engine' && <DoshaRemedyEngine userProfile={userProfile} />}
                   {activeTab === 'biorhythm-tracker' && <CosmicBiorhythmTracker userProfile={userProfile} />}
-                  {activeTab === 'chakra-alignment' && <SacredChakraAlignment />}
-                  {activeTab === 'fengshui-matrix' && <CosmicFengShuiMatrix userProfile={userProfile} />}
-                  {activeTab === 'electional-muhurta' && <ElectionalMuhurtaEngine />}
-                  {activeTab === 'planetary-horas' && <PlanetaryHorasTracker />}
-                  {activeTab === 'mantra-soundboard' && <SacredMantraSoundboard />}
+                  {(activeTab === 'chakras' || activeTab === 'chakra-alignment') && <SacredChakraAlignment />}
+                  {(activeTab === 'feng-shui' || activeTab === 'fengshui-matrix') && <CosmicFengShuiMatrix userProfile={userProfile} />}
+                  {(activeTab === 'muhurta' || activeTab === 'electional-muhurta') && <ElectionalMuhurtaEngine />}
+                  {(activeTab === 'horas' || activeTab === 'planetary-horas') && <PlanetaryHorasTracker />}
+                  {(activeTab === 'mantras' || activeTab === 'mantra-soundboard') && <SacredMantraSoundboard />}
                   {activeTab === 'transit-radar' && <PlanetaryTransitRadar />}
                   {activeTab === 'panchang-deities' && <PanchangDeitiesEngine />}
                   {activeTab === 'cosmic-compass' && <CosmicCompassVisualizer userProfile={userProfile} />}
-                  {activeTab === 'astro-cartography' && <AstroCartographyMatrix userProfile={userProfile} />}
+                  {(activeTab === 'astrocartography' || activeTab === 'astro-cartography') && <AstroCartographyMatrix userProfile={userProfile} />}
                   {activeTab === 'transit-calendar' && <CosmicTransitCalendar />}
                   {activeTab === 'synastry-overlay' && <SynastryOverlayChart userProfile={userProfile} />}
                   {activeTab === 'mind-map' && <AstrologicalMindMap />}
@@ -766,16 +767,17 @@ export default function AppContent() {
           </div>
         </div>
 
-      {/* 📱 MOBILE BOTTOM NAVIGATION DOCK (5 Primary Tabs) */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 pb-safe bg-[#090d16]/95 backdrop-blur-3xl border-t border-white/[0.08] z-40 px-3 flex items-center justify-around shadow-[0_-8px_30px_rgba(0,0,0,0.5)] select-none">
+      {/* 📱 MOBILE BOTTOM NAVIGATION DOCK */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 pb-safe bg-[#090d16]/95 backdrop-blur-3xl border-t border-white/[0.08] z-40 px-2 flex items-center justify-around shadow-[0_-8px_30px_rgba(0,0,0,0.5)] select-none">
         {[
           { id: 'home', icon: Home, label: 'Home', color: 'amber' },
-          { id: 'forecast', icon: Calendar, label: 'Forecast', color: 'cyan' },
-          { id: 'ask', icon: MessageCircle, label: 'Ask', color: 'blue' },
+          { id: 'dashboard', icon: LayoutDashboard, label: 'Studio', color: 'cyan' },
+          { id: 'forecast', icon: Calendar, label: 'Forecast', color: 'blue' },
+          { id: 'ask', icon: MessageCircle, label: 'Ask', color: 'indigo' },
           { id: 'charts', icon: Compass, label: 'Charts', color: 'purple' },
           { id: 'more', icon: Layers, label: 'More', color: 'emerald' },
         ].map(({ id, icon: Icon, label, color }) => {
-          const isActive = activeTab === id || (id === 'home' && (activeTab === 'dashboard' || activeTab === 'overview'));
+          const isActive = activeTab === id || (id === 'dashboard' && (activeTab === 'pro-dashboard' || activeTab === 'overview'));
           return (
             <motion.button
               key={id}
@@ -786,7 +788,7 @@ export default function AppContent() {
               }`}
             >
               <div className="relative">
-                <Icon className={`w-5 h-5 transition-transform ${isActive ? `text-${color}-400 drop-shadow-[0_0_10px_rgba(245,158,11,0.6)] scale-110` : ''}`} />
+                <Icon className={`w-5 h-5 transition-transform ${isActive ? `text-${color}-400 drop-shadow-[0_0_10px_rgba(6,182,212,0.6)] scale-110` : ''}`} />
                 {isActive && (
                   <motion.div 
                     layoutId="mobileActiveDot"
@@ -794,7 +796,7 @@ export default function AppContent() {
                   />
                 )}
               </div>
-              <span className={`text-[10.5px] mt-0.5 tracking-tight ${isActive ? 'font-bold' : 'font-medium'}`}>{label}</span>
+              <span className={`text-[10px] mt-0.5 tracking-tight ${isActive ? 'font-bold' : 'font-medium'}`}>{label}</span>
             </motion.button>
           );
         })}

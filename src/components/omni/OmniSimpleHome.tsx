@@ -1,9 +1,9 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'motion/react';
 import { 
   Sparkles, Heart, Briefcase, DollarSign, Compass, ArrowRight, 
   HelpCircle, CheckCircle2, AlertTriangle, Clock, Calendar, ShieldCheck, 
-  MessageSquare, ChevronRight, User, Globe2
+  MessageSquare, ChevronRight, User, Globe2, Moon, Layers, Award, Globe, FileText, Bot
 } from 'lucide-react';
 import type { UserProfile } from '../../types';
 import OmniWhyDrawer, { type OmniWhyDrawerProps } from './OmniWhyDrawer';
@@ -42,20 +42,29 @@ export default function OmniSimpleHome({
       {/* 1. Header Greeting & Date */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            {greeting}, <span className="text-amber-400">{seekerName}</span>
-          </h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              {greeting}, <span className="text-amber-400">{seekerName}</span>
+            </h1>
+          </div>
           <p className="text-xs sm:text-sm text-slate-400 font-mono pt-0.5">
             Your astrology for today • {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
-        {userProfile.dob && (
-          <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={() => onNavigate('dashboard')}
+            className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 text-xs font-mono font-bold flex items-center gap-1.5 shadow-md shadow-amber-500/20 hover:scale-105 transition-all cursor-pointer"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Master 152+ Tools Studio</span>
+          </button>
+          {userProfile.dob && (
             <span className="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30 flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5" /> High Confidence Birth Chart
+              <ShieldCheck className="w-3.5 h-3.5" /> High Confidence Chart
             </span>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* 2. Hero: Strongest Theme Today */}
@@ -279,7 +288,72 @@ export default function OmniSimpleHome({
         </div>
       </div>
 
-      {/* 6. Quick Ask ASTRO360 Prompt Banner */}
+      {/* 6. Master 152+ Universal Tools & Calculation Engines Hub */}
+      <div className="space-y-4 pt-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+          <div>
+            <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-amber-400" /> Master 152+ Universal Tools & Calculation Engines
+            </h3>
+            <p className="text-xs text-slate-400 font-mono">
+              Launch high-precision celestial calculators, timing radars, remedies & divination suites with 1 click.
+            </p>
+          </div>
+          <button
+            onClick={() => onNavigate('dashboard')}
+            className="text-xs font-mono font-bold text-cyan-400 hover:text-cyan-300 flex items-center gap-1 cursor-pointer self-start sm:self-auto"
+          >
+            Open Full Studio Mode <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {[
+            { id: 'birth-chart', title: 'Natal Kundli & Planetary Coordinates', desc: 'D1–D60 vargas, planetary degrees & padas', icon: Compass, color: 'text-amber-400', border: 'border-amber-500/30' },
+            { id: 'dasha', title: 'Vimshottari Dasha Engine', desc: '120-year timeline, Mahadasha, Antardasha & Pratyantar', icon: Clock, color: 'text-cyan-400', border: 'border-cyan-500/30' },
+            { id: 'transit-calendar', title: 'Planetary Transit Radar', desc: 'Real-time planetary ingresses & speed tracking', icon: Calendar, color: 'text-purple-400', border: 'border-purple-500/30' },
+            { id: 'compatibility', title: 'Synastry & 36-Guna Matchmaker', desc: 'Ashta Koota marriage & relationship harmony', icon: Heart, color: 'text-pink-400', border: 'border-pink-500/30' },
+            { id: 'islamic-suite', title: 'Islamic Ilm al-Falak Hub', desc: 'Qur\'anic astronomical verses & lunar calendar', icon: Moon, color: 'text-emerald-400', border: 'border-emerald-500/30' },
+            { id: 'numerology', title: 'Pythagorean & Chaldean Numerology', desc: 'Life Path, Destiny, Soul Urge & Name vibration', icon: DollarSign, color: 'text-teal-400', border: 'border-teal-500/30' },
+            { id: 'tarot-iching', title: '78 Tarot & 64 I Ching Oracle', desc: 'Hexagram casting, astrological tarot spreads', icon: Layers, color: 'text-indigo-400', border: 'border-indigo-500/30' },
+            { id: 'remedies', title: 'Multi-Tradition Remedies & Gems', desc: 'Prescribed gemstones, rudraksha & yantras', icon: Award, color: 'text-yellow-400', border: 'border-yellow-500/30' },
+            { id: 'feng-shui', title: 'Cosmic Feng Shui & Bagua Matrix', desc: 'Directional energies, 5-element home balance', icon: Globe2, color: 'text-rose-400', border: 'border-rose-500/30' },
+            { id: 'muhurta', title: 'Electional Muhurta & Horas', desc: 'Auspicious timings for business, travel & weddings', icon: Clock, color: 'text-orange-400', border: 'border-orange-500/30' },
+            { id: 'astrocartography', title: 'AstroCartography Global Map', desc: 'Planetary relocation lines across worldwide cities', icon: Globe, color: 'text-blue-400', border: 'border-blue-500/30' },
+            { id: 'btr-suite', title: 'Birth Time Rectification (BTR)', desc: 'Tattwa Shodhana & life event inverse alignment', icon: ShieldCheck, color: 'text-cyan-400', border: 'border-cyan-500/30' },
+            { id: 'divisional-charts', title: 'D1–D60 Divisional Varga Suite', desc: 'Navamsha (D9), Dashamsha (D10) & Shashtiamsa (D60)', icon: Layers, color: 'text-amber-400', border: 'border-amber-500/30' },
+            { id: 'report-generator', title: 'Executive PDF Dossier Generator', desc: '18+ page structured analytical client reports', icon: FileText, color: 'text-emerald-400', border: 'border-emerald-500/30' },
+            { id: 'chat', title: 'AI Astrological Oracle Assistant', desc: 'Conversational consultation with classical sources', icon: Bot, color: 'text-purple-400', border: 'border-purple-500/30' },
+            { id: 'omni-research', title: 'OMNI Multi-Tradition Research Core', desc: 'Direct side-by-side consensus calculation matrix', icon: Sparkles, color: 'text-amber-300', border: 'border-amber-400/40' },
+          ].map((tool) => {
+            const Icon = tool.icon;
+            return (
+              <button
+                key={tool.id}
+                onClick={() => onNavigate(tool.id)}
+                className={`p-4 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] border ${tool.border} hover:scale-[1.02] transition-all duration-200 text-left space-y-2 group cursor-pointer shadow-md`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="p-2 rounded-xl bg-white/5 border border-white/10 group-hover:border-amber-400/40">
+                    <Icon className={`w-4 h-4 ${tool.color}`} />
+                  </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-white transition-colors" />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors line-clamp-1">
+                    {tool.title}
+                  </h4>
+                  <p className="text-[10.5px] text-slate-400 line-clamp-2 pt-0.5 leading-snug">
+                    {tool.desc}
+                  </p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 7. Quick Ask ASTRO360 Prompt Banner */}
       <div 
         onClick={() => onNavigate('ask')}
         className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-indigo-950/80 via-slate-900 to-[#0F172A] border border-indigo-500/30 hover:border-indigo-500/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer group transition-all"
