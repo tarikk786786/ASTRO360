@@ -14,6 +14,7 @@ import OmniWhyShowcase from './OmniWhyShowcase';
 import OmniFAQSection from './OmniFAQSection';
 import OmniAudioBriefing from '../omni/OmniAudioBriefing';
 import OmniLiveSkyRadar from '../omni/OmniLiveSkyRadar';
+import OmniLiveZodiacRadar from './OmniLiveZodiacRadar';
 
 interface LandingPageProps {
   onStartOnboarding: (presetData?: Partial<UserProfile>) => void;
@@ -476,6 +477,9 @@ export default function LandingPage({
           </div>
         </div>
       </section>
+
+      {/* 5.8 All 12 Zodiac Live Horoscope & Transit Radar for Today */}
+      <OmniLiveZodiacRadar onSelectSign={(sign) => handleCreateChart()} />
 
       {/* 6. "Why This Prediction?" Deep Dive */}
       <OmniWhyShowcase onExploreMethodology={() => scrollToSection('methodology-section')} />
