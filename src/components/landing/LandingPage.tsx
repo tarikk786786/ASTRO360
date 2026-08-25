@@ -89,7 +89,7 @@ export default function LandingPage({
               Explore your chart, cycles, relationships, and important periods through multiple astrological traditions—brought together in one modern experience.
             </motion.p>
 
-            {/* CTAs (Enterprise PRD Section 8) */}
+            {/* CTAs (Free Attraction PRD Section 2) */}
             <motion.div 
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -100,14 +100,14 @@ export default function LandingPage({
                 onClick={handleCreateChart}
                 className="px-6 py-3.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm flex items-center gap-2 shadow-xl shadow-amber-400/25 transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
               >
-                <span>Create My Chart</span>
+                <span>Create My Free Chart</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
               <button
-                onClick={() => onNavigateToTab('home')}
+                onClick={() => onNavigateToTab('free-tools')}
                 className="px-6 py-3.5 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] text-slate-300 hover:text-white border border-white/10 font-mono text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer"
               >
-                <span>Explore the Platform</span>
+                <span>Explore Free Tools</span>
               </button>
             </motion.div>
 
@@ -118,11 +118,11 @@ export default function LandingPage({
               transition={{ delay: 0.4 }}
               className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-1 text-[11px] sm:text-xs text-slate-400 font-mono pt-1"
             >
-              <span className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Deterministic calculations</span>
+              <span className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Free to explore</span>
               <span>•</span>
-              <span>Explainable interpretations</span>
+              <span>No credit card required</span>
               <span>•</span>
-              <span>Multi-tradition analysis</span>
+              <span>Deterministic calculations</span>
             </motion.div>
           </div>
 
@@ -188,6 +188,52 @@ export default function LandingPage({
             </motion.div>
           </div>
 
+        </div>
+      </section>
+
+      {/* 2.5 Start Free — See the Difference (Free PRD Section 12 & 44) */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14 text-left space-y-8 border-y border-white/5 bg-[#050811]">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-mono text-xs font-bold uppercase">
+              <Sparkles className="w-3.5 h-3.5" /> Free Attraction Layer
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              Start free. See the difference.
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-400 font-sans max-w-xl">
+              No subscription needed to discover your birth chart, lunar Nakshatra, daily Panchanga, and compatibility.
+            </p>
+          </div>
+          <button
+            onClick={() => onNavigateToTab('free-tools')}
+            className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-mono text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer self-start md:self-auto shrink-0"
+          >
+            <span>Explore All Free Tools</span>
+            <ArrowRight className="w-3.5 h-3.5 text-amber-400" />
+          </button>
+        </div>
+
+        {/* 6 Free Tools Quick Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+          {[
+            { title: "Free Birth Chart", desc: "Sun, Moon, Ascendant & Placements", tab: "free-tools" },
+            { title: "Free Daily Insight", desc: "Today's strongest themes & focus", tab: "forecast" },
+            { title: "Free 7-Day Forecast", desc: "Upcoming key timing windows", tab: "forecast" },
+            { title: "Free Panchanga", desc: "Tithi, Nakshatra & Rahu Kalam", tab: "free-tools" },
+            { title: "Free Nakshatra", desc: "Birth star & Pada calculator", tab: "free-tools" },
+            { title: "Free Compatibility", desc: "Instant elemental harmony score", tab: "free-tools" },
+          ].map((tool, idx) => (
+            <div
+              key={idx}
+              onClick={() => onNavigateToTab(tool.tab)}
+              className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 hover:border-amber-400/40 transition-all cursor-pointer space-y-1.5 group shadow-sm"
+            >
+              <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase">100% Free</span>
+              <h3 className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors">{tool.title}</h3>
+              <p className="text-[11px] text-slate-400 leading-tight">{tool.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -574,14 +620,14 @@ export default function LandingPage({
               onClick={handleCreateChart}
               className="px-6 py-3.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm flex items-center gap-2 shadow-xl shadow-amber-400/25 transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
             >
-              <span>Create My Chart</span>
+              <span>Create My Free Chart</span>
               <ArrowRight className="w-4 h-4" />
             </button>
             <button
-              onClick={() => onNavigateToTab('home')}
+              onClick={() => onNavigateToTab('free-tools')}
               className="px-6 py-3.5 rounded-2xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 font-mono text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer"
             >
-              <span>Explore the Platform</span>
+              <span>Explore Free Tools</span>
             </button>
           </div>
         </div>

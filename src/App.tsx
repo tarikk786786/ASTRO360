@@ -81,6 +81,7 @@ import OmniChartsView from './components/omni/OmniChartsView';
 import OmniMoreHub from './components/omni/OmniMoreHub';
 import OmniMeView from './components/omni/OmniMeView';
 import OmniOnboardingWizard from './components/omni/OmniOnboardingWizard';
+import OmniFreeToolsHub from './components/free-tools/OmniFreeToolsHub';
 import SEOTopicHub from './components/seo/SEOTopicHub';
 import { updatePageSEO } from './lib/seoManager';
 import { warmCosmicProfileCache, prefetchRouteData } from './lib/prefetchEngine';
@@ -764,6 +765,31 @@ export default function AppContent() {
                       }}
                       onNavigateToTab={(tab) => navigateTo(tab)}
                       userProfile={userProfile}
+                    />
+                  )}
+                  {activeTab === 'free-tools' && (
+                    <OmniFreeToolsHub
+                      userProfile={userProfile}
+                      onStartOnboarding={(preset) => {
+                        if (preset && preset.dob) {
+                          const updated: UserProfile = {
+                            ...userProfile,
+                            ...preset,
+                            name: preset.name || userProfile.name,
+                            dob: preset.dob || userProfile.dob,
+                            time: preset.time || userProfile.time,
+                            location: preset.location || userProfile.location,
+                          };
+                          setUserProfile(updated);
+                          saveProfile(updated);
+                          setHasOnboarded(true);
+                          navigateTo('home');
+                        } else {
+                          setLandingPreset(preset);
+                          setShowOnboarding(true);
+                        }
+                      }}
+                      onNavigate={navigateTo}
                     />
                   )}
                   {activeTab === 'home' && (

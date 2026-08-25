@@ -64,8 +64,15 @@ export default function OmniLandingNavbar({
             </div>
           </div>
 
-          {/* Desktop Nav Links (PRD Section 9) */}
-          <nav className="hidden md:flex items-center gap-7 text-xs font-mono text-slate-300">
+          {/* Desktop Nav Links (PRD Section 9 & Free Tools PRD) */}
+          <nav className="hidden md:flex items-center gap-6 text-xs font-mono text-slate-300">
+            <button
+              onClick={() => onNavigateSection('free-tools')}
+              className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors cursor-pointer flex items-center gap-1"
+            >
+              <Sparkles className="w-3 h-3" />
+              <span>Free Tools</span>
+            </button>
             <button
               onClick={() => onNavigateSection('product-preview')}
               className="hover:text-white transition-colors cursor-pointer"
@@ -104,9 +111,9 @@ export default function OmniLandingNavbar({
             )}
             <button
               onClick={onCreateChart}
-              className="px-4 py-2 rounded-xl bg-white hover:bg-slate-200 text-slate-950 font-bold text-xs font-mono flex items-center gap-1.5 shadow-md transition-all cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs font-mono flex items-center gap-1.5 shadow-md transition-all cursor-pointer"
             >
-              <span>Create My Chart</span>
+              <span>Create My Free Chart</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -125,6 +132,13 @@ export default function OmniLandingNavbar({
         {mobileMenuOpen && (
           <div className="md:hidden bg-[#080E1A] border-b border-white/10 p-4 space-y-3 text-left">
             <div className="flex flex-col space-y-2 text-xs font-mono text-slate-300">
+              <button
+                onClick={() => { onNavigateSection('free-tools'); setMobileMenuOpen(false); }}
+                className="py-2 text-left text-emerald-400 font-bold hover:text-emerald-300 flex items-center gap-1"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Free Astrology Tools</span>
+              </button>
               <button
                 onClick={() => { onNavigateSection('product-preview'); setMobileMenuOpen(false); }}
                 className="py-2 text-left hover:text-white"
@@ -161,7 +175,7 @@ export default function OmniLandingNavbar({
                 onClick={() => { onCreateChart(); setMobileMenuOpen(false); }}
                 className="w-full py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs font-mono flex items-center justify-center gap-1.5 shadow-md"
               >
-                <span>Create My Chart</span>
+                <span>Create My Free Chart</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
