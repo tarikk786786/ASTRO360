@@ -74,6 +74,13 @@ import { AstroOmniResearchSuite } from './components/AstroOmniResearchSuite';
 import { useGlobalConfig } from './context/GlobalConfigContext';
 import { Toaster, toast } from 'sonner';
 
+import OmniSimpleHome from './components/omni/OmniSimpleHome';
+import OmniForecastView from './components/omni/OmniForecastView';
+import OmniAskAssistant from './components/omni/OmniAskAssistant';
+import OmniChartsView from './components/omni/OmniChartsView';
+import OmniMoreHub from './components/omni/OmniMoreHub';
+import OmniOnboardingWizard from './components/omni/OmniOnboardingWizard';
+
 const STORAGE_KEY = 'astroverse_profile';
 const TAB_KEY = 'astroverse_tab';
 
@@ -533,38 +540,43 @@ export default function AppContent() {
               <Menu className="w-5 h-5" />
             </button>
 
-            {/* Prominent Back to Home / Landing Button */}
-            {activeTab !== 'landing' ? (
-              <button
-                onClick={() => navigateTo('landing')}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#C9A86A]/10 hover:bg-[#C9A86A] text-[#C9A86A] hover:text-[#070A12] border border-[#C9A86A]/30 hover:border-[#C9A86A] transition-all text-xs font-bold shrink-0 cursor-pointer shadow-sm active:scale-95"
-                title="Return to Landing Page"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Home</span>
-              </button>
-            ) : (
-              <button
-                onClick={() => navigateTo('dashboard')}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-[#C9A86A] text-slate-300 hover:text-[#070A12] border border-white/[0.08] hover:border-[#C9A86A] transition-all text-xs font-semibold shrink-0 cursor-pointer shadow-sm active:scale-95"
-                title="Enter Studio Dashboard"
-              >
-                <LayoutDashboard className="w-3.5 h-3.5 text-[#C9A86A]" />
-                <span>Dashboard</span>
-              </button>
-            )}
+            {/* Brand / Home Link */}
+            <button
+              onClick={() => navigateTo('home')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400/10 hover:bg-amber-400 text-amber-400 hover:text-slate-950 border border-amber-400/30 hover:border-amber-400 transition-all text-xs font-bold shrink-0 cursor-pointer shadow-sm active:scale-95"
+              title="Home"
+            >
+              <Home className="w-3.5 h-3.5" />
+              <span>Home</span>
+            </button>
 
-            {/* Jump to Dashboard button when deep in other tools */}
-            {activeTab !== 'landing' && activeTab !== 'dashboard' && (
-              <button
-                onClick={() => navigateTo('dashboard')}
-                className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.06] transition-all text-xs font-medium shrink-0 cursor-pointer"
-                title="Jump to Dashboard"
-              >
-                <LayoutDashboard className="w-3.5 h-3.5 text-slate-400" />
-                <span>Dashboard</span>
-              </button>
-            )}
+            {/* 5 Primary Desktop Nav Tabs */}
+            <div className="hidden lg:flex items-center gap-1 bg-[#0F172A] p-1 rounded-2xl border border-white/10 mx-2">
+              {[
+                { id: 'home', label: 'Home', icon: Home },
+                { id: 'forecast', label: 'Forecast', icon: Calendar },
+                { id: 'ask', label: 'Ask', icon: MessageCircle },
+                { id: 'charts', label: 'Charts', icon: Compass },
+                { id: 'more', label: 'More', icon: Layers }
+              ].map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id || (tab.id === 'home' && (activeTab === 'dashboard' || activeTab === 'overview'));
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => navigateTo(tab.id)}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                      isActive
+                        ? 'bg-amber-400 text-slate-950 shadow-md'
+                        : 'text-slate-400 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
 
             <div className="flex items-center gap-2 min-w-0">
               <h1 className="text-xs sm:text-sm font-semibold text-slate-200 tracking-tight truncate max-w-[130px] sm:max-w-xs md:max-w-md">
@@ -622,6 +634,18 @@ export default function AppContent() {
                   className="h-full"
                 >
                 <ErrorBoundary>
+                  {(showOnboarding || activeTab === 'onboarding') && (
+                    <OmniOnboardingWizard
+                      initialPreset={landingPreset}
+                      onComplete={(profile) => {
+                        setUserProfile(profile);
+                        saveProfile(profile);
+                        setHasOnboarded(true);
+                        setShowOnboarding(false);
+                        navigateTo('home');
+                      }}
+                    />
+                  )}
                   {activeTab === 'landing' && (
                     <LandingPage
                       onStartOnboarding={(preset) => {
@@ -637,7 +661,7 @@ export default function AppContent() {
                           setUserProfile(updated);
                           saveProfile(updated);
                           setHasOnboarded(true);
-                          navigateTo('birth-chart');
+                          navigateTo('home');
                         } else {
                           setLandingPreset(preset);
                           setShowOnboarding(true);
@@ -647,7 +671,32 @@ export default function AppContent() {
                       userProfile={userProfile}
                     />
                   )}
-                  {activeTab === 'dashboard' && <CosmicIntelligenceCenter onNavigate={navigateTo} userProfile={userProfile} onUpdateProfile={(updated) => { setUserProfile(updated); saveProfile(updated); }} />}
+                  {(activeTab === 'home' || activeTab === 'dashboard' || activeTab === 'overview') && (
+                    <OmniSimpleHome
+                      userProfile={userProfile}
+                      onNavigate={navigateTo}
+                      onOpenProfile={() => setIsProfileModalOpen(true)}
+                    />
+                  )}
+                  {activeTab === 'pro-dashboard' && (
+                    <CosmicIntelligenceCenter
+                      onNavigate={navigateTo}
+                      userProfile={userProfile}
+                      onUpdateProfile={(updated) => { setUserProfile(updated); saveProfile(updated); }}
+                    />
+                  )}
+                  {activeTab === 'forecast' && (
+                    <OmniForecastView userProfile={userProfile} />
+                  )}
+                  {activeTab === 'ask' && (
+                    <OmniAskAssistant userProfile={userProfile} />
+                  )}
+                  {activeTab === 'charts' && (
+                    <OmniChartsView userProfile={userProfile} />
+                  )}
+                  {activeTab === 'more' && (
+                    <OmniMoreHub onNavigate={navigateTo} userProfile={userProfile} />
+                  )}
                   {activeTab === 'live-diagnostics' && <LiveCosmicDiagnostics userProfile={userProfile} />}
                   {activeTab === 'advisor' && <HolisticAdvisor userProfile={userProfile} />}
                   {(activeTab === 'remedies' || activeTab === 'remedy') && <AstroMultiTraditionRemedySuite />}
@@ -717,16 +766,16 @@ export default function AppContent() {
           </div>
         </div>
 
-      {/* 📱 MOBILE BOTTOM NAVIGATION DOCK (Glassmorphic + Active Micro-Interactions) */}
+      {/* 📱 MOBILE BOTTOM NAVIGATION DOCK (5 Primary Tabs) */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 pb-safe bg-[#090d16]/95 backdrop-blur-3xl border-t border-white/[0.08] z-40 px-3 flex items-center justify-around shadow-[0_-8px_30px_rgba(0,0,0,0.5)] select-none">
         {[
-          { id: 'dashboard', icon: LayoutDashboard, label: 'Overview', color: 'cyan' },
-          { id: 'live-diagnostics', icon: Activity, label: 'Diagnose', color: 'amber' },
-          { id: 'birth-chart', icon: Compass, label: 'Kundli', color: 'purple' },
-          { id: 'tools-catalog', icon: Sparkles, label: 'Tools', color: 'emerald' },
-          { id: 'chat', icon: MessageCircle, label: 'Oracle', color: 'blue' },
+          { id: 'home', icon: Home, label: 'Home', color: 'amber' },
+          { id: 'forecast', icon: Calendar, label: 'Forecast', color: 'cyan' },
+          { id: 'ask', icon: MessageCircle, label: 'Ask', color: 'blue' },
+          { id: 'charts', icon: Compass, label: 'Charts', color: 'purple' },
+          { id: 'more', icon: Layers, label: 'More', color: 'emerald' },
         ].map(({ id, icon: Icon, label, color }) => {
-          const isActive = activeTab === id;
+          const isActive = activeTab === id || (id === 'home' && (activeTab === 'dashboard' || activeTab === 'overview'));
           return (
             <motion.button
               key={id}
@@ -737,7 +786,7 @@ export default function AppContent() {
               }`}
             >
               <div className="relative">
-                <Icon className={`w-5 h-5 transition-transform ${isActive ? `text-${color}-400 drop-shadow-[0_0_10px_rgba(6,182,212,0.6)] scale-110` : ''}`} />
+                <Icon className={`w-5 h-5 transition-transform ${isActive ? `text-${color}-400 drop-shadow-[0_0_10px_rgba(245,158,11,0.6)] scale-110` : ''}`} />
                 {isActive && (
                   <motion.div 
                     layoutId="mobileActiveDot"
