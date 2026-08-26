@@ -4,8 +4,7 @@ import {
   Sparkles, Compass, Moon, Sun, Clock, Play, Pause, 
   RotateCcw, ShieldCheck, ChevronRight, ArrowRight, Info, Eye
 } from 'lucide-react';
-import { calculatePlanetaryPositions } from '../../lib/astroCalculations';
-import type { PlanetPosition } from '../../types';
+import { calculatePlanetaryPositions, type PlanetPosition } from '../../lib/astroCalculations';
 
 interface AstroCelestialAnimationProps {
   onExploreChart?: () => void;
@@ -219,7 +218,7 @@ export default function AstroCelestialAnimation({
 
             {/* Real Calculated Planetary Bodies */}
             {calculatedPlanets.map((planet) => {
-              const deg = parseFloat(planet.degree) || (planet.signNumber * 30 + 15);
+              const deg = planet.degreeDecimal || parseFloat(planet.degree) || 0;
               // Radius layering by orbital hierarchy
               const radiusMap: Record<string, number> = {
                 Sun: 45, Moon: 60, Mercury: 80, Venus: 98, Mars: 115, 

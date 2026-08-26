@@ -139,7 +139,7 @@ export class GlobalConfigManager {
         next.houseSystem = 'placidus';
       } else if (partial.astrologySystem === 'vedic') {
         next.zodiacSystem = 'sidereal';
-        next.houseSystem = 'whole_sign';
+        next.houseSystem = 'wholesign';
       }
     }
 

@@ -256,7 +256,7 @@ export default function LandingPage({
 
       {/* 3.7 Interactive Live Audio Briefing Demo on Landing */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        <OmniAudioBriefing userProfile={userProfile || { name: 'Visitor', birthDate: '1998-06-15' }} />
+        <OmniAudioBriefing userProfile={userProfile || { name: 'Visitor', dob: '1998-06-15', time: '12:00', location: 'London, UK', gender: 'universal', preferredSystem: 'universal' }} />
       </section>
 
       {/* 4. Signature Brand Block (PRD Section 48 & 49) */}

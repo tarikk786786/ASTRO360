@@ -80,7 +80,7 @@ export default function OmniCompatibilityLab({ userProfile }: OmniCompatibilityL
             </div>
             <h4 className="text-base font-bold text-white">{seekerName}</h4>
             <p className="text-xs text-slate-400 font-mono">
-              {userProfile.birthDate || '1995-04-14'} • {userProfile.birthCity || 'London, UK'}
+              {userProfile.dob || '1995-04-14'} • {userProfile.location || 'London, UK'}
             </p>
           </div>
 

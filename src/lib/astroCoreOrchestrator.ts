@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ASTRO360 OMNI - AstroCore Master Orchestrator (PRD Section 1, 16, 17, 127)
  * Executes the complete deterministic pipeline:
  * Input -> Time/Loc Normalization -> Ephemeris Core -> Celestial Dataset ->
@@ -66,7 +66,7 @@ export class AstroCoreOrchestrator {
     // 4. Build Master Celestial Dataset (Planets & Coordinates)
     const planetsRecord: CanonicalAstroSchema['planets'] = {};
     rawPositions.forEach(p => {
-      const degTotal = p.degree;
+      const degTotal = p.degreeDecimal || parseFloat(p.degree) || 0;
       const degInSign = degTotal % 30;
       const minutes = Math.floor((degInSign % 1) * 60);
       const seconds = Math.floor((((degInSign % 1) * 60) % 1) * 60);
@@ -85,7 +85,7 @@ export class AstroCoreOrchestrator {
         speedLongitude: p.name === 'Moon' ? 13.176 : 0.985,
         isRetrograde: p.strength === 'Retrograde',
         isStationary: false,
-        isCombust: p.name !== 'Sun' && Math.abs(degTotal - (rawPositions.find(x => x.name === 'Sun')?.degree || 0)) < 6,
+        isCombust: p.name !== 'Sun' && Math.abs(degTotal - (rawPositions.find(x => x.name === 'Sun')?.degreeDecimal || 0)) < 6,
         houseNumber: p.houseNumber,
         nakshatra: p.nakshatra || 'Universal Star',
         pada: p.pada || 1,
@@ -95,7 +95,7 @@ export class AstroCoreOrchestrator {
     });
 
     const ascPos = rawPositions.find(p => p.name === 'Ascendant') || rawPositions[0];
-    const ascDeg = ascPos.degree;
+    const ascDeg = ascPos.degreeDecimal || parseFloat(ascPos.degree) || 0;
 
     // 5. Multi-Tradition House Cusps Computation
     const cusps: CanonicalAstroSchema['houses']['cusps'] = [];

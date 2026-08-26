@@ -11,8 +11,8 @@ export default function OmniShareCardGenerator({ userProfile }: OmniShareCardGen
   const [copiedLink, setCopiedLink] = useState(false);
 
   const seekerName = userProfile.name || 'Alexander Sterling';
-  const birthDate = userProfile.birthDate || '1995-04-14';
-  const birthCity = userProfile.birthCity || 'London, UK';
+  const birthDate = userProfile.dob || '1995-04-14';
+  const birthCity = userProfile.location || 'London, UK';
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(`https://astro360.ai/share/${encodeURIComponent(seekerName)}`);

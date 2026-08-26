@@ -136,6 +136,7 @@ export interface AstroSheetProps {
   onClose: () => void;
   title: string;
   subtitle?: string;
+  description?: string;
   children: React.ReactNode;
 }
 
@@ -144,8 +145,10 @@ export const AstroSheet: React.FC<AstroSheetProps> = ({
   onClose,
   title,
   subtitle,
+  description,
   children,
 }) => {
+  const displaySubtitle = subtitle || description;
   return (
     <AnimatePresence>
       {isOpen && (
@@ -167,7 +170,7 @@ export const AstroSheet: React.FC<AstroSheetProps> = ({
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <div>
                 <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">{title}</h3>
-                {subtitle && <p className="text-xs text-slate-400 font-mono pt-0.5">{subtitle}</p>}
+                {displaySubtitle && <p className="text-xs text-slate-400 font-mono pt-0.5">{displaySubtitle}</p>}
               </div>
               <button
                 onClick={onClose}

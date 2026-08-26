@@ -9,7 +9,7 @@ export type TraditionGroup =
 export interface UserProfile {
   id?: string;
   name: string;
-  email: string;
+  email?: string;
   phone?: string;
   gender: string;
   dob: string;
