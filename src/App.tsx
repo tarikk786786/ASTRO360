@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect, useCallback, Suspense } from 'react';
+import { useState, useEffect, useCallback, Suspense, lazy } from 'react';
 import {
   Sparkles, Menu, X, LayoutDashboard, MessageCircle, ChevronDown, User, Users, Globe2, Bell,
   Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon,
@@ -38,11 +38,9 @@ import SpiritualTraditionsModule from './components/SpiritualTraditionsModule';
 import BhagavadGitaSuite from './components/BhagavadGitaSuite';
 import AstrologyControlCenter from './components/AstrologyControlCenter';
 import CommunityConsultationHub from './components/CommunityConsultationHub';
-import ExecutivePDFDossier from './components/ExecutivePDFDossier';
 import Footer from './components/Footer';
 import AuthScreen from './components/AuthScreen';
 import DivisionalChartsSuite from './components/DivisionalChartsSuite';
-import BirthTimeRectificationSuite from './components/BirthTimeRectificationSuite';
 import GemstoneRudrakshaSuite from './components/GemstoneRudrakshaSuite';
 import NumerologyNameSuite from './components/NumerologyNameSuite';
 import TarotIChingSuite from './components/TarotIChingSuite';
@@ -57,22 +55,26 @@ import SacredMantraSoundboard from './components/SacredMantraSoundboard';
 import PlanetaryTransitRadar from './components/PlanetaryTransitRadar';
 import PanchangDeitiesEngine from './components/PanchangDeitiesEngine';
 import CosmicCompassVisualizer from './components/CosmicCompassVisualizer';
-import AstroCartographyMatrix from './components/AstroCartographyMatrix';
 import CosmicTransitCalendar from './components/CosmicTransitCalendar';
 import SynastryOverlayChart from './components/SynastryOverlayChart';
-import AstrologicalMindMap from './components/AstrologicalMindMap';
 import CosmicChartAnalytics from './components/CosmicChartAnalytics';
 import AstrologyLearningHub from './components/AstrologyLearningHub';
-import ExecutiveReportGenerator from './components/ExecutiveReportGenerator';
-import AdminAnalyticsDashboard from './components/AdminAnalyticsDashboard';
-import CosmicStudioSuite from './components/CosmicStudioSuite';
-import CosmicLeafletMap from './components/CosmicLeafletMap';
-import UniverseCanvas from './components/3d/UniverseCanvas';
 import ErrorBoundary from './components/ErrorBoundary';
 import GlobalLanguageSelector from './components/GlobalLanguageSelector';
-import { AstroOmniResearchSuite } from './components/AstroOmniResearchSuite';
 import { useGlobalConfig } from './context/GlobalConfigContext';
 import { Toaster, toast } from 'sonner';
+
+// Dynamic code-split secondary studio tools for lightning-fast initial page loads
+const ExecutivePDFDossier = lazy(() => import('./components/ExecutivePDFDossier'));
+const ExecutiveReportGenerator = lazy(() => import('./components/ExecutiveReportGenerator'));
+const AdminAnalyticsDashboard = lazy(() => import('./components/AdminAnalyticsDashboard'));
+const CosmicStudioSuite = lazy(() => import('./components/CosmicStudioSuite'));
+const CosmicLeafletMap = lazy(() => import('./components/CosmicLeafletMap'));
+const UniverseCanvas = lazy(() => import('./components/3d/UniverseCanvas'));
+const AstroOmniResearchSuite = lazy(() => import('./components/AstroOmniResearchSuite').then(m => ({ default: m.AstroOmniResearchSuite })));
+const BirthTimeRectificationSuite = lazy(() => import('./components/BirthTimeRectificationSuite'));
+const AstrologicalMindMap = lazy(() => import('./components/AstrologicalMindMap'));
+const AstroCartographyMatrix = lazy(() => import('./components/AstroCartographyMatrix'));
 
 import OmniSimpleHome from './components/omni/OmniSimpleHome';
 import OmniForecastView from './components/omni/OmniForecastView';
