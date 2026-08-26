@@ -41,16 +41,119 @@
         margin: 0;
         padding: 0;
         min-height: 100vh;
+        overflow-x: hidden;
       }
-      #root:empty::before {
-        content: 'Loading Cosmos OMNI...';
+      .astro-initial-loader {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         min-height: 100vh;
+        width: 100vw;
+        background: radial-gradient(circle at 50% 40%, #111a2e 0%, #090d16 70%, #05070c 100%);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+        color: #f8fafc;
+        user-select: none;
+        padding: 24px;
+        box-sizing: border-box;
+      }
+      .astro-loader-orbital {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .astro-ring-outer {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 2px solid rgba(251, 191, 36, 0.2);
+        border-top-color: #fbbf24;
+        animation: astro-spin 3s linear infinite;
+      }
+      .astro-ring-inner {
+        position: absolute;
+        width: 75%;
+        height: 75%;
+        border-radius: 50%;
+        border: 2px dashed rgba(6, 182, 212, 0.3);
+        border-bottom-color: #06b6d4;
+        animation: astro-spin-reverse 2s linear infinite;
+      }
+      .astro-core-gem {
+        position: relative;
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        border: 1px solid rgba(251, 191, 36, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 25px rgba(251, 191, 36, 0.3);
+        animation: astro-pulse 2s ease-in-out infinite;
+      }
+      .astro-core-gem svg {
+        width: 24px;
+        height: 24px;
+        color: #fbbf24;
+      }
+      .astro-brand-title {
+        margin-top: 24px;
+        font-size: 20px;
+        font-weight: 900;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        background: linear-gradient(135deg, #ffffff 30%, #fbbf24 80%, #06b6d4 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .astro-brand-subtitle {
+        margin-top: 6px;
+        font-size: 11px;
         font-family: monospace;
-        font-size: 14px;
-        color: #06b6d4;
+        letter-spacing: 0.08em;
+        color: #94a3b8;
+        text-align: center;
+      }
+      .astro-progress-track {
+        margin-top: 20px;
+        width: 160px;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 999px;
+        overflow: hidden;
+        position: relative;
+      }
+      .astro-progress-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 50%;
+        background: linear-gradient(90deg, #fbbf24, #06b6d4);
+        border-radius: 999px;
+        animation: astro-progress-indeterminate 1.5s ease-in-out infinite;
+      }
+      @keyframes astro-spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      @keyframes astro-spin-reverse {
+        from { transform: rotate(360deg); }
+        to { transform: rotate(0deg); }
+      }
+      @keyframes astro-pulse {
+        0%, 100% { transform: scale(1); opacity: 0.9; }
+        50% { transform: scale(1.06); opacity: 1; filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.6)); }
+      }
+      @keyframes astro-progress-indeterminate {
+        0% { left: -50%; width: 50%; }
+        50% { left: 25%; width: 60%; }
+        100% { left: 100%; width: 50%; }
       }
     </style>
 
@@ -160,7 +263,24 @@
     </script>
   </head>
   <body style="background-color: #090d16; color: #f8fafc;">
-    <div id="root"></div>
+    <div id="root">
+      <div class="astro-initial-loader">
+        <div class="astro-loader-orbital">
+          <div class="astro-ring-outer"></div>
+          <div class="astro-ring-inner"></div>
+          <div class="astro-core-gem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="astro-brand-title">ASTRO360</div>
+        <div class="astro-brand-subtitle">Global Astrological & Astronomical Intelligence</div>
+        <div class="astro-progress-track">
+          <div class="astro-progress-fill"></div>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
