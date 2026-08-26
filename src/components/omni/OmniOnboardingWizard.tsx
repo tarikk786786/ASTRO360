@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { 
   Sparkles, User, Calendar, Clock, MapPin, 
-  ArrowRight, ShieldCheck, CheckCircle2, Compass, Layers
+  ArrowRight, ShieldCheck, CheckCircle2, Compass, Layers,
+  Briefcase, Heart, DollarSign, TrendingUp, Sun, Moon
 } from 'lucide-react';
 import type { UserProfile } from '../../types';
 
@@ -17,8 +18,27 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
   const [time, setTime] = useState(initialPreset?.time || '12:00');
   const [unknownTime, setUnknownTime] = useState(false);
   const [location, setLocation] = useState(initialPreset?.location || 'London, UK');
-  const [preferredSystem, setPreferredSystem] = useState<'vedic' | 'western' | 'chinese'>('vedic');
+  const [primaryFocus, setPrimaryFocus] = useState<'career' | 'love' | 'money' | 'timing' | 'growth'>('career');
+  const [preferredSystem, setPreferredSystem] = useState<'vedic' | 'western' | 'chinese' | 'universal'>('vedic');
+  const [viewDensity, setViewDensity] = useState<'simple' | 'deep'>('simple');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const popularCities = [
+    'London, UK',
+    'New York, USA',
+    'Mumbai, India',
+    'Toronto, Canada',
+    'Sydney, Australia',
+    'Tokyo, Japan'
+  ];
+
+  const focusOptions = [
+    { id: 'career', label: 'Career & Purpose', icon: Briefcase, color: 'text-amber-400' },
+    { id: 'love', label: 'Love & Relationship', icon: Heart, color: 'text-rose-400' },
+    { id: 'money', label: 'Financial Timing', icon: DollarSign, color: 'text-emerald-400' },
+    { id: 'timing', label: 'Transits & Timing', icon: Clock, color: 'text-cyan-400' },
+    { id: 'growth', label: 'Inner Purpose & Growth', icon: TrendingUp, color: 'text-indigo-400' }
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,15 +50,15 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
       time: unknownTime ? '12:00' : (time || '12:00'),
       location: location || 'London, UK',
       gender: 'universal',
-      preferredSystem,
-      careerGoal: 'Personal Growth & Mastery',
-      relationshipStatus: 'Seeking Harmony',
-      primaryLifeFocus: 'Cosmic Intelligence'
+      preferredSystem: preferredSystem as any,
+      careerGoal: primaryFocus === 'career' ? 'Leadership & Elevation' : 'Balanced Purpose',
+      relationshipStatus: primaryFocus === 'love' ? 'Harmonious Partnership' : 'Reflective',
+      primaryLifeFocus: primaryFocus.toUpperCase(),
     };
 
     setTimeout(() => {
       onComplete(finalProfile);
-    }, 400);
+    }, 350);
   };
 
   return (
@@ -46,44 +66,49 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
       <motion.div
         initial={{ opacity: 0, scale: 0.97, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="w-full max-w-xl bg-gradient-to-br from-[#0B1220] via-[#0F172A] to-[#070B14] border-2 border-amber-400/30 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 text-white relative overflow-hidden"
+        className="w-full max-w-2xl bg-gradient-to-br from-[#0B1220] via-[#0F172A] to-[#070B14] border-2 border-amber-400/35 rounded-3xl p-6 sm:p-9 shadow-2xl space-y-6 text-white relative overflow-hidden"
       >
         {/* Subtle glow background */}
-        <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
 
         {/* Header */}
-        <div className="space-y-2 border-b border-white/10 pb-5">
+        <div className="space-y-2 border-b border-white/10 pb-5 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 border border-amber-400/30 text-amber-300 text-[11px] font-mono font-bold tracking-wider uppercase">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>One-Time Setup • 100% Free Forever</span>
+            <span>Visitor Customization • 100% Free Forever</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-            Enter Details to Unlock Studio & Dashboard
+            Personalize Your ASTRO360 Experience
           </h2>
           <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
-            Enter your birth details once to calculate your high-precision astronomical chart, timing dasha, and multi-tradition workspace. You will never be asked again.
+            Enter your details once to calculate your high-precision astronomical chart, timing dasha, and personalized intelligence dashboard.
           </p>
         </div>
 
         {/* 1-Step Form */}
-        <form onSubmit={handleSubmit} className="space-y-4 font-mono text-xs">
+        <form onSubmit={handleSubmit} className="space-y-4 font-mono text-xs relative z-10">
           
-          {/* Full Name */}
+          {/* 1. Full Name */}
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-bold block flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-amber-400" />
-              <span>Full Name or Moniker</span>
+            <label className="text-slate-300 font-bold flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <User className="w-3.5 h-3.5 text-amber-400" />
+                <span>How should we address you? (Name or Moniker)</span>
+              </span>
+              <span className="text-[10px] text-slate-500">Required</span>
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Alexander Sterling"
-              className="w-full bg-[#060A12] border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400 font-sans"
+              placeholder="e.g. Alexander Sterling or Seeker"
+              required
+              className="w-full bg-[#060A12] border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400 font-sans shadow-inner"
             />
           </div>
 
-          {/* Date & Time */}
+          {/* 2. Date & Time of Birth */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <label className="text-slate-300 font-bold block flex items-center gap-1.5">
@@ -95,7 +120,7 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
                 value={dob}
                 onChange={(e) => setDob(e.target.value)}
                 required
-                className="w-full bg-[#060A12] border border-white/15 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
+                className="w-full bg-[#060A12] border border-white/15 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-amber-400 shadow-inner"
               />
             </div>
 
@@ -110,7 +135,7 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
                   onClick={() => setUnknownTime(!unknownTime)}
                   className="text-[10px] text-amber-400 hover:text-amber-300 cursor-pointer underline underline-offset-2"
                 >
-                  {unknownTime ? '✓ Unknown (12:00)' : 'Time Unknown?'}
+                  {unknownTime ? '✓ Set to Solar Noon (12:00)' : 'Exact Time Unknown?'}
                 </button>
               </div>
               <input
@@ -118,12 +143,12 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
                 disabled={unknownTime}
-                className={`w-full bg-[#060A12] border border-white/15 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-amber-400 ${unknownTime ? 'opacity-40 cursor-not-allowed' : ''}`}
+                className={`w-full bg-[#060A12] border border-white/15 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-amber-400 shadow-inner ${unknownTime ? 'opacity-40 cursor-not-allowed' : ''}`}
               />
             </div>
           </div>
 
-          {/* Place of Birth */}
+          {/* 3. Place of Birth with City Presets */}
           <div className="space-y-1.5">
             <label className="text-slate-300 font-bold block flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-amber-400" />
@@ -135,11 +160,58 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
               onChange={(e) => setLocation(e.target.value)}
               placeholder="e.g. London, United Kingdom or Mumbai, India"
               required
-              className="w-full bg-[#060A12] border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400 font-sans"
+              className="w-full bg-[#060A12] border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400 font-sans shadow-inner"
             />
+            {/* Quick city presets */}
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              <span className="text-[10px] text-slate-500 self-center mr-1">Quick select:</span>
+              {popularCities.map((city) => (
+                <button
+                  key={city}
+                  type="button"
+                  onClick={() => setLocation(city)}
+                  className={`text-[10px] px-2 py-0.5 rounded-lg border transition-all cursor-pointer ${
+                    location === city
+                      ? 'bg-amber-400/20 border-amber-400/40 text-amber-300'
+                      : 'bg-white/5 border-white/10 text-slate-400 hover:text-white'
+                  }`}
+                >
+                  {city}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Primary Tradition Preference */}
+          {/* 4. Primary Life Focus Customization */}
+          <div className="space-y-1.5 pt-1">
+            <label className="text-slate-300 font-bold block flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>What are you most curious to explore right now?</span>
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {focusOptions.map((f) => {
+                const Icon = f.icon;
+                const isSelected = primaryFocus === f.id;
+                return (
+                  <button
+                    key={f.id}
+                    type="button"
+                    onClick={() => setPrimaryFocus(f.id as any)}
+                    className={`p-2.5 rounded-xl border text-left flex items-center gap-2 transition-all cursor-pointer min-h-[42px] ${
+                      isSelected
+                        ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold shadow-md'
+                        : 'bg-[#060A12] text-slate-300 hover:text-white border-white/10 hover:border-white/20'
+                    }`}
+                  >
+                    <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-slate-950' : f.color}`} />
+                    <span className="text-[11px] leading-tight">{f.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 5. Primary Tradition Preference */}
           <div className="space-y-1.5 pt-1">
             <label className="text-slate-300 font-bold block flex items-center gap-1.5">
               <Compass className="w-3.5 h-3.5 text-amber-400" />
@@ -147,15 +219,15 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
             </label>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { id: 'vedic', label: 'Vedic Sidereal', desc: 'Lahiri DE440' },
+                { id: 'vedic', label: 'Vedic Sidereal', desc: 'True Lahiri DE440' },
                 { id: 'western', label: 'Western Tropical', desc: 'Placidus Wheels' },
-                { id: 'chinese', label: 'Chinese BaZi', desc: '4 Pillars & Qi' },
+                { id: 'universal', label: 'Universal Consensus', desc: 'Multi-System Synthesis' },
               ].map((sys) => (
                 <button
                   key={sys.id}
                   type="button"
                   onClick={() => setPreferredSystem(sys.id as any)}
-                  className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer ${
+                  className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer min-h-[44px] ${
                     preferredSystem === sys.id
                       ? 'bg-amber-400 text-slate-950 border-amber-400 font-black shadow-md'
                       : 'bg-[#060A12] text-slate-300 hover:text-white border-white/10 hover:border-white/20'
@@ -173,17 +245,17 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300 hover:from-amber-400 hover:to-amber-200 text-slate-950 font-black text-sm font-mono flex items-center justify-center gap-2.5 shadow-xl shadow-amber-500/25 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300 hover:from-amber-400 hover:to-amber-200 text-slate-950 font-black text-sm font-mono flex items-center justify-center gap-2.5 shadow-xl shadow-amber-500/25 active:scale-95 transition-all cursor-pointer disabled:opacity-50 min-h-[48px]"
             >
               {isSubmitting ? (
                 <>
                   <div className="w-4 h-4 rounded-full border-2 border-slate-950 border-t-transparent animate-spin" />
-                  <span>Calculating Ephemeris & Unlocking Studio...</span>
+                  <span>Calculating Ephemeris & Customizing Experience...</span>
                 </>
               ) : (
                 <>
                   <Sparkles className="w-4 h-4 fill-slate-950" />
-                  <span>Unlock Studio & Enter ASTRO360 (100% Free)</span>
+                  <span>Save Profile & Enter ASTRO360 (100% Free)</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
@@ -191,11 +263,11 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
           </div>
 
           {/* Trust Footer */}
-          <div className="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-white/10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] text-slate-400 pt-2 border-t border-white/10 font-mono">
             <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
-              <ShieldCheck className="w-3.5 h-3.5" /> Client-Encrypted & 100% Private
+              <ShieldCheck className="w-3.5 h-3.5" /> Client-Encrypted & Zero-PII Protected
             </span>
-            <span>Saved permanently to your browser</span>
+            <span>Saved locally to your browser</span>
           </div>
 
         </form>
@@ -203,3 +275,4 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
     </div>
   );
 }
+

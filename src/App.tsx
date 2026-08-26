@@ -233,7 +233,18 @@ export default function AppContent() {
   }, [userProfile]);
 
   // Navigate with full history tracking & browser URL sync
+  // Navigate with full history tracking & browser URL sync
   const navigateTo = useCallback((tab: string, replace = false) => {
+    const isPublicTab = tab === 'landing' || tab === 'free-tools' || tab === 'vedic-astrology' || tab === 'western-astrology' || tab === 'panchanga' || tab === 'methodology' || tab === 'seo';
+    const isProfileConfigured = Boolean(userProfile && userProfile.name && userProfile.name.trim().length > 0 && userProfile.dob);
+
+    if (!isPublicTab && !hasOnboarded && !isProfileConfigured) {
+      setLandingPreset(userProfile);
+      setShowOnboarding(true);
+      if (isMobile) setIsSidebarOpen(false);
+      return;
+    }
+
     setActiveTab(tab);
     if (isMobile) setIsSidebarOpen(false);
     setNavigationHistory(prev => {
@@ -247,7 +258,7 @@ export default function AppContent() {
     } catch (e) {
       console.warn("history pushState error", e);
     }
-  }, [isMobile]);
+  }, [isMobile, hasOnboarded, userProfile]);
 
   // Dedicated Go Back action returning to previous screen or fallback to home
   const goBack = useCallback(() => {
