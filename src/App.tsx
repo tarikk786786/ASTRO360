@@ -381,24 +381,53 @@ export default function AppContent() {
   if (!hasOnboarded) {
     if (showOnboarding) {
       return (
-        <Onboarding
-          initialProfile={landingPreset}
-          onComplete={handleOnboardingComplete}
+        <OmniOnboardingWizard
+          initialPreset={landingPreset}
+          onComplete={(profile) => {
+            setUserProfile(profile);
+            saveProfile(profile);
+            setHasOnboarded(true);
+            setShowOnboarding(false);
+            navigateTo(activeTab === 'landing' ? 'home' : activeTab);
+          }}
         />
       );
     }
-      return (
-        <LandingPage
-          onStartOnboarding={(preset) => {
+    return (
+      <LandingPage
+        onStartOnboarding={(preset) => {
+          if (preset && preset.dob) {
+            const updated: UserProfile = {
+              ...userProfile,
+              ...preset,
+              name: preset.name || userProfile.name || 'Seeker',
+              dob: preset.dob,
+              time: preset.time || userProfile.time || '12:00',
+              location: preset.location || userProfile.location || 'London, UK',
+            };
+            setUserProfile(updated);
+            saveProfile(updated);
+            setHasOnboarded(true);
+            navigateTo('home');
+          } else {
             setLandingPreset(preset);
             setShowOnboarding(true);
-          }}
-          onNavigateToTab={(tab) => {
+          }
+        }}
+        onNavigateToTab={(tab) => {
+          if (tab === 'free-tools' || tab === 'vedic-astrology' || tab === 'western-astrology' || tab === 'panchanga' || tab === 'methodology') {
+            navigateTo(tab);
+          } else if (userProfile.dob) {
+            setHasOnboarded(true);
+            navigateTo(tab);
+          } else {
+            setLandingPreset(undefined);
             setShowOnboarding(true);
-          }}
-          userProfile={userProfile}
-        />
-      );
+          }
+        }}
+        userProfile={userProfile}
+      />
+    );
   }
 
   return (
