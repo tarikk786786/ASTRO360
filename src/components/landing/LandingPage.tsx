@@ -68,10 +68,10 @@ export default function LandingPage({
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-400/20 via-emerald-400/20 to-indigo-400/20 border border-amber-400/40 text-amber-300 font-mono text-xs font-bold tracking-wider uppercase shadow-md shadow-amber-400/10"
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>Limited-Time Launch: All Pro Features 100% Free</span>
+              <span>GLOBAL ASTROLOGY INTELLIGENCE</span>
             </motion.div>
 
-            {/* Headline (Enterprise PRD Section 7) */}
+            {/* Headline */}
             <motion.h1 
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -80,21 +80,21 @@ export default function LandingPage({
             >
               A deeper way to understand <br />
               <span className="bg-gradient-to-r from-amber-300 via-amber-400 to-amber-200 bg-clip-text text-transparent">
-                your astrology. Across traditions.
+                your astrology.
               </span>
             </motion.h1>
 
-            {/* Supporting Copy (Enterprise PRD Section 7) */}
+            {/* Supporting Copy */}
             <motion.p 
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               className="text-sm sm:text-base lg:text-lg text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-sans"
             >
-              Explore your chart, cycles, relationships, and important periods through multiple astrological traditions. For a limited time, get full access to all deep timing & analysis tools at zero cost.
+              Explore your chart, relationships, important cycles and future periods across multiple traditions in one clear experience.
             </motion.p>
 
-            {/* CTAs (Free Attraction PRD Section 2) */}
+            {/* CTAs */}
             <motion.div 
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -103,15 +103,15 @@ export default function LandingPage({
             >
               <button
                 onClick={handleCreateChart}
-                className="px-6 py-3.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm flex items-center gap-2 shadow-xl shadow-amber-400/25 transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+                className="px-6 py-3.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm flex items-center gap-2 shadow-xl shadow-amber-400/25 transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98] min-h-[48px]"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>Claim Free Pro Access</span>
+                <span>Create My Free Chart</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
               <button
                 onClick={() => onNavigateToTab('free-tools')}
-                className="px-6 py-3.5 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] text-slate-300 hover:text-white border border-white/10 font-mono text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer"
+                className="px-6 py-3.5 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] text-slate-300 hover:text-white border border-white/10 font-mono text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer min-h-[48px]"
               >
                 <span>Explore Free Tools</span>
               </button>
