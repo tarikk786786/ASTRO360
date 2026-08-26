@@ -2,18 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { Sparkles, ArrowRight, Menu, X, ShieldCheck } from 'lucide-react';
 
 interface OmniLandingNavbarProps {
-  onCreateChart: () => void;
-  onExploreHowItWorks: () => void;
-  onNavigateSection: (sectionId: string) => void;
+  onCreateChart?: () => void;
+  onExploreHowItWorks?: () => void;
+  onNavigateSection?: (sectionId: string) => void;
   onOpenDashboard?: () => void;
+  onStartOnboarding?: (presetData?: Partial<any>) => void;
+  onNavigateToTab?: (tabId: string) => void;
+  userProfile?: any;
 }
 
 export default function OmniLandingNavbar({
   onCreateChart,
   onExploreHowItWorks,
   onNavigateSection,
-  onOpenDashboard
+  onOpenDashboard,
+  onStartOnboarding,
+  onNavigateToTab,
+  userProfile
 }: OmniLandingNavbarProps) {
+  const handleCreate = onStartOnboarding ? () => onStartOnboarding() : onCreateChart || (() => {});
+  const handleNavSection = (id: string) => {
+    if (onNavigateToTab) onNavigateToTab(id);
+    else if (onNavigateSection) onNavigateSection(id);
+  };
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -52,7 +63,7 @@ export default function OmniLandingNavbar({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-4">
           {/* Logo (Minimal 360° Orbital Wordmark) */}
           <div 
-            onClick={() => onNavigateSection('hero')} 
+            onClick={() => handleNavSection('hero')} 
             className="flex items-center gap-3 cursor-pointer shrink-0 group"
           >
             <div className="relative w-8 h-8 rounded-xl bg-slate-900 border border-white/15 flex items-center justify-center shadow-inner group-hover:border-amber-400/50 transition-colors">
@@ -69,35 +80,41 @@ export default function OmniLandingNavbar({
           {/* Desktop Nav Links (PRD Section 9 & Free Tools PRD) */}
           <nav className="hidden md:flex items-center gap-6 text-xs font-mono text-slate-300">
             <button
-              onClick={() => onNavigateSection('free-tools')}
+              onClick={() => handleNavSection('free-tools')}
               className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors cursor-pointer flex items-center gap-1"
             >
               <Sparkles className="w-3 h-3" />
               <span>Free Tools</span>
             </button>
             <button
-              onClick={() => onNavigateSection('product-preview')}
+              onClick={() => handleNavSection('product-preview')}
               className="hover:text-white transition-colors cursor-pointer"
             >
               Product
             </button>
             <button
-              onClick={() => onNavigateSection('systems-section')}
+              onClick={() => handleNavSection('vedic-astrology')}
               className="hover:text-white transition-colors cursor-pointer"
             >
-              Systems
+              Vedic
             </button>
             <button
-              onClick={() => onNavigateSection('methodology-section')}
+              onClick={() => handleNavSection('western-astrology')}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
+              Western
+            </button>
+            <button
+              onClick={() => handleNavSection('panchanga')}
+              className="hover:text-white transition-colors cursor-pointer"
+            >
+              Panchanga
+            </button>
+            <button
+              onClick={() => handleNavSection('methodology')}
               className="hover:text-white transition-colors cursor-pointer"
             >
               Methodology
-            </button>
-            <button
-              onClick={() => onNavigateSection('professional-section')}
-              className="hover:text-white transition-colors cursor-pointer"
-            >
-              Professionals
             </button>
           </nav>
 
@@ -108,14 +125,14 @@ export default function OmniLandingNavbar({
                 onClick={onOpenDashboard}
                 className="px-3.5 py-1.5 rounded-xl text-xs font-mono text-slate-300 hover:text-white transition-colors cursor-pointer"
               >
-                Sign In
+                Dashboard
               </button>
             )}
             <button
-              onClick={onCreateChart}
-              className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs font-mono flex items-center gap-1.5 shadow-md shadow-amber-400/20 transition-all cursor-pointer hover:scale-[1.02]"
+              onClick={handleCreate}
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300 hover:from-amber-400 hover:to-amber-200 active:scale-95 text-slate-950 font-black text-xs font-mono flex items-center gap-1.5 shadow-lg shadow-amber-400/20 transition-all cursor-pointer min-h-[36px]"
             >
-              <Sparkles className="w-3.5 h-3.5" />
+              <Sparkles className="w-3.5 h-3.5 fill-slate-950" />
               <span>Get Free Pro Chart</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
@@ -136,46 +153,40 @@ export default function OmniLandingNavbar({
           <div className="md:hidden bg-[#080E1A] border-b border-white/10 p-4 space-y-3 text-left">
             <div className="flex flex-col space-y-2 text-xs font-mono text-slate-300">
               <button
-                onClick={() => { onNavigateSection('free-tools'); setMobileMenuOpen(false); }}
+                onClick={() => { handleNavSection('free-tools'); setMobileMenuOpen(false); }}
                 className="py-2 text-left text-emerald-400 font-bold hover:text-emerald-300 flex items-center gap-1"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Free Astrology Tools</span>
               </button>
               <button
-                onClick={() => { onNavigateSection('product-preview'); setMobileMenuOpen(false); }}
+                onClick={() => { handleNavSection('vedic-astrology'); setMobileMenuOpen(false); }}
                 className="py-2 text-left hover:text-white"
               >
-                Product Preview
+                Vedic Sidereal (Jyotish)
               </button>
               <button
-                onClick={() => { onNavigateSection('forecast-section'); setMobileMenuOpen(false); }}
+                onClick={() => { handleNavSection('western-astrology'); setMobileMenuOpen(false); }}
                 className="py-2 text-left hover:text-white"
               >
-                Forecast
+                Western Tropical
               </button>
               <button
-                onClick={() => { onNavigateSection('systems-section'); setMobileMenuOpen(false); }}
+                onClick={() => { handleNavSection('panchanga'); setMobileMenuOpen(false); }}
                 className="py-2 text-left hover:text-white"
               >
-                Astrology Systems
+                Daily Panchanga
               </button>
               <button
-                onClick={() => { onNavigateSection('methodology-section'); setMobileMenuOpen(false); }}
+                onClick={() => { handleNavSection('methodology'); setMobileMenuOpen(false); }}
                 className="py-2 text-left hover:text-white"
               >
-                Methodology
-              </button>
-              <button
-                onClick={() => { onNavigateSection('faq-section'); setMobileMenuOpen(false); }}
-                className="py-2 text-left hover:text-white"
-              >
-                FAQ
+                Ephemeris Methodology
               </button>
             </div>
             <div className="pt-2 border-t border-white/10 flex flex-col gap-2">
               <button
-                onClick={() => { onCreateChart(); setMobileMenuOpen(false); }}
+                onClick={() => { handleCreate(); setMobileMenuOpen(false); }}
                 className="w-full py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs font-mono flex items-center justify-center gap-1.5 shadow-md"
               >
                 <span>Create My Free Chart</span>

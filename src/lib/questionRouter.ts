@@ -326,7 +326,7 @@ export class QuestionIntentEngine {
     const seekerName = userProfile.name?.trim() || 'Seeker';
 
     // Compute actual astronomical coordinates
-    let positions = [];
+    let positions: any[] = [];
     let dashaInfo = { mahadasha: 'Jupiter', antardasha: 'Mercury', progressPercent: 60 };
     let panchangInfo = { tithi: 'Shukla Navami', nakshatra: 'Mrigashira', abhijitMuhurta: '11:48 AM - 12:36 PM' };
 
@@ -347,12 +347,12 @@ export class QuestionIntentEngine {
     let summary = '';
     let why = '';
     let mainTheme = '';
-    let supportedSystems = [];
+    let supportedSystems: any[] = [];
     let planetaryDegrees = '';
     let activeHouse = '';
     let classicalRuleCitation = '';
     let nextBestAction = { label: 'Explore Interactive Charts', destinationTab: 'charts', description: 'Inspect full planetary degrees' };
-    let followUpQuestions = [];
+    let followUpQuestions: string[] = [];
 
     switch (classification.category) {
       case 'CAREER':

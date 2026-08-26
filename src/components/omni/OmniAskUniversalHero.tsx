@@ -100,28 +100,33 @@ export default function OmniAskUniversalHero({
     if (!activeResult) return;
     setWhyPayload({
       title: activeResult.query,
-      tradition: activeResult.systems.join(' • '),
+      period: activeResult.answer.technicalEvidence.dashaCycle || 'Active Window',
+      confidence: (activeResult.confidence > 0.85 ? 'High' : 'Moderate–High') as any,
+      confidenceScore: Math.round(activeResult.confidence * 100),
       factors: [
+        activeResult.answer.why,
+        activeResult.answer.technicalEvidence.planetaryDegrees,
+        activeResult.answer.technicalEvidence.dashaCycle
+      ],
+      supportedSystems: [
         {
-          name: 'Primary Driver',
-          description: activeResult.answer.why,
-          weight: `${Math.round(activeResult.confidence * 100)}% Confidence`,
-          system: activeResult.systems[0] || 'Vedic'
+          name: activeResult.systems[0] || 'Vedic Sidereal',
+          status: 'Strong',
+          note: activeResult.answer.why
         },
         {
-          name: 'Planetary Position',
-          description: activeResult.answer.technicalEvidence.planetaryDegrees,
-          weight: 'NASA JPL DE440',
-          system: 'Astronomical Ephemeris'
-        },
-        {
-          name: 'Active Timing Dasha',
-          description: activeResult.answer.technicalEvidence.dashaCycle,
-          weight: 'Vimshottari',
-          system: 'Parashari Timing'
+          name: activeResult.systems[1] || 'Western Tropical',
+          status: 'Favorable',
+          note: activeResult.answer.technicalEvidence.planetaryDegrees
         }
       ],
-      classicalReferences: [activeResult.answer.technicalEvidence.classicalRuleCitation]
+      technicalRules: [
+        {
+          id: 'RULE_01',
+          source: activeResult.answer.technicalEvidence.classicalRuleCitation || 'Classical Scripture',
+          rule: activeResult.answer.why
+        }
+      ]
     });
     setWhyDrawerOpen(true);
   };
