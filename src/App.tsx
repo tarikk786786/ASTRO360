@@ -233,7 +233,6 @@ export default function AppContent() {
   }, [userProfile]);
 
   // Navigate with full history tracking & browser URL sync
-  // Navigate with full history tracking & browser URL sync
   const navigateTo = useCallback((tab: string, replace = false) => {
     const isPublicTab = tab === 'landing' || tab === 'free-tools' || tab === 'vedic-astrology' || tab === 'western-astrology' || tab === 'panchanga' || tab === 'methodology' || tab === 'seo';
     const isProfileConfigured = Boolean(userProfile && userProfile.name && userProfile.name.trim().length > 0 && userProfile.dob);
@@ -765,12 +764,14 @@ export default function AppContent() {
                   {activeTab === 'advisor' && <HolisticAdvisor userProfile={userProfile} />}
                   {(activeTab === 'remedies' || activeTab === 'remedy') && <AstroMultiTraditionRemedySuite />}
                   {activeTab === 'custom-remedies' && <CustomRemedialMediumEngine userProfile={userProfile} />}
-                  {(activeTab === 'synastry' || activeTab === 'compatibility' || activeTab === 'match') && <AstroSynastryMatchmaker userProfile={userProfile} />}
+                  {(activeTab === 'synastry' || activeTab === 'match') && <AstroSynastryMatchmaker userProfile={userProfile} />}
+                  {(activeTab === 'compatibility' || activeTab === 'ashta-koota') && <OmniCompatibilityLab userProfile={userProfile} />}
                   {activeTab === 'global-suite' && <GlobalWisdomSuite userProfile={userProfile} />}
                   {(activeTab === 'omni-research' || activeTab === 'comparative-mode' || activeTab === 'consensus' || activeTab === 'research') && <AstroOmniResearchSuite userProfile={userProfile} />}
                   {activeTab === 'tools-catalog' && <Astro150ToolsCatalog userProfile={userProfile} onNavigate={navigateTo} activeCategory={activeTab} initialCategory={activeTab} />}
-                  {(activeTab === 'birth-chart' || activeTab === 'kundli') && <BirthChartGenerator userProfile={userProfile} />}
+                  {(activeTab === 'birth-chart' || activeTab === 'kundli' || activeTab === 'nakshatra') && <BirthChartGenerator userProfile={userProfile} />}
                   {activeTab === 'master-chart' && <UnifiedChartEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
+                  {activeTab === 'dasha' && <UnifiedChartEngine userProfile={userProfile} activeTab="dasha" initialTab="dasha" />}
                   {(activeTab === 'islamic-astrology' || activeTab === 'islamic-suite' || activeTab === 'islamic') && <UnifiedIslamicSuite userProfile={userProfile} />}
                   {activeTab === 'chat' && <AstrologyChat />}
                   {(activeTab === 'dream-interpreter' || activeTab === 'dream') && <DreamInterpretationEngine userProfile={userProfile} />}
@@ -782,7 +783,7 @@ export default function AppContent() {
                   {(activeTab === 'gemstone-suite' || activeTab === 'gemstones') && <GemstoneRudrakshaSuite />}
                   {(activeTab === 'numerology' || activeTab === 'numerology-suite') && <NumerologyNameSuite />}
                   {(activeTab === 'tarot-iching' || activeTab === 'tarot') && <TarotIChingSuite />}
-                  {activeTab === 'time-horizon' && <TimeHorizonForecastSuite userProfile={userProfile} />}
+                  {(activeTab === 'time-horizon' || activeTab === 'career') && <TimeHorizonForecastSuite userProfile={userProfile} />}
                   {activeTab === 'dosha-engine' && <DoshaRemedyEngine userProfile={userProfile} />}
                   {activeTab === 'biorhythm-tracker' && <CosmicBiorhythmTracker userProfile={userProfile} />}
                   {(activeTab === 'chakras' || activeTab === 'chakra-alignment') && <SacredChakraAlignment />}
@@ -791,7 +792,7 @@ export default function AppContent() {
                   {(activeTab === 'horas' || activeTab === 'planetary-horas') && <PlanetaryHorasTracker />}
                   {(activeTab === 'mantras' || activeTab === 'mantra-soundboard') && <SacredMantraSoundboard />}
                   {activeTab === 'transit-radar' && <PlanetaryTransitRadar />}
-                  {activeTab === 'panchang-deities' && <PanchangDeitiesEngine />}
+                  {(activeTab === 'panchang-deities' || activeTab === 'panchang') && <PanchangDeitiesEngine />}
                   {activeTab === 'cosmic-compass' && <CosmicCompassVisualizer userProfile={userProfile} />}
                   {(activeTab === 'astrocartography' || activeTab === 'astro-cartography') && <AstroCartographyMatrix userProfile={userProfile} />}
                   {(activeTab === 'vedic-astrology' || activeTab === 'western-astrology' || activeTab === 'panchanga' || activeTab === 'methodology') && (
@@ -812,15 +813,6 @@ export default function AppContent() {
                   {activeTab === 'control-center' && <AstrologyControlCenter />}
                   {activeTab === 'studio' && <CosmicStudioSuite userProfile={userProfile} />}
                   {activeTab === 'horoscope' && <PremiumHoroscopeEngine userProfile={userProfile} />}
-                  {(activeTab === 'compatibility' || activeTab === 'ashta-koota') && <OmniCompatibilityLab userProfile={userProfile} />}
-                  {activeTab === 'islamic-suite' && <UnifiedIslamicSuite userProfile={userProfile} />}
-                  {activeTab === 'remedy' && <AstroMultiTraditionRemedySuite />}
-                  {(activeTab === 'kundli' || activeTab === 'nakshatra') && <BirthChartGenerator userProfile={userProfile} />}
-                  {activeTab === 'dasha' && <UnifiedChartEngine userProfile={userProfile} activeTab="dasha" initialTab="dasha" />}
-                  {activeTab === 'career' && <TimeHorizonForecastSuite userProfile={userProfile} />}
-                  {activeTab === 'muhurta' && <ElectionalMuhurtaEngine />}
-                  {activeTab === 'panchang' && <PanchangDeitiesEngine />}
-                  {activeTab === 'dream' && <DreamInterpretationEngine userProfile={userProfile} />}
                   {TRADITIONS[activeTab] && (
                     <TraditionView
                       tradition={TRADITIONS[activeTab]}
