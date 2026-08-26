@@ -1,23 +1,14 @@
-﻿/**
+/**
  * ASTRO360 SEO LAB - Safe Technical Site Crawler Engine
  * Respects robots.txt, concurrency limits, SSRF protection & detects crawl anomalies.
  */
 
 import { CrawlSettings, CrawledUrlResult } from './types';
-
-// Forbidden SSRF IP ranges / loopbacks
-const BLOCKED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '10.', '192.168.', '172.16.', '169.254.'];
+import { SsrfShield } from '../security/ssrfShield';
 
 export class SiteCrawlerEngine {
   public static validateTargetUrl(url: string): { valid: boolean; error?: string } {
-    if (!url || !url.trim()) {
-      return { valid: false, error: 'Target URL cannot be empty.' };
-    }
-    const lower = url.toLowerCase();
-    if (BLOCKED_HOSTS.some(blocked => lower.includes(blocked))) {
-      return { valid: false, error: 'Security Warning: Crawling internal or private infrastructure addresses is strictly prohibited (SSRF Protection).' };
-    }
-    return { valid: true };
+    return SsrfShield.validate(url);
   }
 
   /**
