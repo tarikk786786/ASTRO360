@@ -37,7 +37,7 @@ export default function OmniModernNav({
   return (
     <>
       {/* ─── 1. TOP DESKTOP & TABLET GLASS HEADER ─────────────────────── */}
-      <header className="sticky top-0 z-40 w-full h-15 bg-[#060A12]/90 backdrop-blur-xl border-b border-white/[0.08] px-3 sm:px-6 flex items-center justify-between transition-all select-none">
+      <header className="sticky top-0 z-40 w-full h-16 bg-[#060A12]/90 backdrop-blur-xl border-b border-white/[0.08] px-3 sm:px-6 flex items-center justify-between transition-all select-none">
         
         {/* Left: Brand Wordmark & Logo */}
         <div className="flex items-center gap-3">
@@ -158,7 +158,7 @@ export default function OmniModernNav({
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="lg:hidden fixed top-15 inset-x-0 bg-[#070C16]/98 backdrop-blur-2xl border-b border-white/15 p-4 z-40 shadow-2xl space-y-2"
+            className="lg:hidden fixed top-16 inset-x-0 bg-[#070C16]/98 backdrop-blur-2xl border-b border-white/15 p-4 z-40 shadow-2xl space-y-2"
           >
             <div className="grid grid-cols-2 gap-2 text-xs font-mono font-bold">
               {primaryDestinations.map(tab => {

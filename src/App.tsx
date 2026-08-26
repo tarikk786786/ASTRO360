@@ -245,7 +245,7 @@ export default function AppContent() {
   // Navigate with full history tracking & browser URL sync
   const navigateTo = useCallback((tab: string, replace = false) => {
     setActiveTab(tab);
-    if (isMobile) setIsSidebarOpen(false);
+    setIsSidebarOpen(false);
     setNavigationHistory(prev => {
       if (prev[prev.length - 1] === tab) return prev;
       return replace ? [...prev.slice(0, -1), tab] : [...prev, tab];
@@ -419,11 +419,11 @@ export default function AppContent() {
         )}
       </AnimatePresence>
 
-      {/* Sidebar */}
+      {/* Sidebar Drawer */}
       <aside
-        className={`fixed inset-y-0 left-0 ${!['home', 'forecast', 'ask', 'charts', 'me', 'free-tools'].includes(activeTab) ? 'md:static' : 'md:fixed'} h-full w-64 bg-[#090d16]/98 md:bg-[#090d16]/90 backdrop-blur-3xl border-r border-white/[0.04] flex flex-col z-50 transition-transform duration-300 ease-out shrink-0 ${
-          isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full ' + (!['home', 'forecast', 'ask', 'charts', 'me', 'free-tools'].includes(activeTab) ? 'md:translate-x-0' : '')
-        } ${!isSidebarOpen && ['home', 'forecast', 'ask', 'charts', 'me', 'free-tools'].includes(activeTab) ? 'pointer-events-none hidden' : 'flex'}`}
+        className={`fixed inset-y-0 left-0 h-full w-72 max-w-[85vw] bg-[#090d16]/98 backdrop-blur-3xl border-r border-white/[0.08] flex flex-col z-50 transition-transform duration-300 ease-out shrink-0 shadow-2xl ${
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full pointer-events-none'
+        }`}
       >
         {/* Logo area */}
         <div className="h-14 flex items-center justify-between px-5 border-b border-white/[0.04] flex-shrink-0">
