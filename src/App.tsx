@@ -235,7 +235,7 @@ export default function AppContent() {
   // Navigate with full history tracking & browser URL sync
   const navigateTo = useCallback((tab: string, replace = false) => {
     setActiveTab(tab);
-    setIsSidebarOpen(false);
+    if (isMobile) setIsSidebarOpen(false);
     setNavigationHistory(prev => {
       if (prev[prev.length - 1] === tab) return prev;
       return replace ? [...prev.slice(0, -1), tab] : [...prev, tab];
@@ -373,23 +373,23 @@ export default function AppContent() {
       {/* ✨ High-Resolution Animated Cosmic Background (React Three Fiber) */}
       <UniverseCanvas />
 
-      {/* Sidebar Overlay for Mobile & Desktop Drawer */}
+      {/* Sidebar Overlay for Mobile */}
       <AnimatePresence>
         {isSidebarOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 md:hidden"
             onClick={() => setIsSidebarOpen(false)}
           />
         )}
       </AnimatePresence>
 
-      {/* Sidebar Drawer */}
+      {/* Sidebar (Desktop Static / Mobile Slide-Over) */}
       <aside
-        className={`fixed inset-y-0 left-0 h-full w-72 max-w-[85vw] bg-[#090d16]/98 backdrop-blur-3xl border-r border-white/[0.08] flex flex-col z-50 transition-transform duration-300 ease-out shrink-0 shadow-2xl ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full pointer-events-none'
+        className={`fixed inset-y-0 left-0 md:static h-full w-64 bg-[#090d16]/98 md:bg-[#090d16]/95 backdrop-blur-3xl border-r border-white/[0.06] flex flex-col z-50 transition-transform duration-300 ease-out shrink-0 ${
+          isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'
         }`}
       >
         {/* Logo area */}
