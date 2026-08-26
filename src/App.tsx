@@ -373,25 +373,28 @@ export default function AppContent() {
       {/* ✨ High-Resolution Animated Cosmic Background (React Three Fiber) */}
       <UniverseCanvas />
 
-      {/* Sidebar Overlay for Mobile */}
-      <AnimatePresence>
-        {isSidebarOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 md:hidden"
-            onClick={() => setIsSidebarOpen(false)}
-          />
-        )}
-      </AnimatePresence>
+      {/* Sidebar Overlay for Mobile (App only) */}
+      {activeTab !== 'landing' && (
+        <AnimatePresence>
+          {isSidebarOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 md:hidden"
+              onClick={() => setIsSidebarOpen(false)}
+            />
+          )}
+        </AnimatePresence>
+      )}
 
-      {/* Sidebar (Desktop Static / Mobile Slide-Over) */}
-      <aside
-        className={`fixed inset-y-0 left-0 md:static h-full w-64 bg-[#090d16]/98 md:bg-[#090d16]/95 backdrop-blur-3xl border-r border-white/[0.06] flex flex-col z-50 transition-transform duration-300 ease-out shrink-0 ${
-          isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'
-        }`}
-      >
+      {/* Sidebar (Desktop Static / Mobile Slide-Over) - ONLY inside app tabs, NOT on landing */}
+      {activeTab !== 'landing' && (
+        <aside
+          className={`fixed inset-y-0 left-0 md:static h-full w-64 bg-[#090d16]/98 md:bg-[#090d16]/95 backdrop-blur-3xl border-r border-white/[0.06] flex flex-col z-50 transition-transform duration-300 ease-out shrink-0 ${
+            isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'
+          }`}
+        >
         {/* Logo area */}
         <div className="h-14 flex items-center justify-between px-5 border-b border-white/[0.04] flex-shrink-0">
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigateTo('home')}>
@@ -612,6 +615,7 @@ export default function AppContent() {
           </div>
         </div>
       </aside>
+      )}
 
       {/* Main Content */}
       <main className="flex-1 min-w-0 w-full relative z-10 flex flex-col h-[100dvh] overflow-hidden">
