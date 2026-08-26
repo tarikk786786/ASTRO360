@@ -155,13 +155,6 @@ export default function AppContent() {
         const tabParam = urlParams.get('tab');
         if (tabParam) return tabParam;
       }
-      const savedProfile = localStorage.getItem(STORAGE_KEY);
-      if (savedProfile) {
-        const parsed = JSON.parse(savedProfile);
-        if (parsed && typeof parsed.name === 'string' && parsed.name.trim().length > 0 && parsed.dob) {
-          return localStorage.getItem(TAB_KEY) || 'home';
-        }
-      }
       return 'landing';
     } catch {
       return 'landing';
@@ -170,13 +163,10 @@ export default function AppContent() {
 
   const [navigationHistory, setNavigationHistory] = useState<string[]>(() => {
     try {
-      const savedProfile = localStorage.getItem(STORAGE_KEY);
-      if (savedProfile) {
-        const parsed = JSON.parse(savedProfile);
-        if (parsed && typeof parsed.name === 'string' && parsed.name.trim().length > 0 && parsed.dob) {
-          const initial = localStorage.getItem(TAB_KEY) || 'home';
-          return [initial];
-        }
+      if (typeof window !== 'undefined') {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tabParam = urlParams.get('tab');
+        if (tabParam) return [tabParam];
       }
       return ['landing'];
     } catch {
@@ -377,58 +367,6 @@ export default function AppContent() {
     if (TRADITIONS[activeTab]) return TRADITIONS[activeTab].name;
     return 'Cosmos OMNI';
   };
-
-  if (!hasOnboarded) {
-    if (showOnboarding) {
-      return (
-        <OmniOnboardingWizard
-          initialPreset={landingPreset}
-          onComplete={(profile) => {
-            setUserProfile(profile);
-            saveProfile(profile);
-            setHasOnboarded(true);
-            setShowOnboarding(false);
-            navigateTo(activeTab === 'landing' ? 'home' : activeTab);
-          }}
-        />
-      );
-    }
-    return (
-      <LandingPage
-        onStartOnboarding={(preset) => {
-          if (preset && preset.dob) {
-            const updated: UserProfile = {
-              ...userProfile,
-              ...preset,
-              name: preset.name || userProfile.name || 'Seeker',
-              dob: preset.dob,
-              time: preset.time || userProfile.time || '12:00',
-              location: preset.location || userProfile.location || 'London, UK',
-            };
-            setUserProfile(updated);
-            saveProfile(updated);
-            setHasOnboarded(true);
-            navigateTo('home');
-          } else {
-            setLandingPreset(preset);
-            setShowOnboarding(true);
-          }
-        }}
-        onNavigateToTab={(tab) => {
-          if (tab === 'free-tools' || tab === 'vedic-astrology' || tab === 'western-astrology' || tab === 'panchanga' || tab === 'methodology') {
-            navigateTo(tab);
-          } else if (userProfile.dob) {
-            setHasOnboarded(true);
-            navigateTo(tab);
-          } else {
-            setLandingPreset(undefined);
-            setShowOnboarding(true);
-          }
-        }}
-        userProfile={userProfile}
-      />
-    );
-  }
 
   return (
     <div className="relative min-h-screen bg-[#090d16] text-slate-100 flex overflow-hidden font-sans">
@@ -718,14 +656,14 @@ export default function AppContent() {
                   {activeTab === 'landing' && (
                     <LandingPage
                       onStartOnboarding={(preset) => {
-                        if (preset && preset.name && preset.dob) {
+                        if (preset && preset.dob) {
                           const updated: UserProfile = {
                             ...userProfile,
                             ...preset,
-                            name: preset.name || userProfile.name,
-                            dob: preset.dob || userProfile.dob,
-                            time: preset.time || userProfile.time,
-                            location: preset.location || userProfile.location,
+                            name: preset.name || userProfile.name || 'Seeker',
+                            dob: preset.dob,
+                            time: preset.time || userProfile.time || '12:00',
+                            location: preset.location || userProfile.location || 'London, UK',
                           };
                           setUserProfile(updated);
                           saveProfile(updated);
@@ -736,7 +674,16 @@ export default function AppContent() {
                           setShowOnboarding(true);
                         }
                       }}
-                      onNavigateToTab={(tab) => navigateTo(tab)}
+                      onNavigateToTab={(tab) => {
+                        if (tab === 'free-tools' || tab === 'vedic-astrology' || tab === 'western-astrology' || tab === 'panchanga' || tab === 'methodology') {
+                          navigateTo(tab);
+                        } else if (hasOnboarded || (userProfile && userProfile.dob)) {
+                          navigateTo(tab);
+                        } else {
+                          setLandingPreset(undefined);
+                          setShowOnboarding(true);
+                        }
+                      }}
                       userProfile={userProfile}
                     />
                   )}
