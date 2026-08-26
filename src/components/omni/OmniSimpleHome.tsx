@@ -11,6 +11,7 @@ import OmniWhyDrawer, { type OmniWhyDrawerProps } from './OmniWhyDrawer';
 import OmniAudioBriefing from './OmniAudioBriefing';
 import OmniTransitAlertCenter from './OmniTransitAlertCenter';
 import OmniDailyVibeScore from './OmniDailyVibeScore';
+import OmniAskUniversalHero from './OmniAskUniversalHero';
 import { calculatePlanetaryPositions, calculatePanchang, calculateVimshottariDasha } from '../../lib/astroCalculations';
 
 interface OmniSimpleHomeProps {
@@ -107,6 +108,13 @@ export default function OmniSimpleHome({
           </button>
         </div>
       </div>
+
+      {/* 1.5 UNIVERSAL ENTRY EXPERIENCE: ASK ASTRO360 HERO */}
+      <OmniAskUniversalHero
+        userProfile={userProfile}
+        onNavigate={onNavigate}
+        onOpenProfile={onOpenProfile}
+      />
 
       {/* 2. Personalized Cosmic Placements Card (Live Computed) */}
       <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#0C1322] via-[#0F172A] to-[#0C1322] border border-amber-400/25 shadow-xl grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">

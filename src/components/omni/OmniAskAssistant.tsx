@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Bot, User, Sparkles, Send, Mic, HelpCircle, Layers, BookOpen, 
@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import type { UserProfile } from '../../types';
 import OmniWhyDrawer from './OmniWhyDrawer';
+import { QuestionIntentEngine } from '../../lib/questionRouter';
 
 interface ChatMessage {
   id: string;
@@ -75,85 +76,31 @@ export default function OmniAskAssistant({ userProfile }: { userProfile: UserPro
     setInputQuery('');
     setIsTyping(true);
 
-    // Simulate multi-tradition synthesis AI response with 3 levels of progressive disclosure
+    // Leverage ASTRO360 Universal Question Intent Engine for calculated multi-tradition synthesis
     setTimeout(() => {
-      let botResponse: ChatMessage;
-
-      const lower = query.toLowerCase();
-      if (lower.includes('career') || lower.includes('job') || lower.includes('work')) {
-        botResponse = {
-          id: `b-${Date.now()}`,
-          sender: 'assistant',
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          summary: "Your strongest upcoming career window peaks between September 12 and October 28, 2026.",
-          explanation: {
-            why: "Three independent astrology traditions show synchronized professional expansion during this period.",
-            mainTheme: "Leadership growth, executive responsibility, and elevated public visibility.",
-            supportedSystems: ["Vedic (Jyotish) ➔ Jupiter 10th Kendra", "Western Tropical ➔ Sun trine MC", "KP Astrology ➔ 10th Sub-lord"]
-          },
-          technical: {
-            planetaryDegrees: "Jupiter at 18°24' Cancer, Sun at 22°10' Leo, Saturn at 14°02' Pisces",
-            activeHouse: "10th House (Karma/Profession) & 11th House (Labhasthana/Gains)",
-            dashaCycle: "Jupiter Mahadasha / Mercury Antardasha",
-            ruleIds: ["BPHS-CH24-V12", "TETRA-BK4-C3", "KP-R4-S10"]
-          },
-          followUps: [
-            "What specific days are best for interviews?",
-            "What challenges should I avoid during this career window?",
-            "How does my Chinese BaZi pillar align with this?"
-          ]
-        };
-      } else if (lower.includes('love') || lower.includes('relationship') || lower.includes('marriage')) {
-        botResponse = {
-          id: `b-${Date.now()}`,
-          sender: 'assistant',
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          summary: "Your relationship energy is in a harmonious growth phase, especially active over the upcoming 6 weeks.",
-          explanation: {
-            why: "Venus transit forms a gentle trine with your natal Moon, softening communication and deepening trust.",
-            mainTheme: "Emotional safety, shared life goals, and mutual vulnerability.",
-            supportedSystems: ["Vedic ➔ 7th Lord Venus Kendra Transit", "Western ➔ Solar progression through 7th House"]
-          },
-          technical: {
-            planetaryDegrees: "Venus at 12°45' Libra, Moon at 08°19' Taurus",
-            activeHouse: "7th House (Kalatra/Partnership)",
-            dashaCycle: "Venus Sub-cycle in D9 Navamsha",
-            ruleIds: ["BPHS-D9-VENUS", "VALENS-BK2-REL"]
-          },
-          followUps: [
-            "What is my Ashta Koota compatibility profile?",
-            "When is the most auspicious window for commitment?",
-            "What does my D9 Navamsha say about my spouse?"
-          ]
-        };
-      } else {
-        botResponse = {
-          id: `b-${Date.now()}`,
-          sender: 'assistant',
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          summary: `Analyzing your natal chart for ${userProfile.name || 'your profile'}: You are currently experiencing an active period of personal integration and mental clarity.`,
-          explanation: {
-            why: "Your ascendant ruler is in a supportive angular position relative to the transiting planets.",
-            mainTheme: "Personal alignment, decisive strategy, and long-term foundation building.",
-            supportedSystems: ["Vedic Jyotish", "Western Modern", "Chinese 4 Pillars"]
-          },
-          technical: {
-            planetaryDegrees: "Sun (Leo), Moon (Taurus), Ascendant (Sagittarius)",
-            activeHouse: "1st & 9th House Dharma axis",
-            dashaCycle: "Active Vimshottari period",
-            ruleIds: ["BPHS-LAGNA-GEN", "PTOL-ASPECT-TRINE"]
-          },
-          followUps: [
-            "When is my next major life transition?",
-            "What are my greatest astrological strengths?",
-            "Show my full multi-system comparison"
-          ]
-        };
-      }
+      const solved = QuestionIntentEngine.routeAndSolve(query, userProfile);
+      const botResponse: ChatMessage = {
+        id: `b-${Date.now()}`,
+        sender: 'assistant',
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        summary: solved.answer.summary,
+        explanation: {
+          why: solved.answer.why,
+          mainTheme: solved.answer.mainTheme,
+          supportedSystems: solved.answer.supportedSystems
+        },
+        technical: {
+          planetaryDegrees: solved.answer.technicalEvidence.planetaryDegrees,
+          activeHouse: solved.answer.technicalEvidence.activeHouse,
+          dashaCycle: solved.answer.technicalEvidence.dashaCycle,
+          ruleIds: [solved.answer.technicalEvidence.classicalRuleCitation]
+        },
+        followUps: solved.followUpQuestions
+      };
 
       setIsTyping(false);
       setMessages(prev => [...prev, botResponse]);
-    }, 900);
+    }, 400);
   };
 
   return (
