@@ -85,6 +85,7 @@ import OmniMeView from './components/omni/OmniMeView';
 import OmniOnboardingWizard from './components/omni/OmniOnboardingWizard';
 import OmniFreeToolsHub from './components/free-tools/OmniFreeToolsHub';
 import SEOTopicHub from './components/seo/SEOTopicHub';
+import OmniSEOGrowthSuite from './components/seo/OmniSEOGrowthSuite';
 import OmniModernNav from './components/navigation/OmniModernNav';
 import OmniCompatibilityLab from './components/omni/OmniCompatibilityLab';
 import CosmicCelestialLoader from './components/ui/CosmicCelestialLoader';
@@ -815,8 +816,8 @@ export default function AppContent() {
                   {activeTab === 'mind-map' && <AstrologicalMindMap />}
                   {activeTab === 'chart-analytics' && <CosmicChartAnalytics userProfile={userProfile} />}
                   {activeTab === 'learning-hub' && <AstrologyLearningHub />}
-                  {activeTab === 'report-generator' && <ExecutiveReportGenerator userProfile={userProfile} />}
                   {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
+                  {(activeTab === 'seo' || activeTab === 'seo-suite' || activeTab === 'seo-auditor' || activeTab === 'seo-growth') && <OmniSEOGrowthSuite />}
                   {activeTab === 'control-center' && <AstrologyControlCenter />}
                   {activeTab === 'studio' && <CosmicStudioSuite userProfile={userProfile} />}
                   {activeTab === 'horoscope' && <PremiumHoroscopeEngine userProfile={userProfile} />}
