@@ -1,11 +1,16 @@
 /**
- * ASTRO360 Prediction Engine
- * Merges Deterministic Astronomical Data + Jyotish/Western Rules + Dashas + Transits ➔ Structured Forecast
+ * ASTRO360 Canonical Prediction Architecture
+ * Merges Deterministic Astronomical Data + Jyotish/Western/KP/Jaimini Rules + Dashas + Transits ➔ Structured Forecast
  */
 
 import { YogaResult } from './vedic/yogaEngine';
 import { DoshaEvaluation } from './vedic/doshaEngine';
 import { TransitEvent } from './transitEngine';
+import { CanonicalPredictionPipeline } from './prediction/canonicalPipeline';
+import { UserProfile } from '../types';
+import { CanonicalPrediction } from './prediction/predictionSchema';
+
+export * from './prediction/index';
 
 export interface StructuredPredictionPayload {
   system: 'Vedic' | 'Western' | 'Combined';
@@ -29,6 +34,20 @@ export interface StructuredPredictionPayload {
 }
 
 export class PredictionEngine {
+  /**
+   * Executes canonical prediction pipeline producing strongly typed, Zod-validated prediction
+   */
+  public static executeCanonical(
+    profile: UserProfile,
+    options?: {
+      question?: string;
+      targetCategory?: any;
+      targetEventType?: any;
+    }
+  ): CanonicalPrediction {
+    return CanonicalPredictionPipeline.execute(profile, options);
+  }
+
   /**
    * Generates a deterministic structured prediction payload for AI explanation
    */

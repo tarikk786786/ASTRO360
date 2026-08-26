@@ -1,124 +1,193 @@
-﻿/**
- * ASTRO360 OMNI - Cross-System Consensus & Contradiction Engine (PRD Section 42, 43, 100)
+/**
+ * ASTRO360 OMNI - Canonical Multi-System Consensus & Contradiction Engine (PRD Section 18, 19, 20)
  * Evaluates multi-tradition astrological indicators, detects agreement and
  * explicit divergence across traditions without erasing differences.
  */
 
 import {
   AstrologyTradition,
-  ConsensusConflictAnalysis,
-  EventOntologyCategory,
-  RuleProvenance,
-  CalibratedConfidenceModel
-} from '../schema/canonicalAstroSchema';
+  ConsensusClassification,
+  EventType,
+  CodifiedRule,
+  PredictionContradiction,
+  EvidenceItem
+} from './predictionSchema';
 
-export interface MultiTraditionEvidence {
+export interface TraditionAnalysisView {
   tradition: AstrologyTradition;
   theme: string;
   strength: 'Strong' | 'Moderate' | 'Weak' | 'Neutral';
   specificManifestation: string;
-  triggeredRules: RuleProvenance[];
+  triggeredRules: CodifiedRule[];
+  evidence?: EvidenceItem[];
+}
+
+export interface MultiSystemConsensusResult {
+  eventType: EventType;
+  classification: ConsensusClassification;
+  consensusLevel: 'HIGH_CONSENSUS' | 'MODERATE_CONSENSUS' | 'DIVERGENT' | 'CONFLICTING';
+  commonTheme: string;
+  overallDirection: string;
+  systemDifferences: {
+    tradition: AstrologyTradition;
+    emphasis: string;
+    indicators: string;
+  }[];
+  contradictions: PredictionContradiction[];
+  explicitContradictions: any[];
+  traditionViews: TraditionAnalysisView[];
+  synthesisNote: string;
+  synthesis: string;
+  confidenceScore: number;
 }
 
 export class ConsensusEngine {
   /**
-   * Evaluates consensus and contradiction across multiple traditions for a given category
+   * Evaluates consensus and contradiction across multiple traditions for a given event type.
    */
   public static evaluateConsensus(
-    eventType: EventOntologyCategory,
-    evidences: MultiTraditionEvidence[]
-  ): ConsensusConflictAnalysis {
-    const supporting = evidences.filter(e => e.strength === 'Strong' || e.strength === 'Moderate');
-    const strongCount = evidences.filter(e => e.strength === 'Strong').length;
-
-    let consensusLevel: ConsensusConflictAnalysis['consensusLevel'] = 'DIVERGENT';
-    if (strongCount >= 3) {
-      consensusLevel = 'HIGH_CONSENSUS';
-    } else if (supporting.length >= 2) {
-      consensusLevel = 'MODERATE_CONSENSUS';
-    }
+    eventType: EventType,
+    views: TraditionAnalysisView[]
+  ): MultiSystemConsensusResult {
+    const activeViews = views.filter(v => v.strength === 'Strong' || v.strength === 'Moderate');
+    const strongCount = views.filter(v => v.strength === 'Strong').length;
 
     // Detect explicit contradictions between traditions
-    const explicitContradictions: ConsensusConflictAnalysis['explicitContradictions'] = [];
-    
-    const westernView = evidences.find(e => e.tradition === 'western');
-    const vedicView = evidences.find(e => e.tradition === 'vedic');
+    const contradictions: PredictionContradiction[] = [];
 
-    if (westernView && vedicView) {
-      if (westernView.theme.includes('Expansion') && vedicView.theme.includes('Responsibility')) {
-        explicitContradictions.push({
-          traditionA: 'western',
-          viewA: 'Western Astrology projects vocational expansion and optimistic growth under Jupiter Solar Arc / Transits.',
-          traditionB: 'vedic',
-          viewB: 'Vedic Parashari indicates heavy Saturnian responsibility and rigorous discipline during this Dasha cycle.',
-          resolutionNote: 'Both traditions indicate elevated career activity, but Western emphasizes outward expansion while Vedic highlights internal accountability.'
+    const western = views.find(v => v.tradition === 'western_tropical');
+    const vedic = views.find(v => v.tradition === 'vedic_parashari');
+    const kp = views.find(v => v.tradition === 'vedic_kp');
+
+    if (western && vedic) {
+      if (western.theme.toLowerCase().includes('expansion') && vedic.theme.toLowerCase().includes('responsibility')) {
+        contradictions.push({
+          conflictType: 'THEMATIC_EMPHASIS_DIVERGENCE',
+          systemsInvolved: ['western_tropical', 'vedic_parashari'],
+          description: 'Western Solar Arc projects vocational expansion and public optimism, while Vedic Dasha emphasizes rigorous Saturnian discipline and structural duty.',
+          possibleReason: 'Western focuses on psychological aspiration & solar trajectory; Vedic emphasizes karmic accountability and dasha lord dignity.',
+          confidenceImpact: 'low'
         });
       }
     }
 
-    let overallDirection = 'Elevated thematic activity across participating cosmic systems.';
-    if (consensusLevel === 'HIGH_CONSENSUS') {
-      const eventName = eventType.replace(/_/g, ' ');
-      overallDirection = `Strong cross-tradition convergence on ${eventName}. Multiple independent astrological systems confirm this timing window.`;
-    } else if (consensusLevel === 'MODERATE_CONSENSUS') {
-      const eventName = eventType.replace(/_/g, ' ');
-      overallDirection = `Moderate agreement across traditions. Primary focus on ${eventName} with distinct traditional nuances.`;
-    } else {
-      overallDirection = 'Divergent indications across traditions. Manifestation depends heavily on individual intentional choice.';
+    if (kp && vedic) {
+      if (kp.strength === 'Weak' && vedic.strength === 'Strong') {
+        contradictions.push({
+          conflictType: 'CUSPAL_TIMING_DISAGREEMENT',
+          systemsInvolved: ['vedic_kp', 'vedic_parashari'],
+          description: 'Vedic general Gochara shows favorable Jupiter transit, but KP cuspal sub-lord does not signify the 10th cusp directly in current sub-period.',
+          possibleReason: 'KP requires cuspal sub-lord star connectivity which refines broad transit windows into narrower event triggers.',
+          confidenceImpact: 'moderate'
+        });
+      }
     }
 
-    const synthesisParts = evidences.map(e => `[${e.tradition.toUpperCase()}]: ${e.theme} (${e.specificManifestation})`);
-    const synthesis = `Synthesis: ${synthesisParts.join(' | ')}`;
+    // Determine consensus classification
+    let classification: ConsensusClassification = 'INSUFFICIENT_DATA';
+    let confidenceScore = 0.50;
+
+    if (views.length === 0) {
+      classification = 'INSUFFICIENT_DATA';
+      confidenceScore = 0.30;
+    } else if (contradictions.some(c => c.confidenceImpact === 'high')) {
+      classification = 'CONFLICT';
+      confidenceScore = 0.55;
+    } else if (strongCount >= 3) {
+      classification = 'STRONG_CONSENSUS';
+      confidenceScore = 0.92;
+    } else if (activeViews.length >= 2) {
+      classification = 'MODERATE_CONSENSUS';
+      confidenceScore = 0.82;
+    } else if (activeViews.length === 1) {
+      classification = 'MIXED';
+      confidenceScore = 0.68;
+    } else {
+      classification = 'MIXED';
+      confidenceScore = 0.58;
+    }
+
+    // Synthesize common theme
+    const formattedEventName = eventType.replace(/_/g, ' ').toLowerCase();
+    let commonTheme = '';
+    if (classification === 'STRONG_CONSENSUS') {
+      commonTheme = `Elevated activity and significant milestones regarding ${formattedEventName} supported across multiple astrological traditions.`;
+    } else if (classification === 'MODERATE_CONSENSUS') {
+      commonTheme = `Moderate alignment across traditions regarding ${formattedEventName}, with traditional nuances on internal vs external focus.`;
+    } else if (classification === 'CONFLICT') {
+      commonTheme = `Divergent traditional indications for ${formattedEventName}. Cross-system analysis reveals conflicting timing or strength markers.`;
+    } else {
+      commonTheme = `Baseline thematic focus on ${formattedEventName} with distinct traditional perspectives.`;
+    }
+
+    // Map system differences (never average them)
+    const systemDifferences = views.map(v => ({
+      tradition: v.tradition,
+      emphasis: v.theme,
+      indicators: v.specificManifestation
+    }));
+
+    const synthesisParts = views.map(v => `[${v.tradition.toUpperCase()}]: ${v.theme}`);
+    const synthesisNote = `Synthesis: ${synthesisParts.join(' | ')}`;
+
+    const consensusLevel = classification === 'STRONG_CONSENSUS'
+      ? 'HIGH_CONSENSUS'
+      : classification === 'MODERATE_CONSENSUS'
+      ? 'MODERATE_CONSENSUS'
+      : classification === 'CONFLICT'
+      ? 'CONFLICTING'
+      : 'DIVERGENT';
 
     return {
       eventType,
+      classification,
       consensusLevel,
-      overallDirection,
-      traditionViews: evidences.map(e => ({
-        tradition: e.tradition,
-        theme: e.theme,
-        strength: e.strength,
-        specificManifestation: e.specificManifestation
+      commonTheme,
+      overallDirection: commonTheme,
+      systemDifferences,
+      contradictions,
+      explicitContradictions: contradictions.map(c => ({
+        traditionA: c.systemsInvolved[0] || 'western',
+        viewA: c.description,
+        traditionB: c.systemsInvolved[1] || 'vedic',
+        viewB: c.possibleReason,
+        resolutionNote: c.description
       })),
-      explicitContradictions,
-      synthesis
+      traditionViews: views,
+      synthesisNote,
+      synthesis: synthesisNote,
+      confidenceScore
     };
   }
 
   /**
-   * Computes a non-fake calibrated confidence model (PRD Section 40-41)
+   * Computes calibrated confidence metrics
    */
   public static computeCalibratedConfidence(
     hasPreciseBirthTime: boolean,
     isAstronomicallyVerified: boolean,
     ruleCount: number,
-    consensusLevel: ConsensusConflictAnalysis['consensusLevel']
-  ): CalibratedConfidenceModel {
+    consensusLevel: any
+  ) {
     const inputQuality = hasPreciseBirthTime ? 0.98 : 0.72;
     const astronomicalPrecision = isAstronomicallyVerified ? 0.99 : 0.94;
     const ruleReliability = Math.min(0.65 + ruleCount * 0.05, 0.88);
     const timingPrecision = hasPreciseBirthTime ? 0.82 : 0.60;
-    const crossSystemAgreement = consensusLevel === 'HIGH_CONSENSUS' ? 0.88 : consensusLevel === 'MODERATE_CONSENSUS' ? 0.74 : 0.52;
-    const historicalValidation = 0.70;
-
-    const overallModelConfidence = Number((
-      inputQuality * 0.20 +
-      astronomicalPrecision * 0.20 +
-      ruleReliability * 0.20 +
-      timingPrecision * 0.15 +
-      crossSystemAgreement * 0.15 +
-      historicalValidation * 0.10
-    ).toFixed(2));
+    const crossAgreement = consensusLevel === 'HIGH_CONSENSUS' || consensusLevel === 'STRONG_CONSENSUS' ? 0.92 : 0.75;
+    const overallModelConfidence = Math.round(((inputQuality + astronomicalPrecision + ruleReliability + timingPrecision + crossAgreement) / 5) * 100) / 100;
 
     return {
       inputQuality,
       astronomicalPrecision,
       ruleReliability,
       timingPrecision,
-      crossSystemAgreement,
-      historicalValidation,
+      crossSystemAgreement: crossAgreement,
+      historicalValidation: 0.80,
       overallModelConfidence,
-      disclaimer: 'Calibrated statistical confidence score based on astronomical precision, classical rule provenance, and cross-system consensus. This is an analytical estimation, not a fatalistic metaphysical certainty.'
+      disclaimer: 'Calibrated confidence represents model mathematical convergence, not empirical certainty.'
     };
   }
 }
+
+export type MultiTraditionEvidence = TraditionAnalysisView;
+
