@@ -788,6 +788,24 @@ export default function OmniFreeToolsHub({
           </div>
         )}
 
+        {/* Floating / Sticky Mobile Save Bridge Card */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/20 via-indigo-950/40 to-[#0F172A] border border-amber-500/40 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xl">
+          <div className="space-y-0.5 text-center sm:text-left">
+            <span className="text-xs font-mono font-bold text-amber-300 flex items-center justify-center sm:justify-start gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Unlock Full 120-Year Dasha & Natal Blueprint
+            </span>
+            <p className="text-[11px] text-slate-300">
+              Save these calculated coordinates permanently to your private dashboard.
+            </p>
+          </div>
+          <button
+            onClick={() => onStartOnboarding({ dob: calcDate, time: calcTime, location: calcCity, name: userName })}
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-mono text-xs font-black flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer min-h-[44px]"
+          >
+            <span>Save & Unlock Full Natal Chart →</span>
+          </button>
+        </div>
+
       </div>
     </div>
   );

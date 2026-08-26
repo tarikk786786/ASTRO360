@@ -93,7 +93,7 @@ export default function OmniWhyDrawer({
               <button
                 onClick={onClose}
                 aria-label="Close why explanation modal"
-                className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                className="min-w-[48px] min-h-[48px] p-2.5 rounded-xl bg-white/5 hover:bg-white/10 active:bg-white/20 text-slate-400 hover:text-white transition-all cursor-pointer flex items-center justify-center shrink-0 active:scale-95"
               >
                 <X className="w-5 h-5" />
               </button>

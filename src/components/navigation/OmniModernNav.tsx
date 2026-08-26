@@ -201,7 +201,7 @@ export default function OmniModernNav({
       </AnimatePresence>
 
       {/* ─── 3. FIXED MOBILE BOTTOM NAVIGATION BAR ───────────────────── */}
-      <nav className="md:hidden fixed bottom-0 inset-x-0 h-16 pb-[env(safe-area-inset-bottom)] bg-[#070C16]/95 backdrop-blur-2xl border-t border-white/10 z-40 px-2 flex items-center justify-around shadow-[0_-8px_30px_rgba(0,0,0,0.6)] select-none">
+      <nav className="md:hidden fixed bottom-0 inset-x-0 h-[calc(4rem+env(safe-area-inset-bottom,0px))] pb-[env(safe-area-inset-bottom,0px)] bg-[#070C16]/98 backdrop-blur-2xl border-t border-white/10 z-40 px-2 flex items-center justify-around shadow-[0_-8px_30px_rgba(0,0,0,0.6)] select-none">
         {[
           { id: 'home', icon: Home, label: 'Home' },
           { id: 'forecast', icon: Calendar, label: 'Forecast' },
@@ -214,7 +214,7 @@ export default function OmniModernNav({
             <button
               key={id}
               onClick={() => onNavigate(id)}
-              className={`flex flex-col items-center justify-center w-full h-full py-1 transition-all cursor-pointer relative ${
+              className={`flex flex-col items-center justify-center w-full min-h-[48px] py-1 transition-all cursor-pointer relative active:scale-95 touch-manipulation ${
                 isActive ? 'text-amber-400 font-bold' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -233,7 +233,7 @@ export default function OmniModernNav({
               {isActive && !isHero && (
                 <motion.div
                   layoutId="mobileActiveDot"
-                  className="w-1 h-1 rounded-full bg-amber-400 mx-auto mt-0.5 shadow-[0_0_6px_currentColor]"
+                  className="w-1.5 h-1.5 rounded-full bg-amber-400 mx-auto mt-0.5 shadow-[0_0_6px_currentColor]"
                 />
               )}
             </button>
