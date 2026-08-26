@@ -9,7 +9,7 @@
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.app.json",
     "typecheck:app": "tsc -p tsconfig.app.json",
-    "test": "tsx src/lib/astroCalculations.test.ts && tsx src/backend/dashaEngine.test.ts && tsx src/backend/doshaEngine.test.ts && tsx src/lib/goldenDataset.test.ts && tsx src/lib/seoGrowthEngine.test.ts && tsx src/lib/marketingBrain/marketingBrain.test.ts && tsx src/lib/seoLab/seoLab.test.ts && tsx tests/realUserSimulation.test.ts",
+    "test": "tsx src/lib/astroCalculations.test.ts && tsx src/backend/dashaEngine.test.ts && tsx src/backend/doshaEngine.test.ts && tsx src/lib/goldenDataset.test.ts && tsx src/lib/seoGrowthEngine.test.ts && tsx tests/realUserSimulation.test.ts",
     "test:forensic": "tsx tests/forensicRunner.ts"
   },
   "dependencies": {

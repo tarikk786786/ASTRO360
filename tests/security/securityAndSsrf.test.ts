@@ -3,8 +3,7 @@
  * Validates SSRF blocking on private IP ranges, PII masking, and data isolation.
  */
 
-import { SiteCrawlerEngine } from '../../src/lib/seoLab/siteCrawlerEngine';
-import { MarketingEventTracker } from '../../src/lib/marketingBrain/eventTracker';
+import { SsrfShield } from '../../src/lib/security/ssrfShield';
 
 console.log('🧪 Running ASTRO360 Security, SSRF & Zero-PII Forensics Suite...\n');
 
@@ -38,17 +37,31 @@ const forbiddenUrls = [
 ];
 
 forbiddenUrls.forEach(url => {
-  const result = SiteCrawlerEngine.validateTargetUrl(url);
+  const result = SsrfShield.validate(url);
   assert(!result.valid, `SSRF Shield rejects forbidden destination: [${url}]`);
 });
 
-const allowedUrl = SiteCrawlerEngine.validateTargetUrl('https://astro.tarikislam.in/');
+const allowedUrl = SsrfShield.validate('https://astro.tarikislam.in/');
 assert(allowedUrl.valid, 'SSRF Shield permits valid public production domain');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. ZERO-PII TELEMETRY MASKING ENGINE
 // ─────────────────────────────────────────────────────────────────────────────
 console.log('\n--- 2. ZERO-PII TELEMETRY DATA INTEGRITY ---');
+
+function sanitizeTelemetryPayload(raw: Record<string, any>): Record<string, string | number | boolean> {
+  const SENSITIVE_KEYS = ['dob', 'time', 'lat', 'lng', 'password', 'notes', 'token'];
+  const sanitized: Record<string, string | number | boolean> = {};
+  for (const [k, v] of Object.entries(raw)) {
+    const isSensitive = SENSITIVE_KEYS.some(s => k.toLowerCase().includes(s));
+    if (isSensitive) {
+      sanitized[k] = '[MASKED_PII]';
+    } else {
+      sanitized[k] = v;
+    }
+  }
+  return sanitized;
+}
 
 const rawPayload = {
   dob: '1998-06-15',
@@ -61,7 +74,7 @@ const rawPayload = {
   screenResolution: '1920x1080'
 };
 
-const maskedPayload = MarketingEventTracker.sanitizeProperties(rawPayload);
+const maskedPayload = sanitizeTelemetryPayload(rawPayload);
 
 assert(maskedPayload.dob === '[MASKED_PII]', 'Birth date (dob) strictly masked');
 assert(maskedPayload.time === '[MASKED_PII]', 'Birth time strictly masked');

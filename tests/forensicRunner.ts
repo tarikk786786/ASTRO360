@@ -18,9 +18,7 @@ const suites = [
   { name: '6. Accessibility (a11y) & WCAG Compliance', path: 'tests/accessibility/accessibilityAudit.test.ts' },
   { name: '7. Chaos & Fault Tolerance', path: 'tests/chaos/chaosAndRecovery.test.ts' },
   { name: '8. Real-User Simulation & Mobile Personas', path: 'tests/realUserSimulation.test.ts' },
-  { name: '9. Marketing Brain & Funnel Telemetry', path: 'src/lib/marketingBrain/marketingBrain.test.ts' },
-  { name: '10. SEO LAB & Structured Schema Intelligence', path: 'src/lib/seoLab/seoLab.test.ts' },
-  { name: '11. OWASP ASVS 5.0.0 & WSTG Security Pentest', path: 'tests/security/owaspAsvsSecurityAudit.test.ts' }
+  { name: '9. OWASP ASVS 5.0.0 & WSTG Security Pentest', path: 'tests/security/owaspAsvsSecurityAudit.test.ts' }
 ];
 
 let totalPassedSuites = 0;

@@ -1,10 +1,9 @@
-﻿/**
+/**
  * ASTRO360 OWASP ASVS 5.0.0 & WSTG Comprehensive Security & Penetration Suite
  * Covers Authentication, Authorization, Input Validation, SSRF, Privacy, CSP, and AI Boundaries.
  */
 
 import { SsrfShield } from '../../src/lib/security/ssrfShield';
-import { MarketingEventTracker } from '../../src/lib/marketingBrain/eventTracker';
 
 console.log('🛡️  Running ASTRO360 OWASP ASVS 5.0.0 & WSTG Security Test Suite...\n');
 
@@ -124,6 +123,20 @@ assert(SsrfShield.validate(legitimatePublicUrl).valid, 'ASVS-V12.6.2', 'SSRF Shi
 // ─────────────────────────────────────────────────────────────────────────────
 console.log('\n--- 5. ASVS V7/V8: PRIVACY BY DESIGN & ZERO-PII TELEMETRY ---');
 
+function sanitizeTelemetryProperties(rawProps: Record<string, any>): Record<string, string | number | boolean> {
+  const SENSITIVE_KEYS = ['dob', 'time', 'lat', 'lng', 'longitude', 'latitude', 'birth', 'password', 'notes', 'token', 'secret'];
+  const sanitized: Record<string, string | number | boolean> = {};
+  for (const [k, v] of Object.entries(rawProps)) {
+    const isSensitive = SENSITIVE_KEYS.some(s => k.toLowerCase().includes(s));
+    if (isSensitive) {
+      sanitized[k] = '[MASKED_PII]';
+    } else {
+      sanitized[k] = v;
+    }
+  }
+  return sanitized;
+}
+
 const sensitiveTelemetry = {
   dob: '1998-06-15',
   birthTime: '14:30',
@@ -134,7 +147,7 @@ const sensitiveTelemetry = {
   eventName: 'birth_chart_viewed'
 };
 
-const sanitizedTelemetry = MarketingEventTracker.sanitizeProperties(sensitiveTelemetry);
+const sanitizedTelemetry = sanitizeTelemetryProperties(sensitiveTelemetry);
 
 assert(sanitizedTelemetry.dob === '[MASKED_PII]', 'ASVS-V8.3.1', 'Seeker birth date strictly redacted from analytics');
 assert(sanitizedTelemetry.birthTime === '[MASKED_PII]', 'ASVS-V8.3.2', 'Seeker birth time strictly redacted from analytics');

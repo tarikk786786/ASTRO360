@@ -75,8 +75,6 @@ const AstroOmniResearchSuite = lazy(() => import('./components/AstroOmniResearch
 const BirthTimeRectificationSuite = lazy(() => import('./components/BirthTimeRectificationSuite'));
 const AstrologicalMindMap = lazy(() => import('./components/AstrologicalMindMap'));
 const AstroCartographyMatrix = lazy(() => import('./components/AstroCartographyMatrix'));
-const AstroMarketingBrainDashboard = lazy(() => import('./components/marketingBrain/AstroMarketingBrainDashboard'));
-const AstroSeoLabDashboard = lazy(() => import('./components/seoLab/AstroSeoLabDashboard'));
 
 import OmniSimpleHome from './components/omni/OmniSimpleHome';
 import OmniForecastView from './components/omni/OmniForecastView';
@@ -460,14 +458,6 @@ export default function AppContent() {
               <MessageCircle className="w-4 h-4" />
               <span>AI Oracle</span>
             </button>
-            <button onClick={() => navigateTo('marketing-brain')} className={`sidebar-item ${activeTab === 'marketing-brain' ? 'sidebar-item-active' : ''}`}>
-              <TrendingUp className="w-4 h-4 text-emerald-400" />
-              <span className="font-semibold text-emerald-300">Marketing Brain</span>
-            </button>
-            <button onClick={() => navigateTo('seo-lab')} className={`sidebar-item ${activeTab === 'seo-lab' ? 'sidebar-item-active' : ''}`}>
-              <Globe className="w-4 h-4 text-cyan-400" />
-              <span className="font-semibold text-cyan-300">SEO Lab</span>
-            </button>
           </div>
 
           {/* TOOLS & ENGINES */}
@@ -808,8 +798,6 @@ export default function AppContent() {
                   {activeTab === 'learning-hub' && <AstrologyLearningHub />}
                   {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
                   {(activeTab === 'seo' || activeTab === 'seo-suite' || activeTab === 'seo-auditor' || activeTab === 'seo-growth') && <OmniSEOGrowthSuite />}
-                  {(activeTab === 'seo-lab' || activeTab === 'seo-tools' || activeTab === 'seo-workspace') && <AstroSeoLabDashboard />}
-                  {(activeTab === 'marketing-brain' || activeTab === 'growth-engine') && <AstroMarketingBrainDashboard />}
                   {activeTab === 'control-center' && <AstrologyControlCenter />}
                   {activeTab === 'studio' && <CosmicStudioSuite userProfile={userProfile} />}
                   {activeTab === 'horoscope' && <PremiumHoroscopeEngine userProfile={userProfile} />}
