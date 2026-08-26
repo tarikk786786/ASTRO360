@@ -9,7 +9,7 @@ import {
   Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon,
   Zap, Wrench, DollarSign, Wallet, ArrowLeft, Home, Cpu, Layers,
   AlertTriangle, BarChart2, BookOpen, Calendar, Clock, Eye, FileText, Hash, Map, MapPin,
-  Music, Network, Radar, Shield, Sun, Sunrise,
+  Music, Network, Radar, Shield, Sun, Sunrise, TrendingUp,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TRADITIONS, CategoryInfo, TraditionGroup, UserProfile, GROUP_ICONS } from './types';
@@ -75,6 +75,7 @@ const AstroOmniResearchSuite = lazy(() => import('./components/AstroOmniResearch
 const BirthTimeRectificationSuite = lazy(() => import('./components/BirthTimeRectificationSuite'));
 const AstrologicalMindMap = lazy(() => import('./components/AstrologicalMindMap'));
 const AstroCartographyMatrix = lazy(() => import('./components/AstroCartographyMatrix'));
+const AstroMarketingBrainDashboard = lazy(() => import('./components/marketingBrain/AstroMarketingBrainDashboard'));
 
 import OmniSimpleHome from './components/omni/OmniSimpleHome';
 import OmniForecastView from './components/omni/OmniForecastView';
@@ -458,6 +459,10 @@ export default function AppContent() {
               <MessageCircle className="w-4 h-4" />
               <span>AI Oracle</span>
             </button>
+            <button onClick={() => navigateTo('marketing-brain')} className={`sidebar-item ${activeTab === 'marketing-brain' ? 'sidebar-item-active' : ''}`}>
+              <TrendingUp className="w-4 h-4 text-emerald-400" />
+              <span className="font-semibold text-emerald-300">Marketing Brain</span>
+            </button>
           </div>
 
           {/* TOOLS & ENGINES */}
@@ -798,6 +803,7 @@ export default function AppContent() {
                   {activeTab === 'learning-hub' && <AstrologyLearningHub />}
                   {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
                   {(activeTab === 'seo' || activeTab === 'seo-suite' || activeTab === 'seo-auditor' || activeTab === 'seo-growth') && <OmniSEOGrowthSuite />}
+                  {(activeTab === 'marketing-brain' || activeTab === 'growth-engine') && <AstroMarketingBrainDashboard />}
                   {activeTab === 'control-center' && <AstrologyControlCenter />}
                   {activeTab === 'studio' && <CosmicStudioSuite userProfile={userProfile} />}
                   {activeTab === 'horoscope' && <PremiumHoroscopeEngine userProfile={userProfile} />}
