@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ASTRO360 OMNI: Asynchronous Background Prefetch & Warming Engine
  * Precomputes recurring and personal datasets without blocking the main UI thread.
  */
@@ -78,7 +78,7 @@ export function warmCosmicProfileCache(profile: UserProfile): void {
 /**
  * Prefetches data on user intent (hover or touch start on navigation items)
  */
-export function prefetchRouteData(targetTab: string, profile: UserProfile): void {
+export function prefetchRouteData(targetTab: string, profile?: UserProfile): void {
   if (!profile || !profile.dob) return;
 
   const birthHash = computeDeterministicHash({

@@ -86,7 +86,7 @@ import OmniOnboardingWizard from './components/omni/OmniOnboardingWizard';
 import OmniFreeToolsHub from './components/free-tools/OmniFreeToolsHub';
 import SEOTopicHub from './components/seo/SEOTopicHub';
 import OmniSEOGrowthSuite from './components/seo/OmniSEOGrowthSuite';
-import OmniModernNav from './components/navigation/OmniModernNav';
+import { AstroNavigationShell } from './components/navigation';
 import OmniCompatibilityLab from './components/omni/OmniCompatibilityLab';
 import CosmicCelestialLoader from './components/ui/CosmicCelestialLoader';
 import { updatePageSEO } from './lib/seoManager';
@@ -629,15 +629,16 @@ export default function AppContent() {
 
       {/* Main Content */}
       <main className="flex-1 min-w-0 w-full relative z-10 flex flex-col h-[100dvh] overflow-hidden">
-        {/* Unified Modern Navigation (Desktop Glass Header & Mobile Expandable Drawer) */}
+        {/* Canonical Multi-Platform Navigation Shell (AstroMobileHeader, 5-Word Desktop Bar, AstroMobileBottomNav & Sheets) */}
         {activeTab !== 'landing' && (
-          <OmniModernNav
+          <AstroNavigationShell
             activeTab={activeTab}
             onNavigate={navigateTo}
+            onBack={goBack}
+            canGoBack={navigationHistory.length > 1}
+            pageTitle={getPageTitle()}
             userProfile={userProfile}
-            onOpenSearch={() => setIsCommandPaletteOpen(true)}
-            onToggleStudio={() => setIsSidebarOpen(!isSidebarOpen)}
-            isStudioOpen={isSidebarOpen}
+            onUpdateSystem={(sys) => setUserProfile({ ...userProfile, preferredSystem: sys })}
           />
         )}
 
@@ -744,7 +745,7 @@ export default function AppContent() {
                     <OmniForecastView userProfile={userProfile} />
                   )}
                   {activeTab === 'ask' && (
-                    <OmniAskAssistant userProfile={userProfile} />
+                    <OmniAskAssistant userProfile={userProfile} onNavigate={navigateTo} />
                   )}
                   {activeTab === 'charts' && (
                     <OmniChartsView userProfile={userProfile} />

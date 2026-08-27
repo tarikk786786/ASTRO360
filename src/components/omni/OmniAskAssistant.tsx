@@ -30,7 +30,13 @@ interface ChatMessage {
   followUps?: string[];
 }
 
-export default function OmniAskAssistant({ userProfile }: { userProfile: UserProfile }) {
+export default function OmniAskAssistant({ 
+  userProfile,
+  onNavigate
+}: { 
+  userProfile: UserProfile;
+  onNavigate?: (tab: string) => void;
+}) {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'init-1',
@@ -221,6 +227,53 @@ export default function OmniAskAssistant({ userProfile }: { userProfile: UserPro
                         <div><strong className="text-slate-400">Rule IDs:</strong> {msg.technical.ruleIds.join(', ')}</div>
                       </motion.div>
                     )}
+                  </div>
+                )}
+
+                {/* Contextual Deep Link Actions (1-tap access to relevant engine) */}
+                {isAssistant && onNavigate && (
+                  <div className="pt-2 border-t border-white/10 flex flex-wrap items-center gap-1.5">
+                    <span className="text-[10px] font-mono text-amber-400 font-bold block w-full mb-0.5">
+                      Contextual Actions:
+                    </span>
+                    {(msg.summary.toLowerCase().includes('dasha') || (msg.technical?.dashaCycle && msg.technical.dashaCycle !== 'N/A')) && (
+                      <button
+                        onClick={() => onNavigate('dasha')}
+                        className="px-2.5 py-1 rounded-lg bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 border border-amber-400/30 text-[10.5px] font-mono font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                      >
+                        <span>[Open Dasha]</span>
+                      </button>
+                    )}
+                    {(msg.summary.toLowerCase().includes('chart') || msg.summary.toLowerCase().includes('vedic') || msg.summary.toLowerCase().includes('western')) && (
+                      <button
+                        onClick={() => onNavigate('charts')}
+                        className="px-2.5 py-1 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[10.5px] font-mono font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                      >
+                        <span>[View Chart]</span>
+                      </button>
+                    )}
+                    {(msg.summary.toLowerCase().includes('love') || msg.summary.toLowerCase().includes('relationship') || msg.summary.toLowerCase().includes('partner')) && (
+                      <button
+                        onClick={() => onNavigate('compatibility')}
+                        className="px-2.5 py-1 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10.5px] font-mono font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                      >
+                        <span>[Open Compatibility]</span>
+                      </button>
+                    )}
+                    {(msg.summary.toLowerCase().includes('career') || msg.summary.toLowerCase().includes('timing') || msg.summary.toLowerCase().includes('month')) && (
+                      <button
+                        onClick={() => onNavigate('forecast')}
+                        className="px-2.5 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-[10.5px] font-mono font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                      >
+                        <span>[Explore Timing]</span>
+                      </button>
+                    )}
+                    <button
+                      onClick={() => onNavigate('studio')}
+                      className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-[10.5px] font-mono flex items-center gap-1 cursor-pointer transition-colors"
+                    >
+                      <span>[Open in Studio →]</span>
+                    </button>
                   </div>
                 )}
 
