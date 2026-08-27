@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
-    <title>ASTRO360 — Astrology Charts, Forecasts, Vedic & Western Astrology</title>
-    <meta name="description" content="Explore personalized birth charts, Vedic astrology, Western astrology, compatibility, Panchanga, Dashas, transits and multi-system forecasts with transparent calculations." />
+    <title>ASTRO360: Precision Astrology & Ephemeris Platform</title>
+    <meta name="description" content="Free high-precision birth charts, Vedic Jyotish, Western astrology, compatibility, Panchanga, and multi-tradition planetary forecasts." />
     <meta name="keywords" content="astrology, birth chart, natal chart, vedic astrology, western astrology, kundli, panchang, dasha, compatibility, horoscope, astrocartography" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="author" content="ASTRO360 Engineering & Astronomy Team" />
-    <meta property="og:title" content="ASTRO360 — Global Astrology Intelligence | Multi-Tradition Charts & Forecasts" />
-    <meta property="og:description" content="Explore personalized birth charts, Vedic astrology, Western astrology, compatibility, Panchanga, Dashas, transits and multi-system forecasts with transparent calculations." />
+    <meta property="og:title" content="ASTRO360: Precision Astrology & Ephemeris Platform" />
+    <meta property="og:description" content="Free high-precision birth charts, Vedic Jyotish, Western astrology, compatibility, Panchanga, and multi-tradition planetary forecasts." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://astro.tarikislam.in/" />
     <meta property="og:site_name" content="ASTRO360 OMNI" />
@@ -21,8 +21,8 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@astro360" />
     <meta name="twitter:creator" content="@astro360" />
-    <meta name="twitter:title" content="ASTRO360 OMNI — Universal Cosmic Intelligence Platform" />
-    <meta name="twitter:description" content="World's premier multi-faith astrology platform uniting 6 traditions with NASA JPL DE440 precision. 100% Free Launch Pass." />
+    <meta name="twitter:title" content="ASTRO360: Precision Astrology & Ephemeris Platform" />
+    <meta name="twitter:description" content="Free high-precision birth charts, Vedic Jyotish, Western astrology, compatibility, Panchanga, and multi-tradition planetary forecasts." />
     <meta name="twitter:image" content="https://astro.tarikislam.in/favicon.svg" />
     <meta name="theme-color" content="#090d16" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -138,6 +138,17 @@
         border-radius: 999px;
         animation: astro-progress-indeterminate 1.5s ease-in-out infinite;
       }
+      .sr-only-seo {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
       @keyframes astro-spin {
         from { transform: rotate(0deg); }
         to { transform: rotate(360deg); }
@@ -157,9 +168,22 @@
       }
     </style>
 
+    <!-- Dynamic Self-Referential Canonical & Path Script -->
+    <script>
+      (function() {
+        try {
+          var canonicalTag = document.querySelector('link[rel="canonical"]');
+          if (canonicalTag && window.location) {
+            var rawPath = window.location.pathname || '/';
+            var cleanPath = rawPath.replace(/\/$/, '') || '';
+            canonicalTag.setAttribute('href', 'https://astro.tarikislam.in' + cleanPath);
+          }
+        } catch (err) {}
+      })();
+    </script>
+
     <!-- Cache Busting & Auto-Recovery Script -->
     <script>
-      // Clear stale service worker caches if new build deployed
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations().then(function(registrations) {
           for (var registration of registrations) {
@@ -167,7 +191,6 @@
           }
         });
       }
-      // Catch stale script loading errors and reload
       window.addEventListener('error', function(e) {
         if (e.target && (e.target.tagName === 'SCRIPT' || e.target.tagName === 'LINK')) {
           if (!sessionStorage.getItem('reloaded_for_stale_cache')) {
@@ -186,7 +209,7 @@
       }, true);
     </script>
 
-    <!-- JSON-LD Structured Data Schema (Enhanced with SoftwareApplication & Golden Dataset Benchmark) -->
+    <!-- JSON-LD Structured Data Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -195,7 +218,7 @@
           "@type": "WebSite",
           "@id": "https://astro.tarikislam.in/#website",
           "url": "https://astro.tarikislam.in/",
-          "name": "ASTRO360 OMNI",
+          "name": "ASTRO360",
           "description": "Universal multi-faith astrological, astronomical, and spiritual intelligence platform.",
           "inLanguage": "en-US"
         },
@@ -264,6 +287,65 @@
   </head>
   <body style="background-color: #090d16; color: #f8fafc;">
     <div id="root">
+      <!-- Semantic Crawler-Accessible Foundation (H1, Internal Links, Substantial Structured Content) -->
+      <header style="padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); text-align: center;">
+        <h1 style="font-size: 24px; font-weight: 800; margin: 0 0 12px 0; color: #ffffff;">ASTRO360: Precision Astrology &amp; Ephemeris Platform</h1>
+        <nav aria-label="ASTRO360 Directory" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; font-size: 13px; margin-bottom: 16px;">
+          <a href="/birth-chart" style="color: #fbbf24; text-decoration: none;">Birth Chart Calculator</a>
+          <a href="/vedic-astrology" style="color: #fbbf24; text-decoration: none;">Vedic Astrology</a>
+          <a href="/western-astrology" style="color: #fbbf24; text-decoration: none;">Western Astrology</a>
+          <a href="/compatibility" style="color: #fbbf24; text-decoration: none;">Synastry Compatibility</a>
+          <a href="/panchanga" style="color: #fbbf24; text-decoration: none;">Daily Panchanga</a>
+          <a href="/transits" style="color: #fbbf24; text-decoration: none;">Planetary Transits</a>
+          <a href="/dasha" style="color: #fbbf24; text-decoration: none;">Vimshottari Dasha</a>
+          <a href="/muhurta" style="color: #fbbf24; text-decoration: none;">Auspicious Muhurta</a>
+          <a href="/astrocartography" style="color: #fbbf24; text-decoration: none;">Astrocartography</a>
+          <a href="/methodology" style="color: #fbbf24; text-decoration: none;">Calculation Methodology</a>
+          <a href="/learn/nakshatra" style="color: #38bdf8; text-decoration: none;">27 Nakshatras</a>
+          <a href="/learn/navamsa" style="color: #38bdf8; text-decoration: none;">D9 Navamsa Chart</a>
+          <a href="/learn/vimshottari-dasha" style="color: #38bdf8; text-decoration: none;">Dasha Timeline Guide</a>
+          <a href="/learn/astrology-houses" style="color: #38bdf8; text-decoration: none;">12 Astrology Houses</a>
+        </nav>
+      </header>
+
+      <main style="max-width: 900px; margin: 0 auto; padding: 24px; line-height: 1.6; color: #cbd5e1;">
+        <section style="margin-bottom: 24px;">
+          <h2 style="color: #ffffff; font-size: 18px;">Deterministic Astronomical Ephemeris &amp; Multi-Tradition Intelligence</h2>
+          <p>ASTRO360 is a universal astrology computation and forecast platform uniting Vedic Jyotish, Western Tropical, Krishnamurti Paddhati (KP), Jaimini, Chinese BaZi, and Hellenistic traditions into a verified, explainable calculation pipeline. Powered by NASA JPL DE440 ephemeris algorithms with True Lahiri Ayanamsha calibration, ASTRO360 guarantees sub-arcsecond accuracy across 152+ astrological calculation engines.</p>
+        </section>
+
+        <section style="margin-bottom: 24px;">
+          <h2 style="color: #ffffff; font-size: 18px;">Core Astrological Suites &amp; Tools</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 12px;">
+            <div style="background: rgba(255,255,255,0.03); padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+              <h3 style="color: #fbbf24; font-size: 15px; margin-top: 0;"><a href="/birth-chart" style="color: #fbbf24; text-decoration: none;">Free Birth Chart (Kundli)</a></h3>
+              <p style="font-size: 13px; margin: 0;">Calculate exact planetary coordinates, Ascendant (Lagna), planetary aspects, house cusps, and divisional charts with complete precision.</p>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+              <h3 style="color: #fbbf24; font-size: 15px; margin-top: 0;"><a href="/vedic-astrology" style="color: #fbbf24; text-decoration: none;">Vedic Jyotish &amp; Vargas</a></h3>
+              <p style="font-size: 13px; margin: 0;">Explore classical Parashari rules, 27 Nakshatras with 108 Padas, D1–D60 divisional charts, and comprehensive Shadbala planetary strength.</p>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+              <h3 style="color: #fbbf24; font-size: 15px; margin-top: 0;"><a href="/western-astrology" style="color: #fbbf24; text-decoration: none;">Western Tropical Astrology</a></h3>
+              <p style="font-size: 13px; margin: 0;">Access interactive circular natal wheels, Placidus and Whole Sign house systems, major aspects with exact orbs, and planetary transits.</p>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+              <h3 style="color: #fbbf24; font-size: 15px; margin-top: 0;"><a href="/compatibility" style="color: #fbbf24; text-decoration: none;">Synastry &amp; Matchmaking</a></h3>
+              <p style="font-size: 13px; margin: 0;">Comprehensive relationship compatibility analysis integrating 36-Guna Ashta Koota matchmaking, Western cross-aspects, and composite midpoints.</p>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+              <h3 style="color: #fbbf24; font-size: 15px; margin-top: 0;"><a href="/panchanga" style="color: #fbbf24; text-decoration: none;">Daily Vedic Panchanga</a></h3>
+              <p style="font-size: 13px; margin: 0;">Real-time astronomical ephemeris computing daily Tithi, Nakshatra, Yoga, Karana, Vara, Rahu Kalam, Yamaganda, and Abhijit Muhurta.</p>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+              <h3 style="color: #fbbf24; font-size: 15px; margin-top: 0;"><a href="/dasha" style="color: #fbbf24; text-decoration: none;">Vimshottari Dasha Engine</a></h3>
+              <p style="font-size: 13px; margin: 0;">Detailed 120-year chronological timeline mapping active Mahadasha, Antardasha, and Pratyantardasha periods with precise planetary sub-lords.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- App Loading Animation Overlay -->
       <div class="astro-initial-loader">
         <div class="astro-loader-orbital">
           <div class="astro-ring-outer"></div>
@@ -275,7 +357,7 @@
           </div>
         </div>
         <div class="astro-brand-title">ASTRO360</div>
-        <div class="astro-brand-subtitle">Global Astrological & Astronomical Intelligence</div>
+        <div class="astro-brand-subtitle">Global Astrological &amp; Astronomical Intelligence</div>
         <div class="astro-progress-track">
           <div class="astro-progress-fill"></div>
         </div>

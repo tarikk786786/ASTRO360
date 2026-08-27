@@ -1,4 +1,4 @@
-﻿export interface SEOMetadata {
+export interface SEOMetadata {
   title: string;
   description: string;
   keywords?: string;
@@ -12,16 +12,24 @@
 
 export const SEO_REGISTRY: Record<string, SEOMetadata> = {
   home: {
-    title: 'ASTRO360 — Global Astrology Intelligence | Multi-Tradition Charts & Forecasts',
-    description: 'Explore personalized birth charts, Vedic astrology, Western astrology, compatibility, Panchanga, Dashas, transits and multi-system forecasts with transparent calculations.',
+    title: 'ASTRO360: Precision Astrology & Ephemeris Platform',
+    description: 'Free high-precision birth charts, Vedic Jyotish, Western astrology, compatibility, Panchanga, and multi-tradition planetary forecasts.',
+    keywords: 'astrology, birth chart, vedic astrology, western astrology, kundli, panchang, dasha, astrology forecast, synastry',
+    canonicalUrl: 'https://astro.tarikislam.in/',
+    ogType: 'website',
+    schemaType: 'SoftwareApplication',
+  },
+  landing: {
+    title: 'ASTRO360: Precision Astrology & Ephemeris Platform',
+    description: 'Free high-precision birth charts, Vedic Jyotish, Western astrology, compatibility, Panchanga, and multi-tradition planetary forecasts.',
     keywords: 'astrology, birth chart, vedic astrology, western astrology, kundli, panchang, dasha, astrology forecast, synastry',
     canonicalUrl: 'https://astro.tarikislam.in/',
     ogType: 'website',
     schemaType: 'SoftwareApplication',
   },
   'birth-chart': {
-    title: 'Free Birth Chart Calculator & Natal Placements | ASTRO360',
-    description: 'Generate your free high-precision birth chart with exact planetary coordinates, rising sign (Ascendant), houses, and multi-tradition Vedic and Western interpretations.',
+    title: 'Free Birth Chart Calculator & Natal Placements',
+    description: 'Generate your free high-precision birth chart with exact planetary coordinates, Ascendant rising sign, and house interpretations.',
     keywords: 'birth chart calculator, free natal chart, rising sign calculator, moon sign, kundli generator, planetary positions',
     canonicalUrl: 'https://astro.tarikislam.in/birth-chart',
     ogType: 'website',
@@ -33,17 +41,17 @@ export const SEO_REGISTRY: Record<string, SEOMetadata> = {
     faqs: [
       {
         question: 'What is a birth chart?',
-        answer: 'A birth chart (natal chart or Kundli) is an astronomical snapshot of the sky at the exact moment and location of your birth, mapping the Sun, Moon, Ascendant, and planetary positions.'
+        answer: 'A birth chart is an astronomical snapshot of the sky at the moment and location of birth, mapping planetary positions and houses.'
       },
       {
-        question: 'How accurate are ASTRO360 birth chart calculations?',
-        answer: 'ASTRO360 computes celestial longitudes using JPL DE440 high-precision ephemeris algorithms accurate to within ±0.0001 arcdegrees.'
+        question: 'How accurate are ASTRO360 calculations?',
+        answer: 'ASTRO360 computes planetary positions using JPL DE440 ephemeris algorithms accurate to within ±0.0001 arcdegrees.'
       }
     ]
   },
   'vedic-astrology': {
-    title: 'Vedic Astrology (Jyotish) — Kundli, Nakshatras & Vimshottari Dasha | ASTRO360',
-    description: 'Comprehensive Vedic astrology platform: Janam Kundli, 27 Nakshatras, D1–D60 Divisional Vargas, Vimshottari Dasha timeline, and classical Parashari rules.',
+    title: 'Vedic Astrology: Janam Kundli & Nakshatra Suite',
+    description: 'Comprehensive Vedic astrology platform: Janam Kundli, 27 Nakshatras, D1–D60 Divisional Vargas, and Vimshottari Dasha timeline.',
     keywords: 'vedic astrology, jyotish, janam kundli, nakshatra, vimshottari dasha, navamsa, d10 dashamsha, parashari',
     canonicalUrl: 'https://astro.tarikislam.in/vedic-astrology',
     ogType: 'article',
@@ -54,8 +62,8 @@ export const SEO_REGISTRY: Record<string, SEOMetadata> = {
     ]
   },
   'western-astrology': {
-    title: 'Western Tropical Astrology — Natal Wheel, Transits & Aspects | ASTRO360',
-    description: 'Explore Western tropical astrology with Placidus houses, planetary aspects, major transits, progressions, and modern psychological archetypes.',
+    title: 'Western Astrology: Natal Wheels & Planetary Aspects',
+    description: 'Explore Western tropical astrology with Placidus houses, planetary aspects, major transits, progressions, and archetype analysis.',
     keywords: 'western astrology, tropical astrology, natal wheel, placidus houses, planetary aspects, progressions, solar return',
     canonicalUrl: 'https://astro.tarikislam.in/western-astrology',
     ogType: 'article',
@@ -66,8 +74,8 @@ export const SEO_REGISTRY: Record<string, SEOMetadata> = {
     ]
   },
   compatibility: {
-    title: 'Astrology Compatibility & Synastry Calculator | ASTRO360',
-    description: 'Compare birth charts across 36-Guna Ashta Koota Vedic matchmaking, Western synastry aspect overlays, and Chinese BaZi harmony scores.',
+    title: 'Astrology Compatibility & Synastry Calculator',
+    description: 'Compare birth charts across 36-Guna Ashta Koota Vedic matchmaking, Western synastry aspect overlays, and relationship scores.',
     keywords: 'astrology compatibility, synastry calculator, 36 guna match, kundli matching, relationship astrology, composite chart',
     canonicalUrl: 'https://astro.tarikislam.in/compatibility',
     ogType: 'website',
@@ -78,8 +86,8 @@ export const SEO_REGISTRY: Record<string, SEOMetadata> = {
     ]
   },
   panchanga: {
-    title: 'Live Panchanga Today — Tithi, Nakshatra, Yoga & Rahu Kalam | ASTRO360',
-    description: 'Real-time Vedic Panchang ephemeris with accurate Tithi, Nakshatra, Karana, Yoga, Abhijit Muhurta, and Rahu Kalam timings for any global location.',
+    title: 'Live Daily Panchang: Tithi, Nakshatra & Muhurta',
+    description: 'Real-time Vedic Panchanga with accurate Tithi, Nakshatra, Karana, Yoga, Abhijit Muhurta, and Rahu Kalam timings for any location.',
     keywords: 'panchang today, panchangam, tithi today, nakshatra today, rahu kalam, choghadiya, abhijit muhurta',
     canonicalUrl: 'https://astro.tarikislam.in/panchanga',
     ogType: 'website',
@@ -89,9 +97,57 @@ export const SEO_REGISTRY: Record<string, SEOMetadata> = {
       { name: 'Panchanga', item: 'https://astro.tarikislam.in/panchanga' }
     ]
   },
+  transits: {
+    title: 'Planetary Transits: Real-Time Ephemeris Tracker',
+    description: 'Track live planetary transits, retrogrades, sign ingresses, and exact degree aspects with JPL DE440 ephemeris precision.',
+    keywords: 'planetary transits, transit calculator, retrograde planets, planet ingress, transit aspects',
+    canonicalUrl: 'https://astro.tarikislam.in/transits',
+    ogType: 'website',
+    schemaType: 'SoftwareApplication',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Transits', item: 'https://astro.tarikislam.in/transits' }
+    ]
+  },
+  dasha: {
+    title: 'Vimshottari Dasha Calculator & Life Timeline',
+    description: 'Calculate your personal Vimshottari Dasha periods with active Mahadasha, Antardasha sub-periods, and life event forecasting.',
+    keywords: 'vimshottari dasha calculator, dasha periods, mahadasha, antardasha, dasha timeline',
+    canonicalUrl: 'https://astro.tarikislam.in/dasha',
+    ogType: 'website',
+    schemaType: 'SoftwareApplication',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Dasha', item: 'https://astro.tarikislam.in/dasha' }
+    ]
+  },
+  muhurta: {
+    title: 'Auspicious Muhurta Calculator: Timing Engine',
+    description: 'Calculate favorable Muhurta timings for marriage, business, travel, and new beginnings with Vedic Panchanga algorithms.',
+    keywords: 'muhurta calculator, auspicious timings, shubh muhurat, abhijit muhurta, electional astrology',
+    canonicalUrl: 'https://astro.tarikislam.in/muhurta',
+    ogType: 'website',
+    schemaType: 'SoftwareApplication',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Muhurta', item: 'https://astro.tarikislam.in/muhurta' }
+    ]
+  },
+  astrocartography: {
+    title: 'Astrocartography: Planetary Location Lines',
+    description: 'Discover your planetary power lines across the globe with interactive AC, MC, DC, and IC planetary line astrocartography mapping.',
+    keywords: 'astrocartography, astro map, planetary lines, relocation astrology, locational astrology',
+    canonicalUrl: 'https://astro.tarikislam.in/astrocartography',
+    ogType: 'website',
+    schemaType: 'SoftwareApplication',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Astrocartography', item: 'https://astro.tarikislam.in/astrocartography' }
+    ]
+  },
   methodology: {
-    title: 'How ASTRO360 Calculates — Transparent Ephemeris & AI Methodology | ASTRO360',
-    description: 'Understand the deterministic 4-step pipeline: UTC time normalization ➔ JPL DE440 ephemeris ➔ Classical tradition rules ➔ Explainable AI presentation.',
+    title: 'ASTRO360 Calculation Methodology & Ephemeris',
+    description: 'Learn how ASTRO360 calculates: UTC time normalization, JPL DE440 ephemeris, classical tradition rules, and AI explainability.',
     keywords: 'astrology methodology, astronomical calculations, ephemeris computation, explainable AI astrology, ASTRO360 architecture',
     canonicalUrl: 'https://astro.tarikislam.in/methodology',
     ogType: 'article',
@@ -100,13 +156,67 @@ export const SEO_REGISTRY: Record<string, SEOMetadata> = {
       { name: 'Home', item: 'https://astro.tarikislam.in/' },
       { name: 'Methodology', item: 'https://astro.tarikislam.in/methodology' }
     ]
+  },
+  'learn/nakshatra': {
+    title: '27 Nakshatras Guide: Vedic Lunar Mansions',
+    description: 'Complete guide to the 27 Vedic Nakshatras, 108 Padas, ruling deities, planetary lords, Gana, Yoni, and personality traits.',
+    keywords: 'nakshatra guide, 27 nakshatras, lunar mansions, pada, nakshatra lords, vedic nakshatra',
+    canonicalUrl: 'https://astro.tarikislam.in/learn/nakshatra',
+    ogType: 'article',
+    schemaType: 'Article',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Learn', item: 'https://astro.tarikislam.in/' },
+      { name: 'Nakshatras', item: 'https://astro.tarikislam.in/learn/nakshatra' }
+    ]
+  },
+  'learn/navamsa': {
+    title: 'D9 Navamsa Chart: Vedic Divisional Astrology',
+    description: 'Master the D9 Navamsha chart for marriage timing, inner dharma, soul purpose, and planetary strength assessment in Jyotish.',
+    keywords: 'navamsa chart, d9 chart, navamsha reading, divisional charts, marriage astrology jyotish',
+    canonicalUrl: 'https://astro.tarikislam.in/learn/navamsa',
+    ogType: 'article',
+    schemaType: 'Article',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Learn', item: 'https://astro.tarikislam.in/' },
+      { name: 'Navamsa', item: 'https://astro.tarikislam.in/learn/navamsa' }
+    ]
+  },
+  'learn/vimshottari-dasha': {
+    title: 'Vimshottari Dasha: Planetary Timeline Guide',
+    description: 'Understand the 120-year Vimshottari Dasha cycle: Mahadasha, Antardasha, and Pratyantardasha timing in classical Jyotish.',
+    keywords: 'vimshottari dasha guide, dasha system, mahadasha meaning, antardasha calculation, jyotish timeline',
+    canonicalUrl: 'https://astro.tarikislam.in/learn/vimshottari-dasha',
+    ogType: 'article',
+    schemaType: 'Article',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Learn', item: 'https://astro.tarikislam.in/' },
+      { name: 'Vimshottari Dasha', item: 'https://astro.tarikislam.in/learn/vimshottari-dasha' }
+    ]
+  },
+  'learn/astrology-houses': {
+    title: '12 Astrology Houses: Meanings & Placements',
+    description: 'Explore the 12 astrology houses: Bhavas in Vedic astrology, quadrant house systems (Placidus, Whole Sign), and house lords.',
+    keywords: '12 astrology houses, bhavas, placidus houses, whole sign houses, kendra trikona, house lords',
+    canonicalUrl: 'https://astro.tarikislam.in/learn/astrology-houses',
+    ogType: 'article',
+    schemaType: 'Article',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Learn', item: 'https://astro.tarikislam.in/' },
+      { name: 'Astrology Houses', item: 'https://astro.tarikislam.in/learn/astrology-houses' }
+    ]
   }
 };
 
 export function updatePageSEO(pageKey: string): void {
   if (typeof document === 'undefined') return;
 
-  const data = SEO_REGISTRY[pageKey] || SEO_REGISTRY.home;
+  // Clean key for lookups (e.g. "learn-nakshatra" -> "learn/nakshatra")
+  const normalizedKey = pageKey.replace(/^learn-/, 'learn/');
+  const data = SEO_REGISTRY[normalizedKey] || SEO_REGISTRY[pageKey] || SEO_REGISTRY.home;
 
   // 1. Document Title
   document.title = data.title;
