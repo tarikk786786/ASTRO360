@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Search, X, Sparkles, Clock, Compass, FileText, Settings, Heart, HelpCircle, ArrowRight } from 'lucide-react';
 import { PRIMARY_NAV_ITEMS, MORE_SHEET_ITEMS } from './navigationConfig';
+import { resolveSearchIntent } from '../../lib/seoKeywordMatrix';
 
 export interface AstroCommandFinderProps {
   isOpen: boolean;
@@ -33,6 +34,11 @@ export const AstroCommandFinder: React.FC<AstroCommandFinderProps> = ({
       setTimeout(() => inputRef.current?.focus(), 50);
     }
   }, [isOpen]);
+
+  const directAnswer = useMemo(() => {
+    if (!query.trim()) return null;
+    return resolveSearchIntent(query);
+  }, [query]);
 
   const searchResults = useMemo(() => {
     if (!query.trim()) return [];
@@ -132,6 +138,26 @@ export const AstroCommandFinder: React.FC<AstroCommandFinderProps> = ({
 
           {/* Results / Default State */}
           <div className="p-3 sm:p-4 overflow-y-auto space-y-3 text-left">
+            {query.trim() && directAnswer?.directAnswer && (
+              <div className="p-3.5 rounded-2xl bg-amber-400/10 border border-amber-400/30 space-y-1.5 shadow-lg">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-widest flex items-center gap-1">
+                    <Sparkles className="w-3 h-3" /> Direct Answer • {directAnswer.category}
+                  </span>
+                  <button
+                    onClick={() => {
+                      onNavigate(directAnswer.targetRoute);
+                      onClose();
+                    }}
+                    className="text-[10px] font-mono text-amber-300 hover:text-white underline cursor-pointer"
+                  >
+                    Open {directAnswer.targetRoute} →
+                  </button>
+                </div>
+                <p className="text-xs text-slate-200 leading-relaxed font-sans">{directAnswer.directAnswer}</p>
+              </div>
+            )}
+
             {query.trim() ? (
               searchResults.length === 0 ? (
                 <div className="text-center py-10 space-y-2">
