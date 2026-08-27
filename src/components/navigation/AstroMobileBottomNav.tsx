@@ -116,21 +116,19 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = ({
       ref={navRef}
       role="navigation"
       aria-label="Primary Mobile Navigation"
-      className={`md:hidden fixed bottom-0 inset-x-0 z-40 transition-transform duration-300 ease-out select-none ${
+      className={`md:hidden fixed bottom-0 inset-x-0 z-40 transition-transform duration-300 ease-out select-none px-2.5 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] ${
         isVisible ? 'translate-y-0' : 'translate-y-full'
       } ${className}`}
-      style={{
-        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-      }}
     >
-      <div className="mx-auto max-w-lg bg-[#070C16]/95 backdrop-blur-2xl border-t border-white/[0.08] shadow-[0_-8px_32px_rgba(0,0,0,0.6)] px-2 py-1 flex items-center justify-around">
+      {/* Floating Luxury Glass Dock */}
+      <div className="mx-auto max-w-md bg-[#070D1A]/92 backdrop-blur-2xl border border-white/15 rounded-3xl shadow-[0_12px_48px_rgba(0,0,0,0.85)] p-1.5 flex items-center justify-around ring-1 ring-white/10">
         {PRIMARY_NAV_ITEMS.map((item: PrimaryNavItem, index: number) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
           const isHero = Boolean(item.isHero);
 
           return (
-            <button
+            <motion.button
               key={item.id}
               type="button"
               role="tab"
@@ -138,46 +136,56 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = ({
               aria-current={isActive ? 'page' : undefined}
               aria-label={`${item.label}: ${item.meaning}`}
               tabIndex={0}
+              whileTap={{ scale: 0.90 }}
               onClick={() => onNavigate(item.id)}
               onMouseEnter={() => onPrefetch?.(item.id)}
               onFocus={() => onPrefetch?.(item.id)}
               onKeyDown={(e) => handleKeyDown(e, index)}
-              className={`relative flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-2xl transition-all cursor-pointer touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80 active:scale-95 ${
+              className={`relative flex flex-col items-center justify-center min-w-[56px] min-h-[48px] px-2 py-1 rounded-2xl transition-colors cursor-pointer touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80 ${
                 isActive
                   ? 'text-amber-400 font-bold'
-                  : 'text-slate-400 hover:text-slate-200 active:text-white'
+                  : 'text-slate-400 hover:text-slate-200'
               }`}
             >
+              {/* Active Tab Background Pill Animation */}
+              {isActive && !isHero && !shouldReduceMotion && (
+                <motion.div
+                  layoutId="mobileBottomNavActivePill"
+                  className="absolute inset-0 rounded-2xl bg-amber-400/10 border border-amber-400/25 -z-10 shadow-[0_0_12px_rgba(251,191,36,0.15)]"
+                  transition={{ type: 'spring', stiffness: 380, damping: 28 }}
+                />
+              )}
+
               {/* Central "Ask" Hero Button Treatment — Quiet, confident, slightly emphasized */}
               {isHero ? (
                 <div
                   className={`relative flex items-center justify-center w-10 h-10 rounded-2xl transition-all duration-200 ${
                     isActive
-                      ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/25 scale-105'
-                      : 'bg-white/[0.08] text-amber-300 border border-amber-400/20 hover:bg-white/[0.12]'
+                      ? 'bg-gradient-to-tr from-amber-500 to-amber-300 text-slate-950 shadow-lg shadow-amber-400/35 scale-105'
+                      : 'bg-white/[0.08] text-amber-300 border border-amber-400/30 hover:bg-white/[0.14]'
                   }`}
                 >
                   <Icon className="w-5 h-5" aria-hidden="true" />
                   {isActive && !shouldReduceMotion && (
                     <motion.div
                       layoutId="heroTabGlow"
-                      className="absolute -inset-1 rounded-2xl bg-amber-400/20 -z-10 blur-sm"
+                      className="absolute -inset-1.5 rounded-2xl bg-amber-400/25 -z-10 blur-sm animate-pulse"
                       transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                     />
                   )}
                 </div>
               ) : (
-                <div className="relative p-1 flex items-center justify-center">
+                <div className="relative p-0.5 flex items-center justify-center">
                   <Icon
                     className={`w-5 h-5 transition-transform duration-200 ${
-                      isActive ? 'scale-110 drop-shadow-[0_0_8px_rgba(251,191,36,0.4)]' : ''
+                      isActive ? 'scale-110 drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]' : ''
                     }`}
                     aria-hidden="true"
                   />
                   {isActive && !shouldReduceMotion && (
                     <motion.div
                       layoutId="activeTabDot"
-                      className="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_6px_currentColor]"
+                      className="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.9)]"
                       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                     />
                   )}
@@ -186,13 +194,13 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = ({
 
               {/* Accessible text label */}
               <span
-                className={`text-[10.5px] mt-0.5 tracking-tight font-sans ${
-                  isActive ? 'font-black text-amber-300' : 'font-medium'
+                className={`text-[10px] mt-0.5 tracking-tight font-mono ${
+                  isActive ? 'font-black text-amber-300' : 'font-medium text-slate-400'
                 }`}
               >
                 {item.label}
               </span>
-            </button>
+            </motion.button>
           );
         })}
       </div>

@@ -17,6 +17,8 @@ import CosmicIntelligenceCenter from '../CosmicIntelligenceCenter';
 import BirthChartGenerator from '../BirthChartGenerator';
 import CosmicChartAnalytics from '../CosmicChartAnalytics';
 import { useGlobalConfig } from '../../context/GlobalConfigContext';
+import BorderBeam from '../magicui/border-beam';
+import { fadeInUp, staggerContainer, staggerItem } from '../../lib/animationPresets';
 import { calculatePlanetaryPositions, calculatePanchang, calculateVimshottariDasha } from '../../lib/astroCalculations';
 
 interface OmniSimpleHomeProps {
@@ -92,9 +94,14 @@ export default function OmniSimpleHome({
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8 text-left pb-20 pt-2 sm:pt-4">
+    <motion.div 
+      variants={staggerContainer}
+      initial="hidden"
+      animate="show"
+      className="max-w-5xl mx-auto space-y-6 sm:space-y-8 text-left pb-20 pt-2 sm:pt-4"
+    >
       {/* 1. Header Greeting & Date Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+      <motion.div variants={staggerItem} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
         <div>
           <div className="flex items-center gap-3">
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
@@ -109,18 +116,20 @@ export default function OmniSimpleHome({
           <span className="text-[11px] font-mono text-emerald-300 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-500/30 flex items-center gap-1.5 font-bold shadow-sm">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> High-Precision Ephemeris
           </span>
-          <button
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.95 }}
             onClick={() => onNavigate('studio')}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 text-slate-950 text-xs font-mono font-bold flex items-center gap-1.5 shadow-lg shadow-amber-400/20 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 text-slate-950 text-xs font-mono font-bold flex items-center gap-1.5 shadow-lg shadow-amber-400/20 transition-all cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5 fill-slate-950" />
             <span>Master 152+ Studio Suite →</span>
-          </button>
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
 
       {/* 1.25 DASHBOARD COMMAND & CONTROL BAR (Mobile & Desktop) */}
-      <div className="space-y-2.5">
+      <motion.div variants={staggerItem} className="space-y-2.5">
         {/* Segmented Mode Selector Bar */}
         <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-[#070D18] border border-white/10 overflow-x-auto no-scrollbar shadow-inner">
           {[
@@ -135,13 +144,20 @@ export default function OmniSimpleHome({
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveViewMode(tab.id as any)}
-                className={`flex-1 min-w-[120px] py-2 px-3 rounded-xl text-xs font-mono font-bold flex flex-col items-center justify-center transition-all cursor-pointer ${
+                className={`relative flex-1 min-w-[120px] py-2 px-3 rounded-xl text-xs font-mono font-bold flex flex-col items-center justify-center transition-colors cursor-pointer ${
                   isSelected
-                    ? 'bg-amber-400 text-slate-950 shadow-md font-black'
+                    ? 'text-slate-950 font-black'
                     : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >
-                <span>{tab.label}</span>
+                {isSelected && (
+                  <motion.div
+                    layoutId="homeViewModeHighlight"
+                    className="absolute inset-0 rounded-xl bg-amber-400 shadow-md"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{tab.label}</span>
               </button>
             );
           })}
@@ -185,7 +201,7 @@ export default function OmniSimpleHome({
             <span>Edit Profile</span>
           </button>
         </div>
-      </div>
+      </motion.div>
 
       {/* Render View Modes */}
       {activeViewMode === 'master' ? (
@@ -282,10 +298,10 @@ export default function OmniSimpleHome({
 
       {/* 4. Hero: Strongest Astronomical Alignment Today */}
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
+        variants={staggerItem}
         className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500/15 via-indigo-950/40 to-[#090D16] border border-amber-500/40 p-6 sm:p-8 shadow-2xl space-y-5"
       >
+        <BorderBeam size={220} duration={12} colorFrom="#F59E0B" colorTo="#6366F1" />
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-4">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-amber-300 bg-amber-400/20 px-2.5 py-1 rounded-full border border-amber-400/40 flex items-center gap-1">
@@ -615,6 +631,6 @@ export default function OmniSimpleHome({
         onChangeViewMode={setActiveViewMode}
         onNavigate={onNavigate}
       />
-    </div>
+    </motion.div>
   );
 }

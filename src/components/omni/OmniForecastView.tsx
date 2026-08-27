@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Calendar, Clock, Sparkles, Heart, Briefcase, DollarSign, Compass, 
@@ -259,19 +259,30 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
           { id: '30days', label: '30 DAYS' },
           { id: '12months', label: '12 MONTHS' },
           { id: '5years', label: '5 YEARS' },
-        ].map((h) => (
-          <button
-            key={h.id}
-            onClick={() => setActiveHorizon(h.id as any)}
-            className={`flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer text-center ${
-              activeHorizon === h.id
-                ? 'bg-amber-400 text-slate-950 shadow-md'
-                : 'text-slate-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            {h.label}
-          </button>
-        ))}
+        ].map((h) => {
+          const isSelected = activeHorizon === h.id;
+          return (
+            <button
+              key={h.id}
+              type="button"
+              onClick={() => setActiveHorizon(h.id as any)}
+              className={`relative flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-xs font-mono font-bold transition-colors cursor-pointer text-center ${
+                isSelected
+                  ? 'text-slate-950 font-black'
+                  : 'text-slate-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              {isSelected && (
+                <motion.div
+                  layoutId="forecastHorizonPill"
+                  className="absolute inset-0 rounded-xl bg-amber-400 shadow-md"
+                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                />
+              )}
+              <span className="relative z-10">{h.label}</span>
+            </button>
+          );
+        })}
       </div>
 
       {/* Category Filter Pills */}

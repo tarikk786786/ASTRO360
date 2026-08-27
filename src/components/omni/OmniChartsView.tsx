@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Compass, Sun, Moon, Sparkles, Layers, CheckCircle2, ShieldCheck, 
@@ -38,26 +38,33 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
 
         {/* Simple vs Technical Switcher */}
         <div className="flex items-center gap-1 bg-[#0B1220] p-1 rounded-xl border border-white/10 self-start sm:self-auto">
-          <button
-            onClick={() => setChartMode('simple')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
-              chartMode === 'simple'
-                ? 'bg-amber-400 text-slate-950 shadow-md'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            SIMPLE
-          </button>
-          <button
-            onClick={() => setChartMode('technical')}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
-              chartMode === 'technical'
-                ? 'bg-indigo-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            TECHNICAL
-          </button>
+          {[
+            { id: 'simple', label: 'SIMPLE' },
+            { id: 'technical', label: 'TECHNICAL' },
+          ].map((mode) => {
+            const isSelected = chartMode === mode.id;
+            return (
+              <button
+                key={mode.id}
+                type="button"
+                onClick={() => setChartMode(mode.id as any)}
+                className={`relative px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-colors cursor-pointer ${
+                  isSelected
+                    ? 'text-slate-950 font-black'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                {isSelected && (
+                  <motion.div
+                    layoutId="chartModePill"
+                    className="absolute inset-0 rounded-lg bg-amber-400 shadow-md"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{mode.label}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
