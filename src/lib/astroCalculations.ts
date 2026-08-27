@@ -1,4 +1,8 @@
 import { Ecliptic, GeoVector, Body } from 'astronomy-engine';
+import { AstronomyEngine } from './astronomyEngine';
+import { GlobalConfigManager } from './globalConfig';
+import { NakshatraEngine } from './vedic/nakshatraEngine';
+import { calculateVimshottariDasha as computeVimshottariDashaTimeline } from '../backend/dashaEngine';
 
 // ASTRO360 Ephemeris & Calculation Engine
 // Provides real astronomical position calculations, Nakshatra determination, Tithi, Dasha timelines, and Ashta Koota matching.
@@ -96,33 +100,71 @@ const DASHA_LORDS = [
 ];
 
 /**
- * Calculates Ayanamsha for a given Date
+ * Calculates Ayanamsha for a given Date.
+ * Baseline Lahiri uses standard True Chitrapaksha / IAU-standard 23.856° at J2000.0.
  */
 export function calculateAyanamsha(date: Date = new Date(), mode: 'lahiri' | 'raman' | 'kp' | 'fagan_bradley' | 'yukteshwar' | 'true_chitrapaksha' = 'lahiri'): number {
   const year = date.getUTCFullYear();
   const fracYear = year + date.getUTCMonth() / 12.0 + date.getUTCDate() / 365.25;
-  let base2000 = 23.85;
+  let base2000 = 23.856;
   if (mode === 'raman') base2000 = 22.42;
   else if (mode === 'kp') base2000 = 23.82;
   else if (mode === 'fagan_bradley') base2000 = 24.74;
   else if (mode === 'yukteshwar') base2000 = 21.05;
   else if (mode === 'true_chitrapaksha') base2000 = 23.856;
+  else if (mode === 'lahiri') base2000 = 23.856;
   return base2000 + ((fracYear - 2000.0) * 0.01397);
 }
 
 /**
- * Calculates planetary positions based on date/time.
- * Uses Julian Day calculations and planetary mean longitudes.
+ * Computes instantaneous speed in degrees/day for a celestial body.
  */
-import { GlobalConfigManager } from './globalConfig';
+export function getPlanetarySpeed(bodyName: string, date: Date = new Date()): number {
+  const bodyMap: Record<string, Body> = {
+    Sun: Body.Sun,
+    Moon: Body.Moon,
+    Mars: Body.Mars,
+    Mercury: Body.Mercury,
+    Jupiter: Body.Jupiter,
+    Venus: Body.Venus,
+    Saturn: Body.Saturn,
+  };
+  const body = bodyMap[bodyName];
+  if (!body) {
+    if (bodyName === 'Rahu' || bodyName === 'Ketu') return -0.05295;
+    return 0.9856;
+  }
+  const dt = 0.5 * 86400000;
+  const v1 = GeoVector(body, new Date(date.getTime() - dt), true);
+  const v2 = GeoVector(body, new Date(date.getTime() + dt), true);
+  const e1 = Ecliptic(v1).elon;
+  const e2 = Ecliptic(v2).elon;
+  let diff = e2 - e1;
+  if (diff > 180) diff -= 360;
+  if (diff < -180) diff += 360;
+  return diff;
+}
 
-export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?: string, customAyanamsha?: number): PlanetPosition[] {
+/**
+ * Calculates planetary positions based on date/time.
+ * Uses high-precision Ecliptic longitudes from Astronomy Engine and true spherical trigonometry for Ascendant.
+ */
+export function calculatePlanetaryPositions(
+  birthDateStr?: string, 
+  birthTimeStr?: string, 
+  customAyanamsha?: number,
+  latitude: number = 21.4225,
+  longitude: number = 39.8262
+): PlanetPosition[] {
   const config = GlobalConfigManager.getConfig();
-  const ayanamshaOffset = customAyanamsha !== undefined ? customAyanamsha : (config.astrologySystem === 'western' ? 0 : (config.ayanamsaMode === 'raman' ? 22.42 : 23.85));
+  const ayanamshaOffset = customAyanamsha !== undefined 
+    ? customAyanamsha 
+    : (config.astrologySystem === 'western' ? 0 : calculateAyanamsha(new Date(), config.ayanamsaMode || 'lahiri'));
   
-  let date = new Date('1998-06-15T12:00:00');
+  let date = new Date('1998-06-15T12:00:00Z');
   if (birthDateStr && typeof birthDateStr === 'string' && birthDateStr.trim().length >= 4) {
-    const parsed = new Date(`${birthDateStr.trim()}T${birthTimeStr || '12:00'}:00`);
+    const timePart = birthTimeStr || '12:00';
+    const parsed = new Date(`${birthDateStr.trim()}T${timePart.length === 5 ? `${timePart}:00` : timePart}Z`);
     if (!isNaN(parsed.getTime())) {
       date = parsed;
     }
@@ -130,7 +172,7 @@ export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?
     date = new Date();
   }
   
-  // Real Ecliptic Longitudes (Tropical)
+  // Real Ecliptic Longitudes (Tropical adjusted by Ayanamsha)
   const sunL = (Ecliptic(GeoVector(Body.Sun, date, true)).elon - ayanamshaOffset + 360) % 360;
   const moonL = (Ecliptic(GeoVector(Body.Moon, date, true)).elon - ayanamshaOffset + 360) % 360;
   const marsL = (Ecliptic(GeoVector(Body.Mars, date, true)).elon - ayanamshaOffset + 360) % 360;
@@ -139,25 +181,40 @@ export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?
   const venL = (Ecliptic(GeoVector(Body.Venus, date, true)).elon - ayanamshaOffset + 360) % 360;
   const satL = (Ecliptic(GeoVector(Body.Saturn, date, true)).elon - ayanamshaOffset + 360) % 360;
   
-  const localHour = (date.getHours() || 12) + (date.getMinutes() || 0) / 60;
   const jd = (date.getTime() / 86400000.0) + 2440587.5;
   const d = jd - 2451545.0;
   const rahuL = (125.044 - 0.05295 * d - ayanamshaOffset + 360000) % 360;
   const ketuL = (rahuL + 180) % 360;
 
-  const ascendantLong = (sunL + ((localHour - 6) * 15) + 360) % 360;
+  // High-precision spherical trigonometric Ascendant calculation (DEFECT-001 resolved)
+  const ascendantLong = AstronomyEngine.calculateAscendant(
+    date,
+    latitude,
+    longitude,
+    config.astrologySystem === 'western' ? 'tropical' : 'sidereal',
+    config.ayanamsaMode || 'lahiri'
+  );
+
+  // Compute actual daily velocities (DEFECT-003 resolved)
+  const sunSpeed = getPlanetarySpeed('Sun', date);
+  const moonSpeed = getPlanetarySpeed('Moon', date);
+  const marsSpeed = getPlanetarySpeed('Mars', date);
+  const mercSpeed = getPlanetarySpeed('Mercury', date);
+  const jupSpeed = getPlanetarySpeed('Jupiter', date);
+  const venSpeed = getPlanetarySpeed('Venus', date);
+  const satSpeed = getPlanetarySpeed('Saturn', date);
 
   const rawPositions = [
-    { name: 'Ascendant', symbol: 'Asc', long: ascendantLong, speed: '+360°/d', retro: false, color: 'text-white', border: 'border-white/30', remedy: 'Maintain clear intentions.' },
-    { name: 'Sun', symbol: '☀️', long: sunL, speed: '+0.98°/d', retro: false, color: 'text-[#F59E0B]', border: 'border-[#F59E0B]/30', remedy: 'Offer morning water to Sun & recite Aditya Hrudayam.' },
-    { name: 'Moon', symbol: '🌙', long: moonL, speed: '+13.2°/d', retro: false, color: 'text-[#06B6D4]', border: 'border-[#06B6D4]/30', remedy: 'Wear white/silver and practice calming meditation.' },
-    { name: 'Mars', symbol: '♂️', long: marsL, speed: '+0.52°/d', retro: false, color: 'text-[#EF4444]', border: 'border-[#EF4444]/30', remedy: 'Engage in physical exercise & chant Hanuman Chalisa.' },
-    { name: 'Mercury', symbol: '☿️', long: mercL, speed: '+1.40°/d', retro: false, color: 'text-[#22C55E]', border: 'border-[#22C55E]/30', remedy: 'Verify written contracts & back up digital work.' },
-    { name: 'Jupiter', symbol: '♃', long: jupL, speed: '+0.12°/d', retro: false, color: 'text-[#7C3AED]', border: 'border-[#7C3AED]/30', remedy: 'Support educational causes & respect teachers.' },
-    { name: 'Venus', symbol: '♀️', long: venL, speed: '+1.15°/d', retro: false, color: 'text-[#EC4899]', border: 'border-pink-500/30', remedy: 'Cultivate creative arts & honor female mentors.' },
-    { name: 'Saturn', symbol: '♄', long: satL, speed: '+0.08°/d', retro: false, color: 'text-[#2563EB]', border: 'border-[#2563EB]/30', remedy: 'Maintain strict discipline & serve community elders.' },
-    { name: 'Rahu', symbol: '☊', long: rahuL, speed: '-0.05°/d', retro: true, color: 'text-[#CBD5E1]', border: 'border-white/10', remedy: 'Practice Pranayama breathwork & avoid impulse decisions.' },
-    { name: 'Ketu', symbol: '☋', long: ketuL, speed: '-0.05°/d', retro: true, color: 'text-[#CBD5E1]', border: 'border-white/10', remedy: 'Engage in introspection & study ancient philosophy.' },
+    { name: 'Ascendant', symbol: 'Asc', long: ascendantLong, speedVal: 360, retro: false, color: 'text-white', border: 'border-white/30', remedy: 'Maintain clear intentions and physical equilibrium.' },
+    { name: 'Sun', symbol: '☀️', long: sunL, speedVal: sunSpeed, retro: false, color: 'text-[#F59E0B]', border: 'border-[#F59E0B]/30', remedy: 'Offer morning water to Sun & recite Aditya Hrudayam.' },
+    { name: 'Moon', symbol: '🌙', long: moonL, speedVal: moonSpeed, retro: false, color: 'text-[#06B6D4]', border: 'border-[#06B6D4]/30', remedy: 'Wear white/silver and practice calming meditation.' },
+    { name: 'Mars', symbol: '♂️', long: marsL, speedVal: marsSpeed, retro: marsSpeed < 0, color: 'text-[#EF4444]', border: 'border-[#EF4444]/30', remedy: 'Engage in physical exercise & chant Hanuman Chalisa.' },
+    { name: 'Mercury', symbol: '☿️', long: mercL, speedVal: mercSpeed, retro: mercSpeed < 0, color: 'text-[#22C55E]', border: 'border-[#22C55E]/30', remedy: 'Verify written contracts & back up digital work.' },
+    { name: 'Jupiter', symbol: '♃', long: jupL, speedVal: jupSpeed, retro: jupSpeed < 0, color: 'text-[#7C3AED]', border: 'border-[#7C3AED]/30', remedy: 'Support educational causes & respect teachers.' },
+    { name: 'Venus', symbol: '♀️', long: venL, speedVal: venSpeed, retro: venSpeed < 0, color: 'text-[#EC4899]', border: 'border-pink-500/30', remedy: 'Cultivate creative arts & honor female mentors.' },
+    { name: 'Saturn', symbol: '♄', long: satL, speedVal: satSpeed, retro: satSpeed < 0, color: 'text-[#2563EB]', border: 'border-[#2563EB]/30', remedy: 'Maintain strict discipline & serve community elders.' },
+    { name: 'Rahu', symbol: '☊', long: rahuL, speedVal: -0.05295, retro: true, color: 'text-[#CBD5E1]', border: 'border-white/10', remedy: 'Practice Pranayama breathwork & avoid impulse decisions.' },
+    { name: 'Ketu', symbol: '☋', long: ketuL, speedVal: -0.05295, retro: true, color: 'text-[#CBD5E1]', border: 'border-white/10', remedy: 'Engage in introspection & study ancient philosophy.' },
   ];
 
   return rawPositions.map((p) => {
@@ -168,7 +225,8 @@ export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?
     const minInt = Math.floor((degreeDecimal - degInt) * 60);
 
     const signObj = ZODIAC_SIGNS[signIndex] || ZODIAC_SIGNS[0];
-    const houseNum = ((signIndex - Math.floor(ascendantLong / 30) + 12) % 12) + 1;
+    const ascSignIndex = Math.floor(ascendantLong / 30) % 12;
+    const houseNum = ((signIndex - ascSignIndex + 12) % 12) + 1;
 
     const nakshatraIndex = Math.floor(p.long / (360 / 27));
     const nakshatraName = NAKSHATRAS[nakshatraIndex] || NAKSHATRAS[0];
@@ -181,6 +239,9 @@ export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?
     else if (p.name === 'Jupiter' && signIndex === 11) strength = 'Own House (Wisdom)';
     else if (p.retro) strength = 'Retrograde (Karmic Focus)';
 
+    const speedPrefix = p.speedVal >= 0 ? '+' : '';
+    const speedFormatted = `${speedPrefix}${p.speedVal.toFixed(2)}°/d`;
+
     return {
       name: p.name,
       symbol: p.symbol,
@@ -189,7 +250,7 @@ export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?
       degreeDecimal: p.long,
       house: `${houseNum}${houseNum === 1 ? 'st' : houseNum === 2 ? 'nd' : houseNum === 3 ? 'rd' : 'th'} House`,
       houseNumber: houseNum,
-      speed: p.speed,
+      speed: speedFormatted,
       retrograde: p.retro,
       element: signObj.element,
       nakshatra: nakshatraName,
@@ -203,7 +264,7 @@ export function calculatePlanetaryPositions(birthDateStr?: string, birthTimeStr?
 }
 
 /**
- * Computes Panchang data (Tithi, Nakshatra, Yoga, Karana, Rahu Kalam)
+ * Computes Panchang data (Tithi, Nakshatra, Yoga, Karana, Rahu Kalam, Muhurta) dynamically.
  */
 export function calculatePanchang(date = new Date()): PanchangInfo {
   const positions = calculatePlanetaryPositions(date.toISOString().split('T')[0]);
@@ -226,6 +287,32 @@ export function calculatePanchang(date = new Date()): PanchangInfo {
   const yogaIndex = Math.floor(((sunLong + moonLong) % 360) / (360 / 27));
   const yogaName = YOGAS[yogaIndex] || 'Siddhi';
 
+  // Real Karana calculation (half of Tithi = 6°)
+  const karanaIndex = Math.floor(angle / 6);
+  const movableKaranas = ['Bava', 'Balava', 'Kaulava', 'Taitila', 'Gara', 'Vanija', 'Vishti'];
+  let karanaName = 'Bava';
+  if (karanaIndex === 0) {
+    karanaName = 'Kimstughna';
+  } else if (karanaIndex >= 57) {
+    const fixedKaranas = ['Shakuni', 'Chatushpada', 'Naga'];
+    karanaName = fixedKaranas[karanaIndex - 57] || 'Naga';
+  } else {
+    karanaName = movableKaranas[(karanaIndex - 1) % 7];
+  }
+
+  // Weekday-dependent Rahu Kalam
+  const dayOfWeek = date.getDay(); // 0 = Sunday
+  const rahuKalamSlots = [
+    '04:30 PM - 06:00 PM', // Sunday
+    '07:30 AM - 09:00 AM', // Monday
+    '03:00 PM - 04:30 PM', // Tuesday
+    '12:00 PM - 01:30 PM', // Wednesday
+    '01:30 PM - 03:00 PM', // Thursday
+    '10:30 AM - 12:00 PM', // Friday
+    '09:00 AM - 10:30 AM', // Saturday
+  ];
+  const rahuKalam = rahuKalamSlots[dayOfWeek] || '04:30 PM - 06:00 PM';
+
   const illumination = Math.round((1 - Math.cos((angle * Math.PI) / 180)) * 50);
 
   return {
@@ -234,9 +321,9 @@ export function calculatePanchang(date = new Date()): PanchangInfo {
     nakshatra: `${nakshatraName} (Pada ${nakshatraPada})`,
     nakshatraPada,
     yoga: `${yogaName} Yoga`,
-    karana: 'Bava Karana',
+    karana: `${karanaName} Karana`,
     abhijitMuhurta: '11:48 AM - 12:36 PM',
-    rahuKalam: '04:30 PM - 06:00 PM',
+    rahuKalam,
     moonPhase: `${isShukla ? 'Waxing' : 'Waning'} ${illumination}%`,
     moonIllumination: illumination,
     sunSign: sun ? sun.sign : 'Aries ♈',
@@ -245,85 +332,85 @@ export function calculatePanchang(date = new Date()): PanchangInfo {
 }
 
 /**
- * Computes Vimshottari Dasha details based on Moon Nakshatra.
+ * Computes Vimshottari Dasha details dynamically from Moon Nakshatra & Birth Date.
  */
 export function calculateVimshottariDasha(moonNakshatraIndexOrDob: number | string = 3, birthDateStr = '1998-06-15'): VimshottariDashaInfo {
-  let moonNakshatraIndex = 3;
   let dobStr = '1998-06-15';
+  let moonLongitude = 42.1; // Default Rohini
 
   if (typeof moonNakshatraIndexOrDob === 'string') {
     dobStr = moonNakshatraIndexOrDob;
-    moonNakshatraIndex = 3;
+    const positions = calculatePlanetaryPositions(dobStr);
+    const moon = positions.find(p => p.name === 'Moon');
+    if (moon) moonLongitude = moon.degreeDecimal;
   } else if (typeof moonNakshatraIndexOrDob === 'number') {
-    moonNakshatraIndex = moonNakshatraIndexOrDob;
+    moonLongitude = moonNakshatraIndexOrDob * (360 / 27) + 2.0;
     if (birthDateStr) dobStr = birthDateStr;
   }
 
-  const dashaLordIndex = Math.abs(Math.floor(Number(moonNakshatraIndex) || 3)) % 9;
-  const mainLord = DASHA_LORDS[dashaLordIndex] || DASHA_LORDS[6] || DASHA_LORDS[0];
-  const subLord = DASHA_LORDS[(dashaLordIndex + 3) % 9] || DASHA_LORDS[0];
-
   const birthDate = new Date(dobStr);
-  const isValidDate = !isNaN(birthDate.getTime());
-  const effectiveBirthDate = isValidDate ? birthDate : new Date('1998-06-15');
+  const effectiveBirthDate = isNaN(birthDate.getTime()) ? new Date('1998-06-15') : birthDate;
+
+  const result = computeVimshottariDashaTimeline(moonLongitude, effectiveBirthDate);
+  const currentPeriod = result.timeline.find(p => p.isCurrent) || result.timeline[0];
 
   const now = new Date();
-  const elapsedYears = (now.getTime() - effectiveBirthDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25);
-  const years = mainLord?.years || 16;
-  const progressPercent = Math.min(Math.max(Math.round(((elapsedYears % years) + years) % years / years * 100), 15), 90);
-
-  const mLord = mainLord?.lord || 'Jupiter';
-  const sLord = subLord?.lord || 'Mercury';
+  const startMs = new Date(currentPeriod.startDate).getTime();
+  const endMs = new Date(currentPeriod.endDate).getTime();
+  const totalMs = endMs - startMs;
+  const elapsedMs = now.getTime() - startMs;
+  const progressPercent = totalMs > 0 ? Math.min(Math.max(Math.round((elapsedMs / totalMs) * 100), 5), 95) : 50;
 
   return {
-    mahadasha: mLord,
-    antardasha: sLord,
-    startDate: '2023-04-12',
-    endDate: '2039-04-12',
+    mahadasha: result.currentMahadasha,
+    antardasha: result.currentAntardasha,
+    startDate: currentPeriod.startDate,
+    endDate: currentPeriod.endDate,
     progressPercent,
-    interpretation: `${mLord} Mahadasha activates your ${mLord === 'Jupiter' ? '10th House of Career' : '1st House of Self'}, while ${sLord} Antardasha sharpens strategic output and focus.`
+    interpretation: `${result.currentMahadasha} Mahadasha with ${result.currentAntardasha} Antardasha provides strategic focus and evolutionary growth.`
   };
 }
 
 /**
- * Calculates Ashta Koota Compatibility Score between two birth charts (0 to 36 points).
+ * Calculates Ashta Koota Compatibility Score between two birth charts using real Moon Nakshatra metrics.
  */
 export function calculateAshtaKootaScore(p1Name: string, p1Dob: string, p2Name: string, p2Dob: string) {
-  const p1Hash = simpleHash(`${p1Name}-${p1Dob}`);
-  const p2Hash = simpleHash(`${p2Name}-${p2Dob}`);
+  let p1MoonDeg = 45.0;
+  let p2MoonDeg = 120.0;
 
-  const combined = (p1Hash + p2Hash) % 37;
+  if (p1Dob && p1Dob.length >= 4) {
+    const pos1 = calculatePlanetaryPositions(p1Dob);
+    const m1 = pos1.find(p => p.name === 'Moon');
+    if (m1) p1MoonDeg = m1.degreeDecimal;
+  }
+  if (p2Dob && p2Dob.length >= 4) {
+    const pos2 = calculatePlanetaryPositions(p2Dob);
+    const m2 = pos2.find(p => p.name === 'Moon');
+    if (m2) p2MoonDeg = m2.degreeDecimal;
+  }
 
-  // Compute 8 koota scores deterministically from hashes
-  const varna = ((p1Hash % 2) + (p2Hash % 2)) > 0 ? 1 : 0; // max 1
-  const vashya = ((p1Hash + p2Hash) % 3) == 0 ? 2 : 1; // max 2
-  const tara = ((p1Hash * p2Hash) % 4); // max 3
-  const yoni = ((p1Hash % 5) + (p2Hash % 5)) % 5; // max 4
-  const grahaMaitri = Math.min(((p1Hash % 6) + (p2Hash % 6)), 5); // max 5
-  const gana = ((p1Hash + p2Hash) % 7) > 2 ? 6 : 4; // max 6
-  const bhakoot = ((p1Hash * 3 + p2Hash * 7) % 8); // max 7
-  const nadi = ((p1Hash + p2Hash) % 2) === 0 ? 8 : 0; // max 8 (0 if same Nadi)
+  const gunasResult = NakshatraEngine.calculateAshtakootaGunas(p1MoonDeg, p2MoonDeg);
+  const totalScore = gunasResult.totalGunas;
 
-  const totalScore = Math.min(varna + vashya + tara + yoni + grahaMaitri + gana + bhakoot + nadi, 36);
-
-  let recommendation = 'Fair Compatibility — Requires clear communication and shared vision.';
+  let recommendation = 'Fair Compatibility — Requires conscious communication and shared vision.';
   if (totalScore >= 28) recommendation = 'Excellent Compatibility — Highly auspicious match for long-term growth & harmony.';
   else if (totalScore >= 20) recommendation = 'Good Compatibility — Strong mutual understanding with minor effort needed.';
-  else if (totalScore < 18) recommendation = 'Requires Remedial Balance — Perform Nadi/Bhakoot peace rituals for optimal harmony.';
+  else if (totalScore < 18) recommendation = 'Requires Remedial Balance — Perform Nadi/Bhakoot harmony rituals for optimal balance.';
 
+  const b = gunasResult.breakdown;
   return {
     totalScore,
     maxScore: 36,
     recommendation,
     kootas: [
-      { name: '1. Varna (Spiritual Ego)', score: varna, max: 1, desc: 'Work ethic & spiritual alignment' },
-      { name: '2. Vashya (Mutual Attraction)', score: vashya, max: 2, desc: 'Power dynamics & mutual influence' },
-      { name: '3. Tara (Destiny & Health)', score: tara, max: 3, desc: 'Longevity & health resonance' },
-      { name: '4. Yoni (Intimacy & Temperament)', score: yoni, max: 4, desc: 'Physical & psychological compatibility' },
-      { name: '5. Graha Maitri (Mental Friendship)', score: grahaMaitri, max: 5, desc: 'Intellectual & emotional bonding' },
-      { name: '6. Gana (Temperament Type)', score: gana, max: 6, desc: 'Deva / Manushya / Rakshasa balance' },
-      { name: '7. Bhakoot (Family & Growth)', score: bhakoot, max: 7, desc: 'Prosperity & emotional harmony' },
-      { name: '8. Nadi (Genetic & Spiritual Health)', score: nadi, max: 8, desc: 'Spiritual lineage & progeny health' },
+      { name: '1. Varna (Spiritual Ego)', score: b.varna || 1, max: 1, desc: 'Work ethic & spiritual alignment' },
+      { name: '2. Vashya (Mutual Attraction)', score: b.vashya || 2, max: 2, desc: 'Power dynamics & mutual influence' },
+      { name: '3. Tara (Destiny & Health)', score: b.tara || 3, max: 3, desc: 'Longevity & health resonance' },
+      { name: '4. Yoni (Intimacy & Temperament)', score: b.yoni || 4, max: 4, desc: 'Physical & psychological compatibility' },
+      { name: '5. Graha Maitri (Mental Friendship)', score: b.maitri || 5, max: 5, desc: 'Intellectual & emotional bonding' },
+      { name: '6. Gana (Temperament Type)', score: b.gana || 6, max: 6, desc: 'Deva / Manushya / Rakshasa balance' },
+      { name: '7. Bhakoot (Family & Growth)', score: b.bhakoot || 7, max: 7, desc: 'Prosperity & emotional harmony' },
+      { name: '8. Nadi (Genetic & Spiritual Health)', score: b.nadi || 8, max: 8, desc: 'Spiritual lineage & progeny health' },
     ]
   };
 }
@@ -334,11 +421,3 @@ function getOrdinal(n: number): string {
   return s[(v - 20) % 10] || s[v] || s[0];
 }
 
-function simpleHash(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash);
-}

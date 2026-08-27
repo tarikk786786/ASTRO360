@@ -1,28 +1,316 @@
 {
-  "version": "1.0.0",
-  "ayanamsha": "Lahiri",
-  "ayanamshaValue": 24.2216,
+  "version": "2.0.0",
+  "ayanamsha": "Lahiri (True Chitrapaksha IAU-Standard)",
+  "ayanamshaBaseJ2000": 23.856,
+  "description": "ASTRO360 Master Astronomical & Astrology Golden Dataset with multi-tradition planetary coordinates, nakshatras, and dasha benchmarks",
   "goldenTestCases": [
     {
       "id": "mecca-baseline-1998",
-      "name": "Tarik Islam Baseline Chart",
+      "name": "Baseline Chart - Mecca",
       "birthDate": "1998-06-15",
       "birthTime": "12:00",
       "location": "Mecca, Saudi Arabia",
       "latitude": 21.4225,
       "longitude": 39.8262,
+      "timezone": "Asia/Riyadh",
       "expectedPositions": {
-        "Sun": { "sign": "Gemini", "approxDegree": 0.5 },
-        "Moon": { "sign": "Aquarius", "approxDegree": 15.2 },
-        "Mars": { "sign": "Taurus", "approxDegree": 22.1 },
-        "Mercury": { "sign": "Gemini", "approxDegree": 12.4 },
-        "Jupiter": { "sign": "Pisces", "approxDegree": 3.8 },
-        "Venus": { "sign": "Taurus", "approxDegree": 18.9 },
-        "Saturn": { "sign": "Aries", "approxDegree": 5.1 },
-        "Rahu": { "sign": "Leo", "approxDegree": 11.3 },
-        "Ketu": { "sign": "Aquarius", "approxDegree": 11.3 }
+        "Sun": { "sign": "Gemini", "approxDegree": 0.3 },
+        "Moon": { "sign": "Aquarius", "approxDegree": 15.0 },
+        "Mars": { "sign": "Taurus", "approxDegree": 21.9 },
+        "Mercury": { "sign": "Gemini", "approxDegree": 12.2 },
+        "Jupiter": { "sign": "Pisces", "approxDegree": 3.6 },
+        "Venus": { "sign": "Taurus", "approxDegree": 18.7 },
+        "Saturn": { "sign": "Aries", "approxDegree": 4.9 },
+        "Rahu": { "sign": "Leo", "approxDegree": 11.2 },
+        "Ketu": { "sign": "Aquarius", "approxDegree": 11.2 }
       },
-      "expectedMahadasha": "Rahu"
+      "expectedMahadasha": "Rahu",
+      "category": "BASELINE"
+    },
+    {
+      "id": "j2000-standard-epoch",
+      "name": "Standard Astronomical J2000.0 Epoch",
+      "birthDate": "2000-01-01",
+      "birthTime": "12:00",
+      "location": "Greenwich, London, UK",
+      "latitude": 51.4769,
+      "longitude": 0.0,
+      "timezone": "UTC",
+      "expectedPositions": {
+        "Sun": { "sign": "Sagittarius", "approxDegree": 16.5 },
+        "Moon": { "sign": "Libra", "approxDegree": 25.8 },
+        "Mars": { "sign": "Aquarius", "approxDegree": 19.3 },
+        "Jupiter": { "sign": "Aries", "approxDegree": 1.4 },
+        "Saturn": { "sign": "Aries", "approxDegree": 16.6 }
+      },
+      "category": "ASTRONOMICAL_EPOCH"
+    },
+    {
+      "id": "india-independence-1947",
+      "name": "Indian Independence Chart - Midnight",
+      "birthDate": "1947-08-15",
+      "birthTime": "00:00",
+      "location": "New Delhi, India",
+      "latitude": 28.6139,
+      "longitude": 77.2090,
+      "timezone": "Asia/Kolkata",
+      "expectedPositions": {
+        "Sun": { "sign": "Cancer", "approxDegree": 27.9 },
+        "Moon": { "sign": "Cancer", "approxDegree": 3.9 },
+        "Mars": { "sign": "Gemini", "approxDegree": 7.4 },
+        "Mercury": { "sign": "Cancer", "approxDegree": 13.7 },
+        "Venus": { "sign": "Cancer", "approxDegree": 22.5 },
+        "Saturn": { "sign": "Cancer", "approxDegree": 20.4 },
+        "Rahu": { "sign": "Taurus", "approxDegree": 5.4 },
+        "Ketu": { "sign": "Scorpio", "approxDegree": 5.4 }
+      },
+      "expectedMahadasha": "Saturn",
+      "category": "HISTORICAL"
+    },
+    {
+      "id": "apollo-moon-landing-1969",
+      "name": "Apollo 11 Lunar Touchdown",
+      "birthDate": "1969-07-20",
+      "birthTime": "20:17",
+      "location": "Houston, Texas, USA",
+      "latitude": 29.7604,
+      "longitude": -95.3698,
+      "timezone": "America/Chicago",
+      "expectedPositions": {
+        "Sun": { "sign": "Cancer", "approxDegree": 4.8 },
+        "Moon": { "sign": "Virgo", "approxDegree": 11.2 },
+        "Jupiter": { "sign": "Virgo", "approxDegree": 6.3 }
+      },
+      "category": "HISTORICAL"
+    },
+    {
+      "id": "nepal-quarter-hour-tz",
+      "name": "Kathmandu Quarter-Hour Timezone (+05:45)",
+      "birthDate": "2024-03-21",
+      "birthTime": "06:15",
+      "location": "Kathmandu, Nepal",
+      "latitude": 27.7172,
+      "longitude": 85.3240,
+      "timezone": "Asia/Kathmandu",
+      "expectedPositions": {
+        "Sun": { "sign": "Pisces", "approxDegree": 6.8 },
+        "Moon": { "sign": "Cancer", "approxDegree": 22.4 }
+      },
+      "category": "TIMEZONE_QUARTER_HOUR"
+    },
+    {
+      "id": "newfoundland-half-hour-tz",
+      "name": "St. John's Half-Hour Timezone (-03:30)",
+      "birthDate": "2023-11-15",
+      "birthTime": "14:30",
+      "location": "St. John's, Newfoundland, Canada",
+      "latitude": 47.5615,
+      "longitude": -52.7126,
+      "timezone": "America/St_Johns",
+      "expectedPositions": {
+        "Sun": { "sign": "Scorpio", "approxDegree": 29.1 },
+        "Moon": { "sign": "Sagittarius", "approxDegree": 18.5 }
+      },
+      "category": "TIMEZONE_HALF_HOUR"
+    },
+    {
+      "id": "chatham-island-tz",
+      "name": "Chatham Islands Fractional Offset (+12:45)",
+      "birthDate": "2025-01-01",
+      "birthTime": "00:05",
+      "location": "Waitangi, Chatham Islands, New Zealand",
+      "latitude": -43.9536,
+      "longitude": -176.5597,
+      "timezone": "Pacific/Chatham",
+      "expectedPositions": {
+        "Sun": { "sign": "Sagittarius", "approxDegree": 16.2 }
+      },
+      "category": "TIMEZONE_QUARTER_HOUR"
+    },
+    {
+      "id": "high-lat-reykjavik",
+      "name": "Sub-Arctic High Latitude - Reykjavik 64N",
+      "birthDate": "2026-06-21",
+      "birthTime": "00:00",
+      "location": "Reykjavik, Iceland",
+      "latitude": 64.1466,
+      "longitude": -21.9426,
+      "timezone": "Atlantic/Reykjavik",
+      "expectedPositions": {
+        "Sun": { "sign": "Gemini", "approxDegree": 5.9 }
+      },
+      "category": "HIGH_LATITUDE"
+    },
+    {
+      "id": "high-lat-tromso",
+      "name": "Arctic Circle High Latitude - Tromso 69N",
+      "birthDate": "2026-12-21",
+      "birthTime": "12:00",
+      "location": "Tromso, Norway",
+      "latitude": 69.6492,
+      "longitude": 18.9553,
+      "timezone": "Europe/Oslo",
+      "expectedPositions": {
+        "Sun": { "sign": "Sagittarius", "approxDegree": 5.8 }
+      },
+      "category": "HIGH_LATITUDE"
+    },
+    {
+      "id": "equatorial-quito",
+      "name": "Equatorial Baseline - Quito (0 Latitude)",
+      "birthDate": "2026-03-20",
+      "birthTime": "12:00",
+      "location": "Quito, Ecuador",
+      "latitude": -0.1807,
+      "longitude": -78.4678,
+      "timezone": "America/Guayaquil",
+      "expectedPositions": {
+        "Sun": { "sign": "Pisces", "approxDegree": 5.9 }
+      },
+      "category": "EQUATORIAL"
+    },
+    {
+      "id": "equatorial-pontianak",
+      "name": "Exact Equator Line - Pontianak",
+      "birthDate": "2026-09-23",
+      "birthTime": "12:00",
+      "location": "Pontianak, Indonesia",
+      "latitude": 0.0,
+      "longitude": 109.3259,
+      "timezone": "Asia/Pontianak",
+      "expectedPositions": {
+        "Sun": { "sign": "Virgo", "approxDegree": 6.1 }
+      },
+      "category": "EQUATORIAL"
+    },
+    {
+      "id": "leap-day-2024",
+      "name": "Intercalary Leap Day Boundary 2024",
+      "birthDate": "2024-02-29",
+      "birthTime": "23:59",
+      "location": "Tokyo, Japan",
+      "latitude": 35.6762,
+      "longitude": 139.6503,
+      "timezone": "Asia/Tokyo",
+      "expectedPositions": {
+        "Sun": { "sign": "Aquarius", "approxDegree": 16.7 }
+      },
+      "category": "LEAP_YEAR_BOUNDARY"
+    },
+    {
+      "id": "century-leap-2000",
+      "name": "Century Leap Year 2000-02-29",
+      "birthDate": "2000-02-29",
+      "birthTime": "12:00",
+      "location": "Paris, France",
+      "latitude": 48.8566,
+      "longitude": 2.3522,
+      "timezone": "Europe/Paris",
+      "expectedPositions": {
+        "Sun": { "sign": "Aquarius", "approxDegree": 16.4 }
+      },
+      "category": "LEAP_YEAR_BOUNDARY"
+    },
+    {
+      "id": "non-leap-century-1900",
+      "name": "Non-Leap Gregorian Century 1900-02-28",
+      "birthDate": "1900-02-28",
+      "birthTime": "12:00",
+      "location": "Berlin, Germany",
+      "latitude": 52.5200,
+      "longitude": 13.4050,
+      "timezone": "Europe/Berlin",
+      "expectedPositions": {
+        "Sun": { "sign": "Aquarius", "approxDegree": 17.5 }
+      },
+      "category": "HISTORICAL_BOUNDARY"
+    },
+    {
+      "id": "eclipse-total-solar-2024",
+      "name": "Great American Total Solar Eclipse",
+      "birthDate": "2024-04-08",
+      "birthTime": "18:17",
+      "location": "Dallas, Texas, USA",
+      "latitude": 32.7767,
+      "longitude": -96.7970,
+      "timezone": "America/Chicago",
+      "expectedPositions": {
+        "Sun": { "sign": "Pisces", "approxDegree": 25.1 },
+        "Moon": { "sign": "Pisces", "approxDegree": 25.1 },
+        "Rahu": { "sign": "Pisces", "approxDegree": 21.3 }
+      },
+      "category": "ECLIPSE_SYZYGY"
+    },
+    {
+      "id": "great-conjunction-2020",
+      "name": "Jupiter-Saturn Great Conjunction 2020",
+      "birthDate": "2020-12-21",
+      "birthTime": "18:20",
+      "location": "London, UK",
+      "latitude": 51.5074,
+      "longitude": -0.1278,
+      "timezone": "Europe/London",
+      "expectedPositions": {
+        "Jupiter": { "sign": "Capricorn", "approxDegree": 6.2 },
+        "Saturn": { "sign": "Capricorn", "approxDegree": 6.2 }
+      },
+      "category": "PLANETARY_CONJUNCTION"
+    },
+    {
+      "id": "southern-hemisphere-sydney",
+      "name": "Southern Hemisphere Sydney Baseline",
+      "birthDate": "2026-01-15",
+      "birthTime": "08:30",
+      "location": "Sydney, Australia",
+      "latitude": -33.8688,
+      "longitude": 151.2093,
+      "timezone": "Australia/Sydney",
+      "expectedPositions": {
+        "Sun": { "sign": "Capricorn", "approxDegree": 0.8 }
+      },
+      "category": "SOUTHERN_HEMISPHERE"
+    },
+    {
+      "id": "southern-hemisphere-buenos-aires",
+      "name": "Southern Hemisphere Buenos Aires",
+      "birthDate": "2025-07-09",
+      "birthTime": "15:00",
+      "location": "Buenos Aires, Argentina",
+      "latitude": -34.6037,
+      "longitude": -58.3816,
+      "timezone": "America/Argentina/Buenos_Aires",
+      "expectedPositions": {
+        "Sun": { "sign": "Gemini", "approxDegree": 23.4 }
+      },
+      "category": "SOUTHERN_HEMISPHERE"
+    },
+    {
+      "id": "south-pole-antarctica",
+      "name": "Amundsen-Scott South Pole Station",
+      "birthDate": "2026-01-01",
+      "birthTime": "12:00",
+      "location": "South Pole, Antarctica",
+      "latitude": -90.0,
+      "longitude": 0.0,
+      "timezone": "Antarctica/South_Pole",
+      "expectedPositions": {
+        "Sun": { "sign": "Sagittarius", "approxDegree": 16.9 }
+      },
+      "category": "POLAR_EXTREME"
+    },
+    {
+      "id": "future-epoch-2040",
+      "name": "Future Planetary Alignment 2040",
+      "birthDate": "2040-09-08",
+      "birthTime": "12:00",
+      "location": "Cairo, Egypt",
+      "latitude": 30.0444,
+      "longitude": 31.2357,
+      "timezone": "Africa/Cairo",
+      "expectedPositions": {
+        "Sun": { "sign": "Leo", "approxDegree": 22.1 }
+      },
+      "category": "FUTURE_PROJECTION"
     }
   ]
 }

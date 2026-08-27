@@ -71,6 +71,11 @@ export class AstroCoreOrchestrator {
       const minutes = Math.floor((degInSign % 1) * 60);
       const seconds = Math.floor((((degInSign % 1) * 60) % 1) * 60);
 
+      const obliquityRad = 23.4393 * Math.PI / 180;
+      const lonRad = degTotal * Math.PI / 180;
+      const decl = Math.asin(Math.sin(obliquityRad) * Math.sin(lonRad)) * 180 / Math.PI;
+      const ra = Math.atan2(Math.cos(obliquityRad) * Math.sin(lonRad), Math.cos(lonRad)) * 180 / Math.PI;
+
       planetsRecord[p.name] = {
         name: p.name,
         longitude: Number(degTotal.toFixed(4)),
@@ -79,8 +84,8 @@ export class AstroCoreOrchestrator {
         minutes,
         seconds,
         latitude: 0.0,
-        declination: Number((Math.sin(degTotal * Math.PI / 180) * 23.44).toFixed(2)),
-        rightAscension: Number((degTotal * 0.98).toFixed(2)),
+        declination: Number(decl.toFixed(2)),
+        rightAscension: Number(ra.toFixed(2)),
         distanceAU: p.name === 'Moon' ? 0.00257 : p.name === 'Sun' ? 1.000 : 1.524,
         speedLongitude: p.name === 'Moon' ? 13.176 : 0.985,
         isRetrograde: p.strength === 'Retrograde',
@@ -100,6 +105,7 @@ export class AstroCoreOrchestrator {
     // 5. Multi-Tradition House Cusps Computation
     const cusps: CanonicalAstroSchema['houses']['cusps'] = [];
     const zodiacSigns = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const SIGN_LORDS = ['Mars', 'Venus', 'Mercury', 'Moon', 'Sun', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Saturn', 'Jupiter'];
     const ascSignIdx = Math.floor(ascDeg / 30);
 
     for (let i = 1; i <= 12; i++) {
@@ -112,7 +118,7 @@ export class AstroCoreOrchestrator {
         cuspLongitude: Number(houseDeg.toFixed(4)),
         sign: signName,
         degreeInSign: Number((houseDeg % 30).toFixed(2)),
-        signLord: 'Jupiter',
+        signLord: SIGN_LORDS[(ascSignIdx + i - 1) % 12],
         occupants
       });
     }
@@ -187,6 +193,55 @@ export class AstroCoreOrchestrator {
     );
 
     // 10. Assemble Canonical Astro Schema
+    const aspectsList: CanonicalAstroSchema['aspects'] = [];
+    const aspectTypes = [
+      { type: 'conjunction' as const, angle: 0, orb: 8, harmonic: true },
+      { type: 'opposition' as const, angle: 180, orb: 8, harmonic: false },
+      { type: 'trine' as const, angle: 120, orb: 8, harmonic: true },
+      { type: 'square' as const, angle: 90, orb: 7, harmonic: false },
+      { type: 'sextile' as const, angle: 60, orb: 6, harmonic: true }
+    ];
+    const planetKeys = Object.keys(planetsRecord).filter(k => k !== 'Ascendant');
+    for (let i = 0; i < planetKeys.length; i++) {
+      for (let j = i + 1; j < planetKeys.length; j++) {
+        const pA = planetsRecord[planetKeys[i]];
+        const pB = planetsRecord[planetKeys[j]];
+        let diff = Math.abs(pA.longitude - pB.longitude);
+        if (diff > 180) diff = 360 - diff;
+        for (const asp of aspectTypes) {
+          const orb = Math.abs(diff - asp.angle);
+          if (orb <= asp.orb) {
+            aspectsList.push({
+              planetA: pA.name,
+              planetB: pB.name,
+              aspectType: asp.type,
+              angleDeg: asp.angle,
+              exactAngle: Number(diff.toFixed(2)),
+              orbDeg: Number(orb.toFixed(2)),
+              isApplying: true,
+              isHarmonic: asp.harmonic
+            });
+          }
+        }
+      }
+    }
+
+    const d1: Record<string, number> = {};
+    const d9: Record<string, number> = {};
+    const d10: Record<string, number> = {};
+    for (const p of Object.values(planetsRecord)) {
+      const lon = p.longitude;
+      const signNumber = Math.floor(lon / 30) + 1;
+      d1[p.name] = signNumber;
+      let startSign = [1, 5, 9].includes(signNumber) ? 1 :
+                      [2, 6, 10].includes(signNumber) ? 10 :
+                      [3, 7, 11].includes(signNumber) ? 7 : 4;
+      const pada = Math.floor((lon % 30) / 3.3333333);
+      d9[p.name] = ((startSign - 1 + pada) % 12) + 1;
+      const isOdd = signNumber % 2 !== 0;
+      d10[p.name] = ((Math.floor((lon % 30) / 3) + signNumber - 1 + (isOdd ? 0 : 9)) % 12) + 1;
+    }
+
     return {
       schemaVersion: '3.0.0',
       calculation: {
@@ -225,24 +280,13 @@ export class AstroCoreOrchestrator {
         descendantDeg: Number(((ascDeg + 180) % 360).toFixed(4)),
         imumCoeliDeg: Number(((ascDeg + 90) % 360).toFixed(4))
       },
-      aspects: [
-        {
-          planetA: 'Sun',
-          planetB: 'Jupiter',
-          aspectType: 'trine',
-          angleDeg: 120.0,
-          exactAngle: 120.4,
-          orbDeg: 0.4,
-          isApplying: true,
-          isHarmonic: true
-        }
-      ],
+      aspects: aspectsList,
       traditions: {
         vedic: {
           vargas: {
-            D1: { Sun: 1, Moon: 4, Mars: 10, Mercury: 2, Jupiter: 9, Venus: 12, Saturn: 11 },
-            D9: { Sun: 5, Moon: 9, Mars: 1, Mercury: 6, Jupiter: 4, Venus: 2, Saturn: 7 },
-            D10: { Sun: 10, Moon: 1, Mars: 9, Mercury: 10, Jupiter: 1, Venus: 4, Saturn: 10 }
+            D1: d1 as any,
+            D9: d9 as any,
+            D10: d10 as any
           },
           activeDasha: {
             system: 'Vimshottari (120 Years)',

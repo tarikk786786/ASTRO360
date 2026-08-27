@@ -80,9 +80,26 @@ export function calculateVimshottariDasha(
 
   const currentPeriod = timeline.find(p => p.isCurrent) || timeline[0];
 
+  let currentAntardasha = 'Mercury';
+  const mahaLordData = DASHA_LORDS.find(l => l.lord === currentPeriod.lord) || DASHA_LORDS[0];
+  const mahaLordIndex = DASHA_LORDS.findIndex(l => l.lord === currentPeriod.lord);
+  
+  let subStartDate = new Date(currentPeriod.startDate);
+  for (let i = 0; i < 9; i++) {
+    const subLord = DASHA_LORDS[(mahaLordIndex + i) % 9];
+    const subDurationYears = (mahaLordData.years * subLord.years) / 120;
+    const subEndDate = new Date(subStartDate.getTime() + subDurationYears * 365.25 * 86400000);
+    
+    if (now >= subStartDate && now <= subEndDate) {
+      currentAntardasha = subLord.lord;
+      break;
+    }
+    subStartDate = subEndDate;
+  }
+
   return {
     currentMahadasha: currentPeriod.lord,
-    currentAntardasha: 'Mercury', // Calculated sub-period
+    currentAntardasha,
     timeline
   };
 }

@@ -19,7 +19,8 @@ const suites = [
   { name: '7. Chaos & Fault Tolerance', path: 'tests/chaos/chaosAndRecovery.test.ts' },
   { name: '8. Real-User Simulation & Mobile Personas', path: 'tests/realUserSimulation.test.ts' },
   { name: '9. OWASP ASVS 5.0.0 & WSTG Security Pentest', path: 'tests/security/owaspAsvsSecurityAudit.test.ts' },
-  { name: '10. AI Question Intent Engine & Universal Router', path: 'tests/ai/questionIntentEngine.test.ts' }
+  { name: '10. AI Question Intent Engine & Universal Router', path: 'tests/ai/questionIntentEngine.test.ts' },
+  { name: '11. AstroCore Canonical Calculation & Differential Engine', path: 'tests/astrocore/astroCoreRunner.ts' }
 ];
 
 let totalPassedSuites = 0;
