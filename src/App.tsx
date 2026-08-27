@@ -748,6 +748,7 @@ export default function AppContent() {
                       userProfile={userProfile}
                       onNavigate={navigateTo}
                       onOpenProfile={() => setIsProfileModalOpen(true)}
+                      onUpdateProfile={(updated) => { setUserProfile(updated); saveProfile(updated); }}
                     />
                   )}
                   {(activeTab === 'dashboard' || activeTab === 'pro-dashboard' || activeTab === 'overview') && (

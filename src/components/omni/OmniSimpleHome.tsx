@@ -4,7 +4,7 @@ import {
   Sparkles, Heart, Briefcase, DollarSign, Compass, ArrowRight, 
   HelpCircle, CheckCircle2, AlertTriangle, Clock, Calendar, ShieldCheck, 
   MessageSquare, ChevronRight, Moon, Layers, Award, Globe, FileText, Bot,
-  Sun, Zap, Star
+  Sun, Zap, Star, Sliders, Settings, LineChart, Globe2, User
 } from 'lucide-react';
 import type { UserProfile } from '../../types';
 import OmniWhyDrawer, { type OmniWhyDrawerProps } from './OmniWhyDrawer';
@@ -12,21 +12,31 @@ import OmniAudioBriefing from './OmniAudioBriefing';
 import OmniTransitAlertCenter from './OmniTransitAlertCenter';
 import OmniDailyVibeScore from './OmniDailyVibeScore';
 import OmniAskUniversalHero from './OmniAskUniversalHero';
+import AstroDashboardControlDrawer from '../dashboard/AstroDashboardControlDrawer';
+import CosmicIntelligenceCenter from '../CosmicIntelligenceCenter';
+import BirthChartGenerator from '../BirthChartGenerator';
+import CosmicChartAnalytics from '../CosmicChartAnalytics';
+import { useGlobalConfig } from '../../context/GlobalConfigContext';
 import { calculatePlanetaryPositions, calculatePanchang, calculateVimshottariDasha } from '../../lib/astroCalculations';
 
 interface OmniSimpleHomeProps {
   userProfile: UserProfile;
   onNavigate: (tab: string) => void;
   onOpenProfile?: () => void;
+  onUpdateProfile?: (updated: UserProfile) => void;
 }
 
 export default function OmniSimpleHome({
   userProfile,
   onNavigate,
-  onOpenProfile
+  onOpenProfile,
+  onUpdateProfile
 }: OmniSimpleHomeProps) {
   const [whyModalOpen, setWhyModalOpen] = useState(false);
   const [selectedWhyPayload, setSelectedWhyPayload] = useState<Partial<OmniWhyDrawerProps>>({});
+  const [activeViewMode, setActiveViewMode] = useState<'simple' | 'master' | 'vargas' | 'analytics'>('simple');
+  const [isControlDrawerOpen, setIsControlDrawerOpen] = useState(false);
+  const { config } = useGlobalConfig();
 
   // Dynamic greeting based on current local hour
   const greeting = useMemo(() => {
@@ -109,15 +119,102 @@ export default function OmniSimpleHome({
         </div>
       </div>
 
-      {/* 1.5 UNIVERSAL ENTRY EXPERIENCE: ASK ASTRO360 HERO */}
-      <OmniAskUniversalHero
-        userProfile={userProfile}
-        onNavigate={onNavigate}
-        onOpenProfile={onOpenProfile}
-      />
+      {/* 1.25 DASHBOARD COMMAND & CONTROL BAR (Mobile & Desktop) */}
+      <div className="space-y-2.5">
+        {/* Segmented Mode Selector Bar */}
+        <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-[#070D18] border border-white/10 overflow-x-auto no-scrollbar shadow-inner">
+          {[
+            { id: 'simple', label: '⚡ Daily Summary' },
+            { id: 'master', label: '📊 Master Dashboard' },
+            { id: 'vargas', label: '🌌 Vargas & Dasha' },
+            { id: 'analytics', label: '📈 Chart Analytics' },
+          ].map(tab => {
+            const isSelected = activeViewMode === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveViewMode(tab.id as any)}
+                className={`flex-1 min-w-[120px] py-2 px-3 rounded-xl text-xs font-mono font-bold flex flex-col items-center justify-center transition-all cursor-pointer ${
+                  isSelected
+                    ? 'bg-amber-400 text-slate-950 shadow-md font-black'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
 
-      {/* 2. Personalized Cosmic Placements Card (Live Computed) */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#0C1322] via-[#0F172A] to-[#0C1322] border border-amber-400/25 shadow-xl grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        {/* Quick Customization Pill Actions */}
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 text-xs font-mono">
+          <button
+            type="button"
+            onClick={() => setIsControlDrawerOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 border border-amber-400/30 font-bold shrink-0 transition-all cursor-pointer"
+          >
+            <Sliders className="w-3.5 h-3.5" />
+            <span>Customize Controls & Options</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsControlDrawerOpen(true)}
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/10 shrink-0 transition-all cursor-pointer capitalize"
+          >
+            <Globe2 className="w-3 h-3 text-cyan-400" />
+            <span>{userProfile.preferredSystem || 'Vedic'}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsControlDrawerOpen(true)}
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/10 shrink-0 transition-all cursor-pointer"
+          >
+            <Compass className="w-3 h-3 text-amber-400" />
+            <span>{config.houseSystem || 'Whole Sign'}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={onOpenProfile}
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/10 shrink-0 transition-all cursor-pointer"
+          >
+            <User className="w-3 h-3 text-purple-400" />
+            <span>Edit Profile</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Render View Modes */}
+      {activeViewMode === 'master' ? (
+        <div className="pt-1">
+          <CosmicIntelligenceCenter
+            onNavigate={onNavigate}
+            userProfile={userProfile}
+            onUpdateProfile={onUpdateProfile}
+          />
+        </div>
+      ) : activeViewMode === 'vargas' ? (
+        <div className="pt-1">
+          <BirthChartGenerator userProfile={userProfile} />
+        </div>
+      ) : activeViewMode === 'analytics' ? (
+        <div className="pt-1">
+          <CosmicChartAnalytics userProfile={userProfile} />
+        </div>
+      ) : (
+        <>
+          {/* 1.5 UNIVERSAL ENTRY EXPERIENCE: ASK ASTRO360 HERO */}
+          <OmniAskUniversalHero
+            userProfile={userProfile}
+            onNavigate={onNavigate}
+            onOpenProfile={onOpenProfile}
+          />
+
+          {/* 2. Personalized Cosmic Placements Card (Live Computed) */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#0C1322] via-[#0F172A] to-[#0C1322] border border-amber-400/25 shadow-xl grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         {/* Sun Placement */}
         <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 space-y-1">
           <div className="flex items-center gap-1.5 text-amber-400 text-xs font-mono font-bold">
@@ -498,12 +595,25 @@ export default function OmniSimpleHome({
           })}
         </div>
       </div>
+      </>
+      )}
 
       {/* Universal Explainability Drawer Modal */}
       <OmniWhyDrawer
         isOpen={whyModalOpen}
         onClose={() => setWhyModalOpen(false)}
         {...selectedWhyPayload}
+      />
+
+      {/* Astro Dashboard Controls & Customizer Drawer */}
+      <AstroDashboardControlDrawer
+        isOpen={isControlDrawerOpen}
+        onClose={() => setIsControlDrawerOpen(false)}
+        userProfile={userProfile}
+        onUpdateProfile={onUpdateProfile}
+        activeViewMode={activeViewMode}
+        onChangeViewMode={setActiveViewMode}
+        onNavigate={onNavigate}
       />
     </div>
   );
