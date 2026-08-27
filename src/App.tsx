@@ -150,31 +150,20 @@ export default function AppContent() {
     }
   });
   
-  const [activeTab, setActiveTab] = useState<string>(() => {
-    try {
-      if (typeof window !== 'undefined') {
-        const urlParams = new URLSearchParams(window.location.search);
-        const tabParam = urlParams.get('tab');
-        if (tabParam) return tabParam;
-      }
-      return 'landing';
-    } catch {
-      return 'landing';
-    }
-  });
+  // Always initialize activeTab to 'landing' so every first visit & browser refresh displays the Landing Page
+  const [activeTab, setActiveTab] = useState<string>('landing');
+  const [navigationHistory, setNavigationHistory] = useState<string[]>(['landing']);
 
-  const [navigationHistory, setNavigationHistory] = useState<string[]>(() => {
+  // Reset URL to root landing page on fresh load or browser refresh
+  useEffect(() => {
     try {
-      if (typeof window !== 'undefined') {
-        const urlParams = new URLSearchParams(window.location.search);
-        const tabParam = urlParams.get('tab');
-        if (tabParam) return [tabParam];
+      if (typeof window !== 'undefined' && window.history) {
+        window.history.replaceState({ tab: 'landing' }, '', window.location.pathname);
       }
-      return ['landing'];
-    } catch {
-      return ['landing'];
+    } catch (e) {
+      console.warn("history replaceState error", e);
     }
-  });
+  }, []);
 
   const handleResetAllData = () => {
     try {
