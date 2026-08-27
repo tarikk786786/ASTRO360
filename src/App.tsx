@@ -61,6 +61,7 @@ import CosmicChartAnalytics from './components/CosmicChartAnalytics';
 import AstrologyLearningHub from './components/AstrologyLearningHub';
 import ErrorBoundary from './components/ErrorBoundary';
 import GlobalLanguageSelector from './components/GlobalLanguageSelector';
+import { AstroMiniAudioPlayer, AstroAudioPlayer } from './components/audio';
 import { useGlobalConfig } from './context/GlobalConfigContext';
 import { Toaster, toast } from 'sonner';
 
@@ -1027,6 +1028,10 @@ export default function AppContent() {
         onClose={() => setIsCommandPaletteOpen(false)}
         onNavigate={navigateTo}
       />
+
+      {/* Global ASTRO360 Audio Players (Mini Dock & Full Player Sheet) */}
+      <AstroMiniAudioPlayer />
+      <AstroAudioPlayer />
 
       {/* Sonner Toast Provider */}
       <Toaster position="top-right" theme="dark" richColors />

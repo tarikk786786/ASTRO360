@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Play, Pause, Volume2, Sparkles, FastForward, RotateCcw, FileText, ChevronDown, CheckCircle2 } from 'lucide-react';
 import type { UserProfile } from '../../types';
+import { useAudio } from '../../context/AudioContext';
 
 interface OmniAudioBriefingProps {
   userProfile: UserProfile;
 }
 
 export default function OmniAudioBriefing({ userProfile }: OmniAudioBriefingProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [playbackSpeed, setPlaybackSpeed] = useState<1 | 1.25 | 1.5>(1);
-  const [progress, setProgress] = useState(0);
+  const { playTrack, openFullPlayer, activeTrack, playbackState, togglePlay, speed, setSpeed, progress } = useAudio();
   const [showTranscript, setShowTranscript] = useState(false);
   const [narrator, setNarrator] = useState<'Aura (Harmonic)' | 'Orion (Analytical)' | 'Kavya (Classical)'>('Aura (Harmonic)');
 
@@ -18,29 +17,33 @@ export default function OmniAudioBriefing({ userProfile }: OmniAudioBriefingProp
 
   const briefingText = `Good morning, ${seekerName}. Today, the Moon transits your 10th house of ambition, forming an auspicious trine to natal Jupiter. You may feel a clear surge of strategic clarity around your career and long-term milestones. In your Vimshottari progression, you remain anchored in a supportive Rahu-Jupiter sub-period, favoring calculated initiative over hesitation. Between 2:15 PM and 4:30 PM, communication channels are especially receptive. Stay centered, trust the underlying timing, and lead with quiet confidence.`;
 
-  // Simulated audio playback progression
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (isPlaying) {
-      timer = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 100) {
-            setIsPlaying(false);
-            return 0;
-          }
-          return prev + 1 * playbackSpeed;
-        });
-      }, 300);
-    }
-    return () => clearInterval(timer);
-  }, [isPlaying, playbackSpeed]);
+  const isThisTrackActive = activeTrack?.id === 'daily-briefing';
+  const isPlaying = isThisTrackActive && playbackState === 'playing';
 
-  const togglePlay = () => setIsPlaying(!isPlaying);
+  const handleTogglePlay = () => {
+    if (isThisTrackActive) {
+      togglePlay();
+    } else {
+      const voiceId = narrator.includes('Aura') ? 'CALM_GUIDE' : narrator.includes('Orion') ? 'TECHNICAL' : 'EDITORIAL';
+      playTrack({
+        id: 'daily-briefing',
+        title: 'Daily 2-Minute Cosmic Audio Briefing',
+        subtitle: `Personalized for ${seekerName}`,
+        domain: 'ASTROLOGY',
+        language: 'en',
+        voiceProfileId: voiceId,
+        text: briefingText,
+        isSynthetic: true,
+        provenance: 'ASTRO360 Ephemeris Speech Synthesizer',
+        disclaimer: 'Astrological interpretations are reflective perspectives on astronomical timing, not deterministic guarantees.',
+      });
+    }
+  };
 
   const cycleSpeed = () => {
-    if (playbackSpeed === 1) setPlaybackSpeed(1.25);
-    else if (playbackSpeed === 1.25) setPlaybackSpeed(1.5);
-    else setPlaybackSpeed(1);
+    if (speed === 1) setSpeed(1.25);
+    else if (speed === 1.25) setSpeed(1.5);
+    else setSpeed(1);
   };
 
   return (
@@ -57,10 +60,10 @@ export default function OmniAudioBriefing({ userProfile }: OmniAudioBriefingProp
             <div className="flex items-center gap-2">
               <h3 className="text-sm font-extrabold text-white tracking-tight">Daily 2-Minute Cosmic Audio Briefing</h3>
               <span className="text-[9px] font-mono font-bold bg-amber-400/10 text-amber-300 px-2 py-0.5 rounded-full border border-amber-400/30">
-                AI Voice
+                Synthetic Voice
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 font-mono">Personalized for {seekerName} • Generated at Dawn</p>
+            <p className="text-[11px] text-slate-400 font-mono">Personalized for {seekerName} • Ephemeris Synchronized</p>
           </div>
         </div>
 
@@ -84,12 +87,15 @@ export default function OmniAudioBriefing({ userProfile }: OmniAudioBriefingProp
       {/* Waveform Player Controls */}
       <div className="py-4 space-y-3">
         {/* Animated Waveform Visualizer */}
-        <div className="h-10 flex items-center justify-center gap-1 bg-black/30 rounded-2xl p-2 border border-white/5 overflow-hidden">
+        <div 
+          onClick={openFullPlayer}
+          className="h-10 flex items-center justify-center gap-1 bg-black/30 rounded-2xl p-2 border border-white/5 overflow-hidden cursor-pointer hover:border-amber-400/30 transition-all"
+        >
           {Array.from({ length: 36 }).map((_, i) => {
             const height = isPlaying
               ? Math.sin((i + progress / 2) * 0.5) * 14 + 16
               : (i % 3 === 0 ? 8 : i % 2 === 0 ? 14 : 6);
-            const isPassed = (i / 36) * 100 <= progress;
+            const isPassed = isThisTrackActive ? (i / 36) * 100 <= progress : false;
             return (
               <motion.div
                 key={i}
@@ -102,69 +108,57 @@ export default function OmniAudioBriefing({ userProfile }: OmniAudioBriefingProp
           })}
         </div>
 
-        {/* Progress Bar & Timestamps */}
-        <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
-          <span>0:{Math.floor((progress / 100) * 120).toString().padStart(2, '0')}</span>
-          <div className="flex-1 mx-3 bg-slate-800 h-1.5 rounded-full overflow-hidden">
-            <div
-              className="bg-amber-400 h-full rounded-full transition-all duration-200 shadow-[0_0_8px_rgba(251,191,36,0.8)]"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <span>2:00</span>
-        </div>
+        {/* Playback action bar */}
+        <div className="flex items-center justify-between gap-3 pt-1">
+          <div className="flex items-center gap-2.5">
+            <button
+              type="button"
+              onClick={handleTogglePlay}
+              aria-label={isPlaying ? 'Pause audio briefing' : 'Play audio briefing'}
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-300 hover:from-amber-400 hover:to-amber-200 text-slate-950 font-bold text-xs font-mono shadow-lg shadow-amber-400/25 active:scale-95 transition-all cursor-pointer"
+            >
+              {isPlaying ? <Pause className="w-4 h-4 fill-slate-950" /> : <Play className="w-4 h-4 fill-slate-950 translate-x-0.5" />}
+              <span>{isPlaying ? 'Pause Briefing' : 'Listen to Briefing (2m)'}</span>
+            </button>
 
-        {/* Primary Controls */}
-        <div className="flex items-center justify-between pt-1">
+            <button
+              type="button"
+              onClick={cycleSpeed}
+              className="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-mono font-bold transition-colors cursor-pointer"
+            >
+              {speed}x
+            </button>
+          </div>
+
           <div className="flex items-center gap-2">
             <button
-              onClick={togglePlay}
-              className="px-4 py-2 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-xs font-mono flex items-center gap-2 shadow-lg shadow-amber-500/25 active:scale-95 transition-all cursor-pointer"
+              type="button"
+              onClick={() => setShowTranscript(!showTranscript)}
+              className="flex items-center gap-1 text-xs font-mono text-slate-400 hover:text-white cursor-pointer px-2 py-1 rounded-lg hover:bg-white/5"
             >
-              {isPlaying ? <Pause className="w-4 h-4 fill-slate-950" /> : <Play className="w-4 h-4 fill-slate-950" />}
-              <span>{isPlaying ? 'Pause Briefing' : 'Play Briefing'}</span>
-            </button>
-
-            <button
-              onClick={() => setProgress(0)}
-              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs transition-colors cursor-pointer"
-              title="Restart from beginning"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </button>
-
-            <button
-              onClick={cycleSpeed}
-              className="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-amber-300 border border-white/10 text-[11px] font-mono font-bold transition-colors cursor-pointer"
-              title="Toggle Playback Speed"
-            >
-              {playbackSpeed}x
+              <FileText className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden sm:inline">Transcript</span>
+              <ChevronDown className={`w-3 h-3 transition-transform ${showTranscript ? 'rotate-180' : ''}`} />
             </button>
           </div>
-
-          <button
-            onClick={() => setShowTranscript(!showTranscript)}
-            className="flex items-center gap-1.5 text-xs font-mono text-slate-400 hover:text-amber-300 transition-colors cursor-pointer"
-          >
-            <FileText className="w-3.5 h-3.5" />
-            <span>{showTranscript ? 'Hide Text' : 'Read Transcript'}</span>
-            <ChevronDown className={`w-3 h-3 transition-transform ${showTranscript ? 'rotate-180' : ''}`} />
-          </button>
         </div>
       </div>
 
-      {/* Expandable Full Text Transcript */}
+      {/* Expandable Transcript Panel */}
       <AnimatePresence>
         {showTranscript && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="border-t border-white/10 pt-3 text-xs text-slate-300 font-sans leading-relaxed space-y-2"
+            className="overflow-hidden border-t border-white/10 pt-3 mt-2"
           >
-            <p className="bg-black/30 p-3.5 rounded-2xl border border-white/5 italic text-slate-200">
-              "{briefingText}"
-            </p>
+            <div className="p-3.5 rounded-2xl bg-black/40 border border-white/5 text-xs text-slate-300 leading-relaxed font-sans space-y-2">
+              <span className="text-[10px] font-mono text-amber-400 uppercase font-bold tracking-wider block">
+                Synchronized Briefing Transcript:
+              </span>
+              <p>{briefingText}</p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

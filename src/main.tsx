@@ -3,13 +3,16 @@ import {createRoot} from 'react-dom/client';
 import App from './App';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { GlobalConfigProvider } from './context/GlobalConfigContext';
+import { AudioProvider } from './context/AudioContext';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary>
       <GlobalConfigProvider>
-        <App />
+        <AudioProvider>
+          <App />
+        </AudioProvider>
       </GlobalConfigProvider>
     </ErrorBoundary>
   </StrictMode>,
