@@ -32,8 +32,9 @@ export default function DashboardSubNav({ activeCategory, onSelectCategory }: Da
         width: btnRect.width,
         opacity: 1,
       });
-      // Smooth scroll into view on mobile
-      activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      // Horizontal scroll within sub-nav container only without triggering page vertical jump
+      const targetScrollLeft = btnRect.left - containerRect.left + container.scrollLeft - (containerRect.width / 2) + (btnRect.width / 2);
+      container.scrollTo({ left: Math.max(0, targetScrollLeft), behavior: 'smooth' });
     }
   }, [activeCategory]);
 

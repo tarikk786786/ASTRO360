@@ -79,15 +79,23 @@ export default function AstrologyChat() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatAreaRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatAreaRef.current) {
+      chatAreaRef.current.scrollTo({
+        top: chatAreaRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, isLoading]);
+    // Only scroll within the chat box when user actively messages
+    if (messages.length > 1 || isLoading) {
+      scrollToBottom();
+    }
+  }, [messages.length, isLoading]);
 
   const handleSubmit = async (e?: React.FormEvent, promptOverride?: string) => {
     e?.preventDefault();
@@ -267,7 +275,7 @@ export default function AstrologyChat() {
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 overflow-y-auto p-4 custom-scrollbar space-y-6">
+      <div ref={chatAreaRef} className="flex-1 overflow-y-auto p-4 custom-scrollbar space-y-6">
         <AnimatePresence initial={false}>
           {messages.map((msg) => (
             <motion.div
@@ -338,7 +346,6 @@ export default function AstrologyChat() {
             </motion.div>
           )}
         </AnimatePresence>
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Suggested Prompts */}

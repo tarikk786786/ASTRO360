@@ -57,15 +57,23 @@ export default function OmniAskAssistant({
   const [whyModalOpen, setWhyModalOpen] = useState(false);
   const [selectedWhyPayload, setSelectedWhyPayload] = useState<any>({});
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, isTyping]);
+    // Only scroll within the chat container when user sends or receives messages
+    if (messages.length > 1 || isTyping) {
+      scrollToBottom();
+    }
+  }, [messages.length, isTyping]);
 
   const handleSend = (textToSend?: string) => {
     const query = (textToSend || inputQuery).trim();
@@ -147,7 +155,10 @@ export default function OmniAskAssistant({
       </div>
 
       {/* Chat Messages Container */}
-      <div className="min-h-[420px] max-h-[560px] overflow-y-auto space-y-4 p-4 rounded-3xl bg-[#0B1220] border border-white/10">
+      <div 
+        ref={chatContainerRef}
+        className="min-h-[420px] max-h-[560px] overflow-y-auto space-y-4 p-4 rounded-3xl bg-[#0B1220] border border-white/10"
+      >
         {messages.map((msg) => {
           const isAssistant = msg.sender === 'assistant';
           const isTechExpanded = expandedTechId === msg.id;
@@ -311,8 +322,6 @@ export default function OmniAskAssistant({
             <span>ASTRO360 synthesizing multi-tradition ephemeris...</span>
           </div>
         )}
-
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Bar */}
