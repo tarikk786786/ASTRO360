@@ -45,14 +45,30 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, 'dist/public'),
     emptyOutDir: true,
-    chunkSizeWarningLimit: 2000,
+    chunkSizeWarningLimit: 1200,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom'],
-          'vendor-motion': ['motion'],
-          'vendor-icons': ['lucide-react'],
-          'vendor-charts': ['recharts'],
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
+              return 'vendor-react';
+            }
+            if (id.includes('motion')) {
+              return 'vendor-motion';
+            }
+            if (id.includes('lucide-react')) {
+              return 'vendor-icons';
+            }
+            if (id.includes('recharts') || id.includes('d3')) {
+              return 'vendor-charts';
+            }
+            if (id.includes('astronomy-engine')) {
+              return 'vendor-astronomy';
+            }
+            if (id.includes('three') || id.includes('@react-three')) {
+              return 'vendor-three';
+            }
+          }
         },
       },
     },
