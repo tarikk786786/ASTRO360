@@ -22,6 +22,7 @@ import { AstroMoreSheet } from './AstroMoreSheet';
 import { AstroSystemSheet } from './AstroSystemSheet';
 import { AstroCommandFinder } from './AstroCommandFinder';
 import { prefetchRouteData } from '../../lib/prefetchEngine';
+import { useNotifications } from '../../context/NotificationContext';
 
 export interface AstroNavigationShellProps {
   activeTab: string;
@@ -46,6 +47,7 @@ export const AstroNavigationShell: React.FC<AstroNavigationShellProps> = ({
   const [isSystemSheetOpen, setIsSystemSheetOpen] = useState(false);
   const [isCommandFinderOpen, setIsCommandFinderOpen] = useState(false);
   const [activeSystem, setActiveSystem] = useState(userProfile?.preferredSystem || 'Vedic');
+  const { unreadCount, openCenter } = useNotifications();
 
   // Check if current view is a secondary / sub-page (not one of the 5 canonical roots)
   const isSubPage = !['home', 'forecast', 'ask', 'charts', 'me', 'landing'].includes(activeTab);
@@ -71,6 +73,8 @@ export const AstroNavigationShell: React.FC<AstroNavigationShellProps> = ({
           onOpenSearch={() => setIsCommandFinderOpen(true)}
           onOpenSystemSheet={() => setIsSystemSheetOpen(true)}
           onOpenMoreSheet={() => setIsMoreSheetOpen(true)}
+          onOpenNotifications={openCenter}
+          notificationCount={unreadCount}
           userProfile={userProfile}
           activeSystem={activeSystem.charAt(0).toUpperCase() + activeSystem.slice(1)}
         />
@@ -182,6 +186,19 @@ export const AstroNavigationShell: React.FC<AstroNavigationShellProps> = ({
           >
             <Layers className="w-3.5 h-3.5 text-amber-400" />
             <span>152+ Tools</span>
+          </button>
+
+          {/* Desktop Notifications Bell Trigger */}
+          <button
+            type="button"
+            onClick={openCenter}
+            className="relative p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-slate-300 hover:text-white transition-all cursor-pointer"
+            title="Astrology Alerts & Notifications"
+          >
+            <Bell className="w-4 h-4" />
+            {unreadCount > 0 && (
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.9)]" />
+            )}
           </button>
 
           {/* Me / Profile Avatar Pill */}

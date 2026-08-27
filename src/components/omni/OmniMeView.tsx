@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { UserProfile } from '../../types';
 import OmniShareCardGenerator from './OmniShareCardGenerator';
+import { AstroNotificationSettings } from '../notifications';
 
 interface OmniMeViewProps {
   userProfile: UserProfile;
@@ -198,6 +199,14 @@ export default function OmniMeView({
             </div>
           )}
         </div>
+      </div>
+
+      {/* 4.5. Personal Astrology Notification Settings */}
+      <div className="space-y-3">
+        <h2 className="text-sm font-bold text-white tracking-tight flex items-center gap-1.5">
+          <Bell className="w-4 h-4 text-amber-400" /> Notifications & Astrological Timing Alerts
+        </h2>
+        <AstroNotificationSettings />
       </div>
 
       {/* 5. Optional Expert Mode Switcher */}

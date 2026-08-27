@@ -62,6 +62,7 @@ import AstrologyLearningHub from './components/AstrologyLearningHub';
 import ErrorBoundary from './components/ErrorBoundary';
 import GlobalLanguageSelector from './components/GlobalLanguageSelector';
 import { AstroMiniAudioPlayer, AstroAudioPlayer } from './components/audio';
+import { AstroNotificationCenterModal, AstroNotificationPrePermissionCard } from './components/notifications';
 import { useGlobalConfig } from './context/GlobalConfigContext';
 import { Toaster, toast } from 'sonner';
 
@@ -1032,6 +1033,10 @@ export default function AppContent() {
       {/* Global ASTRO360 Audio Players (Mini Dock & Full Player Sheet) */}
       <AstroMiniAudioPlayer />
       <AstroAudioPlayer />
+
+      {/* Global ASTRO360 Notification Center & Pre-Permission Modals */}
+      <AstroNotificationCenterModal onNavigate={navigateTo} onOpenSettings={() => navigateTo('me')} />
+      <AstroNotificationPrePermissionCard />
 
       {/* Sonner Toast Provider */}
       <Toaster position="top-right" theme="dark" richColors />

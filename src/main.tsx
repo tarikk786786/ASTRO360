@@ -4,6 +4,7 @@ import App from './App';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { GlobalConfigProvider } from './context/GlobalConfigContext';
 import { AudioProvider } from './context/AudioContext';
+import { NotificationProvider } from './context/NotificationContext';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
@@ -11,7 +12,9 @@ createRoot(document.getElementById('root')!).render(
     <ErrorBoundary>
       <GlobalConfigProvider>
         <AudioProvider>
-          <App />
+          <NotificationProvider>
+            <App />
+          </NotificationProvider>
         </AudioProvider>
       </GlobalConfigProvider>
     </ErrorBoundary>
