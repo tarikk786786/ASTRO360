@@ -102,6 +102,10 @@ const AstroCartographyMatrix = lazy(() => import('./components/AstroCartographyM
 const CosmicPassportCard = lazy(() => import('./components/social/CosmicPassportCard'));
 const EmbeddableWidgetGenerator = lazy(() => import('./components/widgets/EmbeddableWidgetGenerator'));
 const ProgrammaticSeoDirectory = lazy(() => import('./components/seo/ProgrammaticSeoDirectory'));
+const InteractiveDualChartStudio = lazy(() => import('./components/charts/InteractiveDualChartStudio'));
+const ExecutiveCosmicDossierSuite = lazy(() => import('./components/dossier/ExecutiveCosmicDossierSuite'));
+const AstroDeterministicCopilot = lazy(() => import('./components/ai/AstroDeterministicCopilot'));
+const PwaCosmicBriefing = lazy(() => import('./components/pwa/PwaCosmicBriefing'));
 
 const STORAGE_KEY = 'astroverse_profile';
 const TAB_KEY = 'astroverse_tab';
@@ -309,7 +313,15 @@ export default function AppContent() {
       tab === 'widgets' ||
       tab === 'embed' ||
       tab === 'directory' ||
-      tab === 'celebrities'
+      tab === 'celebrities' ||
+      tab === 'chart-studio' ||
+      tab === 'dual-chart' ||
+      tab === 'dossier' ||
+      tab === 'pdf-report' ||
+      tab === 'copilot' ||
+      tab === 'ask' ||
+      tab === 'pwa' ||
+      tab === 'briefing'
     );
     const storedOnboarded = typeof window !== 'undefined' && (localStorage.getItem('astro_has_onboarded') === 'true' || localStorage.getItem('astro_user_profile') !== null);
     const isProfileConfigured = Boolean((userProfile && userProfile.name && userProfile.name.trim().length > 0 && userProfile.dob) || storedOnboarded);
@@ -917,6 +929,10 @@ export default function AppContent() {
                   {activeTab === 'passport' && <CosmicPassportCard userProfile={userProfile} onNavigateToTab={navigateTo} />}
                   {(activeTab === 'widgets' || activeTab === 'embed') && <EmbeddableWidgetGenerator onNavigateToTab={navigateTo} />}
                   {(activeTab === 'directory' || activeTab === 'celebrities') && <ProgrammaticSeoDirectory onNavigateToTab={navigateTo} />}
+                  {(activeTab === 'chart-studio' || activeTab === 'dual-chart') && <InteractiveDualChartStudio userProfile={userProfile} onNavigateToTab={navigateTo} />}
+                  {(activeTab === 'dossier' || activeTab === 'pdf-report') && <ExecutiveCosmicDossierSuite userProfile={userProfile} onNavigateToTab={navigateTo} />}
+                  {(activeTab === 'copilot' || activeTab === 'ask') && <AstroDeterministicCopilot userProfile={userProfile} onNavigateToTab={navigateTo} />}
+                  {(activeTab === 'pwa' || activeTab === 'briefing') && <PwaCosmicBriefing onNavigateToTab={navigateTo} />}
                   {TRADITIONS[activeTab] && (
                     <TraditionView
                       tradition={TRADITIONS[activeTab]}
