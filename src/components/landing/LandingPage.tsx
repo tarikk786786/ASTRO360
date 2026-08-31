@@ -1075,28 +1075,31 @@ export default function LandingPage({
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3.5 max-w-5xl mx-auto text-left">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 max-w-6xl mx-auto text-left">
             {[
-              { title: 'Free Birth Chart (Kundli)', desc: 'North & South Indian D1 Rashi & Planetary Positions', tab: 'birth-chart' },
-              { title: 'Free Moon Sign & Nakshatra', desc: 'Exact degree, Nakshatra Pada & Lord placement', tab: 'free-tools' },
-              { title: 'Free Rising Sign (Lagna)', desc: 'Lagna cusp calculation with sub-arcsecond accuracy', tab: 'free-tools' },
-              { title: 'Free Daily Panchanga', desc: 'Tithi, Vara, Nakshatra, Yoga, Karana & Rahu Kaal', tab: 'panchanga' },
-              { title: 'Free Compatibility (36-Guna)', desc: 'Ashta Koota Synastry with cancellation rules', tab: 'compatibility' },
+              { title: 'Free Birth Chart (Kundli)', desc: 'North & South Indian D1 Rashi & planetary placements', tab: 'birth-chart' },
+              { title: 'Free Divisional Charts', desc: 'Navamsha D9, Dashamsha D10, Shodashavarga matrix', tab: 'vargas' },
+              { title: 'Free Shadbala Potency', desc: '6-fold mathematical planetary strength rankings', tab: 'shadbala' },
               { title: 'Free Vimshottari Dasha', desc: '120-year planetary timeline with Antardasha cycles', tab: 'dasha' },
               { title: 'Free Transit Radar', desc: 'Live Gochara transits across your natal houses', tab: 'transits' },
+              { title: 'Free Sade Sati Radar', desc: '7.5-year Saturn transit phase & classical remedies', tab: 'sadesati' },
+              { title: 'Free Compatibility (36-Guna)', desc: 'Ashta Koota Synastry with cancellation rules', tab: 'compatibility' },
+              { title: 'Free Daily Panchanga', desc: 'Tithi, Vara, Nakshatra, Yoga, Karana & Rahu Kaal', tab: 'panchanga' },
               { title: 'Free Electional Muhurta', desc: 'Abhijit, Brahma & Choghadiya auspicious windows', tab: 'muhurta' },
+              { title: 'Free Sacred Gemstones', desc: 'Benefic ratna recommendations with metal & finger', tab: 'gemstone-suite' },
+              { title: 'Free Cosmic News Radar', desc: 'Global geopolitical & financial astrology insights', tab: 'news-intelligence' },
               { title: 'Free Astrocartography', desc: 'Global planetary relocation lines & AC/MC crossings', tab: 'astrocartography' },
             ].map((tool, idx) => (
               <div
                 key={idx}
                 onClick={() => onNavigateToTab(tool.tab)}
-                className="bg-[#0B1220] border border-white/8 hover:border-amber-400/35 rounded-xl p-4 space-y-1.5 cursor-pointer transition-all group"
+                className="bg-[#0B1220] border border-white/8 hover:border-amber-400/35 rounded-xl p-4 space-y-1.5 cursor-pointer transition-all group hover:bg-[#0E172A]"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors">{tool.title}</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-amber-400 transition-colors" />
+                  <span className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors font-mono">{tool.title}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-amber-400 transition-colors shrink-0" />
                 </div>
-                <p className="text-[11px] text-slate-400 font-sans">{tool.desc}</p>
+                <p className="text-[11px] text-slate-400 font-sans leading-relaxed">{tool.desc}</p>
               </div>
             ))}
           </div>
@@ -1144,6 +1147,66 @@ export default function LandingPage({
             <span className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-emerald-400" /> OWASP ASVS 5.0.0 Tested</span>
             <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Zero PII Storage</span>
             <span className="flex items-center gap-1.5"><Scale className="w-4 h-4 text-emerald-400" /> Scripture-Grounded Truth</span>
+          </div>
+        </RevealSection>
+
+        {/* ════════════════════════════════════════════════════════════
+            SECTION 12B: FREQUENTLY ASKED QUESTIONS (FAQ)
+            ════════════════════════════════════════════════════════════ */}
+        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto border-t border-white/8 text-left">
+          <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/8 text-slate-300 text-xs font-mono">
+              <HelpCircle className="w-3.5 h-3.5 text-amber-400" />
+              <span>Clarity & Methodology</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
+              FREQUENTLY ASKED QUESTIONS
+            </h2>
+            <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
+              Everything you need to know about our ephemeris accuracy, privacy, and multi-tradition algorithms.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            {[
+              {
+                q: 'Is ASTRO360 really 100% free?',
+                a: 'Yes. All 150+ computational calculators, Kundli generators, 36-Guna matchmakers, daily Panchanga, and deep analytical inquiry tools are completely free with zero paywalls, hidden tiers, or required credit cards.'
+              },
+              {
+                q: 'How are the planetary positions calculated?',
+                a: 'All positions are calculated using true geocentric NASA JPL DE440 ephemeris standards with Chitrapaksha (True Lahiri) ayanamsha down to sub-arcsecond accuracy, with smooth boundary transition handling across 0°/360° cusps.'
+              },
+              {
+                q: 'Do you store or sell my birth data?',
+                a: 'Never. All birth calculations are executed client-side with zero PII retention, adhering to OWASP ASVS 5.0.0 Level 3 privacy architecture.'
+              },
+              {
+                q: 'What is the difference between Vedic Sidereal and Western Tropical in ASTRO360?',
+                a: 'Vedic Sidereal aligns with the physical fixed stars (using Lahiri ayanamsha ~24° offset), whereas Western Tropical anchors to the Vernal Equinox (0° Aries on March 21). ASTRO360 computes and presents both systems simultaneously side-by-side so you can compare.'
+              },
+              {
+                q: 'Can I use ASTRO360 if I do not know my exact birth time?',
+                a: 'Yes. You can use the built-in Birth-Time Sensitivity Test and Tattva/Kunda rectification tools to test your psychological archetypes and past life milestones to identify your most probable Ascendant degree.'
+              },
+              {
+                q: 'How does the Natural Language Inquiry Sandbox work?',
+                a: 'Our QuestionIntentEngine classifies natural questions into 16 intent archetypes (Career, Marriage, Transit Timing, Sade Sati, Health), calculates active Dasha and Gochara factors, and produces an explainable 3-level synthesis with classical scripture citations.'
+              }
+            ].map((faq, idx) => (
+              <details
+                key={idx}
+                className="group bg-[#0B1220] border border-white/8 rounded-2xl p-5 open:border-amber-400/40 transition-all"
+              >
+                <summary className="font-bold text-white text-sm cursor-pointer list-none flex justify-between items-center font-mono">
+                  <span>{faq.q}</span>
+                  <ChevronDown className="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform shrink-0 ml-2" />
+                </summary>
+                <p className="mt-3 text-xs sm:text-sm text-slate-300 font-sans leading-relaxed border-t border-white/6 pt-3">
+                  {faq.a}
+                </p>
+              </details>
+            ))}
           </div>
         </RevealSection>
 
