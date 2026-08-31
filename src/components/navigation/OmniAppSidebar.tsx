@@ -209,13 +209,10 @@ export default function OmniAppSidebar({
       <div className="p-3 space-y-2.5 border-b border-white/5 shrink-0">
         <button
           onClick={() => onNavigate('landing')}
-          className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-mono font-bold bg-gradient-to-r from-amber-500/10 via-white/5 to-cyan-500/10 hover:from-amber-500/20 hover:to-cyan-500/20 text-amber-300 border border-amber-400/20 hover:border-amber-400/40 transition-all cursor-pointer group shadow-sm"
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-mono font-bold bg-gradient-to-r from-amber-500/10 via-white/5 to-cyan-500/10 hover:from-amber-500/20 hover:to-cyan-500/20 text-amber-300 border border-amber-400/20 hover:border-amber-400/40 transition-all cursor-pointer group shadow-sm"
         >
-          <div className="flex items-center gap-2">
-            <Home className="w-3.5 h-3.5 text-amber-400 group-hover:-translate-x-0.5 transition-transform" />
-            <span>← Return to Landing Page</span>
-          </div>
-          <span className="text-[10px] text-amber-400/70 font-mono">Overview</span>
+          <Home className="w-3.5 h-3.5 text-amber-400 group-hover:-translate-x-0.5 transition-transform" />
+          <span>Return to Landing Page</span>
         </button>
 
         {/* Live Filter Search Input */}
