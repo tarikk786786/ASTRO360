@@ -1,9 +1,9 @@
-﻿import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'motion/react';
 import { 
   Sparkles, Layers, Compass, Heart, Calendar, Clock, MapPin, 
   BookOpen, Activity, FileText, Settings, ShieldCheck, Wrench, 
-  HelpCircle, ChevronRight, Globe, Moon, Cpu, Award
+  HelpCircle, ChevronRight, Globe, Moon, Cpu, Award, Zap, Star
 } from 'lucide-react';
 import type { UserProfile } from '../../types';
 
@@ -13,12 +13,87 @@ interface OmniMoreHubProps {
 }
 
 export default function OmniMoreHub({ onNavigate, userProfile }: OmniMoreHubProps) {
-  const sections = [
+  const [selectedFilter, setSelectedFilter] = useState<'all' | 'vedic' | 'islamic' | 'bazi' | 'western' | 'kp' | 'jaimini' | 'esoteric'>('all');
+  const currentTradition = (userProfile.preferredSystem || 'vedic').toLowerCase();
+
+  const traditionSpotlight = useMemo(() => {
+    if (currentTradition.includes('islamic')) {
+      return {
+        title: 'Islamic Astrology (Ilm al-Falak) Spotlight',
+        desc: 'Canonical Arabic astrology engines grounded in Ptolemaic-Arab synthesis and lunar mansions.',
+        badge: 'Active Engine',
+        tools: [
+          { id: 'islamic-astrology', label: '28 Lunar Mansions (Manazil)', desc: 'Moon stations & spiritual timing', icon: Moon, color: 'text-emerald-400' },
+          { id: 'problem-solver', label: 'Istikhara & Planetary Hours', desc: 'Sa\'at al-Kawakib electional timing', icon: Clock, color: 'text-amber-400' },
+          { id: 'remedy', label: 'Islamic Spiritual Remedies', desc: 'Asma al-Husna & Quranic Dhikr', icon: ShieldCheck, color: 'text-cyan-400' },
+        ]
+      };
+    } else if (currentTradition.includes('chinese') || currentTradition.includes('bazi')) {
+      return {
+        title: 'Chinese BaZi & Feng Shui Spotlight',
+        desc: '60 Jiazi Heavenly Stems & Earthly Branches with 5 Elements generation.',
+        badge: 'Active Engine',
+        tools: [
+          { id: 'spiritual-traditions', label: 'Four Pillars of Destiny (BaZi)', desc: 'Day Master & 10-Year Luck Pillars', icon: Globe, color: 'text-red-400' },
+          { id: 'fengshui-matrix', label: 'Cosmic Feng Shui & BaGua', desc: 'Spatial energy flow & Flying Stars', icon: Compass, color: 'text-teal-400' },
+          { id: 'tarot-iching', label: 'I-Ching 64 Hexagram Oracle', desc: 'Book of Changes divination', icon: Sparkles, color: 'text-amber-400' },
+        ]
+      };
+    } else if (currentTradition.includes('kp')) {
+      return {
+        badge: 'Active Engine',
+        title: 'KP Stellar System (Krishnamurti Padhdhati)',
+        desc: 'Sub-Lord precision based on 249 table and Cuspal Interlinks.',
+        tools: [
+          { id: 'omni-research', label: '249 Cuspal Sub-Lord Matrix', desc: 'Sign-Star-Sub significators', icon: Cpu, color: 'text-cyan-400' },
+          { id: 'dasha', label: 'DBAS Dasha-Bhukti Timeline', desc: 'Sub-period timing of events', icon: Clock, color: 'text-amber-400' },
+          { id: 'btr-suite', label: 'Ruling Planets BTR Solver', desc: 'Instant sub-minute rectification', icon: Compass, color: 'text-indigo-400' },
+        ]
+      };
+    } else if (currentTradition.includes('jaimini')) {
+      return {
+        badge: 'Active Engine',
+        title: 'Jaimini Sutras (Chara Karaka & Arudhas)',
+        desc: 'Sign-based aspects, Atmakaraka soul evolution, and Chara Dasha.',
+        tools: [
+          { id: 'divisional-charts', label: '7 Chara Karakas & Karakamsha', desc: 'AK, AmK, BK, MK, PK, GK, DK', icon: Layers, color: 'text-amber-400' },
+          { id: 'dasha', label: 'Chara Dasha Sign Cycles', desc: 'Direct & reverse zodiacal periods', icon: Clock, color: 'text-purple-400' },
+          { id: 'problem-solver', label: 'Arudha Pada Diagnostic', desc: 'Maya, illusion & public status (AL/A10)', icon: Wrench, color: 'text-cyan-400' },
+        ]
+      };
+    } else if (currentTradition.includes('western') || currentTradition.includes('hellenistic')) {
+      return {
+        badge: 'Active Engine',
+        title: 'Western Tropical & Hellenistic Spotlight',
+        desc: '360° zodiacal wheels, Ptolemaic aspects, solar arcs, and time lords.',
+        tools: [
+          { id: 'omni-research', label: 'Secondary Progressions & Solar Arc', desc: 'Year-by-year psychological unfoldment', icon: Zap, color: 'text-amber-400' },
+          { id: 'astro-cartography', label: 'Astrocartography Relocation', desc: 'Planetary lines on world map', icon: MapPin, color: 'text-emerald-400' },
+          { id: 'remedy', label: 'Planetary Talismans & Hours', desc: 'Picatrix & Agrippan remediation', icon: ShieldCheck, color: 'text-cyan-400' },
+        ]
+      };
+    } else {
+      // Vedic Parashari
+      return {
+        badge: 'Active Engine',
+        title: 'Vedic Jyotish Parashari Spotlight',
+        desc: 'Classical 16 Divisional Vargas, 120-Year Vimshottari Dasha & Nakshatra Deities.',
+        tools: [
+          { id: 'divisional-charts', label: 'Vedic D1–D60 Varga Suite', desc: 'D9 Navamsha, D10 Dashamsha, D60 Shashtiamsha', icon: Layers, color: 'text-amber-400' },
+          { id: 'dasha', label: 'Vimshottari Dasha Engine', desc: 'Mahadasha, Antardasha & Pratyantar timing', icon: Clock, color: 'text-cyan-400' },
+          { id: 'panchang-deities', label: 'Panchanga & 27 Nakshatra Deities', desc: 'Tithi, Vara, Nakshatra, Yoga, Karana', icon: Calendar, color: 'text-amber-400' },
+        ]
+      };
+    }
+  }, [currentTradition]);
+
+  const allSections = [
     {
       title: "Universal Divination & Calculation Tools",
       description: "Interactive precision engines across global divination traditions",
+      tradition: 'all',
       items: [
-        { id: 'compatibility', label: 'Synastry & Compatibility', icon: Heart, color: 'text-pink-400', badge: 'Ashta Koota' },
+        { id: 'compatibility', label: 'Synastry & Compatibility', icon: Heart, color: 'text-pink-400', badge: 'Multi-Tradition' },
         { id: 'panchang-deities', label: 'Panchanga & Daily Deities', icon: Calendar, color: 'text-amber-400', badge: 'Tithi/Yoga' },
         { id: 'dasha', label: 'Vimshottari Dasha Engine', icon: Clock, color: 'text-cyan-400', badge: '120y Cycle' },
         { id: 'astro-cartography', label: 'Astrocartography Matrix', icon: MapPin, color: 'text-emerald-400', badge: 'Planetary Lines' },
@@ -30,8 +105,9 @@ export default function OmniMoreHub({ onNavigate, userProfile }: OmniMoreHubProp
       ]
     },
     {
-      title: "World Astrology Traditions (9 Systems)",
+      title: "World Astrology Traditions (7 Core Systems)",
       description: "Deep traditional computation engines with canonical source citation",
+      tradition: 'all',
       items: [
         { id: 'divisional-charts', label: 'Vedic D1–D60 Varga Suite', icon: Layers, color: 'text-amber-400', badge: 'Parashari' },
         { id: 'islamic-astrology', label: 'Islamic Astrology (Ilm al-Falak)', icon: Moon, color: 'text-emerald-400', badge: '28 Mansions' },
@@ -44,6 +120,7 @@ export default function OmniMoreHub({ onNavigate, userProfile }: OmniMoreHubProp
     {
       title: "Research, Reports & Advanced Governance",
       description: "Explainability architecture, classical rule citations & executive exports",
+      tradition: 'all',
       items: [
         { id: 'omni-research', label: 'OMNI Research Core', icon: Cpu, color: 'text-cyan-400', badge: 'Explainable' },
         { id: 'report-generator', label: 'Executive PDF Report Generator', icon: FileText, color: 'text-amber-400', badge: 'Export' },
@@ -59,15 +136,58 @@ export default function OmniMoreHub({ onNavigate, userProfile }: OmniMoreHubProp
       <div className="border-b border-white/10 pb-4 space-y-1">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2">
           <Layers className="w-7 h-7 text-indigo-400" />
-          More Engines, Traditions & Advanced Tools
+          More Engines, Traditions & Specialized Tools
         </h1>
         <p className="text-xs sm:text-sm text-slate-400 font-mono">
-          Explore Specialized Astrological Modules, Divination Systems, and Research Tools
+          Explore 152+ Specialized Astrological Modules, Multi-Tradition Divination Systems & Research Tools
         </p>
       </div>
 
+      {/* Featured Tradition Spotlight Hero */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="p-6 rounded-3xl bg-gradient-to-br from-indigo-950/40 via-[#0E172A] to-[#0A0F1D] border border-indigo-500/40 space-y-4 shadow-xl"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Star className="w-4 h-4 text-amber-400" />
+            <span className="text-[10px] font-mono uppercase text-indigo-300 bg-indigo-500/20 px-2.5 py-0.5 rounded-full border border-indigo-500/30 font-bold">
+              {traditionSpotlight.badge}
+            </span>
+          </div>
+          <span className="text-[11px] font-mono text-emerald-400 font-bold">100% Free Open Access</span>
+        </div>
+
+        <div>
+          <h2 className="text-lg font-bold text-white">{traditionSpotlight.title}</h2>
+          <p className="text-xs text-slate-300 font-mono pt-0.5">{traditionSpotlight.desc}</p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+          {traditionSpotlight.tools.map((t) => {
+            const Icon = t.icon;
+            return (
+              <div
+                key={t.id}
+                onClick={() => onNavigate(t.id)}
+                className="p-3.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-indigo-400/40 transition-all cursor-pointer space-y-1 group"
+              >
+                <div className="flex items-center gap-2">
+                  <Icon className={`w-4 h-4 ${t.color}`} />
+                  <h3 className="text-xs font-bold text-white group-hover:text-indigo-300 transition-colors truncate">
+                    {t.label}
+                  </h3>
+                </div>
+                <p className="text-[10.5px] text-slate-400 line-clamp-1">{t.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      </motion.div>
+
       {/* Sections */}
-      {sections.map((sec, idx) => (
+      {allSections.map((sec, idx) => (
         <div key={idx} className="space-y-4">
           <div>
             <h2 className="text-base font-bold text-white tracking-tight">{sec.title}</h2>
