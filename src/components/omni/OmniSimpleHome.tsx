@@ -98,29 +98,101 @@ export default function OmniSimpleHome({
       variants={staggerContainer}
       initial="hidden"
       animate="show"
-      className="max-w-5xl mx-auto space-y-6 sm:space-y-8 text-left pb-20 pt-2 sm:pt-4"
+      className="max-w-5xl mx-auto space-y-6 sm:space-y-8 text-left pb-20 pt-2 sm:pt-4 relative"
     >
+      {/* ═══ LIVING AMBIENT BACKGROUND LAYER ═══ */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+        {/* Slow-orbiting amber nebula glow — upper left */}
+        <motion.div
+          animate={{ x: [0, 40, -20, 0], y: [0, -30, 20, 0], scale: [1, 1.15, 0.95, 1] }}
+          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -top-20 -left-20 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-amber-500/12 via-amber-600/6 to-transparent blur-[120px]"
+        />
+        {/* Slow-orbiting indigo nebula glow — lower right */}
+        <motion.div
+          animate={{ x: [0, -30, 25, 0], y: [0, 35, -15, 0], scale: [1, 0.9, 1.1, 1] }}
+          transition={{ duration: 28, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute bottom-[10%] -right-16 w-[450px] h-[450px] rounded-full bg-gradient-to-tl from-indigo-500/10 via-purple-600/5 to-transparent blur-[140px]"
+        />
+        {/* Cyan accent nebula — center */}
+        <motion.div
+          animate={{ x: [0, 20, -15, 0], y: [0, -20, 15, 0], opacity: [0.4, 0.7, 0.5, 0.4] }}
+          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-[40%] left-[30%] w-[350px] h-[350px] rounded-full bg-gradient-to-r from-cyan-500/8 via-teal-400/4 to-transparent blur-[100px]"
+        />
+        {/* Floating micro-particle constellation dots */}
+        {[...Array(12)].map((_, i) => (
+          <motion.div
+            key={`particle-${i}`}
+            animate={{
+              y: [0, -(15 + i * 3), 0],
+              opacity: [0.15, 0.5, 0.15],
+            }}
+            transition={{
+              duration: 4 + (i % 5) * 1.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: i * 0.35,
+            }}
+            className="absolute w-1 h-1 rounded-full bg-white/30"
+            style={{
+              top: `${10 + (i * 7.5) % 85}%`,
+              left: `${5 + (i * 8.3) % 90}%`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* ═══ RELATIVE Z-INDEX CONTENT LAYER ═══ */}
+      <div className="relative z-10 space-y-6 sm:space-y-8">
       {/* 1. Header Greeting & Date Banner */}
       <motion.div variants={staggerItem} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
         <div>
           <div className="flex items-center gap-3">
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
-              {greeting}, <span className="text-amber-400">{seekerName}</span>
+              {greeting},{' '}
+              <motion.span
+                animate={{
+                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                }}
+                transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+                className="bg-gradient-to-r from-amber-300 via-amber-500 to-amber-200 bg-[length:200%_auto] bg-clip-text text-transparent"
+              >
+                {seekerName}
+              </motion.span>
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-slate-400 font-mono pt-1">
+          <p className="text-xs sm:text-sm text-slate-400 font-mono pt-1 flex items-center gap-2">
+            <motion.span
+              animate={{ opacity: [0.6, 1, 0.6] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              className="inline-flex items-center gap-1"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+              </span>
+              Live Ephemeris Active
+            </motion.span>
+            <span className="text-slate-600">•</span>
             Personal Astrology Command • {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2.5">
-          <span className="text-[11px] font-mono text-emerald-300 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-500/30 flex items-center gap-1.5 font-bold shadow-sm">
+          <motion.span
+            animate={{ boxShadow: ['0 0 0px rgba(16, 185, 129, 0)', '0 0 12px rgba(16, 185, 129, 0.3)', '0 0 0px rgba(16, 185, 129, 0)'] }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            className="text-[11px] font-mono text-emerald-300 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-500/30 flex items-center gap-1.5 font-bold shadow-sm"
+          >
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> High-Precision Ephemeris
-          </span>
+          </motion.span>
           <motion.button
-            whileHover={{ scale: 1.03 }}
+            whileHover={{ scale: 1.04, boxShadow: '0 0 24px rgba(251, 191, 36, 0.35)' }}
             whileTap={{ scale: 0.95 }}
+            animate={{ boxShadow: ['0 4px 14px rgba(251, 191, 36, 0.15)', '0 4px 24px rgba(251, 191, 36, 0.3)', '0 4px 14px rgba(251, 191, 36, 0.15)'] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
             onClick={() => onNavigate('studio')}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 text-slate-950 text-xs font-mono font-bold flex items-center gap-1.5 shadow-lg shadow-amber-400/20 transition-all cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 text-slate-950 text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5 fill-slate-950" />
             <span>Master 152+ Studio Suite →</span>
@@ -230,50 +302,95 @@ export default function OmniSimpleHome({
           />
 
           {/* 2. Personalized Cosmic Placements Card (Live Computed) */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#0C1322] via-[#0F172A] to-[#0C1322] border border-amber-400/25 shadow-xl grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        {/* Sun Placement */}
-        <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 space-y-1">
-          <div className="flex items-center gap-1.5 text-amber-400 text-xs font-mono font-bold">
-            <Sun className="w-3.5 h-3.5" /> <span>Sun Sign</span>
-          </div>
-          <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{astroData.sunSign}</p>
-          <span className="text-[10px] text-slate-400 font-mono">Core Vitality & Will</span>
-        </div>
+          <motion.div
+            variants={staggerItem}
+            className="relative p-[1px] rounded-2xl overflow-hidden shadow-xl"
+          >
+            {/* Animated gradient border */}
+            <motion.div
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+              className="absolute inset-0 rounded-2xl bg-[conic-gradient(from_0deg,#F59E0B,#6366F1,#06B6D4,#F59E0B)]"
+              style={{ padding: '1px' }}
+            />
+            <div className="relative p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#0C1322] via-[#0F172A] to-[#0C1322] backdrop-blur-xl grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+              {/* Sun Placement */}
+              <motion.div
+                whileHover={{ scale: 1.04, y: -2 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                className="p-3 rounded-xl bg-white/[0.03] hover:bg-amber-500/5 border border-white/5 hover:border-amber-400/30 space-y-1 transition-colors cursor-default"
+              >
+                <div className="flex items-center gap-1.5 text-amber-400 text-xs font-mono font-bold">
+                  <motion.div animate={{ rotate: [0, 360] }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}>
+                    <Sun className="w-3.5 h-3.5" />
+                  </motion.div>
+                  <span>Sun Sign</span>
+                </div>
+                <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{astroData.sunSign}</p>
+                <span className="text-[10px] text-slate-400 font-mono">Core Vitality & Will</span>
+              </motion.div>
 
-        {/* Moon Placement & Nakshatra */}
-        <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 space-y-1">
-          <div className="flex items-center gap-1.5 text-cyan-400 text-xs font-mono font-bold">
-            <Moon className="w-3.5 h-3.5" /> <span>Moon & Star</span>
-          </div>
-          <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{astroData.nakshatra}</p>
-          <span className="text-[10px] text-slate-400 font-mono">{astroData.moonSign}</span>
-        </div>
+              {/* Moon Placement & Nakshatra */}
+              <motion.div
+                whileHover={{ scale: 1.04, y: -2 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                className="p-3 rounded-xl bg-white/[0.03] hover:bg-cyan-500/5 border border-white/5 hover:border-cyan-400/30 space-y-1 transition-colors cursor-default"
+              >
+                <div className="flex items-center gap-1.5 text-cyan-400 text-xs font-mono font-bold">
+                  <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.8, 1, 0.8] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}>
+                    <Moon className="w-3.5 h-3.5" />
+                  </motion.div>
+                  <span>Moon & Star</span>
+                </div>
+                <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{astroData.nakshatra}</p>
+                <span className="text-[10px] text-slate-400 font-mono">{astroData.moonSign}</span>
+              </motion.div>
 
-        {/* Rising / Ascendant */}
-        <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 space-y-1">
-          <div className="flex items-center gap-1.5 text-indigo-400 text-xs font-mono font-bold">
-            <Compass className="w-3.5 h-3.5" /> <span>Ascendant (Lagna)</span>
-          </div>
-          <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{astroData.ascendant}</p>
-          <span className="text-[10px] text-slate-400 font-mono">1st House Horizon</span>
-        </div>
+              {/* Rising / Ascendant */}
+              <motion.div
+                whileHover={{ scale: 1.04, y: -2 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                className="p-3 rounded-xl bg-white/[0.03] hover:bg-indigo-500/5 border border-white/5 hover:border-indigo-400/30 space-y-1 transition-colors cursor-default"
+              >
+                <div className="flex items-center gap-1.5 text-indigo-400 text-xs font-mono font-bold">
+                  <motion.div animate={{ rotate: [0, 15, -15, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}>
+                    <Compass className="w-3.5 h-3.5" />
+                  </motion.div>
+                  <span>Ascendant (Lagna)</span>
+                </div>
+                <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{astroData.ascendant}</p>
+                <span className="text-[10px] text-slate-400 font-mono">1st House Horizon</span>
+              </motion.div>
 
-        {/* Current Mahadasha */}
-        <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 space-y-1">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-purple-400 text-xs font-mono font-bold">
-              <Clock className="w-3.5 h-3.5" /> <span>Current Dasha</span>
+              {/* Current Mahadasha */}
+              <motion.div
+                whileHover={{ scale: 1.04, y: -2 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                className="p-3 rounded-xl bg-white/[0.03] hover:bg-purple-500/5 border border-white/5 hover:border-purple-400/30 space-y-1 transition-colors cursor-default"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-purple-400 text-xs font-mono font-bold">
+                    <motion.div animate={{ rotate: [0, -360] }} transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}>
+                      <Clock className="w-3.5 h-3.5" />
+                    </motion.div>
+                    <span>Current Dasha</span>
+                  </div>
+                  <span className="text-[9px] font-mono text-purple-300 bg-purple-500/15 px-1.5 py-0.5 rounded">
+                    {astroData.dashaProgress}%
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{astroData.dasha}</p>
+                <div className="w-full bg-white/10 h-1 rounded-full overflow-hidden mt-1">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${astroData.dashaProgress}%` }}
+                    transition={{ duration: 1.5, ease: 'easeOut', delay: 0.3 }}
+                    className="bg-gradient-to-r from-purple-400 to-indigo-400 h-full rounded-full"
+                  />
+                </div>
+              </motion.div>
             </div>
-            <span className="text-[9px] font-mono text-purple-300 bg-purple-500/15 px-1.5 py-0.5 rounded">
-              {astroData.dashaProgress}%
-            </span>
-          </div>
-          <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{astroData.dasha}</p>
-          <div className="w-full bg-white/10 h-1 rounded-full overflow-hidden mt-1">
-            <div className="bg-purple-400 h-full rounded-full" style={{ width: `${astroData.dashaProgress}%` }} />
-          </div>
-        </div>
-      </div>
+          </motion.div>
 
       {/* 3. Quick Action Navigation Jump Dock */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
@@ -584,19 +701,24 @@ export default function OmniSimpleHome({
             { id: 'report-generator', title: 'Executive PDF Dossier Generator', desc: '18+ page structured analytical client reports', icon: FileText, color: 'text-emerald-400', border: 'border-emerald-500/30' },
             { id: 'chat', title: 'AI Astrological Oracle Assistant', desc: 'Conversational consultation with classical sources', icon: Bot, color: 'text-purple-400', border: 'border-purple-500/30' },
             { id: 'omni-research', title: 'OMNI Multi-Tradition Research Core', desc: 'Direct side-by-side consensus calculation matrix', icon: Sparkles, color: 'text-amber-300', border: 'border-amber-400/40' },
-          ].map((tool) => {
+          ].map((tool, idx) => {
             const Icon = tool.icon;
             return (
-              <button
+              <motion.button
                 key={tool.id}
                 onClick={() => onNavigate(tool.id)}
-                className={`p-4 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] border ${tool.border} hover:scale-[1.02] active:scale-98 transition-all duration-200 text-left space-y-2 group cursor-pointer shadow-md`}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.03 * idx, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ scale: 1.04, y: -4, boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}
+                whileTap={{ scale: 0.97 }}
+                className={`p-4 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] border ${tool.border} transition-all duration-200 text-left space-y-2 group cursor-pointer shadow-md`}
               >
                 <div className="flex items-center justify-between">
-                  <div className="p-2 rounded-xl bg-white/5 border border-white/10 group-hover:border-amber-400/40">
-                    <Icon className={`w-4 h-4 ${tool.color}`} />
+                  <div className="p-2 rounded-xl bg-white/5 border border-white/10 group-hover:border-amber-400/40 transition-colors">
+                    <Icon className={`w-4 h-4 ${tool.color} group-hover:scale-110 transition-transform`} />
                   </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-white transition-colors" />
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors line-clamp-1">
@@ -606,13 +728,15 @@ export default function OmniSimpleHome({
                     {tool.desc}
                   </p>
                 </div>
-              </button>
+              </motion.button>
             );
           })}
         </div>
       </div>
       </>
       )}
+
+      </div>{/* ═══ END CONTENT Z-10 LAYER ═══ */}
 
       {/* Universal Explainability Drawer Modal */}
       <OmniWhyDrawer
