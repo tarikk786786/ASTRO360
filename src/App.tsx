@@ -89,7 +89,7 @@ const AstrologyLearningHub = lazy(() => import('./components/AstrologyLearningHu
 const ExecutiveReportGenerator = lazy(() => import('./components/ExecutiveReportGenerator'));
 const AdminAnalyticsDashboard = lazy(() => import('./components/AdminAnalyticsDashboard'));
 const CosmicStudioSuite = lazy(() => import('./components/CosmicStudioSuite'));
-const UniverseCanvas = lazy(() => import('./components/3d/UniverseCanvas'));
+const CosmicAtmosphereCanvas = lazy(() => import('./components/3d/CosmicAtmosphereCanvas'));
 const AstroOmniResearchSuite = lazy(() => import('./components/AstroOmniResearchSuite').then(m => ({ default: m.AstroOmniResearchSuite })));
 const BirthTimeRectificationSuite = lazy(() => import('./components/BirthTimeRectificationSuite'));
 const AstrologicalMindMap = lazy(() => import('./components/AstrologicalMindMap'));
@@ -474,9 +474,9 @@ export default function AppContent() {
 
   return (
     <div className="relative min-h-screen bg-[#090d16] text-slate-100 flex overflow-hidden font-sans">
-      {/* ✨ High-Resolution Animated Cosmic Background (React Three Fiber) */}
+      {/* ✨ High-Resolution Deep Space Animated Atmosphere (React Three Fiber & Constellations) */}
       <Suspense fallback={null}>
-        <UniverseCanvas />
+        <CosmicAtmosphereCanvas />
       </Suspense>
 
       {/* Redesigned Glassmorphic Sidebar Navigation (Desktop Static / Mobile Slide-Over) */}

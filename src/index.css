@@ -633,3 +633,34 @@ button, a, [role="button"] {
   }
 }
 
+/* Organic Deep Celestial Keyframes */
+@keyframes auroraBreathe {
+  0%, 100% {
+    opacity: 0.18;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.28;
+    transform: scale(1.08) translate(10px, -15px);
+  }
+}
+
+@keyframes shimmerSlide {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.aurora-ambient-glow {
+  animation: auroraBreathe 14s ease-in-out infinite alternate;
+}
+
+.shimmer-luxury-border {
+  background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.03) 100%);
+  background-size: 200% 100%;
+  animation: shimmerSlide 6s linear infinite;
+}
+
