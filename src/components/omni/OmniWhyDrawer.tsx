@@ -19,7 +19,7 @@ export interface OmniWhyDrawerProps {
   onClose: () => void;
   title?: string;
   period?: string;
-  confidence?: 'High' | 'Moderate–High' | 'Moderate' | 'Calibrated';
+  confidence?: 'High' | 'Moderate–High' | 'Moderate' | 'Calibrated' | string;
   confidenceScore?: number;
   factors?: string[];
   supportedSystems?: SupportedSystemInfo[];
