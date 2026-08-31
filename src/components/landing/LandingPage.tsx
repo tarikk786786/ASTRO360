@@ -17,6 +17,7 @@ import InteractiveToolsSuite from './InteractiveToolsSuite';
 import OmniHeroChartStudio from './OmniHeroChartStudio';
 import OmniProductPreview from './OmniProductPreview';
 import AnimatedStarfield from './AnimatedStarfield';
+import LiveCosmicSkyStudio from './LiveCosmicSkyStudio';
 import { useScrollReveal, use3DTilt, useMagneticHover, useMouseGlow } from '../../hooks/useAnimations';
 import { QuestionIntentEngine } from '../../lib/questionRouter';
 
@@ -734,6 +735,13 @@ export default function LandingPage({
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
           <InteractiveToolsSuite onNavigateToTab={onNavigateToTab} />
+        </RevealSection>
+
+        {/* ════════════════════════════════════════════════════════════
+            SECTION 4B: LIVE CELESTIAL SKY TELEMETRY & GRAHAS STUDIO
+            ════════════════════════════════════════════════════════════ */}
+        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
+          <LiveCosmicSkyStudio onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
