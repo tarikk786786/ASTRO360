@@ -19,6 +19,7 @@ import OmniProductPreview from './OmniProductPreview';
 import AnimatedStarfield from './AnimatedStarfield';
 import LiveCosmicSkyStudio from './LiveCosmicSkyStudio';
 import LiveAspectariumAndLunarTracker from './LiveAspectariumAndLunarTracker';
+import LiveScriptureAndBhavaExplorer from './LiveScriptureAndBhavaExplorer';
 import { useScrollReveal, use3DTilt, useMagneticHover, useMouseGlow } from '../../hooks/useAnimations';
 import { QuestionIntentEngine } from '../../lib/questionRouter';
 
@@ -750,6 +751,13 @@ export default function LandingPage({
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
           <LiveAspectariumAndLunarTracker onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
+        </RevealSection>
+
+        {/* ════════════════════════════════════════════════════════════
+            SECTION 4D: 12 BHAVAS & SCRIPTURE REFERENCE LIBRARY
+            ════════════════════════════════════════════════════════════ */}
+        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
+          <LiveScriptureAndBhavaExplorer onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
