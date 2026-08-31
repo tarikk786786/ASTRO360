@@ -60,6 +60,13 @@ export default function OmniSimpleHome({
       const panchang = calculatePanchang(new Date());
       const dasha = calculateVimshottariDasha(moon?.degreeDecimal ? Math.floor(moon.degreeDecimal / (360 / 27)) : 3, userProfile.dob || '1998-06-15');
 
+      const moonDeg = moon?.degreeDecimal || 74;
+      const sunDeg = sun?.degreeDecimal || 118;
+      const loveScore = Math.min(95, Math.max(68, Math.round(72 + ((moonDeg % 30) / 30) * 22)));
+      const careerScore = Math.min(96, Math.max(70, Math.round(75 + ((sunDeg % 30) / 30) * 20)));
+      const moneyScore = Math.min(92, Math.max(65, Math.round(70 + (((sunDeg + moonDeg) % 30) / 30) * 22)));
+      const travelScore = Math.min(94, Math.max(66, Math.round(71 + (((moonDeg * 2) % 30) / 30) * 23)));
+
       return {
         sunSign: sun ? `${sun.sign} (${sun.degree})` : 'Cancer ♋ (28°)',
         moonSign: moon ? `${moon.sign} (${moon.degree})` : 'Gemini ♊ (14°)',
@@ -71,6 +78,10 @@ export default function OmniSimpleHome({
         yoga: panchang.yoga,
         abhijit: panchang.abhijitMuhurta,
         rahuKalam: panchang.rahuKalam,
+        loveScore,
+        careerScore,
+        moneyScore,
+        travelScore,
       };
     } catch {
       return {
@@ -84,6 +95,10 @@ export default function OmniSimpleHome({
         yoga: 'Siddhi Yoga',
         abhijit: '11:48 AM - 12:36 PM',
         rahuKalam: '04:30 PM - 06:00 PM',
+        loveScore: 84,
+        careerScore: 91,
+        moneyScore: 78,
+        travelScore: 82,
       };
     }
   }, [userProfile.dob, userProfile.time]);
@@ -532,7 +547,7 @@ export default function OmniSimpleHome({
                 <Heart className="w-4 h-4 text-pink-400" />
               </div>
               <span className="text-[10px] font-mono font-bold text-pink-400 bg-pink-500/10 px-2 py-0.5 rounded-md border border-pink-500/20">
-                86% Elevated
+                {astroData.loveScore}% Resonance
               </span>
             </div>
             <div>
@@ -551,7 +566,7 @@ export default function OmniSimpleHome({
                 <Briefcase className="w-4 h-4 text-cyan-400" />
               </div>
               <span className="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-md border border-cyan-500/20">
-                92% Strong
+                {astroData.careerScore}% Strong
               </span>
             </div>
             <div>
@@ -570,7 +585,7 @@ export default function OmniSimpleHome({
                 <DollarSign className="w-4 h-4 text-emerald-400" />
               </div>
               <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
-                79% Balanced
+                {astroData.moneyScore}% Balanced
               </span>
             </div>
             <div>
@@ -589,7 +604,7 @@ export default function OmniSimpleHome({
                 <Compass className="w-4 h-4 text-purple-400" />
               </div>
               <span className="text-[10px] font-mono font-bold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-md border border-purple-500/20">
-                84% Active
+                {astroData.travelScore}% Active
               </span>
             </div>
             <div>

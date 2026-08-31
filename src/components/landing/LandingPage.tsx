@@ -29,6 +29,7 @@ import LiveShodashavargaAndGemstoneSuite from './LiveShodashavargaAndGemstoneSui
 import LivePrashnaAndKPSubLordSuite from './LivePrashnaAndKPSubLordSuite';
 import { useScrollReveal, use3DTilt, useMagneticHover, useMouseGlow } from '../../hooks/useAnimations';
 import { QuestionIntentEngine } from '../../lib/questionRouter';
+import { calculatePlanetaryPositions, calculateAyanamsha } from '../../lib/astroCalculations';
 
 interface LandingPageProps {
   onStartOnboarding: (presetData?: Partial<UserProfile>) => void;
@@ -276,12 +277,33 @@ export default function LandingPage({
     onStartOnboarding(preset || { name: 'Seeker', dob: '1998-06-15', time: '12:00', location: 'London, UK' });
   };
 
-  const tickerItems = [
-    { icon: Moon, label: 'Moon', value: 'Rohini (Taurus ♉)', color: 'text-cyan-400' },
-    { icon: Sun, label: 'Sun', value: 'Simha (Leo ♌)', color: 'text-amber-400' },
-    { icon: Sparkles, label: 'Ayanamsha', value: "True Lahiri 24°13'08\"", color: 'text-emerald-400' },
-    { icon: Activity, label: 'NOAA Solar Kp', value: '5.8 (G2 Moderate)', color: 'text-amber-300' },
-  ];
+  const tickerItems = useMemo(() => {
+    try {
+      const now = new Date();
+      const pos = calculatePlanetaryPositions();
+      const sun = pos.find(p => p.name === 'Sun');
+      const moon = pos.find(p => p.name === 'Moon');
+      const jup = pos.find(p => p.name === 'Jupiter');
+      const ayan = calculateAyanamsha(now, 'true_chitrapaksha');
+      const ayanDeg = Math.floor(ayan);
+      const ayanMin = Math.floor((ayan - ayanDeg) * 60);
+      const ayanSec = Math.round(((ayan - ayanDeg) * 60 - ayanMin) * 60);
+
+      return [
+        { icon: Moon, label: 'Live Moon', value: moon ? `${moon.nakshatra} (${moon.sign} ${moon.degree})` : 'Rohini (Taurus ♉)', color: 'text-cyan-400' },
+        { icon: Sun, label: 'Live Sun', value: sun ? `${sun.sign} (${sun.degree})` : 'Simha (Leo ♌)', color: 'text-amber-400' },
+        { icon: Sparkles, label: 'Ayanamsha', value: `True Lahiri ${ayanDeg}°${ayanMin}'${ayanSec < 10 ? '0' : ''}${ayanSec}"`, color: 'text-emerald-400' },
+        { icon: Activity, label: 'Jupiter', value: jup ? `${jup.sign} ${jup.degree}` : 'Taurus ♉', color: 'text-amber-300' },
+      ];
+    } catch {
+      return [
+        { icon: Moon, label: 'Moon', value: 'Rohini (Taurus ♉)', color: 'text-cyan-400' },
+        { icon: Sun, label: 'Sun', value: 'Simha (Leo ♌)', color: 'text-amber-400' },
+        { icon: Sparkles, label: 'Ayanamsha', value: "True Lahiri 24°14'12\"", color: 'text-emerald-400' },
+        { icon: Activity, label: 'NOAA Solar Kp', value: '3.2 (Quiet)', color: 'text-amber-300' },
+      ];
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#060A12] text-[#F8FAFC] selection:bg-amber-400 selection:text-slate-950 font-sans relative overflow-x-hidden">

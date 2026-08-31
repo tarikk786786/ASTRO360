@@ -105,7 +105,8 @@ const DASHA_LORDS = [
  */
 export function calculateAyanamsha(date: Date = new Date(), mode: 'lahiri' | 'raman' | 'kp' | 'fagan_bradley' | 'yukteshwar' | 'true_chitrapaksha' = 'lahiri'): number {
   const year = date.getUTCFullYear();
-  const fracYear = year + date.getUTCMonth() / 12.0 + date.getUTCDate() / 365.25;
+  const startOfYear = Date.UTC(year, 0, 1);
+  const fracYear = year + (date.getTime() - startOfYear) / (365.25 * 86400000);
   let base2000 = 23.856;
   if (mode === 'raman') base2000 = 22.42;
   else if (mode === 'kp') base2000 = 23.82;
@@ -156,11 +157,6 @@ export function calculatePlanetaryPositions(
   latitude: number = 21.4225,
   longitude: number = 39.8262
 ): PlanetPosition[] {
-  const config = GlobalConfigManager.getConfig();
-  const ayanamshaOffset = customAyanamsha !== undefined 
-    ? customAyanamsha 
-    : (config.astrologySystem === 'western' ? 0 : calculateAyanamsha(new Date(), config.ayanamsaMode || 'lahiri'));
-  
   let date = new Date('1998-06-15T12:00:00Z');
   if (birthDateStr && typeof birthDateStr === 'string' && birthDateStr.trim().length >= 4) {
     const timePart = birthTimeStr || '12:00';
@@ -171,6 +167,11 @@ export function calculatePlanetaryPositions(
   } else {
     date = new Date();
   }
+
+  const config = GlobalConfigManager.getConfig();
+  const ayanamshaOffset = customAyanamsha !== undefined 
+    ? customAyanamsha 
+    : (config.astrologySystem === 'western' ? 0 : calculateAyanamsha(date, config.ayanamsaMode || 'lahiri'));
   
   // Real Ecliptic Longitudes (Tropical adjusted by Ayanamsha)
   const sunL = (Ecliptic(GeoVector(Body.Sun, date, true)).elon - ayanamshaOffset + 360) % 360;

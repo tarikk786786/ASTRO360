@@ -52,7 +52,8 @@ export class AstronomyEngine {
    */
   public static getAyanamsaValue(date: Date, mode: AyanamsaMode = 'lahiri'): number {
     const year = date.getUTCFullYear();
-    const fracYear = year + date.getUTCMonth() / 12.0 + date.getUTCDate() / 365.25;
+    const startOfYear = Date.UTC(year, 0, 1);
+    const fracYear = year + (date.getTime() - startOfYear) / (365.25 * 86400000);
     
     // Base Lahiri Ayanamsa at 2000.0 is 23.85°
     let base2000 = 23.85;

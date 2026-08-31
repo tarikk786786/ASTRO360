@@ -327,10 +327,17 @@ export default function AppContent() {
       tab === 'briefing' ||
       tab === 'shlokas' ||
       tab === 'scripture' ||
-      tab === 'sabian' ||
-      tab === 'sabian-symbols' ||
       tab === 'ephemeris-lab' ||
-      tab === 'diagnostic-lab'
+      tab === 'diagnostic-lab' ||
+      tab === 'vargas' ||
+      tab === 'divisional-charts' ||
+      tab === 'shadbala' ||
+      tab === 'planetary-strengths' ||
+      tab === 'sadesati' ||
+      tab === 'saturn-transit' ||
+      tab === 'report-generator' ||
+      tab === 'executive-report' ||
+      tab === 'seo-lab/backlinks'
     );
     const storedOnboarded = typeof window !== 'undefined' && (localStorage.getItem('astro_has_onboarded') === 'true' || localStorage.getItem('astro_user_profile') !== null);
     const isProfileConfigured = Boolean((userProfile && userProfile.name && userProfile.name.trim().length > 0 && userProfile.dob) || storedOnboarded);
@@ -897,7 +904,10 @@ export default function AppContent() {
                   {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
                   {activeTab === 'spiritual-traditions' && <SpiritualTraditionsModule userProfile={userProfile} />}
                   {activeTab === 'consultation-hub' && <CommunityConsultationHub />}
-                  {activeTab === 'divisional-charts' && <DivisionalChartsSuite userProfile={userProfile} />}
+                  {(activeTab === 'divisional-charts' || activeTab === 'vargas') && <DivisionalChartsSuite userProfile={userProfile} />}
+                  {(activeTab === 'shadbala' || activeTab === 'planetary-strengths') && <UnifiedChartEngine userProfile={userProfile} activeTab="shadbala" initialTab="shadbala" />}
+                  {(activeTab === 'sadesati' || activeTab === 'saturn-transit') && <TimeHorizonForecastSuite userProfile={userProfile} />}
+                  {(activeTab === 'report-generator' || activeTab === 'executive-report') && <ExecutiveReportGenerator userProfile={userProfile} />}
                   {activeTab === 'btr-suite' && <BirthTimeRectificationSuite />}
                   {(activeTab === 'gemstone-suite' || activeTab === 'gemstones') && <GemstoneRudrakshaSuite />}
                   {(activeTab === 'numerology' || activeTab === 'numerology-suite') && <NumerologyNameSuite />}
@@ -930,7 +940,7 @@ export default function AppContent() {
                   {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
                   {(activeTab === 'seo' || activeTab === 'seo-suite' || activeTab === 'seo-auditor' || activeTab === 'seo-growth') && <OmniSEOGrowthSuite />}
                   {(activeTab === 'seo-lab' || activeTab === 'keyword-lab' || activeTab === 'keywords' || activeTab === 'seo-lab/keywords') && <KeywordResearchLab onNavigate={navigateTo} />}
-                  {(activeTab === 'backlink-lab' || activeTab === 'backlinks' || activeTab === 'link-lab') && <BacklinkOpportunityLab onNavigate={navigateTo} />}
+                  {(activeTab === 'backlink-lab' || activeTab === 'backlinks' || activeTab === 'link-lab' || activeTab === 'seo-lab/backlinks') && <BacklinkOpportunityLab onNavigate={navigateTo} />}
                   {(activeTab === 'news-intelligence' || activeTab === 'cosmic-news' || activeTab === 'mundane' || activeTab === 'news-prediction') && <CosmicNewsIntelligenceHub userProfile={userProfile} onNavigate={navigateTo} />}
                   {activeTab === 'control-center' && <AstrologyControlCenter />}
                   {activeTab === 'studio' && <CosmicStudioSuite userProfile={userProfile} />}

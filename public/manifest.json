@@ -1,7 +1,7 @@
 {
-  "short_name": "COSMOS",
-  "name": "COSMOS OMNI — Universal Cosmic Intelligence Platform",
-  "description": "World's premier universal multi-faith astrology platform uniting Islamic, Vedic, Western, BaZi, and Kabbalah astrology.",
+  "short_name": "ASTRO360",
+  "name": "ASTRO360 OMNI — Universal Multi-Tradition Cosmic Intelligence",
+  "description": "High-precision astronomical ephemeris and multi-tradition astrology intelligence platform uniting Vedic, Western, Hellenistic, KP, and Islamic Falak.",
   "icons": [
     {
       "src": "/favicon.svg",
@@ -9,9 +9,9 @@
       "sizes": "192x192 512x512"
     }
   ],
-  "start_url": "/",
-  "background_color": "#0b1220",
-  "theme_color": "#0b1220",
+  "start_url": "/?tab=home",
+  "background_color": "#060A12",
+  "theme_color": "#060A12",
   "display": "standalone",
   "orientation": "portrait"
 }

@@ -196,20 +196,23 @@ export function useTypewriter(text: string, speed = 50, startDelay = 500) {
       return;
     }
 
+    let interval: NodeJS.Timeout | null = null;
     const timeout = setTimeout(() => {
       let i = 0;
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         i++;
         setDisplayed(text.slice(0, i));
         if (i >= text.length) {
-          clearInterval(interval);
+          if (interval) clearInterval(interval);
           setIsDone(true);
         }
       }, speed);
-      return () => clearInterval(interval);
     }, startDelay);
 
-    return () => clearTimeout(timeout);
+    return () => {
+      clearTimeout(timeout);
+      if (interval) clearInterval(interval);
+    };
   }, [text, speed, startDelay]);
 
   return { displayed, isDone };

@@ -45,9 +45,8 @@ const ALL_TOOL_LINKS: ToolQuickLink[] = [
   { name: 'Sabian Symbols 360° Degree Lab', tab: 'sabian', category: 'charts', desc: 'Clairvoyant degree archetypes & evolutionary challenges' },
   { name: 'Multi-System Ephemeris Lab', tab: 'ephemeris-lab', category: 'labs', desc: 'Side-by-side Lahiri, KP, Raman & Tropical delta diff' },
   { name: 'Celebrity Charts & Directory', tab: 'directory', category: 'charts', desc: 'Verified ephemeris charts of Einstein, Jobs, Vivekananda' },
-  { name: 'Free Embeddable Widgets', tab: 'widgets', category: 'labs', desc: 'Free Panchang, Horas, and Moon Phase widgets for webmasters' },
-  { name: 'SEO Keyword Research Lab', tab: 'seo-lab/keywords', category: 'labs', desc: 'Free-first search engine intelligence suite' },
-  { name: 'Backlink Opportunity Lab', tab: 'seo-lab/backlinks', category: 'labs', desc: 'Discover & qualify organic editorial backlinks' },
+  { name: 'Executive Report Generator', tab: 'report-generator', category: 'charts', desc: '18+ page structured analytical client reports' },
+  { name: 'AstroCartography Global Map', tab: 'astrocartography', category: 'labs', desc: 'Planetary relocation lines across worldwide cities' },
 ];
 
 export default function OmniLandingNavbar({
