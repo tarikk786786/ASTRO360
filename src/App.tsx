@@ -106,6 +106,9 @@ const InteractiveDualChartStudio = lazy(() => import('./components/charts/Intera
 const ExecutiveCosmicDossierSuite = lazy(() => import('./components/dossier/ExecutiveCosmicDossierSuite'));
 const AstroDeterministicCopilot = lazy(() => import('./components/ai/AstroDeterministicCopilot'));
 const PwaCosmicBriefing = lazy(() => import('./components/pwa/PwaCosmicBriefing'));
+const ClassicalShlokaLibrary = lazy(() => import('./components/scripture/ClassicalShlokaLibrary'));
+const SabianSymbolsDegreeExplorer = lazy(() => import('./components/sabian/SabianSymbolsDegreeExplorer'));
+const MultiSystemEphemerisDiagnosticLab = lazy(() => import('./components/diagnostics/MultiSystemEphemerisDiagnosticLab'));
 
 const STORAGE_KEY = 'astroverse_profile';
 const TAB_KEY = 'astroverse_tab';
@@ -321,7 +324,13 @@ export default function AppContent() {
       tab === 'copilot' ||
       tab === 'ask' ||
       tab === 'pwa' ||
-      tab === 'briefing'
+      tab === 'briefing' ||
+      tab === 'shlokas' ||
+      tab === 'scripture' ||
+      tab === 'sabian' ||
+      tab === 'sabian-symbols' ||
+      tab === 'ephemeris-lab' ||
+      tab === 'diagnostic-lab'
     );
     const storedOnboarded = typeof window !== 'undefined' && (localStorage.getItem('astro_has_onboarded') === 'true' || localStorage.getItem('astro_user_profile') !== null);
     const isProfileConfigured = Boolean((userProfile && userProfile.name && userProfile.name.trim().length > 0 && userProfile.dob) || storedOnboarded);
@@ -933,6 +942,9 @@ export default function AppContent() {
                   {(activeTab === 'dossier' || activeTab === 'pdf-report') && <ExecutiveCosmicDossierSuite userProfile={userProfile} onNavigateToTab={navigateTo} />}
                   {(activeTab === 'copilot' || activeTab === 'ask') && <AstroDeterministicCopilot userProfile={userProfile} onNavigateToTab={navigateTo} />}
                   {(activeTab === 'pwa' || activeTab === 'briefing') && <PwaCosmicBriefing onNavigateToTab={navigateTo} />}
+                  {(activeTab === 'shlokas' || activeTab === 'scripture') && <ClassicalShlokaLibrary />}
+                  {(activeTab === 'sabian' || activeTab === 'sabian-symbols') && <SabianSymbolsDegreeExplorer />}
+                  {(activeTab === 'ephemeris-lab' || activeTab === 'diagnostic-lab') && <MultiSystemEphemerisDiagnosticLab userProfile={userProfile} />}
                   {TRADITIONS[activeTab] && (
                     <TraditionView
                       tradition={TRADITIONS[activeTab]}
