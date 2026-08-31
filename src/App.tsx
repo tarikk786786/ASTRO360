@@ -9,7 +9,7 @@ import {
   Compass, Moon, ShieldCheck, Activity, Gem, HeartHandshake, Globe, Search, Command, CloudMoon,
   Zap, Wrench, DollarSign, Wallet, ArrowLeft, Home, Cpu, Layers,
   AlertTriangle, BarChart2, BookOpen, Calendar, Clock, Eye, FileText, Hash, Map, MapPin,
-  Music, Network, Radar, Shield, Sun, Sunrise, TrendingUp,
+  Music, Network, Radar, Shield, Sun, Sunrise, TrendingUp, Radio,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TRADITIONS, CategoryInfo, TraditionGroup, UserProfile, GROUP_ICONS } from './types';
@@ -40,6 +40,9 @@ const OmniFreeToolsHub = lazy(() => import('./components/free-tools/OmniFreeTool
 const OmniCompatibilityLab = lazy(() => import('./components/omni/OmniCompatibilityLab'));
 const SEOTopicHub = lazy(() => import('./components/seo/SEOTopicHub'));
 const OmniSEOGrowthSuite = lazy(() => import('./components/seo/OmniSEOGrowthSuite'));
+const KeywordResearchLab = lazy(() => import('./components/seo-lab/KeywordResearchLab'));
+const BacklinkOpportunityLab = lazy(() => import('./components/backlink-lab/BacklinkOpportunityLab'));
+const CosmicNewsIntelligenceHub = lazy(() => import('./components/news-prediction/CosmicNewsIntelligenceHub'));
 
 // Heavy secondary astrology suites
 const CosmicIntelligenceCenter = lazy(() => import('./components/CosmicIntelligenceCenter'));
@@ -137,6 +140,32 @@ function saveProfile(profile: UserProfile): void {
   }
 }
 
+// Helper to resolve route and tab from current window location
+function resolveInitialTab(): string {
+  if (typeof window === 'undefined') return 'landing';
+  const searchParams = new URLSearchParams(window.location.search);
+  const tabParam = searchParams.get('tab');
+  if (tabParam) return tabParam;
+
+  const rawPath = window.location.pathname.replace(/^\/+|\/+$/g, '');
+  if (!rawPath) return 'landing';
+
+  if (rawPath === 'seo-lab' || rawPath === 'keywords' || rawPath === 'seo-lab/keywords') return 'seo-lab';
+  if (rawPath === 'backlink-lab' || rawPath === 'backlinks' || rawPath === 'link-lab') return 'backlink-lab';
+  if (rawPath === 'news-intelligence' || rawPath === 'cosmic-news' || rawPath === 'mundane' || rawPath === 'news-prediction') return 'news-intelligence';
+  if (rawPath.startsWith('learn/')) return 'learning-hub';
+  if (rawPath === 'birth-chart' || rawPath === 'kundli') return 'birth-chart';
+  if (rawPath === 'vedic-astrology' || rawPath === 'western-astrology' || rawPath === 'panchanga' || rawPath === 'methodology') return rawPath;
+  if (rawPath === 'compatibility' || rawPath === 'ashta-koota') return 'compatibility';
+  if (rawPath === 'dasha') return 'dasha';
+  if (rawPath === 'transits' || rawPath === 'transit-radar') return 'transits';
+  if (rawPath === 'muhurta' || rawPath === 'electional-muhurta') return 'muhurta';
+  if (rawPath === 'astrocartography' || rawPath === 'astro-cartography') return 'astrocartography';
+  if (rawPath === 'free-tools') return 'free-tools';
+
+  return rawPath;
+}
+
 export default function AppContent() {
   const { config, updateConfig } = useGlobalConfig();
   const [userProfile, setUserProfile] = useState<UserProfile>(loadProfile);
@@ -153,18 +182,22 @@ export default function AppContent() {
     }
   });
   
-  // Always initialize activeTab to 'landing' so every first visit & browser refresh displays the Landing Page
-  const [activeTab, setActiveTab] = useState<string>('landing');
-  const [navigationHistory, setNavigationHistory] = useState<string[]>(['landing']);
+  // Initialize activeTab with query param, pathname or fallback to landing
+  const [activeTab, setActiveTab] = useState<string>(resolveInitialTab);
+  const [navigationHistory, setNavigationHistory] = useState<string[]>(() => {
+    const init = resolveInitialTab();
+    return init === 'landing' ? ['landing'] : ['landing', init];
+  });
 
-  // Reset URL to root landing page on fresh load or browser refresh
+  // Synchronize SEO tags and history on load
   useEffect(() => {
     try {
       if (typeof window !== 'undefined' && window.history) {
-        window.history.replaceState({ tab: 'landing' }, '', window.location.pathname);
+        const initial = resolveInitialTab();
+        updatePageSEO(initial);
       }
     } catch (e) {
-      console.warn("history replaceState error", e);
+      console.warn("history init error", e);
     }
   }, []);
 
@@ -241,7 +274,34 @@ export default function AppContent() {
 
   // Navigate with full history tracking & browser URL sync
   const navigateTo = useCallback((tab: string, replace = false) => {
-    const isPublicTab = tab === 'landing' || tab === 'free-tools' || tab === 'vedic-astrology' || tab === 'western-astrology' || tab === 'panchanga' || tab === 'methodology' || tab === 'seo';
+    const isPublicTab = (
+      tab === 'landing' ||
+      tab === 'free-tools' ||
+      tab === 'birth-chart' ||
+      tab === 'vedic-astrology' ||
+      tab === 'western-astrology' ||
+      tab === 'panchanga' ||
+      tab === 'compatibility' ||
+      tab === 'dasha' ||
+      tab === 'transits' ||
+      tab === 'muhurta' ||
+      tab === 'astrocartography' ||
+      tab === 'methodology' ||
+      tab === 'learning-hub' ||
+      tab.startsWith('learn/') ||
+      tab === 'seo' ||
+      tab === 'seo-lab' ||
+      tab === 'keyword-lab' ||
+      tab === 'keywords' ||
+      tab === 'seo-lab/keywords' ||
+      tab === 'backlink-lab' ||
+      tab === 'backlinks' ||
+      tab === 'link-lab' ||
+      tab === 'news-intelligence' ||
+      tab === 'cosmic-news' ||
+      tab === 'mundane' ||
+      tab === 'news-prediction'
+    );
     const isProfileConfigured = Boolean(userProfile && userProfile.name && userProfile.name.trim().length > 0 && userProfile.dob);
 
     if (!isPublicTab && !hasOnboarded && !isProfileConfigured) {
@@ -380,6 +440,10 @@ export default function AppContent() {
     if (activeTab === 'consultation-hub') return 'Astrologer Consultations & Community Q&A';
     if (activeTab === 'earnings-hub' || activeTab === 'monetization') return 'Astrology Business & Global Revenue Hub';
     if (activeTab === 'omni-research' || activeTab === 'comparative-mode' || activeTab === 'consensus') return 'ASTRO360 OMNI • Research & Consensus Core';
+    if (activeTab === 'seo' || activeTab === 'seo-suite' || activeTab === 'seo-growth') return 'Search Visibility & Growth Engine';
+    if (activeTab === 'seo-lab' || activeTab === 'keyword-lab' || activeTab === 'keywords' || activeTab === 'seo-lab/keywords') return 'SEO Keyword Research Lab';
+    if (activeTab === 'backlink-lab' || activeTab === 'backlinks' || activeTab === 'link-lab') return 'Backlink Opportunity & Digital PR Lab';
+    if (activeTab === 'news-intelligence' || activeTab === 'cosmic-news' || activeTab === 'mundane' || activeTab === 'news-prediction') return 'Cosmic News & Mundane Prediction Hub';
     if (activeTab === 'landing') return 'Product Overview & Free Birth Chart';
     if (TRADITIONS[activeTab]) return TRADITIONS[activeTab].name;
     return 'Cosmos OMNI';
@@ -538,7 +602,9 @@ export default function AppContent() {
                   <button onClick={() => navigateTo('chart-analytics')} className={`sidebar-item ${activeTab === 'chart-analytics' ? 'sidebar-item-active' : ''}`}><BarChart2 className="w-4 h-4" /><span>Chart Analytics</span></button>
                   <button onClick={() => navigateTo('learning-hub')} className={`sidebar-item ${activeTab === 'learning-hub' ? 'sidebar-item-active' : ''}`}><BookOpen className="w-4 h-4" /><span>Learning Hub</span></button>
                   <button onClick={() => navigateTo('report-generator')} className={`sidebar-item ${activeTab === 'report-generator' ? 'sidebar-item-active' : ''}`}><FileText className="w-4 h-4" /><span>Report Generator</span></button>
-                  <button onClick={() => navigateTo('admin-dashboard')} className={`sidebar-item ${activeTab === 'admin-dashboard' ? 'sidebar-item-active' : ''}`}><Shield className="w-4 h-4" /><span>Admin Dashboard</span></button>
+                  <button onClick={() => navigateTo('seo-lab')} className={`sidebar-item ${activeTab === 'seo-lab' || activeTab === 'keywords' ? 'sidebar-item-active' : ''}`}><Search className="w-4 h-4 text-cyan-400" /><span className="text-cyan-300 font-bold">SEO Keyword Lab</span></button>
+                  <button onClick={() => navigateTo('backlink-lab')} className={`sidebar-item ${activeTab === 'backlink-lab' || activeTab === 'backlinks' ? 'sidebar-item-active' : ''}`}><Globe className="w-4 h-4 text-purple-400" /><span className="text-purple-300 font-bold">Backlink Lab</span></button>
+                  <button onClick={() => navigateTo('news-intelligence')} className={`sidebar-item ${activeTab === 'news-intelligence' || activeTab === 'cosmic-news' || activeTab === 'mundane' ? 'sidebar-item-active' : ''}`}><Radio className="w-4 h-4 text-amber-400" /><span className="text-amber-300 font-bold">Cosmic News Hub</span></button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -822,6 +888,9 @@ export default function AppContent() {
                   {activeTab === 'learning-hub' && <AstrologyLearningHub />}
                   {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
                   {(activeTab === 'seo' || activeTab === 'seo-suite' || activeTab === 'seo-auditor' || activeTab === 'seo-growth') && <OmniSEOGrowthSuite />}
+                  {(activeTab === 'seo-lab' || activeTab === 'keyword-lab' || activeTab === 'keywords' || activeTab === 'seo-lab/keywords') && <KeywordResearchLab onNavigate={navigateTo} />}
+                  {(activeTab === 'backlink-lab' || activeTab === 'backlinks' || activeTab === 'link-lab') && <BacklinkOpportunityLab onNavigate={navigateTo} />}
+                  {(activeTab === 'news-intelligence' || activeTab === 'cosmic-news' || activeTab === 'mundane' || activeTab === 'news-prediction') && <CosmicNewsIntelligenceHub userProfile={userProfile} onNavigate={navigateTo} />}
                   {activeTab === 'control-center' && <AstrologyControlCenter />}
                   {activeTab === 'studio' && <CosmicStudioSuite userProfile={userProfile} />}
                   {activeTab === 'horoscope' && <PremiumHoroscopeEngine userProfile={userProfile} />}

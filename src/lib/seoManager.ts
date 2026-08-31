@@ -208,6 +208,42 @@ export const SEO_REGISTRY: Record<string, SEOMetadata> = {
       { name: 'Learn', item: 'https://astro.tarikislam.in/' },
       { name: 'Astrology Houses', item: 'https://astro.tarikislam.in/learn/astrology-houses' }
     ]
+  },
+  'seo-lab': {
+    title: 'Free SEO Keyword Research Lab: Real Data Discovery',
+    description: 'Free-first SEO keyword discovery, deterministic Google Trends momentum, 16 classical astrology clusters, and content briefs.',
+    keywords: 'free keyword research, astrology seo, keyword clusters, google trends momentum, search intent analysis',
+    canonicalUrl: 'https://astro.tarikislam.in/seo-lab',
+    ogType: 'website',
+    schemaType: 'SoftwareApplication',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'SEO Lab', item: 'https://astro.tarikislam.in/seo-lab' }
+    ]
+  },
+  'backlink-lab': {
+    title: 'Backlink Opportunity & Digital PR Lab',
+    description: 'Ethical backlink discovery, competitor link gaps, unlinked brand mentions, transparent embed widgets, and live verification.',
+    keywords: 'backlink discovery, digital pr astrology, competitor link gaps, unlinked brand mentions, ethical link building',
+    canonicalUrl: 'https://astro.tarikislam.in/backlink-lab',
+    ogType: 'website',
+    schemaType: 'SoftwareApplication',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Backlink Lab', item: 'https://astro.tarikislam.in/backlink-lab' }
+    ]
+  },
+  'free-tools': {
+    title: 'Free Online Astrology Tools & Ephemeris Calculators',
+    description: 'Access 8 free, ad-free astronomical calculators: Birth Chart, Moon Sign, Rising Sign, Nakshatra, Panchanga, and Compatibility.',
+    keywords: 'free astrology tools, free birth chart, free kundli, free panchang, astrology calculators',
+    canonicalUrl: 'https://astro.tarikislam.in/free-tools',
+    ogType: 'website',
+    schemaType: 'SoftwareApplication',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Free Tools', item: 'https://astro.tarikislam.in/free-tools' }
+    ]
   }
 };
 
@@ -215,8 +251,15 @@ export function updatePageSEO(pageKey: string): void {
   if (typeof document === 'undefined') return;
 
   // Clean key for lookups (e.g. "learn-nakshatra" -> "learn/nakshatra")
-  const normalizedKey = pageKey.replace(/^learn-/, 'learn/');
+  const normalizedKey = pageKey.replace(/^learn-/, 'learn/').replace(/^\/+/, '');
   const data = SEO_REGISTRY[normalizedKey] || SEO_REGISTRY[pageKey] || SEO_REGISTRY.home;
+
+  // Derive exact self-referencing canonical URL
+  const targetCanonical = data.canonicalUrl || (
+    normalizedKey === 'home' || normalizedKey === 'landing' || normalizedKey === ''
+      ? 'https://astro.tarikislam.in/'
+      : `https://astro.tarikislam.in/${normalizedKey}`
+  );
 
   // 1. Document Title
   document.title = data.title;
@@ -240,7 +283,7 @@ export function updatePageSEO(pageKey: string): void {
   setMeta('property', 'og:title', data.title);
   setMeta('property', 'og:description', data.description);
   setMeta('property', 'og:type', data.ogType || 'website');
-  if (data.canonicalUrl) setMeta('property', 'og:url', data.canonicalUrl);
+  setMeta('property', 'og:url', targetCanonical);
   setMeta('property', 'og:image', data.ogImage || 'https://astro.tarikislam.in/favicon.svg');
 
   // 5. Twitter Card Tags
@@ -248,14 +291,14 @@ export function updatePageSEO(pageKey: string): void {
   setMeta('name', 'twitter:title', data.title);
   setMeta('name', 'twitter:description', data.description);
 
-  // 6. Canonical Link
+  // 6. Canonical Link (Self-referencing for every individual page)
   let canonicalEl = document.querySelector('link[rel="canonical"]');
   if (!canonicalEl) {
     canonicalEl = document.createElement('link');
     canonicalEl.setAttribute('rel', 'canonical');
     document.head.appendChild(canonicalEl);
   }
-  canonicalEl.setAttribute('href', data.canonicalUrl || 'https://astro.tarikislam.in/');
+  canonicalEl.setAttribute('href', targetCanonical);
 
   // 7. Inject Structured Data JSON-LD
   let scriptEl = document.querySelector('#astro360-jsonld') as HTMLScriptElement | null;

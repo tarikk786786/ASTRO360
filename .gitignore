@@ -55,3 +55,11 @@ Thumbs.db
 .env.production
 .env.development
 
+# Cloned reference repositories
+awesome-seo-tools/
+google-trends-tracker/
+indie-keyword-finder/
+seo-keyword-research-tool/
+seo-keyword-scraper/
+seotoolsuite/
+

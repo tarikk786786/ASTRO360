@@ -30,6 +30,8 @@ import {
   Bookmark, 
   Bell, 
   Globe2,
+  Search,
+  Radio,
   LucideIcon 
 } from 'lucide-react';
 
@@ -250,6 +252,33 @@ export const MORE_SHEET_ITEMS: MoreSheetItem[] = [
     icon: ShieldCheck,
     route: '/rectification',
     category: 'advanced',
+  },
+  {
+    id: 'seo-lab',
+    label: 'SEO Keyword Research Lab',
+    description: 'Free-first keyword discovery, Google Trends, clusters & content briefs',
+    icon: Search,
+    route: '/seo-lab',
+    category: 'advanced',
+    badge: 'Free',
+  },
+  {
+    id: 'backlink-lab',
+    label: 'Backlink Opportunity Lab',
+    description: 'High-trust link discovery, unlinked mentions, digital PR & verification',
+    icon: Globe2,
+    route: '/backlink-lab',
+    category: 'advanced',
+    badge: 'PR Lab',
+  },
+  {
+    id: 'news-intelligence',
+    label: 'Cosmic News & Mundane Prediction Hub',
+    description: 'Free open news APIs, NOAA space weather, USGS seismic & planetary correlations',
+    icon: Radio,
+    route: '/news-intelligence',
+    category: 'advanced',
+    badge: 'Real-Time',
   },
 ];
 

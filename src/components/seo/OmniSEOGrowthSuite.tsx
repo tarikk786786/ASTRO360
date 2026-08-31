@@ -15,9 +15,11 @@ import {
   type TopicCluster,
   type BacklinkProspect
 } from '../../lib/seoGrowthEngine';
+import KeywordResearchLab from '../seo-lab/KeywordResearchLab';
+import BacklinkOpportunityLab from '../backlink-lab/BacklinkOpportunityLab';
 
 export default function OmniSEOGrowthSuite() {
-  const [activeTab, setActiveTab] = useState<'audit' | 'clusters' | 'schema' | 'backlinks' | 'aeo' | 'performance' | 'changelog'>('audit');
+  const [activeTab, setActiveTab] = useState<'audit' | 'keywords' | 'clusters' | 'schema' | 'backlinks' | 'aeo' | 'performance' | 'changelog'>('keywords');
   const [selectedCluster, setSelectedCluster] = useState<TopicCluster>(ASTRO360_TOPIC_CLUSTERS[0]);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [filterPriority, setFilterPriority] = useState<string>('all');
@@ -85,6 +87,7 @@ export default function OmniSEOGrowthSuite() {
       {/* ─── 2. TAB SWITCHER ─────────────────────────────────────────── */}
       <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none snap-x font-mono text-xs">
         {[
+          { id: 'keywords', label: '🔎 Free Keyword Lab' },
           { id: 'audit', label: '🛡️ Technical Audit & Crawler' },
           { id: 'clusters', label: '🎯 Topic Clusters & Intent' },
           { id: 'schema', label: '🏷️ Structured Data Schema' },
@@ -106,6 +109,11 @@ export default function OmniSEOGrowthSuite() {
           </button>
         ))}
       </div>
+
+      {/* ─── TAB 0: FREE KEYWORD LAB ─────────────────────────────────── */}
+      {activeTab === 'keywords' && (
+        <KeywordResearchLab />
+      )}
 
       {/* ─── TAB 1: TECHNICAL CRAWLER & AUDIT ────────────────────────── */}
       {activeTab === 'audit' && (
@@ -334,41 +342,7 @@ export default function OmniSEOGrowthSuite() {
 
       {/* ─── TAB 5: ETHICAL BACKLINK PROSPECTING ──────────────────────── */}
       {activeTab === 'backlinks' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
-            <div>
-              <h3 className="text-base font-bold text-white">White-Hat Backlink Prospecting & Digital PR Engine</h3>
-              <p className="text-xs text-slate-400 font-mono">Zero spam. High-relevance educational outreach and directory citations</p>
-            </div>
-
-            <span className="text-xs font-mono text-purple-400 bg-purple-500/10 px-3 py-1 rounded-xl border border-purple-500/20 font-bold">
-              100% White-Hat Verified
-            </span>
-          </div>
-
-          <div className="space-y-3">
-            {auditData.prospects.map((prospect) => (
-              <div key={prospect.id} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-white text-sm">{prospect.targetDomain}</span>
-                    <span className="text-[10px] bg-white/10 text-slate-300 px-2 py-0.5 rounded">
-                      {prospect.category}
-                    </span>
-                  </div>
-                  <p className="text-slate-400 text-[11px]">Pitch Angle: <span className="text-slate-200">{prospect.pitchAngle}</span></p>
-                  <p className="text-amber-300 text-[10px]">Resource: {prospect.suggestedResource}</p>
-                </div>
-
-                <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-[11px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-xl border border-emerald-500/20">
-                    {prospect.outreachStatus}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <BacklinkOpportunityLab />
       )}
 
       {/* ─── TAB 6: CORE WEB VITALS ──────────────────────────────────── */}

@@ -3,7 +3,7 @@ import { Command } from 'cmdk';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Search, Compass, Sun, Moon, CloudMoon, Bot, Clock, Activity,
-  Heart, Award, Layers, X, Sparkles, BookOpen, ShieldCheck
+  Heart, Award, Layers, X, Sparkles, BookOpen, ShieldCheck, Radio
 } from 'lucide-react';
 
 interface CommandPaletteModalProps {
@@ -171,6 +171,39 @@ export default function CommandPaletteModal({ isOpen, onClose, onNavigate }: Com
                     <span className="font-semibold text-white">Directory of 150+ Astrological Tools</span>
                   </div>
                   <span className="text-[10px] font-mono text-slate-400">Full System Catalog</span>
+                </Command.Item>
+
+                <Command.Item
+                  onSelect={() => handleSelect('seo-lab')}
+                  className="p-3 rounded-xl hover:bg-white/10 flex items-center justify-between text-xs cursor-pointer transition-colors"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Search className="w-4 h-4 text-cyan-300" />
+                    <span className="font-semibold text-white">SEO Keyword Research Lab</span>
+                  </div>
+                  <span className="text-[10px] font-mono text-cyan-400">Free Real-Data Lab</span>
+                </Command.Item>
+
+                <Command.Item
+                  onSelect={() => handleSelect('backlink-lab')}
+                  className="p-3 rounded-xl hover:bg-white/10 flex items-center justify-between text-xs cursor-pointer transition-colors"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Sparkles className="w-4 h-4 text-purple-400" />
+                    <span className="font-semibold text-white">Backlink Opportunity & PR Lab</span>
+                  </div>
+                  <span className="text-[10px] font-mono text-purple-400">High-Trust Link Lab</span>
+                </Command.Item>
+
+                <Command.Item
+                  onSelect={() => handleSelect('news-intelligence')}
+                  className="p-3 rounded-xl hover:bg-white/10 flex items-center justify-between text-xs cursor-pointer transition-colors"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Radio className="w-4 h-4 text-amber-400" />
+                    <span className="font-semibold text-white">Cosmic News & Mundane Prediction Hub</span>
+                  </div>
+                  <span className="text-[10px] font-mono text-amber-400">Open News & APIs</span>
                 </Command.Item>
               </Command.Group>
             </Command.List>

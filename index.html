@@ -29,6 +29,24 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href="https://astro.tarikislam.in/" />
+    <script>
+      (function() {
+        try {
+          var base = 'https://astro.tarikislam.in';
+          var path = window.location.pathname || '/';
+          if (path !== '/' && path.endsWith('/')) {
+            path = path.slice(0, -1);
+          }
+          var canonicalUrl = base + (path === '/' ? '/' : path);
+          var link = document.querySelector('link[rel="canonical"]');
+          if (link) {
+            link.setAttribute('href', canonicalUrl);
+          }
+          var ogUrl = document.querySelector('meta[property="og:url"]');
+          if (ogUrl) ogUrl.setAttribute('content', canonicalUrl);
+        } catch(e) {}
+      })();
+    </script>
     <link rel="manifest" href="/manifest.json" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
