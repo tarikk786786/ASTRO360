@@ -11,3 +11,5 @@ export { default as AstroMoreSheet } from './AstroMoreSheet';
 export { default as AstroSystemSheet } from './AstroSystemSheet';
 export { default as AstroCommandFinder } from './AstroCommandFinder';
 export { default as AstroNavigationShell } from './AstroNavigationShell';
+export { default as OmniAppSidebar } from './OmniAppSidebar';
+

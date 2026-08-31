@@ -12,7 +12,7 @@ import {
   Music, Network, Radar, Shield, Sun, Sunrise, TrendingUp, Radio,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { TRADITIONS, CategoryInfo, TraditionGroup, UserProfile, GROUP_ICONS } from './types';
+import { TRADITIONS, CategoryInfo, TraditionGroup, UserProfile } from './types';
 import { useWalletStore } from './stores/walletStore';
 import CommandPaletteModal from './components/CommandPaletteModal';
 import Footer from './components/Footer';
@@ -22,7 +22,7 @@ import { AstroMiniAudioPlayer, AstroAudioPlayer } from './components/audio';
 import { AstroNotificationCenterModal, AstroNotificationPrePermissionCard } from './components/notifications';
 import { useGlobalConfig } from './context/GlobalConfigContext';
 import { Toaster, toast } from 'sonner';
-import { AstroNavigationShell } from './components/navigation';
+import { AstroNavigationShell, OmniAppSidebar } from './components/navigation';
 import CosmicCelestialLoader from './components/ui/CosmicCelestialLoader';
 import { updatePageSEO } from './lib/seoManager';
 import { warmCosmicProfileCache, prefetchRouteData } from './lib/prefetchEngine';
@@ -407,30 +407,6 @@ export default function AppContent() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // Group traditions by TraditionGroup
-  const groupedTraditions = Object.values(TRADITIONS || {}).reduce((acc, tradition) => {
-    if (tradition && tradition.group) {
-      if (!acc[tradition.group]) {
-        acc[tradition.group] = [];
-      }
-      acc[tradition.group].push(tradition);
-    }
-    return acc;
-  }, {} as Record<TraditionGroup, CategoryInfo[]>);
-
-  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
-    'tools': false,
-    'standalone': false,
-    'Asian & Eastern': false,
-    'Western & European': false,
-    'Middle Eastern & Semitic': false,
-    'Indigenous & Ancient': false
-  });
-
-  const toggleGroup = (group: string) => {
-    setExpandedGroups(prev => ({ ...prev, [group]: !prev[group] }));
-  };
-
   const handleOnboardingComplete = (profile: UserProfile) => {
     setUserProfile(profile);
     saveProfile(profile);
@@ -494,250 +470,30 @@ export default function AppContent() {
         <UniverseCanvas />
       </Suspense>
 
-      {/* Sidebar Overlay for Mobile (App only) */}
+      {/* Redesigned Glassmorphic Sidebar Navigation (Desktop Static / Mobile Slide-Over) */}
       {activeTab !== 'landing' && (
-        <AnimatePresence>
-          {isSidebarOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 md:hidden"
-              onClick={() => setIsSidebarOpen(false)}
-            />
-          )}
-        </AnimatePresence>
-      )}
-
-      {/* Sidebar (Desktop Static / Mobile Slide-Over) - ONLY inside app tabs, NOT on landing */}
-      {activeTab !== 'landing' && (
-        <aside
-          className={`fixed inset-y-0 left-0 md:static h-full w-64 bg-[#090d16]/98 md:bg-[#090d16]/95 backdrop-blur-3xl border-r border-white/[0.06] flex flex-col z-50 transition-transform duration-300 ease-out shrink-0 ${
-            isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0'
-          }`}
-        >
-        {/* Logo area */}
-        <div className="h-14 flex items-center justify-between px-5 border-b border-white/[0.04] flex-shrink-0">
-          <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigateTo('home')}>
-            <div className="w-7 h-7 rounded-xl bg-slate-900 border border-white/15 flex items-center justify-center shadow-inner">
-              <div className="w-3.5 h-3.5 rounded-full border border-amber-400/80" />
-            </div>
-            <span className="font-bold text-sm tracking-wide text-white">
-              ASTRO360 <span className="text-amber-400 font-light">OMNI</span>
-            </span>
-          </div>
-          <button className="p-1 text-slate-500 hover:text-white cursor-pointer" onClick={() => setIsSidebarOpen(false)}>
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-
-        <nav className="flex-1 overflow-y-auto custom-scrollbar px-3 py-4 space-y-5">
-          {/* Back to Home / Landing Button */}
-          <div className="pb-1">
-            <button
-              onClick={() => navigateTo('landing')}
-              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
-                activeTab === 'landing'
-                  ? 'bg-[#C9A86A] text-[#070A12] border-[#C9A86A] shadow-md'
-                  : 'bg-white/[0.04] text-[#C9A86A] border-[#C9A86A]/30 hover:bg-[#C9A86A] hover:text-[#070A12]'
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <Home className="w-4 h-4" />
-                <span>← Back to Landing Page</span>
-              </div>
-            </button>
-          </div>
-
-          {/* PRIMARY HUB */}
-          <div className="space-y-0.5">
-            <button onClick={() => navigateTo('dashboard')} className={`sidebar-item ${activeTab === 'dashboard' ? 'sidebar-item-active' : ''}`}>
-              <LayoutDashboard className="w-4 h-4" />
-              <span>Dashboard</span>
-            </button>
-            <button onClick={() => navigateTo('live-diagnostics')} className={`sidebar-item ${activeTab === 'live-diagnostics' ? 'sidebar-item-active' : ''}`}>
-              <Activity className="w-4 h-4" />
-              <span>Live Diagnostics</span>
-            </button>
-            <button onClick={() => navigateTo('advisor')} className={`sidebar-item ${activeTab === 'advisor' ? 'sidebar-item-active' : ''}`}>
-              <ShieldCheck className="w-4 h-4" />
-              <span>Life Advisor</span>
-            </button>
-            <button onClick={() => navigateTo('birth-chart')} className={`sidebar-item ${activeTab === 'birth-chart' ? 'sidebar-item-active' : ''}`}>
-              <Compass className="w-4 h-4" />
-              <span>Birth Chart</span>
-            </button>
-            <button onClick={() => navigateTo('studio')} className={`sidebar-item ${activeTab === 'studio' ? 'sidebar-item-active' : ''}`}>
-              <Sparkles className="w-4 h-4 text-[#C9A86A]" />
-              <span className="font-semibold text-[#C9A86A]">Cosmic Studio</span>
-            </button>
-            <button onClick={() => navigateTo('omni-research')} className={`sidebar-item ${activeTab === 'omni-research' || activeTab === 'comparative-mode' ? 'sidebar-item-active' : ''}`}>
-              <Cpu className="w-4 h-4 text-indigo-400" />
-              <span className="font-semibold text-indigo-300">OMNI Research Core</span>
-            </button>
-            <button onClick={() => navigateTo('chat')} className={`sidebar-item ${activeTab === 'chat' ? 'sidebar-item-active' : ''}`}>
-              <MessageCircle className="w-4 h-4" />
-              <span>AI Oracle</span>
-            </button>
-          </div>
-
-          {/* TOOLS & ENGINES */}
-          <div className="mt-4">
-            <button onClick={() => toggleGroup('tools')} className="w-full flex items-center justify-between px-3 py-2 group">
-              <span className="sidebar-section-label">Tools & Engines</span>
-              <motion.div animate={{ rotate: expandedGroups['tools'] ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-600" />
-              </motion.div>
-            </button>
-            <AnimatePresence>
-              {expandedGroups['tools'] && (
-                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} className="overflow-hidden space-y-0.5 mt-1">
-                  <button onClick={() => navigateTo('remedies')} className={`sidebar-item ${activeTab === 'remedies' ? 'sidebar-item-active' : ''}`}><Gem className="w-4 h-4" /><span>Gemstone Remedies</span></button>
-                  <button onClick={() => navigateTo('custom-remedies')} className={`sidebar-item ${activeTab === 'custom-remedies' ? 'sidebar-item-active' : ''}`}><HeartHandshake className="w-4 h-4" /><span>Problem Solver</span></button>
-                  <button onClick={() => navigateTo('synastry')} className={`sidebar-item ${activeTab === 'synastry' ? 'sidebar-item-active' : ''}`}><Sparkles className="w-4 h-4" /><span>Synastry Matcher</span></button>
-                  <button onClick={() => navigateTo('global-suite')} className={`sidebar-item ${activeTab === 'global-suite' ? 'sidebar-item-active' : ''}`}><Globe className="w-4 h-4" /><span>Global Wisdom</span></button>
-                  <button onClick={() => navigateTo('tools-catalog')} className={`sidebar-item ${activeTab === 'tools-catalog' ? 'sidebar-item-active' : ''}`}><Sparkles className="w-4 h-4" /><span>150+ Tools</span></button>
-                  <button onClick={() => navigateTo('master-chart')} className={`sidebar-item ${activeTab === 'master-chart' ? 'sidebar-item-active' : ''}`}><Compass className="w-4 h-4" /><span>Master Chart</span></button>
-                  <button onClick={() => navigateTo('islamic-astrology')} className={`sidebar-item ${activeTab === 'islamic-astrology' ? 'sidebar-item-active' : ''}`}><Moon className="w-4 h-4" /><span>Islamic Sciences</span></button>
-                  <button onClick={() => navigateTo('dream-interpreter')} className={`sidebar-item ${activeTab === 'dream-interpreter' ? 'sidebar-item-active' : ''}`}><CloudMoon className="w-4 h-4" /><span>Dream Engine</span></button>
-                  <button onClick={() => navigateTo('problem-solver')} className={`sidebar-item ${activeTab === 'problem-solver' ? 'sidebar-item-active' : ''}`}><Zap className="w-4 h-4" /><span>Interactive Tools</span></button>
-                  <button onClick={() => navigateTo('spiritual-traditions')} className={`sidebar-item ${activeTab === 'spiritual-traditions' ? 'sidebar-item-active' : ''}`}><ShieldCheck className="w-4 h-4" /><span>Spiritual Beliefs</span></button>
-                  <button onClick={() => navigateTo('consultation-hub')} className={`sidebar-item ${activeTab === 'consultation-hub' ? 'sidebar-item-active' : ''}`}><Users className="w-4 h-4" /><span>Consultations</span></button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* STANDALONE TOOLS */}
-          <div className="mt-4">
-            <button onClick={() => toggleGroup('standalone')} className="w-full flex items-center justify-between px-3 py-2 group">
-              <span className="sidebar-section-label">Standalone Tools</span>
-              <motion.div animate={{ rotate: expandedGroups['standalone'] ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-600" />
-              </motion.div>
-            </button>
-            <AnimatePresence>
-              {expandedGroups['standalone'] && (
-                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} className="overflow-hidden space-y-0.5 mt-1">
-                  <button onClick={() => navigateTo('divisional-charts')} className={`sidebar-item ${activeTab === 'divisional-charts' ? 'sidebar-item-active' : ''}`}><Compass className="w-4 h-4" /><span>Divisional Charts</span></button>
-                  <button onClick={() => navigateTo('btr-suite')} className={`sidebar-item ${activeTab === 'btr-suite' ? 'sidebar-item-active' : ''}`}><Clock className="w-4 h-4" /><span>Birth Time Rectification</span></button>
-                  <button onClick={() => navigateTo('gemstone-suite')} className={`sidebar-item ${activeTab === 'gemstone-suite' ? 'sidebar-item-active' : ''}`}><Gem className="w-4 h-4" /><span>Gemstones</span></button>
-                  <button onClick={() => navigateTo('numerology-suite')} className={`sidebar-item ${activeTab === 'numerology-suite' ? 'sidebar-item-active' : ''}`}><Hash className="w-4 h-4" /><span>Numerology</span></button>
-                  <button onClick={() => navigateTo('tarot-iching')} className={`sidebar-item ${activeTab === 'tarot-iching' ? 'sidebar-item-active' : ''}`}><Eye className="w-4 h-4" /><span>Tarot & I Ching</span></button>
-                  <button onClick={() => navigateTo('time-horizon')} className={`sidebar-item ${activeTab === 'time-horizon' ? 'sidebar-item-active' : ''}`}><Calendar className="w-4 h-4" /><span>Time Horizon</span></button>
-                  <button onClick={() => navigateTo('dosha-engine')} className={`sidebar-item ${activeTab === 'dosha-engine' ? 'sidebar-item-active' : ''}`}><AlertTriangle className="w-4 h-4" /><span>Dosha Engine</span></button>
-                  <button onClick={() => navigateTo('biorhythm-tracker')} className={`sidebar-item ${activeTab === 'biorhythm-tracker' ? 'sidebar-item-active' : ''}`}><Activity className="w-4 h-4" /><span>Biorhythm Tracker</span></button>
-                  <button onClick={() => navigateTo('chakra-alignment')} className={`sidebar-item ${activeTab === 'chakra-alignment' ? 'sidebar-item-active' : ''}`}><Sunrise className="w-4 h-4" /><span>Chakra Alignment</span></button>
-                  <button onClick={() => navigateTo('fengshui-matrix')} className={`sidebar-item ${activeTab === 'fengshui-matrix' ? 'sidebar-item-active' : ''}`}><Map className="w-4 h-4" /><span>Feng Shui Matrix</span></button>
-                  <button onClick={() => navigateTo('electional-muhurta')} className={`sidebar-item ${activeTab === 'electional-muhurta' ? 'sidebar-item-active' : ''}`}><Clock className="w-4 h-4" /><span>Electional Muhurta</span></button>
-                  <button onClick={() => navigateTo('planetary-horas')} className={`sidebar-item ${activeTab === 'planetary-horas' ? 'sidebar-item-active' : ''}`}><Sun className="w-4 h-4" /><span>Planetary Horas</span></button>
-                  <button onClick={() => navigateTo('mantra-soundboard')} className={`sidebar-item ${activeTab === 'mantra-soundboard' ? 'sidebar-item-active' : ''}`}><Music className="w-4 h-4" /><span>Mantra Soundboard</span></button>
-                  <button onClick={() => navigateTo('transit-radar')} className={`sidebar-item ${activeTab === 'transit-radar' ? 'sidebar-item-active' : ''}`}><Radar className="w-4 h-4" /><span>Transit Radar</span></button>
-                  <button onClick={() => navigateTo('panchang-deities')} className={`sidebar-item ${activeTab === 'panchang-deities' ? 'sidebar-item-active' : ''}`}><Calendar className="w-4 h-4" /><span>Panchang & Deities</span></button>
-                  <button onClick={() => navigateTo('cosmic-compass')} className={`sidebar-item ${activeTab === 'cosmic-compass' ? 'sidebar-item-active' : ''}`}><Compass className="w-4 h-4" /><span>Cosmic Compass</span></button>
-                  <button onClick={() => navigateTo('astro-cartography')} className={`sidebar-item ${activeTab === 'astro-cartography' ? 'sidebar-item-active' : ''}`}><MapPin className="w-4 h-4" /><span>Astro-Cartography</span></button>
-                  <button onClick={() => navigateTo('transit-calendar')} className={`sidebar-item ${activeTab === 'transit-calendar' ? 'sidebar-item-active' : ''}`}><Calendar className="w-4 h-4" /><span>Transit Calendar</span></button>
-                  <button onClick={() => navigateTo('synastry-overlay')} className={`sidebar-item ${activeTab === 'synastry-overlay' ? 'sidebar-item-active' : ''}`}><Sparkles className="w-4 h-4" /><span>Synastry Overlay</span></button>
-                  <button onClick={() => navigateTo('mind-map')} className={`sidebar-item ${activeTab === 'mind-map' ? 'sidebar-item-active' : ''}`}><Network className="w-4 h-4" /><span>Mind Map</span></button>
-                  <button onClick={() => navigateTo('chart-analytics')} className={`sidebar-item ${activeTab === 'chart-analytics' ? 'sidebar-item-active' : ''}`}><BarChart2 className="w-4 h-4" /><span>Chart Analytics</span></button>
-                  <button onClick={() => navigateTo('learning-hub')} className={`sidebar-item ${activeTab === 'learning-hub' ? 'sidebar-item-active' : ''}`}><BookOpen className="w-4 h-4" /><span>Learning Hub</span></button>
-                  <button onClick={() => navigateTo('report-generator')} className={`sidebar-item ${activeTab === 'report-generator' ? 'sidebar-item-active' : ''}`}><FileText className="w-4 h-4" /><span>Report Generator</span></button>
-                  <button onClick={() => navigateTo('seo-lab')} className={`sidebar-item ${activeTab === 'seo-lab' || activeTab === 'keywords' ? 'sidebar-item-active' : ''}`}><Search className="w-4 h-4 text-cyan-400" /><span className="text-cyan-300 font-bold">SEO Keyword Lab</span></button>
-                  <button onClick={() => navigateTo('backlink-lab')} className={`sidebar-item ${activeTab === 'backlink-lab' || activeTab === 'backlinks' ? 'sidebar-item-active' : ''}`}><Globe className="w-4 h-4 text-purple-400" /><span className="text-purple-300 font-bold">Backlink Lab</span></button>
-                  <button onClick={() => navigateTo('news-intelligence')} className={`sidebar-item ${activeTab === 'news-intelligence' || activeTab === 'cosmic-news' || activeTab === 'mundane' ? 'sidebar-item-active' : ''}`}><Radio className="w-4 h-4 text-amber-400" /><span className="text-amber-300 font-bold">Cosmic News Hub</span></button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* GLOBAL SYSTEMS */}
-          {Object.entries(groupedTraditions).map(([groupName, traditions]) => (
-            <div key={groupName} className="mt-4">
-              <button
-                onClick={() => toggleGroup(groupName)}
-                className="w-full flex items-center justify-between px-3 py-2 group"
-              >
-                <span className="sidebar-section-label">
-                  {/* GROUP_ICONS was imported but never referenced — the group glyph it
-                      exists to supply was missing from the UI entirely. */}
-                  <span className="mr-1.5 opacity-80">{GROUP_ICONS[groupName as TraditionGroup]}</span>
-                  {groupName}
-                </span>
-                <motion.div
-                  animate={{ rotate: expandedGroups[groupName] ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ChevronDown className="w-3.5 h-3.5 text-slate-600" />
-                </motion.div>
-              </button>
-              <AnimatePresence>
-                {expandedGroups[groupName] && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="space-y-0.5 mt-1">
-                      {traditions.map((tradition) => (
-                        <button
-                          key={tradition.id}
-                          onClick={() => navigateTo(tradition.id)}
-                          className={`sidebar-item ${activeTab === tradition.id ? 'sidebar-item-active' : ''}`}
-                        >
-                          {tradition.icon && (
-                            <span className="text-sm mr-2.5 opacity-80">{tradition.icon}</span>
-                          )}
-                          <span>{tradition.name}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          ))}
-        </nav>
-
-        {/* Bottom area */}
-        <div className="p-3 border-t border-white/[0.04] space-y-2">
-          <div className="rounded-xl p-2.5 bg-white/[0.02] border border-white/[0.04] space-y-2">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cosmic-500/30 to-nebula-500/30 text-cosmic-300 flex items-center justify-center shrink-0 text-xs font-bold ring-1 ring-white/10">
-                {userProfile.name?.charAt(0).toUpperCase() || <User className="w-4 h-4" />}
-              </div>
-              <div className="overflow-hidden flex-1">
-                <p className="text-xs font-semibold text-white truncate">{userProfile.name || 'Seeker'}</p>
-                <p className="text-[10px] text-slate-400 truncate capitalize">{userProfile.preferredSystem || 'Western'} • {userProfile.dob || '1998-06-15'}</p>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-1.5 pt-1">
-              <button
-                onClick={() => setIsProfileModalOpen(true)}
-                className="py-1.5 px-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] text-slate-300 border border-white/[0.06] text-[10px] font-medium transition-all truncate"
-              >
-                Customise
-              </button>
-              <button
-                onClick={() => setIsAuthModalOpen(true)}
-                className="py-1.5 px-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] text-slate-300 border border-white/[0.06] text-[10px] font-medium transition-all truncate"
-              >
-                Sign In
-              </button>
-            </div>
-          </div>
-          <div className="p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.04] text-[10px] space-y-1">
-            <div className="flex items-center gap-1.5 text-slate-300 font-medium">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-              <span>Verified System</span>
-            </div>
-            <p className="text-slate-500 leading-tight">
-              Engineered for absolute accuracy.
-            </p>
-          </div>
-        </div>
-      </aside>
+        <>
+          <AnimatePresence>
+            {isSidebarOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 md:hidden"
+                onClick={() => setIsSidebarOpen(false)}
+              />
+            )}
+          </AnimatePresence>
+          <OmniAppSidebar
+            activeTab={activeTab}
+            onNavigate={navigateTo}
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+            userProfile={userProfile}
+            onOpenProfileModal={() => setIsProfileModalOpen(true)}
+            onOpenAuthModal={() => setIsAuthModalOpen(true)}
+          />
+        </>
       )}
 
       {/* Main Content */}
