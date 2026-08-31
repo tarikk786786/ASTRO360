@@ -22,13 +22,13 @@ import { AstroMiniAudioPlayer, AstroAudioPlayer } from './components/audio';
 import { AstroNotificationCenterModal, AstroNotificationPrePermissionCard } from './components/notifications';
 import { useGlobalConfig } from './context/GlobalConfigContext';
 import { Toaster, toast } from 'sonner';
-import LandingPage from './components/landing/LandingPage';
 import { AstroNavigationShell } from './components/navigation';
 import CosmicCelestialLoader from './components/ui/CosmicCelestialLoader';
 import { updatePageSEO } from './lib/seoManager';
 import { warmCosmicProfileCache, prefetchRouteData } from './lib/prefetchEngine';
 
 // Code-split dynamic views for instant landing page load
+const LandingPage = lazy(() => import('./components/landing/LandingPage'));
 const OmniSimpleHome = lazy(() => import('./components/omni/OmniSimpleHome'));
 const OmniForecastView = lazy(() => import('./components/omni/OmniForecastView'));
 const OmniAskAssistant = lazy(() => import('./components/omni/OmniAskAssistant'));
@@ -48,10 +48,8 @@ const CosmicNewsIntelligenceHub = lazy(() => import('./components/news-predictio
 const CosmicIntelligenceCenter = lazy(() => import('./components/CosmicIntelligenceCenter'));
 const AstrologyChat = lazy(() => import('./components/AstrologyChat'));
 const TraditionView = lazy(() => import('./components/TraditionView'));
-const Onboarding = lazy(() => import('./components/Onboarding'));
 const UnifiedChartEngine = lazy(() => import('./components/UnifiedChartEngine'));
 const UnifiedIslamicSuite = lazy(() => import('./components/UnifiedIslamicSuite'));
-const AstroCoreBrainConsole = lazy(() => import('./components/AstroCoreBrainConsole'));
 const BirthChartGenerator = lazy(() => import('./components/BirthChartGenerator'));
 const HolisticAdvisor = lazy(() => import('./components/HolisticAdvisor'));
 const LiveCosmicDiagnostics = lazy(() => import('./components/LiveCosmicDiagnostics'));
@@ -64,7 +62,6 @@ const DreamInterpretationEngine = lazy(() => import('./components/DreamInterpret
 const UniversalProblemSolverSuite = lazy(() => import('./components/UniversalProblemSolverSuite'));
 const PremiumHoroscopeEngine = lazy(() => import('./components/PremiumHoroscopeEngine'));
 const SpiritualTraditionsModule = lazy(() => import('./components/SpiritualTraditionsModule'));
-const BhagavadGitaSuite = lazy(() => import('./components/BhagavadGitaSuite'));
 const AstrologyControlCenter = lazy(() => import('./components/AstrologyControlCenter'));
 const CommunityConsultationHub = lazy(() => import('./components/CommunityConsultationHub'));
 const AuthScreen = lazy(() => import('./components/AuthScreen'));
@@ -89,11 +86,9 @@ const CosmicChartAnalytics = lazy(() => import('./components/CosmicChartAnalytic
 const AstrologyLearningHub = lazy(() => import('./components/AstrologyLearningHub'));
 
 // Studio tools
-const ExecutivePDFDossier = lazy(() => import('./components/ExecutivePDFDossier'));
 const ExecutiveReportGenerator = lazy(() => import('./components/ExecutiveReportGenerator'));
 const AdminAnalyticsDashboard = lazy(() => import('./components/AdminAnalyticsDashboard'));
 const CosmicStudioSuite = lazy(() => import('./components/CosmicStudioSuite'));
-const CosmicLeafletMap = lazy(() => import('./components/CosmicLeafletMap'));
 const UniverseCanvas = lazy(() => import('./components/3d/UniverseCanvas'));
 const AstroOmniResearchSuite = lazy(() => import('./components/AstroOmniResearchSuite').then(m => ({ default: m.AstroOmniResearchSuite })));
 const BirthTimeRectificationSuite = lazy(() => import('./components/BirthTimeRectificationSuite'));
@@ -490,7 +485,9 @@ export default function AppContent() {
   return (
     <div className="relative min-h-screen bg-[#090d16] text-slate-100 flex overflow-hidden font-sans">
       {/* ✨ High-Resolution Animated Cosmic Background (React Three Fiber) */}
-      <UniverseCanvas />
+      <Suspense fallback={null}>
+        <UniverseCanvas />
+      </Suspense>
 
       {/* Sidebar Overlay for Mobile (App only) */}
       {activeTab !== 'landing' && (

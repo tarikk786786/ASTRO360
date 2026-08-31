@@ -50,11 +50,8 @@ export default defineConfig({
       output: {
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
-              return 'vendor-react';
-            }
-            if (id.includes('motion')) {
-              return 'vendor-motion';
+            if (id.includes('three') || id.includes('@react-three')) {
+              return 'vendor-three';
             }
             if (id.includes('lucide-react')) {
               return 'vendor-icons';
@@ -65,8 +62,11 @@ export default defineConfig({
             if (id.includes('astronomy-engine')) {
               return 'vendor-astronomy';
             }
-            if (id.includes('three') || id.includes('@react-three')) {
-              return 'vendor-three';
+            if (id.includes('motion') || id.includes('framer-motion')) {
+              return 'vendor-motion';
+            }
+            if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
+              return 'vendor-react';
             }
           }
         },
