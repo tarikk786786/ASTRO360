@@ -109,12 +109,7 @@ export default function OmniSimpleHome({
   };
 
   return (
-    <motion.div 
-      variants={staggerContainer}
-      initial="hidden"
-      animate="show"
-      className="max-w-5xl mx-auto space-y-6 sm:space-y-8 text-left pb-20 pt-2 sm:pt-4 relative"
-    >
+    <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8 text-left pb-20 pt-2 sm:pt-4 relative">
       {/* ═══ LIVING AMBIENT BACKGROUND LAYER ═══ */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
         {/* Slow-orbiting amber nebula glow — upper left */}
@@ -161,7 +156,7 @@ export default function OmniSimpleHome({
       {/* ═══ RELATIVE Z-INDEX CONTENT LAYER ═══ */}
       <div className="relative z-10 space-y-6 sm:space-y-8">
       {/* 1. Header Greeting & Date Banner */}
-      <motion.div variants={staggerItem} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
         <div>
           <div className="flex items-center gap-3">
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
@@ -213,10 +208,10 @@ export default function OmniSimpleHome({
             <span>Master 152+ Studio Suite →</span>
           </motion.button>
         </div>
-      </motion.div>
+      </div>
 
       {/* 1.25 DASHBOARD COMMAND & CONTROL BAR (Mobile & Desktop) */}
-      <motion.div variants={staggerItem} className="space-y-2.5">
+      <div className="space-y-2.5">
         {/* Segmented Mode Selector Bar */}
         <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-[#070D18] border border-white/10 overflow-x-auto no-scrollbar shadow-inner">
           {[
@@ -288,7 +283,7 @@ export default function OmniSimpleHome({
             <span>Edit Profile</span>
           </button>
         </div>
-      </motion.div>
+      </div>
 
       {/* Render View Modes */}
       {activeViewMode === 'master' ? (
@@ -317,10 +312,7 @@ export default function OmniSimpleHome({
           />
 
           {/* 2. Personalized Cosmic Placements Card (Live Computed) */}
-          <motion.div
-            variants={staggerItem}
-            className="relative p-[1px] rounded-2xl overflow-hidden shadow-xl"
-          >
+          <div className="relative p-[1px] rounded-2xl overflow-hidden shadow-xl">
             {/* Animated gradient border */}
             <motion.div
               animate={{ rotate: [0, 360] }}
@@ -405,7 +397,7 @@ export default function OmniSimpleHome({
                 </div>
               </motion.div>
             </div>
-          </motion.div>
+          </div>
 
       {/* Trust & Sub-Arcsecond Ephemeris Explainability Banner */}
       <TrustAndExplainabilityBanner />
@@ -432,8 +424,7 @@ export default function OmniSimpleHome({
       </div>
 
       {/* 4. Hero: Strongest Astronomical Alignment Today */}
-      <motion.div
-        variants={staggerItem}
+      <div
         className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500/15 via-indigo-950/40 to-[#090D16] border border-amber-500/40 p-6 sm:p-8 shadow-2xl space-y-5"
       >
         <BorderBeam size={220} duration={12} colorFrom="#F59E0B" colorTo="#6366F1" />
@@ -485,7 +476,7 @@ export default function OmniSimpleHome({
             <HelpCircle className="w-3.5 h-3.5 text-amber-400" /> <span>Why? Explain Calculation</span>
           </button>
         </div>
-      </motion.div>
+      </div>
 
       {/* 5. Live Cosmic Vibe Metrics */}
       <div className="w-full">
@@ -768,6 +759,6 @@ export default function OmniSimpleHome({
         onChangeViewMode={setActiveViewMode}
         onNavigate={onNavigate}
       />
-    </motion.div>
+    </div>
   );
 }
