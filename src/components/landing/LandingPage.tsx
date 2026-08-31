@@ -17,6 +17,7 @@ import InteractiveToolsSuite from './InteractiveToolsSuite';
 import OmniHeroChartStudio from './OmniHeroChartStudio';
 import OmniProductPreview from './OmniProductPreview';
 import AnimatedStarfield from './AnimatedStarfield';
+import UniverseCanvas from '../3d/UniverseCanvas';
 import AstroCelestialAnimation from './AstroCelestialAnimation';
 import LiveCosmicSkyStudio from './LiveCosmicSkyStudio';
 import LiveAspectariumAndLunarTracker from './LiveAspectariumAndLunarTracker';
@@ -283,7 +284,8 @@ export default function LandingPage({
   return (
     <div className="min-h-screen bg-[#060A12] text-[#F8FAFC] selection:bg-amber-400 selection:text-slate-950 font-sans relative overflow-x-hidden">
       
-      {/* ── Living Starfield Canvas ─────────────────────────────────── */}
+      {/* ── Living 3D Universe Canvas & Starfield ─────────────────── */}
+      <UniverseCanvas />
       <AnimatedStarfield />
 
       {/* ── Editorial Background Surface Gradients ──────────────────── */}
