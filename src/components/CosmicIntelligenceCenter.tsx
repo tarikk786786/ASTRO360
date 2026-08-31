@@ -34,6 +34,7 @@ import PlanetaryAspectGraph from './PlanetaryAspectGraph';
 import CosmicAnalyticsKPI from './CosmicAnalyticsKPI';
 import EphemerisDataTable from './EphemerisDataTable';
 import CosmicLiveClockBadge from './ui/CosmicLiveClockBadge';
+import TrustAndExplainabilityBanner from './ui/TrustAndExplainabilityBanner';
 import CosmicTransitCalendar from './CosmicTransitCalendar';
 import DailyMuhurtaPlanner from './DailyMuhurtaPlanner';
 import LunarMansionsWheel from './LunarMansionsWheel';
@@ -746,6 +747,9 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
             </div>
           </div>
         </motion.div>
+
+        {/* 🌟 Master Cryptographic Privacy & Ephemeris Authenticity Trust Bar */}
+        <TrustAndExplainabilityBanner />
 
         {/* DYNAMIC CATEGORY VIEWS (CHANGABLE AS SELECTED ON ALL DEVICES) */}
         <AnimatePresence mode="wait">

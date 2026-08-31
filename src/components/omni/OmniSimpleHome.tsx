@@ -19,6 +19,7 @@ import { useGlobalConfig } from '../../context/GlobalConfigContext';
 import BorderBeam from '../magicui/border-beam';
 import { fadeInUp, staggerContainer, staggerItem } from '../../lib/animationPresets';
 import { calculatePlanetaryPositions, calculatePanchang, calculateVimshottariDasha } from '../../lib/astroCalculations';
+import TrustAndExplainabilityBanner from '../ui/TrustAndExplainabilityBanner';
 
 interface OmniSimpleHomeProps {
   userProfile: UserProfile;
@@ -405,6 +406,9 @@ export default function OmniSimpleHome({
               </motion.div>
             </div>
           </motion.div>
+
+      {/* Trust & Sub-Arcsecond Ephemeris Explainability Banner */}
+      <TrustAndExplainabilityBanner />
 
       {/* 3. Quick Action Navigation Jump Dock */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
