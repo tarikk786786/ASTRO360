@@ -81,17 +81,37 @@ export default function OmniMeView({
           </div>
         </div>
 
-        {/* Pro Membership Status */}
+        {/* Active Tradition Engine Profile */}
+        <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-cyan-500/30 flex items-center justify-between text-xs font-mono">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+              <Cpu className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-white font-bold block capitalize">
+                {userProfile.preferredSystem || 'Vedic Parashari'} Tradition Engine
+              </span>
+              <span className="text-[10.5px] text-slate-400">
+                NASA JPL DE440 Sub-Arcsecond Ephemeris Synchronized
+              </span>
+            </div>
+          </div>
+          <span className="text-[10px] font-bold text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-cyan-500/30 uppercase">
+            Active Framework
+          </span>
+        </div>
+
+        {/* Pro Free Access Status */}
         <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-indigo-500/10 border border-amber-400/30 flex items-center justify-between text-xs font-mono">
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-amber-400" />
             <div>
-              <span className="text-white font-bold block">ASTRO360 Pro — Lifetime Launch Access</span>
-              <span className="text-[10.5px] text-emerald-400">All 152+ engines & deep intelligence features unlocked free</span>
+              <span className="text-white font-bold block">ASTRO360 Pro — Lifetime Free Access</span>
+              <span className="text-[10.5px] text-emerald-400">All 152+ engines & deep multi-tradition tools unlocked free</span>
             </div>
           </div>
           <span className="text-[10px] font-bold text-slate-950 bg-amber-400 px-2.5 py-1 rounded-lg uppercase">
-            Active ($0.00)
+            100% Free ($0.00)
           </span>
         </div>
       </div>
