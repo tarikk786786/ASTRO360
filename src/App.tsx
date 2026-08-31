@@ -106,6 +106,7 @@ const SabianSymbolsDegreeExplorer = lazy(() => import('./components/sabian/Sabia
 const MultiSystemEphemerisDiagnosticLab = lazy(() => import('./components/diagnostics/MultiSystemEphemerisDiagnosticLab'));
 const PlanetaryFrequencyStudio = lazy(() => import('./components/audio/PlanetaryFrequencyStudio'));
 const KundliMatchingSuite = lazy(() => import('./components/compatibility/KundliMatchingSuite'));
+const PlanetaryHoraClock = lazy(() => import('./components/timing/PlanetaryHoraClock'));
 
 const STORAGE_KEY = 'astroverse_profile';
 const TAB_KEY = 'astroverse_tab';
@@ -342,7 +343,10 @@ export default function AppContent() {
       tab === 'compatibility' ||
       tab === 'synastry' ||
       tab === 'kundli-matching' ||
-      tab === 'match'
+      tab === 'match' ||
+      tab === 'planetary-horas' ||
+      tab === 'horas' ||
+      tab === 'hora-clock'
     );
     const storedOnboarded = typeof window !== 'undefined' && (localStorage.getItem('astro_has_onboarded') === 'true' || localStorage.getItem('astro_user_profile') !== null);
     const isProfileConfigured = Boolean((userProfile && userProfile.name && userProfile.name.trim().length > 0 && userProfile.dob) || storedOnboarded);
@@ -720,6 +724,7 @@ export default function AppContent() {
                   {(activeTab === 'ephemeris-lab' || activeTab === 'diagnostic-lab') && <MultiSystemEphemerisDiagnosticLab userProfile={userProfile} />}
                   {(activeTab === 'frequencies' || activeTab === 'binaural' || activeTab === 'sound-studio' || activeTab === 'planetary-frequencies') && <PlanetaryFrequencyStudio />}
                   {(activeTab === 'compatibility' || activeTab === 'synastry' || activeTab === 'kundli-matching' || activeTab === 'match') && <KundliMatchingSuite userProfile={userProfile} onNavigateToTab={navigateTo} />}
+                  {(activeTab === 'planetary-horas' || activeTab === 'horas' || activeTab === 'hora-clock') && <PlanetaryHoraClock />}
                   {TRADITIONS[activeTab] && (
                     <TraditionView
                       tradition={TRADITIONS[activeTab]}
