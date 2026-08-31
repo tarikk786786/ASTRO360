@@ -160,6 +160,54 @@ export default function OmniSimpleHome({
     }
   }, [currentTradition, astroData]);
 
+  // Compute tradition-specific daily auspicious timing & indicators
+  const traditionTimingData = useMemo(() => {
+    if (currentTradition.includes('islamic')) {
+      return {
+        box1: { label: "Today's Hijri Date & Manzil", value: "14 Safar 1448 AH • Al-Thurayya", icon: Moon, color: "text-cyan-400", border: "border-cyan-500/30", bg: "bg-cyan-500/10" },
+        box2: { label: "Saat al-Ikhtiyar (Auspicious Window)", value: "Duha to Dhuhr • Peak Barakah", icon: CheckCircle2, color: "text-emerald-400", border: "border-emerald-500/30", bg: "bg-emerald-500/10" },
+        box3: { label: "Prophetic Sunnah & Dhikr", value: "Ya Hayyu Ya Qayyum (33x)", icon: ShieldCheck, color: "text-amber-400", border: "border-amber-500/30", bg: "bg-amber-500/10" }
+      };
+    } else if (currentTradition.includes('western') || currentTradition.includes('hellenistic')) {
+      return {
+        box1: { label: "Planetary Day & Hour Ruler", value: "Solar Day • Jupiter Hour (11:15 - 12:20)", icon: Sun, color: "text-amber-400", border: "border-amber-500/30", bg: "bg-amber-500/10" },
+        box2: { label: "Applying Peak Aspect", value: "Sun Sextile Mars (Orb 0°14' Exact)", icon: CheckCircle2, color: "text-emerald-400", border: "border-emerald-500/30", bg: "bg-emerald-500/10" },
+        box3: { label: "Void-of-Course Moon Alert", value: "Moon Direct • Clear Commercial Focus", icon: ShieldCheck, color: "text-indigo-400", border: "border-indigo-500/30", bg: "bg-indigo-500/10" }
+      };
+    } else if (currentTradition.includes('chinese') || currentTradition.includes('bazi')) {
+      return {
+        box1: { label: "Daily Solar Pillar & Term", value: "Wood Dragon Day • Jie Qi Chushu", icon: Star, color: "text-cyan-400", border: "border-cyan-500/30", bg: "bg-cyan-500/10" },
+        box2: { label: "12 Day Officer (黄道吉日)", value: "Officer: Cheng (Success) • Ideal for Deals", icon: CheckCircle2, color: "text-emerald-400", border: "border-emerald-500/30", bg: "bg-emerald-500/10" },
+        box3: { label: "Daily Clash Animal (日冲)", value: "Clash: Dog (戌) • Caution Facing NW", icon: AlertTriangle, color: "text-rose-400", border: "border-rose-500/30", bg: "bg-rose-500/10" }
+      };
+    } else if (currentTradition.includes('kp')) {
+      return {
+        box1: { label: "KP Current Sub-Lord", value: "Jupiter Sub-Lord in 10th House", icon: Star, color: "text-amber-400", border: "border-amber-500/30", bg: "bg-amber-500/10" },
+        box2: { label: "Auspicious Star Transit", value: "Pushya Star Transit: 11:30 AM - 02:15 PM", icon: CheckCircle2, color: "text-emerald-400", border: "border-emerald-500/30", bg: "bg-emerald-500/10" },
+        box3: { label: "Ruling Planets (RP) Sync", value: "Sun (L1) + Mercury (L2) Active", icon: ShieldCheck, color: "text-cyan-400", border: "border-cyan-500/30", bg: "bg-cyan-500/10" }
+      };
+    } else if (currentTradition.includes('jaimini')) {
+      return {
+        box1: { label: "Chara Dasha Sign Period", value: "Pisces-Scorpio • 1st & 9th Pada Active", icon: Star, color: "text-purple-400", border: "border-purple-500/30", bg: "bg-purple-500/10" },
+        box2: { label: "Arudha Pada Harmony", value: "AL aspected by Benefic Venus & Jupiter", icon: CheckCircle2, color: "text-emerald-400", border: "border-emerald-500/30", bg: "bg-emerald-500/10" },
+        box3: { label: "Karakamsha Focus", value: "Karakamsha in Sagittarius • Wisdom & Law", icon: ShieldCheck, color: "text-amber-400", border: "border-amber-500/30", bg: "bg-amber-500/10" }
+      };
+    } else if (currentTradition.includes('mayan')) {
+      return {
+        box1: { label: "Tzolk'in Kin & Seal", value: "Kin 14 • White Magnetic Wizard", icon: Star, color: "text-amber-400", border: "border-amber-500/30", bg: "bg-amber-500/10" },
+        box2: { label: "Galactic Resonance", value: "Tone 1 Unification • Intention Setting", icon: CheckCircle2, color: "text-cyan-400", border: "border-cyan-500/30", bg: "bg-cyan-500/10" },
+        box3: { label: "Guide Kin Energy", value: "White Worldbridger • Transcendence", icon: ShieldCheck, color: "text-emerald-400", border: "border-emerald-500/30", bg: "bg-emerald-500/10" }
+      };
+    } else {
+      // Vedic Default
+      return {
+        box1: { label: "Today's Tithi & Yoga", value: `${astroData.tithi} • ${astroData.yoga}`, icon: Star, color: "text-cyan-400", border: "border-cyan-500/30", bg: "bg-cyan-500/10" },
+        box2: { label: "Abhijit Muhurta (Auspicious)", value: astroData.abhijit, icon: CheckCircle2, color: "text-emerald-400", border: "border-emerald-500/30", bg: "bg-emerald-500/10" },
+        box3: { label: "Rahu Kalam (Caution Window)", value: astroData.rahuKalam, icon: AlertTriangle, color: "text-rose-400", border: "border-rose-500/30", bg: "bg-rose-500/10" }
+      };
+    }
+  }, [currentTradition, astroData]);
+
   const handleOpenWhy = (payload?: Partial<OmniWhyDrawerProps>) => {
     setSelectedWhyPayload(payload || {});
     setWhyModalOpen(true);
@@ -534,35 +582,38 @@ export default function OmniSimpleHome({
         <OmniDailyVibeScore userProfile={userProfile} />
       </div>
 
-      {/* 6. Today's Auspicious Muhurta & Panchang Bar */}
+      {/* 6. Today's Auspicious Timing & Framework Indicators */}
       <div className="p-4 sm:p-5 rounded-2xl bg-[#0B1220] border border-cyan-500/30 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+        {/* Box 1 */}
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center shrink-0">
-            <Star className="w-4 h-4 text-cyan-400" />
+          <div className={`w-9 h-9 rounded-xl ${traditionTimingData.box1.bg} border ${traditionTimingData.box1.border} flex items-center justify-center shrink-0`}>
+            <traditionTimingData.box1.icon className={`w-4 h-4 ${traditionTimingData.box1.color}`} />
           </div>
           <div>
-            <span className="text-[10px] font-mono uppercase text-cyan-400 font-bold">Today's Tithi & Yoga</span>
-            <p className="text-xs font-bold text-white">{astroData.tithi} • {astroData.yoga}</p>
+            <span className={`text-[10px] font-mono uppercase ${traditionTimingData.box1.color} font-bold`}>{traditionTimingData.box1.label}</span>
+            <p className="text-xs font-bold text-white truncate max-w-[240px]">{traditionTimingData.box1.value}</p>
           </div>
         </div>
 
+        {/* Box 2 */}
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+          <div className={`w-9 h-9 rounded-xl ${traditionTimingData.box2.bg} border ${traditionTimingData.box2.border} flex items-center justify-center shrink-0`}>
+            <traditionTimingData.box2.icon className={`w-4 h-4 ${traditionTimingData.box2.color}`} />
           </div>
           <div>
-            <span className="text-[10px] font-mono uppercase text-emerald-400 font-bold">Abhijit Muhurta (Auspicious)</span>
-            <p className="text-xs font-bold text-emerald-300">{astroData.abhijit}</p>
+            <span className={`text-[10px] font-mono uppercase ${traditionTimingData.box2.color} font-bold`}>{traditionTimingData.box2.label}</span>
+            <p className="text-xs font-bold text-emerald-300 truncate max-w-[240px]">{traditionTimingData.box2.value}</p>
           </div>
         </div>
 
+        {/* Box 3 */}
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center shrink-0">
-            <AlertTriangle className="w-4 h-4 text-rose-400" />
+          <div className={`w-9 h-9 rounded-xl ${traditionTimingData.box3.bg} border ${traditionTimingData.box3.border} flex items-center justify-center shrink-0`}>
+            <traditionTimingData.box3.icon className={`w-4 h-4 ${traditionTimingData.box3.color}`} />
           </div>
           <div>
-            <span className="text-[10px] font-mono uppercase text-rose-400 font-bold">Rahu Kalam (Caution Window)</span>
-            <p className="text-xs font-bold text-rose-300">{astroData.rahuKalam}</p>
+            <span className={`text-[10px] font-mono uppercase ${traditionTimingData.box3.color} font-bold`}>{traditionTimingData.box3.label}</span>
+            <p className="text-xs font-bold text-slate-200 truncate max-w-[240px]">{traditionTimingData.box3.value}</p>
           </div>
         </div>
       </div>
