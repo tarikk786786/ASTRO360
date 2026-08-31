@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, ArrowRight, ShieldCheck, CheckCircle2, Compass, 
@@ -6,10 +6,16 @@ import {
   Clock, BookOpen, ChevronRight, User, TrendingUp, RefreshCw,
   Scale, HelpCircle, Eye, Sliders, Check, Search, FileText,
   MapPin, Moon, Sun, Star, Activity, AlertCircle, ArrowUpRight,
-  Zap, Lock, Award, PlayCircle, BarChart3, ChevronDown
+  Zap, Lock, Award, PlayCircle, BarChart3, ChevronDown, Radio,
+  Cpu, Flame, Gem, Hash, ShieldAlert, CheckSquare, Share2,
+  Maximize2, Database, Download, Terminal, Info
 } from 'lucide-react';
 import { UserProfile } from '../../types';
 import OmniLandingNavbar from './OmniLandingNavbar';
+import OmniLiveZodiacRadar from './OmniLiveZodiacRadar';
+import InteractiveToolsSuite from './InteractiveToolsSuite';
+import OmniHeroChartStudio from './OmniHeroChartStudio';
+import OmniProductPreview from './OmniProductPreview';
 
 interface LandingPageProps {
   onStartOnboarding: (presetData?: Partial<UserProfile>) => void;
@@ -26,84 +32,94 @@ export default function LandingPage({
   const [heroActiveView, setHeroActiveView] = useState<'why' | 'compare' | 'timeline' | 'technical' | 'followup'>('why');
   const [heroActiveQuery, setHeroActiveQuery] = useState<string>('When is my next important career period?');
   
-  // Section 3: Categories & Questions State
+  // Section: Question Categories State
   const [selectedCategory, setSelectedCategory] = useState<string>('CAREER');
   
-  // Section 7: Interactive Timeline Slider State
+  // Section: Interactive Timeline Slider State
   const [timelineIndex, setTimelineIndex] = useState<number>(0);
   
-  // Section 8: Birth-Time Sensitivity Test State
+  // Section: Birth-Time Sensitivity Test State
   const [selectedBirthTime, setSelectedBirthTime] = useState<string>('10:50');
   
-  // Section 9: Simple vs Expert Mode Switcher State
+  // Section: Simple vs Expert Mode Switcher State
   const [demoDensity, setDemoDensity] = useState<'simple' | 'expert'>('simple');
   
-  // Section 6: Tradition Compare Selector
-  const [selectedTradition, setSelectedTradition] = useState<'vedic' | 'western' | 'kp' | 'jaimini' | 'chinese'>('vedic');
+  // Section: Tradition Compare Selector
+  const [selectedTradition, setSelectedTradition] = useState<'vedic' | 'western' | 'kp' | 'jaimini' | 'chinese' | 'hellenistic'>('vedic');
+
+  // Interactive Live Ephemeris Sandbox State
+  const [sandboxAyanamsha, setSandboxAyanamsha] = useState<'lahiri' | 'raman' | 'krishnamurti' | 'tropical'>('lahiri');
+  const [sandboxHouseSystem, setSandboxHouseSystem] = useState<'placidus' | 'equal' | 'whole_sign' | 'sripati'>('placidus');
 
   // Question Categories Data
   const questionCategories = [
-    { id: 'CAREER', label: 'CAREER', icon: Briefcase, color: 'text-amber-400', count: '4 Inquiries' },
-    { id: 'LOVE', label: 'LOVE', icon: Heart, color: 'text-rose-400', count: '4 Inquiries' },
+    { id: 'CAREER', label: 'CAREER & VOCATION', icon: Briefcase, color: 'text-amber-400', count: '4 Inquiries' },
+    { id: 'LOVE', label: 'LOVE & MARRIAGE', icon: Heart, color: 'text-rose-400', count: '4 Inquiries' },
     { id: 'RELATIONSHIPS', label: 'RELATIONSHIPS', icon: User, color: 'text-pink-400', count: '3 Inquiries' },
-    { id: 'MONEY', label: 'MONEY', icon: DollarSign, color: 'text-emerald-400', count: '3 Inquiries' },
-    { id: 'TIMING', label: 'TIMING', icon: Clock, color: 'text-cyan-400', count: '3 Inquiries' },
-    { id: 'GROWTH', label: 'GROWTH', icon: TrendingUp, color: 'text-indigo-400', count: '3 Inquiries' },
-    { id: 'MY CHART', label: 'MY CHART', icon: Compass, color: 'text-purple-400', count: '3 Inquiries' },
-    { id: 'FAMILY', label: 'FAMILY', icon: Globe, color: 'text-orange-400', count: '2 Inquiries' },
-    { id: 'TRAVEL', label: 'TRAVEL', icon: MapPin, color: 'text-teal-400', count: '2 Inquiries' },
-    { id: 'EDUCATION', label: 'EDUCATION', icon: BookOpen, color: 'text-blue-400', count: '2 Inquiries' },
+    { id: 'MONEY', label: 'WEALTH & ASSETS', icon: DollarSign, color: 'text-emerald-400', count: '3 Inquiries' },
+    { id: 'TIMING', label: 'TIMING & PERIODS', icon: Clock, color: 'text-cyan-400', count: '3 Inquiries' },
+    { id: 'GROWTH', label: 'PURPOSE & DHARMA', icon: TrendingUp, color: 'text-indigo-400', count: '3 Inquiries' },
+    { id: 'MY CHART', label: 'BIRTH CHART ESSENTIALS', icon: Compass, color: 'text-purple-400', count: '3 Inquiries' },
+    { id: 'HEALTH', label: 'VITALITY & WELLNESS', icon: Activity, color: 'text-emerald-300', count: '3 Inquiries' },
+    { id: 'FAMILY', label: 'FAMILY & LINEAGE', icon: Globe, color: 'text-orange-400', count: '2 Inquiries' },
+    { id: 'TRAVEL', label: 'TRAVEL & RELOCATION', icon: MapPin, color: 'text-teal-400', count: '2 Inquiries' },
+    { id: 'EDUCATION', label: 'LEARNING & SKILLS', icon: BookOpen, color: 'text-blue-400', count: '2 Inquiries' },
   ];
 
   const categoryQuestions: Record<string, { q: string; sub: string; tag: string }[]> = {
     CAREER: [
-      { q: 'When is my next important career period?', sub: 'Evaluates 10th house transits, Jupiter cycles & Vimshottari dasha lords', tag: 'Timing + Transits' },
-      { q: 'Why is this period significant for leadership?', sub: 'Shows planetary dignity, aspect convergence & historical baseline', tag: 'Dignity + Yogas' },
-      { q: 'What do different traditions say about my vocation?', sub: 'Compares Vedic Sidereal, Western Solar Arcs & KP cuspal sub-lords', tag: 'Multi-System' },
-      { q: 'How stable is this career timing result?', sub: 'Tests ±15 min birth-time uncertainty to show reliability', tag: 'Uncertainty Index' },
+      { q: 'When is my next important career period?', sub: 'Evaluates 10th house transits, Jupiter cycles & Vimshottari dasha lords with sub-arcsecond precision', tag: 'Timing + Transits' },
+      { q: 'Why is this period significant for leadership?', sub: 'Shows planetary dignity, Raja Yogas, aspect convergence & historical baseline', tag: 'Dignity + Yogas' },
+      { q: 'What do different traditions say about my vocation?', sub: 'Compares Vedic Sidereal (10th Bhava), Western Midheaven & KP cuspal sub-lords', tag: 'Multi-System' },
+      { q: 'How stable is this career timing result?', sub: 'Tests ±15 min birth-time uncertainty to verify if Lagna or D9 Navamsha shifts', tag: 'Uncertainty Index' },
     ],
     LOVE: [
-      { q: 'What does my chart say about relationships?', sub: 'Evaluates 7th house Kendra, Venus dignity & Darakaraka planetary status', tag: '7th Bhava' },
-      { q: 'What timing periods highlight connection?', sub: 'Highlights benefic Jupiter & Venus transits across relationship axis', tag: 'Transit Activation' },
-      { q: 'How compatible are our two birth charts?', sub: 'Ashta Koota 36-Guna matching + Western synastry aspect grid', tag: 'Synastry + Koota' },
-      { q: 'What patterns should I be mindful of?', sub: 'Identifies Kuja (Manglik) influences with classical cancellation rules', tag: 'Dosha Evaluation' },
+      { q: 'What does my chart say about long-term relationships?', sub: 'Evaluates 7th house Kendra, Venus dignity & Darakaraka planetary status across D1 and D9', tag: '7th Bhava' },
+      { q: 'What timing periods highlight connection & marriage?', sub: 'Highlights benefic Jupiter & Venus transits across the 1st/7th relationship axis', tag: 'Transit Activation' },
+      { q: 'How compatible are our two birth charts?', sub: 'Ashta Koota 36-Guna matching + Western synastry aspect grid and composite Midpoints', tag: 'Synastry + Koota' },
+      { q: 'What patterns should I be mindful of?', sub: 'Identifies Kuja (Manglik) influences with classical BPHS cancellation rules', tag: 'Dosha Evaluation' },
     ],
     RELATIONSHIPS: [
-      { q: 'How do our timing cycles align over the next year?', sub: 'Overlay dual Vimshottari dasha periods and Jupiter-Saturn transits', tag: 'Dual Timeline' },
-      { q: 'Where do we have natural emotional harmony?', sub: 'Evaluates Moon sign element chemistry, Trines & Navamsha D9 harmony', tag: 'D9 Navamsha' },
-      { q: 'What areas require conscious communication?', sub: 'Highlights Saturn-Mars aspect friction and 3rd/7th house cusps', tag: 'Aspect Geometry' },
+      { q: 'How do our timing cycles align over the next year?', sub: 'Overlay dual Vimshottari dasha periods and Jupiter-Saturn transit intersections', tag: 'Dual Timeline' },
+      { q: 'Where do we have natural emotional harmony?', sub: 'Evaluates Moon sign element chemistry, Trines & Navamsha D9 planetary resonance', tag: 'D9 Navamsha' },
+      { q: 'What areas require conscious communication?', sub: 'Highlights Saturn-Mars aspect friction and 3rd/7th house cuspal tensions', tag: 'Aspect Geometry' },
     ],
     MONEY: [
-      { q: 'When are my strongest financial timing cycles?', sub: 'Analyzes 2nd (wealth) and 11th (gains) houses + Dhana Yogas', tag: 'Dhana Yogas' },
-      { q: 'How do different systems evaluate resource stability?', sub: 'Compares Vedic Indu Lagna with Western 2nd house progressions', tag: 'Consensus' },
-      { q: 'What does my chart say about long-term asset building?', sub: 'Evaluates Saturn-Jupiter structural compounding cycles', tag: 'Long-Range' },
+      { q: 'When are my strongest financial timing cycles?', sub: 'Analyzes 2nd (wealth) and 11th (gains) houses + classical Dhana & Lakshmi Yogas', tag: 'Dhana Yogas' },
+      { q: 'How do different systems evaluate resource stability?', sub: 'Compares Vedic Indu Lagna with Western 2nd house solar arcs and KP sub-lords', tag: 'Consensus' },
+      { q: 'What does my chart say about long-term asset building?', sub: 'Evaluates Saturn-Jupiter structural compounding cycles and 4th house real estate', tag: 'Long-Range' },
     ],
     TIMING: [
-      { q: 'What matters right now in my life timing?', sub: 'Current active planetary phase, transit triggers & daily Panchanga', tag: 'Real-Time Sky' },
-      { q: 'What comes next over the next 6 to 12 months?', sub: 'Near-term transit horizon with entering and separating aspects', tag: 'Horizon Forecast' },
-      { q: 'Which period looks stronger for major decisions?', sub: 'Multi-system timing score based on benefic planetary support', tag: 'Decision Window' },
+      { q: 'What matters right now in my life timing?', sub: 'Current active planetary phase, transit triggers & daily Vedic Panchanga (Tithi, Vara, Nakshatra)', tag: 'Real-Time Sky' },
+      { q: 'What comes next over the next 6 to 12 months?', sub: 'Near-term transit horizon with entering and separating planetary aspects', tag: 'Horizon Forecast' },
+      { q: 'Which window looks strongest for major decisions?', sub: 'Multi-system timing score based on benefic planetary support and Abhijit Muhurta', tag: 'Decision Window' },
     ],
     GROWTH: [
-      { q: 'What is my primary soul purpose in this lifetime?', sub: 'Evaluates Atmakaraka (soul planet), Rahu-Ketu nodal axis & Sun', tag: 'Atmakaraka' },
-      { q: 'What inner strengths are highlighted in my chart?', sub: 'Shadbala 6-fold planetary potency matrix & dignity scores', tag: 'Shadbala Potency' },
-      { q: 'How can I align with my natural strengths?', sub: 'D1 Rashi and D9 Navamsha harmonic integration analysis', tag: 'Harmonic Synthesis' },
+      { q: 'What is my primary soul purpose in this lifetime?', sub: 'Evaluates Atmakaraka (soul planet), Rahu-Ketu nodal axis & Sun spiritual dignity', tag: 'Atmakaraka' },
+      { q: 'What inner strengths are highlighted in my chart?', sub: 'Shadbala 6-fold planetary potency matrix (Sthana, Dik, Kala, Chesta, Naisargika, Drik)', tag: 'Shadbala Potency' },
+      { q: 'How can I align with my natural strengths?', sub: 'D1 Rashi and D9 Navamsha harmonic integration and Ishta Devata analysis', tag: 'Harmonic Synthesis' },
     ],
     'MY CHART': [
-      { q: 'What are my exact Sun, Moon, and Rising signs?', sub: 'Sub-arcsecond degrees, Nakshatras and Pada placements', tag: 'DE440 Precision' },
-      { q: 'Which planets are in their strongest dignity?', sub: 'Exaltation, Moolatrikona, Own Sign vs Debilitation breakdown', tag: 'Essential Dignity' },
-      { q: 'What special Yogas are present in my birth chart?', sub: 'Identifies Raja, Dhana, Nipuna & Pancha Mahapurusha yogas', tag: 'Classical Yogas' },
+      { q: 'What are my exact Sun, Moon, and Rising signs?', sub: 'Sub-arcsecond degrees, Nakshatras, Padas and planetary house positions (DE440)', tag: 'DE440 Precision' },
+      { q: 'Which planets are in their strongest dignity?', sub: 'Exaltation, Moolatrikona, Own Sign vs Debilitation and Neecha Bhanga calculation', tag: 'Essential Dignity' },
+      { q: 'What special Yogas are present in my birth chart?', sub: 'Identifies Raja, Dhana, Gajakesari, Budhaditya & Pancha Mahapurusha yogas', tag: 'Classical Yogas' },
+    ],
+    HEALTH: [
+      { q: 'How is my general vitality and constitutional balance?', sub: 'Evaluates 1st house (Lagna), Sun vitality, 6th house resilience and Ayurvedic Dosha balance', tag: 'Constitutional Vitality' },
+      { q: 'What timing cycles indicate periods for rest and recovery?', sub: 'Tracks 6th/8th/12th house transit activations and Rahu/Ketu sub-periods', tag: 'Recovery Windows' },
+      { q: 'What lifestyle practices align with my planetary archetypes?', sub: 'Classical diurnal routines (Dinacharya) based on planetary hora and Moon phases', tag: 'Ayurvedic Jyotish' },
     ],
     FAMILY: [
-      { q: 'What does my chart say about family roots & ancestry?', sub: 'Analyzes 4th house (mother/home) and 9th house (lineage & dharma)', tag: '4th & 9th Bhava' },
-      { q: 'What timing cycles affect family harmony?', sub: 'Evaluates Jupiter-Moon transit interactions and Dasha sub-periods', tag: 'Family Transits' },
+      { q: 'What does my chart say about family roots & ancestry?', sub: 'Analyzes 4th house (mother/home), 9th house (lineage & dharma) and Pitra Dosha status', tag: '4th & 9th Bhava' },
+      { q: 'What timing cycles affect family harmony?', sub: 'Evaluates Jupiter-Moon transit interactions and Dasha sub-periods across domestic bhavas', tag: 'Family Transits' },
     ],
     TRAVEL: [
-      { q: 'When are my most favorable windows for travel & relocation?', sub: 'Analyzes 3rd (short journeys), 9th (long travel), and 12th (overseas)', tag: 'Relocation Timing' },
-      { q: 'What do different traditions indicate about foreign residence?', sub: 'Rahu dasha & 12th house planetary alignments across systems', tag: 'Astrocartography' },
+      { q: 'When are my most favorable windows for travel & relocation?', sub: 'Analyzes 3rd (short journeys), 9th (long pilgrimage), and 12th (overseas residence)', tag: 'Relocation Timing' },
+      { q: 'What do different traditions indicate about foreign residence?', sub: 'Rahu dasha, 12th house planetary alignments and Astrocartography planetary lines', tag: 'Astrocartography' },
     ],
     EDUCATION: [
-      { q: 'What fields of study align best with my intellectual strengths?', sub: 'Analyzes Mercury, Jupiter, 5th house (intelligence) & Saraswati Yoga', tag: 'Intellectual Vocation' },
-      { q: 'When is my most supportive timing for exams & certifications?', sub: '5th house benefic dasha and transit activations', tag: 'Academic Timing' },
+      { q: 'What fields of study align best with my intellectual strengths?', sub: 'Analyzes Mercury, Jupiter, 5th house (intellect) & Saraswati/Nipuna Yogas', tag: 'Intellectual Vocation' },
+      { q: 'When is my most supportive timing for exams & certifications?', sub: '5th and 10th house benefic dasha and transit activations', tag: 'Academic Timing' },
     ],
   };
 
@@ -129,43 +145,61 @@ export default function LandingPage({
     vedic: {
       name: 'Vedic Sidereal (Jyotish)',
       status: 'Strong Activation',
-      theme: 'Expansion through Karma & Dasha cycles',
+      theme: 'Expansion through Karma, Dasha & Shodashavarga cycles',
       indicators: 'Jupiter transiting 10th bhava from Lagna; Moon in Rohini Nakshatra; Jupiter-Saturn Dasha balance active.',
       source: 'Brihat Parashara Hora Shastra, Ch. 45',
       badge: '92% Alignment'
     },
     western: {
-      name: 'Western Tropical',
+      name: 'Western Tropical & Psychological',
       status: 'Strong Activation',
-      theme: 'Midheaven Elevation & Social Recognition',
-      indicators: 'Transiting Jupiter sextile natal Sun; Progressed Midheaven forming trine with natal Jupiter in 10th house.',
-      source: "Ptolemy's Tetrabiblos & Modern Solar Arc",
+      theme: 'Midheaven Elevation, Solar Arcs & Social Recognition',
+      indicators: 'Transiting Jupiter sextile natal Sun; Progressed Midheaven forming exact trine with natal Jupiter in 10th house.',
+      source: "Ptolemy's Tetrabiblos & Modern Solar Arc Directions",
       badge: '89% Alignment'
     },
     kp: {
-      name: 'KP Stellar System',
-      status: 'Moderate Alignment',
-      theme: 'Specific Sub-Lord Cuspal Significations',
-      indicators: '10th house cuspal sub-lord signifies houses 2, 6, 10, and 11, indicating steady occupational elevation.',
-      source: 'Krishnamurti Padhdhati Reader III',
-      badge: '84% Alignment'
+      name: 'KP Stellar System (Krishnamurti Padhdhati)',
+      status: 'High Precision',
+      theme: 'Specific Sub-Lord Cuspal Significations & Placidus Cusps',
+      indicators: '10th house cuspal sub-lord signifies houses 2, 6, 10, and 11, indicating steady occupational elevation and gain.',
+      source: 'Krishnamurti Padhdhati Reader III & IV',
+      badge: '88% Alignment'
     },
     jaimini: {
-      name: 'Jaimini Sutras',
+      name: 'Jaimini Sutras (Chara Dasha)',
       status: 'Favorable Influence',
-      theme: 'Amatyakaraka (AmK) Career Dignity',
-      indicators: 'Chara Dasha period activating Amatyakaraka sign with benefic aspect from Jupiter on Arudha Lagna (AL).',
-      source: 'Jaimini Upadesha Sutras',
-      badge: '81% Alignment'
+      theme: 'Amatyakaraka (AmK) Career Dignity & Arudha Lagna',
+      indicators: 'Chara Dasha period activating Amatyakaraka sign with benefic Rashi Drishti from Jupiter on Arudha Lagna (AL).',
+      source: 'Maharishi Jaimini Upadesha Sutras',
+      badge: '85% Alignment'
     },
     chinese: {
-      name: 'Chinese BaZi & Qi Cycles',
+      name: 'Chinese BaZi & 4 Pillars of Destiny',
       status: 'Harmonious Flow',
-      theme: 'Resource Element Support',
-      indicators: 'Current 10-Year Luck Pillar brings supportive Yang Wood energy nourishing career day-master.',
-      source: 'Classical 4-Pillars of Destiny',
-      badge: '78% Alignment'
+      theme: 'Resource & Officer Element Cycles (Day Master Support)',
+      indicators: 'Current 10-Year Luck Pillar brings supportive Yang Wood energy nourishing the Fire day-master.',
+      source: 'Classical BaZi San Ming Tong Hui',
+      badge: '82% Alignment'
+    },
+    hellenistic: {
+      name: 'Hellenistic & Arabic Lots',
+      status: 'Favorable Lot of Fortune',
+      theme: 'Lot of Spirit & Tenth-Place Climax Timing',
+      indicators: 'Zodiacal Releasing from the Lot of Spirit reaches a major Level 1 angular pivot in career domicile.',
+      source: 'Vettius Valens Anthologies (Book IV)',
+      badge: '80% Alignment'
     }
+  };
+
+  // Sample quick calculate handler
+  const handleQuickCalculate = (preset?: Partial<UserProfile>) => {
+    onStartOnboarding(preset || {
+      name: 'Seeker',
+      dob: '1998-06-15',
+      time: '12:00',
+      location: 'London, UK'
+    });
   };
 
   return (
@@ -173,9 +207,9 @@ export default function LandingPage({
       
       {/* Background Starfield & Subtle Cosmic Nebula Glow */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-gradient-to-b from-amber-500/10 via-indigo-600/5 to-transparent rounded-full blur-[140px]" />
-        <div className="absolute top-[35%] right-[-10%] w-[600px] h-[600px] bg-gradient-to-br from-cyan-500/5 via-purple-600/5 to-transparent rounded-full blur-[120px]" />
-        <div className="absolute bottom-[20%] left-[-10%] w-[700px] h-[700px] bg-gradient-to-tr from-amber-600/5 via-rose-600/5 to-transparent rounded-full blur-[140px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[650px] bg-gradient-to-b from-amber-500/12 via-indigo-600/6 to-transparent rounded-full blur-[150px]" />
+        <div className="absolute top-[35%] right-[-10%] w-[650px] h-[650px] bg-gradient-to-br from-cyan-500/8 via-purple-600/6 to-transparent rounded-full blur-[130px]" />
+        <div className="absolute bottom-[20%] left-[-10%] w-[750px] h-[750px] bg-gradient-to-tr from-amber-600/8 via-rose-600/6 to-transparent rounded-full blur-[150px]" />
       </div>
 
       <div className="relative z-10">
@@ -186,20 +220,57 @@ export default function LandingPage({
           userProfile={userProfile}
         />
 
+        {/* ─── LIVE REAL-TIME CELESTIAL STATUS TICKER ────────────────────────── */}
+        <div className="pt-20 sm:pt-24 border-b border-white/10 bg-black/40 backdrop-blur-md">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+            <div className="flex items-center gap-2 text-amber-400 font-bold">
+              <Radio className="w-3.5 h-3.5 animate-pulse text-amber-400" />
+              <span>LIVE EPHEMERIS (NASA JPL DE440):</span>
+            </div>
+
+            <div className="flex items-center gap-4 sm:gap-6 overflow-x-auto no-scrollbar text-[11px] text-slate-300">
+              <span className="flex items-center gap-1.5 whitespace-nowrap">
+                <Moon className="w-3 h-3 text-cyan-400" />
+                <span>Moon: <strong className="text-white">Rohini (Taurus ♉)</strong></span>
+              </span>
+              <span className="flex items-center gap-1.5 whitespace-nowrap">
+                <Sun className="w-3 h-3 text-amber-400" />
+                <span>Sun: <strong className="text-white">Simha (Leo ♌)</strong></span>
+              </span>
+              <span className="flex items-center gap-1.5 whitespace-nowrap">
+                <Sparkles className="w-3 h-3 text-emerald-400" />
+                <span>Ayanamsha: <strong className="text-white">True Lahiri 24°13'08"</strong></span>
+              </span>
+              <span className="flex items-center gap-1.5 whitespace-nowrap">
+                <Sun className="w-3 h-3 text-rose-400" />
+                <span>NOAA Solar Kp: <strong className="text-amber-400">5.8 (G2 Moderate)</strong></span>
+              </span>
+            </div>
+
+            <button
+              onClick={() => onNavigateToTab('news-intelligence')}
+              className="text-amber-400 hover:text-amber-300 underline text-[11px] cursor-pointer flex items-center gap-1 shrink-0"
+            >
+              <span>Space & News Radar</span>
+              <ArrowRight className="w-3 h-3" />
+            </button>
+          </div>
+        </div>
+
         {/* ============================================================
             SECTION 1: HERO — "BE YOUR OWN ASTROLOGER."
             ============================================================ */}
-        <section className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+        <section className="relative pt-12 pb-16 sm:pt-16 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
           
           <div className="max-w-4xl mx-auto space-y-6">
             {/* Eyebrow Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-mono font-bold tracking-widest uppercase shadow-lg shadow-amber-400/5">
               <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
-              <span>PERSONAL ASTROLOGY, MADE EXPLORABLE</span>
+              <span>THE UNIVERSAL ASTROLOGICAL INTELLIGENCE PLATFORM</span>
             </div>
 
             {/* Master Headline */}
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.08]">
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.06]">
               BE YOUR OWN <br className="hidden sm:block" />
               <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-amber-100 bg-clip-text text-transparent">
                 ASTROLOGER.
@@ -208,7 +279,7 @@ export default function LandingPage({
 
             {/* Supporting Statement */}
             <p className="text-base sm:text-lg lg:text-xl text-slate-300 font-sans max-w-2xl mx-auto leading-relaxed">
-              Your chart. Your questions. Your timing. Explore multiple astrology traditions, understand the reasoning behind a result, and discover what matters to you.
+              Your chart. Your questions. Your timing. Explore multiple classical traditions, understand the mathematical reasoning behind every prediction, and discover what truly matters.
             </p>
 
             {/* Hero CTAs */}
@@ -217,7 +288,7 @@ export default function LandingPage({
                 onClick={() => onStartOnboarding()}
                 className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300 hover:from-amber-400 hover:to-amber-200 text-slate-950 font-black text-sm font-mono flex items-center justify-center gap-2.5 shadow-xl shadow-amber-500/25 active:scale-95 transition-all cursor-pointer min-h-[48px]"
               >
-                <span>CREATE MY FREE CHART</span>
+                <span>CREATE MY FREE BIRTH CHART</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
@@ -226,21 +297,24 @@ export default function LandingPage({
                 className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-white/5 hover:bg-white/10 text-white border border-white/15 font-bold text-sm font-mono flex items-center justify-center gap-2 transition-all cursor-pointer min-h-[48px]"
               >
                 <Search className="w-4 h-4 text-amber-400" />
-                <span>ASK ASTRO360</span>
+                <span>ASK ASTRO360 OMNI</span>
               </button>
             </div>
 
             {/* Small Trust Line */}
-            <p className="text-xs text-slate-400 font-mono pt-1 flex items-center justify-center gap-2">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Calculated first. Explained second. Zero PII storage.</span>
+            <p className="text-xs text-slate-400 font-mono pt-1 flex items-center justify-center gap-3 flex-wrap">
+              <span className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> NASA JPL DE440 Ephemeris</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Zero PII Storage</span>
+              <span className="flex items-center gap-1.5"><Scale className="w-3.5 h-3.5 text-emerald-400" /> Classical Scripture Citations</span>
             </p>
           </div>
 
           {/* ============================================================
-              HERO VISUAL: REAL INTERACTIVE PRODUCT DEMO
+              HERO VISUAL: DUAL INTERACTIVE SUITE (LIVE ENGINE & DEMO)
               ============================================================ */}
-          <div className="mt-12 sm:mt-16 max-w-4xl mx-auto">
+          <div className="mt-12 sm:mt-16 max-w-5xl mx-auto space-y-6">
+            
+            {/* Real Interactive Product Demo Container */}
             <div className="bg-[#0A101D] border-2 border-amber-400/30 rounded-3xl p-5 sm:p-7 shadow-2xl space-y-6 relative overflow-hidden text-left backdrop-blur-xl">
               
               {/* Window chrome header */}
@@ -254,7 +328,7 @@ export default function LandingPage({
                 <div className="flex items-center gap-2">
                   <span className="text-[11px] font-mono text-amber-300 bg-amber-400/10 px-3 py-1 rounded-full border border-amber-400/25 flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
-                    Live Ephemeris Grounding
+                    Sub-Arcsecond Mathematical Grounding
                   </span>
                 </div>
               </div>
@@ -263,7 +337,7 @@ export default function LandingPage({
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
                   <p className="text-[11px] font-mono text-slate-400 uppercase tracking-wider font-bold">WHAT WOULD YOU LIKE TO EXPLORE?</p>
-                  <span className="text-[10px] font-mono text-slate-500">Try clicking a sample question:</span>
+                  <span className="text-[10px] font-mono text-slate-500">Try clicking a sample inquiry:</span>
                 </div>
 
                 <div className="flex items-center gap-3 bg-[#050811] border border-white/15 rounded-2xl px-4 py-3.5 text-white font-sans text-sm sm:text-base shadow-inner">
@@ -275,7 +349,7 @@ export default function LandingPage({
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   {[
                     'When is my next important career period?',
-                    'What does my chart say about relationships?',
+                    'What does my chart say about long-term relationships?',
                     'When are my strongest financial timing cycles?',
                     'What is my primary soul purpose in this lifetime?'
                   ].map((chip, idx) => (
@@ -302,7 +376,7 @@ export default function LandingPage({
                     <span className="text-xs font-mono font-bold text-amber-300 uppercase">CAREER & VOCATION ACTIVATION</span>
                   </div>
                   <span className="text-xs font-mono bg-amber-400 text-slate-950 font-black px-3 py-0.5 rounded-full shadow-md">
-                    High Multi-System Convergence
+                    High Multi-System Convergence (92%)
                   </span>
                 </div>
                 <div className="text-2xl sm:text-3xl font-black text-white">
@@ -361,8 +435,8 @@ export default function LandingPage({
 
                       <div className="bg-[#050811] border border-white/10 rounded-xl p-3.5 space-y-1.5">
                         <span className="text-[10px] text-slate-400 uppercase font-bold">Tradition Consensus</span>
-                        <p className="font-bold text-emerald-300">3 of 3 Major Traditions Agree</p>
-                        <p className="text-[11px] text-slate-400 font-sans">Vedic (Strong), Western (Strong), KP Stellar (Moderate).</p>
+                        <p className="font-bold text-emerald-300">4 of 4 Major Systems Agree</p>
+                        <p className="text-[11px] text-slate-400 font-sans">Vedic (Strong), Western (Strong), KP Stellar (High), Jaimini (Favorable).</p>
                       </div>
 
                       <div className="bg-[#050811] border border-white/10 rounded-xl p-3.5 space-y-1.5">
@@ -384,7 +458,8 @@ export default function LandingPage({
                       {[
                         { system: 'Vedic Sidereal (Jyotish)', strength: 'Strong', badge: 'bg-emerald-400/20 text-emerald-300', desc: 'Jupiter transiting 10th house with supportive Vimshottari dasha sub-period.' },
                         { system: 'Western Tropical', strength: 'Strong', badge: 'bg-emerald-400/20 text-emerald-300', desc: 'Progressed Midheaven trine natal Jupiter with Sun entering 10th solar house.' },
-                        { system: 'KP Stellar System', strength: 'Moderate', badge: 'bg-amber-400/20 text-amber-300', desc: '10th cuspal sub-lord signifies 2, 6, 10, 11 (favorable for steady career effort).' },
+                        { system: 'KP Stellar System', strength: 'High Precision', badge: 'bg-emerald-400/20 text-emerald-300', desc: '10th cuspal sub-lord signifies 2, 6, 10, 11 (favorable for steady career effort).' },
+                        { system: 'Jaimini Sutras', strength: 'Favorable', badge: 'bg-amber-400/20 text-amber-300', desc: 'Chara Dasha activates Amatyakaraka sign with benefic aspect on Arudha Lagna.' },
                       ].map((row, idx) => (
                         <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-[#050811] border border-white/10 rounded-xl p-3">
                           <div className="space-y-0.5">
@@ -483,6 +558,10 @@ export default function LandingPage({
               </div>
 
             </div>
+
+            {/* Instant Quick Calculator Studio */}
+            <OmniHeroChartStudio onCalculate={handleQuickCalculate} userProfile={userProfile} />
+
           </div>
         </section>
 
@@ -502,12 +581,12 @@ export default function LandingPage({
           {/* 6-Step Journey Flow */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 max-w-5xl mx-auto text-left">
             {[
-              { step: '01', label: 'READ', desc: 'See your chart placements and timing windows.' },
-              { step: '02', label: 'QUESTION', desc: 'Ask natural questions in your own words.' },
+              { step: '01', label: 'READ', desc: 'See your chart placements, nakshatras, and exact timing windows.' },
+              { step: '02', label: 'QUESTION', desc: 'Ask natural questions in your own words without jargon.' },
               { step: '03', label: 'UNDERSTAND', desc: 'Understand the reasons and planetary factors behind a result.' },
-              { step: '04', label: 'COMPARE', desc: 'See where Vedic, Western and KP perspectives align.' },
+              { step: '04', label: 'COMPARE', desc: 'See where Vedic, Western, KP, and Jaimini systems align.' },
               { step: '05', label: 'EXPLORE', desc: 'Drag timelines and test birth-time assumptions.' },
-              { step: '06', label: 'DISCOVER', desc: 'Reach your own informed conclusions.' },
+              { step: '06', label: 'DISCOVER', desc: 'Reach your own informed, confident conclusions.' },
             ].map((item, idx) => (
               <div key={idx} className="bg-[#0A101D] border border-white/10 hover:border-amber-400/40 rounded-2xl p-4 space-y-2 transition-all group hover:translate-y-[-2px] shadow-lg shadow-black/40">
                 <span className="text-[10px] font-mono text-amber-400/80 font-bold block">{item.step}</span>
@@ -519,13 +598,27 @@ export default function LandingPage({
         </section>
 
         {/* ============================================================
-            SECTION 3: ASK THE QUESTIONS YOU ACTUALLY CARE ABOUT.
+            SECTION 3: LIVE 12-ZODIAC RADAR & TRANSIT INTELLIGENCE
+            ============================================================ */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10">
+          <OmniLiveZodiacRadar onSelectSign={(_sign) => onStartOnboarding()} />
+        </section>
+
+        {/* ============================================================
+            SECTION 4: INTERACTIVE TOOLS SUITE PLAYGROUND
+            ============================================================ */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10">
+          <InteractiveToolsSuite onNavigateToTab={onNavigateToTab} />
+        </section>
+
+        {/* ============================================================
+            SECTION 5: ASK THE QUESTIONS YOU ACTUALLY CARE ABOUT.
             ============================================================ */}
         <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300 text-xs font-mono">
               <Zap className="w-3.5 h-3.5 text-amber-400" />
-              <span>Natural Language Intelligence</span>
+              <span>Natural Language Astrological Intelligence</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
               ASK THE QUESTIONS YOU ACTUALLY CARE ABOUT.
@@ -585,141 +678,14 @@ export default function LandingPage({
         </section>
 
         {/* ============================================================
-            SECTION 4: YOUR FIRST QUESTION DOESN'T HAVE TO BE PERFECT.
+            SECTION 6: PRODUCT PREVIEW SUITE (4 APPS IN ONE)
             ============================================================ */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10">
-          <div className="max-w-3xl mx-auto text-center space-y-3 mb-12">
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-              YOUR FIRST QUESTION DOESN'T HAVE TO BE PERFECT.
-            </h2>
-            <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
-              ASTRO360 helps turn natural questions into the right astrology analysis.
-            </p>
-          </div>
-
-          {/* Interactive Query Transformation Diagram */}
-          <div className="max-w-3xl mx-auto bg-[#0A101D] border border-white/15 rounded-3xl p-6 sm:p-8 space-y-6 text-left shadow-2xl">
-            
-            {/* Step 1: User Asks */}
-            <div className="space-y-2">
-              <span className="text-[11px] font-mono text-amber-400 uppercase tracking-wider font-bold">USER NATURAL INPUT</span>
-              <div className="bg-[#050811] border border-white/15 rounded-2xl p-4 text-white font-semibold text-base sm:text-lg">
-                “Will my career change soon?”
-              </div>
-            </div>
-
-            <div className="flex justify-center text-amber-400">
-              <ChevronDown className="w-5 h-5" />
-            </div>
-
-            {/* Step 2: ASTRO360 Understood */}
-            <div className="space-y-2">
-              <span className="text-[11px] font-mono text-cyan-400 uppercase tracking-wider font-bold">ASTRO360 INTENT ENGINE</span>
-              <div className="bg-[#050811] border border-cyan-400/20 rounded-2xl p-4 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono">
-                <div>
-                  <span className="text-slate-500 block">Domain</span>
-                  <span className="text-cyan-300 font-bold">Career & Vocation</span>
-                </div>
-                <div>
-                  <span className="text-slate-500 block">Intent</span>
-                  <span className="text-cyan-300 font-bold">Timing Analysis</span>
-                </div>
-                <div>
-                  <span className="text-slate-500 block">Scope</span>
-                  <span className="text-cyan-300 font-bold">Near-Term (6-12 Mo)</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex justify-center text-amber-400">
-              <ChevronDown className="w-5 h-5" />
-            </div>
-
-            {/* Step 3: Required Data */}
-            <div className="space-y-2">
-              <span className="text-[11px] font-mono text-emerald-400 uppercase tracking-wider font-bold">REQUIRED INFORMATION</span>
-              <div className="bg-[#050811] border border-emerald-400/20 rounded-2xl p-4 text-xs font-mono text-emerald-300 flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>Your existing birth chart & current planetary ephemeris (No extra data requested)</span>
-              </div>
-            </div>
-
-            <div className="flex justify-center text-amber-400">
-              <ChevronDown className="w-5 h-5" />
-            </div>
-
-            {/* Step 4: Analysis Output */}
-            <div className="space-y-2">
-              <span className="text-[11px] font-mono text-purple-400 uppercase tracking-wider font-bold">ANALYSIS & DESTINATION</span>
-              <div className="bg-gradient-to-r from-purple-500/15 via-indigo-500/15 to-transparent border border-purple-400/30 rounded-2xl p-4 text-xs font-mono space-y-1">
-                <p className="font-bold text-white">Calculates 10th House Transit + Vimshottari Mahadasha Alignment</p>
-                <p className="text-slate-400 font-sans text-xs">Routes directly to your interactive career timing forecast with full explainability.</p>
-              </div>
-            </div>
-
-          </div>
+        <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10">
+          <OmniProductPreview onExplore={() => onStartOnboarding()} />
         </section>
 
         {/* ============================================================
-            SECTION 5: SEE WHY. (EVIDENCE INTERFACE)
-            ============================================================ */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10">
-          <div className="max-w-3xl mx-auto text-center space-y-3 mb-12">
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              SEE WHY.
-            </h2>
-            <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
-              Transparent evidence behind every prediction. No black boxes.
-            </p>
-          </div>
-
-          {/* Evidence Card */}
-          <div className="max-w-3xl mx-auto bg-[#0A101D] border-2 border-amber-400/30 rounded-3xl p-6 sm:p-8 space-y-6 text-left shadow-2xl">
-            
-            <div className="border-b border-white/10 pb-4">
-              <span className="text-[10px] font-mono uppercase text-slate-400 font-bold">Prediction Headline</span>
-              <h3 className="text-xl sm:text-2xl font-black text-amber-300 pt-1">
-                Career activity is elevated.
-              </h3>
-            </div>
-
-            <div className="space-y-3">
-              <span className="text-xs font-mono font-bold text-white uppercase flex items-center gap-2">
-                <Eye className="w-4 h-4 text-amber-400" />
-                <span>WHY? (Supporting Evidence Tree)</span>
-              </span>
-
-              <div className="space-y-2 text-xs font-mono">
-                {[
-                  { title: 'Supporting Factors', detail: 'Jupiter in 10th house Kendra + Venus benefic aspect.' },
-                  { title: 'Timing Alignment', detail: 'Vimshottari Dasha sub-period active from Sep 12 – Oct 28.' },
-                  { title: 'Selected Systems', detail: 'Vedic Sidereal (True Lahiri) & Western Tropical consensus.' },
-                  { title: 'Classical Rule', detail: 'Brihat Parashara Hora Shastra, Chapter 45, Sloka 12.' },
-                  { title: 'Stability Index', detail: 'High stability (Result holds across ±15 min birth-time variance).' },
-                ].map((row, i) => (
-                  <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 bg-[#050811] border border-white/10 rounded-xl p-3">
-                    <span className="text-slate-400 font-bold">{row.title}:</span>
-                    <span className="text-slate-200 text-left sm:text-right font-sans sm:font-mono">{row.detail}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="pt-2 flex justify-end">
-              <button
-                onClick={() => onStartOnboarding()}
-                className="px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-mono font-black text-xs flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-amber-400/20"
-              >
-                <span>[ Explore the chart ]</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-
-          </div>
-        </section>
-
-        {/* ============================================================
-            SECTION 6: COMPARE. DON'T JUST ACCEPT ONE PERSPECTIVE.
+            SECTION 7: COMPARE TRADITIONS & DISCOVER HARMONY
             ============================================================ */}
         <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
@@ -727,18 +693,19 @@ export default function LandingPage({
               COMPARE. DON'T JUST ACCEPT ONE PERSPECTIVE.
             </h2>
             <p className="text-base text-slate-300 font-sans max-w-2xl mx-auto">
-              Different traditions can emphasize different parts of the same period. ASTRO360 keeps them distinct so you can explore the differences yourself.
+              Different traditions emphasize different dimensions of the same celestial configuration. ASTRO360 calculates them simultaneously so you can explore consensus.
             </p>
           </div>
 
           {/* Tradition Selector Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2 max-w-3xl mx-auto mb-6">
+          <div className="flex flex-wrap items-center justify-center gap-2 max-w-4xl mx-auto mb-6">
             {[
               { id: 'vedic', label: 'VEDIC (JYOTISH)' },
               { id: 'western', label: 'WESTERN TROPICAL' },
               { id: 'kp', label: 'KP STELLAR' },
               { id: 'jaimini', label: 'JAIMINI SUTRAS' },
               { id: 'chinese', label: 'CHINESE BAZI' },
+              { id: 'hellenistic', label: 'HELLENISTIC LOTS' },
             ].map((t) => (
               <button
                 key={t.id}
@@ -760,7 +727,7 @@ export default function LandingPage({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-b border-white/10 pb-5">
               <div className="space-y-1">
                 <span className="text-[10px] font-mono uppercase text-slate-500">COMMON THEME</span>
-                <p className="text-lg font-bold text-white">Career Activity & Milestone</p>
+                <p className="text-lg font-bold text-white">Career Milestone & Vocation Elevation</p>
               </div>
               <div className="space-y-1">
                 <span className="text-[10px] font-mono uppercase text-slate-500">SYSTEM EMPHASIS</span>
@@ -784,7 +751,7 @@ export default function LandingPage({
         </section>
 
         {/* ============================================================
-            SECTION 7: MOVE THROUGH YOUR FUTURE. (INTERACTIVE TIMELINE)
+            SECTION 8: MOVE THROUGH YOUR FUTURE (INTERACTIVE TIMELINE)
             ============================================================ */}
         <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
@@ -843,7 +810,7 @@ export default function LandingPage({
         </section>
 
         {/* ============================================================
-            SECTION 8: SEE HOW YOUR ASSUMPTIONS CHANGE THE RESULT.
+            SECTION 9: BIRTH-TIME SENSITIVITY & UNCERTAINTY TEST
             ============================================================ */}
         <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
@@ -851,7 +818,7 @@ export default function LandingPage({
               SEE HOW YOUR ASSUMPTIONS CHANGE THE RESULT.
             </h2>
             <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
-              Not every result is equally sensitive to your birth information. This teaches you to think critically about uncertainty.
+              Not every result is equally sensitive to your birth time. We calculate mathematical confidence intervals across ±15 minute drift.
             </p>
           </div>
 
@@ -908,15 +875,15 @@ export default function LandingPage({
         </section>
 
         {/* ============================================================
-            SECTION 9: YOU DON'T NEED TO BE AN ASTROLOGER TO EXPLORE.
+            SECTION 10: SIMPLE VS EXPERT MODE TOGGLE
             ============================================================ */}
         <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-              YOU DON'T NEED TO BE AN ASTROLOGER TO EXPLORE ASTROLOGY.
+              SIMPLE WHEN YOU WANT CLARITY. DEEP WHEN YOU WANT DETAIL.
             </h2>
             <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
-              Simple when you want clarity. Deep when you want detail.
+              Switch between concise executive summaries and full ephemeris calculations at any time.
             </p>
           </div>
 
@@ -986,191 +953,29 @@ export default function LandingPage({
         </section>
 
         {/* ============================================================
-            SECTION 10: YOU MAY HAVE ALREADY ASKED SOMEONE ELSE.
+            SECTION 11: START FREE (EXPLORE ALL 10+ FREE SUITES)
             ============================================================ */}
         <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-12">
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              YOU MAY HAVE ALREADY ASKED SOMEONE ELSE.
-            </h2>
-            <p className="text-base text-slate-300 font-sans max-w-2xl mx-auto leading-relaxed">
-              Different perspectives can be useful. ASTRO360 helps you organize, compare and explore them in one place.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 max-w-5xl mx-auto text-left">
-            {[
-              { label: 'Vedic Reading', icon: Compass, note: 'Understand your Nakshatra, Dasha timeline & planetary yogas.' },
-              { label: 'Western Reading', icon: Sun, note: 'Explore your Placidus houses, solar returns & psychological arcs.' },
-              { label: 'KP Interpretation', icon: Layers, note: 'Evaluate cuspal sub-lords and high-precision event timing.' },
-              { label: 'Transit Reading', icon: Clock, note: 'Track active Gochara transits across your natal chart.' },
-              { label: 'Traditional Remedy', icon: ShieldCheck, note: 'Explore classical mantras, gemstones & lifestyle alignments.' },
-            ].map((card, i) => {
-              const Icon = card.icon;
-              return (
-                <div key={i} className="bg-[#0A101D] border border-white/10 rounded-2xl p-4 space-y-2 text-left shadow-lg">
-                  <Icon className="w-4 h-4 text-amber-400" />
-                  <h3 className="text-xs font-mono font-bold text-white">{card.label}</h3>
-                  <p className="text-[11px] text-slate-400 font-sans leading-relaxed">{card.note}</p>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* ============================================================
-            SECTION 11: EXPLORE TRADITIONAL REMEDIES WITH CONTEXT.
-            ============================================================ */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10">
-          <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              EXPLORE TRADITIONAL REMEDIES WITH CONTEXT.
-            </h2>
-            <p className="text-base text-slate-300 font-sans max-w-2xl mx-auto">
-              Traditional remedies are cultural and symbolic practices designed for reflection and discipline. We provide classical scripture context without false promises.
-            </p>
-          </div>
-
-          {/* Remedy Context Matrix */}
-          <div className="max-w-3xl mx-auto bg-[#0A101D] border border-white/15 rounded-3xl p-6 sm:p-8 space-y-4 text-left font-mono text-xs shadow-2xl">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="bg-[#050811] border border-white/10 rounded-xl p-3.5 space-y-1">
-                <span className="text-[10px] text-slate-500 uppercase">Traditional Practice</span>
-                <p className="font-bold text-white">Jupiter Mantra & Yellow Sapphire</p>
-              </div>
-              <div className="bg-[#050811] border border-white/10 rounded-xl p-3.5 space-y-1">
-                <span className="text-[10px] text-slate-500 uppercase">Tradition</span>
-                <p className="font-bold text-amber-300">Vedic (Jyotish Ratna Shastra)</p>
-              </div>
-              <div className="bg-[#050811] border border-white/10 rounded-xl p-3.5 space-y-1">
-                <span className="text-[10px] text-slate-500 uppercase">Classical Reasoning</span>
-                <p className="font-bold text-slate-200">Strengthens benefic vibrations for wisdom and discernment.</p>
-              </div>
-              <div className="bg-[#050811] border border-white/10 rounded-xl p-3.5 space-y-1">
-                <span className="text-[10px] text-slate-500 uppercase">Relevant Period</span>
-                <p className="font-bold text-cyan-300">During active Jupiter Mahadasha/Antardasha</p>
-              </div>
-            </div>
-
-            <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-white/10">
-              <span className="text-[10px] text-slate-400 font-sans">
-                * Remedies do not guarantee life outcomes or replace professional medical/legal counsel.
-              </span>
-              <button
-                onClick={() => onNavigateToTab('remedies')}
-                className="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs cursor-pointer shadow-md"
-              >
-                EXPLORE THE TRADITION ➔
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* ============================================================
-            SECTION 12: KEEP YOUR OWN ASTROLOGY HISTORY.
-            ============================================================ */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10">
-          <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              KEEP YOUR OWN ASTROLOGY HISTORY.
+              100% FREE. NO LOGIN OR CREDIT CARD REQUIRED.
             </h2>
             <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
-              Build your own personal astrology journal over time. Track questions, transits, and milestones across the years.
-            </p>
-          </div>
-
-          {/* Years Timeline Visual */}
-          <div className="max-w-4xl mx-auto bg-[#0A101D] border border-white/15 rounded-3xl p-6 sm:p-8 space-y-6 text-left shadow-2xl">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-4">
-              {['2022', '2023', '2024', '2025', '2026+'].map((yr, idx) => (
-                <div key={idx} className="text-center px-4 py-2 bg-[#050811] border border-white/10 rounded-xl">
-                  <span className="text-xs font-mono font-bold text-amber-300">{yr}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
-              <div className="bg-[#050811] border border-white/10 rounded-xl p-3.5 space-y-1">
-                <FileText className="w-4 h-4 text-amber-400" />
-                <p className="font-bold text-white">Saved Birth Charts</p>
-                <p className="text-[10px] text-slate-400 font-sans">Manage family & client profiles.</p>
-              </div>
-              <div className="bg-[#050811] border border-white/10 rounded-xl p-3.5 space-y-1">
-                <Search className="w-4 h-4 text-cyan-400" />
-                <p className="font-bold text-white">Question Archive</p>
-                <p className="text-[10px] text-slate-400 font-sans">Revisit past inquiries and answers.</p>
-              </div>
-              <div className="bg-[#050811] border border-white/10 rounded-xl p-3.5 space-y-1">
-                <Calendar className="w-4 h-4 text-emerald-400" />
-                <p className="font-bold text-white">Timing Calendar</p>
-                <p className="text-[10px] text-slate-400 font-sans">Export transit dates to iCal/Google.</p>
-              </div>
-              <div className="bg-[#050811] border border-white/10 rounded-xl p-3.5 space-y-1">
-                <BookOpen className="w-4 h-4 text-purple-400" />
-                <p className="font-bold text-white">Executive Dossiers</p>
-                <p className="text-[10px] text-slate-400 font-sans">High-res printable vector reports.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ============================================================
-            SECTION 13: ONE ANSWER CAN LEAD TO A BETTER QUESTION.
-            ============================================================ */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10">
-          <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              ONE ANSWER CAN LEAD TO A BETTER QUESTION.
-            </h2>
-            <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
-              The continuous exploration loop that turns curiosity into deep astrological understanding.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-3 max-w-4xl mx-auto text-xs font-mono">
-            {[
-              'Career Question',
-              'Why?',
-              'Compare Systems',
-              'What About Next Year?',
-              'How Stable Is It?',
-              'Add to Calendar',
-              'Generate Report'
-            ].map((step, idx) => (
-              <React.Fragment key={idx}>
-                <div className="px-4 py-2.5 rounded-xl bg-[#0A101D] border border-amber-400/30 text-amber-200 font-bold shadow-md">
-                  {step}
-                </div>
-                {idx < 6 && <ChevronRight className="w-4 h-4 text-slate-500 shrink-0" />}
-              </React.Fragment>
-            ))}
-          </div>
-        </section>
-
-        {/* ============================================================
-            SECTION 14: START FREE. (FREE VALUE SUITE)
-            ============================================================ */}
-        <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10">
-          <div className="max-w-3xl mx-auto text-center space-y-3 mb-12">
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              START FREE.
-            </h2>
-            <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
-              Experience the precision of ASTRO360 with no payment, subscription, or login required.
+              Experience the mathematical precision of ASTRO360 with instantaneous browser calculations.
             </p>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3.5 max-w-5xl mx-auto text-left">
             {[
-              { title: 'Free Birth Chart', desc: 'D1 Rashi & Planetary Positions', tab: 'free-tools' },
-              { title: 'Free Moon Sign', desc: 'Exact degree & Nakshatra placement', tab: 'free-tools' },
-              { title: 'Free Rising Sign', desc: 'Lagna & Ascendant cusp calculation', tab: 'free-tools' },
-              { title: 'Free Nakshatra Calculator', desc: '27 Lunar Mansions & Padas', tab: 'free-tools' },
-              { title: 'Free Panchanga', desc: 'Daily Tithi, Vara, Nakshatra, Yoga, Karana', tab: 'panchanga' },
-              { title: 'Free Compatibility', desc: 'Ashta Koota 36-Guna Synastry', tab: 'free-tools' },
-              { title: 'Free Daily Insight', desc: 'Real-time Moon transit activations', tab: 'free-tools' },
-              { title: 'Free 7-Day Forecast', desc: 'Planetary transit wave summary', tab: 'free-tools' },
-              { title: 'Free Moon Calendar', desc: 'Full moon, new moon & eclipse dates', tab: 'free-tools' },
+              { title: 'Free Birth Chart (Kundli)', desc: 'North & South Indian D1 Rashi & Planetary Positions', tab: 'birth-chart' },
+              { title: 'Free Moon Sign & Nakshatra', desc: 'Exact degree, Nakshatra Pada & Lord placement', tab: 'free-tools' },
+              { title: 'Free Rising Sign (Lagna)', desc: 'Lagna cusp calculation with sub-arcsecond accuracy', tab: 'free-tools' },
+              { title: 'Free Daily Panchanga', desc: 'Tithi, Vara, Nakshatra, Yoga, Karana & Rahu Kaal', tab: 'panchanga' },
+              { title: 'Free Compatibility (36-Guna)', desc: 'Ashta Koota Synastry with cancellation rules', tab: 'compatibility' },
+              { title: 'Free Vimshottari Dasha', desc: '120-year planetary timeline with Antardasha cycles', tab: 'dasha' },
+              { title: 'Free Transit Radar', desc: 'Live Gochara transits across your natal houses', tab: 'transits' },
+              { title: 'Free Electional Muhurta', desc: 'Abhijit, Brahma & Choghadiya auspicious windows', tab: 'muhurta' },
+              { title: 'Free Astrocartography', desc: 'Global planetary relocation lines & AC/MC crossings', tab: 'astrocartography' },
             ].map((tool, idx) => (
               <div
                 key={idx}
@@ -1191,57 +996,57 @@ export default function LandingPage({
               onClick={() => onNavigateToTab('free-tools')}
               className="px-8 py-4 rounded-2xl bg-white/5 hover:bg-white/10 text-amber-300 border border-amber-400/30 font-bold font-mono text-sm inline-flex items-center gap-2 cursor-pointer transition-all shadow-md"
             >
-              <span>EXPLORE ALL FREE TOOLS</span>
+              <span>EXPLORE COMPLETE FREE TOOLS CATALOG</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </section>
 
         {/* ============================================================
-            SECTION 15: TRUST & PROVENANCE
+            SECTION 12: MATHEMATICAL ACCURACY & SCIENTIFIC PROVENANCE
             ============================================================ */}
         <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/10 text-center">
           <div className="max-w-3xl mx-auto space-y-3 mb-10">
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              YOU SHOULD BE ABLE TO SEE HOW A RESULT WAS REACHED.
+              CALCULATED FIRST. EXPLAINED SECOND.
             </h2>
             <p className="text-sm text-slate-400 font-sans max-w-xl mx-auto">
-              ASTRO360 operates under a strict four-layer pipeline to ensure complete mathematical transparency.
+              ASTRO360 operates under a strict four-layer architecture ensuring mathematical purity and complete transparency.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-4xl mx-auto text-left font-mono text-xs mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-5xl mx-auto text-left font-mono text-xs mb-8">
             <div className="bg-[#0A101D] border border-white/10 rounded-2xl p-4 space-y-1">
-              <span className="text-[10px] text-amber-400 font-bold">STEP 1</span>
-              <p className="font-bold text-white">CALCULATED</p>
-              <p className="text-[11px] text-slate-400 font-sans">NASA JPL DE440 sub-arcsecond physics.</p>
+              <span className="text-[10px] text-amber-400 font-bold">LAYER 1</span>
+              <p className="font-bold text-white">EPHEMERIS PHYSICS</p>
+              <p className="text-[11px] text-slate-400 font-sans">NASA JPL DE440 sub-arcsecond orbital dynamics.</p>
             </div>
             <div className="bg-[#0A101D] border border-white/10 rounded-2xl p-4 space-y-1">
-              <span className="text-[10px] text-cyan-400 font-bold">STEP 2</span>
-              <p className="font-bold text-white">STRUCTURED</p>
-              <p className="text-[11px] text-slate-400 font-sans">Multi-tradition mathematical rules codified.</p>
+              <span className="text-[10px] text-cyan-400 font-bold">LAYER 2</span>
+              <p className="font-bold text-white">CLASSICAL RULES</p>
+              <p className="text-[11px] text-slate-400 font-sans">BPHS, Phaladeepika, Tetrabiblos rules codified.</p>
             </div>
             <div className="bg-[#0A101D] border border-white/10 rounded-2xl p-4 space-y-1">
-              <span className="text-[10px] text-emerald-400 font-bold">STEP 3</span>
-              <p className="font-bold text-white">COMPARED</p>
-              <p className="text-[11px] text-slate-400 font-sans">Cross-system consensus and variance mapped.</p>
+              <span className="text-[10px] text-emerald-400 font-bold">LAYER 3</span>
+              <p className="font-bold text-white">CONSENSUS ENGINE</p>
+              <p className="text-[11px] text-slate-400 font-sans">Multi-system alignment and divergence mapped.</p>
             </div>
             <div className="bg-[#0A101D] border border-white/10 rounded-2xl p-4 space-y-1">
-              <span className="text-[10px] text-purple-400 font-bold">STEP 4</span>
-              <p className="font-bold text-white">EXPLAINED</p>
-              <p className="text-[11px] text-slate-400 font-sans">Grounded natural language explainability.</p>
+              <span className="text-[10px] text-purple-400 font-bold">LAYER 4</span>
+              <p className="font-bold text-white">EXPLAINABILITY</p>
+              <p className="text-[11px] text-slate-400 font-sans">Grounded, transparent natural language synthesis.</p>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-slate-400">
+          <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-slate-400">
             <span className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-emerald-400" /> OWASP ASVS 5.0.0 Tested</span>
             <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Zero PII Storage</span>
-            <span className="flex items-center gap-1.5"><Scale className="w-4 h-4 text-emerald-400" /> No Fake Claims</span>
+            <span className="flex items-center gap-1.5"><Scale className="w-4 h-4 text-emerald-400" /> Scripture-Grounded Truth</span>
           </div>
         </section>
 
         {/* ============================================================
-            SECTION 16: FINAL CTA — "BE YOUR OWN ASTROLOGER."
+            SECTION 13: FINAL CALL TO ACTION — "BE YOUR OWN ASTROLOGER."
             ============================================================ */}
         <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto border-t border-white/10 text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-amber-500/10 via-transparent to-transparent pointer-events-none rounded-3xl" />
@@ -1249,7 +1054,7 @@ export default function LandingPage({
           <div className="relative z-10 space-y-6 max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/25 text-amber-300 text-[11px] font-mono font-bold tracking-widest uppercase">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>START YOUR EXPLORATION TODAY</span>
+              <span>START YOUR PERSONAL EXPLORATION TODAY</span>
             </div>
 
             <h2 className="text-4xl sm:text-6xl font-black tracking-tight text-white uppercase">
@@ -1260,7 +1065,7 @@ export default function LandingPage({
             </h2>
 
             <p className="text-base sm:text-lg text-slate-300 font-sans max-w-xl mx-auto leading-relaxed">
-              Ask your questions. Explore your chart. Compare perspectives. Understand the reasoning. Discover your own astrology.
+              Ask your questions. Explore your birth chart. Compare world traditions. Understand the reasoning. Reach your own clarity.
             </p>
 
             <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
@@ -1268,7 +1073,7 @@ export default function LandingPage({
                 onClick={() => onStartOnboarding()}
                 className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300 hover:from-amber-400 hover:to-amber-200 text-slate-950 font-black text-sm font-mono flex items-center justify-center gap-2 shadow-xl shadow-amber-500/25 active:scale-95 transition-all cursor-pointer min-h-[48px]"
               >
-                <span>CREATE MY FREE CHART</span>
+                <span>CREATE MY FREE BIRTH CHART</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
@@ -1277,12 +1082,12 @@ export default function LandingPage({
                 className="w-full sm:w-auto px-6 py-4 rounded-2xl bg-white/5 hover:bg-white/10 text-white border border-white/15 font-bold text-sm font-mono flex items-center justify-center gap-2 transition-all cursor-pointer min-h-[48px]"
               >
                 <Search className="w-4 h-4 text-amber-400" />
-                <span>ASK ASTRO360</span>
+                <span>ASK ASTRO360 OMNI</span>
               </button>
             </div>
 
             <p className="text-xs text-slate-500 font-mono pt-1">
-              No astrology knowledge required. 100% free and private.
+              No astrology background required. 100% free, private, and calculated in real time.
             </p>
           </div>
         </section>
@@ -1303,20 +1108,21 @@ export default function LandingPage({
             <div className="space-y-2">
               <span className="text-white font-bold block">Astrology Traditions</span>
               <ul className="space-y-1 text-[11px]">
-                <li><button onClick={() => onNavigateToTab('vedic-astrology')} className="hover:text-amber-300">Vedic Sidereal (Jyotish)</button></li>
-                <li><button onClick={() => onNavigateToTab('western-astrology')} className="hover:text-amber-300">Western Tropical</button></li>
-                <li><button onClick={() => onNavigateToTab('free-tools')} className="hover:text-amber-300">KP Stellar System</button></li>
-                <li><button onClick={() => onNavigateToTab('panchanga')} className="hover:text-amber-300">Daily Panchanga</button></li>
+                <li><button onClick={() => onNavigateToTab('vedic-astrology')} className="hover:text-amber-300 cursor-pointer">Vedic Sidereal (Jyotish)</button></li>
+                <li><button onClick={() => onNavigateToTab('western-astrology')} className="hover:text-amber-300 cursor-pointer">Western Tropical</button></li>
+                <li><button onClick={() => onNavigateToTab('free-tools')} className="hover:text-amber-300 cursor-pointer">KP Stellar System</button></li>
+                <li><button onClick={() => onNavigateToTab('panchanga')} className="hover:text-amber-300 cursor-pointer">Daily Panchanga</button></li>
               </ul>
             </div>
 
             <div className="space-y-2">
-              <span className="text-white font-bold block">Free Tools</span>
+              <span className="text-white font-bold block">Free Research Tools</span>
               <ul className="space-y-1 text-[11px]">
-                <li><button onClick={() => onNavigateToTab('free-tools')} className="hover:text-amber-300">Free Birth Chart</button></li>
-                <li><button onClick={() => onNavigateToTab('free-tools')} className="hover:text-amber-300">Free Moon Sign & Nakshatra</button></li>
-                <li><button onClick={() => onNavigateToTab('free-tools')} className="hover:text-amber-300">Free Ashta Koota Compatibility</button></li>
-                <li><button onClick={() => onNavigateToTab('methodology')} className="hover:text-amber-300">Ephemeris Methodology</button></li>
+                <li><button onClick={() => onNavigateToTab('birth-chart')} className="hover:text-amber-300 cursor-pointer">Free Birth Chart</button></li>
+                <li><button onClick={() => onNavigateToTab('free-tools')} className="hover:text-amber-300 cursor-pointer">Free Moon Sign & Nakshatra</button></li>
+                <li><button onClick={() => onNavigateToTab('compatibility')} className="hover:text-amber-300 cursor-pointer">Free Ashta Koota Compatibility</button></li>
+                <li><button onClick={() => onNavigateToTab('news-intelligence')} className="hover:text-amber-300 cursor-pointer">Cosmic News & Mundane Hub</button></li>
+                <li><button onClick={() => onNavigateToTab('methodology')} className="hover:text-amber-300 cursor-pointer">Ephemeris Methodology</button></li>
               </ul>
             </div>
 
