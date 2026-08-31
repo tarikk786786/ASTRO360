@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { 
   Sparkles, ArrowRight, ShieldCheck, CheckCircle2, Compass, 
@@ -18,6 +18,7 @@ import OmniHeroChartStudio from './OmniHeroChartStudio';
 import OmniProductPreview from './OmniProductPreview';
 import AnimatedStarfield from './AnimatedStarfield';
 import { useScrollReveal, use3DTilt, useMagneticHover, useMouseGlow } from '../../hooks/useAnimations';
+import { QuestionIntentEngine } from '../../lib/questionRouter';
 
 interface LandingPageProps {
   onStartOnboarding: (presetData?: Partial<UserProfile>) => void;
@@ -84,6 +85,7 @@ export default function LandingPage({
   // Hero Interactive Demo State
   const [heroActiveView, setHeroActiveView] = useState<'why' | 'compare' | 'timeline' | 'technical'>('why');
   const [heroActiveQuery, setHeroActiveQuery] = useState<string>('When is my next important career period?');
+  const [customInputQuery, setCustomInputQuery] = useState<string>('');
   
   // Section: Question Categories State
   const [selectedCategory, setSelectedCategory] = useState<string>('CAREER');
@@ -106,6 +108,24 @@ export default function LandingPage({
   // Scroll progress for hero subtle parallax
   const { scrollY } = useScroll();
   const heroParallax = useTransform(scrollY, [0, 600], [0, -40]);
+
+  // Compute live real-time answer from QuestionIntentEngine
+  const activeSolvedResult = useMemo(() => {
+    const profile: UserProfile = userProfile || {
+      id: 'guest_landing',
+      name: 'Seeker',
+      gender: 'other',
+      dob: '1998-06-15',
+      time: '12:00',
+      location: 'London, UK',
+      preferredSystem: 'vedic'
+    };
+    try {
+      return QuestionIntentEngine.routeAndSolve(heroActiveQuery, profile);
+    } catch {
+      return null;
+    }
+  }, [heroActiveQuery, userProfile]);
 
   // Question Categories Data
   const questionCategories = [
@@ -427,24 +447,46 @@ export default function LandingPage({
                 </span>
               </div>
 
-              {/* Inquiry Selection */}
-              <div className="space-y-2">
+              {/* Inquiry Selection & Custom Question Form */}
+              <div className="space-y-2.5">
                 <div className="flex items-center justify-between text-xs font-mono text-slate-400">
-                  <span className="font-semibold uppercase tracking-wider">Sample Inquiry:</span>
-                  <span className="text-slate-500 hidden sm:inline">Select a question to inspect:</span>
+                  <span className="font-semibold uppercase tracking-wider">Natural Language Inquiry Sandbox:</span>
+                  <span className="text-slate-500 hidden sm:inline">Type any question or click a sample:</span>
                 </div>
 
-                <div className="flex items-center gap-3 bg-[#060A12] border border-white/10 rounded-xl px-4 py-3 text-white font-sans text-sm">
-                  <Search className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span className="font-medium text-amber-200">"{heroActiveQuery}"</span>
-                </div>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (customInputQuery.trim()) {
+                      setHeroActiveQuery(customInputQuery.trim());
+                      setCustomInputQuery('');
+                    }
+                  }}
+                  className="flex items-center gap-2 bg-[#060A12] border border-white/12 rounded-xl p-1.5 focus-within:border-amber-400/50 transition-colors"
+                >
+                  <Search className="w-4 h-4 text-amber-400 shrink-0 ml-2.5" />
+                  <input
+                    type="text"
+                    value={customInputQuery}
+                    onChange={(e) => setCustomInputQuery(e.target.value)}
+                    placeholder={`"${heroActiveQuery}" (Type your own question...)`}
+                    className="flex-1 bg-transparent border-none text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none px-2 py-1 font-sans"
+                  />
+                  <button
+                    type="submit"
+                    className="px-3.5 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold font-mono text-xs cursor-pointer transition-colors shrink-0"
+                  >
+                    Analyze
+                  </button>
+                </form>
 
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   {[
                     'When is my next important career period?',
                     'What does my chart say about long-term relationships?',
                     'When are my strongest financial timing cycles?',
-                    'What is my primary soul purpose in this lifetime?'
+                    'What is my primary soul purpose in this lifetime?',
+                    "What is my birth star Nakshatra and Pada?"
                   ].map((chip, idx) => (
                     <button
                       key={idx}
@@ -461,22 +503,24 @@ export default function LandingPage({
                 </div>
               </div>
 
-              {/* Event Timing Banner */}
+              {/* Dynamic Event Timing Banner */}
               <div className="bg-[#060A12] border border-amber-400/25 rounded-xl p-4 sm:p-5 space-y-2">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <Briefcase className="w-4 h-4 text-amber-400" />
-                    <span className="text-xs font-mono font-semibold text-amber-300 uppercase">CAREER & VOCATION</span>
+                    <span className="text-xs font-mono font-semibold text-amber-300 uppercase">
+                      {activeSolvedResult?.category || 'CAREER & VOCATION'}
+                    </span>
                   </div>
                   <span className="text-xs font-mono bg-amber-400/20 text-amber-300 px-2.5 py-0.5 rounded border border-amber-400/30">
-                    Strong Multi-Tradition Agreement
+                    Confidence: {activeSolvedResult ? `${Math.round(activeSolvedResult.confidence * 100)}% Match` : 'Strong Multi-Tradition Agreement'}
                   </span>
                 </div>
                 <div className="text-2xl sm:text-3xl font-black text-white">
-                  Sep 12 – Oct 28
+                  {activeSolvedResult?.timeRange || 'Sep 12 – Oct 28'}
                 </div>
                 <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
-                  Elevated occupational activity, leadership expansion, and public recognition. Both Vedic Dasha and Western transits activate the 10th house career axis simultaneously.
+                  {activeSolvedResult?.answer.summary || 'Elevated occupational activity, leadership expansion, and public recognition. Both Vedic Dasha and Western transits activate the 10th house career axis simultaneously.'}
                 </p>
               </div>
 
@@ -507,7 +551,7 @@ export default function LandingPage({
                 <AnimatePresence mode="wait">
                   {heroActiveView === 'why' && (
                     <motion.div
-                      key="why"
+                      key={`why-${heroActiveQuery}`}
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -8 }}
@@ -516,20 +560,32 @@ export default function LandingPage({
                     >
                       <div className="bg-[#060A12] border border-white/8 rounded-xl p-3.5 space-y-1">
                         <span className="text-[10px] text-slate-500 uppercase font-medium">Primary Planetary Factor</span>
-                        <p className="font-semibold text-amber-300">Jupiter in Taurus (10th Bhava)</p>
-                        <p className="text-[11px] text-slate-400 font-sans">Benefic transit casting protective aspect on Lagna and 2nd house of accumulated wealth.</p>
+                        <p className="font-semibold text-amber-300">
+                          {activeSolvedResult?.answer.technicalEvidence.planetaryDegrees?.split(';')[0] || 'Jupiter in Taurus (10th Bhava)'}
+                        </p>
+                        <p className="text-[11px] text-slate-400 font-sans">
+                          {activeSolvedResult?.answer.why || 'Benefic transit casting protective aspect on Lagna and 2nd house of accumulated wealth.'}
+                        </p>
                       </div>
 
                       <div className="bg-[#060A12] border border-white/8 rounded-xl p-3.5 space-y-1">
                         <span className="text-[10px] text-slate-500 uppercase font-medium">Active Timing Dasha</span>
-                        <p className="font-semibold text-cyan-300">Jupiter-Saturn Dasha Sub-Period</p>
-                        <p className="text-[11px] text-slate-400 font-sans">Exact degree activation occurs during the Sep 12 – Oct 28 window.</p>
+                        <p className="font-semibold text-cyan-300">
+                          {activeSolvedResult?.answer.technicalEvidence.dashaCycle || 'Jupiter-Saturn Dasha Sub-Period'}
+                        </p>
+                        <p className="text-[11px] text-slate-400 font-sans">
+                          Harmonic timing activation occurs during the {activeSolvedResult?.timeRange || 'Sep 12 – Oct 28'} window.
+                        </p>
                       </div>
 
                       <div className="bg-[#060A12] border border-white/8 rounded-xl p-3.5 space-y-1">
                         <span className="text-[10px] text-slate-500 uppercase font-medium">Tradition Consensus</span>
-                        <p className="font-semibold text-emerald-300">Agreement Across 4 Traditions</p>
-                        <p className="text-[11px] text-slate-400 font-sans">Vedic (Active), Western (Active), KP Stellar (High), Jaimini (Favorable).</p>
+                        <p className="font-semibold text-emerald-300">
+                          {activeSolvedResult ? `${activeSolvedResult.systems.length} Traditions Evaluated` : 'Agreement Across 4 Traditions'}
+                        </p>
+                        <p className="text-[11px] text-slate-400 font-sans">
+                          {activeSolvedResult ? activeSolvedResult.systems.join(' • ') : 'Vedic (Active), Western (Active), KP Stellar (High), Jaimini (Favorable).'}
+                        </p>
                       </div>
 
                       <div className="bg-[#060A12] border border-white/8 rounded-xl p-3.5 space-y-1">
@@ -542,7 +598,7 @@ export default function LandingPage({
 
                   {heroActiveView === 'compare' && (
                     <motion.div
-                      key="compare"
+                      key={`compare-${heroActiveQuery}`}
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -8 }}
@@ -550,10 +606,10 @@ export default function LandingPage({
                       className="space-y-2 text-xs font-mono"
                     >
                       {[
-                        { system: 'Vedic Sidereal (Jyotish)', status: 'Active Period', desc: 'Jupiter transiting 10th house with supportive Vimshottari dasha sub-period.' },
-                        { system: 'Western Tropical', status: 'Active Period', desc: 'Progressed Midheaven trine natal Jupiter with Sun entering 10th solar house.' },
-                        { system: 'KP Stellar System', status: 'High Precision', desc: '10th cuspal sub-lord signifies 2, 6, 10, 11 (favorable for steady career effort).' },
-                        { system: 'Jaimini Sutras', status: 'Favorable', desc: 'Chara Dasha activates Amatyakaraka sign with benefic aspect on Arudha Lagna.' },
+                        { system: 'Vedic Sidereal (Jyotish)', status: 'Active Period', desc: 'Evaluates Vimshottari Mahadasha lords and Gochara transit angles from Moon/Lagna.' },
+                        { system: 'Western Tropical', status: 'Active Period', desc: 'Progressed angles, Solar Arcs, and Placidus midheaven house cusps.' },
+                        { system: 'KP Stellar System', status: 'High Precision', desc: 'Cuspal sub-lord significations across 249 sub-divisions.' },
+                        { system: 'Jaimini Sutras', status: 'Favorable', desc: 'Chara Dasha sign periods and Amatyakaraka/Atmakaraka dignity.' },
                       ].map((row, idx) => (
                         <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-[#060A12] border border-white/8 rounded-xl p-3">
                           <div className="space-y-0.5">
@@ -570,7 +626,7 @@ export default function LandingPage({
 
                   {heroActiveView === 'timeline' && (
                     <motion.div
-                      key="timeline"
+                      key={`timeline-${heroActiveQuery}`}
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -8 }}
@@ -578,22 +634,22 @@ export default function LandingPage({
                       className="bg-[#060A12] border border-white/8 rounded-xl p-4 space-y-3 text-xs font-mono"
                     >
                       <div className="flex items-center justify-between text-slate-400 text-[11px]">
-                        <span>Aug 2026</span>
-                        <span className="text-amber-400 font-semibold">Sep 12 – Oct 28 (Active Period)</span>
-                        <span>Dec 2026</span>
+                        <span>Entry Phase</span>
+                        <span className="text-amber-400 font-semibold">{activeSolvedResult?.timeRange || 'Active Peak Window'}</span>
+                        <span>Consolidation</span>
                       </div>
                       <div className="w-full bg-white/10 h-2.5 rounded-full overflow-hidden relative">
                         <div className="bg-gradient-to-r from-amber-500 to-amber-300 h-full w-[45%] ml-[30%] rounded-full" />
                       </div>
                       <p className="text-[11px] text-slate-400 font-sans text-center">
-                        Planetary momentum begins building in late August, peaks between Sep 12 and Oct 28, and transitions into consolidation in November.
+                        Planetary momentum begins building prior to exact aspect degrees, reaches maximum intensity during the peak window, and stabilizes thereafter.
                       </p>
                     </motion.div>
                   )}
 
                   {heroActiveView === 'technical' && (
                     <motion.div
-                      key="technical"
+                      key={`tech-${heroActiveQuery}`}
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -8 }}
@@ -602,9 +658,9 @@ export default function LandingPage({
                     >
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[11px]">
                         <div><span className="text-slate-500">Ayanamsha:</span> <span className="text-amber-300 font-semibold">True Lahiri (24°13'08")</span></div>
-                        <div><span className="text-slate-500">Jupiter Longitude:</span> <span className="text-white font-semibold">18°24' Taurus (Rohini P3)</span></div>
-                        <div><span className="text-slate-500">10th House Cusp:</span> <span className="text-white font-semibold">12°11' MC (Placidus/Sripati)</span></div>
-                        <div><span className="text-slate-500">Classical Rule:</span> <span className="text-white font-semibold">BPHS Ch. 45 / Sloka 12</span></div>
+                        <div><span className="text-slate-500">Ephemeris Target:</span> <span className="text-white font-semibold">{activeSolvedResult?.answer.technicalEvidence.planetaryDegrees || '18°24\' Taurus (Rohini P3)'}</span></div>
+                        <div><span className="text-slate-500">Output Mode:</span> <span className="text-white font-semibold">{activeSolvedResult?.outputType || 'timeline_card'}</span></div>
+                        <div><span className="text-slate-500">Classical Rule:</span> <span className="text-white font-semibold">{activeSolvedResult?.answer.technicalEvidence.classicalRuleCitation || 'BPHS Ch. 45 / Sloka 12'}</span></div>
                       </div>
                     </motion.div>
                   )}
