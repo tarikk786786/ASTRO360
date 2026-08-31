@@ -8,7 +8,6 @@ import {
 } from 'lucide-react';
 import type { UserProfile } from '../../types';
 import OmniWhyDrawer, { type OmniWhyDrawerProps } from './OmniWhyDrawer';
-import OmniAudioBriefing from './OmniAudioBriefing';
 import OmniTransitAlertCenter from './OmniTransitAlertCenter';
 import OmniDailyVibeScore from './OmniDailyVibeScore';
 import OmniAskUniversalHero from './OmniAskUniversalHero';
@@ -484,14 +483,9 @@ export default function OmniSimpleHome({
         </div>
       </motion.div>
 
-      {/* 5. Daily Audio Briefing & Live Vibe Metrics */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        <div className="lg:col-span-6">
-          <OmniAudioBriefing userProfile={userProfile} />
-        </div>
-        <div className="lg:col-span-6">
-          <OmniDailyVibeScore userProfile={userProfile} />
-        </div>
+      {/* 5. Live Cosmic Vibe Metrics */}
+      <div className="w-full">
+        <OmniDailyVibeScore userProfile={userProfile} />
       </div>
 
       {/* 6. Today's Auspicious Muhurta & Panchang Bar */}
