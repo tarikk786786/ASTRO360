@@ -37,17 +37,133 @@ export default function OmniAskAssistant({
   userProfile: UserProfile;
   onNavigate?: (tab: string) => void;
 }) {
+  const currentTradition = (userProfile.preferredSystem || 'vedic').toLowerCase();
+  const seekerName = userProfile.name?.trim() || 'Seeker';
+
+  const traditionMeta = React.useMemo(() => {
+    if (currentTradition.includes('islamic')) {
+      return {
+        badge: 'Islamic Ilm al-Falak Active',
+        greeting: `Salam & Welcome ${seekerName}, I am your ASTRO360 Ilm al-Falak assistant. I analyze your chart through classical Arabic Lunar Mansions (Manazil al-Qamar), Arabic Parts (Sahm), Planetary Hours (Sa'at al-Kawakib), and Prophetic Sunnah spiritual remedies. What would you like to inquire?`,
+        followUps: [
+          "What is my current Lunar Mansion & its barakah?",
+          "Which planetary hour is active for major decisions?",
+          "What is the position of my Sahm al-Sa'ada (Part of Fortune)?"
+        ],
+        chips: [
+          "What is my current Lunar Mansion?",
+          "Which planetary hour is active now?",
+          "Explain my Sahm al-Sa'ada (Part of Fortune)",
+          "What spiritual remedies are prescribed for me?"
+        ]
+      };
+    } else if (currentTradition.includes('chinese') || currentTradition.includes('bazi')) {
+      return {
+        badge: 'Chinese BaZi 4-Pillars Active',
+        greeting: `Greetings ${seekerName}, I am your ASTRO360 BaZi Four Pillars assistant. I compute your Year, Month, Day, and Hour Pillars, analyze your Day Master strength, 5 Elements balance, and 10-Year Da Yun luck cycle. What would you like to explore?`,
+        followUps: [
+          "What is my Day Master element and strength?",
+          "Which elements are favorable (Yong Shen) for my wealth?",
+          "What does my current 10-Year Da Yun luck pillar signify?"
+        ],
+        chips: [
+          "What is my Day Master element?",
+          "Which elements are favorable for wealth?",
+          "Analyze my 10-Year Da Yun Luck Pillar",
+          "What career matches my BaZi chart?"
+        ]
+      };
+    } else if (currentTradition.includes('western') || currentTradition.includes('hellenistic')) {
+      return {
+        badge: 'Western Tropical & Hellenistic Active',
+        greeting: `Hello ${seekerName}, I am your ASTRO360 Western Tropical & Hellenistic assistant. I analyze your 360° circular chart, Ptolemaic transit aspects, Placidus house cusps, and essential dignities. How can I guide you today?`,
+        followUps: [
+          "What are my current major transit aspects?",
+          "Explain my Midheaven (MC) and career purpose",
+          "How does the current Void-of-Course Moon affect me?"
+        ],
+        chips: [
+          "What are my major transit aspects today?",
+          "Explain my Midheaven (MC) career zenith",
+          "What does my 7th house ruler indicate for love?",
+          "How does the Void-of-Course Moon affect me?"
+        ]
+      };
+    } else if (currentTradition.includes('kp')) {
+      return {
+        badge: 'KP Stellar 249 Sub-Lords Active',
+        greeting: `Hello ${seekerName}, I am your ASTRO360 KP Stellar assistant. I calculate your 249 Cuspal Sub-Lords, Sign-Star-Sub significators, and Ruling Planets for precise event timing. What is your question?`,
+        followUps: [
+          "Check my 10th Cusp Sub-Lord for career timing",
+          "What do my Ruling Planets indicate right now?",
+          "When will my next major favorable event occur?"
+        ],
+        chips: [
+          "Check my 10th Cusp Sub-Lord for career",
+          "What do my Ruling Planets indicate now?",
+          "When is my favorable period for finances?",
+          "Analyze my 7th Cusp Sub-Lord for marriage"
+        ]
+      };
+    } else if (currentTradition.includes('jaimini')) {
+      return {
+        badge: 'Jaimini Chara Sutras Active',
+        greeting: `Namaste ${seekerName}, I am your ASTRO360 Jaimini Sutras assistant. I evaluate your 7 Chara Karakas (Atmakaraka, Amatyakaraka), Arudha Padas, and Chara Dasha sign periods. What would you like to know?`,
+        followUps: [
+          "Who is my Atmakaraka (Soul Planet)?",
+          "What does my Arudha Lagna reveal about my public image?",
+          "Analyze my current Chara Dasha sign period"
+        ],
+        chips: [
+          "Who is my Atmakaraka (Soul Planet)?",
+          "What does my Arudha Lagna indicate?",
+          "Analyze my current Chara Dasha period",
+          "Who is my Amatyakaraka for career?"
+        ]
+      };
+    } else if (currentTradition.includes('mayan')) {
+      return {
+        badge: 'Mayan Tzolk\'in Sacred Calendar Active',
+        greeting: `In Lak'ech ${seekerName}, I am your ASTRO360 Mayan Tzolk'in assistant. I interpret your Sacred Solar Seal, Galactic Tone, and Wavespell evolutionary destiny. What would you like to explore?`,
+        followUps: [
+          "What is my Tzolk'in Kin and Solar Seal?",
+          "Explain the mission of my Galactic Tone",
+          "What does my current 13-day Wavespell cycle guide?"
+        ],
+        chips: [
+          "What is my Tzolk'in Kin and Solar Seal?",
+          "Explain my Galactic Tone mission",
+          "What is my 13-day Wavespell cycle?",
+          "Who is my Guide Kin & Higher Self?"
+        ]
+      };
+    } else {
+      // Vedic Parashari
+      return {
+        badge: 'Vedic Parashari Jyotish Active',
+        greeting: `Namaste ${seekerName}, I am your ASTRO360 Vedic astrological assistant. I analyze your chart across Vedic, Western, KP, and BaZi systems with sub-arcsecond accuracy. What would you like to know about your life or timing?`,
+        followUps: [
+          "When is my strongest career period?",
+          "What does this month mean for love?",
+          "Compare my Vedic and Western chart"
+        ],
+        chips: [
+          "When is my strongest career period?",
+          "What does this month mean for love?",
+          "Compare my Vedic and Western chart",
+          "What remedies are recommended for me?"
+        ]
+      };
+    }
+  }, [currentTradition, seekerName]);
+
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'init-1',
       sender: 'assistant',
       timestamp: 'Just now',
-      summary: `Hello ${userProfile.name?.trim() || 'Seeker'}, I am your ASTRO360 astrological assistant. I analyze your chart across Vedic, Western, KP, and BaZi systems simultaneously. What would you like to know about your life or timing?`,
-      followUps: [
-        "When is my strongest career period?",
-        "What does this month mean for love?",
-        "Compare my Vedic and Western chart"
-      ]
+      summary: traditionMeta.greeting,
+      followUps: traditionMeta.followUps
     }
   ]);
 
@@ -131,19 +247,14 @@ export default function OmniAskAssistant({
           </p>
         </div>
         <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/30 flex items-center gap-1.5 self-start sm:self-auto">
-          <ShieldCheck className="w-3.5 h-3.5" /> 4 Traditions Active
+          <ShieldCheck className="w-3.5 h-3.5" /> {traditionMeta.badge}
         </span>
       </div>
 
       {/* Suggested Quick Prompt Chips */}
       <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 text-xs font-mono">
         <span className="text-slate-500 shrink-0">Try:</span>
-        {[
-          "When is my strongest career period?",
-          "What does this month mean for love?",
-          "Compare my Vedic and Western chart",
-          "What are my best months for travel?"
-        ].map((prompt, idx) => (
+        {traditionMeta.chips.map((prompt, idx) => (
           <button
             key={idx}
             onClick={() => handleSend(prompt)}
