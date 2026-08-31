@@ -103,6 +103,63 @@ export default function OmniSimpleHome({
     }
   }, [userProfile.dob, userProfile.time]);
 
+  const currentTradition = (userProfile.preferredSystem || config.astrologySystem || 'vedic').toLowerCase();
+
+  // Compute 4 adaptive tradition placement cards based on selected framework
+  const traditionPlacements = useMemo(() => {
+    if (currentTradition.includes('islamic')) {
+      return {
+        card1: { title: 'Al-Shams (Sun)', value: 'Asad (Leo ♌ 14°)', sub: 'Day Governor & Vitality', icon: Sun, color: 'text-amber-400' },
+        card2: { title: 'Manzil al-Qamar', value: 'Al-Thurayya (Pleiades)', sub: '28 Sacred Lunar Mansions', icon: Moon, color: 'text-cyan-400' },
+        card3: { title: 'Sahm al-Sa\'ada', value: 'Part of Fortune (H7)', sub: 'Classical Arabic Lot', icon: Compass, color: 'text-emerald-400' },
+        card4: { title: 'Sa\'at al-Kawakib', value: 'Hour of Mushtari (Jupiter)', sub: 'Active Planetary Governor', icon: Clock, color: 'text-purple-400', progress: 75 }
+      };
+    } else if (currentTradition.includes('western') || currentTradition.includes('hellenistic')) {
+      return {
+        card1: { title: 'Tropical Sun', value: astroData.sunSign, sub: 'Ecliptic Ego & Solar Purpose', icon: Sun, color: 'text-amber-400' },
+        card2: { title: 'Tropical Moon', value: `${astroData.moonSign} • Waxing`, sub: 'Emotional Rhythm & Phase', icon: Moon, color: 'text-cyan-400' },
+        card3: { title: 'Rising & Midheaven', value: `${astroData.ascendant} / MC Taurus`, sub: 'Horizon & Career Zenith', icon: Compass, color: 'text-indigo-400' },
+        card4: { title: 'Major Transit Aspect', value: 'Sun Sextile Mars (3.4σ)', sub: 'Current Applying Transit', icon: Sparkles, color: 'text-purple-400', progress: 88 }
+      };
+    } else if (currentTradition.includes('kp')) {
+      return {
+        card1: { title: 'KP Asc Sub-Lord', value: 'Jupiter-Saturn-Venus', sub: '249 Table Sub-Division', icon: Star, color: 'text-amber-400' },
+        card2: { title: 'Moon Star Lord', value: `${astroData.nakshatra}`, sub: 'Constellation Governor', icon: Moon, color: 'text-cyan-400' },
+        card3: { title: 'Ruling Planets (RP)', value: 'Sun / Mer / Jup', sub: 'Instant Ephemeris RP', icon: Compass, color: 'text-indigo-400' },
+        card4: { title: 'Active Dasha-Bhukti', value: astroData.dasha, sub: `${astroData.dashaProgress}% Completed`, icon: Clock, color: 'text-purple-400', progress: astroData.dashaProgress }
+      };
+    } else if (currentTradition.includes('jaimini')) {
+      return {
+        card1: { title: 'Atmakaraka (AK)', value: 'Sun (Surya 28°42\')', sub: 'Soul King & Highest Degree', icon: Award, color: 'text-amber-400' },
+        card2: { title: 'Amatyakaraka (AmK)', value: 'Jupiter (Guru 24°10\')', sub: 'Executive Intellect & Career', icon: Star, color: 'text-cyan-400' },
+        card3: { title: 'Arudha Lagna (AL)', value: 'Simha (Leo Arudha)', sub: 'Manifested Public Image', icon: Compass, color: 'text-emerald-400' },
+        card4: { title: 'Chara Dasha', value: 'Pisces - Scorpio Period', sub: 'Sign-Based Sutra Timing', icon: Clock, color: 'text-purple-400', progress: 60 }
+      };
+    } else if (currentTradition.includes('chinese') || currentTradition.includes('bazi')) {
+      return {
+        card1: { title: 'Day Master (日元)', value: 'Yang Earth Wu (戊土)', sub: 'Core Element Constitution', icon: Sun, color: 'text-amber-400' },
+        card2: { title: 'Four Pillars (四柱)', value: 'Wood Dragon • Fire Horse', sub: 'Year & Month Pillars', icon: Layers, color: 'text-cyan-400' },
+        card3: { title: 'Five Elements (五行)', value: 'Fire 38% • Earth 32%', sub: 'Favorable Element: Water', icon: Compass, color: 'text-emerald-400' },
+        card4: { title: '10-Yr Da Yun (大运)', value: 'Metal Monkey Luck Pillar', sub: 'Decade Cycle 2024–2034', icon: Clock, color: 'text-purple-400', progress: 40 }
+      };
+    } else if (currentTradition.includes('mayan')) {
+      return {
+        card1: { title: 'Tzolk\'in Solar Seal', value: 'White Magnetic Wizard', sub: 'Kin 14 • Timelessness', icon: Sun, color: 'text-amber-400' },
+        card2: { title: 'Galactic Tone', value: 'Tone 1 — Magnetic Tone', sub: 'Tone of Purpose & Union', icon: Moon, color: 'text-cyan-400' },
+        card3: { title: 'Wavespell Cycle', value: 'Wizard Wavespell (13 Days)', sub: 'Spiritual Intent & Evolution', icon: Compass, color: 'text-emerald-400' },
+        card4: { title: 'Destiny Oracle', value: 'Guide: White Worldbridger', sub: 'Higher Self & Support Kin', icon: Sparkles, color: 'text-purple-400', progress: 70 }
+      };
+    } else {
+      // Vedic Parashari (Default)
+      return {
+        card1: { title: 'Sun Sign (Surya)', value: astroData.sunSign, sub: 'Core Vitality & Will', icon: Sun, color: 'text-amber-400' },
+        card2: { title: 'Moon & Nakshatra', value: astroData.nakshatra, sub: astroData.moonSign, icon: Moon, color: 'text-cyan-400' },
+        card3: { title: 'Ascendant (Lagna)', value: astroData.ascendant, sub: '1st House Horizon', icon: Compass, color: 'text-indigo-400' },
+        card4: { title: 'Current Dasha', value: astroData.dasha, sub: `${astroData.dashaProgress}% Completed`, icon: Clock, color: 'text-purple-400', progress: astroData.dashaProgress }
+      };
+    }
+  }, [currentTradition, astroData]);
+
   const handleOpenWhy = (payload?: Partial<OmniWhyDrawerProps>) => {
     setSelectedWhyPayload(payload || {});
     setWhyModalOpen(true);
@@ -321,76 +378,70 @@ export default function OmniSimpleHome({
               style={{ padding: '1px' }}
             />
             <div className="relative p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#0C1322] via-[#0F172A] to-[#0C1322] backdrop-blur-xl grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-              {/* Sun Placement */}
+              {/* Card 1 */}
               <motion.div
                 whileHover={{ scale: 1.04, y: -2 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 className="p-3 rounded-xl bg-white/[0.03] hover:bg-amber-500/5 border border-white/5 hover:border-amber-400/30 space-y-1 transition-colors cursor-default"
               >
-                <div className="flex items-center gap-1.5 text-amber-400 text-xs font-mono font-bold">
-                  <motion.div animate={{ rotate: [0, 360] }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}>
-                    <Sun className="w-3.5 h-3.5" />
-                  </motion.div>
-                  <span>Sun Sign</span>
+                <div className={`flex items-center gap-1.5 ${traditionPlacements.card1.color} text-xs font-mono font-bold`}>
+                  <traditionPlacements.card1.icon className="w-3.5 h-3.5" />
+                  <span>{traditionPlacements.card1.title}</span>
                 </div>
-                <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{astroData.sunSign}</p>
-                <span className="text-[10px] text-slate-400 font-mono">Core Vitality & Will</span>
+                <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{traditionPlacements.card1.value}</p>
+                <span className="text-[10px] text-slate-400 font-mono">{traditionPlacements.card1.sub}</span>
               </motion.div>
 
-              {/* Moon Placement & Nakshatra */}
+              {/* Card 2 */}
               <motion.div
                 whileHover={{ scale: 1.04, y: -2 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 className="p-3 rounded-xl bg-white/[0.03] hover:bg-cyan-500/5 border border-white/5 hover:border-cyan-400/30 space-y-1 transition-colors cursor-default"
               >
-                <div className="flex items-center gap-1.5 text-cyan-400 text-xs font-mono font-bold">
-                  <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.8, 1, 0.8] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}>
-                    <Moon className="w-3.5 h-3.5" />
-                  </motion.div>
-                  <span>Moon & Star</span>
+                <div className={`flex items-center gap-1.5 ${traditionPlacements.card2.color} text-xs font-mono font-bold`}>
+                  <traditionPlacements.card2.icon className="w-3.5 h-3.5" />
+                  <span>{traditionPlacements.card2.title}</span>
                 </div>
-                <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{astroData.nakshatra}</p>
-                <span className="text-[10px] text-slate-400 font-mono">{astroData.moonSign}</span>
+                <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{traditionPlacements.card2.value}</p>
+                <span className="text-[10px] text-slate-400 font-mono">{traditionPlacements.card2.sub}</span>
               </motion.div>
 
-              {/* Rising / Ascendant */}
+              {/* Card 3 */}
               <motion.div
                 whileHover={{ scale: 1.04, y: -2 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 className="p-3 rounded-xl bg-white/[0.03] hover:bg-indigo-500/5 border border-white/5 hover:border-indigo-400/30 space-y-1 transition-colors cursor-default"
               >
-                <div className="flex items-center gap-1.5 text-indigo-400 text-xs font-mono font-bold">
-                  <motion.div animate={{ rotate: [0, 15, -15, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}>
-                    <Compass className="w-3.5 h-3.5" />
-                  </motion.div>
-                  <span>Ascendant (Lagna)</span>
+                <div className={`flex items-center gap-1.5 ${traditionPlacements.card3.color} text-xs font-mono font-bold`}>
+                  <traditionPlacements.card3.icon className="w-3.5 h-3.5" />
+                  <span>{traditionPlacements.card3.title}</span>
                 </div>
-                <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{astroData.ascendant}</p>
-                <span className="text-[10px] text-slate-400 font-mono">1st House Horizon</span>
+                <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{traditionPlacements.card3.value}</p>
+                <span className="text-[10px] text-slate-400 font-mono">{traditionPlacements.card3.sub}</span>
               </motion.div>
 
-              {/* Current Mahadasha */}
+              {/* Card 4 */}
               <motion.div
                 whileHover={{ scale: 1.04, y: -2 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                 className="p-3 rounded-xl bg-white/[0.03] hover:bg-purple-500/5 border border-white/5 hover:border-purple-400/30 space-y-1 transition-colors cursor-default"
               >
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-purple-400 text-xs font-mono font-bold">
-                    <motion.div animate={{ rotate: [0, -360] }} transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}>
-                      <Clock className="w-3.5 h-3.5" />
-                    </motion.div>
-                    <span>Current Dasha</span>
+                  <div className={`flex items-center gap-1.5 ${traditionPlacements.card4.color} text-xs font-mono font-bold`}>
+                    <traditionPlacements.card4.icon className="w-3.5 h-3.5" />
+                    <span>{traditionPlacements.card4.title}</span>
                   </div>
-                  <span className="text-[9px] font-mono text-purple-300 bg-purple-500/15 px-1.5 py-0.5 rounded">
-                    {astroData.dashaProgress}%
-                  </span>
+                  {traditionPlacements.card4.progress !== undefined && (
+                    <span className="text-[9px] font-mono text-purple-300 bg-purple-500/15 px-1.5 py-0.5 rounded">
+                      {traditionPlacements.card4.progress}%
+                    </span>
+                  )}
                 </div>
-                <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{astroData.dasha}</p>
+                <p className="text-xs sm:text-sm font-bold text-white tracking-wide truncate">{traditionPlacements.card4.value}</p>
                 <div className="w-full bg-white/10 h-1 rounded-full overflow-hidden mt-1">
                   <motion.div
                     initial={{ width: 0 }}
-                    animate={{ width: `${astroData.dashaProgress}%` }}
+                    animate={{ width: `${traditionPlacements.card4.progress || 60}%` }}
                     transition={{ duration: 1.5, ease: 'easeOut', delay: 0.3 }}
                     className="bg-gradient-to-r from-purple-400 to-indigo-400 h-full rounded-full"
                   />

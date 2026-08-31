@@ -9,7 +9,7 @@ export type SupportedLanguage =
   | 'en' | 'hi' | 'bn' | 'ta' | 'te' | 'mr' | 'gu' | 'kn' | 'ml' | 'pa' 
   | 'ur' | 'ar' | 'es' | 'fr' | 'de' | 'pt' | 'ru' | 'zh' | 'ja' | 'ko' 
   | string;
-export type AstrologySystemMode = 'vedic' | 'western' | 'islamic' | 'chinese';
+export type AstrologySystemMode = 'vedic' | 'western' | 'islamic' | 'chinese' | 'kp' | 'jaimini' | 'mayan' | string;
 export type DateFormatMode = 'YYYY-MM-DD' | 'DD/MM/YYYY' | 'MM/DD/YYYY';
 export type AsrJuristicMethod = 'standard' | 'hanafi';
 export type ThemeMode = 'dark' | 'cosmic' | 'gold';

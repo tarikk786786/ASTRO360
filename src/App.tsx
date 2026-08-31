@@ -516,7 +516,12 @@ export default function AppContent() {
             canGoBack={navigationHistory.length > 1}
             pageTitle={getPageTitle()}
             userProfile={userProfile}
-            onUpdateSystem={(sys) => setUserProfile({ ...userProfile, preferredSystem: sys })}
+            onUpdateSystem={(sys) => {
+              const updated = { ...userProfile, preferredSystem: sys };
+              setUserProfile(updated);
+              saveProfile(updated);
+              updateConfig({ astrologySystem: sys as any });
+            }}
           />
         )}
 
