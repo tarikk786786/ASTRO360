@@ -3,16 +3,17 @@ import { motion } from 'motion/react';
 import { 
   Sparkles, User, Calendar, Clock, MapPin, 
   ArrowRight, ShieldCheck, CheckCircle2, Compass, Layers,
-  Briefcase, Heart, DollarSign, TrendingUp, Sun, Moon
+  Briefcase, Heart, DollarSign, TrendingUp, Sun, Moon, X
 } from 'lucide-react';
 import type { UserProfile } from '../../types';
 
 interface OmniOnboardingWizardProps {
   onComplete: (profile: UserProfile) => void;
   initialPreset?: Partial<UserProfile>;
+  onClose?: () => void;
 }
 
-export default function OmniOnboardingWizard({ onComplete, initialPreset }: OmniOnboardingWizardProps) {
+export default function OmniOnboardingWizard({ onComplete, initialPreset, onClose }: OmniOnboardingWizardProps) {
   const [name, setName] = useState(initialPreset?.name || '');
   const [dob, setDob] = useState(initialPreset?.dob || '1998-06-15');
   const [time, setTime] = useState(initialPreset?.time || '12:00');
@@ -20,7 +21,6 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
   const [location, setLocation] = useState(initialPreset?.location || 'London, UK');
   const [primaryFocus, setPrimaryFocus] = useState<'career' | 'love' | 'money' | 'timing' | 'growth'>('career');
   const [preferredSystem, setPreferredSystem] = useState<'vedic' | 'western' | 'chinese' | 'universal'>('vedic');
-  const [viewDensity, setViewDensity] = useState<'simple' | 'deep'>('simple');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const popularCities = [
@@ -62,15 +62,23 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center p-4 sm:p-6 text-left">
+    <div className="fixed inset-0 z-50 bg-[#060A12]/92 backdrop-blur-xl overflow-y-auto flex items-center justify-center p-4 sm:p-6 text-left">
       <motion.div
-        initial={{ opacity: 0, scale: 0.97, y: 15 }}
+        initial={{ opacity: 0, scale: 0.96, y: 12 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="w-full max-w-2xl bg-gradient-to-br from-[#0B1220] via-[#0F172A] to-[#070B14] border-2 border-amber-400/35 rounded-3xl p-6 sm:p-9 shadow-2xl space-y-6 text-white relative overflow-hidden"
+        className="w-full max-w-2xl bg-[#0B1220] border-2 border-amber-400/35 rounded-3xl p-6 sm:p-9 shadow-2xl shadow-black/90 space-y-6 text-white relative overflow-hidden my-auto"
       >
-        {/* Subtle glow background */}
-        <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
+        {/* Close Button if onClose is provided */}
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute top-5 right-5 text-slate-400 hover:text-white p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors z-20 cursor-pointer"
+            aria-label="Close"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        )}
 
         {/* Header */}
         <div className="space-y-2 border-b border-white/10 pb-5 relative z-10">
@@ -104,7 +112,7 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Alexander Sterling or Seeker"
               required
-              className="w-full bg-[#060A12] border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400 font-sans shadow-inner"
+              className="w-full bg-[#060A12] border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/30 font-sans shadow-inner"
             />
           </div>
 
@@ -120,7 +128,7 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
                 value={dob}
                 onChange={(e) => setDob(e.target.value)}
                 required
-                className="w-full bg-[#060A12] border border-white/15 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-amber-400 shadow-inner"
+                className="w-full bg-[#060A12] border border-white/15 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/30 shadow-inner"
               />
             </div>
 
@@ -143,7 +151,7 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
                 disabled={unknownTime}
-                className={`w-full bg-[#060A12] border border-white/15 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-amber-400 shadow-inner ${unknownTime ? 'opacity-40 cursor-not-allowed' : ''}`}
+                className={`w-full bg-[#060A12] border border-white/15 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/30 shadow-inner ${unknownTime ? 'opacity-40 cursor-not-allowed' : ''}`}
               />
             </div>
           </div>
@@ -160,7 +168,7 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
               onChange={(e) => setLocation(e.target.value)}
               placeholder="e.g. London, United Kingdom or Mumbai, India"
               required
-              className="w-full bg-[#060A12] border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400 font-sans shadow-inner"
+              className="w-full bg-[#060A12] border border-white/15 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/30 font-sans shadow-inner"
             />
             {/* Quick city presets */}
             <div className="flex flex-wrap gap-1.5 pt-1">
@@ -172,8 +180,8 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
                   onClick={() => setLocation(city)}
                   className={`text-[10px] px-2 py-0.5 rounded-lg border transition-all cursor-pointer ${
                     location === city
-                      ? 'bg-amber-400/20 border-amber-400/40 text-amber-300'
-                      : 'bg-white/5 border-white/10 text-slate-400 hover:text-white'
+                      ? 'bg-amber-400/20 border-amber-400/40 text-amber-300 font-bold'
+                      : 'bg-[#060A12] border-white/10 text-slate-400 hover:text-white'
                   }`}
                 >
                   {city}
@@ -275,4 +283,3 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset }: Omni
     </div>
   );
 }
-
