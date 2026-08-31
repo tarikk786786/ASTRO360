@@ -33,6 +33,7 @@ import DashboardSubNav from './ui/DashboardSubNav';
 import PlanetaryAspectGraph from './PlanetaryAspectGraph';
 import CosmicAnalyticsKPI from './CosmicAnalyticsKPI';
 import EphemerisDataTable from './EphemerisDataTable';
+import CosmicLiveClockBadge from './ui/CosmicLiveClockBadge';
 import CosmicTransitCalendar from './CosmicTransitCalendar';
 import DailyMuhurtaPlanner from './DailyMuhurtaPlanner';
 import LunarMansionsWheel from './LunarMansionsWheel';
@@ -401,29 +402,6 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
     return (dict as any)[selectedLanguage] || dict['en'];
   }, [selectedLanguage]);
 
-  // Accurate Local Time Telemetry with Timezone Abbreviation
-  const [currentTimeStr, setCurrentTimeStr] = useState<string>('');
-  const [timeZoneAbbr, setTimeZoneAbbr] = useState<string>('');
-
-  useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      setCurrentTimeStr(now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
-      try {
-        const parts = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(now);
-        const tz = parts.find(p => p.type === 'timeZoneName')?.value || '';
-        setTimeZoneAbbr(tz);
-      } catch {
-        setTimeZoneAbbr('LOCAL');
-      }
-    };
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const todayDateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
-
   // Dynamic Astronomical Position Calculations from target DOB & time
   const planetPositions: PlanetPosition[] = useMemo(() => {
     try {
@@ -688,7 +666,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
               </span>
             </div>
             <p className="text-[11px] sm:text-xs text-[#94A3B8] font-mono">
-              {todayDateStr} • <span className="text-[#06B6D4] font-semibold">{currentTimeStr || '12:00:00 PM'}</span> <span className="text-white font-bold">{timeZoneAbbr}</span>
+              <CosmicLiveClockBadge />
             </p>
           </div>
 
@@ -794,7 +772,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
                         Daily Cosmic Intelligence
                       </h2>
                       <p className="text-[11px] sm:text-xs text-amber-300/80 font-mono font-medium tracking-wide">
-                        Real-time Ephemeris Telemetry • {todayDateStr}
+                        Real-time Ephemeris Telemetry • {new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}
                       </p>
                     </div>
                   </div>

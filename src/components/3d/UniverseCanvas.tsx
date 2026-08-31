@@ -13,8 +13,8 @@ export default function UniverseCanvas() {
       <ErrorBoundary fallback={<div />}>
         <Canvas
           camera={{ position: [0, 20, 50], fov: 45, near: 0.1, far: 10000 }}
-          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-          dpr={[1, 1.5]}
+          gl={{ antialias: false, alpha: true, powerPreference: 'default' }}
+          dpr={[1, 1.25]}
         >
           <Suspense fallback={null}>
             {/* Lighting */}
