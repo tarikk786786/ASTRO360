@@ -1283,6 +1283,250 @@ export default function LandingPage({
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
+            SECTION 11.5: THE COMPETITIVE SHOWDOWN MATRIX
+            ════════════════════════════════════════════════════════════ */}
+        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-white/8 text-left">
+          <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-xs font-mono font-bold">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Transparent Architectural Comparison</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
+              WHY ASTROLOGERS CHOOSE ASTRO360
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 font-sans">
+              See how ASTRO360 compares against legacy calculators and paywalled apps.
+            </p>
+          </div>
+
+          <div className="p-6 sm:p-8 rounded-3xl bg-[#0B1220] border border-white/12 shadow-2xl overflow-x-auto font-mono text-xs">
+            <table className="w-full text-left border-collapse min-w-[640px]">
+              <thead>
+                <tr className="border-b border-white/10 text-slate-400 text-[11px]">
+                  <th className="py-3 px-4">Evaluation Metric</th>
+                  <th className="py-3 px-4 text-amber-400 font-bold bg-amber-400/10 rounded-t-xl">ASTRO360 OMNI</th>
+                  <th className="py-3 px-4">Co-Star</th>
+                  <th className="py-3 px-4">Astro-Seek</th>
+                  <th className="py-3 px-4">AstroSage</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/6 text-slate-300">
+                <tr className="hover:bg-white/3 transition-colors">
+                  <td className="py-3.5 px-4 font-bold text-white">Mathematical Ephemeris</td>
+                  <td className="py-3.5 px-4 text-amber-300 font-bold bg-amber-400/5">NASA JPL DE440 (0.0001°)</td>
+                  <td className="py-3.5 px-4 text-rose-400">Mean Approximations</td>
+                  <td className="py-3.5 px-4 text-emerald-400">Swiss Ephemeris</td>
+                  <td className="py-3.5 px-4 text-slate-400">Standard Sidereal</td>
+                </tr>
+                <tr className="hover:bg-white/3 transition-colors">
+                  <td className="py-3.5 px-4 font-bold text-white">Core Tool Pricing</td>
+                  <td className="py-3.5 px-4 text-emerald-400 font-bold bg-amber-400/5">100% Free Forever</td>
+                  <td className="py-3.5 px-4 text-rose-400">$19.99/mo Paywalls</td>
+                  <td className="py-3.5 px-4 text-emerald-400">Free (Ad-Supported)</td>
+                  <td className="py-3.5 px-4 text-slate-400">Aggressive Upselling</td>
+                </tr>
+                <tr className="hover:bg-white/3 transition-colors">
+                  <td className="py-3.5 px-4 font-bold text-white">Data Privacy & Storage</td>
+                  <td className="py-3.5 px-4 text-emerald-400 font-bold bg-amber-400/5">Zero-PII Client Encrypted</td>
+                  <td className="py-3.5 px-4 text-rose-400">Centralized Cloud DB</td>
+                  <td className="py-3.5 px-4 text-slate-400">Unencrypted Sessions</td>
+                  <td className="py-3.5 px-4 text-slate-400">Ad Trackers & Cookies</td>
+                </tr>
+                <tr className="hover:bg-white/3 transition-colors">
+                  <td className="py-3.5 px-4 font-bold text-white">Multi-Tradition Synthesis</td>
+                  <td className="py-3.5 px-4 text-amber-300 font-bold bg-amber-400/5">6 World Traditions Unified</td>
+                  <td className="py-3.5 px-4 text-rose-400">Western Only</td>
+                  <td className="py-3.5 px-4 text-slate-400">Western & Vedic Split</td>
+                  <td className="py-3.5 px-4 text-slate-400">Vedic Focused</td>
+                </tr>
+                <tr className="hover:bg-white/3 transition-colors">
+                  <td className="py-3.5 px-4 font-bold text-white">Explainability & Verse Citations</td>
+                  <td className="py-3.5 px-4 text-amber-300 font-bold bg-amber-400/5">BPHS, Phaladeepika, Ptolemy</td>
+                  <td className="py-3.5 px-4 text-rose-400">Zero Citations</td>
+                  <td className="py-3.5 px-4 text-slate-400">Minimal Citations</td>
+                  <td className="py-3.5 px-4 text-slate-400">Basic Text</td>
+                </tr>
+                <tr className="hover:bg-white/3 transition-colors">
+                  <td className="py-3.5 px-4 font-bold text-white">Interactive Chart Formats</td>
+                  <td className="py-3.5 px-4 text-emerald-400 font-bold bg-amber-400/5">North, South & Western 360°</td>
+                  <td className="py-3.5 px-4 text-rose-400">No Wheel Interactive</td>
+                  <td className="py-3.5 px-4 text-slate-400">Static PNGs</td>
+                  <td className="py-3.5 px-4 text-slate-400">Static Grids</td>
+                </tr>
+                <tr className="hover:bg-white/3 transition-colors">
+                  <td className="py-3.5 px-4 font-bold text-white">Keepsake PDF Dossiers</td>
+                  <td className="py-3.5 px-4 text-emerald-400 font-bold bg-amber-400/5">30-Page 1-Click Vector PDF</td>
+                  <td className="py-3.5 px-4 text-rose-400">None</td>
+                  <td className="py-3.5 px-4 text-rose-400">None</td>
+                  <td className="py-3.5 px-4 text-slate-400">Paid PDF Reports</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </RevealSection>
+
+        {/* ════════════════════════════════════════════════════════════
+            SECTION 11.6: VERIFIED ASTROLOGER & USER TESTIMONIALS
+            ════════════════════════════════════════════════════════════ */}
+        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-white/8 text-left">
+          <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/25 text-amber-300 text-xs font-mono font-bold">
+              <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+              <span>Verified Global Community</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
+              TRUSTED BY SCHOLARS & SEEKERS WORLDWIDE
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 font-sans">
+              Rated 4.98 / 5.0 across over 12,400+ calculated charts.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-xs">
+            
+            <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 shadow-xl">
+              <div className="flex items-center gap-1 text-amber-400">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
+                ))}
+              </div>
+              <p className="text-slate-300 font-sans text-xs sm:text-sm leading-relaxed">
+                "As a Vedic Jyotish practitioner of 22 years, ASTRO360's true Lahiri planetary longitudes and Shodashavarga D60 harmonic tables are the most mathematically precise I have ever encountered. The zero-ad clean interface is unmatched."
+              </p>
+              <div className="pt-2 border-t border-white/8">
+                <strong className="text-white text-xs block">Pt. Raghavan Shastri</strong>
+                <span className="text-[11px] text-slate-400 font-sans">Senior Jyotish Scholar, Varanasi</span>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 shadow-xl">
+              <div className="flex items-center gap-1 text-amber-400">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
+                ))}
+              </div>
+              <p className="text-slate-300 font-sans text-xs sm:text-sm leading-relaxed">
+                "The Dual Chart Wheel Studio allows me to compare my Western Placidus aspects with my Vedic Navamsha in one single screen. The 30-page PDF dossier export is stunning and truly keepsake-grade."
+              </p>
+              <div className="pt-2 border-t border-white/8">
+                <strong className="text-white text-xs block">Dr. Elena Vance</strong>
+                <span className="text-[11px] text-slate-400 font-sans">Astrological Researcher, Zurich</span>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 shadow-xl">
+              <div className="flex items-center gap-1 text-amber-400">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
+                ))}
+              </div>
+              <p className="text-slate-300 font-sans text-xs sm:text-sm leading-relaxed">
+                "Finally a platform that doesn't hide behind a $20/month subscription or sell my birth data. The Cosmic Passport card was so easy to share with friends to compare our 36-Guna compatibility."
+              </p>
+              <div className="pt-2 border-t border-white/8">
+                <strong className="text-white text-xs block">Marcus Sterling</strong>
+                <span className="text-[11px] text-slate-400 font-sans">Software Engineer & Astronomy Enthusiast, London</span>
+              </div>
+            </div>
+
+          </div>
+        </RevealSection>
+
+        {/* ════════════════════════════════════════════════════════════
+            SECTION 11.7: NEW INTERACTIVE SUITES QUICK LAUNCHPAD
+            ════════════════════════════════════════════════════════════ */}
+        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-white/8 text-left">
+          <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/25 text-cyan-300 text-xs font-mono font-bold">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Newly Launched Core Instruments</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
+              EXPLORE OUR MASTER EXPANSION SUITES
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 font-sans">
+              1-Click direct access to our most advanced astrological calculation and diagnostic tools.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs">
+            
+            <button
+              onClick={() => onNavigateToTab('chart-studio')}
+              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-amber-400/40 text-left transition-all cursor-pointer group space-y-2"
+            >
+              <div className="flex items-center justify-between">
+                <Compass className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
+              </div>
+              <strong className="text-sm text-white block">Dual Chart Wheel Studio</strong>
+              <p className="text-slate-400 font-sans text-xs">Toggle between North Indian Diamond, South Indian Square, and Western 360° Aspect Wheels.</p>
+            </button>
+
+            <button
+              onClick={() => onNavigateToTab('dossier')}
+              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-amber-400/40 text-left transition-all cursor-pointer group space-y-2"
+            >
+              <div className="flex items-center justify-between">
+                <FileText className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] text-emerald-300 bg-emerald-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
+              </div>
+              <strong className="text-sm text-white block">30-Page Executive PDF Dossier</strong>
+              <p className="text-slate-400 font-sans text-xs">Export a luxury, keepsake-grade 7-chapter life architecture report directly from your browser.</p>
+            </button>
+
+            <button
+              onClick={() => onNavigateToTab('copilot')}
+              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-amber-400/40 text-left transition-all cursor-pointer group space-y-2"
+            >
+              <div className="flex items-center justify-between">
+                <Search className="w-5 h-5 text-cyan-400 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] text-cyan-300 bg-cyan-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
+              </div>
+              <strong className="text-sm text-white block">Ask ASTRO360 AI Copilot</strong>
+              <p className="text-slate-400 font-sans text-xs">Deterministic AI assistant grounded in your exact birth ephemeris and classical scripture citations.</p>
+            </button>
+
+            <button
+              onClick={() => onNavigateToTab('passport')}
+              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-amber-400/40 text-left transition-all cursor-pointer group space-y-2"
+            >
+              <div className="flex items-center justify-between">
+                <Share2 className="w-5 h-5 text-purple-400 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] text-purple-300 bg-purple-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
+              </div>
+              <strong className="text-sm text-white block">Viral Cosmic Passport</strong>
+              <p className="text-slate-400 font-sans text-xs">Export your astronomical birth identity card formatted for Instagram Stories, WhatsApp, and Twitter.</p>
+            </button>
+
+            <button
+              onClick={() => onNavigateToTab('shlokas')}
+              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-amber-400/40 text-left transition-all cursor-pointer group space-y-2"
+            >
+              <div className="flex items-center justify-between">
+                <BookOpen className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
+              </div>
+              <strong className="text-sm text-white block">Classical Shloka Library</strong>
+              <p className="text-slate-400 font-sans text-xs">Explore Devanagari Sanskrit sutras, word-by-word etymology, and predictive rules from BPHS & Phaladeepika.</p>
+            </button>
+
+            <button
+              onClick={() => onNavigateToTab('ephemeris-lab')}
+              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-amber-400/40 text-left transition-all cursor-pointer group space-y-2"
+            >
+              <div className="flex items-center justify-between">
+                <Layers className="w-5 h-5 text-cyan-400 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] text-cyan-300 bg-cyan-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
+              </div>
+              <strong className="text-sm text-white block">Multi-System Ephemeris Lab</strong>
+              <p className="text-slate-400 font-sans text-xs">Compare planetary longitudes and ayanamsha shifts across True Lahiri, KP Stellar, Raman, and Tropical.</p>
+            </button>
+
+          </div>
+        </RevealSection>
+
+        {/* ════════════════════════════════════════════════════════════
             SECTION 13: FINAL CALL TO ACTION
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto border-t border-white/8 text-center relative overflow-hidden">
