@@ -237,12 +237,48 @@ export const SEO_REGISTRY: Record<string, SEOMetadata> = {
     title: 'Free Online Astrology Tools & Ephemeris Calculators',
     description: 'Access 8 free, ad-free astronomical calculators: Birth Chart, Moon Sign, Rising Sign, Nakshatra, Panchanga, and Compatibility.',
     keywords: 'free astrology tools, free birth chart, free kundli, free panchang, astrology calculators',
-    canonicalUrl: 'https://astro.tarikislam.in/free-tools',
+    canonicalUrl: 'https://astro-360-neon.vercel.app/?tab=free-tools',
     ogType: 'website',
     schemaType: 'SoftwareApplication',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro.tarikislam.in/' },
-      { name: 'Free Tools', item: 'https://astro.tarikislam.in/free-tools' }
+      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
+      { name: 'Free Tools', item: 'https://astro-360-neon.vercel.app/?tab=free-tools' }
+    ]
+  },
+  passport: {
+    title: 'Cosmic Passport: Shareable Astronomical Identity Card',
+    description: 'Generate your free, shareable Cosmic Passport card for Instagram Stories, WhatsApp, and Twitter with NASA JPL DE440 coordinates.',
+    keywords: 'cosmic passport, astrology share card, instagram story birth chart, shareable natal chart',
+    canonicalUrl: 'https://astro-360-neon.vercel.app/?tab=passport',
+    ogType: 'website',
+    schemaType: 'SoftwareApplication',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
+      { name: 'Cosmic Passport', item: 'https://astro-360-neon.vercel.app/?tab=passport' }
+    ]
+  },
+  widgets: {
+    title: 'Free Embeddable Astrology Widgets for Webmasters & Bloggers',
+    description: 'Embed live Vedic Panchanga, 24-Hour Planetary Horas, Moon Phase, and 36-Guna Matcher into your blog or website with 1 line of HTML.',
+    keywords: 'astrology widgets, embeddable panchang widget, free horoscope widget, wordpress astrology embed',
+    canonicalUrl: 'https://astro-360-neon.vercel.app/?tab=widgets',
+    ogType: 'website',
+    schemaType: 'SoftwareApplication',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
+      { name: 'Embeddable Widgets', item: 'https://astro-360-neon.vercel.app/?tab=widgets' }
+    ]
+  },
+  directory: {
+    title: 'Global Celebrity Astrological Ephemeris & Knowledge Directory',
+    description: 'Explore verified birth charts of historic luminaries (Einstein, Jobs, Vivekananda), 108 planetary houses, and 144 zodiac compatibility combinations.',
+    keywords: 'celebrity birth charts, albert einstein kundli, steve jobs astrology, 108 planetary houses, zodiac compatibility directory',
+    canonicalUrl: 'https://astro-360-neon.vercel.app/?tab=directory',
+    ogType: 'article',
+    schemaType: 'Article',
+    breadcrumbs: [
+      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
+      { name: 'Celebrity Directory', item: 'https://astro-360-neon.vercel.app/?tab=directory' }
     ]
   }
 };
