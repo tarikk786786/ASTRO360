@@ -17,6 +17,7 @@ import InteractiveToolsSuite from './InteractiveToolsSuite';
 import OmniHeroChartStudio from './OmniHeroChartStudio';
 import OmniProductPreview from './OmniProductPreview';
 import AnimatedStarfield from './AnimatedStarfield';
+import AstroCelestialAnimation from './AstroCelestialAnimation';
 import LiveCosmicSkyStudio from './LiveCosmicSkyStudio';
 import LiveAspectariumAndLunarTracker from './LiveAspectariumAndLunarTracker';
 import LiveScriptureAndBhavaExplorer from './LiveScriptureAndBhavaExplorer';
@@ -726,6 +727,13 @@ export default function LandingPage({
               </div>
             ))}
           </div>
+        </RevealSection>
+
+        {/* ════════════════════════════════════════════════════════════
+            SECTION 2B: INTERACTIVE 3D CELESTIAL ORBITAL WHEEL
+            ════════════════════════════════════════════════════════════ */}
+        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
+          <AstroCelestialAnimation onExploreChart={() => onStartOnboarding()} />
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════

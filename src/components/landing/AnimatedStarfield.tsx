@@ -133,6 +133,22 @@ export default function AnimatedStarfield() {
       const scroll = scrollRef.current;
       const t = time * 0.001;
 
+      // Draw subtle ambient cosmic dust nodes
+      const nebulaPulse = Math.sin(t * 0.2) * 0.05 + 0.08;
+      const nebGrad1 = ctx.createRadialGradient(w() * 0.25, h() * 0.35, 10, w() * 0.25, h() * 0.35, w() * 0.45);
+      nebGrad1.addColorStop(0, `rgba(99, 102, 241, ${nebulaPulse})`);
+      nebGrad1.addColorStop(0.5, `rgba(56, 189, 248, ${nebulaPulse * 0.4})`);
+      nebGrad1.addColorStop(1, 'transparent');
+      ctx.fillStyle = nebGrad1;
+      ctx.fillRect(0, 0, w(), h());
+
+      const nebGrad2 = ctx.createRadialGradient(w() * 0.75, h() * 0.65, 10, w() * 0.75, h() * 0.65, w() * 0.4);
+      nebGrad2.addColorStop(0, `rgba(245, 158, 11, ${nebulaPulse * 0.6})`);
+      nebGrad2.addColorStop(0.6, `rgba(168, 85, 247, ${nebulaPulse * 0.3})`);
+      nebGrad2.addColorStop(1, 'transparent');
+      ctx.fillStyle = nebGrad2;
+      ctx.fillRect(0, 0, w(), h());
+
       // Draw stars with twinkling & parallax
       starsRef.current.forEach((star) => {
         const parallaxY = scroll * (star.layer === 0 ? 0.02 : star.layer === 1 ? 0.05 : 0.1);
@@ -150,7 +166,7 @@ export default function AnimatedStarfield() {
           ctx.beginPath();
           ctx.arc(star.x, drawY, star.radius * 3, 0, Math.PI * 2);
           const glow = ctx.createRadialGradient(star.x, drawY, 0, star.x, drawY, star.radius * 3);
-          glow.addColorStop(0, `rgba(251, 191, 36, ${opacity * 0.15})`);
+          glow.addColorStop(0, `rgba(251, 191, 36, ${opacity * 0.2})`);
           glow.addColorStop(1, 'transparent');
           ctx.fillStyle = glow;
           ctx.fill();
