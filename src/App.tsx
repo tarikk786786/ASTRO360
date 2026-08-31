@@ -99,6 +99,9 @@ const AstroOmniResearchSuite = lazy(() => import('./components/AstroOmniResearch
 const BirthTimeRectificationSuite = lazy(() => import('./components/BirthTimeRectificationSuite'));
 const AstrologicalMindMap = lazy(() => import('./components/AstrologicalMindMap'));
 const AstroCartographyMatrix = lazy(() => import('./components/AstroCartographyMatrix'));
+const CosmicPassportCard = lazy(() => import('./components/social/CosmicPassportCard'));
+const EmbeddableWidgetGenerator = lazy(() => import('./components/widgets/EmbeddableWidgetGenerator'));
+const ProgrammaticSeoDirectory = lazy(() => import('./components/seo/ProgrammaticSeoDirectory'));
 
 const STORAGE_KEY = 'astroverse_profile';
 const TAB_KEY = 'astroverse_tab';
@@ -301,7 +304,12 @@ export default function AppContent() {
       tab === 'news-intelligence' ||
       tab === 'cosmic-news' ||
       tab === 'mundane' ||
-      tab === 'news-prediction'
+      tab === 'news-prediction' ||
+      tab === 'passport' ||
+      tab === 'widgets' ||
+      tab === 'embed' ||
+      tab === 'directory' ||
+      tab === 'celebrities'
     );
     const storedOnboarded = typeof window !== 'undefined' && (localStorage.getItem('astro_has_onboarded') === 'true' || localStorage.getItem('astro_user_profile') !== null);
     const isProfileConfigured = Boolean((userProfile && userProfile.name && userProfile.name.trim().length > 0 && userProfile.dob) || storedOnboarded);
@@ -906,6 +914,9 @@ export default function AppContent() {
                   {activeTab === 'control-center' && <AstrologyControlCenter />}
                   {activeTab === 'studio' && <CosmicStudioSuite userProfile={userProfile} />}
                   {activeTab === 'horoscope' && <PremiumHoroscopeEngine userProfile={userProfile} />}
+                  {activeTab === 'passport' && <CosmicPassportCard userProfile={userProfile} onNavigateToTab={navigateTo} />}
+                  {(activeTab === 'widgets' || activeTab === 'embed') && <EmbeddableWidgetGenerator onNavigateToTab={navigateTo} />}
+                  {(activeTab === 'directory' || activeTab === 'celebrities') && <ProgrammaticSeoDirectory onNavigateToTab={navigateTo} />}
                   {TRADITIONS[activeTab] && (
                     <TraditionView
                       tradition={TRADITIONS[activeTab]}

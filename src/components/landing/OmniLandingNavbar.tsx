@@ -35,8 +35,10 @@ const ALL_TOOL_LINKS: ToolQuickLink[] = [
   { name: '24-Hour Planetary Horas', tab: 'muhurta', category: 'timing', desc: 'Diurnal planetary hour calendar for optimal action' },
   { name: 'Shubh Muhurta & Choghadiya', tab: 'muhurta', category: 'timing', desc: 'Abhijit Muhurta & auspicious decision windows' },
   { name: 'Sacred Gemstone Advisor', tab: 'gemstone-suite', category: 'remedies', desc: 'Benefic ratna recommendations with metal & finger' },
-  { name: 'Rudraksha & Seed Mantras', tab: 'mantras', category: 'remedies', desc: '1–14 Mukhi divine bead alignments' },
   { name: 'Cosmic News & Mundane Hub', tab: 'news-intelligence', category: 'labs', desc: 'Global geopolitical and financial astrology radar' },
+  { name: 'Shareable Cosmic Passport', tab: 'passport', category: 'charts', desc: '1-click viral Instagram story & WhatsApp birth chart ID' },
+  { name: 'Celebrity Charts & Directory', tab: 'directory', category: 'charts', desc: 'Verified ephemeris charts of Einstein, Jobs, Vivekananda' },
+  { name: 'Free Embeddable Widgets', tab: 'widgets', category: 'labs', desc: 'Free Panchang, Horas, and Moon Phase widgets for webmasters' },
   { name: 'SEO Keyword Research Lab', tab: 'seo-lab/keywords', category: 'labs', desc: 'Free-first search engine intelligence suite' },
   { name: 'Backlink Opportunity Lab', tab: 'seo-lab/backlinks', category: 'labs', desc: 'Discover & qualify organic editorial backlinks' },
 ];
