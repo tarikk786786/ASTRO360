@@ -1553,6 +1553,30 @@ export default function LandingPage({
               <p className="text-slate-400 font-sans text-xs">Compare planetary longitudes and ayanamsha shifts across True Lahiri, KP Stellar, Raman, and Tropical.</p>
             </button>
 
+            <button
+              onClick={() => onNavigateToTab('frequencies')}
+              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-indigo-400/40 text-left transition-all cursor-pointer group space-y-2"
+            >
+              <div className="flex items-center justify-between">
+                <Radio className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] text-indigo-300 bg-indigo-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
+              </div>
+              <strong className="text-sm text-white block">Planetary Frequency & Binaural Studio</strong>
+              <p className="text-slate-400 font-sans text-xs">Live synthesized cosmic octave tuning frequencies (Sun 126.22 Hz, Om 136.10 Hz) with binaural beats.</p>
+            </button>
+
+            <button
+              onClick={() => onNavigateToTab('sabian')}
+              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-pink-400/40 text-left transition-all cursor-pointer group space-y-2"
+            >
+              <div className="flex items-center justify-between">
+                <Sparkles className="w-5 h-5 text-pink-400 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] text-pink-300 bg-pink-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
+              </div>
+              <strong className="text-sm text-white block">Sabian Symbols 360° Degree Lab</strong>
+              <p className="text-slate-400 font-sans text-xs">Explore clairvoyant degree archetypes and evolutionary challenges across all 360 zodiac degrees.</p>
+            </button>
+
           </div>
         </RevealSection>
 
