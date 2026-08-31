@@ -135,6 +135,7 @@ function loadProfile(): UserProfile {
 function saveProfile(profile: UserProfile): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+    localStorage.setItem('astro_has_onboarded', 'true');
   } catch (e) {
     console.warn("localStorage unavailable", e);
   }
@@ -273,7 +274,7 @@ export default function AppContent() {
   }, [userProfile]);
 
   // Navigate with full history tracking & browser URL sync
-  const navigateTo = useCallback((tab: string, replace = false) => {
+  const navigateTo = useCallback((tab: string, replace = false, forceBypass = false) => {
     const isPublicTab = (
       tab === 'landing' ||
       tab === 'free-tools' ||
@@ -302,9 +303,10 @@ export default function AppContent() {
       tab === 'mundane' ||
       tab === 'news-prediction'
     );
-    const isProfileConfigured = Boolean(userProfile && userProfile.name && userProfile.name.trim().length > 0 && userProfile.dob);
+    const storedOnboarded = typeof window !== 'undefined' && (localStorage.getItem('astro_has_onboarded') === 'true' || localStorage.getItem('astro_user_profile') !== null);
+    const isProfileConfigured = Boolean((userProfile && userProfile.name && userProfile.name.trim().length > 0 && userProfile.dob) || storedOnboarded);
 
-    if (!isPublicTab && !hasOnboarded && !isProfileConfigured) {
+    if (!forceBypass && !isPublicTab && !hasOnboarded && !isProfileConfigured) {
       setLandingPreset(userProfile);
       setShowOnboarding(true);
       if (isMobile) setIsSidebarOpen(false);
@@ -735,12 +737,22 @@ export default function AppContent() {
                   {(showOnboarding || activeTab === 'onboarding') && (
                     <OmniOnboardingWizard
                       initialPreset={landingPreset}
+                      onClose={() => {
+                        setShowOnboarding(false);
+                        if (activeTab === 'onboarding') setActiveTab('landing');
+                      }}
                       onComplete={(profile) => {
                         setUserProfile(profile);
                         saveProfile(profile);
                         setHasOnboarded(true);
                         setShowOnboarding(false);
-                        navigateTo('home');
+                        setActiveTab('home');
+                        if (typeof window !== 'undefined' && window.history) {
+                          try {
+                            window.history.pushState({ tab: 'home' }, '', '?tab=home');
+                          } catch (e) {}
+                        }
+                        toast.success(`Welcome ${profile.name || 'Seeker'}! Personalized ephemeris & dashboard ready.`);
                       }}
                     />
                   )}
@@ -759,21 +771,21 @@ export default function AppContent() {
                           setUserProfile(updated);
                           saveProfile(updated);
                           setHasOnboarded(true);
-                          navigateTo('home');
+                          setShowOnboarding(false);
+                          setActiveTab('home');
+                          if (typeof window !== 'undefined' && window.history) {
+                            try {
+                              window.history.pushState({ tab: 'home' }, '', '?tab=home');
+                            } catch (e) {}
+                          }
+                          toast.success(`Profile customized for ${updated.name}!`);
                         } else {
                           setLandingPreset(preset);
                           setShowOnboarding(true);
                         }
                       }}
                       onNavigateToTab={(tab) => {
-                        if (tab === 'free-tools' || tab === 'vedic-astrology' || tab === 'western-astrology' || tab === 'panchanga' || tab === 'methodology') {
-                          navigateTo(tab);
-                        } else if (hasOnboarded || (userProfile && userProfile.dob)) {
-                          navigateTo(tab);
-                        } else {
-                          setLandingPreset(undefined);
-                          setShowOnboarding(true);
-                        }
+                        navigateTo(tab);
                       }}
                       userProfile={userProfile}
                     />

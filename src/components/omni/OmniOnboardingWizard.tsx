@@ -56,9 +56,12 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset, onClos
       primaryLifeFocus: primaryFocus.toUpperCase(),
     };
 
-    setTimeout(() => {
+    try {
       onComplete(finalProfile);
-    }, 350);
+    } catch (err) {
+      console.error("Error completing onboarding profile:", err);
+      setIsSubmitting(false);
+    }
   };
 
   return (
