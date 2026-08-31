@@ -21,6 +21,7 @@ import LiveCosmicSkyStudio from './LiveCosmicSkyStudio';
 import LiveAspectariumAndLunarTracker from './LiveAspectariumAndLunarTracker';
 import LiveScriptureAndBhavaExplorer from './LiveScriptureAndBhavaExplorer';
 import LivePlanetarySpeedAndShadbalaSuite from './LivePlanetarySpeedAndShadbalaSuite';
+import LiveMultiTraditionAndTattvaSuite from './LiveMultiTraditionAndTattvaSuite';
 import { useScrollReveal, use3DTilt, useMagneticHover, useMouseGlow } from '../../hooks/useAnimations';
 import { QuestionIntentEngine } from '../../lib/questionRouter';
 
@@ -766,6 +767,13 @@ export default function LandingPage({
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
           <LivePlanetarySpeedAndShadbalaSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
+        </RevealSection>
+
+        {/* ════════════════════════════════════════════════════════════
+            SECTION 4F: 6 WORLD TRADITIONS & 5-TATTVA CLOCK
+            ════════════════════════════════════════════════════════════ */}
+        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
+          <LiveMultiTraditionAndTattvaSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
