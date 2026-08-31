@@ -22,6 +22,7 @@ import LiveAspectariumAndLunarTracker from './LiveAspectariumAndLunarTracker';
 import LiveScriptureAndBhavaExplorer from './LiveScriptureAndBhavaExplorer';
 import LivePlanetarySpeedAndShadbalaSuite from './LivePlanetarySpeedAndShadbalaSuite';
 import LiveMultiTraditionAndTattvaSuite from './LiveMultiTraditionAndTattvaSuite';
+import LiveIngressAndRajaYogaSuite from './LiveIngressAndRajaYogaSuite';
 import { useScrollReveal, use3DTilt, useMagneticHover, useMouseGlow } from '../../hooks/useAnimations';
 import { QuestionIntentEngine } from '../../lib/questionRouter';
 
@@ -774,6 +775,13 @@ export default function LandingPage({
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
           <LiveMultiTraditionAndTattvaSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
+        </RevealSection>
+
+        {/* ════════════════════════════════════════════════════════════
+            SECTION 4G: PLANETARY INGRESSES & CLASSICAL RAJA YOGAS
+            ════════════════════════════════════════════════════════════ */}
+        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
+          <LiveIngressAndRajaYogaSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
