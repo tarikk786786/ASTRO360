@@ -389,6 +389,14 @@ export default function LandingPage({
               <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Zero PII Storage</span>
               <span className="flex items-center gap-1.5"><Scale className="w-3.5 h-3.5 text-emerald-400" /> Scripture Citations</span>
             </div>
+
+            {/* Instant Hero Chart Studio Card */}
+            <div className="pt-6 max-w-2xl mx-auto">
+              <OmniHeroChartStudio
+                onCalculate={(data) => onStartOnboarding(data)}
+                userProfile={userProfile}
+              />
+            </div>
           </motion.div>
 
           {/* ════════════════════════════════════════════════════════════
