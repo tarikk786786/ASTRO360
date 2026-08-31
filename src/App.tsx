@@ -660,7 +660,7 @@ export default function AppContent() {
                   )}
                   {activeTab === 'live-diagnostics' && <LiveCosmicDiagnostics userProfile={userProfile} />}
                   {activeTab === 'advisor' && <HolisticAdvisor userProfile={userProfile} />}
-                  {(activeTab === 'remedies' || activeTab === 'remedy') && <AstroMultiTraditionRemedySuite />}
+                  {(activeTab === 'remedies' || activeTab === 'remedy') && <AstroMultiTraditionRemedySuite userProfile={userProfile} />}
                   {activeTab === 'custom-remedies' && <CustomRemedialMediumEngine userProfile={userProfile} />}
                   {(activeTab === 'synastry' || activeTab === 'match') && <AstroSynastryMatchmaker userProfile={userProfile} />}
                   {(activeTab === 'compatibility' || activeTab === 'ashta-koota') && <OmniCompatibilityLab userProfile={userProfile} />}

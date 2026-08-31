@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Zap, Heart, Moon, Shield, Scale, Calendar, AlertTriangle, CheckCircle2, 
   Sparkles, RefreshCw, Volume2, Play, Pause, Compass, Clock, BookOpen, 
-  FileText, ShieldCheck, Sun, ArrowRight, UserCheck, Flame, Lock
+  FileText, ShieldCheck, Sun, ArrowRight, UserCheck, Flame, Lock, Globe, Star
 } from 'lucide-react';
 import type { UserProfile } from '../types';
 
@@ -16,7 +16,170 @@ export default function UniversalProblemSolverSuite({ userProfile }: UniversalPr
     'deescalator' | 'timing' | 'dispute' | 'sleep' | 'shield'
   >('deescalator');
 
-  const name = userProfile?.name || 'Tarik Islam';
+  const name = userProfile?.name || 'Seeker';
+  const currentTradition = (userProfile?.preferredSystem || 'vedic').toLowerCase();
+
+  // Multi-Tradition Content Resolver
+  const traditionContent = useMemo(() => {
+    if (currentTradition.includes('islamic')) {
+      return {
+        badge: 'Islamic Ilm al-Falak Problem Solver',
+        panicAnchorScript: 'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ',
+        panicAnchorTranslit: '"La hawla wa la quwwata illa billah" — There is no power nor strength except through Allah.',
+        panicAnchorSurah: 'Surah Al-Imran (3:173): "Hasbunallahu wa Ni\'mal Wakeel" (Allah is sufficient for us).',
+        timingSystem: 'Islamic Sa\'at al-Kawakib & Sa\'at al-Ikhtiyar',
+        timingAdviceA: 'Optimal Jupiter Hour (Sa\'at al-Mushtari) for halal business, contracts, and new enterprises.',
+        timingAdviceB: 'Mercury Hour (Sa\'at al-Utarid) for commerce, bookkeeping, publishing, and structured negotiations.',
+        timingAdviceC: 'Mars Hour (Sa\'at al-Mirrikh) — High friction risk. Postpone important negotiations.',
+        disputeRule: 'Sharia Fiqh Sulh (Reconciliation) & Covenant Fulfillment (Surah Al-Ma\'idah 5:1)',
+        disputeScript: `"Peace and blessings upon you. In the spirit of Islamic justice (Adl) and preserving mutual dignity, I propose we review our agreements according to Sharia principles with an independent neutral mediator so we resolve this amicably without grievance."`,
+        sleepProtocolName: 'Sunnah & Prophetic Sleep Readiness Protocol',
+        sleepHabits: [
+          { id: 'wudu', text: 'Perform Ablution (Wudu) before stepping into bed' },
+          { id: 'screenOff', text: 'Turn off all blue light screens 45 mins prior to sleep' },
+          { id: 'ayatulKursi', text: 'Recite Ayatul Kursi & The 3 Quls into palms and gently wipe' },
+          { id: 'rightSide', text: 'Sleep on your right side facing Qiblah (Sunnah posture)' },
+        ],
+        shieldTitle: 'Negative Energy, Evil Eye (Ayn/Hasad) & Spiritual Drain Diagnostic',
+        shieldTiers: [
+          'Tier 1 (Spiritual): Recite Morning & Evening Sunnah Adhkar (The 3 Quls + Ayatul Kursi).',
+          'Tier 2 (Physical Grounding): Bath with sea salt or Sidr leaf water; keep space clean and scented.',
+          'Tier 3 (Digital Privacy): Practice Strategic Concealment—"Seek help in fulfilling your needs by being discrete."'
+        ]
+      };
+    } else if (currentTradition.includes('chinese') || currentTradition.includes('bazi')) {
+      return {
+        badge: 'BaZi & Taoist 5-Elements Problem Solver',
+        panicAnchorScript: '心如止水 道法自然',
+        panicAnchorTranslit: '"Xin Ru Zhi Shui, Dao Fa Zi Ran" — Heart still as water; walking the natural flow of the Great Tao.',
+        panicAnchorSurah: 'Tao Te Ching Chapter 16: "Attain utmost emptiness; maintain absolute stillness."',
+        timingSystem: 'Chinese 12 Day Officers (Jian Chu) & Solar Terms',
+        timingAdviceA: 'Cheng (Success Day) in Chen Dragon Hour (07:00-09:00) for grand business launches.',
+        timingAdviceB: 'Kai (Open Day) in Wu Horse Hour (11:00-13:00) for signing partnerships and negotiations.',
+        timingAdviceC: 'Po (Destruction Day) — Avoid high-stakes financial commitments.',
+        disputeRule: 'Taoist He Wei Gui (Harmony as Highest Virtue) & 5-Element Neutralization',
+        disputeScript: `"Greetings. In accordance with mutual respect and preserving harmonious long-term relations (和为贵), let us step back and find a balanced middle path that benefits both parties and clears all blockages."`,
+        sleepProtocolName: 'Taoist Yin-Yang & Dan Tian Sleep Protocol',
+        sleepHabits: [
+          { id: 'wudu', text: 'Warm foot bath with sea salt and ginger to ground upper Yang qi' },
+          { id: 'screenOff', text: 'Extinguish digital stimulation 45 mins prior to sleep' },
+          { id: 'ayatulKursi', text: 'Practice 10 minutes of Lower Dan Tian diaphragmatic breathing' },
+          { id: 'rightSide', text: 'Align head toward North/East to harmonize with Earth\'s magnetic field' },
+        ],
+        shieldTitle: 'Sha Qi (Negative Energy) & Vitality Drain Diagnostic',
+        shieldTiers: [
+          'Tier 1 (Spiritual): Clear inner Shen with 10 minutes of silent Taoist meditation.',
+          'Tier 2 (Feng Shui): Place a 5-Element brass bell or black tourmaline near entrance to block Sha Qi.',
+          'Tier 3 (Energetic Balance): Avoid sharing unfinished creative projects with unaligned energies.'
+        ]
+      };
+    } else if (currentTradition.includes('western') || currentTradition.includes('hellenistic')) {
+      return {
+        badge: 'Western Hellenistic & Hermetic Problem Solver',
+        panicAnchorScript: 'PAX INTRINSECA • AS ABOVE SO BELOW',
+        panicAnchorTranslit: '"Mind is the master of all temporary external storms; order resides within."',
+        panicAnchorSurah: 'Hermetic Corpus: "The soul is serene, grounded in celestial geometry and reason."',
+        timingSystem: 'Ptolemaic Planetary Hours & Electional Aspects',
+        timingAdviceA: 'Solar Hour & Jupiter Hour for executive ventures, contracts, and expansion.',
+        timingAdviceB: 'Mercury Hour for correspondence, commercial transactions, and agreements.',
+        timingAdviceC: 'Mars Hour — Combative planetary tension. Avoid signing binding agreements.',
+        disputeRule: 'Classical Roman Equity & Principled Negotiation',
+        disputeScript: `"Thank you for bringing your concerns to my attention. I value transparency and fair dealing. Let us review the agreed terms objectively with a neutral arbiter to reach an equitable settlement."`,
+        sleepProtocolName: 'Circadian & Hermetic Sleep Restoration Protocol',
+        sleepHabits: [
+          { id: 'wudu', text: 'Warm epsom salt shower to relax muscular nervous tension' },
+          { id: 'screenOff', text: 'Eliminate blue-light exposure 45 mins before bedtime' },
+          { id: 'ayatulKursi', text: 'Perform 5 minutes of progressive muscle relaxation' },
+          { id: 'rightSide', text: 'Diffuse lavender & chamomile essential oils in a cool room (66°F)' },
+        ],
+        shieldTitle: 'Psychic Drain & Energy Boundary Diagnostic',
+        shieldTiers: [
+          'Tier 1 (Spiritual): Visualize an impenetrable sphere of brilliant golden solar light surrounding your aura.',
+          'Tier 2 (Physical Grounding): Take a 20-minute mineral sea salt bath to discharge electrostatic tension.',
+          'Tier 3 (Boundaries): Practice firm energetic boundaries and emotional detachment from toxic environments.'
+        ]
+      };
+    } else if (currentTradition.includes('kp')) {
+      return {
+        badge: 'KP Stellar Cuspal Sub-Lord Problem Solver',
+        panicAnchorScript: '249 SUB-LORD EQUANIMITY',
+        panicAnchorTranslit: '"Planetary transits pass like clouds; the inner witness remains immovable."',
+        panicAnchorSurah: 'KP Astrology Epistemic: "Sub-Lord precision reveals the path; decisive calm clears obstacles."',
+        timingSystem: 'KP 249 Cuspal Sub-Lord Favorable Interlinks',
+        timingAdviceA: 'Cuspal Sub-Lord signifies 2, 6, 10, 11 (Favorable for wealth and success).',
+        timingAdviceB: 'Star Lord signifies 3, 9, 11 (Excellent for agreements, travel, and documents).',
+        timingAdviceC: 'Sub-Lord signifies 6, 8, 12 (Obstruction period — postpone key decisions).',
+        disputeRule: 'KP Cuspal Interlinks Conflict Resolution',
+        disputeScript: `"I believe in resolving differences transparently and factually. Let us evaluate all points objectively so both parties can achieve a fair and mutually beneficial outcome."`,
+        sleepProtocolName: 'KP Stellar Planetary Balance Sleep Protocol',
+        sleepHabits: [
+          { id: 'wudu', text: 'Wash feet with cool water to neutralize active Mars/Rahu heat' },
+          { id: 'screenOff', text: 'Turn off phones and Wi-Fi near bed 45 mins before resting' },
+          { id: 'ayatulKursi', text: 'Recite calming planetary Beej mantras before closing eyes' },
+          { id: 'rightSide', text: 'Keep sleeping quarters minimalist, quiet, and well-ventilated' },
+        ],
+        shieldTitle: 'Planetary Malefic Affliction & Aura Shield Diagnostic',
+        shieldTiers: [
+          'Tier 1 (Spiritual): Propitiate ruling planets with dedicated daily meditation and charity.',
+          'Tier 2 (Physical Grounding): Wear favorable elemental gemstones verified by sub-lord significators.',
+          'Tier 3 (Strategic Action): Avoid initiating disputes during 6th/8th/12th sub-lord operating hours.'
+        ]
+      };
+    } else if (currentTradition.includes('jaimini')) {
+      return {
+        badge: 'Jaimini Sutras Problem Solver',
+        panicAnchorScript: 'ॐ आत्मने नमः • ATMA SHANTI',
+        panicAnchorTranslit: '"Om Atmane Namah — The eternal Atmakaraka soul is invincible and untroubled."',
+        panicAnchorSurah: 'Jaimini Upadesha Sutras: "The soul is unblemished; maya dissolves in the light of truth."',
+        timingSystem: 'Jaimini Chara Dasha & Arudha Pada Auspicious Timing',
+        timingAdviceA: 'Rajya Pada (A10) active window: Supreme for professional advancement and public recognition.',
+        timingAdviceB: 'Dhana Pada (A2/A11) active window: Optimal for commercial prosperity and agreements.',
+        timingAdviceC: 'Mrityu Pada (A8) active: Period for introspective contemplation, avoid confrontation.',
+        disputeRule: 'Jaimini Arudha Lagna & Dharma Resolution',
+        disputeScript: `"In the spirit of preserving mutual honor and righteous conduct (Dharma), I propose we come together with open hearts and resolve this matter equitably without acrimony."`,
+        sleepProtocolName: 'Jaimini Karakamsha Sattvic Sleep Protocol',
+        sleepHabits: [
+          { id: 'wudu', text: 'Wash face, hands, and feet with cool water to purify the five elements' },
+          { id: 'screenOff', text: 'Switch off all glowing electronic screens 45 mins prior to sleep' },
+          { id: 'ayatulKursi', text: 'Meditate on the Karakamsha Ishta Devata for 5 minutes' },
+          { id: 'rightSide', text: 'Ensure the bedroom is free from cluttered Arudha distractions' },
+        ],
+        shieldTitle: 'Karmic Obstruction & Aura Protection Diagnostic',
+        shieldTiers: [
+          'Tier 1 (Spiritual): Daily recitation of the Atmakaraka and Ishta Devata stotrams.',
+          'Tier 2 (Physical Grounding): Burn pure Guggul or Sandalwood incense in the living space.',
+          'Tier 3 (Dharmic Living): Perform selfless service (Seva) to dissolve past karmic impressions.'
+        ]
+      };
+    } else {
+      // Vedic Parashari
+      return {
+        badge: 'Vedic Parashari Problem Solver',
+        panicAnchorScript: 'ॐ शान्तिः शान्तिः शान्तिः • ॐ नमः शिवाय',
+        panicAnchorTranslit: '"Om Shanti Shanti Shanti — May universal peace, psychological calm, and divine stillness prevail."',
+        panicAnchorSurah: 'Brihat Parashara Hora Shastra: "Through sattvic conduct and devotion, all graha afflictions are mitigated."',
+        timingSystem: 'Vedic Abhijit Muhurta & Shubha Choghadiya',
+        timingAdviceA: 'Abhijit Muhurta (Midday Window) — Highly auspicious for launches, business, and major deals.',
+        timingAdviceB: 'Amrit & Shubha Choghadiya — Favorable for commercial transactions, travel, and agreements.',
+        timingAdviceC: 'Rahu Kalam Window — Avoid initiating high-stakes initiatives or signing contracts.',
+        disputeRule: 'Vedic Dharma, Satya & Nyaya Shastra',
+        disputeScript: `"Namaste. In accordance with Dharma and preserving goodwill, let us sit together with an impartial advisor to reach a fair, truthful, and harmonious resolution."`,
+        sleepProtocolName: 'Vedic Sattvic Sleep Readiness Protocol',
+        sleepHabits: [
+          { id: 'wudu', text: 'Wash feet with warm water and massage soles with sesame or ghee oil' },
+          { id: 'screenOff', text: 'Disconnect from all digital screens 45 mins prior to bedtime' },
+          { id: 'ayatulKursi', text: 'Chant Mahamrityunjaya Mantra or Gayatri Mantra 3 times before sleep' },
+          { id: 'rightSide', text: 'Drink warm turmeric or Brahmi herbal infusion in a quiet environment' },
+        ],
+        shieldTitle: 'Negative Graha Drishti & Aura Shield Diagnostic',
+        shieldTiers: [
+          'Tier 1 (Spiritual): Recite Hanuman Chalisa or Sudarshana Kavacha daily for psychic armor.',
+          'Tier 2 (Physical Grounding): Bath with rock salt and light a pure camphor lamp at twilight.',
+          'Tier 3 (Daan/Charity): Donate food and essentials to needy individuals on Tuesdays or Saturdays.'
+        ]
+      };
+    }
+  }, [currentTradition]);
 
   // --- TOOL 1: PANIC & ANXIETY DE-ESCALATOR STATE ---
   const [panicLevel, setPanicLevel] = useState<number>(5);
@@ -57,28 +220,20 @@ export default function UniversalProblemSolverSuite({ userProfile }: UniversalPr
 
   const calculateTiming = () => {
     const dates = [
-      { date: targetDate, window: '09:15 AM - 11:30 AM', hora: 'Jupiter Hora (Expansion)', score: 94, status: 'Highly Auspicious', advice: 'Optimal for signing contracts and launching campaigns.' },
-      { date: targetDate, window: '02:45 PM - 04:15 PM', hora: 'Mercury Hora (Commerce)', score: 88, status: 'Favorable', advice: 'Great for negotiations, publishing, and financial transfers.' },
-      { date: targetDate, window: '06:00 PM - 07:30 PM', hora: 'Mars Hora (Conflict Risk)', score: 42, status: 'Avoid High Stakes', advice: 'Potential for heated disputes. Postpone legal agreements.' }
+      { date: targetDate, window: '09:15 AM - 11:30 AM', hora: 'Primary Auspicious Period', score: 94, status: 'Highly Auspicious', advice: traditionContent.timingAdviceA },
+      { date: targetDate, window: '02:45 PM - 04:15 PM', hora: 'Secondary Commerce Period', score: 88, status: 'Favorable', advice: traditionContent.timingAdviceB },
+      { date: targetDate, window: '06:00 PM - 07:30 PM', hora: 'Friction / Inauspicious Window', score: 42, status: 'Avoid High Stakes', advice: traditionContent.timingAdviceC }
     ];
     setTimingResult(dates);
   };
 
   // --- TOOL 3: DISPUTE MEDIATOR STATE ---
   const [disputeType, setDisputeType] = useState<string>('property');
-  const [disputeOpponent, setDisputeOpponent] = useState<string>('Relative / Family Member');
+  const [disputeOpponent, setDisputeOpponent] = useState<string>('Counterparty');
   const [generatedScript, setGeneratedScript] = useState<string>('');
 
   const generateMediationPlan = () => {
-    let script = '';
-    if (disputeType === 'property') {
-      script = `"Peace be upon you. In the interest of fairness and preserving our family honor, I propose we review the documented entitlements according to established Sharia Fiqh rules. Let us involve an independent neutral mediator to arrive at an equitable resolution without enmity."`;
-    } else if (disputeType === 'contract') {
-      script = `"Thank you for bringing your concerns to my attention. I believe in fulfilling all covenants in good faith. Let us review Section X of our agreement together and schedule a 30-minute structured call to resolve any misunderstandings amicably."`;
-    } else {
-      script = `"I value our relationship above temporary misunderstandings. Let us take 24 hours to calm emotions, and then meet with the clear intention of seeking a fair solution that respects both parties' rights."`;
-    }
-    setGeneratedScript(script);
+    setGeneratedScript(traditionContent.disputeScript);
   };
 
   // --- TOOL 4: SLEEP CHAMBER STATE ---
@@ -88,7 +243,7 @@ export default function UniversalProblemSolverSuite({ userProfile }: UniversalPr
     wudu: true,
     screenOff: false,
     ayatulKursi: true,
-    coolRoom: false
+    rightSide: false
   });
 
   // --- TOOL 5: AURA SHIELD DIAGNOSTIC STATE ---
@@ -247,11 +402,14 @@ export default function UniversalProblemSolverSuite({ userProfile }: UniversalPr
               </div>
             </div>
 
-            {/* Calming Dhikr Anchor */}
+            {/* Calming Anchor */}
             <div className="p-5 rounded-2xl bg-rose-950/30 border border-rose-500/30 text-center space-y-2">
-              <p className="text-xs text-rose-300 font-bold uppercase tracking-wider font-mono">Sacred Calming Anchor</p>
-              <p className="text-2xl font-serif text-rose-100" style={{ direction: 'rtl' }}>لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ</p>
-              <p className="text-xs text-slate-300 font-sans italic font-medium">"La hawla wa la quwwata illa billah" — There is no power nor strength except through Allah.</p>
+              <p className="text-xs text-rose-300 font-bold uppercase tracking-wider font-mono">
+                {traditionContent.badge} — Sacred Calming Anchor
+              </p>
+              <p className="text-2xl font-serif text-rose-100">{traditionContent.panicAnchorScript}</p>
+              <p className="text-xs text-slate-300 font-sans italic font-medium">{traditionContent.panicAnchorTranslit}</p>
+              <p className="text-[11px] text-amber-300 font-mono">{traditionContent.panicAnchorSurah}</p>
             </div>
           </div>
         </motion.div>
@@ -264,12 +422,12 @@ export default function UniversalProblemSolverSuite({ userProfile }: UniversalPr
             <div className="flex items-center justify-between border-b border-amber-500/20 pb-4">
               <div>
                 <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                  <Clock className="w-6 h-6 text-amber-400" /> Business & Event Auspicious Timing (Muhurta)
+                  <Clock className="w-6 h-6 text-amber-400" /> Business & Event Auspicious Timing
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Calculate planetary hours (Hora) & ethical timing windows for major initiatives</p>
+                <p className="text-xs text-slate-400 mt-1">{traditionContent.timingSystem}</p>
               </div>
               <span className="text-xs font-mono px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                Electional Astrology
+                {currentTradition.toUpperCase()}
               </span>
             </div>
 
@@ -312,7 +470,9 @@ export default function UniversalProblemSolverSuite({ userProfile }: UniversalPr
             {/* Results Grid */}
             {timingResult && (
               <div className="space-y-4 pt-2">
-                <h4 className="text-xs font-bold text-amber-300 uppercase tracking-wider">Calculated Planetary Hora Windows</h4>
+                <h4 className="text-xs font-bold text-amber-300 uppercase tracking-wider">
+                  Calculated Favorable Timing Windows ({traditionContent.timingSystem})
+                </h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {timingResult.map((res: any, idx: number) => (
                     <div key={idx} className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-3">
@@ -344,7 +504,7 @@ export default function UniversalProblemSolverSuite({ userProfile }: UniversalPr
                 <h3 className="text-xl font-bold text-white flex items-center gap-2">
                   <Scale className="w-6 h-6 text-emerald-400" /> Legal, Property & Dispute Mediator
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Sharia Fiqh rules, astrological timing & de-escalation negotiation scripts</p>
+                <p className="text-xs text-slate-400 mt-1">{traditionContent.disputeRule}</p>
               </div>
               <span className="text-xs font-mono px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                 Ethical Resolution
@@ -359,7 +519,7 @@ export default function UniversalProblemSolverSuite({ userProfile }: UniversalPr
                   onChange={(e) => setDisputeType(e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-white text-xs focus:outline-none focus:border-emerald-500"
                 >
-                  <option value="property">Land / Real Estate / Inheritance Dispute</option>
+                  <option value="property">Land / Real Estate / Asset Dispute</option>
                   <option value="contract">Business Contract / Debt Disagreement</option>
                   <option value="workplace">Workplace Friction / Employer Conflict</option>
                   <option value="family">Family / Relational Disagreement</option>
@@ -386,12 +546,14 @@ export default function UniversalProblemSolverSuite({ userProfile }: UniversalPr
 
             {generatedScript && (
               <div className="p-6 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 space-y-4">
-                <h4 className="text-xs font-bold text-emerald-300 uppercase tracking-wider">Recommended De-escalation Message Script</h4>
+                <h4 className="text-xs font-bold text-emerald-300 uppercase tracking-wider">
+                  Recommended De-escalation Message Script ({traditionContent.badge})
+                </h4>
                 <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 text-xs text-emerald-100 font-mono leading-relaxed">
                   {generatedScript}
                 </div>
                 <p className="text-[11px] text-slate-400">
-                  Tip: Send this message during Mercury Hora or Jupiter Hora on a Wednesday/Thursday for maximum peaceful reception.
+                  Tip: Send this communication during an auspicious planetary window for maximum peaceful reception.
                 </p>
               </div>
             )}
@@ -408,7 +570,7 @@ export default function UniversalProblemSolverSuite({ userProfile }: UniversalPr
                 <h3 className="text-xl font-bold text-white flex items-center gap-2">
                   <Moon className="w-6 h-6 text-purple-400" /> Insomnia & Sleep Restoration Chamber
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Sunnah sleep protocol, Solfeggio sound simulation & circadian tune-up</p>
+                <p className="text-xs text-slate-400 mt-1">{traditionContent.sleepProtocolName}</p>
               </div>
               <span className="text-xs font-mono px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40">
                 Rest Restoration
@@ -448,16 +610,11 @@ export default function UniversalProblemSolverSuite({ userProfile }: UniversalPr
               </button>
             </div>
 
-            {/* Sunnah Sleep Readiness Checklist */}
+            {/* Tradition Sleep Readiness Checklist */}
             <div className="space-y-3">
-              <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Sunnah Sleep Readiness Protocol</h4>
+              <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider">{traditionContent.sleepProtocolName}</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[
-                  { id: 'wudu', text: 'Perform Ablution (Wudu) before stepping into bed' },
-                  { id: 'screenOff', text: 'Turn off all blue light screens 45 mins prior to sleep' },
-                  { id: 'ayatulKursi', text: 'Recite Ayatul Kursi & The 3 Quls into palms and wipe' },
-                  { id: 'coolRoom', text: 'Ensure room temperature is cool (65-68°F)' },
-                ].map((hab) => {
+                {traditionContent.sleepHabits.map((hab) => {
                   const isChecked = !!sleepHabits[hab.id];
                   return (
                     <button
@@ -491,9 +648,9 @@ export default function UniversalProblemSolverSuite({ userProfile }: UniversalPr
             <div className="flex items-center justify-between border-b border-cyan-500/20 pb-4">
               <div>
                 <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                  <Shield className="w-6 h-6 text-cyan-400" /> Negative Energy & Aura Shield Diagnostic
+                  <Shield className="w-6 h-6 text-cyan-400" /> {traditionContent.shieldTitle}
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">Assess spiritual drain, evil eye (Hasad) symptoms, and generate a 3-tier protection shield</p>
+                <p className="text-xs text-slate-400 mt-1">Assess energetic drain and generate a 3-tier protection shield protocol</p>
               </div>
               <span className="text-xs font-mono px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
                 Aura Diagnostic
@@ -505,8 +662,8 @@ export default function UniversalProblemSolverSuite({ userProfile }: UniversalPr
                 { id: 1, q: 'Do you experience sudden unexplained exhaustion after being around certain crowds or social media?' },
                 { id: 2, q: 'Have you noticed unexpected breakdowns or setbacks right after sharing good news publicly?' },
                 { id: 3, q: 'Do you feel a heavy tightness in your chest or cold chills without medical reason?' },
-                { id: 4, q: 'Are you struggling to maintain regular spiritual routines or daily prayers?' },
-                { id: 5, q: 'Do you feel irritable or defensive in your home environment for no clear reason?' },
+                { id: 4, q: 'Are you struggling to maintain regular spiritual routines or daily focus?' },
+                { id: 5, q: 'Do you feel irritable or defensive in your living environment for no clear reason?' },
               ].map((item) => (
                 <div key={item.id} className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                   <span className="text-slate-200 font-medium">{item.id}. {item.q}</span>
@@ -546,11 +703,11 @@ export default function UniversalProblemSolverSuite({ userProfile }: UniversalPr
                 <p className="text-5xl font-mono font-bold text-cyan-300">{drainScore}%</p>
                 
                 <div className="p-4 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300 leading-relaxed text-left space-y-2">
-                  <strong className="text-cyan-300 font-semibold block">Prescribed 3-Tier Protection Shield:</strong>
+                  <strong className="text-cyan-300 font-semibold block">Prescribed 3-Tier Protection Shield ({traditionContent.badge}):</strong>
                   <ul className="space-y-1.5 text-slate-300">
-                    <li>• <strong>Tier 1 (Spiritual):</strong> Recite Morning & Evening Sunnah Adhkar (The 3 Quls + Ayatul Kursi).</li>
-                    <li>• <strong>Tier 2 (Physical Grounding):</strong> Bath with sea salt or Sidr water; sprinkle coarse salt in room corners.</li>
-                    <li>• <strong>Tier 3 (Digital Privacy):</strong> Practice "Strategic Concealment"—keep unverified projects private until complete.</li>
+                    {traditionContent.shieldTiers.map((tier, idx) => (
+                      <li key={idx}>• {tier}</li>
+                    ))}
                   </ul>
                 </div>
               </div>

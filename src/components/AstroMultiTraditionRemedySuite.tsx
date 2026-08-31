@@ -1,11 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Award, Compass, ShieldCheck, Sun, Moon, Sparkles, Check, ChevronRight, BookOpen, Activity, Globe, Heart } from 'lucide-react';
 import { MULTI_TRADITION_REMEDIES, type AstrologyTraditionType, type PlanetaryRemedyItem } from '../lib/remedyEngine';
+import type { UserProfile } from '../types';
 
-export default function AstroMultiTraditionRemedySuite() {
+export default function AstroMultiTraditionRemedySuite({ userProfile }: { userProfile?: UserProfile }) {
   const [selectedPlanetIndex, setSelectedPlanetIndex] = useState<number>(0);
-  const [activeTradition, setActiveTradition] = useState<AstrologyTraditionType>('vedic');
+  
+  const resolveInitialTradition = (): AstrologyTraditionType => {
+    const sys = (userProfile?.preferredSystem || 'vedic').toLowerCase();
+    if (sys.includes('islamic')) return 'islamic';
+    if (sys.includes('chinese') || sys.includes('bazi')) return 'chinese';
+    if (sys.includes('western') || sys.includes('hellenistic')) return 'western';
+    if (sys.includes('mayan')) return 'mayan';
+    return 'vedic';
+  };
+
+  const [activeTradition, setActiveTradition] = useState<AstrologyTraditionType>(resolveInitialTradition);
+
+  useEffect(() => {
+    setActiveTradition(resolveInitialTradition());
+  }, [userProfile?.preferredSystem]);
 
   const currentRemedyItem: PlanetaryRemedyItem = MULTI_TRADITION_REMEDIES[selectedPlanetIndex] || MULTI_TRADITION_REMEDIES[0];
 
