@@ -282,10 +282,12 @@ export default function AppContent() {
   }, [userProfile]);
 
   // Navigate with full history tracking & browser URL sync
-  const navigateTo = useCallback((tab: string, replace = false, forceBypass = false) => {
+  const navigateTo = useCallback((tabInput: string, replace = false, forceBypass = false) => {
+    const tab = (tabInput || '').replace(/^\/+/, '').trim();
     const isPublicTab = (
       tab === 'landing' ||
       tab === 'free-tools' ||
+      tab === 'tools-catalog' ||
       tab === 'birth-chart' ||
       tab === 'vedic-astrology' ||
       tab === 'western-astrology' ||
@@ -295,6 +297,7 @@ export default function AppContent() {
       tab === 'transits' ||
       tab === 'muhurta' ||
       tab === 'astrocartography' ||
+      tab === 'astro-cartography' ||
       tab === 'methodology' ||
       tab === 'learning-hub' ||
       tab.startsWith('learn/') ||
@@ -325,6 +328,8 @@ export default function AppContent() {
       tab === 'briefing' ||
       tab === 'shlokas' ||
       tab === 'scripture' ||
+      tab === 'sabian' ||
+      tab === 'sabian-symbols' ||
       tab === 'ephemeris-lab' ||
       tab === 'diagnostic-lab' ||
       tab === 'vargas' ||
@@ -346,7 +351,58 @@ export default function AppContent() {
       tab === 'match' ||
       tab === 'planetary-horas' ||
       tab === 'horas' ||
-      tab === 'hora-clock'
+      tab === 'hora-clock' ||
+      tab === 'btr-suite' ||
+      tab === 'gemstone-suite' ||
+      tab === 'gemstones' ||
+      tab === 'numerology' ||
+      tab === 'numerology-suite' ||
+      tab === 'tarot' ||
+      tab === 'tarot-iching' ||
+      tab === 'time-horizon' ||
+      tab === 'career' ||
+      tab === 'dosha-engine' ||
+      tab === 'biorhythm-tracker' ||
+      tab === 'chakras' ||
+      tab === 'chakra-alignment' ||
+      tab === 'feng-shui' ||
+      tab === 'fengshui-matrix' ||
+      tab === 'electional-muhurta' ||
+      tab === 'mantras' ||
+      tab === 'mantra-soundboard' ||
+      tab === 'transit-radar' ||
+      tab === 'panchang-deities' ||
+      tab === 'panchang' ||
+      tab === 'cosmic-compass' ||
+      tab === 'transit-calendar' ||
+      tab === 'synastry-overlay' ||
+      tab === 'mind-map' ||
+      tab === 'chart-analytics' ||
+      tab === 'admin-dashboard' ||
+      tab === 'control-center' ||
+      tab === 'studio' ||
+      tab === 'horoscope' ||
+      tab === 'dream-interpreter' ||
+      tab === 'dream' ||
+      tab === 'problem-solver' ||
+      tab === 'spiritual-traditions' ||
+      tab === 'consultation-hub' ||
+      tab === 'islamic-astrology' ||
+      tab === 'islamic-suite' ||
+      tab === 'islamic' ||
+      tab === 'live-diagnostics' ||
+      tab === 'advisor' ||
+      tab === 'remedies' ||
+      tab === 'remedy' ||
+      tab === 'custom-remedies' ||
+      tab === 'global-suite' ||
+      tab === 'omni-research' ||
+      tab === 'comparative-mode' ||
+      tab === 'consensus' ||
+      tab === 'research' ||
+      tab === 'master-chart' ||
+      tab === 'kundli' ||
+      tab === 'nakshatra'
     );
     const storedOnboarded = typeof window !== 'undefined' && (localStorage.getItem('astro_has_onboarded') === 'true' || localStorage.getItem('astro_user_profile') !== null);
     const isProfileConfigured = Boolean((userProfile && userProfile.name && userProfile.name.trim().length > 0 && userProfile.dob) || storedOnboarded);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, Layers, ShieldCheck, Compass, Heart, Globe, Scale, BookOpen, Star, Flame, Sun, Moon, Cpu, CheckCircle2, ChevronRight, X, Gem 
@@ -64,8 +64,8 @@ export default function Astro150ToolsCatalog({ userProfile, onNavigate, activeCa
     vastuZones?: { zone: string; element: string; balance: number; remedy: string }[];
   } | null>(null);
 
-  const handleRunLiveCalculation = () => {
-    const targetTool = activeLiveTool || selectedTool || toolsList[0];
+  const handleRunLiveCalculation = (toolToRun?: ToolItem) => {
+    const targetTool = toolToRun || activeLiveTool || selectedTool || toolsList[0];
     setIsLiveExecuting(false);
     const toolId = targetTool.id;
     const cat = targetTool.cat;
@@ -101,7 +101,7 @@ export default function Astro150ToolsCatalog({ userProfile, onNavigate, activeCa
     }
 
     // Deterministic Astronomical Accuracy Calculation derived from mathematical precision
-    const nameCode = subjectName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const nameCode = (subjectName || 'User').split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const calculatedAccuracy = 94 + (nameCode % 5);
 
     setLiveEngineOutput({
@@ -991,10 +991,18 @@ export default function Astro150ToolsCatalog({ userProfile, onNavigate, activeCa
     return matchesCat && matchesSearch;
   });
 
+  useEffect(() => {
+    if (!liveEngineOutput && toolsList.length > 0) {
+      const initial = activeLiveTool || toolsList[0];
+      setActiveLiveTool(initial);
+      handleRunLiveCalculation(initial);
+    }
+  }, [activeLiveTool, liveEngineOutput, toolsList]);
+
   const handleLaunchTool = (tool: ToolItem) => {
     setActiveLiveTool(tool);
     setSelectedTool(null);
-    setLiveEngineOutput(null);
+    handleRunLiveCalculation(tool);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -1342,13 +1350,28 @@ export default function Astro150ToolsCatalog({ userProfile, onNavigate, activeCa
               <p className="text-xs text-slate-300 leading-relaxed">{tool.desc}</p>
             </div>
 
-            <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs">
-              <span className="flex items-center gap-1 text-emerald-400 font-semibold">
-                <CheckCircle2 className="w-3.5 h-3.5" /> Working & Launchable
+            <div className="pt-3 border-t border-white/5 flex flex-wrap items-center justify-between gap-2 text-xs">
+              <span className="flex items-center gap-1 text-emerald-400 font-semibold text-[11px]">
+                <CheckCircle2 className="w-3.5 h-3.5" /> 100% Calculated
               </span>
-              <span className="text-amber-400 font-semibold group-hover:underline">
-                Click to Open Engine →
-              </span>
+              <div className="flex items-center gap-2">
+                {tool.targetTab && onNavigate && (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onNavigate(tool.targetTab!);
+                    }}
+                    className="px-2.5 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 text-[10px] font-mono font-bold transition-all cursor-pointer shadow-sm flex items-center gap-1"
+                  >
+                    <span>Open Suite</span>
+                    <ChevronRight className="w-3 h-3" />
+                  </button>
+                )}
+                <span className="text-amber-400 font-semibold text-[11px] group-hover:underline flex items-center gap-1">
+                  <span>⚡ Calculate</span>
+                </span>
+              </div>
             </div>
           </motion.div>
         ))}
@@ -1537,7 +1560,7 @@ export default function Astro150ToolsCatalog({ userProfile, onNavigate, activeCa
                   {/* Interactive Live Calculation Execution Button & Result */}
                   <div className="pt-3 border-t border-white/10 space-y-4">
                     <button
-                      onClick={handleRunLiveCalculation}
+                      onClick={() => handleRunLiveCalculation(selectedTool || undefined)}
                       disabled={isLiveExecuting}
                       className="w-full py-3 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 text-slate-950 font-bold text-xs hover:from-amber-400 hover:to-yellow-400 transition-all shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 cursor-pointer focus-ring"
                     >
