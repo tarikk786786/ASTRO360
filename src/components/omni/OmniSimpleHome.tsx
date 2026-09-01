@@ -21,6 +21,7 @@ import { fadeInUp, staggerContainer, staggerItem } from '../../lib/animationPres
 import { calculatePlanetaryPositions, calculatePanchang, calculateVimshottariDasha } from '../../lib/astroCalculations';
 import TrustAndExplainabilityBanner from '../ui/TrustAndExplainabilityBanner';
 import { LiveRealtimeSkyTelemetryBar } from '../telemetry/LiveRealtimeSkyTelemetryBar';
+import GlobalLanguageSelector from '../GlobalLanguageSelector';
 import { Interactive3DCosmicWheel } from '../3d/Interactive3DCosmicWheel';
 import { Interactive3DAstroCartographyGlobe } from '../3d/Interactive3DAstroCartographyGlobe';
 import { Interactive3DAspectariumGraph } from '../3d/Interactive3DAspectariumGraph';
