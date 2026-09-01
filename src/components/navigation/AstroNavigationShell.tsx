@@ -21,6 +21,7 @@ import { AstroMobileBottomNav } from './AstroMobileBottomNav';
 import { AstroMoreSheet } from './AstroMoreSheet';
 import { AstroSystemSheet } from './AstroSystemSheet';
 import { AstroCommandFinder } from './AstroCommandFinder';
+import { AstroCommandCenterDrawer } from './AstroCommandCenterDrawer';
 import { prefetchRouteData } from '../../lib/prefetchEngine';
 import { useNotifications } from '../../context/NotificationContext';
 
@@ -43,11 +44,24 @@ export const AstroNavigationShell: React.FC<AstroNavigationShellProps> = ({
   userProfile,
   onUpdateSystem,
 }) => {
+  const [isCommandCenterOpen, setIsCommandCenterOpen] = useState(false);
   const [isMoreSheetOpen, setIsMoreSheetOpen] = useState(false);
   const [isSystemSheetOpen, setIsSystemSheetOpen] = useState(false);
   const [isCommandFinderOpen, setIsCommandFinderOpen] = useState(false);
   const [activeSystem, setActiveSystem] = useState(userProfile?.preferredSystem || 'Vedic');
   const { unreadCount, openCenter } = useNotifications();
+
+  // Bind ⌘K or Ctrl+K to Command Center
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsCommandCenterOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Check if current view is a secondary / sub-page (not one of the 5 canonical roots)
   const isSubPage = !['home', 'forecast', 'ask', 'charts', 'me', 'landing'].includes(activeTab);
@@ -163,29 +177,18 @@ export const AstroNavigationShell: React.FC<AstroNavigationShellProps> = ({
           })}
         </nav>
 
-        {/* Right: Search, Tools Catalog & Profile Avatar */}
+        {/* Right: Command Center, Notifications & Profile Avatar */}
         <div className="flex items-center gap-2 shrink-0">
-          {/* Global Search & Command Finder Button */}
+          {/* Master Command Center Trigger */}
           <button
             type="button"
-            onClick={() => setIsCommandFinderOpen(true)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-slate-300 hover:text-white transition-all text-xs font-mono cursor-pointer"
-            title="Global Command Search (⌘K)"
+            onClick={() => setIsCommandCenterOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 hover:text-white border border-amber-400/30 transition-all cursor-pointer shadow-sm"
+            title="Open Master Command Center (⌘K)"
           >
-            <Search className="w-3.5 h-3.5 text-amber-400" />
-            <span className="hidden lg:inline">Search</span>
-            <kbd className="bg-white/10 px-1.5 py-0.5 rounded text-[9px] text-slate-400">⌘K</kbd>
-          </button>
-
-          {/* 152+ Astrological Tools Catalog Drawer Trigger */}
-          <button
-            type="button"
-            onClick={() => setIsMoreSheetOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-all cursor-pointer"
-            title="Browse all 152+ Classical Astrology Techniques"
-          >
-            <Layers className="w-3.5 h-3.5 text-amber-400" />
-            <span>152+ Tools</span>
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <span className="hidden sm:inline">Command Center</span>
+            <kbd className="hidden lg:inline bg-amber-400/20 px-1.5 py-0.5 rounded text-[9px] text-amber-300">⌘K</kbd>
           </button>
 
           {/* Desktop Notifications Bell Trigger */}
@@ -229,14 +232,23 @@ export const AstroNavigationShell: React.FC<AstroNavigationShellProps> = ({
         onPrefetch={handlePrefetch}
       />
 
-      {/* ── 4. MORE ASTROLOGICAL SYSTEMS SHEET ──────────────────────── */}
+      {/* ── 4. MASTER COMMAND CENTER DRAWER (All Screens) ───────────── */}
+      <AstroCommandCenterDrawer
+        isOpen={isCommandCenterOpen}
+        onClose={() => setIsCommandCenterOpen(false)}
+        activeTab={activeTab}
+        onNavigate={onNavigate}
+        userProfile={userProfile}
+      />
+
+      {/* ── 5. MORE ASTROLOGICAL SYSTEMS SHEET ──────────────────────── */}
       <AstroMoreSheet
         isOpen={isMoreSheetOpen}
         onClose={() => setIsMoreSheetOpen(false)}
         onNavigate={onNavigate}
       />
 
-      {/* ── 5. ASTROLOGY SYSTEM SWITCHER SHEET ──────────────────────── */}
+      {/* ── 6. ASTROLOGY SYSTEM SWITCHER SHEET ──────────────────────── */}
       <AstroSystemSheet
         isOpen={isSystemSheetOpen}
         activeSystem={activeSystem}
@@ -244,7 +256,7 @@ export const AstroNavigationShell: React.FC<AstroNavigationShellProps> = ({
         onClose={() => setIsSystemSheetOpen(false)}
       />
 
-      {/* ── 6. GLOBAL SEARCH & COMMAND FINDER ───────────────────────── */}
+      {/* ── 7. GLOBAL SEARCH & COMMAND FINDER ───────────────────────── */}
       <AstroCommandFinder
         isOpen={isCommandFinderOpen}
         onClose={() => setIsCommandFinderOpen(false)}

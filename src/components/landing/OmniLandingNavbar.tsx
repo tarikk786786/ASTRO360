@@ -5,6 +5,7 @@ import {
   ChevronDown, BookOpen, Layers, Zap
 } from 'lucide-react';
 import GlobalLanguageSelector from '../GlobalLanguageSelector';
+import { AstroCommandCenterDrawer } from '../navigation/AstroCommandCenterDrawer';
 
 interface OmniLandingNavbarProps {
   onCreateChart?: () => void;
@@ -70,6 +71,19 @@ export default function OmniLandingNavbar({
   const [toolsDropdownOpen, setToolsDropdownOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [searchFilter, setSearchFilter] = useState('');
+  const [commandCenterOpen, setCommandCenterOpen] = useState(false);
+
+  // Bind ⌘K or Ctrl+K
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setCommandCenterOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -193,12 +207,23 @@ export default function OmniLandingNavbar({
             </button>
           </nav>
 
-          {/* Action Bar (Search + Language + CTAs) */}
+          {/* Action Bar (Search + Language + Command Center + CTAs) */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Global Multi-Language Selector */}
             <div className="hidden sm:block">
               <GlobalLanguageSelector compact={true} />
             </div>
+
+            {/* Master Command Center Button */}
+            <button
+              onClick={() => setCommandCenterOpen(true)}
+              className="px-2.5 py-1.5 rounded-xl bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 hover:text-white border border-amber-400/30 text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-sm"
+              title="Open Command Center (⌘K)"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden sm:inline">Command Center</span>
+              <kbd className="hidden lg:inline bg-amber-400/20 px-1 py-0.2 rounded text-[9px] text-amber-300">⌘K</kbd>
+            </button>
 
             {/* Quick Search Button */}
             <button
@@ -367,6 +392,18 @@ export default function OmniLandingNavbar({
           </div>
         </div>
       )}
+
+      {/* 4. Master Command Center Drawer */}
+      <AstroCommandCenterDrawer
+        isOpen={commandCenterOpen}
+        onClose={() => setCommandCenterOpen(false)}
+        activeTab="landing"
+        onNavigate={(tab) => {
+          handleNavSection(tab);
+          setCommandCenterOpen(false);
+        }}
+        userProfile={userProfile}
+      />
     </>
   );
 }
