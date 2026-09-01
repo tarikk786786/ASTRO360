@@ -108,6 +108,7 @@ const MultiSystemEphemerisDiagnosticLab = lazyWithRetry(() => import('./componen
 const PlanetaryFrequencyStudio = lazyWithRetry(() => import('./components/audio/PlanetaryFrequencyStudio'));
 const KundliMatchingSuite = lazyWithRetry(() => import('./components/compatibility/KundliMatchingSuite'));
 const PlanetaryHoraClock = lazyWithRetry(() => import('./components/timing/PlanetaryHoraClock'));
+const HighPrecisionPredictionStudio = lazyWithRetry(() => import('./components/prediction/HighPrecisionPredictionStudio').then(m => ({ default: m.HighPrecisionPredictionStudio })));
 
 const STORAGE_KEY = 'astroverse_profile';
 const TAB_KEY = 'astroverse_tab';
@@ -729,8 +730,12 @@ export default function AppContent() {
                       onUpdateProfile={(updated: UserProfile) => { setUserProfile(updated); saveProfile(updated); }}
                     />
                   )}
-                  {activeTab === 'forecast' && (
-                    <OmniForecastView userProfile={userProfile} />
+                  {(activeTab === 'forecast' || activeTab === 'predictions' || activeTab === 'prediction' || activeTab === 'precision-forecast' || activeTab === 'forecast-studio') && (
+                    <HighPrecisionPredictionStudio
+                      userProfile={userProfile}
+                      onNavigate={navigateTo}
+                      onOpenProfile={() => setIsProfileModalOpen(true)}
+                    />
                   )}
                   {(activeTab === 'copilot' || activeTab === 'ask' || activeTab === 'oracle') && (
                     <AstroDeterministicCopilot userProfile={userProfile} onNavigateToTab={navigateTo} />
