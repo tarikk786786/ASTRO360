@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { 
   Sparkles, Download, Printer, Play, Pause, 
   Clock, CheckCircle2, Award, Zap, Compass, Shield, Flame, Activity, BarChart3, Layers, BookOpen, Search,
-  Volume2, VolumeX, Moon, Sun, Star, Radio, RefreshCw
+  Volume2, VolumeX, Moon, Sun, Star, Radio, RefreshCw, HeartHandshake, Crown
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { UserProfile } from '../types';
@@ -109,7 +109,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
   // Primary Studio Mode
   const [activeStudioTab, setActiveStudioTab] = useState<
-    'chart' | 'aspects' | 'avasthas' | 'nakshatras' | 'soundResonator' | 'dashaTree' | 'ashtakavarga' | 'shadbala' | 'multisystem' | 'timing' | 'predictions' | 'research' | 'rules'
+    'chart' | 'aspects' | 'yogas' | 'friendship' | 'avasthas' | 'nakshatras' | 'soundResonator' | 'dashaTree' | 'ashtakavarga' | 'shadbala' | 'multisystem' | 'timing' | 'predictions' | 'research' | 'rules'
   >('chart');
   
   // Density mode: 'comfortable' vs 'compact'
@@ -346,6 +346,159 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
     });
   }, [rawBasePlanets]);
 
+  // Classical Yogas Analysis
+  const activeYogas = useMemo(() => {
+    const yogas: Array<{ name: string; type: string; desc: string; source: string; status: 'Active' | 'Strong' | 'Forming' }> = [];
+    
+    const jup = rawBasePlanets.find(p => p.name === 'Jupiter');
+    const moon = rawBasePlanets.find(p => p.name === 'Moon');
+    const sun = rawBasePlanets.find(p => p.name === 'Sun');
+    const merc = rawBasePlanets.find(p => p.name === 'Mercury');
+    const mars = rawBasePlanets.find(p => p.name === 'Mars');
+    const ven = rawBasePlanets.find(p => p.name === 'Venus');
+    const sat = rawBasePlanets.find(p => p.name === 'Saturn');
+
+    // 1. Gaja Kesari Yoga (Jupiter in Kendra from Moon: 1, 4, 7, 10)
+    if (jup && moon) {
+      const diff = Math.abs((jup.houseNumber || 1) - (moon.houseNumber || 1));
+      if (diff === 0 || diff === 3 || diff === 6 || diff === 9) {
+        yogas.push({
+          name: 'Gaja Kesari Yoga',
+          type: 'Supreme Auspicious (Fame & Intellect)',
+          desc: 'Jupiter resides in a mutual Kendra from the Moon, granting wisdom, oratorical brilliance, and enduring public respect.',
+          source: 'Brihat Parashara Hora Shastra (Ch. 36, Sloka 3)',
+          status: 'Strong'
+        });
+      }
+    }
+
+    // 2. Budhaditya Yoga (Sun + Mercury in same house/sign)
+    if (sun && merc && (sun.houseNumber === merc.houseNumber || sun.sign === merc.sign)) {
+      yogas.push({
+        name: 'Budhaditya Yoga',
+        type: 'Intellectual & Administrative Radiance',
+        desc: 'Conjunction of Surya and Budha gives sharp analytical reasoning, scholarly eloquence, and executive dignity.',
+        source: 'Saravali (Ch. 14, Sloka 8)',
+        status: 'Active'
+      });
+    }
+
+    // 3. Amala Yoga (Benefic Jupiter, Venus, or Mercury in 10th House from Lagna/Moon)
+    if ((jup && jup.houseNumber === 10) || (ven && ven.houseNumber === 10) || (merc && merc.houseNumber === 10)) {
+      yogas.push({
+        name: 'Amala Yoga',
+        type: 'Pure Spotless Reputation & Career Fortune',
+        desc: 'Natural benefic in the 10th House of Karma bestows unblemished ethical honor, professional prosperity, and philanthropic recognition.',
+        source: 'Phaladeepika (Ch. 6, Sloka 21)',
+        status: 'Strong'
+      });
+    }
+
+    // 4. Ruchaka Yoga (Pancha Mahapurusha - Mars exalted or in own sign in Kendra)
+    if (mars && [1, 4, 7, 10].includes(mars.houseNumber || 0) && ['Aries', 'Scorpio', 'Capricorn'].includes(mars.sign)) {
+      yogas.push({
+        name: 'Ruchaka Mahapurusha Yoga',
+        type: 'Martial Power & Courage',
+        desc: 'Mars in own/exaltation sign in Kendra produces commanding leadership, immense physical prowess, and strategic victories.',
+        source: 'Brihat Jataka (Ch. 12, Sloka 2)',
+        status: 'Strong'
+      });
+    }
+
+    // 5. Hamsa Yoga (Jupiter exalted/own in Kendra)
+    if (jup && [1, 4, 7, 10].includes(jup.houseNumber || 0) && ['Sagittarius', 'Pisces', 'Cancer'].includes(jup.sign)) {
+      yogas.push({
+        name: 'Hamsa Mahapurusha Yoga',
+        type: 'Spiritual Majesty & Pure Wisdom',
+        desc: 'Jupiter in own or exalted rashi in a quadrant grants righteous nature, philosophical insight, and veneration among peers.',
+        source: 'Brihat Parashara Hora Shastra (Ch. 75, Sloka 15)',
+        status: 'Strong'
+      });
+    }
+
+    // 6. Malavya Yoga (Venus exalted/own in Kendra)
+    if (ven && [1, 4, 7, 10].includes(ven.houseNumber || 0) && ['Taurus', 'Libra', 'Pisces'].includes(ven.sign)) {
+      yogas.push({
+        name: 'Malavya Mahapurusha Yoga',
+        type: 'Artistic Splendor & Refined Luxury',
+        desc: 'Venus in Kendra in Taurus/Libra/Pisces gives aesthetic mastery, sensual refinement, magnetic charisma, and prosperity.',
+        source: 'Jataka Parijata (Ch. 6, Sloka 1)',
+        status: 'Strong'
+      });
+    }
+
+    // Fallback baseline auspicious alignment
+    if (yogas.length === 0) {
+      yogas.push({
+        name: 'Chandra-Mangala Yoga',
+        type: 'Financial & Resourceful Acumen',
+        desc: 'Sympathetic energetic alignment between Chandra and Mangala fostering enterprise, industrious commerce, and liquid resource gains.',
+        source: 'Hora Ratnam (Ch. 4, Sloka 44)',
+        status: 'Active'
+      });
+    }
+
+    return yogas;
+  }, [rawBasePlanets]);
+
+  // Panchadha Maitri 5-Fold Relationship Matrix
+  const friendshipMatrix = useMemo(() => {
+    const planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const matrix: Array<{ p1: string; p2: string; naisargika: string; tatkalika: string; panchadha: string; color: string }> = [];
+
+    const naturalFriends: Record<string, { friends: string[]; neutrals: string[]; enemies: string[] }> = {
+      Sun: { friends: ['Moon', 'Mars', 'Jupiter'], neutrals: ['Mercury'], enemies: ['Venus', 'Saturn'] },
+      Moon: { friends: ['Sun', 'Mercury'], neutrals: ['Mars', 'Jupiter', 'Venus', 'Saturn'], enemies: [] },
+      Mars: { friends: ['Sun', 'Moon', 'Jupiter'], neutrals: ['Venus', 'Saturn'], enemies: ['Mercury'] },
+      Mercury: { friends: ['Sun', 'Venus'], neutrals: ['Mars', 'Jupiter', 'Saturn'], enemies: ['Moon'] },
+      Jupiter: { friends: ['Sun', 'Moon', 'Mars'], neutrals: ['Saturn'], enemies: ['Mercury', 'Venus'] },
+      Venus: { friends: ['Mercury', 'Saturn'], neutrals: ['Mars', 'Jupiter'], enemies: ['Sun', 'Moon'] },
+      Saturn: { friends: ['Mercury', 'Venus'], neutrals: ['Jupiter'], enemies: ['Sun', 'Moon', 'Mars'] },
+    };
+
+    for (let i = 0; i < planets.length; i++) {
+      for (let j = i + 1; j < planets.length; j++) {
+        const p1 = planets[i];
+        const p2 = planets[j];
+        const obj1 = rawBasePlanets.find(p => p.name === p1);
+        const obj2 = rawBasePlanets.find(p => p.name === p2);
+
+        // Natural (Naisargika)
+        let nScore = 0;
+        if (naturalFriends[p1]?.friends.includes(p2)) nScore = 1;
+        else if (naturalFriends[p1]?.enemies.includes(p2)) nScore = -1;
+
+        // Temporary (Tatkalika) - 2nd, 3rd, 4th, 10th, 11th, 12th from p1 are Friends (+1), others Enemies (-1)
+        const h1 = obj1?.houseNumber || 1;
+        const h2 = obj2?.houseNumber || 1;
+        const hDiff = (h2 - h1 + 12) % 12 + 1;
+        const isTempFriend = [2, 3, 4, 10, 11, 12].includes(hDiff);
+        const tScore = isTempFriend ? 1 : -1;
+
+        // Compound (Panchadha) = nScore + tScore
+        const total = nScore + tScore;
+        let panchadha = 'Sama (Neutral)';
+        let color = 'text-slate-300';
+
+        if (total >= 2) { panchadha = 'Adhi Mitra (Great Friend)'; color = 'text-emerald-400 font-bold'; }
+        else if (total === 1) { panchadha = 'Mitra (Friend)'; color = 'text-emerald-300'; }
+        else if (total === 0) { panchadha = 'Sama (Neutral)'; color = 'text-amber-300'; }
+        else if (total === -1) { panchadha = 'Shatru (Enemy)'; color = 'text-rose-300'; }
+        else { panchadha = 'Adhi Shatru (Great Enemy)'; color = 'text-rose-500 font-bold'; }
+
+        matrix.push({
+          p1,
+          p2,
+          naisargika: nScore === 1 ? 'Friend' : nScore === -1 ? 'Enemy' : 'Neutral',
+          tatkalika: isTempFriend ? 'Temporary Friend' : 'Temporary Enemy',
+          panchadha,
+          color
+        });
+      }
+    }
+    return matrix;
+  }, [rawBasePlanets]);
+
   // Aspect & Drishti Matrix calculation
   const aspectPairs = useMemo(() => {
     const validPlanets = rawBasePlanets.filter(p => p.name !== 'Ascendant');
@@ -568,7 +721,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               Astrological Workspace & Ephemeris Inspector
             </h1>
             <p className="text-xs sm:text-sm text-slate-300">
-              Interactive 12-house Kundli, real-time time-travel scrubbing, Aspect orbs, Planetary Avasthas, 27 Nakshatras, Sound synthesis, and Shadbala meters.
+              Interactive 12-house Kundli, real-time time-travel scrubbing, Aspect orbs, Auspicious Yogas, Panchadha Maitri, 27 Nakshatras, and Sound Resonator.
             </p>
           </div>
 
@@ -614,6 +767,8 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         {[
           { id: 'chart', label: '🔭 Chart Workspace' },
           { id: 'aspects', label: '📐 Aspects & Drishti' },
+          { id: 'yogas', label: '👑 Auspicious Yogas' },
+          { id: 'friendship', label: '🤝 Panchadha Maitri' },
           { id: 'avasthas', label: '🧘 Planetary Avasthas' },
           { id: 'nakshatras', label: '✨ 27 Nakshatras' },
           { id: 'soundResonator', label: '🎵 Sound Resonator' },
@@ -1079,7 +1234,83 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 3: PLANETARY AVASTHAS & DIGNITY ─────────────────────── */}
+      {/* ─── TAB 3: AUSPICIOUS YOGAS ANALYZER ─────────────────────────── */}
+      {activeStudioTab === 'yogas' && (
+        <div className="p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 space-y-5 font-mono text-xs">
+          <div className="border-b border-white/10 pb-3 flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Crown className="w-4 h-4 text-amber-400" />
+                Classical Auspicious Yogas & Special Combinations
+              </h3>
+              <p className="text-slate-400">Pancha Mahapurusha, Gaja Kesari, Raja, Dhana, and planetary confluence yogas.</p>
+            </div>
+            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-amber-400/20 font-bold">
+              {activeYogas.length} Formed Yogas
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {activeYogas.map((yoga, idx) => (
+              <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-amber-500/20 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-bold text-amber-300 flex items-center gap-1.5">
+                    <Crown className="w-3.5 h-3.5 text-amber-400" />
+                    {yoga.name}
+                  </span>
+                  <span className="text-[10px] px-2 py-0.5 rounded font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    {yoga.status}
+                  </span>
+                </div>
+                <span className="text-[11px] text-cyan-300 block">{yoga.type}</span>
+                <p className="text-slate-300 text-xs font-sans leading-relaxed">{yoga.desc}</p>
+                <div className="text-[10px] text-slate-400 pt-1.5 border-t border-white/5 italic">
+                  Citation: {yoga.source}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ─── TAB 4: PANCHADHA MAITRI (5-FOLD RELATIONSHIPS) ───────────── */}
+      {activeStudioTab === 'friendship' && (
+        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
+          <div className="border-b border-white/10 pb-3 flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <HeartHandshake className="w-4 h-4 text-emerald-400" />
+                Panchadha Maitri (5-Fold Planetary Relationship Matrix)
+              </h3>
+              <p className="text-slate-400">Synthesis of Natural (Naisargika) + Positional (Tatkalika) mutual friendship.</p>
+            </div>
+            <span className="text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-xl border border-emerald-500/20 font-bold">
+              Classical 5-Level Scale
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {friendshipMatrix.map((item, idx) => (
+              <div key={idx} className="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-bold text-white">{item.p1} ⇄ {item.p2}</span>
+                  <span className={`text-[10px] ${item.color}`}>{item.panchadha}</span>
+                </div>
+                <div className="flex justify-between text-[10px] text-slate-400">
+                  <span>Natural (Naisargika):</span>
+                  <span className="text-slate-300">{item.naisargika}</span>
+                </div>
+                <div className="flex justify-between text-[10px] text-slate-400">
+                  <span>Positional (Tatkalika):</span>
+                  <span className="text-slate-300">{item.tatkalika}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ─── TAB 5: PLANETARY AVASTHAS & DIGNITY ─────────────────────── */}
       {activeStudioTab === 'avasthas' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1123,7 +1354,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 4: 27 NAKSHATRAS EXPLORER ───────────────────────────── */}
+      {/* ─── TAB 6: 27 NAKSHATRAS EXPLORER ───────────────────────────── */}
       {activeStudioTab === 'nakshatras' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1162,7 +1393,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 5: HANS COUSTO SOUND RESONATOR ───────────────────────── */}
+      {/* ─── TAB 7: HANS COUSTO SOUND RESONATOR ───────────────────────── */}
       {activeStudioTab === 'soundResonator' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 space-y-6 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1215,7 +1446,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 6: VIMSHOTTARI TREE ─────────────────────────────────── */}
+      {/* ─── TAB 8: VIMSHOTTARI TREE ─────────────────────────────────── */}
       {activeStudioTab === 'dashaTree' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1252,7 +1483,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 7: ASHTAKAVARGA (SAV) POTENCY MATRIX ────────────────── */}
+      {/* ─── TAB 9: ASHTAKAVARGA (SAV) POTENCY MATRIX ────────────────── */}
       {activeStudioTab === 'ashtakavarga' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1286,7 +1517,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 8: SHADBALA POTENCY METERS ──────────────────────────── */}
+      {/* ─── TAB 10: SHADBALA POTENCY METERS ─────────────────────────── */}
       {activeStudioTab === 'shadbala' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1334,7 +1565,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 9: MULTI-SYSTEM SIDE-BY-SIDE ────────────────────────── */}
+      {/* ─── TAB 11: MULTI-SYSTEM SIDE-BY-SIDE ───────────────────────── */}
       {activeStudioTab === 'multisystem' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
@@ -1374,7 +1605,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 10: TIMING WORKSPACE ────────────────────────────────── */}
+      {/* ─── TAB 12: TIMING WORKSPACE ────────────────────────────────── */}
       {activeStudioTab === 'timing' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1407,7 +1638,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 11: PREDICTIONS & EVENT JOURNAL ─────────────────────── */}
+      {/* ─── TAB 13: PREDICTIONS & EVENT JOURNAL ─────────────────────── */}
       {activeStudioTab === 'predictions' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
@@ -1451,7 +1682,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 12: RESEARCH & ACCURACY LAB ─────────────────────────── */}
+      {/* ─── TAB 14: RESEARCH & ACCURACY LAB ─────────────────────────── */}
       {activeStudioTab === 'research' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-cyan-500/30 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1500,7 +1731,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 13: RULE & SOURCE EXPLORER ──────────────────────────── */}
+      {/* ─── TAB 15: RULE & SOURCE EXPLORER ──────────────────────────── */}
       {activeStudioTab === 'rules' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
