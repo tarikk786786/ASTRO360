@@ -4,6 +4,7 @@ import {
   Compass, Heart, Clock, Gem, Globe, Activity, Star, 
   ChevronDown, BookOpen, Layers, Zap
 } from 'lucide-react';
+import GlobalLanguageSelector from '../GlobalLanguageSelector';
 
 interface OmniLandingNavbarProps {
   onCreateChart?: () => void;
@@ -192,8 +193,13 @@ export default function OmniLandingNavbar({
             </button>
           </nav>
 
-          {/* Action Bar (Search + CTAs) */}
+          {/* Action Bar (Search + Language + CTAs) */}
           <div className="flex items-center gap-2 sm:gap-3">
+            {/* Global Multi-Language Selector */}
+            <div className="hidden sm:block">
+              <GlobalLanguageSelector compact={true} />
+            </div>
+
             {/* Quick Search Button */}
             <button
               onClick={() => setSearchModalOpen(true)}
@@ -201,7 +207,7 @@ export default function OmniLandingNavbar({
               title="Search all tools"
             >
               <Search className="w-3.5 h-3.5 text-amber-400" />
-              <span className="hidden sm:inline text-[11px] text-slate-400">Search tools...</span>
+              <span className="hidden md:inline text-[11px] text-slate-400">Search tools...</span>
             </button>
 
             {onOpenDashboard && (
@@ -286,6 +292,10 @@ export default function OmniLandingNavbar({
             </div>
 
             <div className="pt-2 border-t border-white/10 flex flex-col gap-2">
+              <div className="pb-1">
+                <span className="text-[10px] text-slate-400 font-mono block mb-1">Select Language:</span>
+                <GlobalLanguageSelector compact={false} align="left" />
+              </div>
               <button
                 onClick={() => { handleCreate(); setMobileMenuOpen(false); }}
                 className="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs font-mono flex items-center justify-center gap-1.5 shadow-md cursor-pointer"

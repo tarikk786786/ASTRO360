@@ -21,6 +21,7 @@ import { fadeInUp, staggerContainer, staggerItem } from '../../lib/animationPres
 import { calculatePlanetaryPositions, calculatePanchang, calculateVimshottariDasha } from '../../lib/astroCalculations';
 import TrustAndExplainabilityBanner from '../ui/TrustAndExplainabilityBanner';
 import { LiveRealtimeSkyTelemetryBar } from '../telemetry/LiveRealtimeSkyTelemetryBar';
+import GlobalLanguageSelector from '../GlobalLanguageSelector';
 
 interface OmniSimpleHomeProps {
   userProfile: UserProfile;
@@ -295,10 +296,12 @@ export default function OmniSimpleHome({
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2.5">
+          <GlobalLanguageSelector compact={true} />
+          
           <motion.span
             animate={{ boxShadow: ['0 0 0px rgba(16, 185, 129, 0)', '0 0 12px rgba(16, 185, 129, 0.3)', '0 0 0px rgba(16, 185, 129, 0)'] }}
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            className="text-[11px] font-mono text-emerald-300 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-500/30 flex items-center gap-1.5 font-bold shadow-sm"
+            className="text-[11px] font-mono text-emerald-300 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-500/30 flex items-center gap-1.5 font-bold shadow-sm hidden md:inline-flex"
           >
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> High-Precision Ephemeris
           </motion.span>

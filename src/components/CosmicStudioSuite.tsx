@@ -10,6 +10,7 @@ import { useProfileStore } from '../stores/profileStore';
 import { calculatePlanetaryPositions, type PlanetPosition } from '../lib/astroCalculations';
 import { calculateDivisionalChart } from '../lib/astrologyEngines';
 import { exportUniversalPdf } from '../lib/pdfReportEngine';
+import GlobalLanguageSelector from './GlobalLanguageSelector';
 
 interface CosmicStudioSuiteProps {
   userProfile?: UserProfile;
@@ -831,8 +832,10 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
             </p>
           </div>
 
-          {/* Quick Actions & Density Toggle */}
+          {/* Quick Actions, Language & Density Toggle */}
           <div className="flex flex-wrap items-center gap-2.5 font-mono text-xs">
+            <GlobalLanguageSelector compact={true} />
+
             <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-white/10">
               <button
                 onClick={() => setDensity('comfortable')}
