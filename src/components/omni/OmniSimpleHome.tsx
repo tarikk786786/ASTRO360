@@ -20,6 +20,7 @@ import BorderBeam from '../magicui/border-beam';
 import { fadeInUp, staggerContainer, staggerItem } from '../../lib/animationPresets';
 import { calculatePlanetaryPositions, calculatePanchang, calculateVimshottariDasha } from '../../lib/astroCalculations';
 import TrustAndExplainabilityBanner from '../ui/TrustAndExplainabilityBanner';
+import { LiveRealtimeSkyTelemetryBar } from '../telemetry/LiveRealtimeSkyTelemetryBar';
 
 interface OmniSimpleHomeProps {
   userProfile: UserProfile;
@@ -314,6 +315,12 @@ export default function OmniSimpleHome({
           </motion.button>
         </div>
       </div>
+
+      {/* 1.15 LIVE REAL-TIME SKY & EPHEMERIS TELEMETRY BAR */}
+      <LiveRealtimeSkyTelemetryBar
+        userProfile={userProfile}
+        onOpenStudio={() => onNavigate('studio')}
+      />
 
       {/* 1.25 DASHBOARD COMMAND & CONTROL BAR (Mobile & Desktop) */}
       <div className="space-y-2.5">
