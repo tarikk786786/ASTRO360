@@ -72,8 +72,8 @@ function InteractiveCameraRig() {
   const { camera, pointer } = useThree();
 
   useFrame((_, delta) => {
-    STATIC_TARGET_POS.x = THREE.MathUtils.lerp(STATIC_TARGET_POS.x, pointer.x * 2.0, delta * 1.0);
-    STATIC_TARGET_POS.y = THREE.MathUtils.lerp(STATIC_TARGET_POS.y, pointer.y * 1.2, delta * 1.0);
+    STATIC_TARGET_POS.x = THREE.MathUtils.lerp(STATIC_TARGET_POS.x, pointer.x * 1.5, delta * 0.8);
+    STATIC_TARGET_POS.y = THREE.MathUtils.lerp(STATIC_TARGET_POS.y, pointer.y * 1.0, delta * 0.8);
     camera.position.x = STATIC_TARGET_POS.x;
     camera.position.y = STATIC_TARGET_POS.y;
     camera.lookAt(0, 0, -20);
@@ -82,7 +82,7 @@ function InteractiveCameraRig() {
   return null;
 }
 
-// Deep Multi-Spectral Scintillating Starfield
+// Deep Multi-Spectral Scintillating Starfield (Mobile Optimized Count)
 function DeepCosmicStarfield({ 
   starTexture, 
   palette 
@@ -92,7 +92,7 @@ function DeepCosmicStarfield({
 }) {
   const pointsRef = useRef<any>(null);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const starCount = isMobile ? 900 : 2500;
+  const starCount = isMobile ? 450 : 2200;
 
   const [positions, colors, scales] = useMemo(() => {
     const pos = new Float32Array(starCount * 3);
@@ -134,7 +134,7 @@ function DeepCosmicStarfield({
         <bufferAttribute attach="attributes-color" count={starCount} array={colors} itemSize={3} />
       </bufferGeometry>
       <pointsMaterial
-        size={isMobile ? 0.32 : 0.42}
+        size={isMobile ? 0.30 : 0.40}
         map={starTexture}
         vertexColors
         transparent
@@ -154,7 +154,6 @@ function SubtleCelestialSphere({ accentColor }: { accentColor: string }) {
   useFrame((_, delta) => {
     if (groupRef.current) {
       groupRef.current.rotation.y += delta * 0.0015;
-      groupRef.current.rotation.z += delta * 0.0005;
     }
   });
 
@@ -162,23 +161,11 @@ function SubtleCelestialSphere({ accentColor }: { accentColor: string }) {
     <group ref={groupRef} position={[0, 0, -30]}>
       {/* Primary Ecliptic Ring */}
       <mesh rotation={[Math.PI * 0.25, 0, 0]}>
-        <ringGeometry args={[42 - 0.04, 42 + 0.04, 128]} />
+        <ringGeometry args={[42 - 0.04, 42 + 0.04, 64]} />
         <meshBasicMaterial
           color={accentColor}
           transparent
-          opacity={0.06}
-          side={THREE.DoubleSide}
-          blending={THREE.AdditiveBlending}
-        />
-      </mesh>
-
-      {/* Secondary Equatorial Ring */}
-      <mesh rotation={[-Math.PI * 0.15, Math.PI * 0.2, 0]}>
-        <ringGeometry args={[48 - 0.03, 48 + 0.03, 128]} />
-        <meshBasicMaterial
-          color="#38BDF8"
-          transparent
-          opacity={0.04}
+          opacity={0.05}
           side={THREE.DoubleSide}
           blending={THREE.AdditiveBlending}
         />
@@ -187,7 +174,7 @@ function SubtleCelestialSphere({ accentColor }: { accentColor: string }) {
   );
 }
 
-// Delicate, Natural Shooting Stars
+// Delicate Shooting Star
 function EfficientShootingStar({ delay = 0, speed = 1.4 }: { delay?: number; speed?: number }) {
   const lineRef = useRef<any>(null);
   const streak = useRef({ 
@@ -215,7 +202,7 @@ function EfficientShootingStar({ delay = 0, speed = 1.4 }: { delay?: number; spe
       const sz = -18 + (Math.random() - 0.5) * 15;
       streak.current.start.set(sx, sy, sz);
       streak.current.end.set(sx + (Math.random() - 0.35) * 32, sy - 28 - Math.random() * 12, sz);
-      streak.current.nextTime = t + 7 + Math.random() * 9;
+      streak.current.nextTime = t + 8 + Math.random() * 10;
     }
 
     if (streak.current.active && lineRef.current) {
@@ -245,31 +232,6 @@ function EfficientShootingStar({ delay = 0, speed = 1.4 }: { delay?: number; spe
   );
 }
 
-// Gentle Ambient Nebula Cloud Dust
-function NebulaAtmosphere({ color }: { color: string }) {
-  const meshRef = useRef<any>(null);
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      const t = state.clock.elapsedTime * 0.05;
-      meshRef.current.rotation.z = t * 0.2;
-    }
-  });
-
-  return (
-    <mesh ref={meshRef} position={[0, 0, -35]}>
-      <planeGeometry args={[110, 80]} />
-      <meshBasicMaterial
-        color={color}
-        transparent
-        opacity={0.03}
-        blending={THREE.AdditiveBlending}
-        depthWrite={false}
-      />
-    </mesh>
-  );
-}
-
 export interface CosmicAtmosphereCanvasProps {
   userProfile?: UserProfile;
 }
@@ -279,6 +241,7 @@ export const CosmicAtmosphereCanvas: React.FC<CosmicAtmosphereCanvasProps> = mem
   const containerRef = useRef<HTMLDivElement>(null);
   const starTexture = useMemo(() => getCircularStarTexture(), []);
   const palette = useMemo(() => getTraditionPalette(userProfile?.preferredSystem), [userProfile?.preferredSystem]);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   // Conserve 100% GPU/battery when tab is in background
   useEffect(() => {
@@ -296,11 +259,11 @@ export const CosmicAtmosphereCanvas: React.FC<CosmicAtmosphereCanvasProps> = mem
       
       {/* Ultra-Soft Atmospheric Radial Glows */}
       <div 
-        className="absolute -top-1/4 left-1/4 w-[75vw] h-[75vw] rounded-full blur-[140px] transition-colors duration-1000 opacity-60"
+        className="absolute -top-1/4 left-1/4 w-[75vw] h-[75vw] rounded-full blur-[120px] transition-colors duration-1000 opacity-60 pointer-events-none"
         style={{ background: `radial-gradient(circle, ${palette.aurora1} 0%, transparent 70%)` }}
       />
       <div 
-        className="absolute -bottom-1/4 right-1/4 w-[70vw] h-[70vw] rounded-full blur-[140px] transition-colors duration-1000 opacity-50"
+        className="absolute -bottom-1/4 right-1/4 w-[70vw] h-[70vw] rounded-full blur-[120px] transition-colors duration-1000 opacity-50 pointer-events-none"
         style={{ background: `radial-gradient(circle, ${palette.aurora2} 0%, transparent 70%)` }}
       />
 
@@ -308,9 +271,9 @@ export const CosmicAtmosphereCanvas: React.FC<CosmicAtmosphereCanvasProps> = mem
       {isVisible && (
         <Canvas
           camera={{ position: [0, 0, 15], fov: 55, near: 0.1, far: 300 }}
-          dpr={[1, 1.5]}
+          dpr={isMobile ? [1, 1.1] : [1, 1.5]}
           gl={{
-            antialias: true,
+            antialias: !isMobile,
             powerPreference: 'high-performance',
             alpha: true,
             stencil: false,
@@ -321,9 +284,7 @@ export const CosmicAtmosphereCanvas: React.FC<CosmicAtmosphereCanvasProps> = mem
           <InteractiveCameraRig />
           <DeepCosmicStarfield starTexture={starTexture} palette={palette} />
           <SubtleCelestialSphere accentColor={palette.accentHex} />
-          <NebulaAtmosphere color={palette.accentHex} />
           <EfficientShootingStar delay={0} speed={1.3} />
-          <EfficientShootingStar delay={4.5} speed={1.1} />
         </Canvas>
       )}
 

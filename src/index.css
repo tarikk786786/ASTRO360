@@ -709,3 +709,24 @@ button, a, [role="button"] {
 }
 
 
+/* GLOBAL MOBILE SPEED & TOUCH HARDENING */
+@media (max-width: 768px) {
+  * {
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  
+  button, a, input, select, textarea, [role="button"], [role="tab"] {
+    touch-action: manipulation !important;
+  }
+
+  body, #root, main {
+    overscroll-behavior-y: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Reduce costly blur on low-end mobile devices */
+  .backdrop-blur-2xl {
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+  }
+}
