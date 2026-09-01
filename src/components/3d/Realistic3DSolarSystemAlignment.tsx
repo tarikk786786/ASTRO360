@@ -17,7 +17,6 @@ export interface RealisticPlanetData {
   radius: number;
   rotationSpeed: number;
   baseColor: string;
-  specularColor?: string;
   roughness: number;
   metalness: number;
   hasRing?: boolean;
@@ -29,7 +28,7 @@ export interface RealisticPlanetData {
   careerImpact: string;
 }
 
-// Procedural texture helpers for realistic celestial bodies
+// Procedural high-fidelity textures for realistic celestial bodies
 function createProceduralTexture(type: string): THREE.CanvasTexture {
   const canvas = document.createElement('canvas');
   canvas.width = 512;
@@ -40,47 +39,47 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
     // Banded gas giant stripes
     const grad = ctx.createLinearGradient(0, 0, 0, 256);
     grad.addColorStop(0.0, '#B45309');
-    grad.addColorStop(0.15, '#D97706');
-    grad.addColorStop(0.28, '#FEF3C7');
-    grad.addColorStop(0.42, '#92400E');
-    grad.addColorStop(0.55, '#FDE68A');
-    grad.addColorStop(0.68, '#78350F');
-    grad.addColorStop(0.82, '#F59E0B');
+    grad.addColorStop(0.18, '#D97706');
+    grad.addColorStop(0.32, '#FEF3C7');
+    grad.addColorStop(0.48, '#92400E');
+    grad.addColorStop(0.62, '#FDE68A');
+    grad.addColorStop(0.76, '#78350F');
+    grad.addColorStop(0.88, '#F59E0B');
     grad.addColorStop(1.0, '#451A03');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 512, 256);
 
     // Subtle atmospheric swirls
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
-    for (let i = 0; i < 12; i++) {
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.18)';
+    for (let i = 0; i < 15; i++) {
       ctx.beginPath();
-      ctx.ellipse(Math.random() * 512, Math.random() * 256, Math.random() * 80 + 30, Math.random() * 8 + 3, 0, 0, Math.PI * 2);
+      ctx.ellipse(Math.random() * 512, Math.random() * 256, Math.random() * 90 + 30, Math.random() * 8 + 3, 0, 0, Math.PI * 2);
       ctx.fill();
     }
     // Great Red Spot
     ctx.fillStyle = '#DC2626';
     ctx.beginPath();
-    ctx.ellipse(320, 160, 28, 14, 0, 0, Math.PI * 2);
+    ctx.ellipse(320, 160, 26, 14, 0, 0, Math.PI * 2);
     ctx.fill();
   } else if (type === 'sun') {
     // Fiery solar corona granulation
     const grad = ctx.createRadialGradient(256, 128, 10, 256, 128, 256);
     grad.addColorStop(0.0, '#FFFBEB');
-    grad.addColorStop(0.3, '#FDE047');
-    grad.addColorStop(0.6, '#F59E0B');
-    grad.addColorStop(0.9, '#DC2626');
+    grad.addColorStop(0.25, '#FDE047');
+    grad.addColorStop(0.55, '#F59E0B');
+    grad.addColorStop(0.85, '#DC2626');
     grad.addColorStop(1.0, '#7F1D1D');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 512, 256);
 
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
     for (let i = 0; i < 40; i++) {
       ctx.beginPath();
       ctx.arc(Math.random() * 512, Math.random() * 256, Math.random() * 12 + 2, 0, Math.PI * 2);
       ctx.fill();
     }
   } else if (type === 'earth') {
-    // Blue oceans and continents
+    // Deep blue oceans and green-brown continents
     ctx.fillStyle = '#1E3A8A';
     ctx.fillRect(0, 0, 512, 256);
     ctx.fillStyle = '#15803D';
@@ -89,15 +88,15 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
       ctx.ellipse(Math.random() * 512, Math.random() * 256, Math.random() * 60 + 20, Math.random() * 40 + 15, Math.random() * Math.PI, 0, Math.PI * 2);
       ctx.fill();
     }
-    // White cloud swirls
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-    for (let i = 0; i < 15; i++) {
+    // White swirling clouds
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+    for (let i = 0; i < 16; i++) {
       ctx.beginPath();
-      ctx.ellipse(Math.random() * 512, Math.random() * 256, Math.random() * 90 + 30, Math.random() * 15 + 4, Math.random() * Math.PI, 0, Math.PI * 2);
+      ctx.ellipse(Math.random() * 512, Math.random() * 256, Math.random() * 90 + 30, Math.random() * 14 + 4, Math.random() * Math.PI, 0, Math.PI * 2);
       ctx.fill();
     }
   } else if (type === 'mars') {
-    // Rust red surface with dark terrain
+    // Rust red surface
     ctx.fillStyle = '#991B1B';
     ctx.fillRect(0, 0, 512, 256);
     ctx.fillStyle = '#7F1D1D';
@@ -108,10 +107,10 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
     }
     // White polar caps
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, 512, 20);
-    ctx.fillRect(0, 236, 512, 20);
+    ctx.fillRect(0, 0, 512, 16);
+    ctx.fillRect(0, 240, 512, 16);
   } else if (type === 'venus') {
-    // Dense golden atmosphere
+    // Dense golden-cream atmosphere
     const grad = ctx.createLinearGradient(0, 0, 0, 256);
     grad.addColorStop(0.0, '#D97706');
     grad.addColorStop(0.5, '#FDE68A');
@@ -119,7 +118,7 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 512, 256);
   } else if (type === 'saturn') {
-    // Golden ochre rings
+    // Golden ochre gas bands
     const grad = ctx.createLinearGradient(0, 0, 0, 256);
     grad.addColorStop(0.0, '#78350F');
     grad.addColorStop(0.3, '#D97706');
@@ -136,7 +135,7 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 512, 256);
   } else if (type === 'neptune') {
-    // Deep azure blue
+    // Deep royal azure blue
     const grad = ctx.createLinearGradient(0, 0, 0, 256);
     grad.addColorStop(0.0, '#1E1B4B');
     grad.addColorStop(0.5, '#2563EB');
@@ -144,7 +143,7 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 512, 256);
   } else {
-    // Mercury / rocky
+    // Mercury / cratered rocky
     ctx.fillStyle = '#6B7280';
     ctx.fillRect(0, 0, 512, 256);
     ctx.fillStyle = '#374151';
@@ -161,17 +160,17 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
   return texture;
 }
 
-// Planetary definitions matching the linear cinematic visual alignment from the user image
+// Well-spaced linear cinematic visual alignment matching the user reference
 const REALISTIC_PLANETS: RealisticPlanetData[] = [
   {
     id: 'neptune',
     name: 'Neptune',
     vedicName: 'Varuna',
     symbol: '♆',
-    xPos: -9.5,
+    xPos: -12.2,
     yPos: 0,
     zPos: 0,
-    radius: 0.65,
+    radius: 0.7,
     rotationSpeed: 0.008,
     baseColor: '#2563EB',
     roughness: 0.3,
@@ -185,10 +184,10 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     name: 'Uranus',
     vedicName: 'Indra / Rahu Aspect',
     symbol: '♅',
-    xPos: -7.5,
+    xPos: -9.4,
     yPos: 0,
     zPos: 0.1,
-    radius: 0.7,
+    radius: 0.72,
     rotationSpeed: 0.009,
     baseColor: '#67E8F9',
     roughness: 0.4,
@@ -202,7 +201,7 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     name: 'Saturn',
     vedicName: 'Shani Dev',
     symbol: '♄',
-    xPos: -5.0,
+    xPos: -6.2,
     yPos: 0,
     zPos: 0.2,
     radius: 0.95,
@@ -222,7 +221,7 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     name: 'Jupiter',
     vedicName: 'Guru / Brihaspati',
     symbol: '♃',
-    xPos: -2.3,
+    xPos: -2.6,
     yPos: 0,
     zPos: 0.1,
     radius: 1.15,
@@ -239,7 +238,7 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     name: 'Mars',
     vedicName: 'Mangala',
     symbol: '♂',
-    xPos: -0.2,
+    xPos: 0.6,
     yPos: 0,
     zPos: 0,
     radius: 0.45,
@@ -256,7 +255,7 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     name: 'Earth & Moon',
     vedicName: 'Bhumi & Chandra',
     symbol: '⊕',
-    xPos: 1.5,
+    xPos: 3.0,
     yPos: 0,
     zPos: 0,
     radius: 0.58,
@@ -274,7 +273,7 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     name: 'Venus',
     vedicName: 'Shukra Dev',
     symbol: '♀',
-    xPos: 3.2,
+    xPos: 5.4,
     yPos: 0,
     zPos: 0,
     radius: 0.52,
@@ -291,7 +290,7 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     name: 'Mercury',
     vedicName: 'Budha',
     symbol: '☿',
-    xPos: 4.6,
+    xPos: 7.5,
     yPos: 0,
     zPos: 0,
     radius: 0.32,
@@ -348,7 +347,7 @@ function RealisticPlanetMesh({
           roughness={planet.roughness}
           metalness={planet.metalness}
           emissive={isSelected ? planet.baseColor : '#000000'}
-          emissiveIntensity={isSelected ? 0.35 : 0}
+          emissiveIntensity={isSelected ? 0.4 : 0}
         />
       </mesh>
 
@@ -359,7 +358,7 @@ function RealisticPlanetMesh({
           rotation={[Math.PI / 2.6, 0, Math.PI / 8]}
           scale={isSelected ? [1.25, 1.25, 1.25] : [1, 1, 1]}
         >
-          <ringGeometry args={[planet.ringInner || 1.2, planet.ringOuter || 2.1, 64]} />
+          <ringGeometry args={[planet.ringInner || 1.25, planet.ringOuter || 2.2, 64]} />
           <meshStandardMaterial
             color="#D97706"
             roughness={0.4}
@@ -380,26 +379,30 @@ function RealisticPlanetMesh({
         </group>
       )}
 
-      {/* Floating Astrological Data Badge */}
-      <Html position={[0, planet.radius + 0.55, 0]} center distanceFactor={12}>
-        <button
-          onClick={(e) => { e.stopPropagation(); onSelect(planet); }}
-          className={`px-2.5 py-1 rounded-full text-xs font-mono font-bold whitespace-nowrap shadow-2xl flex items-center gap-1.5 transition-all cursor-pointer ${
-            isSelected
-              ? 'bg-amber-400 text-slate-950 ring-2 ring-amber-300 scale-110 shadow-amber-400/50'
-              : hovered
-                ? 'bg-black/95 text-white border border-amber-400/60 scale-105'
-                : 'bg-black/80 text-slate-200 border border-white/20 hover:border-white/50'
-          }`}
-        >
-          <span className="text-amber-400 font-bold">{planet.symbol}</span>
-          <span>{planet.name}</span>
-          {natalPosition && (
-            <span className="text-[10px] font-normal text-amber-200">
-              ({natalPosition.sign.slice(0, 3)} {natalPosition.degree})
-            </span>
-          )}
-        </button>
+      {/* Dynamic Smart Badge: Selective Expansion to avoid overlapping */}
+      <Html position={[0, planet.radius + 0.55, 0]} center distanceFactor={14}>
+        {isSelected || hovered ? (
+          <button
+            onClick={(e) => { e.stopPropagation(); onSelect(planet); }}
+            className="px-3 py-1 rounded-full text-xs font-mono font-bold whitespace-nowrap shadow-2xl flex items-center gap-1.5 bg-amber-400 text-slate-950 ring-2 ring-amber-300 scale-110 shadow-amber-400/50 cursor-pointer transition-transform"
+          >
+            <span className="font-black">{planet.symbol}</span>
+            <span>{planet.name}</span>
+            {natalPosition && (
+              <span className="text-[10.5px] font-normal text-slate-900">
+                ({natalPosition.sign.slice(0, 3)} {natalPosition.degree})
+              </span>
+            )}
+          </button>
+        ) : (
+          <button
+            onClick={(e) => { e.stopPropagation(); onSelect(planet); }}
+            className="w-6 h-6 rounded-full bg-black/80 hover:bg-black/95 text-slate-200 hover:text-amber-300 border border-white/20 hover:border-amber-400 text-xs font-mono flex items-center justify-center shadow-lg transition-all cursor-pointer hover:scale-125"
+            title={`${planet.name} (${natalPosition ? `${natalPosition.sign} ${natalPosition.degree}` : ''})`}
+          >
+            <span>{planet.symbol}</span>
+          </button>
+        )}
       </Html>
     </group>
   );
@@ -416,16 +419,16 @@ function GiantSunOnRight() {
   });
 
   return (
-    <group position={[8.8, 0, 0]}>
+    <group position={[13.5, 0, 0]}>
       {/* Radiant Sun Sphere */}
       <mesh ref={sunMeshRef}>
-        <sphereGeometry args={[3.6, 64, 64]} />
+        <sphereGeometry args={[3.8, 64, 64]} />
         <meshBasicMaterial map={sunTexture} />
       </mesh>
 
       {/* Atmospheric Corona Glow */}
       <mesh scale={[1.08, 1.08, 1.08]}>
-        <sphereGeometry args={[3.6, 32, 32]} />
+        <sphereGeometry args={[3.8, 32, 32]} />
         <meshBasicMaterial
           color="#F59E0B"
           transparent
@@ -435,11 +438,10 @@ function GiantSunOnRight() {
         />
       </mesh>
 
-      {/* Sun Label */}
-      <Html position={[-3.2, 0, 0]} center distanceFactor={14}>
-        <div className="px-3 py-1 rounded-full bg-black/90 border border-amber-400/50 text-amber-300 font-mono text-xs font-bold shadow-xl flex items-center gap-1">
-          <span>☉</span>
-          <span>SOLAR SOURCE (SURYA)</span>
+      {/* Sun Minimal Badge */}
+      <Html position={[-3.5, 0, 0]} center distanceFactor={16}>
+        <div className="px-2.5 py-0.5 rounded-full bg-black/90 border border-amber-400/50 text-amber-300 font-mono text-[11px] font-bold shadow-xl flex items-center gap-1">
+          <span>☉ SUN</span>
         </div>
       </Html>
     </group>
@@ -514,7 +516,7 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
       {/* 3D WebGL Canvas (Cinematic Viewport) */}
       <div className="w-full h-[360px] sm:h-[440px] relative rounded-2xl bg-[#020306] border border-white/10 overflow-hidden shadow-inner">
         <Canvas
-          camera={{ position: [0, 1.5, 12.5], fov: 46 }}
+          camera={{ position: [0, 1.2, 17], fov: 42 }}
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
           className="w-full h-full cursor-grab active:cursor-grabbing"
         >
@@ -525,8 +527,8 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
           <ambientLight intensity={0.45} />
 
           {/* Powerful directional sunlight originating from the Sun on the right */}
-          <pointLight position={[8.5, 0, 0]} intensity={4.5} color="#FFFBEB" distance={35} decay={1.5} />
-          <pointLight position={[-15, 10, 10]} intensity={0.5} color="#38BDF8" />
+          <pointLight position={[13.0, 0, 0]} intensity={4.8} color="#FFFBEB" distance={45} decay={1.4} />
+          <pointLight position={[-18, 10, 10]} intensity={0.5} color="#38BDF8" />
 
           {/* Sun on the right */}
           <GiantSunOnRight />
@@ -550,7 +552,7 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
           <OrbitControls
             enableZoom={true}
             minDistance={4}
-            maxDistance={22}
+            maxDistance={25}
             enablePan={true}
             autoRotate={false}
             maxPolarAngle={Math.PI / 1.7}
