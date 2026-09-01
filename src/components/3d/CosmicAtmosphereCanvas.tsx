@@ -1,13 +1,21 @@
-import React, { useRef, useMemo, useEffect, useState } from 'react';
+import React, { useRef, useMemo, useEffect, useState, memo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { ErrorBoundary } from 'react-error-boundary';
 import { calculatePlanetaryPositions, type PlanetPosition } from '../../lib/astroCalculations';
 import type { UserProfile } from '../../types';
 
-// Generate a procedural silky-smooth circular star glow texture
+// Pre-allocated static vectors to prevent Garbage Collector pauses
+const STATIC_TARGET_POS = new THREE.Vector3(0, 0, 42);
+const STATIC_HEAD = new THREE.Vector3();
+const STATIC_TAIL = new THREE.Vector3();
+
+// Generate a procedural circular star glow texture once
+let cachedStarTexture: any = null;
 function getCircularStarTexture(): any {
+  if (cachedStarTexture) return cachedStarTexture;
   if (typeof document === 'undefined') return null;
+
   const canvas = document.createElement('canvas');
   canvas.width = 64;
   canvas.height = 64;
@@ -24,9 +32,9 @@ function getCircularStarTexture(): any {
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, 64, 64);
 
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.needsUpdate = true;
-  return texture;
+  cachedStarTexture = new THREE.CanvasTexture(canvas);
+  cachedStarTexture.needsUpdate = true;
+  return cachedStarTexture;
 }
 
 // Tradition-specific spectral palettes
@@ -36,7 +44,7 @@ function getTraditionPalette(system?: string): { colors: any[]; primaryHex: stri
   if (s.includes('islamic')) {
     return {
       colors: [
-        new THREE.Color('#2DD4BF'), // Celestial Teal (Mamluk / Ilm al-Falak)
+        new THREE.Color('#2DD4BF'), // Celestial Teal
         new THREE.Color('#FBBF24'), // Sacred Gold
         new THREE.Color('#38BDF8'), // Azure Sky
         new THREE.Color('#FFFFFF'), // Pure Light
@@ -93,16 +101,15 @@ function getTraditionPalette(system?: string): { colors: any[]; primaryHex: stri
   };
 }
 
-// Interactive Smooth Inertial Camera Rig
+// Interactive Smooth Inertial Camera Rig (Zero Allocation)
 function InteractiveCameraRig() {
   const { camera, pointer } = useThree();
-  const targetPos = useRef(new THREE.Vector3(0, 0, 42));
 
   useFrame((_, delta) => {
-    targetPos.current.x = THREE.MathUtils.lerp(targetPos.current.x, pointer.x * 4.5, delta * 1.8);
-    targetPos.current.y = THREE.MathUtils.lerp(targetPos.current.y, pointer.y * 3.0, delta * 1.8);
-    camera.position.x = targetPos.current.x;
-    camera.position.y = targetPos.current.y;
+    STATIC_TARGET_POS.x = THREE.MathUtils.lerp(STATIC_TARGET_POS.x, pointer.x * 4.0, delta * 1.5);
+    STATIC_TARGET_POS.y = THREE.MathUtils.lerp(STATIC_TARGET_POS.y, pointer.y * 2.5, delta * 1.5);
+    camera.position.x = STATIC_TARGET_POS.x;
+    camera.position.y = STATIC_TARGET_POS.y;
     camera.lookAt(0, 0, 0);
   });
 
@@ -119,7 +126,7 @@ function ScintillatingStarfield({
 }) {
   const pointsRef = useRef<any>(null);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const starCount = isMobile ? 1200 : 2800;
+  const starCount = isMobile ? 800 : 2200;
 
   const [positions, colors] = useMemo(() => {
     const pos = new Float32Array(starCount * 3);
@@ -146,8 +153,8 @@ function ScintillatingStarfield({
 
   useFrame((state, delta) => {
     if (pointsRef.current) {
-      pointsRef.current.rotation.y += delta * 0.005;
-      pointsRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.025) * 0.012;
+      pointsRef.current.rotation.y += delta * 0.004;
+      pointsRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.02) * 0.01;
     }
   });
 
@@ -158,11 +165,11 @@ function ScintillatingStarfield({
         <bufferAttribute attach="attributes-color" count={starCount} array={colors} itemSize={3} />
       </bufferGeometry>
       <pointsMaterial
-        size={isMobile ? 0.38 : 0.52}
+        size={isMobile ? 0.35 : 0.48}
         map={starTexture}
         vertexColors
         transparent
-        opacity={0.82}
+        opacity={0.80}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
         depthWrite={false}
@@ -182,19 +189,19 @@ function InteractiveConstellationNetwork({
   const pointsRef = useRef<any>(null);
   const linesRef = useRef<any>(null);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const nodeCount = isMobile ? 45 : 90;
+  const nodeCount = isMobile ? 35 : 75;
 
   const [positions, linePositions] = useMemo(() => {
     const pos = new Float32Array(nodeCount * 3);
     const lineCoords: number[] = [];
 
     for (let i = 0; i < nodeCount; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 68;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 44;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 32 - 6;
+      pos[i * 3] = (Math.random() - 0.5) * 65;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 42;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 30 - 6;
     }
 
-    const maxDist = isMobile ? 11 : 13.5;
+    const maxDist = isMobile ? 10 : 13;
     for (let i = 0; i < nodeCount; i++) {
       for (let j = i + 1; j < nodeCount; j++) {
         const dx = pos[i * 3] - pos[j * 3];
@@ -215,14 +222,14 @@ function InteractiveConstellationNetwork({
   }, [nodeCount, isMobile]);
 
   useFrame((state) => {
-    const t = state.clock.elapsedTime * 0.01;
+    const t = state.clock.elapsedTime * 0.008;
     if (pointsRef.current) {
       pointsRef.current.rotation.y = t;
-      pointsRef.current.rotation.z = Math.sin(t * 0.5) * 0.03;
+      pointsRef.current.rotation.z = Math.sin(t * 0.5) * 0.025;
     }
     if (linesRef.current) {
       linesRef.current.rotation.y = t;
-      linesRef.current.rotation.z = Math.sin(t * 0.5) * 0.03;
+      linesRef.current.rotation.z = Math.sin(t * 0.5) * 0.025;
     }
   });
 
@@ -234,11 +241,11 @@ function InteractiveConstellationNetwork({
           <bufferAttribute attach="attributes-position" count={nodeCount} array={positions} itemSize={3} />
         </bufferGeometry>
         <pointsMaterial
-          size={0.65}
+          size={0.6}
           map={starTexture}
           color={accentColor}
           transparent
-          opacity={0.88}
+          opacity={0.85}
           sizeAttenuation
           blending={THREE.AdditiveBlending}
           depthWrite={false}
@@ -253,7 +260,7 @@ function InteractiveConstellationNetwork({
         <lineBasicMaterial
           color={accentColor}
           transparent
-          opacity={0.07}
+          opacity={0.06}
           blending={THREE.AdditiveBlending}
           depthWrite={false}
         />
@@ -262,20 +269,12 @@ function InteractiveConstellationNetwork({
   );
 }
 
-// Multi-Lane Asynchronous Meteor Shower Streams
-function ShootingStarStreaks() {
-  const lineRef1 = useRef<any>(null);
-  const lineRef2 = useRef<any>(null);
-  const streak1 = useRef({ active: false, progress: 0, start: new THREE.Vector3(), end: new THREE.Vector3(), nextTime: 3 });
-  const streak2 = useRef({ active: false, progress: 0, start: new THREE.Vector3(), end: new THREE.Vector3(), nextTime: 7 });
+// Zero-Allocation Single Shooting Star
+function EfficientShootingStar() {
+  const lineRef = useRef<any>(null);
+  const streak = useRef({ active: false, progress: 0, start: new THREE.Vector3(), end: new THREE.Vector3(), nextTime: 4 });
 
-  const geom1 = useMemo(() => {
-    const g = new THREE.BufferGeometry();
-    g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(6), 3));
-    return g;
-  }, []);
-
-  const geom2 = useMemo(() => {
+  const geom = useMemo(() => {
     const g = new THREE.BufferGeometry();
     g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(6), 3));
     return g;
@@ -284,76 +283,41 @@ function ShootingStarStreaks() {
   useFrame((state, delta) => {
     const t = state.clock.elapsedTime;
 
-    // Stream 1
-    if (!streak1.current.active && t > streak1.current.nextTime) {
-      streak1.current.active = true;
-      streak1.current.progress = 0;
+    if (!streak.current.active && t > streak.current.nextTime) {
+      streak.current.active = true;
+      streak.current.progress = 0;
       const sx = (Math.random() - 0.5) * 50;
       const sy = 14 + Math.random() * 16;
       const sz = -8 + (Math.random() - 0.5) * 12;
-      streak1.current.start.set(sx, sy, sz);
-      streak1.current.end.set(sx + (Math.random() - 0.3) * 28, sy - 24 - Math.random() * 10, sz);
-      streak1.current.nextTime = t + 7 + Math.random() * 8;
+      streak.current.start.set(sx, sy, sz);
+      streak.current.end.set(sx + (Math.random() - 0.3) * 28, sy - 24 - Math.random() * 10, sz);
+      streak.current.nextTime = t + 6 + Math.random() * 8;
     }
 
-    if (streak1.current.active && lineRef1.current) {
-      streak1.current.progress += delta * 1.7;
-      const p = streak1.current.progress;
+    if (streak.current.active && lineRef.current) {
+      streak.current.progress += delta * 1.6;
+      const p = streak.current.progress;
       if (p >= 1) {
-        streak1.current.active = false;
-        lineRef1.current.visible = false;
+        streak.current.active = false;
+        lineRef.current.visible = false;
       } else {
-        lineRef1.current.visible = true;
-        const head = streak1.current.start.clone().lerp(streak1.current.end, Math.min(1, p));
-        const tail = streak1.current.start.clone().lerp(streak1.current.end, Math.max(0, p - 0.28));
-        const arr = lineRef1.current.geometry.attributes.position.array;
-        arr[0] = head.x; arr[1] = head.y; arr[2] = head.z;
-        arr[3] = tail.x; arr[4] = tail.y; arr[5] = tail.z;
-        lineRef1.current.geometry.attributes.position.needsUpdate = true;
-        lineRef1.current.material.opacity = Math.sin(p * Math.PI) * 0.7;
-      }
-    }
+        lineRef.current.visible = true;
+        STATIC_HEAD.lerpVectors(streak.current.start, streak.current.end, Math.min(1, p));
+        STATIC_TAIL.lerpVectors(streak.current.start, streak.current.end, Math.max(0, p - 0.25));
 
-    // Stream 2
-    if (!streak2.current.active && t > streak2.current.nextTime) {
-      streak2.current.active = true;
-      streak2.current.progress = 0;
-      const sx = 20 + Math.random() * 30;
-      const sy = 16 + Math.random() * 12;
-      const sz = -12 + (Math.random() - 0.5) * 10;
-      streak2.current.start.set(sx, sy, sz);
-      streak2.current.end.set(sx - 35, sy - 22, sz);
-      streak2.current.nextTime = t + 10 + Math.random() * 10;
-    }
-
-    if (streak2.current.active && lineRef2.current) {
-      streak2.current.progress += delta * 1.5;
-      const p = streak2.current.progress;
-      if (p >= 1) {
-        streak2.current.active = false;
-        lineRef2.current.visible = false;
-      } else {
-        lineRef2.current.visible = true;
-        const head = streak2.current.start.clone().lerp(streak2.current.end, Math.min(1, p));
-        const tail = streak2.current.start.clone().lerp(streak2.current.end, Math.max(0, p - 0.25));
-        const arr = lineRef2.current.geometry.attributes.position.array;
-        arr[0] = head.x; arr[1] = head.y; arr[2] = head.z;
-        arr[3] = tail.x; arr[4] = tail.y; arr[5] = tail.z;
-        lineRef2.current.geometry.attributes.position.needsUpdate = true;
-        lineRef2.current.material.opacity = Math.sin(p * Math.PI) * 0.65;
+        const arr = lineRef.current.geometry.attributes.position.array;
+        arr[0] = STATIC_HEAD.x; arr[1] = STATIC_HEAD.y; arr[2] = STATIC_HEAD.z;
+        arr[3] = STATIC_TAIL.x; arr[4] = STATIC_TAIL.y; arr[5] = STATIC_TAIL.z;
+        lineRef.current.geometry.attributes.position.needsUpdate = true;
+        lineRef.current.material.opacity = Math.sin(p * Math.PI) * 0.7;
       }
     }
   });
 
   return (
-    <group>
-      <lineSegments ref={lineRef1} geometry={geom1} visible={false}>
-        <lineBasicMaterial color="#E0F2FE" transparent opacity={0.7} blending={THREE.AdditiveBlending} />
-      </lineSegments>
-      <lineSegments ref={lineRef2} geometry={geom2} visible={false}>
-        <lineBasicMaterial color="#FEF08A" transparent opacity={0.65} blending={THREE.AdditiveBlending} />
-      </lineSegments>
-    </group>
+    <lineSegments ref={lineRef} geometry={geom} visible={false}>
+      <lineBasicMaterial color="#E0F2FE" transparent opacity={0.7} blending={THREE.AdditiveBlending} />
+    </lineSegments>
   );
 }
 
@@ -374,7 +338,7 @@ function PersonalizedPlanetaryRing({ userProfile }: { userProfile?: UserProfile 
 
   useFrame((_, delta) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.003;
+      groupRef.current.rotation.y += delta * 0.002;
     }
   });
 
@@ -384,7 +348,7 @@ function PersonalizedPlanetaryRing({ userProfile }: { userProfile?: UserProfile 
     <group ref={groupRef} rotation={[Math.PI * 0.18, 0, 0]}>
       {/* Ecliptic Orbit Path */}
       <mesh rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[26 - 0.05, 26 + 0.05, 128]} />
+        <ringGeometry args={[26 - 0.05, 26 + 0.05, 96]} />
         <meshBasicMaterial color="#F59E0B" transparent opacity={0.16} side={THREE.DoubleSide} />
       </mesh>
 
@@ -396,7 +360,7 @@ function PersonalizedPlanetaryRing({ userProfile }: { userProfile?: UserProfile 
 
         return (
           <mesh key={p.name} position={[x, 0, z]}>
-            <sphereGeometry args={[0.55, 16, 16]} />
+            <sphereGeometry args={[0.55, 12, 12]} />
             <meshStandardMaterial
               color="#FDE68A"
               emissive="#F59E0B"
@@ -414,13 +378,13 @@ export interface CosmicAtmosphereCanvasProps {
   userProfile?: UserProfile;
 }
 
-export default function CosmicAtmosphereCanvas({ userProfile }: CosmicAtmosphereCanvasProps) {
+export const CosmicAtmosphereCanvas: React.FC<CosmicAtmosphereCanvasProps> = memo(({ userProfile }) => {
   const [isVisible, setIsVisible] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const starTexture = useMemo(() => getCircularStarTexture(), []);
   const palette = useMemo(() => getTraditionPalette(userProfile?.preferredSystem), [userProfile?.preferredSystem]);
 
-  // Pause rendering when tab is hidden to conserve GPU/battery
+  // Pause rendering when tab is hidden to conserve 100% GPU/battery
   useEffect(() => {
     const handleVisibility = () => {
       setIsVisible(!document.hidden);
@@ -453,8 +417,8 @@ export default function CosmicAtmosphereCanvas({ userProfile }: CosmicAtmosphere
         {isVisible && (
           <Canvas
             camera={{ position: [0, 0, 42], fov: 45, near: 0.1, far: 1000 }}
-            gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
-            dpr={[1, 1.25]}
+            gl={{ antialias: false, alpha: true, powerPreference: 'low-power' }}
+            dpr={[1, 1.2]}
           >
             {/* Ambient Lighting */}
             <ambientLight intensity={0.4} />
@@ -465,10 +429,13 @@ export default function CosmicAtmosphereCanvas({ userProfile }: CosmicAtmosphere
             <ScintillatingStarfield starTexture={starTexture} palette={palette} />
             <InteractiveConstellationNetwork starTexture={starTexture} accentColor={palette.accentHex} />
             <PersonalizedPlanetaryRing userProfile={userProfile} />
-            <ShootingStarStreaks />
+            <EfficientShootingStar />
           </Canvas>
         )}
       </ErrorBoundary>
     </div>
   );
-}
+});
+
+CosmicAtmosphereCanvas.displayName = 'CosmicAtmosphereCanvas';
+export default CosmicAtmosphereCanvas;

@@ -532,15 +532,7 @@ export default function AppContent() {
         >
           <div className={`${activeTab === 'landing' ? 'w-full' : 'max-w-7xl mx-auto px-2.5 sm:px-4 lg:px-6'} h-full w-full`}>
             <Suspense fallback={<CosmicCelestialLoader message="Synchronizing Celestial Intelligence" />}>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeTab}
-                  initial={{ opacity: 1 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 1 }}
-                  transition={{ duration: 0 }}
-                  className="h-full"
-                >
+              <div key={activeTab} className="h-full">
                 <ErrorBoundary>
                   {(showOnboarding || activeTab === 'onboarding') && (
                     <OmniOnboardingWizard
@@ -741,9 +733,9 @@ export default function AppContent() {
                   )}
                 </ErrorBoundary>
                 <Footer />
-              </motion.div>
-            </AnimatePresence>
+              </div>
           </Suspense>
+
           </div>
         </div>
 
