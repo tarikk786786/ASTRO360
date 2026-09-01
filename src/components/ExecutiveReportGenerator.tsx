@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   FileText, Download, Printer, ShieldCheck, Sparkles, CheckCircle2, 
-  User, Briefcase, HeartHandshake, Gem, Calendar, ArrowUpRight, Copy, Check
+  User, Briefcase, HeartHandshake, Gem, Calendar, ArrowUpRight, Copy, Check,
+  Globe2, Eye, Flame
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { useGlobalConfig } from '../context/GlobalConfigContext';
+import { printExecutiveDossierPdf } from '../lib/pdfReportEngine';
+import type { UserProfile } from '../types';
 
 interface ReportModule {
-  id: 'birth' | 'career' | 'marriage' | 'wealth' | 'annual';
+  id: 'comprehensive' | 'career' | 'relationship' | 'wealth' | 'annual';
   name: string;
   category: string;
   pages: number;
@@ -19,12 +21,12 @@ interface ReportModule {
 
 const REPORT_CATALOG: ReportModule[] = [
   { 
-    id: 'birth', 
-    name: 'Comprehensive Birth Chart Dossier (Kundli & Divisional)', 
-    category: 'Natal Astrological Blueprint', 
+    id: 'comprehensive', 
+    name: 'Comprehensive 6-Tradition Master Dossier', 
+    category: 'Full Ephemeris & Multi-Faith Blueprint', 
     pages: 18, 
-    description: 'Complete 360° Natal Kundli, D1 Ascendant, D9 Navamsha, D10 Dashamsha, Vimshottari Dasha timeline, and multi-tradition remedies.',
-    sections: ['1. Ascendant & Planetary Coordinates', '2. Vimshottari Mahadasha Timeline', '3. D9 Navamsha & Soul Purpose', '4. Prescribed Gemstones & Mantras'],
+    description: 'Complete 360° Natal Kundli, D1 Ascendant, 9 Planetary Ephemeris, Vimshottari Dasha timeline, 6-Tradition Cross-Synthesis, and multi-faith remedies.',
+    sections: ['1. Ascendant & Planetary Coordinates (DE440)', '2. Vimshottari Mahadasha Timeline', '3. 6-Tradition Master Synthesis Matrix', '4. Prescribed Gemstones & Vedic/Islamic Mantras'],
     prescribedRemedy: 'Mahagayatri Mantra & Yellow Sapphire (Pukhraj) 4.5+ Carats on Index Finger'
   },
   { 
@@ -37,7 +39,7 @@ const REPORT_CATALOG: ReportModule[] = [
     prescribedRemedy: 'Surya Beej Mantra & Emerald (Panna) for Mercury 2nd House Commerce'
   },
   { 
-    id: 'marriage', 
+    id: 'relationship', 
     name: 'Marriage & Relationship Synastry Dossier', 
     category: 'Relationship Harmony & 36-Guna Match', 
     pages: 14, 
@@ -66,176 +68,191 @@ const REPORT_CATALOG: ReportModule[] = [
 ];
 
 interface ExecutiveReportGeneratorProps {
-  userProfile?: {
-    name?: string;
-    location?: string;
-    dob?: string;
-    time?: string;
-  };
+  userProfile?: UserProfile;
 }
 
-export default function ExecutiveReportGenerator({ userProfile }: ExecutiveReportGeneratorProps) {
-  const { config } = useGlobalConfig();
+export default function ExecutiveReportGenerator({ userProfile = {
+  name: 'Cosmic Seeker',
+  dob: '1998-06-15',
+  time: '12:00',
+  location: 'Universal Coordinates',
+  preferredSystem: 'vedic',
+} as UserProfile }: ExecutiveReportGeneratorProps) {
   const [selectedReport, setSelectedReport] = useState<ReportModule>(REPORT_CATALOG[0]);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
-  const [isCopied, setIsCopied] = useState<boolean>(false);
 
   const seekerName = userProfile?.name || 'Cosmic Seeker';
   const seekerLocation = userProfile?.location || 'Universal Meridian';
 
-  const handlePrintPDF = () => {
-    window.print();
+  const handleExportPDF = () => {
+    setIsGenerating(true);
+    toast.info('Generating high-resolution vector PDF dossier...');
+    setTimeout(() => {
+      printExecutiveDossierPdf({
+        userProfile,
+        reportType: selectedReport.id,
+        includeDivisionalCharts: true,
+        includeRemedies: true,
+      });
+      setIsGenerating(false);
+    }, 400);
   };
 
   const handleDownloadMD = () => {
-    setIsGenerating(false);
     const text = `# ASTRO360 OMNI — ${selectedReport.name.toUpperCase()}\n` +
       `Subject: ${seekerName} | Location: ${seekerLocation} | Date: ${new Date().toLocaleDateString()}\n` +
-      `Sidereal Lahiri Ayanamsha: 24.2216° | Report Length: ${selectedReport.pages} Pages\n\n` +
+      `Sidereal Lahiri Ayanamsha: 23.856° | Report Length: ${selectedReport.pages} Pages\n\n` +
       `---\n\n` +
       `## 1. EXECUTIVE SUMMARY & BLUEPRINT\n` +
       `${selectedReport.description}\n\n` +
-        `## 2. REPORT STRUCTURE & SECTIONS\n` +
-        selectedReport.sections.map(s => `- ${s}`).join('\n') + `\n\n` +
-        `## 3. PRESCRIBED SACRED REMEDIAL PROTOCOL\n` +
-        `Key Remedy: ${selectedReport.prescribedRemedy}\n\n` +
-        `---\n` +
-        `Verified by ASTRO360 Astronomical Engine • 100% Confidential Seeker Dossier`;
+      `## 2. REPORT STRUCTURE & SECTIONS\n` +
+      selectedReport.sections.map(s => `- ${s}`).join('\n') + `\n\n` +
+      `## 3. PRESCRIBED SACRED REMEDIAL PROTOCOL\n` +
+      `${selectedReport.prescribedRemedy}\n\n` +
+      `---\nGenerated deterministically by ASTRO360 NASA JPL DE440 Core Engine.`;
 
     const blob = new Blob([text], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `ASTRO360_${selectedReport.id.toUpperCase()}_Dossier.md`;
+    a.download = `ASTRO360_${selectedReport.id}_Dossier_${seekerName.replace(/\s+/g, '_')}.md`;
     a.click();
-    toast.success(`Exported ${selectedReport.name} Dossier!`);
+    URL.revokeObjectURL(url);
+    toast.success('Markdown summary downloaded successfully!');
   };
 
   return (
-    <div className="p-6 rounded-3xl bg-[#111827] border border-amber-500/40 shadow-2xl space-y-6 text-left relative overflow-hidden">
-      {/* HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4 print:hidden">
+    <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8 text-left pb-16 select-none">
+      {/* Header Banner */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#0B132B] via-[#080E1C] to-[#040812] border border-amber-400/30 shadow-2xl space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/20 text-amber-300 text-xs font-mono font-bold">
+            <FileText className="w-3.5 h-3.5" />
+            <span>EXECUTIVE PDF REPORT GENERATOR</span>
+          </div>
+
+          <span className="text-xs font-mono text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20 font-bold">
+            NASA JPL DE440 Ephemeris • Lahiri 23.856°
+          </span>
+        </div>
+
         <div>
-          <h3 className="text-lg font-bold text-white flex items-center gap-2.5">
-            <FileText className="w-5.5 h-5.5 text-amber-400" /> Executive PDF & Dossier Report Generator
-          </h3>
-          <p className="text-xs text-slate-300 font-mono pt-1">
-            Printable Astrological Reports for Birth, Career, Marriage, Wealth & Annual Forecasts
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-white font-sans tracking-tight">
+            High-Resolution Astrological PDF Dossiers
+          </h1>
+          <p className="text-sm text-slate-300 mt-1 max-w-2xl font-sans leading-relaxed">
+            Generate publication-grade, multi-page vector PDF dossiers formatted for executive consulting, personal archives, and ceremonial printing.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 shrink-0">
+        {/* Global Action Buttons */}
+        <div className="pt-3 border-t border-white/10 flex flex-wrap items-center gap-3">
+          <button
+            onClick={handleExportPDF}
+            disabled={isGenerating}
+            className="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs font-mono flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-amber-400/20 active:scale-95 disabled:opacity-50"
+          >
+            <Printer className="w-4 h-4" />
+            <span>{isGenerating ? 'Generating PDF...' : 'Print / Export Official PDF'}</span>
+          </button>
+
           <button
             onClick={handleDownloadMD}
-            disabled={isGenerating}
-            className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 border border-white/10"
+            className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold text-xs font-mono border border-white/10 flex items-center gap-2 transition-all cursor-pointer active:scale-95"
           >
-            <Download className="w-3.5 h-3.5" /> {isGenerating ? 'Compiling...' : 'Download Markdown'}
-          </button>
-
-          <button
-            onClick={handlePrintPDF}
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20"
-          >
-            <Printer className="w-4 h-4 text-slate-950" /> Print / Export PDF Dossier
+            <Download className="w-4 h-4" />
+            <span>Download Summary (.md)</span>
           </button>
         </div>
       </div>
 
-      {/* REPORT SELECTOR GRID (Hidden during print) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3 print:hidden">
-        {REPORT_CATALOG.map((report) => {
-          const isSelected = selectedReport.id === report.id;
-          return (
-            <button
-              key={report.id}
-              onClick={() => setSelectedReport(report)}
-              className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer space-y-2 flex flex-col justify-between ${
-                isSelected
-                  ? 'bg-amber-500/20 border-amber-400 text-white shadow-xl ring-1 ring-amber-400/40'
-                  : 'bg-[#0B1220] border-white/10 text-slate-400 hover:text-white hover:border-white/20'
-              }`}
-            >
-              <div className="space-y-1">
+      {/* REPORT SELECTION GRID */}
+      <div className="space-y-4">
+        <h2 className="text-lg font-extrabold text-white font-sans flex items-center gap-2">
+          <Sparkles className="w-5 h-5 text-amber-400" />
+          <span>Select Report Module</span>
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {REPORT_CATALOG.map((rep) => {
+            const isSelected = selectedReport.id === rep.id;
+            return (
+              <button
+                key={rep.id}
+                onClick={() => setSelectedReport(rep)}
+                className={`p-5 rounded-2xl border text-left transition-all space-y-3 cursor-pointer ${
+                  isSelected
+                    ? 'bg-[#0E172B] border-amber-400 shadow-lg shadow-amber-400/10'
+                    : 'bg-[#080E1B] hover:bg-[#0B1324] border-white/10 text-slate-300'
+                }`}
+              >
                 <div className="flex items-center justify-between">
-                  <span className="text-[9px] font-mono text-amber-400 font-bold uppercase">{report.category}</span>
-                  <span className="text-[9px] font-mono text-cyan-300 font-bold bg-cyan-500/10 px-1.5 py-0.5 rounded border border-cyan-500/30">
-                    {report.pages} Pages
+                  <span className="text-[11px] font-mono font-bold text-amber-400">
+                    {rep.category}
+                  </span>
+                  <span className="text-[10px] font-mono text-slate-400 bg-white/5 px-2 py-0.5 rounded-md">
+                    {rep.pages} Pages
                   </span>
                 </div>
-                <h4 className="text-xs font-bold text-white leading-tight">{report.name}</h4>
-              </div>
 
-              <span className="text-[10px] text-slate-300 font-mono flex items-center gap-1 font-bold pt-2 border-t border-white/10">
-                <Sparkles className="w-3 h-3 text-amber-400" /> Select Report
-              </span>
-            </button>
-          );
-        })}
+                <div className="text-sm font-extrabold text-white font-sans leading-snug">
+                  {rep.name}
+                </div>
+
+                <p className="text-xs text-slate-400 leading-relaxed font-sans line-clamp-2">
+                  {rep.description}
+                </p>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* PRINTABLE DOSSIER REPORT DOCUMENT PREVIEW */}
-      <div className="p-6 rounded-2xl bg-[#0B1220] border border-amber-500/40 space-y-6 text-xs font-mono print:bg-white print:text-black print:p-0 print:border-none shadow-2xl">
-        {/* Dossier Document Header */}
-        <div className="border-b border-amber-500/40 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-amber-400 print:text-black bg-amber-500/10 print:bg-transparent px-2.5 py-0.5 rounded border border-amber-500/30 print:border-black font-mono">
-                CONFIDENTIAL EXECUTIVE DOSSIER
-              </span>
-              <span className="text-[10px] text-slate-400 print:text-gray-600 font-mono">ID: ASTRO-DOSSIER-2026-98A</span>
-            </div>
-            <h2 className="text-base sm:text-lg font-bold text-white print:text-black">{selectedReport.name}</h2>
-            <p className="text-[11px] text-slate-300 print:text-gray-800 font-mono">
-              Prepared for: <strong className="text-amber-300 print:text-black">{seekerName}</strong> • Location: <strong className="text-cyan-300 print:text-black">{seekerLocation}</strong>
-            </p>
+      {/* SELECTED REPORT LIVE PREVIEW */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-[#080E1B] border border-white/10 shadow-xl space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+          <div>
+            <h3 className="text-lg font-extrabold text-white font-sans">
+              {selectedReport.name}
+            </h3>
+            <span className="text-xs font-mono text-slate-400">
+              Prepared for {seekerName} • {seekerLocation}
+            </span>
           </div>
 
-          <div className="text-right shrink-0">
-            <span className="text-xs font-mono font-bold text-emerald-400 print:text-black block">Sidereal Lahiri Ayanamsha 24.2216°</span>
-            <span className="text-[10px] text-slate-400 print:text-gray-600 font-mono">Generated: {new Date().toLocaleDateString()}</span>
-          </div>
+          <button
+            onClick={handleExportPDF}
+            className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs font-mono flex items-center gap-1.5 cursor-pointer shadow-md active:scale-95"
+          >
+            <Printer className="w-4 h-4" />
+            <span>Generate This PDF</span>
+          </button>
         </div>
 
-        {/* Section 1: Executive Overview */}
-        <div className="space-y-2">
-          <h4 className="text-xs font-bold text-amber-400 print:text-black font-mono flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-amber-400 print:text-black" /> 1. Executive Blueprint & Diagnostic Summary
-          </h4>
-          <p className="text-slate-200 print:text-black text-[11px] leading-relaxed bg-black/40 print:bg-transparent p-4 rounded-xl border border-white/10 print:border-gray-300">
-            {selectedReport.description}
-          </p>
-        </div>
-
-        {/* Section 2: Structure & Key Chapters */}
-        <div className="space-y-2">
-          <h4 className="text-xs font-bold text-cyan-400 print:text-black font-mono flex items-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-cyan-400 print:text-black" /> 2. Included Analysis Sections
-          </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        {/* Sections Preview */}
+        <div className="space-y-3">
+          <span className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider block">
+            Included Analytical Chapters
+          </span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {selectedReport.sections.map((sec, idx) => (
-              <div key={idx} className="p-3 rounded-xl bg-white/5 print:bg-transparent border border-white/10 print:border-gray-300 flex items-center gap-2 text-slate-300 print:text-black text-[11px]">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 print:text-black shrink-0" />
-                <span>{sec}</span>
+              <div key={idx} className="p-3.5 rounded-xl bg-white/5 border border-white/5 flex items-center gap-2.5">
+                <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                <span className="text-xs text-slate-200 font-sans font-medium">{sec}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Section 3: Prescribed Sacred Remedies */}
-        <div className="p-4 rounded-xl bg-emerald-950/40 print:bg-transparent border border-emerald-500/40 print:border-gray-300 space-y-2">
-          <h4 className="text-xs font-bold text-emerald-400 print:text-black font-mono flex items-center gap-1.5">
-            <Gem className="w-4 h-4 text-emerald-400 print:text-black" /> 3. Prescribed Sacred Remedial Protocol
-          </h4>
-          <p className="text-slate-200 print:text-black text-[11px] leading-relaxed">
+        {/* Prescribed Remedy Highlight */}
+        <div className="p-4 rounded-2xl bg-amber-400/10 border border-amber-400/20 space-y-1.5">
+          <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-amber-300">
+            <Flame className="w-4 h-4" />
+            <span>Prescribed Remedial Protocol</span>
+          </div>
+          <p className="text-xs text-slate-200 font-sans leading-relaxed">
             {selectedReport.prescribedRemedy}
           </p>
-        </div>
-
-        {/* Dossier Footer Signature */}
-        <div className="pt-4 border-t border-white/10 print:border-gray-300 flex items-center justify-between text-[10px] text-slate-400 print:text-gray-600 font-mono">
-          <span>ASTRO360 Omni Astronomical Engine • Version 7.4.2</span>
-          <span>Page 1 of {selectedReport.pages} • Verified Certified Dossier</span>
         </div>
       </div>
     </div>

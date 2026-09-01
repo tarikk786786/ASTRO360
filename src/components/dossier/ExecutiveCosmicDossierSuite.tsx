@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   FileText, Download, Printer, Sparkles, Check, 
@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import type { UserProfile } from '../../types';
 import { toast } from 'sonner';
+import { printExecutiveDossierPdf } from '../../lib/pdfReportEngine';
 
 interface ExecutiveCosmicDossierSuiteProps {
   userProfile?: UserProfile;
@@ -85,23 +86,30 @@ export default function ExecutiveCosmicDossierSuite({ userProfile, onNavigateToT
   const [selectedChapter, setSelectedChapter] = useState<DossierChapter>(DOSSIER_CHAPTERS[0]);
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const name = userProfile?.name || 'Seeker';
-  const dob = userProfile?.dob || '1998-02-22';
-  const location = userProfile?.location || 'London, UK';
+  const safeProfile: UserProfile = userProfile || {
+    name: 'Cosmic Seeker',
+    dob: '1998-06-15',
+    time: '12:00',
+    location: 'Universal Coordinates',
+    gender: 'male',
+    preferredSystem: 'vedic',
+  } as UserProfile;
 
   const handlePrint = () => {
     setIsGenerating(true);
     toast.info('Formatting print-ready vector PDF document...');
     setTimeout(() => {
       setIsGenerating(false);
-      if (typeof window !== 'undefined') {
-        window.print();
-      }
-    }, 600);
+      printExecutiveDossierPdf({
+        userProfile: safeProfile,
+        includeDivisionalCharts: true,
+        includeRemedies: true,
+      });
+    }, 400);
   };
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto text-left">
+    <div className="space-y-6 max-w-5xl mx-auto text-left select-none">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
         <div>
@@ -138,69 +146,60 @@ export default function ExecutiveCosmicDossierSuite({ userProfile, onNavigateToT
             <button
               key={ch.id}
               onClick={() => setSelectedChapter(ch)}
-              className={`p-4 rounded-2xl border text-left transition-all cursor-pointer space-y-2 ${
+              className={`p-4 rounded-2xl border text-left transition-all space-y-2 cursor-pointer ${
                 isSelected
-                  ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-lg font-bold'
-                  : 'bg-[#0B1220] text-slate-300 hover:text-white border-white/10 hover:border-white/20'
+                  ? 'bg-amber-400/10 border-amber-400/60 shadow-lg shadow-amber-400/10 text-white'
+                  : 'bg-[#080E1A] hover:bg-white/5 border-white/10 text-slate-400 hover:text-slate-200'
               }`}
             >
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold uppercase opacity-80">Chapter {ch.id}</span>
-                <span className={`text-[10px] px-2 py-0.5 rounded ${isSelected ? 'bg-slate-950/20 text-slate-950' : 'bg-white/5 text-slate-400'}`}>
-                  {ch.pages} Pages
-                </span>
+              <div className="flex items-center justify-between text-[11px]">
+                <span className="text-amber-400 font-bold">CH 0{ch.id}</span>
+                <span className="text-slate-400">{ch.pages} Pages</span>
               </div>
-              <strong className="text-xs block leading-tight truncate">{ch.title}</strong>
-              <span className="text-[10px] font-sans opacity-80 block truncate">{ch.sanskritTitle}</span>
+              <div className="font-bold text-white leading-snug truncate">{ch.title}</div>
+              <div className="text-[10px] text-slate-400">{ch.sanskritTitle}</div>
             </button>
           );
         })}
       </div>
 
-      {/* Selected Chapter Preview Box */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-[#0B1220] border border-white/12 shadow-2xl space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/8 pb-4">
+      {/* Chapter Deep Dive Preview Card */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-[#080E1A] border border-white/10 shadow-2xl space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="px-2 py-0.5 rounded bg-amber-400/20 text-amber-300 text-xs font-mono font-bold">
-                Chapter {selectedChapter.id}
-              </span>
-              <h3 className="text-lg sm:text-xl font-bold text-white font-mono">{selectedChapter.title}</h3>
-            </div>
-            <p className="text-xs text-slate-400 font-sans mt-1">{selectedChapter.summary}</p>
+            <span className="text-xs font-mono font-bold text-amber-400">
+              CHAPTER 0{selectedChapter.id} PREVIEW
+            </span>
+            <h3 className="text-xl sm:text-2xl font-bold text-white mt-0.5">
+              {selectedChapter.title}
+            </h3>
+            <p className="text-xs text-slate-300 font-mono mt-1">{selectedChapter.sanskritTitle}</p>
           </div>
-          <span className="text-xs font-mono text-cyan-300 bg-cyan-400/10 px-3 py-1 rounded-xl border border-cyan-400/20 w-fit shrink-0">
-            {name}'s Celestial Record
-          </span>
+
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono text-cyan-300 bg-cyan-400/10 px-3 py-1.5 rounded-xl border border-cyan-400/20 font-bold">
+              Included in PDF
+            </span>
+          </div>
         </div>
 
-        {/* Chapter Inclusions List */}
-        <div className="space-y-2">
-          <span className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider block">
-            Included High-Precision Sections:
+        <p className="text-sm text-slate-300 leading-relaxed font-sans">
+          {selectedChapter.summary}
+        </p>
+
+        {/* Highlights List */}
+        <div className="space-y-3">
+          <span className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider block">
+            Analytical Modules in this Chapter
           </span>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
-            {selectedChapter.highlights.map((item, idx) => (
-              <div key={idx} className="p-3.5 rounded-xl bg-[#060A12] border border-white/8 flex items-center gap-3">
-                <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span className="text-slate-200 font-sans text-xs">{item}</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {selectedChapter.highlights.map((h, i) => (
+              <div key={i} className="p-3.5 rounded-2xl bg-white/5 border border-white/5 flex items-start gap-3">
+                <Check className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                <span className="text-xs text-slate-200 font-sans">{h}</span>
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Print Guarantee */}
-        <div className="p-4 rounded-2xl bg-amber-400/5 border border-amber-400/15 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs">
-          <span className="text-amber-300 flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-amber-400" />
-            <span>100% Free • Pure Client-Side Generation • Zero Watermarks • 300 DPI Print-Ready</span>
-          </span>
-          <button
-            onClick={handlePrint}
-            className="text-amber-400 hover:text-amber-300 font-bold underline underline-offset-2 cursor-pointer"
-          >
-            Export Full 30-Page Dossier →
-          </button>
         </div>
       </div>
     </div>
