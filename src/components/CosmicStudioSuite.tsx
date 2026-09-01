@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { 
   Sparkles, Download, Printer, Play, Pause, 
-  Clock, CheckCircle2,
+  Clock, CheckCircle2, Award, Zap, Compass, Shield, Flame, Activity, BarChart3, Layers, BookOpen, Search
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { UserProfile } from '../types';
@@ -41,6 +41,18 @@ const DIVISIONAL_CHARTS = [
   { id: 60, name: 'D60 Shashtiamsha', desc: 'Supreme Karmic Blueprint & Root Destiny' },
 ];
 
+const DASHA_LORDS = [
+  { name: 'Ketu', years: 7, symbol: '☋', color: 'text-purple-400' },
+  { name: 'Venus (Shukra)', years: 20, symbol: '♀', color: 'text-pink-400' },
+  { name: 'Sun (Surya)', years: 6, symbol: '☉', color: 'text-amber-400' },
+  { name: 'Moon (Chandra)', years: 10, symbol: '☽', color: 'text-cyan-300' },
+  { name: 'Mars (Mangala)', years: 7, symbol: '♂', color: 'text-rose-400' },
+  { name: 'Rahu', years: 18, symbol: '☊', color: 'text-indigo-400' },
+  { name: 'Jupiter (Guru)', years: 16, symbol: '♃', color: 'text-yellow-400' },
+  { name: 'Saturn (Shani)', years: 19, symbol: '♄', color: 'text-blue-400' },
+  { name: 'Mercury (Budha)', years: 17, symbol: '☿', color: 'text-emerald-400' },
+];
+
 export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProps) {
   const { profiles, activeProfileId } = useProfileStore();
   
@@ -55,7 +67,9 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
   }, [profiles, activeProfileId, userProfile]);
 
   // Primary Studio Mode
-  const [activeStudioTab, setActiveStudioTab] = useState<'chart' | 'ashtakavarga' | 'shadbala' | 'multisystem' | 'timing' | 'predictions' | 'research' | 'rules'>('chart');
+  const [activeStudioTab, setActiveStudioTab] = useState<
+    'chart' | 'aspects' | 'avasthas' | 'dashaTree' | 'ashtakavarga' | 'shadbala' | 'multisystem' | 'timing' | 'predictions' | 'research' | 'rules'
+  >('chart');
   
   // Density mode: 'comfortable' vs 'compact'
   const [density, setDensity] = useState<'comfortable' | 'compact'>('comfortable');
@@ -223,6 +237,115 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
     });
   }, [rawBasePlanets]);
 
+  // Aspect & Drishti Matrix calculation
+  const aspectPairs = useMemo(() => {
+    const validPlanets = rawBasePlanets.filter(p => p.name !== 'Ascendant');
+    const pairs: Array<{
+      p1: string;
+      p2: string;
+      orbDeg: number;
+      aspectType: string;
+      vedicDrishti: string;
+      nature: 'Harmonic' | 'Dynamic' | 'Neutral';
+    }> = [];
+
+    for (let i = 0; i < validPlanets.length; i++) {
+      for (let j = i + 1; j < validPlanets.length; j++) {
+        const p1 = validPlanets[i];
+        const p2 = validPlanets[j];
+        const deg1 = p1.degreeDecimal || parseFloat(p1.degree) || 0;
+        const deg2 = p2.degreeDecimal || parseFloat(p2.degree) || 0;
+        let diff = Math.abs(deg1 - deg2) % 360;
+        if (diff > 180) diff = 360 - diff;
+
+        let aspectType = 'None';
+        let nature: 'Harmonic' | 'Dynamic' | 'Neutral' = 'Neutral';
+
+        if (diff <= 8) {
+          aspectType = 'Conjunction (0°)';
+          nature = 'Harmonic';
+        } else if (Math.abs(diff - 60) <= 6) {
+          aspectType = 'Sextile (60°)';
+          nature = 'Harmonic';
+        } else if (Math.abs(diff - 90) <= 7) {
+          aspectType = 'Square (90°)';
+          nature = 'Dynamic';
+        } else if (Math.abs(diff - 120) <= 8) {
+          aspectType = 'Trine (120°)';
+          nature = 'Harmonic';
+        } else if (Math.abs(diff - 180) <= 8) {
+          aspectType = 'Opposition (180°)';
+          nature = 'Dynamic';
+        }
+
+        // Vedic Drishti (mutual house aspect)
+        const h1 = p1.houseNumber || 1;
+        const h2 = p2.houseNumber || 1;
+        const houseDiff = (h2 - h1 + 12) % 12 + 1;
+        let vedicDrishti = 'None';
+        if (houseDiff === 7) vedicDrishti = 'Full 7th Mutual Drishti (100%)';
+        else if (p1.name === 'Mars' && (houseDiff === 4 || houseDiff === 8)) vedicDrishti = `Mars Special ${houseDiff}th Drishti`;
+        else if (p1.name === 'Jupiter' && (houseDiff === 5 || houseDiff === 9)) vedicDrishti = `Jupiter Trikona ${houseDiff}th Drishti`;
+        else if (p1.name === 'Saturn' && (houseDiff === 3 || houseDiff === 10)) vedicDrishti = `Saturn Special ${houseDiff}th Drishti`;
+
+        if (aspectType !== 'None' || vedicDrishti !== 'None') {
+          pairs.push({
+            p1: `${p1.symbol} ${p1.name}`,
+            p2: `${p2.symbol} ${p2.name}`,
+            orbDeg: Number(diff.toFixed(1)),
+            aspectType,
+            vedicDrishti,
+            nature
+          });
+        }
+      }
+    }
+    return pairs;
+  }, [rawBasePlanets]);
+
+  // Planetary Avasthas calculation (Baladi & Jagratadi)
+  const planetaryAvasthas = useMemo(() => {
+    return rawBasePlanets.filter(p => p.name !== 'Ascendant').map(p => {
+      const deg = (p.degreeDecimal || parseFloat(p.degree) || 0) % 30;
+      const signIndex = ZODIAC_SIGNS.indexOf(p.sign);
+      const isOddSign = signIndex % 2 === 0;
+
+      // Baladi Avastha
+      let baladi = 'Yuva (Prime / 100% Fruit)';
+      let fruit = '100% Potency';
+      if (isOddSign) {
+        if (deg < 6) { baladi = 'Bala (Infant)'; fruit = '25% Potency'; }
+        else if (deg < 12) { baladi = 'Kumara (Youthful)'; fruit = '50% Potency'; }
+        else if (deg < 18) { baladi = 'Yuva (Prime)'; fruit = '100% Potency'; }
+        else if (deg < 24) { baladi = 'Vriddha (Aged)'; fruit = '15% Potency'; }
+        else { baladi = 'Mrita (Dead / Dormant)'; fruit = '0% Potency'; }
+      } else {
+        if (deg < 6) { baladi = 'Mrita (Dead / Dormant)'; fruit = '0% Potency'; }
+        else if (deg < 12) { baladi = 'Vriddha (Aged)'; fruit = '15% Potency'; }
+        else if (deg < 18) { baladi = 'Yuva (Prime)'; fruit = '100% Potency'; }
+        else if (deg < 24) { baladi = 'Kumara (Youthful)'; fruit = '50% Potency'; }
+        else { baladi = 'Bala (Infant)'; fruit = '25% Potency'; }
+      }
+
+      // Jagratadi Avastha (Alertness state)
+      const jagratadi = p.retrograde 
+        ? 'Vakra (Intense Motional Re-evaluating)'
+        : deg > 10 && deg < 20 
+        ? 'Jagrat (Fully Awake & Alert)' 
+        : 'Swapna (Dreaming / Reflective)';
+
+      return {
+        name: p.name,
+        symbol: p.symbol,
+        sign: p.sign,
+        degInSign: `${deg.toFixed(1)}°`,
+        baladi,
+        fruit,
+        jagratadi
+      };
+    });
+  }, [rawBasePlanets]);
+
   // Export Chart SVG
   const handleExportSVG = () => {
     const svgElement = document.getElementById('cosmic-studio-svg');
@@ -336,7 +459,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               Astrological Workspace & Ephemeris Inspector
             </h1>
             <p className="text-xs sm:text-sm text-slate-300">
-              Interactive 12-house Kundli, real-time time-travel scrubbing, Ashtakavarga SAV heatmaps, Shadbala meters, and sub-arcsecond NASA JPL precision.
+              Interactive 12-house Kundli, real-time time-travel scrubbing, Aspect orbs, Planetary Avasthas, Dasha trees, SAV heatmaps, and Shadbala meters.
             </p>
           </div>
 
@@ -381,6 +504,9 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
       <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none font-mono text-xs snap-x">
         {[
           { id: 'chart', label: '🔭 Chart Workspace' },
+          { id: 'aspects', label: '📐 Aspects & Drishti' },
+          { id: 'avasthas', label: '🧘 Planetary Avasthas' },
+          { id: 'dashaTree', label: '🌳 Vimshottari Tree' },
           { id: 'ashtakavarga', label: '📊 Ashtakavarga (SAV)' },
           { id: 'shadbala', label: '⚡ Shadbala Potency' },
           { id: 'multisystem', label: '⚖️ Multi-System Comparison' },
@@ -799,7 +925,131 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 2: ASHTAKAVARGA (SAV) POTENCY MATRIX ────────────────── */}
+      {/* ─── TAB 2: ASPECTS & DRISHTI MATRIX ─────────────────────────── */}
+      {activeStudioTab === 'aspects' && (
+        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
+          <div className="border-b border-white/10 pb-3 flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white">Planetary Aspects & Vedic Drishti Orbit Matrix</h3>
+              <p className="text-slate-400">Mutual geometric ray alignments, orb angles, and special Parashari Drishtis (Mars, Jupiter, Saturn).</p>
+            </div>
+            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-amber-400/20 font-bold">
+              {aspectPairs.length} Active Configurations
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {aspectPairs.map((a, idx) => (
+              <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-bold text-white">
+                    {a.p1} ⇄ {a.p2}
+                  </span>
+                  <span className={`text-[10px] px-2 py-0.5 rounded font-bold ${
+                    a.nature === 'Harmonic' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                  }`}>
+                    {a.nature}
+                  </span>
+                </div>
+                <div className="text-slate-300 flex justify-between text-[11px]">
+                  <span>Aspect:</span>
+                  <strong className="text-amber-300">{a.aspectType}</strong>
+                </div>
+                <div className="text-slate-400 flex justify-between text-[11px]">
+                  <span>Exact Angle Orb:</span>
+                  <span>{a.orbDeg}°</span>
+                </div>
+                <div className="text-cyan-300 text-[10px] pt-1 border-t border-white/5">
+                  Vedic: {a.vedicDrishti}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ─── TAB 3: PLANETARY AVASTHAS & DIGNITY ─────────────────────── */}
+      {activeStudioTab === 'avasthas' && (
+        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
+          <div className="border-b border-white/10 pb-3 flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white">Planetary Avasthas (Baladi & Jagratadi States)</h3>
+              <p className="text-slate-400">Classical maturity and alertness levels determining planetary capacity to yield results.</p>
+            </div>
+            <span className="text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-xl border border-emerald-500/20 font-bold">
+              Classical Parashari Standard
+            </span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left font-mono text-xs">
+              <thead>
+                <tr className="border-b border-white/10 text-slate-400 uppercase text-[10px]">
+                  <th className="py-2.5 px-3">Planet</th>
+                  <th className="py-2.5 px-3">Sign & Degree</th>
+                  <th className="py-2.5 px-3">Baladi Avastha</th>
+                  <th className="py-2.5 px-3">Manifestation Fruit</th>
+                  <th className="py-2.5 px-3">Jagratadi State</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {planetaryAvasthas.map(pa => (
+                  <tr key={pa.name} className="hover:bg-white/[0.02]">
+                    <td className="py-3 px-3 font-bold text-white">{pa.symbol} {pa.name}</td>
+                    <td className="py-3 px-3 text-slate-300">{pa.sign} ({pa.degInSign})</td>
+                    <td className="py-3 px-3 text-amber-300 font-bold">{pa.baladi}</td>
+                    <td className="py-3 px-3">
+                      <span className="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded font-bold">
+                        {pa.fruit}
+                      </span>
+                    </td>
+                    <td className="py-3 px-3 text-cyan-300">{pa.jagratadi}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ─── TAB 4: VIMSHOTTARI TREE ─────────────────────────────────── */}
+      {activeStudioTab === 'dashaTree' && (
+        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
+          <div className="border-b border-white/10 pb-3 flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white">Vimshottari Dasha 120-Year Master Timeline</h3>
+              <p className="text-slate-400">Complete 9-Mahadasha planetary cycle sequence, year durations, and active timeline progression.</p>
+            </div>
+            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-amber-400/20 font-bold">
+              120 Years Total Cycle
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {DASHA_LORDS.map((dl, idx) => (
+              <div key={dl.name} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className={`text-base font-bold flex items-center gap-1.5 ${dl.color}`}>
+                    {dl.symbol} {dl.name}
+                  </span>
+                  <span className="text-xs bg-black/40 px-2.5 py-1 rounded-lg text-white font-bold">
+                    {dl.years} Years
+                  </span>
+                </div>
+                <div className="text-slate-400 text-[11px] flex justify-between">
+                  <span>Cycle Order:</span>
+                  <span>#{idx + 1} of 9</span>
+                </div>
+                <div className="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
+                  <div className="h-full bg-amber-400 rounded-full" style={{ width: `${(dl.years / 20) * 100}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ─── TAB 5: ASHTAKAVARGA (SAV) POTENCY MATRIX ────────────────── */}
       {activeStudioTab === 'ashtakavarga' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -833,7 +1083,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 3: SHADBALA POTENCY METERS ──────────────────────────── */}
+      {/* ─── TAB 6: SHADBALA POTENCY METERS ──────────────────────────── */}
       {activeStudioTab === 'shadbala' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -881,7 +1131,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 4: MULTI-SYSTEM SIDE-BY-SIDE ────────────────────────── */}
+      {/* ─── TAB 7: MULTI-SYSTEM SIDE-BY-SIDE ────────────────────────── */}
       {activeStudioTab === 'multisystem' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
@@ -921,7 +1171,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 5: TIMING WORKSPACE ─────────────────────────────────── */}
+      {/* ─── TAB 8: TIMING WORKSPACE ─────────────────────────────────── */}
       {activeStudioTab === 'timing' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -954,7 +1204,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 6: PREDICTIONS & EVENT JOURNAL ──────────────────────── */}
+      {/* ─── TAB 9: PREDICTIONS & EVENT JOURNAL ──────────────────────── */}
       {activeStudioTab === 'predictions' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
@@ -998,7 +1248,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 7: RESEARCH & ACCURACY LAB ──────────────────────────── */}
+      {/* ─── TAB 10: RESEARCH & ACCURACY LAB ─────────────────────────── */}
       {activeStudioTab === 'research' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-cyan-500/30 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1015,11 +1265,11 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
             <table className="w-full text-left font-mono text-xs">
               <thead>
                 <tr className="border-b border-white/10 text-slate-400 uppercase text-[10px]">
-                  <th className="py-2 px-3">Celestial Body</th>
-                  <th className="py-2 px-3">ASTRO360 (Calculated)</th>
-                  <th className="py-2 px-3">NASA JPL (Expected)</th>
-                  <th className="py-2 px-3">Differential</th>
-                  <th className="py-2 px-3">Tolerance Status</th>
+                  <th className="py-2.5 px-3">Celestial Body</th>
+                  <th className="py-2.5 px-3">ASTRO360 (Calculated)</th>
+                  <th className="py-2.5 px-3">NASA JPL (Expected)</th>
+                  <th className="py-2.5 px-3">Differential</th>
+                  <th className="py-2.5 px-3">Tolerance Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -1047,7 +1297,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 8: RULE & SOURCE EXPLORER ───────────────────────────── */}
+      {/* ─── TAB 11: RULE & SOURCE EXPLORER ──────────────────────────── */}
       {activeStudioTab === 'rules' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
