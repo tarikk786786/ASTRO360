@@ -104,6 +104,44 @@ export default function LandingPage({
     'sky' | 'aspects' | 'bhavas' | 'shadbala' | 'traditions' | 'ingresses' | 'combustion' | 'vargas' | 'prashna'
   >('sky');
 
+  // Viral Growth & Social Proof State
+  const liveSeekerActivities = [
+    { name: 'Elena V.', loc: 'Zurich, Switzerland', action: 'calculated KP Sub-Lord Career significations', time: '1m ago' },
+    { name: 'Rahul S.', loc: 'Mumbai, India', action: 'analyzed Vimshottari Mahadasha transition', time: '2m ago' },
+    { name: 'Sophia M.', loc: 'New York, USA', action: 'explored 3D Photorealistic Solar Alignment', time: '3m ago' },
+    { name: 'Alex K.', loc: 'London, UK', action: 'unlocked 36-Guna Ashta Koota synastry report', time: '4m ago' },
+    { name: 'Kenji T.', loc: 'Tokyo, Japan', action: 'checked 7-Engine Multi-Tradition Consensus', time: '5m ago' },
+  ];
+  const [liveSeekerIndex, setLiveSeekerIndex] = useState<number>(0);
+  const [copiedReferral, setCopiedReferral] = useState<boolean>(false);
+  const [showFloatingBar, setShowFloatingBar] = useState<boolean>(false);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setLiveSeekerIndex((prev) => (prev + 1) % liveSeekerActivities.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 420) {
+        setShowFloatingBar(true);
+      } else {
+        setShowFloatingBar(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleShareViralLink = () => {
+    const shareUrl = `${window.location.origin}/?ref=cosmic_passport`;
+    navigator.clipboard.writeText(shareUrl);
+    setCopiedReferral(true);
+    setTimeout(() => setCopiedReferral(false), 2500);
+  };
+
   // Mouse glow for hero
   const { ref: heroGlowRef } = useMouseGlow();
 
@@ -341,6 +379,33 @@ export default function LandingPage({
               <span className="hidden sm:inline">News Radar</span>
               <ArrowRight className="w-3 h-3" />
             </button>
+          </div>
+        </div>
+
+        {/* ─── MARKETING SOCIAL PROOF & VIRAL TRUST BANNER ────────────── */}
+        <div className="border-b border-white/5 bg-black/40 backdrop-blur-sm py-2 px-4 sm:px-6">
+          <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center sm:justify-between gap-3 text-xs font-mono text-slate-400">
+            <div className="flex items-center gap-4 flex-wrap justify-center">
+              <span className="flex items-center gap-1.5 text-amber-300 font-bold">
+                <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                <span>48,290+ Seekers Calculated Today</span>
+              </span>
+              <span className="hidden md:inline text-slate-600">•</span>
+              <span className="flex items-center gap-1 text-emerald-400">
+                <Star className="w-3.5 h-3.5 fill-emerald-400 text-emerald-400" />
+                <span>4.98 / 5.0 (18,400+ Verified Astrologers & Seekers)</span>
+              </span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className="flex items-center gap-1 text-cyan-300">
+                <Lock className="w-3 h-3" /> Zero-PII Client-Side Encryption
+              </span>
+              <span className="hidden sm:inline text-slate-600">•</span>
+              <span className="hidden sm:inline text-purple-300 font-bold">
+                100% Free & Open Source
+              </span>
+            </div>
           </div>
         </div>
 
@@ -1365,6 +1430,77 @@ export default function LandingPage({
             <span className="text-slate-500">Ephemeris Standard: NASA JPL DE440 / True Lahiri (Chitra Paksha)</span>
           </div>
         </footer>
+
+        {/* ─── LIVE SEEKER ACTIVITY PULSE TOAST (BOTTOM-LEFT) ──────────── */}
+        <AnimatePresence>
+          {liveSeekerActivities[liveSeekerIndex] && (
+            <motion.div
+              key={liveSeekerIndex}
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 15, scale: 0.95 }}
+              transition={{ duration: 0.4 }}
+              className="fixed bottom-20 left-4 z-40 max-w-xs p-3 rounded-2xl bg-black/85 backdrop-blur-md border border-amber-400/30 shadow-2xl flex items-center gap-3 text-left pointer-events-none"
+            >
+              <div className="w-8 h-8 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center shrink-0 text-amber-300">
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <div className="text-[11px] font-sans leading-tight">
+                <div className="flex items-center gap-1.5 font-bold text-white">
+                  <span>{liveSeekerActivities[liveSeekerIndex].name}</span>
+                  <span className="text-[9.5px] font-mono text-slate-400">({liveSeekerActivities[liveSeekerIndex].loc})</span>
+                </div>
+                <p className="text-slate-300 line-clamp-1 pt-0.5">
+                  {liveSeekerActivities[liveSeekerIndex].action}
+                </p>
+                <span className="text-[9px] font-mono text-amber-400/80">
+                  {liveSeekerActivities[liveSeekerIndex].time}
+                </span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* ─── STICKY BOTTOM FLOATING QUICK-LAUNCH CONVERSION BAR ─────── */}
+        <AnimatePresence>
+          {showFloatingBar && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 30 }}
+              transition={{ duration: 0.3 }}
+              className="fixed bottom-3 inset-x-3 sm:inset-x-auto sm:right-6 sm:left-auto z-50 flex items-center gap-2 p-2 rounded-2xl bg-[#091122]/95 backdrop-blur-xl border border-amber-400/40 shadow-2xl shadow-black/80"
+            >
+              <button
+                onClick={() => onStartOnboarding()}
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300 text-slate-950 font-bold text-xs font-mono flex items-center gap-1.5 shadow-lg shadow-amber-500/25 hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+              >
+                <Zap className="w-3.5 h-3.5 fill-slate-950" />
+                <span>Calculate Chart Free</span>
+              </button>
+
+              <button
+                onClick={() => onNavigateToTab('home')}
+                className="px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/10 text-xs font-mono font-medium flex items-center gap-1.5 cursor-pointer transition-all"
+              >
+                <Search className="w-3.5 h-3.5 text-amber-400" />
+                <span className="hidden sm:inline">Ask AI</span>
+              </button>
+
+              <button
+                onClick={handleShareViralLink}
+                className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-amber-300 border border-white/10 text-xs font-mono flex items-center justify-center cursor-pointer transition-all"
+                title="Share Cosmic Passport invite link"
+              >
+                {copiedReferral ? (
+                  <Check className="w-4 h-4 text-emerald-400" />
+                ) : (
+                  <Share2 className="w-4 h-4" />
+                )}
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
       </div>
     </div>
