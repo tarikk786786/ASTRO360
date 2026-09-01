@@ -150,7 +150,13 @@ export const AstroDashboardControlDrawer: React.FC<AstroDashboardControlDrawerPr
           </div>
 
           {/* Tab Content */}
-          <div className="p-4 overflow-y-auto space-y-3 text-left">
+          <div 
+            className="p-4 flex-1 min-h-0 overflow-y-auto overscroll-contain space-y-3 text-left"
+            style={{
+              WebkitOverflowScrolling: 'touch',
+              touchAction: 'pan-y'
+            }}
+          >
             {/* 1. VIEW MODES */}
             {activeTab === 'view' && (
               <div className="space-y-2.5">

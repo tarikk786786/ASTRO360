@@ -134,7 +134,13 @@ export const AstroMoreSheet: React.FC<AstroMoreSheetProps> = ({
           </div>
 
           {/* Tools Grid / List */}
-          <div className="p-3 sm:p-4 overflow-y-auto space-y-2 text-left">
+          <div 
+            className="p-3 sm:p-4 flex-1 min-h-0 overflow-y-auto overscroll-contain space-y-2 text-left"
+            style={{
+              WebkitOverflowScrolling: 'touch',
+              touchAction: 'pan-y'
+            }}
+          >
             {filteredItems.length === 0 ? (
               <div className="text-center py-12 space-y-2">
                 <Search className="w-8 h-8 text-slate-600 mx-auto" />
