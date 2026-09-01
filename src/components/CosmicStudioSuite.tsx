@@ -9,7 +9,7 @@ import { UserProfile } from '../types';
 import { useProfileStore } from '../stores/profileStore';
 import { calculatePlanetaryPositions, type PlanetPosition } from '../lib/astroCalculations';
 import { calculateDivisionalChart } from '../lib/astrologyEngines';
-import { exportUniversalPdf } from '../lib/pdfReportEngine';
+import { exportUniversalPdf, generateExecutiveHtmlDossier } from '../lib/pdfReportEngine';
 import GlobalLanguageSelector from './GlobalLanguageSelector';
 
 interface CosmicStudioSuiteProps {
@@ -733,84 +733,21 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
   // Export Chart Printable PDF Dossier
   const handleExportPDF = () => {
     const svgElement = document.getElementById('cosmic-studio-svg');
-    const svgHtml = svgElement ? new XMLSerializer().serializeToString(svgElement) : '';
+    const svgHtml = svgElement ? new XMLSerializer().serializeToString(svgElement) : undefined;
     
-    const htmlContent = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>ASTRO360 Kundli & Ephemeris Chart — ${currentProfile.name}</title>
-          <style>
-            @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Plus+Jakarta+Sans:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
-            body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; padding: 28px; color: #0f172a; line-height: 1.5; background: #fff; }
-            .header { border-bottom: 2px solid #b45309; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-end; }
-            .title { font-family: 'Cinzel', serif; font-size: 20px; font-weight: 700; color: #92400e; }
-            .meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #fffbeb; border: 1px solid #fde68a; padding: 12px; border-radius: 10px; margin-bottom: 16px; }
-            .meta-lbl { font-size: 9px; font-weight: 700; color: #78350f; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; }
-            .meta-val { font-size: 12px; font-weight: 700; color: #1e293b; }
-            .chart-container { display: flex; justify-content: center; align-items: center; margin-bottom: 16px; padding: 15px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fafafa; }
-            .table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 11px; }
-            .table th { background: #f1f5f9; padding: 8px; text-align: left; font-family: 'JetBrains Mono', monospace; font-weight: 700; color: #475569; border: 1px solid #cbd5e1; }
-            .table td { padding: 6px 8px; border: 1px solid #e2e8f0; }
-            .footer { text-align: center; font-size: 10px; color: #64748b; margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 10px; font-family: 'JetBrains Mono', monospace; }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <div>
-              <div class="title">ASTRO360 PRECISION KUNDLI & CELESTIAL EPHEMERIS</div>
-              <div style="font-size: 11px; color: #64748b;">NASA JPL DE440 Sub-Arcsecond Ephemeris & Multi-Tradition Architecture</div>
-            </div>
-            <div style="font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #78350f; font-weight: 700;">
-              STYLE: ${chartLayout.toUpperCase()} • VARGA D${selectedVarga} • ${ayanamsha.toUpperCase()}
-            </div>
-          </div>
+    const htmlContent = generateExecutiveHtmlDossier({
+      userProfile: {
+        ...currentProfile,
+        time: formattedActiveTime
+      },
+      chartLayout: chartLayout as any,
+      svgChartHtml: svgHtml,
+      includeRemedies: true,
+      includeDivisionalCharts: true
+    });
 
-          <div class="meta-grid">
-            <div><div class="meta-lbl">Native Name</div><div class="meta-val">${currentProfile.name}</div></div>
-            <div><div class="meta-lbl">Date of Birth</div><div class="meta-val">${currentProfile.dob}</div></div>
-            <div><div class="meta-lbl">Exact Time</div><div class="meta-val">${formattedActiveTime}</div></div>
-            <div><div class="meta-lbl">Coordinates / City</div><div class="meta-val">${currentProfile.location}</div></div>
-          </div>
-
-          <div class="chart-container">
-            ${svgHtml || '<div style="padding:40px; text-align:center;">D1 Rashi Chart</div>'}
-          </div>
-
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Body / Planet</th>
-                <th>Longitude / Degree</th>
-                <th>Sign / Rashi</th>
-                <th>House (Bhava)</th>
-                <th>Nakshatra</th>
-                <th>Pada</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${rawBasePlanets.map(p => `
-                <tr>
-                  <td><strong>${p.name}</strong> ${p.symbol || ''}</td>
-                  <td>${p.degree}</td>
-                  <td>${p.sign}</td>
-                  <td>House ${p.houseNumber}</td>
-                  <td>${p.nakshatra || '—'}</td>
-                  <td>Pada ${p.pada || '—'}</td>
-                  <td>${p.retrograde ? '<span style="color:#b91c1c; font-weight:bold;">Retrograde (R)</span>' : 'Direct'}</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-
-          <div class="footer">
-            ASTRO360 OMNI • Verified Sub-Arcsecond Calculation Engine • Document ID: ASTRO-${Date.now().toString(36).toUpperCase()}
-          </div>
-        </body>
-      </html>
-    `;
-    exportUniversalPdf(htmlContent, `ASTRO360_Kundli_${currentProfile.name.replace(/\s+/g, '_')}`);
+    exportUniversalPdf(htmlContent, `ASTRO360_Executive_Dossier_${currentProfile.name.replace(/\s+/g, '_')}`);
+    toast.success('👑 Master Executive PDF Dossier opened for high-res printing!');
   };
 
   return (

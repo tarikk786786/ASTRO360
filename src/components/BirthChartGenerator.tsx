@@ -6,7 +6,7 @@ import {
 import type { UserProfile } from '../types';
 import { calculatePlanetaryPositions } from '../lib/astroCalculations';
 import { calculateDivisionalChart } from '../lib/astrologyEngines';
-import { exportUniversalPdf } from '../lib/pdfReportEngine';
+import { exportUniversalPdf, generateExecutiveHtmlDossier } from '../lib/pdfReportEngine';
 
 interface BirthChartGeneratorProps {
   userProfile: UserProfile;
@@ -173,79 +173,19 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
         <div className="flex items-center gap-3 shrink-0 flex-wrap">
           <button
             onClick={() => {
-              const htmlContent = `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                  <title>ASTRO360 Master Kundli Report - ${userProfile?.name || 'Seeker'}</title>
-                  <style>
-                    body { font-family: 'Segoe UI', system-ui, sans-serif; padding: 40px; color: #0f172a; background: #ffffff; line-height: 1.6; }
-                    .header { text-align: center; border-bottom: 3px double #d97706; padding-bottom: 20px; margin-bottom: 30px; }
-                    .header h1 { font-size: 26px; color: #b45309; margin: 0; }
-                    .header p { font-size: 13px; color: #64748b; margin-top: 5px; }
-                    .section { margin-bottom: 30px; }
-                    .section-title { font-size: 16px; font-weight: bold; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 6px; margin-bottom: 15px; }
-                    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
-                    th, td { border: 1px solid #cbd5e1; padding: 8px 10px; text-align: left; }
-                    th { background-color: #f8fafc; color: #334155; font-weight: 600; }
-                    .meta-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; background: #fffbe6; padding: 15px; border-radius: 8px; border: 1px solid #fef08a; }
-                    .meta-item { font-size: 12px; }
-                    .footer { text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px; margin-top: 40px; }
-                  </style>
-                </head>
-                <body>
-                  <div class="header">
-                    <h1>🌌 ASTRO360 Ephemeris Master Kundli Report</h1>
-                    <p>Mathematically Precise Sidereal Astronomical Chart | NASA JPL DE440 Standard</p>
-                  </div>
-
-                  <div class="section">
-                    <div class="section-title">👤 Subject Profile Details</div>
-                    <div class="meta-grid">
-                      <div class="meta-item"><strong>Full Name:</strong> ${userProfile?.name || 'Seeker'}</div>
-                      <div class="meta-item"><strong>Date of Birth:</strong> ${userProfile?.dob || '1998-06-15'}</div>
-                      <div class="meta-item"><strong>Time of Birth:</strong> ${userProfile?.time || '12:00'}</div>
-                      <div class="meta-item"><strong>Birth Location:</strong> ${userProfile?.location || 'Global Coordinates'}</div>
-                      <div class="meta-item"><strong>Calculation Ephemeris:</strong> Swiss Ephemeris (DE440)</div>
-                      <div class="meta-item"><strong>Ayanamsha System:</strong> ${ayanamshaOffsets[selectedAyanamsha]}</div>
-                    </div>
-                  </div>
-
-                  <div class="section">
-                    <div class="section-title">🪐 Planetary Positions & Dignities</div>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Celestial Body</th>
-                          <th>Zodiac Sign</th>
-                          <th>Exact Longitude</th>
-                          <th>House Placement</th>
-                          <th>Planetary Dignity</th>
-                          <th>Strength</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        ${planets.map(p => `
-                          <tr>
-                            <td><strong>${p.name}</strong></td>
-                            <td>${p.sign}</td>
-                            <td>${p.deg}</td>
-                            <td>${p.house}</td>
-                            <td>${p.status}</td>
-                            <td>${p.strength}</td>
-                          </tr>
-                        `).join('')}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <div class="footer">
-                    Report generated dynamically by ASTRO360 Ephemeris Engine | Official Certificate of Sidereal Alignment
-                  </div>
-                </body>
-                </html>
-              `;
-              exportUniversalPdf(htmlContent, `ASTRO360_Kundli_${userProfile?.name ? userProfile.name.replace(/\s+/g, '_') : 'Seeker'}`);
+              const htmlContent = generateExecutiveHtmlDossier({
+                userProfile: userProfile || {
+                  name: 'Cosmic Seeker',
+                  dob: '1998-06-15',
+                  time: '12:00',
+                  location: 'Universal Coordinates',
+                  preferredSystem: 'vedic'
+                } as any,
+                chartLayout: chartStyle as any,
+                includeRemedies: true,
+                includeDivisionalCharts: true
+              });
+              exportUniversalPdf(htmlContent, `ASTRO360_Master_Dossier_${userProfile?.name ? userProfile.name.replace(/\s+/g, '_') : 'Seeker'}`);
             }}
             className="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer shadow-sm"
           >
