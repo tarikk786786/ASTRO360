@@ -110,13 +110,14 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
       )}
 
       {/* Radiant Glowing Nebula Backdrop */}
-      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600/15 via-purple-600/20 to-amber-500/15 blur-2xl pointer-events-none" />
+      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-600/20 via-purple-600/25 to-amber-500/20 blur-3xl pointer-events-none animate-pulse" style={{ animationDuration: '6s' }} />
 
       {/* MAIN CONTAINER WITH 3D PERSPECTIVE TRANSFORM */}
       <div 
         style={{
-          transform: is3DMode ? 'rotateX(42deg) rotateZ(-15deg)' : 'none',
-          transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
+          transform: is3DMode ? 'perspective(800px) rotateX(46deg) rotateZ(-12deg)' : 'none',
+          transformStyle: 'preserve-3d',
+          transition: 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)'
         }}
         className="relative w-full h-full flex items-center justify-center pointer-events-auto"
       >
