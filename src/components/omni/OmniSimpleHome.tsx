@@ -22,6 +22,7 @@ import { calculatePlanetaryPositions, calculatePanchang, calculateVimshottariDas
 import TrustAndExplainabilityBanner from '../ui/TrustAndExplainabilityBanner';
 import { LiveRealtimeSkyTelemetryBar } from '../telemetry/LiveRealtimeSkyTelemetryBar';
 import GlobalLanguageSelector from '../GlobalLanguageSelector';
+import { Realistic3DSolarSystemAlignment } from '../3d/Realistic3DSolarSystemAlignment';
 import { Interactive3DCosmicWheel } from '../3d/Interactive3DCosmicWheel';
 import { Interactive3DAstroCartographyGlobe } from '../3d/Interactive3DAstroCartographyGlobe';
 import { Interactive3DAspectariumGraph } from '../3d/Interactive3DAspectariumGraph';
@@ -43,7 +44,7 @@ export default function OmniSimpleHome({
   const [whyModalOpen, setWhyModalOpen] = useState(false);
   const [selectedWhyPayload, setSelectedWhyPayload] = useState<Partial<OmniWhyDrawerProps>>({});
   const [activeViewMode, setActiveViewMode] = useState<'simple' | 'master' | 'vargas' | 'analytics'>('simple');
-  const [active3DMode, setActive3DMode] = useState<'orrery' | 'globe' | 'aspectarium'>('orrery');
+  const [active3DMode, setActive3DMode] = useState<'cinematic' | 'orrery' | 'globe' | 'aspectarium'>('cinematic');
   const [isControlDrawerOpen, setIsControlDrawerOpen] = useState(false);
   const [isBeginnerGuideOpen, setIsBeginnerGuideOpen] = useState(false);
   const { config } = useGlobalConfig();
@@ -568,10 +569,20 @@ export default function OmniSimpleHome({
             </h3>
           </div>
 
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-black/50 border border-white/10">
+          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-black/50 border border-white/10 overflow-x-auto no-scrollbar">
+            <button
+              onClick={() => setActive3DMode('cinematic')}
+              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer ${
+                active3DMode === 'cinematic'
+                  ? 'bg-amber-400 text-slate-950 shadow-md font-black'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              ☀️ 3D Solar System (Alignment)
+            </button>
             <button
               onClick={() => setActive3DMode('orrery')}
-              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer ${
                 active3DMode === 'orrery'
                   ? 'bg-amber-400 text-slate-950 shadow-md font-black'
                   : 'text-slate-400 hover:text-white'
@@ -581,7 +592,7 @@ export default function OmniSimpleHome({
             </button>
             <button
               onClick={() => setActive3DMode('globe')}
-              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer ${
                 active3DMode === 'globe'
                   ? 'bg-cyan-400 text-slate-950 shadow-md font-black'
                   : 'text-slate-400 hover:text-white'
@@ -591,7 +602,7 @@ export default function OmniSimpleHome({
             </button>
             <button
               onClick={() => setActive3DMode('aspectarium')}
-              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer ${
                 active3DMode === 'aspectarium'
                   ? 'bg-purple-400 text-slate-950 shadow-md font-black'
                   : 'text-slate-400 hover:text-white'
@@ -603,7 +614,11 @@ export default function OmniSimpleHome({
         </div>
 
         {/* Dynamic 3D Studio Rendering */}
-        {active3DMode === 'orrery' ? (
+        {active3DMode === 'cinematic' ? (
+          <Realistic3DSolarSystemAlignment
+            userProfile={userProfile}
+          />
+        ) : active3DMode === 'orrery' ? (
           <Interactive3DCosmicWheel
             userProfile={userProfile}
             onSelectPlanet={(planetName) => {
