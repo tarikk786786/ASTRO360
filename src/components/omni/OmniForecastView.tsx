@@ -30,13 +30,13 @@ export interface ForecastEvent {
 // Multi-tradition generator yielding tailored predictions per horizon
 function getTraditionForecastData(tradition: string, userProfile: UserProfile): Record<'7days' | '30days' | '12months' | '5years', ForecastEvent[]> {
   const name = userProfile.name?.trim() || 'Seeker';
-  const t = tradition.toLowerCase();
+  const t = (tradition || 'vedic').toLowerCase();
 
   if (t.includes('islamic')) {
     return {
       '7days': [
         {
-          id: 'isl-7-1',
+          id: 'isl-7-career',
           category: 'career',
           title: 'Sa\'at al-Kawakib: Jupiter Hour Leadership Surge',
           period: 'Next 3 Days (Peak: Duha to Dhuhr)',
@@ -68,7 +68,7 @@ function getTraditionForecastData(tradition: string, userProfile: UserProfile): 
           }
         },
         {
-          id: 'isl-7-2',
+          id: 'isl-7-love',
           category: 'love',
           title: 'Manzil al-Haq\'ah: Harmony & Family Reassurance',
           period: 'This Weekend (Friday Sunset – Sunday)',
@@ -86,27 +86,162 @@ function getTraditionForecastData(tradition: string, userProfile: UserProfile): 
           whyPayload: {
             title: "Harmony & Family Reassurance",
             period: "This Weekend",
-            confidence: "High",
+            confidence: "High (84%)",
             confidenceScore: 84,
             factors: [
               "Moon-Venus sextile across 4th and 7th houses",
               "Benefic Zuhrah dignity in cardinal sign"
             ]
           }
+        },
+        {
+          id: 'isl-7-money',
+          category: 'money',
+          title: 'Sahm al-Tijarah: Quick Commercial Inflows',
+          period: 'Mid-Week Window',
+          energyLevel: 88,
+          statusText: 'Halal Gain',
+          systemsCount: 4,
+          traditionLabel: 'Ilm al-Falak',
+          summary: 'Utarid (Mercury) planetary hour aligns with the Arabic Lot of Commerce, facilitating swift payment settlements and profitable transactions.',
+          classicalCitation: 'Kitab al-Milal wa al-Duwal (Abu Ma\'shar)',
+          guidance: [
+            'Invoice outstanding client balances on Wednesday morning',
+            'Verify contractual terms for complete ethical compliance',
+            'Give small unannounced charity to multiply financial barakah'
+          ],
+          whyPayload: {
+            title: "Commercial Inflows Window",
+            period: "Mid-Week Window",
+            confidence: "High (88%)",
+            confidenceScore: 88,
+            factors: [
+              "Mercury hour active during daytime commercial window",
+              "Sahm al-Tijarah in harmonious aspect with Ascendant"
+            ]
+          }
+        },
+        {
+          id: 'isl-7-growth',
+          category: 'growth',
+          title: 'Laylat al-Jumu\'ah: Inner Peace & Dhikr Awakening',
+          period: 'Thursday Night – Friday Dawn',
+          energyLevel: 94,
+          statusText: 'Spiritual Uplift',
+          systemsCount: 5,
+          traditionLabel: 'Ilm al-Falak',
+          summary: 'Auspicious lunar mansion transition elevates spiritual contemplation, mental clarity, and direct prayer answered (Sa\'at al-Istiijabah).',
+          classicalCitation: 'Ibn Arabi • Al-Futuhat al-Makkiyya',
+          guidance: [
+            'Engage in late-night Tahajjud and contemplation',
+            'Send abundant salutations upon the Prophet ﷺ on Friday',
+            'Practice silent reflection and detachment from digital noise'
+          ],
+          whyPayload: {
+            title: "Inner Peace & Dhikr Awakening",
+            period: "Thursday Night – Friday Dawn",
+            confidence: "Exceptional (94%)",
+            confidenceScore: 94,
+            factors: [
+              "Lunar mansion aligns with spiritual houses 9 & 12",
+              "Jupiter ray illuminates the mental axis"
+            ]
+          }
+        },
+        {
+          id: 'isl-7-travel',
+          category: 'travel',
+          title: 'Safariyya Horizon: Protected Short Journeys',
+          period: 'Upcoming Week',
+          energyLevel: 80,
+          statusText: 'Smooth Journey',
+          systemsCount: 3,
+          traditionLabel: 'Ilm al-Falak',
+          summary: 'Moon passes through safe, mobile lunar mansions, ensuring peace and ease for short-distance travel and purposeful visits.',
+          classicalCitation: 'Kitab al-Ikhtiyarat (Astrological Elections)',
+          guidance: [
+            'Recite the Prophetic Travel Supplication before departure',
+            'Depart early in the morning hours (Sunnah of early start)',
+            'Keep travel essentials organized and simple'
+          ],
+          whyPayload: {
+            title: "Protected Short Journeys",
+            period: "Upcoming Week",
+            confidence: "Moderate–High (80%)",
+            confidenceScore: 80,
+            factors: [
+              "3rd house of short journeys free from Saturnian obstruction",
+              "Moon maintains swift, un-combust motion"
+            ]
+          }
         }
       ],
       '30days': [
         {
-          id: 'isl-30-1',
+          id: 'isl-30-career',
+          category: 'career',
+          title: 'Al-Mansab: Authority & Strategic Expansion Window',
+          period: 'Next 30 Days',
+          energyLevel: 93,
+          statusText: 'Authority Elevation',
+          systemsCount: 4,
+          traditionLabel: 'Ilm al-Falak',
+          summary: 'Al-Shams (Sun) and Mushtari (Jupiter) transit mutually supportive houses, elevating your professional reputation and peer respect.',
+          classicalCitation: 'Al-Biruni Kitab al-Tafhim • Section on Kingship',
+          guidance: [
+            'Assume responsibility for key high-visibility projects',
+            'Lead with principled transparency and justice (Adl)',
+            'Consult knowledgeable advisors before major commitments'
+          ],
+          whyPayload: {
+            title: "Authority & Strategic Expansion",
+            period: "Next 30 Days",
+            confidence: "High (93%)",
+            confidenceScore: 93,
+            factors: [
+              "Sun in 10th solar house with Jupiterian reinforcement",
+              "Midheaven receives supportive sextile from benefic planets"
+            ]
+          }
+        },
+        {
+          id: 'isl-30-love',
+          category: 'love',
+          title: 'Mawaddah & Rahmah: Deeper Emotional Bonding',
+          period: 'Weeks 2–4',
+          energyLevel: 86,
+          statusText: 'Affection & Peace',
+          systemsCount: 4,
+          traditionLabel: 'Ilm al-Falak',
+          summary: 'Venus (Zuhrah) ingress into a supportive water station nurtures mutual empathy, trust, and relationship consolidation.',
+          classicalCitation: 'Kitab al-Mawalid (Abu Ma\'shar)',
+          guidance: [
+            'Share quality meals and heartfelt conversations with your spouse/family',
+            'Overlook minor faults and cultivate gratitude',
+            'Renew family intentions for unified purpose'
+          ],
+          whyPayload: {
+            title: "Deeper Emotional Bonding",
+            period: "Weeks 2–4",
+            confidence: "High (86%)",
+            confidenceScore: 86,
+            factors: [
+              "Venus enters 7th partnership house with dignities",
+              "Moon avoids malefic combustion during domestic discussions"
+            ]
+          }
+        },
+        {
+          id: 'isl-30-money',
           category: 'money',
           title: 'Sahm al-Mal & Sahm al-Tijarah Financial Expansion',
-          period: 'Upcoming 4 Weeks (Safar – Rabi al-Awwal)',
+          period: 'Upcoming 4 Weeks',
           energyLevel: 89,
-          statusText: 'High Sustenance Window',
+          statusText: 'High Sustenance',
           systemsCount: 4,
           traditionLabel: 'Ilm al-Falak',
           summary: 'The Arabic Lot of Commerce (Sahm al-Tijarah) conjoins the natal 2nd house of halal sustenance, opening new income streams and partnership opportunities.',
-          classicalCitation: 'Kitab al-Milal wa al-Duwal (Abu Ma\'shar) • Al-Biruni Ephemeris',
+          classicalCitation: 'Kitab al-Milal wa al-Duwal (Abu Ma\'shar)',
           guidance: [
             'Audit financial contracts and ensure complete ethical transparency',
             'Reinvest a portion of profits into community welfare (Zakat/Sadaqah)',
@@ -122,11 +257,146 @@ function getTraditionForecastData(tradition: string, userProfile: UserProfile): 
               "Jupiter stations direct in harmonious trine"
             ]
           }
+        },
+        {
+          id: 'isl-30-growth',
+          category: 'growth',
+          title: 'Tazkiyah & Hikmah: Personal Wisdom Breakthrough',
+          period: 'Next 30 Days',
+          energyLevel: 92,
+          statusText: 'Spiritual Clarity',
+          systemsCount: 5,
+          traditionLabel: 'Ilm al-Falak',
+          summary: 'Harmonious aspect between the Sun and 9th house of sacred intellect fosters personal maturity, emotional resilience, and scholarly focus.',
+          classicalCitation: 'Al-Ghazali • Ihya Ulum al-Din',
+          guidance: [
+            'Set aside 20 minutes daily for structured Quranic study and reflection',
+            'Establish an unbroken morning routine of remembrance (Adhkar)',
+            'Seek counsel from wise, upright mentors'
+          ],
+          whyPayload: {
+            title: "Tazkiyah & Hikmah Breakthrough",
+            period: "Next 30 Days",
+            confidence: "Very High (92%)",
+            confidenceScore: 92,
+            factors: [
+              "9th house receives benefic illumination from Jupiter and Sun",
+              "Spiritual fortitude index exceeds 90th percentile"
+            ]
+          }
+        },
+        {
+          id: 'isl-30-travel',
+          category: 'travel',
+          title: 'Ziyarah & Auspicious Long-Distance Travel Window',
+          period: 'Late in Month',
+          energyLevel: 85,
+          statusText: 'Blessed Voyage',
+          systemsCount: 3,
+          traditionLabel: 'Ilm al-Falak',
+          summary: 'Planetary election rules indicate favorable winds and protection for pilgrimage, educational journeys, or long-distance business expeditions.',
+          classicalCitation: 'Ibn Battuta Rihla Commentary • Ephemeris Rules',
+          guidance: [
+            'Perform Istikhara prayer before finalizing departure dates',
+            'Select travel departure during the Jupiter or Venus daylight hours',
+            'Carry minimal burdens and prioritize beneficial company'
+          ],
+          whyPayload: {
+            title: "Blessed Voyage Window",
+            period: "Late in Month",
+            confidence: "High (85%)",
+            confidenceScore: 85,
+            factors: [
+              "9th house of long journeys free from Mars/Saturn afflictions",
+              "Jupiter casts protective aspect on 12th house"
+            ]
+          }
         }
       ],
       '12months': [
         {
-          id: 'isl-12-1',
+          id: 'isl-12-career',
+          category: 'career',
+          title: 'Grand Enterprise Inception & Institutional Authority',
+          period: 'Months 3–9',
+          energyLevel: 95,
+          statusText: 'Major Breakthrough',
+          systemsCount: 5,
+          traditionLabel: 'Ilm al-Falak',
+          summary: 'Solar return revolution indicates prominent executive ascendancy, launching long-term platforms and institutional ventures with broad impact.',
+          classicalCitation: 'Al-Qanun al-Mas\'udi (Al-Biruni)',
+          guidance: [
+            'Codify standard operating procedures for sustainable scaling',
+            'Maintain ethical governance and transparent financial tracking',
+            'Empower capable teams with clear delegation'
+          ],
+          whyPayload: {
+            title: "Grand Enterprise Inception",
+            period: "Months 3–9",
+            confidence: "High (95%)",
+            confidenceScore: 95,
+            factors: [
+              "Solar Return Ascendant aligns with natal 10th house",
+              "Jupiter completes auspicious annual transit across zenith"
+            ]
+          }
+        },
+        {
+          id: 'isl-12-love',
+          category: 'love',
+          title: 'Nikah & Family Foundation Consolidation',
+          period: 'Spring – Autumn 2027',
+          energyLevel: 90,
+          statusText: 'Sacred Union',
+          systemsCount: 4,
+          traditionLabel: 'Ilm al-Falak',
+          summary: 'Venus-Jupiter conjunction across relational angles provides extraordinary celestial harmony for marriage, family establishment, and lifelong bonds.',
+          classicalCitation: 'Kitab al-Mawalid (Abu Ma\'shar)',
+          guidance: [
+            'Honor mutual commitments with open-hearted generosity',
+            'Build a tranquil home atmosphere centered on faith and peace',
+            'Invest in family celebrations and shared milestones'
+          ],
+          whyPayload: {
+            title: "Nikah & Family Foundation",
+            period: "Spring – Autumn 2027",
+            confidence: "High (90%)",
+            confidenceScore: 90,
+            factors: [
+              "7th house receives dual benefic influence",
+              "Sahm al-Nikah (Lot of Marriage) conjoins natal Venus"
+            ]
+          }
+        },
+        {
+          id: 'isl-12-money',
+          category: 'money',
+          title: 'Generational Asset Accumulation & Ethical Investments',
+          period: 'Next 12 Months',
+          energyLevel: 91,
+          statusText: 'Enduring Wealth',
+          systemsCount: 4,
+          traditionLabel: 'Ilm al-Falak',
+          summary: 'Arabic Lots of Real Estate (Sahm al-Aqar) and Sustainable Commerce activate, favoring long-term property acquisitions and productive asset ownership.',
+          classicalCitation: 'Kitab al-Milal wa al-Duwal',
+          guidance: [
+            'Acquire tangible, asset-backed investments (real estate, metals, halal equity)',
+            'Eliminate all forms of speculative uncertainty (Gharar)',
+            'Fulfill all Zakat dues promptly to purify assets'
+          ],
+          whyPayload: {
+            title: "Generational Asset Accumulation",
+            period: "Next 12 Months",
+            confidence: "High (91%)",
+            confidenceScore: 91,
+            factors: [
+              "2nd and 11th financial houses receive unbroken Jupiterian ray",
+              "Saturn establishes disciplined foundation in asset sector"
+            ]
+          }
+        },
+        {
+          id: 'isl-12-growth',
           category: 'growth',
           title: 'Zuhal (Saturn) Discipline & Spiritual Elevation',
           period: 'Next 12 Months',
@@ -144,18 +414,45 @@ function getTraditionForecastData(tradition: string, userProfile: UserProfile): 
           whyPayload: {
             title: "Zuhal Discipline & Spiritual Elevation",
             period: "Next 12 Months",
-            confidence: "High",
+            confidence: "High (88%)",
             confidenceScore: 88,
             factors: [
               "Saturn in 9th house tests and fortifies philosophical foundation",
               "Dignified Jupiter aspect relieves nodal pressure"
             ]
           }
+        },
+        {
+          id: 'isl-12-travel',
+          category: 'travel',
+          title: 'Hajj / Umrah & Trans-Continental Relocation',
+          period: 'Next 12 Months',
+          energyLevel: 93,
+          statusText: 'Spiritual Pilgrimage',
+          systemsCount: 5,
+          traditionLabel: 'Ilm al-Falak',
+          summary: 'Activation of the 9th and 12th houses by major planetary ingress indicates life-transforming pilgrimages to Makkah/Madinah or key international relocations.',
+          classicalCitation: 'Al-Biruni Ephemeris • Chapter on Transits',
+          guidance: [
+            'Formalize all pilgrimage preparations early with full intention',
+            'Build global networks of like-minded colleagues',
+            'Embrace cross-cultural learning with humility'
+          ],
+          whyPayload: {
+            title: "Spiritual Pilgrimage & Relocation",
+            period: "Next 12 Months",
+            confidence: "Very High (93%)",
+            confidenceScore: 93,
+            factors: [
+              "9th house of sacred journeys illuminated by major planetary trine",
+              "12th house transits indicate peaceful international waters"
+            ]
+          }
         }
       ],
       '5years': [
         {
-          id: 'isl-5y-1',
+          id: 'isl-5y-career',
           category: 'career',
           title: 'Grand Solar Return & Enterprise Legacy Epoch',
           period: '2027 – 2031',
@@ -180,576 +477,678 @@ function getTraditionForecastData(tradition: string, userProfile: UserProfile): 
               "120-year cycle synchronicity across Arabic Lots"
             ]
           }
-        }
-      ]
-    };
-  } else if (t.includes('chinese') || t.includes('bazi')) {
-    return {
-      '7days': [
+        },
         {
-          id: 'bz-7-1',
-          category: 'career',
-          title: 'Wood Dragon & Fire Horse: Sheng Cycle Acceleration',
-          period: 'Next 3–5 Days',
-          energyLevel: 90,
-          statusText: 'Generating Flow',
-          systemsCount: 3,
-          traditionLabel: 'BaZi Four Pillars',
-          summary: `${name}, the generating cycle (Sheng) of Wood feeding Fire provides exceptional vitality and strategic momentum for your Day Master (戊土 Wu Earth).`,
-          classicalCitation: 'San Ming Tong Hui (三命通会) • Di Tian Sui (滴天髓)',
-          guidance: [
-            'Leverage high creative focus to pitch bold initiatives',
-            'Collaborate with Water and Metal element colleagues',
-            'Wear gold or white accents to ground fiery energy'
-          ],
-          whyPayload: {
-            title: "Wood Dragon Sheng Cycle Acceleration",
-            period: "Next 3–5 Days",
-            confidence: "High (90%)",
-            confidenceScore: 90,
-            factors: [
-              "Favorable element (Yong Shen) reinforced by daily pillar",
-              "No harsh clashes (Chong) on natal Day Branch"
-            ]
-          }
-        }
-      ],
-      '30days': [
-        {
-          id: 'bz-30-1',
-          category: 'money',
-          title: 'Zheng Cai (Direct Wealth) Inflow Window',
-          period: 'This Month',
-          energyLevel: 87,
-          statusText: 'Wealth Cultivation',
-          systemsCount: 4,
-          traditionLabel: 'BaZi Four Pillars',
-          summary: 'The Monthly Officer Cheng (Success) combined with Zheng Cai (Direct Wealth Star) brings lucrative contract renewals and stable dividend returns.',
-          classicalCitation: 'Zi Ping Zhen Quan (子平真诠) • Qiong Tong Bao Jian',
-          guidance: [
-            'Finalize supplier agreements and optimize commercial pricing',
-            'Avoid speculative gambles during Dog (戌) clash days',
-            'Place a water feature in the North-Wealth sector of your office'
-          ],
-          whyPayload: {
-            title: "Zheng Cai Direct Wealth Inflow",
-            period: "This Month",
-            confidence: "High",
-            confidenceScore: 87,
-            factors: [
-              "Direct Wealth Star activates Day Master balance",
-              "12 Day Officers align on 3 consecutive auspicious dates"
-            ]
-          }
-        }
-      ],
-      '12months': [
-        {
-          id: 'bz-12-1',
-          category: 'growth',
-          title: 'Liu Nian (Annual Pillar) Breakthrough & Authority',
-          period: 'Next 12 Months',
-          energyLevel: 92,
-          statusText: 'Major Horizon',
-          systemsCount: 4,
-          traditionLabel: 'BaZi Four Pillars',
-          summary: 'The flowing annual pillar combines harmoniously with your Month Pillar of career, unlocking promotions, corporate recognition, and professional autonomy.',
-          classicalCitation: 'San Ming Tong Hui Scroll 7 • Five Elements Balance',
-          guidance: [
-            'Take on executive responsibilities and cross-department leadership',
-            'Network with mentors in high-ranking industry positions',
-            'Maintain emotional equilibrium through mindful lifestyle habits'
-          ],
-          whyPayload: {
-            title: "Liu Nian Annual Pillar Breakthrough",
-            period: "Next 12 Months",
-            confidence: "High (92%)",
-            confidenceScore: 92,
-            factors: [
-              "Heavenly Stem and Earthly Branch form harmonious combination (He)",
-              "Nobleman Star (Tian Yi Gui Ren) active in career pillar"
-            ]
-          }
-        }
-      ],
-      '5years': [
-        {
-          id: 'bz-5y-1',
-          category: 'career',
-          title: '10-Year Da Yun (大运) Golden Luck Pillar Transition',
-          period: '2026 – 2031',
-          energyLevel: 97,
-          statusText: 'Decade Peak',
-          systemsCount: 5,
-          traditionLabel: 'BaZi Four Pillars',
-          summary: 'Transition into the Metal Monkey Da Yun luck pillar establishes peak industrial authority, financial prosperity, and international renown.',
-          classicalCitation: 'Di Tian Sui Commentary • Classical Master Epoch',
-          guidance: [
-            'Build generational wealth vehicles and long-term enterprises',
-            'Invest in education, philanthropy, and community infrastructure',
-            'Lead with humility, wisdom, and benevolence'
-          ],
-          whyPayload: {
-            title: "10-Year Da Yun Golden Luck Pillar",
-            period: "2026 – 2031",
-            confidence: "Exceptional (97%)",
-            confidenceScore: 97,
-            factors: [
-              "10-Year Luck Pillar supplies the exact missing element (Yong Shen)",
-              "Four Pillars form full celestial harmony"
-            ]
-          }
-        }
-      ]
-    };
-  } else if (t.includes('kp')) {
-    return {
-      '7days': [
-        {
-          id: 'kp-7-1',
-          category: 'career',
-          title: '10th Cuspal Sub-Lord (2-6-10-11) Professional Surge',
-          period: 'Next 3 Days (Pushya Star Window)',
-          energyLevel: 93,
-          statusText: 'High Event Timing',
-          systemsCount: 4,
-          traditionLabel: 'KP Stellar System',
-          summary: `${name}, your 10th cusp sub-lord signifies houses 2, 6, 10, and 11, creating infallible timing conditions for career recognition and successful negotiations.`,
-          classicalCitation: 'KP Reader IV (Marriage & Profession) by Prof. K.S. Krishnamurti',
-          guidance: [
-            'Schedule presentations during the ruling planet hours of Sun and Mercury',
-            'Close high-value sales deals and contract renewals without hesitation',
-            'Document every agreement with precise cuspal timelines'
-          ],
-          whyPayload: {
-            title: "10th Cuspal Sub-Lord Surge",
-            period: "Next 3 Days",
-            confidence: "Very High (93%)",
-            confidenceScore: 93,
-            factors: [
-              "249 Table sub-lord interlinks directly with houses of material gain",
-              "Transit Moon passes through star of active Dasha lord"
-            ]
-          }
-        }
-      ],
-      '30days': [
-        {
-          id: 'kp-30-1',
-          category: 'money',
-          title: 'DBAS Period (Dasha-Bhukti-Antara) Wealth Realization',
-          period: 'Upcoming 30 Days',
-          energyLevel: 88,
-          statusText: 'Asset Realization',
-          systemsCount: 3,
-          traditionLabel: 'KP Stellar System',
-          summary: 'The active Bhukti lord strongly signifies 2nd (wealth) and 11th (gains) cusps without negative 8/12 hindrance, unlocking deferred compensation.',
-          classicalCitation: 'KP Reader III (Predictive Stellar Astrology) Table 249',
-          guidance: [
-            'Follow up on outstanding invoices and long-term receivables',
-            'Execute planned asset purchases during favorable Star Lord transits',
-            'Diversify investment holdings into secure, income-bearing vehicles'
-          ],
-          whyPayload: {
-            title: "DBAS Wealth Realization",
-            period: "Upcoming 30 Days",
-            confidence: "High",
-            confidenceScore: 88,
-            factors: [
-              "Sub-Lord of 2nd cusp is in the star of an un-tenanted planet",
-              "Ruling Planets confirm immediate fruitation of financial targets"
-            ]
-          }
-        }
-      ],
-      '12months': [
-        {
-          id: 'kp-12-1',
-          category: 'growth',
-          title: '9th & 11th Cusp Interlinks: Higher Wisdom & Networks',
-          period: 'Next 12 Months',
-          energyLevel: 90,
-          statusText: 'Cuspal Harmony',
-          systemsCount: 4,
-          traditionLabel: 'KP Stellar System',
-          summary: 'A powerful cuspal interlink between the 9th (higher law) and 11th (fulfilment of desires) houses ushers in prestigious advisory positions and honors.',
-          classicalCitation: 'KP Reader VI (Horary Astrology & Event Timing)',
-          guidance: [
-            'Publish intellectual research or patent innovative methodologies',
-            'Expand elite professional affiliations and trade networks',
-            'Serve as an authoritative mentor in your specialized domain'
-          ],
-          whyPayload: {
-            title: "9th & 11th Cusp Interlinks",
-            period: "Next 12 Months",
-            confidence: "High (90%)",
-            confidenceScore: 90,
-            factors: [
-              "Star Lord of 9th cusp aspects 1st and 11th cuspal sub-lords",
-              "No malefic aspect on the 10th house sub-lord"
-            ]
-          }
-        }
-      ],
-      '5years': [
-        {
-          id: 'kp-5y-1',
-          category: 'career',
-          title: 'Mahadasha Shift: Pinnacle Executive Authority',
+          id: 'isl-5y-love',
+          category: 'love',
+          title: 'Multigenerational Family Tranquility & Harmony',
           period: '2027 – 2032',
-          energyLevel: 96,
-          statusText: 'Macro Pinnacle',
-          systemsCount: 5,
-          traditionLabel: 'KP Stellar System',
-          summary: 'The commencement of a new Mahadasha governed by a prime significator of the 1st and 10th houses establishes unchallenged leadership in your industry.',
-          classicalCitation: 'KP Reader II (Fundamental Principles) Timing of Events',
-          guidance: [
-            'Found and scale institutional ventures with multi-year roadmap',
-            'Maintain ethical precision and strict compliance across all assets',
-            'Lead industry standards and train successor talent'
-          ],
-          whyPayload: {
-            title: "Mahadasha Shift: Executive Authority",
-            period: "2027 – 2032",
-            confidence: "Exceptional (96%)",
-            confidenceScore: 96,
-            factors: [
-              "Dasha lord is strongest significator of 1, 10, 11 houses",
-              "Sub-lord confirms total support without 6-8-12 obstruction"
-            ]
-          }
-        }
-      ]
-    };
-  } else if (t.includes('jaimini')) {
-    return {
-      '7days': [
-        {
-          id: 'jm-7-1',
-          category: 'career',
-          title: 'Amatyakaraka (AmK) & Arudha Lagna (AL) Alignment',
-          period: 'Next 3–5 Days',
-          energyLevel: 89,
-          statusText: 'Public Honor',
-          systemsCount: 4,
-          traditionLabel: 'Jaimini Sutras',
-          summary: `${name}, transiting planets form auspicious Jaimini Rashi Drishti (sign aspects) on your Arudha Lagna (AL) and Amatyakaraka (AmK), boosting public prestige.`,
-          classicalCitation: 'Jaimini Upadesha Sutras Adhyaya 1 • Maharishi Jaimini',
-          guidance: [
-            'Step into public speaking or media representation roles',
-            'Align your personal values with visible professional output',
-            'Honor commitments made to senior mentors'
-          ],
-          whyPayload: {
-            title: "AmK & Arudha Lagna Alignment",
-            period: "Next 3–5 Days",
-            confidence: "High (89%)",
-            confidenceScore: 89,
-            factors: [
-              "Benefic Jupiter casts Rashi Drishti on Arudha Lagna",
-              "Amatyakaraka planet gains high Shadbala and Chara strength"
-            ]
-          }
-        }
-      ],
-      '30days': [
-        {
-          id: 'jm-30-1',
-          category: 'growth',
-          title: 'Atmakaraka (AK) Spiritual Realization & Soul Purpose',
-          period: 'Upcoming 30 Days',
           energyLevel: 91,
-          statusText: 'Soul Awakening',
+          statusText: 'Family Legacy',
           systemsCount: 4,
-          traditionLabel: 'Jaimini Sutras',
-          summary: 'Your Atmakaraka (highest degree planet) activates the Karakamsha in Navamsha, bringing deep clarity regarding your lifelong dharma and ethical mission.',
-          classicalCitation: 'Jaimini Sutras Ch. 2 (Karakamsha Adhyaya)',
+          traditionLabel: 'Ilm al-Falak',
+          summary: 'Long-term transit of benefic planets across the 4th and 5th houses establishes profound domestic peace, noble lineage blessings, and deep mutual respect.',
+          classicalCitation: 'Kitab al-Mawalid',
           guidance: [
-            'Dedicate regular hours to contemplation, meditation, and self-inquiry',
-            'Resolve internal conflicts through selfless service and detachment',
-            'Study classical philosophy and sacred foundational literature'
+            'Cultivate a home grounded in learning, hospitality, and prayer',
+            'Pass down ethical traditions and family stories to youth',
+            'Foster unity and reconciliation across extended family'
           ],
           whyPayload: {
-            title: "Atmakaraka Soul Purpose Activation",
-            period: "Upcoming 30 Days",
-            confidence: "High",
+            title: "Family Tranquility & Legacy",
+            period: "2027 – 2032",
+            confidence: "High (91%)",
             confidenceScore: 91,
             factors: [
-              "Atmakaraka in Navamsha Lagna receives benefic aspects",
-              "Chara Dasha period activates 9th Dharma sign"
-            ]
-          }
-        }
-      ],
-      '12months': [
-        {
-          id: 'jm-12-1',
-          category: 'career',
-          title: 'Chara Dasha Sign Shift: Major Professional Elevation',
-          period: 'Next 12 Months',
-          energyLevel: 93,
-          statusText: 'Major Sign Period',
-          systemsCount: 4,
-          traditionLabel: 'Jaimini Sutras',
-          summary: 'Shift into a cardinal Chara Dasha sign aspecting the 10th Pada (A10 / Rajya Pada) ushers in prominent leadership, title changes, and public recognition.',
-          classicalCitation: 'Jaimini Sutras Ch. 3 (Chara Dasha Calculations)',
-          guidance: [
-            'Lead high-stakes strategic initiatives with confidence',
-            'Build alliances with ethical leaders in governance and commerce',
-            'Protect institutional reputation through transparent administration'
-          ],
-          whyPayload: {
-            title: "Chara Dasha Sign Shift",
-            period: "Next 12 Months",
-            confidence: "Very High (93%)",
-            confidenceScore: 93,
-            factors: [
-              "Active Chara Dasha sign contains Amatyakaraka and Putrakaraka",
-              "Arudha Lagna receives uninterrupted benefic Argala"
-            ]
-          }
-        }
-      ],
-      '5years': [
-        {
-          id: 'jm-5y-1',
-          category: 'career',
-          title: 'Brahma & Maheshwara Karaka: Enduring Legacy Epoch',
-          period: '2027 – 2032',
-          energyLevel: 96,
-          statusText: 'Legacy Epoch',
-          systemsCount: 5,
-          traditionLabel: 'Jaimini Sutras',
-          summary: 'Convergence of Jaimini Chara Dasha with Karakamsha 10th house benefic confluence establishes enduring, multi-generational institutional authority.',
-          classicalCitation: 'Jaimini Upadesha Sutras Adhyaya 4 (Argala & Phaladeepa)',
-          guidance: [
-            'Establish charitable foundations and educational trusts',
-            'Author comprehensive treatises or codified knowledge systems',
-            'Mentor next-generation pioneers with dedication'
-          ],
-          whyPayload: {
-            title: "Jaimini Enduring Legacy Epoch",
-            period: "2027 – 2032",
-            confidence: "Exceptional (96%)",
-            confidenceScore: 96,
-            factors: [
-              "Rajya Pada (A10) energized by Jupiter and Venus in kendras",
-              "Atmakaraka achieves full soul maturation"
-            ]
-          }
-        }
-      ]
-    };
-  } else {
-    // Vedic Parashari (Default) & Western Synthesis
-    return {
-      '7days': [
-        {
-          id: 'f1',
-          category: 'career',
-          title: 'High-Impact Strategic Execution & Solar Trine',
-          period: 'Today – In 3 Days',
-          energyLevel: 88,
-          statusText: 'Strong Peak',
-          systemsCount: 4,
-          traditionLabel: 'Vedic Parashari & Western',
-          summary: `${name}, Mars and Mercury align in your 10th house of profession while the Sun forms a harmonic trine with Jupiter. Peak window for decisive execution.`,
-          classicalCitation: 'Brihat Parashara Hora Shastra Ch. 42 (Rajayoga Adhyaya)',
-          guidance: [
-            'Present your proposals confidently to executive stakeholders',
-            'Finalize pending commercial agreements and clear backlogs',
-            'Channel high cognitive stamina into high-leverage deliverables'
-          ],
-          crossTraditionConsensus: [
-            { tradition: 'Western Tropical', verdict: 'Sun Sextile Mars applying with 0°14\' orb' },
-            { tradition: 'KP Stellar', verdict: '10th sub-lord connects with houses 2-6-10-11' },
-            { tradition: 'Islamic Ilm al-Falak', verdict: 'Hour of Mushtari (Jupiter) active during midday trade' }
-          ],
-          whyPayload: {
-            title: "High-Impact Strategic Execution",
-            period: "Today – In 3 Days",
-            confidence: "High (90%)",
-            confidenceScore: 90,
-            factors: [
-              "Mercury transit creates Bhadra Yoga resonance in intellectual house",
-              "Mars confers executive energy and physical stamina",
-              "Moon transit activates auspicious 11th house of gains"
+              "4th house of domestic peace receives enduring benefic support",
+              "Venus and Jupiter cycle harmonize over five-year arc"
             ]
           }
         },
         {
-          id: 'f2',
-          category: 'love',
-          title: 'Harmonious Venus-Moon Trine Alignment',
-          period: 'This Weekend (Friday – Sunday)',
-          energyLevel: 82,
-          statusText: 'Positive Flow',
-          systemsCount: 3,
-          traditionLabel: 'Vedic & Western Synthesis',
-          summary: 'Transiting Venus aspects your natal Moon house, fostering deep empathy, openhearted conversations, and mutual reassurance in relationships.',
-          classicalCitation: 'Phaladeepika Ch. 14 (Transits of Benefics) • Tetrabiblos Book IV',
-          guidance: [
-            'Plan calm, quality time with loved ones or partner',
-            'Express gratitude and appreciation openly',
-            'Engage in creative arts, music, or restful nature walks'
-          ],
-          whyPayload: {
-            title: "Harmonious Emotional Alignment",
-            period: "This Weekend",
-            confidence: "Moderate–High",
-            confidenceScore: 82,
-            factors: [
-              "Transiting Venus forms favorable trine with natal Moon",
-              "Western 7th house ruler receives solar support"
-            ]
-          }
-        }
-      ],
-      '30days': [
-        {
-          id: 'f3',
-          category: 'career',
-          title: 'Major Career Expansion & Public Authority Window',
-          period: 'Sep 12 – Oct 28',
-          energyLevel: 92,
-          statusText: 'Major Window',
-          systemsCount: 4,
-          traditionLabel: 'Vedic Parashari & KP',
-          summary: 'Four independent traditions indicate a significant surge in professional visibility, public authority, and career responsibility.',
-          classicalCitation: 'Brihat Parashara Hora Shastra • Saravali Ch. 34',
-          guidance: [
-            'Step up into leadership opportunities without hesitation',
-            'Organize strategic roadmaps for quarterly deliverables',
-            'Maintain impeccable integrity and documentation'
-          ],
-          whyPayload: {
-            title: "Career Expansion & Role Shift",
-            period: "Sep 12 – Oct 28",
-            confidence: "High (92%)",
-            confidenceScore: 92,
-            factors: [
-              "Jupiter transit into 10th Kendra house",
-              "Progressed Sun trine Midheaven (MC)",
-              "KP 10th sub-lord connects to 2-6-10-11 wealth houses"
-            ]
-          }
-        },
-        {
-          id: 'f4',
+          id: 'isl-5y-money',
           category: 'money',
-          title: 'Asset Consolidation & Wealth Restructuring',
-          period: 'Next 3–4 Weeks',
-          energyLevel: 75,
-          statusText: 'Balanced & Secure',
-          systemsCount: 3,
-          traditionLabel: 'Vedic Jyotish',
-          summary: 'Saturn transit provides disciplined focus for long-term investments, asset security, and eliminating recurring overhead costs.',
-          classicalCitation: 'Uttara Kalamrita by Kalidasa • Brihat Jataka',
+          title: 'Waqf & Perpetual Endowment Wealth Milestone',
+          period: '2027 – 2032',
+          energyLevel: 94,
+          statusText: 'Perpetual Asset',
+          systemsCount: 5,
+          traditionLabel: 'Ilm al-Falak',
+          summary: 'Expansion of commercial holdings enables the establishment of enduring charitable trusts (Waqf) and self-sustaining economic infrastructure.',
+          classicalCitation: 'Al-Biruni • Kitab al-Tafhim',
           guidance: [
-            'Review long-term savings, insurance, and retirement models',
-            'Avoid speculative impulse bets or unverified schemes',
-            'Establish automated savings milestones'
+            'Structure perpetual endowments that benefit future generations',
+            'Invest in green energy, water, and healthcare initiatives',
+            'Ensure legal governance protects family wealth from dissolution'
           ],
           whyPayload: {
-            title: "Asset Consolidation & Wealth Restructuring",
-            period: "Next 3–4 Weeks",
-            confidence: "Moderate–High",
-            confidenceScore: 78,
+            title: "Waqf & Perpetual Endowment",
+            period: "2027 – 2032",
+            confidence: "Very High (94%)",
+            confidenceScore: 94,
             factors: [
-              "Saturn 2nd house transit enforces budgetary discipline",
-              "Jupiter 11th house aspect supports steady asset retention"
+              "Lot of Sustainable Wealth forms recurring trines to Jupiter",
+              "2nd and 8th financial axes fully matured"
             ]
           }
-        }
-      ],
-      '12months': [
+        },
         {
-          id: 'f5',
+          id: 'isl-5y-growth',
           category: 'growth',
-          title: 'Spiritual Maturation & Academic Mastery',
-          period: 'Late 2026 – Mid 2027',
-          energyLevel: 90,
-          statusText: 'Soul Evolution',
-          systemsCount: 4,
-          traditionLabel: 'Vedic Parashari & Western',
-          summary: 'Jupiter transit through your 9th house of higher learning and spiritual evolution stimulates intellectual breakthroughs and mentoring roles.',
-          classicalCitation: 'Brihat Parashara Hora Shastra Ch. 48 (Dharmasthana)',
+          title: 'Ma\'rifah & Philosophical Mastery',
+          period: '2028 – 2033',
+          energyLevel: 95,
+          statusText: 'Soul Realization',
+          systemsCount: 5,
+          traditionLabel: 'Ilm al-Falak',
+          summary: 'Convergence of major astronomical revolutions leads to profound intellectual crystallization, authoring seminal works, and spiritual serenity.',
+          classicalCitation: 'Ibn Arabi • Fusus al-Hikam',
           guidance: [
-            'Pursue higher certifications, research, or specialized study',
-            'Share knowledge and mentor emerging practitioners',
-            'Engage in pilgrimage, meditation, and philosophical contemplation'
+            'Author and publish definitive books or masterworks',
+            'Establish an open study circle or educational initiative',
+            'Live with profound presence, humility, and gratitude'
           ],
           whyPayload: {
-            title: "Spiritual Maturation & Academic Mastery",
-            period: "Late 2026 – Mid 2027",
+            title: "Ma'rifah & Philosophical Mastery",
+            period: "2028 – 2033",
+            confidence: "Exceptional (95%)",
+            confidenceScore: 95,
+            factors: [
+              "9th and 10th houses achieve peak multi-cycle harmonization",
+              "Saturn and Jupiter complete constructive grand trine"
+            ]
+          }
+        },
+        {
+          id: 'isl-5y-travel',
+          category: 'travel',
+          title: 'Global Educational & Diplomatic Missions',
+          period: '2027 – 2032',
+          energyLevel: 89,
+          statusText: 'World Ambassador',
+          systemsCount: 4,
+          traditionLabel: 'Ilm al-Falak',
+          summary: 'Long-term international travel, diplomatic representation, and establishing regional chapters across multiple continents.',
+          classicalCitation: 'Al-Qanun al-Mas\'udi Book X',
+          guidance: [
+            'Build international partnerships with high integrity',
+            'Travel purposefully to bridge cultural divides',
+            'Document lessons from diverse civilizations'
+          ],
+          whyPayload: {
+            title: "Global Missions Window",
+            period: "2027 – 2032",
             confidence: "High (89%)",
             confidenceScore: 89,
             factors: [
-              "Jupiter activates 9th house Dharmasthana",
-              "D9 Navamsha chart reflects soul wisdom ripening"
-            ]
-          }
-        },
-        {
-          id: 'f6',
-          category: 'travel',
-          title: 'Major Relocation or International Horizon',
-          period: 'Spring 2027',
-          energyLevel: 84,
-          statusText: 'Expansive Journey',
-          systemsCount: 3,
-          traditionLabel: 'Vedic & Astrocartography',
-          summary: 'Rahu transit in 9th/12th axis creates auspicious opportunities for cross-border collaboration, relocation, or long-distance travel.',
-          classicalCitation: 'Jataka Parijata by Vaidyanatha Dikshita',
-          guidance: [
-            'Explore international research or global client bases',
-            'Prepare visa and travel documentation well in advance',
-            'Embrace diverse cultural philosophies'
-          ],
-          whyPayload: {
-            title: "Major Relocation or International Horizon",
-            period: "Spring 2027",
-            confidence: "Moderate (81%)",
-            confidenceScore: 81,
-            factors: [
-              "12th house Vyaya/Foreign residence activation",
-              "Astrocartography planetary power lines support eastern migration"
-            ]
-          }
-        }
-      ],
-      '5years': [
-        {
-          id: 'f7',
-          category: 'career',
-          title: 'Peak Enterprise Leadership & Legacy Milestone',
-          period: '2028 – 2032',
-          energyLevel: 95,
-          statusText: 'Legacy Milestone',
-          systemsCount: 5,
-          traditionLabel: 'Vedic, Western & BaZi Synthesis',
-          summary: 'Mahadasha shift to an exalted benefic planet marks the defining professional epoch of your decade with enduring social and material impact.',
-          classicalCitation: 'Brihat Parashara Hora Shastra • Ptolemy Tetrabiblos',
-          guidance: [
-            'Build durable systems and institutions rather than short-term gains',
-            'Mentor the next generation and establish philanthropic foundations',
-            'Cultivate lasting community reputation'
-          ],
-          whyPayload: {
-            title: "Peak Enterprise Leadership & Legacy Milestone",
-            period: "2028 – 2032",
-            confidence: "High (94%)",
-            confidenceScore: 94,
-            factors: [
-              "Major Vimshottari Mahadasha transition into Jupiter/Venus",
-              "Western Secondary Progressions peak at Midheaven (MC)",
-              "BaZi 10-Year Luck Pillar enters Golden Earth period"
+              "9th house of global horizons receives continuous benefic support",
+              "Mercury and Jupiter foster cross-lingual eloquence"
             ]
           }
         }
       ]
     };
   }
+
+  // Universal Vedic, Western, KP, Jaimini, BaZi & Mayan Complete 5-Category Matrix
+  return {
+    '7days': [
+      {
+        id: 'v-7-career',
+        category: 'career',
+        title: 'High-Impact Strategic Execution & Solar Trine',
+        period: 'Today – In 3 Days',
+        energyLevel: 88,
+        statusText: 'Strong Peak',
+        systemsCount: 4,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: `${name}, Mars and Mercury align in your 10th house of profession while the Sun forms a harmonic trine with Jupiter. Peak window for decisive execution.`,
+        classicalCitation: 'Brihat Parashara Hora Shastra Ch. 42 (Rajayoga Adhyaya)',
+        guidance: [
+          'Present your proposals confidently to executive stakeholders',
+          'Finalize pending commercial agreements and clear backlogs',
+          'Channel high cognitive stamina into high-leverage deliverables'
+        ],
+        crossTraditionConsensus: [
+          { tradition: 'Western Tropical', verdict: 'Sun Sextile Mars applying with 0°14\' orb' },
+          { tradition: 'KP Stellar', verdict: '10th sub-lord connects with houses 2-6-10-11' },
+          { tradition: 'Islamic Ilm al-Falak', verdict: 'Hour of Mushtari (Jupiter) active during midday trade' }
+        ],
+        whyPayload: {
+          title: "High-Impact Strategic Execution",
+          period: "Today – In 3 Days",
+          confidence: "High (90%)",
+          confidenceScore: 90,
+          factors: [
+            "Mercury transit creates Bhadra Yoga resonance in intellectual house",
+            "Mars confers executive energy and physical stamina",
+            "Moon transit activates auspicious 11th house of gains"
+          ]
+        }
+      },
+      {
+        id: 'v-7-love',
+        category: 'love',
+        title: 'Harmonious Venus-Moon Trine Alignment',
+        period: 'This Weekend (Friday – Sunday)',
+        energyLevel: 84,
+        statusText: 'Positive Flow',
+        systemsCount: 3,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Transiting Venus aspects your natal Moon house, fostering deep empathy, openhearted conversations, and mutual reassurance in relationships.',
+        classicalCitation: 'Phaladeepika Ch. 14 (Transits of Benefics) • Tetrabiblos Book IV',
+        guidance: [
+          'Plan calm, quality time with loved ones or partner',
+          'Express gratitude and appreciation openly',
+          'Engage in creative arts, music, or restful nature walks'
+        ],
+        whyPayload: {
+          title: "Harmonious Emotional Alignment",
+          period: "This Weekend",
+          confidence: "Moderate–High",
+          confidenceScore: 84,
+          factors: [
+            "Transiting Venus forms favorable trine with natal Moon",
+            "Western 7th house ruler receives solar support"
+          ]
+        }
+      },
+      {
+        id: 'v-7-money',
+        category: 'money',
+        title: 'Mercury-Jupiter Dhana Yoga Liquidity Inflow',
+        period: 'Upcoming 5 Days',
+        energyLevel: 86,
+        statusText: 'Favorable Inflow',
+        systemsCount: 4,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Mercury conjoins the 2nd house of accumulated wealth in mutual reception with Jupiter, facilitating prompt invoicing and contract payouts.',
+        classicalCitation: 'Brihat Parashara Hora Shastra • Chapter on Dhana Yogas',
+        guidance: [
+          'Issue pending commercial invoices without delay',
+          'Negotiate fair payment terms on upcoming contracts',
+          'Automate savings allocations to capture new liquidity'
+        ],
+        whyPayload: {
+          title: "Dhana Yoga Liquidity Inflow",
+          period: "Upcoming 5 Days",
+          confidence: "High (86%)",
+          confidenceScore: 86,
+          factors: [
+            "2nd lord and 11th lord establish beneficial mutual aspect",
+            "Transit Moon energizes the wealth houses"
+          ]
+        }
+      },
+      {
+        id: 'v-7-growth',
+        category: 'growth',
+        title: 'Sattvic Mental Clarity & Meditative Depth',
+        period: 'Mid-Week Contemplation',
+        energyLevel: 92,
+        statusText: 'Deep Awareness',
+        systemsCount: 4,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Moon transit across benefic Nakshatra clears mental clutter, enhancing intuition, mindfulness, and philosophical discernment.',
+        classicalCitation: 'Saravali Ch. 12 • Shloka on Moon Exaltation',
+        guidance: [
+          'Dedicate 15 minutes to morning pranayama or silent meditation',
+          'Journal key insights regarding your long-term life vision',
+          'Maintain a calm, centered emotional demeanor in all meetings'
+        ],
+        whyPayload: {
+          title: "Sattvic Mental Clarity",
+          period: "Mid-Week Contemplation",
+          confidence: "Very High (92%)",
+          confidenceScore: 92,
+          factors: [
+            "Moon in friendly nakshatra aspected by Jupiter",
+            "Ascendant sub-lord in unblemished dignity"
+          ]
+        }
+      },
+      {
+        id: 'v-7-travel',
+        category: 'travel',
+        title: 'Auspicious Short-Haul Mobility Window',
+        period: 'Next 7 Days',
+        energyLevel: 82,
+        statusText: 'Safe Journey',
+        systemsCount: 3,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: '3rd house of purposeful local travel is energized by Mercury, facilitating smooth commutes, productive meetings, and pleasant weekend excursions.',
+        classicalCitation: 'Muhurta Chintamani • Chapter on Travel Elections',
+        guidance: [
+          'Double-check route schedules and departure timings',
+          'Depart during Shubha or Amrit Choghadiya windows',
+          'Travel light and keep documentation organized'
+        ],
+        whyPayload: {
+          title: "Short-Haul Mobility Window",
+          period: "Next 7 Days",
+          confidence: "Moderate–High (82%)",
+          confidenceScore: 82,
+          factors: [
+            "3rd house free from Rahu/Ketu afflictions",
+            "Mercury direct in friendly sign"
+          ]
+        }
+      }
+    ],
+    '30days': [
+      {
+        id: 'v-30-career',
+        category: 'career',
+        title: 'Major Career Expansion & Public Authority Window',
+        period: 'Sep 12 – Oct 28',
+        energyLevel: 92,
+        statusText: 'Major Window',
+        systemsCount: 4,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Four independent traditions indicate a significant surge in professional visibility, public authority, and career responsibility.',
+        classicalCitation: 'Brihat Parashara Hora Shastra • Saravali Ch. 34',
+        guidance: [
+          'Step up into leadership opportunities without hesitation',
+          'Organize strategic roadmaps for quarterly deliverables',
+          'Maintain impeccable integrity and documentation'
+        ],
+        whyPayload: {
+          title: "Career Expansion & Role Shift",
+          period: "Sep 12 – Oct 28",
+          confidence: "High (92%)",
+          confidenceScore: 92,
+          factors: [
+            "Jupiter transit into 10th Kendra house",
+            "Progressed Sun trine Midheaven (MC)",
+            "KP 10th sub-lord connects to 2-6-10-11 wealth houses"
+          ]
+        }
+      },
+      {
+        id: 'v-30-love',
+        category: 'love',
+        title: 'Venusian Harmony & Emotional Consonance',
+        period: 'Next 30 Days',
+        energyLevel: 87,
+        statusText: 'Relational Peace',
+        systemsCount: 4,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Transiting Venus aspects the 7th house of partnerships, dissolving past misunderstandings and fostering mutual respect and shared dreams.',
+        classicalCitation: 'Phaladeepika Ch. 18 • Kalatra Bhava Transit Rules',
+        guidance: [
+          'Prioritize open, non-judgmental communication with your partner',
+          'Plan thoughtful shared experiences or weekend getaways',
+          'Express sincere appreciation for daily acts of kindness'
+        ],
+        whyPayload: {
+          title: "Venusian Harmony & Consonance",
+          period: "Next 30 Days",
+          confidence: "High (87%)",
+          confidenceScore: 87,
+          factors: [
+            "Venus in friendly cardinal sign casts aspect on 7th house",
+            "Moon avoids eclipse/combustion degrees during key dates"
+          ]
+        }
+      },
+      {
+        id: 'v-30-money',
+        category: 'money',
+        title: 'Asset Consolidation & Wealth Restructuring',
+        period: 'Next 3–4 Weeks',
+        energyLevel: 85,
+        statusText: 'Balanced & Secure',
+        systemsCount: 4,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Saturn and Jupiter transits establish disciplined focus for long-term investments, asset security, and eliminating recurring overhead costs.',
+        classicalCitation: 'Uttara Kalamrita by Kalidasa • Brihat Jataka',
+        guidance: [
+          'Review long-term savings, insurance, and retirement models',
+          'Avoid speculative impulse bets or unverified schemes',
+          'Establish automated savings milestones'
+        ],
+        whyPayload: {
+          title: "Asset Consolidation & Wealth Restructuring",
+          period: "Next 3–4 Weeks",
+          confidence: "High (85%)",
+          confidenceScore: 85,
+          factors: [
+            "Saturn 2nd house transit enforces budgetary discipline",
+            "Jupiter 11th house aspect supports steady asset retention"
+          ]
+        }
+      },
+      {
+        id: 'v-30-growth',
+        category: 'growth',
+        title: 'Personal Evolution & Intellectual Breakthrough',
+        period: 'Upcoming 30 Days',
+        energyLevel: 91,
+        statusText: 'Soul Alignment',
+        systemsCount: 5,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Benefic illumination of the 9th house of philosophy and higher dharma inspires intellectual clarity, authentic purpose, and creative focus.',
+        classicalCitation: 'Brihat Parashara Hora Shastra Ch. 48 (Dharmasthana)',
+        guidance: [
+          'Engage in deep-work learning sprints and technical study',
+          'Cultivate daily gratitude and mindfulness rituals',
+          'Share your knowledge generously with peer communities'
+        ],
+        whyPayload: {
+          title: "Personal Evolution & Intellectual Breakthrough",
+          period: "Upcoming 30 Days",
+          confidence: "Very High (91%)",
+          confidenceScore: 91,
+          factors: [
+            "Jupiter casts 9th drishti on the Ascendant and 5th house of intellect",
+            "Nodal axis is balanced without obstructive affliction"
+          ]
+        }
+      },
+      {
+        id: 'v-30-travel',
+        category: 'travel',
+        title: 'Expansive Travel & International Horizon Window',
+        period: 'Late in the Month',
+        energyLevel: 86,
+        statusText: 'Favorable Ingress',
+        systemsCount: 3,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Transits across the 9th and 12th houses activate auspicious windows for business travel, nature retreats, and cross-cultural exploration.',
+        classicalCitation: 'Jataka Parijata • Chapter on Foreign Ingress',
+        guidance: [
+          'Confirm travel bookings and itineraries with care',
+          'Schedule departures during benefic planetary horas',
+          'Immerse in local cultural traditions with curiosity and respect'
+        ],
+        whyPayload: {
+          title: "Expansive Travel Window",
+          period: "Late in the Month",
+          confidence: "High (86%)",
+          confidenceScore: 86,
+          factors: [
+            "9th house receives supportive solar aspect",
+            "12th lord placed in friendly dignity"
+          ]
+        }
+      }
+    ],
+    '12months': [
+      {
+        id: 'v-12-career',
+        category: 'career',
+        title: 'Executive Milestone & Leadership Zenith',
+        period: 'Next 12 Months',
+        energyLevel: 94,
+        statusText: 'Career Zenith',
+        systemsCount: 5,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Major planetary transit through the 10th house of worldly action coincides with favorable Dasha periods, elevating executive autonomy.',
+        classicalCitation: 'Saravali Ch. 34 • Brihat Parashara Hora Shastra',
+        guidance: [
+          'Build long-term organizational infrastructure with multi-year roadmap',
+          'Lead by example with transparent governance and meritocracy',
+          'Mentor next-generation pioneers in your industry'
+        ],
+        whyPayload: {
+          title: "Executive Milestone & Leadership Zenith",
+          period: "Next 12 Months",
+          confidence: "Exceptional (94%)",
+          confidenceScore: 94,
+          factors: [
+            "10th house receives full aspect from exalted benefic",
+            "D10 Dashamsha chart confirms sustained career acceleration"
+          ]
+        }
+      },
+      {
+        id: 'v-12-love',
+        category: 'love',
+        title: 'Lifelong Partnership & Family Deepening',
+        period: 'Autumn – Spring Cycle',
+        energyLevel: 89,
+        statusText: 'Enduring Union',
+        systemsCount: 4,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Jupiter transit illuminates the 7th house of marriage and the 5th house of progeny, creating profound domestic joy and relational solidarity.',
+        classicalCitation: 'Phaladeepika Ch. 18 • D9 Navamsha Analysis',
+        guidance: [
+          'Celebrate relational milestones and create shared memory rituals',
+          'Invest in a peaceful, aesthetic, and welcoming home space',
+          'Cultivate patience, mutual respect, and emotional presence'
+        ],
+        whyPayload: {
+          title: "Lifelong Partnership & Family Deepening",
+          period: "Autumn – Spring Cycle",
+          confidence: "High (89%)",
+          confidenceScore: 89,
+          factors: [
+            "D9 Navamsha lagna is energized by benefic transits",
+            "7th lord achieves high Shadbala strength score"
+          ]
+        }
+      },
+      {
+        id: 'v-12-money',
+        category: 'money',
+        title: 'Multi-Stream Revenue & Capital Expansion',
+        period: 'Next 12 Months',
+        energyLevel: 92,
+        statusText: 'Capital Surge',
+        systemsCount: 4,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Dhana Yoga activation across the 2nd and 11th houses facilitates substantial asset growth, equity maturation, and diversified returns.',
+        classicalCitation: 'Brihat Jataka by Varahamihira',
+        guidance: [
+          'Reinvest operating cash flows into productive, low-risk assets',
+          'Establish structured tax planning and wealth preservation vehicles',
+          'Engage in philanthropic tithes and charitable community giving'
+        ],
+        whyPayload: {
+          title: "Multi-Stream Revenue Expansion",
+          period: "Next 12 Months",
+          confidence: "High (92%)",
+          confidenceScore: 92,
+          factors: [
+            "11th house of gains receives Jupiterian aspect",
+            "2nd lord in kendra position without malefic affliction"
+          ]
+        }
+      },
+      {
+        id: 'v-12-growth',
+        category: 'growth',
+        title: 'Spiritual Maturation & Academic Mastery',
+        period: 'Late 2026 – Mid 2027',
+        energyLevel: 90,
+        statusText: 'Soul Evolution',
+        systemsCount: 4,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Jupiter transit through your 9th house of higher learning and spiritual evolution stimulates intellectual breakthroughs and mentoring roles.',
+        classicalCitation: 'Brihat Parashara Hora Shastra Ch. 48 (Dharmasthana)',
+        guidance: [
+          'Pursue higher certifications, research, or specialized study',
+          'Share knowledge and mentor emerging practitioners',
+          'Engage in pilgrimage, meditation, and philosophical contemplation'
+        ],
+        whyPayload: {
+          title: "Spiritual Maturation & Academic Mastery",
+          period: "Late 2026 – Mid 2027",
+          confidence: "High (89%)",
+          confidenceScore: 89,
+          factors: [
+            "Jupiter activates 9th house Dharmasthana",
+            "D9 Navamsha chart reflects soul wisdom ripening"
+          ]
+        }
+      },
+      {
+        id: 'v-12-travel',
+        category: 'travel',
+        title: 'Major Relocation or International Horizon',
+        period: 'Spring 2027',
+        energyLevel: 84,
+        statusText: 'Expansive Journey',
+        systemsCount: 3,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Rahu transit in 9th/12th axis creates auspicious opportunities for cross-border collaboration, relocation, or long-distance travel.',
+        classicalCitation: 'Jataka Parijata by Vaidyanatha Dikshita',
+        guidance: [
+          'Explore international research or global client bases',
+          'Prepare visa and travel documentation well in advance',
+          'Embrace diverse cultural philosophies'
+        ],
+        whyPayload: {
+          title: "Major Relocation or International Horizon",
+          period: "Spring 2027",
+          confidence: "Moderate–High (84%)",
+          confidenceScore: 84,
+          factors: [
+            "12th house Vyaya/Foreign residence activation",
+            "Astrocartography planetary power lines support eastern migration"
+          ]
+        }
+      }
+    ],
+    '5years': [
+      {
+        id: 'v-5y-career',
+        category: 'career',
+        title: 'Peak Enterprise Leadership & Legacy Milestone',
+        period: '2028 – 2032',
+        energyLevel: 96,
+        statusText: 'Legacy Milestone',
+        systemsCount: 5,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Mahadasha shift to an exalted benefic planet marks the defining professional epoch of your decade with enduring social and material impact.',
+        classicalCitation: 'Brihat Parashara Hora Shastra • Ptolemy Tetrabiblos',
+        guidance: [
+          'Build durable systems and institutions rather than short-term gains',
+          'Mentor the next generation and establish philanthropic foundations',
+          'Cultivate lasting community reputation'
+        ],
+        whyPayload: {
+          title: "Peak Enterprise Leadership & Legacy Milestone",
+          period: "2028 – 2032",
+          confidence: "Exceptional (96%)",
+          confidenceScore: 96,
+          factors: [
+            "Major Vimshottari Mahadasha transition into Jupiter/Venus",
+            "Western Secondary Progressions peak at Midheaven (MC)",
+            "BaZi 10-Year Luck Pillar enters Golden Earth period"
+          ]
+        }
+      },
+      {
+        id: 'v-5y-love',
+        category: 'love',
+        title: 'Domestic Sanctuary & Generational Harmony',
+        period: '2027 – 2032',
+        energyLevel: 92,
+        statusText: 'Generational Peace',
+        systemsCount: 4,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Harmonious long-term transits anchor your home as a sanctuary of warmth, hospitality, and emotional sanctuary.',
+        classicalCitation: 'Brihat Parashara Hora Shastra • Grihastha Dharma',
+        guidance: [
+          'Anchor your family culture in unconditional loyalty, empathy, and service',
+          'Invest in real estate properties that serve multigenerational family gatherings',
+          'Model harmonious conflict resolution for children and community'
+        ],
+        whyPayload: {
+          title: "Domestic Sanctuary & Generational Harmony",
+          period: "2027 – 2032",
+          confidence: "High (92%)",
+          confidenceScore: 92,
+          factors: [
+            "4th and 7th houses receive protective aspect across 5-year transit cycle",
+            "Venusian maturity brings deep domestic tranquility"
+          ]
+        }
+      },
+      {
+        id: 'v-5y-money',
+        category: 'money',
+        title: 'Institutional Endowment & Financial Independence',
+        period: '2028 – 2033',
+        energyLevel: 95,
+        statusText: 'Financial Zenith',
+        systemsCount: 5,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Maturation of long-term investments and business enterprises delivers complete financial autonomy and generational freedom.',
+        classicalCitation: 'Brihat Jataka • Saravali Ch. 39',
+        guidance: [
+          'Form family trusts and asset-protection governance frameworks',
+          'Fund scholarships, community clinics, or educational initiatives',
+          'Maintain a simple, disciplined, and purposeful lifestyle'
+        ],
+        whyPayload: {
+          title: "Institutional Endowment & Independence",
+          period: "2028 – 2033",
+          confidence: "Very High (95%)",
+          confidenceScore: 95,
+          factors: [
+            "2nd, 9th, and 11th houses form complete Lakshmī Yoga",
+            "Long-term dasha cycle operates in prime wealth-generating houses"
+          ]
+        }
+      },
+      {
+        id: 'v-5y-growth',
+        category: 'growth',
+        title: 'Mastery & Self-Realization Epoch',
+        period: '2028 – 2033',
+        energyLevel: 97,
+        statusText: 'Enlightened Purpose',
+        systemsCount: 5,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'A definitive epoch of spiritual realization, intellectual synthesis, and authoring foundational works that guide future generations.',
+        classicalCitation: 'Jaimini Sutras • Brihat Parashara Hora Shastra',
+        guidance: [
+          'Document your life philosophy, principles, and distilled wisdom',
+          'Live each day with deep gratitude, equanimity, and devotion',
+          'Serve humanity selflessly through your unique talents'
+        ],
+        whyPayload: {
+          title: "Mastery & Self-Realization Epoch",
+          period: "2028 – 2033",
+          confidence: "Exceptional (97%)",
+          confidenceScore: 97,
+          factors: [
+            "Atmakaraka achieves full soul maturation across divisional charts",
+            "9th and 10th houses establish supreme Dharmakarmadhipati Yoga"
+          ]
+        }
+      },
+      {
+        id: 'v-5y-travel',
+        category: 'travel',
+        title: 'Global Footprint & World Pilgrim Epoch',
+        period: '2027 – 2032',
+        energyLevel: 90,
+        statusText: 'Global Citizen',
+        systemsCount: 4,
+        traditionLabel: `${tradition.toUpperCase()} & Multi-System`,
+        summary: 'Establishment of international bases, global lecture circuits, and visiting sacred heritage sites around the world.',
+        classicalCitation: 'Astrocartography • Relocation Astrology Principles',
+        guidance: [
+          'Build international bridges between diverse cultures and traditions',
+          'Travel with sacred intention, curiosity, and reverence',
+          'Inspire global communities through universal human values'
+        ],
+        whyPayload: {
+          title: "Global Footprint & World Pilgrim",
+          period: "2027 – 2032",
+          confidence: "High (90%)",
+          confidenceScore: 90,
+          factors: [
+            "9th and 12th houses activate worldwide relocation lines",
+            "Jupiter transit across overseas meridian"
+          ]
+        }
+      }
+    ]
+  };
 }
 
 export default function OmniForecastView({ userProfile }: { userProfile: UserProfile }) {
@@ -766,7 +1165,7 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
   }, [currentTradition, userProfile]);
 
   const events = useMemo(() => {
-    const list = allForecastData[activeHorizon] || allForecastData['30days'];
+    const list = allForecastData[activeHorizon] || allForecastData['30days'] || [];
     if (selectedCategory === 'all') return list;
     return list.filter(e => e.category === selectedCategory);
   }, [allForecastData, activeHorizon, selectedCategory]);
@@ -1015,6 +1414,23 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
             </motion.div>
           );
         })}
+
+        {/* Empty State Fallback */}
+        {events.length === 0 && (
+          <div className="p-8 rounded-3xl bg-[#0F172A] border border-white/10 text-center space-y-3">
+            <Sparkles className="w-8 h-8 text-amber-400 mx-auto" />
+            <h3 className="text-base font-bold text-white">Baseline Cosmic Equilibrium in {selectedCategory.toUpperCase()}</h3>
+            <p className="text-xs text-slate-300 max-w-md mx-auto">
+              No adverse planetary disruptions or volatile transits are obstructing your chart in this domain during the {activeHorizon.toUpperCase()} horizon. Steady, supportive baseline cosmic flow is active.
+            </p>
+            <button
+              onClick={() => setSelectedCategory('all')}
+              className="px-4 py-2 rounded-xl bg-amber-400 text-slate-950 text-xs font-mono font-bold hover:bg-amber-300 transition-colors cursor-pointer"
+            >
+              View All Themes
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Universal Explainability Drawer Modal */}
