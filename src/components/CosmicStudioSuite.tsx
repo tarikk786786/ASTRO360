@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { 
   Sparkles, Download, Printer, Play, Pause, 
   Clock, CheckCircle2, Award, Zap, Compass, Shield, Flame, Activity, BarChart3, Layers, BookOpen, Search,
-  Volume2, VolumeX, Moon, Sun, Star, Radio, RefreshCw, HeartHandshake, Crown
+  Volume2, VolumeX, Moon, Sun, Star, Radio, RefreshCw, HeartHandshake, Crown, Key, Sliders
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { UserProfile } from '../types';
@@ -109,7 +109,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
   // Primary Studio Mode
   const [activeStudioTab, setActiveStudioTab] = useState<
-    'chart' | 'aspects' | 'yogas' | 'friendship' | 'avasthas' | 'nakshatras' | 'soundResonator' | 'dashaTree' | 'ashtakavarga' | 'shadbala' | 'multisystem' | 'timing' | 'predictions' | 'research' | 'rules'
+    'chart' | 'aspects' | 'yogas' | 'jaimini' | 'rectification' | 'friendship' | 'avasthas' | 'nakshatras' | 'soundResonator' | 'dashaTree' | 'ashtakavarga' | 'shadbala' | 'multisystem' | 'timing' | 'predictions' | 'research' | 'rules'
   >('chart');
   
   // Density mode: 'comfortable' vs 'compact'
@@ -127,6 +127,9 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
   const [offsetMinutes, setOffsetMinutes] = useState<number>(0);
   const [isLiveAnimating, setIsLiveAnimating] = useState<boolean>(false);
   const [animSpeed, setAnimSpeed] = useState<number>(1); // 1, 5, 20
+
+  // BTR Rectification Seconds Offset
+  const [rectificationSecs, setRectificationSecs] = useState<number>(0);
 
   // Ayanamsha Configuration
   const [ayanamsha, setAyanamsha] = useState<'lahiri' | 'raman' | 'kp' | 'tropical'>('lahiri');
@@ -218,10 +221,11 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
   const activeStudioDate = useMemo(() => {
     const [year, month, day] = (currentProfile.dob || '1995-10-24').split('-').map(Number);
     const [hours, mins] = (currentProfile.time || '14:30').split(':').map(Number);
-    const date = new Date(year, month - 1, day, hours, mins);
+    const date = new Date(year, month - 1, day, hours, mins, 0);
     date.setMinutes(date.getMinutes() + offsetMinutes);
+    date.setSeconds(date.getSeconds() + rectificationSecs);
     return date;
-  }, [currentProfile, offsetMinutes]);
+  }, [currentProfile, offsetMinutes, rectificationSecs]);
 
   const formattedActiveTime = useMemo(() => {
     return activeStudioDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -267,6 +271,33 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
       setSelectedPlanet(rawBasePlanets[0]);
     }
   }, [rawBasePlanets, selectedPlanet]);
+
+  // Jaimini 7 Chara Karakas System
+  const jaiminiKarakas = useMemo(() => {
+    const classical = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    const candidates = rawBasePlanets
+      .filter(p => classical.includes(p.name))
+      .map(p => ({
+        ...p,
+        degInSign: (p.degreeDecimal || parseFloat(p.degree) || 0) % 30
+      }))
+      .sort((a, b) => b.degInSign - a.degInSign);
+
+    const karakaTitles = [
+      { id: 'AK', role: 'Atmakaraka (Soul / Dharma Lord)', color: 'text-amber-400 font-bold', significance: 'Primary indicator of soul purpose, karma, and inner spiritual path.' },
+      { id: 'AmK', role: 'Amatyakaraka (Career & Intellect)', color: 'text-cyan-300 font-bold', significance: 'Executive career, intellectual prowess, financial sustenance, and public rank.' },
+      { id: 'BK', role: 'Bhratrikaraka (Courage & Mentors)', color: 'text-emerald-400', significance: 'Siblings, teachers, spiritual guides, and valor in undertaking actions.' },
+      { id: 'MK', role: 'Matrikaraka (Mother & Hearth)', color: 'text-pink-400', significance: 'Maternal roots, domestic property, vehicle comfort, and emotional sanctuary.' },
+      { id: 'PK', role: 'Putrakaraka (Children & Creation)', color: 'text-yellow-400', significance: 'Progeny, artistic lineage, creative intelligence, and intuitive foresight.' },
+      { id: 'GK', role: 'Gnatikaraka (Obstacles & Debts)', color: 'text-rose-400', significance: 'Karmic competition, bodily ailments, spiritual challenges, and discipline.' },
+      { id: 'DK', role: 'Darakaraka (Spouse & Union)', color: 'text-purple-400 font-bold', significance: 'Spouse, marriage partner, soul contracts, and collaborative alliances.' }
+    ];
+
+    return candidates.map((p, idx) => ({
+      ...p,
+      karaka: karakaTitles[idx] || { id: `K${idx + 1}`, role: 'Anugraha', color: 'text-slate-300', significance: 'General secondary karaka indicator.' }
+    }));
+  }, [rawBasePlanets]);
 
   // Theme Styling Map
   const themeClasses = {
@@ -721,7 +752,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               Astrological Workspace & Ephemeris Inspector
             </h1>
             <p className="text-xs sm:text-sm text-slate-300">
-              Interactive 12-house Kundli, real-time time-travel scrubbing, Aspect orbs, Auspicious Yogas, Panchadha Maitri, 27 Nakshatras, and Sound Resonator.
+              Interactive 12-house Kundli, real-time time-travel scrubbing, Aspect orbs, Auspicious Yogas, Jaimini Karakas, Rectification, and Sound Resonator.
             </p>
           </div>
 
@@ -768,6 +799,8 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
           { id: 'chart', label: '🔭 Chart Workspace' },
           { id: 'aspects', label: '📐 Aspects & Drishti' },
           { id: 'yogas', label: '👑 Auspicious Yogas' },
+          { id: 'jaimini', label: '🗝️ Jaimini Karakas' },
+          { id: 'rectification', label: '⏱️ Rectification (BTR)' },
           { id: 'friendship', label: '🤝 Panchadha Maitri' },
           { id: 'avasthas', label: '🧘 Planetary Avasthas' },
           { id: 'nakshatras', label: '✨ 27 Nakshatras' },
@@ -1273,7 +1306,123 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 4: PANCHADHA MAITRI (5-FOLD RELATIONSHIPS) ───────────── */}
+      {/* ─── TAB 4: JAIMINI CHARA KARAKAS & KARAKAMSHA ────────────────── */}
+      {activeStudioTab === 'jaimini' && (
+        <div className="p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 space-y-5 font-mono text-xs">
+          <div className="border-b border-white/10 pb-3 flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Key className="w-4 h-4 text-amber-400" />
+                Jaimini 7 Chara Karaka System & Soul Karakamsha
+              </h3>
+              <p className="text-slate-400">Hierarchical degree ranking determining soul evolution (Atmakaraka), career (Amatyakaraka), and partner (Darakaraka).</p>
+            </div>
+            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-amber-400/20 font-bold">
+              Upadesha Sutras Standard
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {jaiminiKarakas.map(jk => (
+              <div key={jk.name} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-bold text-white flex items-center gap-1.5">
+                    {jk.symbol} {jk.name}
+                  </span>
+                  <span className={`text-[11px] px-2 py-0.5 rounded bg-black/40 ${jk.karaka.color}`}>
+                    {jk.karaka.id}
+                  </span>
+                </div>
+                <div className="text-slate-300 text-[11px] font-bold">
+                  {jk.karaka.role}
+                </div>
+                <div className="text-slate-400 text-[10px] flex justify-between">
+                  <span>Sign Longitude:</span>
+                  <strong className="text-amber-300">{jk.degInSign.toFixed(2)}° in {jk.sign}</strong>
+                </div>
+                <p className="text-slate-300 text-[11px] font-sans leading-relaxed pt-1 border-t border-white/5">
+                  {jk.karaka.significance}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ─── TAB 5: BIRTH TIME RECTIFICATION (BTR) STUDIO ─────────────── */}
+      {activeStudioTab === 'rectification' && (
+        <div className="p-6 rounded-3xl bg-[#0B1220] border border-cyan-500/30 space-y-5 font-mono text-xs">
+          <div className="border-b border-white/10 pb-3 flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Sliders className="w-4 h-4 text-cyan-400" />
+                Birth Time Rectification (BTR) & Micro-Tuner
+              </h3>
+              <p className="text-slate-400">Micro-adjust birth time by seconds to calibrate Navamsha (D9) and Shashtiamsha (D60) Lagna boundaries.</p>
+            </div>
+            <span className="text-xs bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-xl border border-cyan-500/20 font-bold">
+              Current Offset: {rectificationSecs > 0 ? `+${rectificationSecs}s` : `${rectificationSecs}s`}
+            </span>
+          </div>
+
+          <div className="p-5 rounded-2xl bg-black/50 border border-cyan-500/30 flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <span className="text-slate-400 text-[10px] uppercase font-bold block">Rectified Birth Time</span>
+              <strong className="text-xl text-cyan-300 font-mono">{formattedActiveTime}</strong>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                onClick={() => setRectificationSecs(prev => prev - 60)}
+                className="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-bold"
+              >
+                -1m
+              </button>
+              <button
+                onClick={() => setRectificationSecs(prev => prev - 10)}
+                className="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-bold"
+              >
+                -10s
+              </button>
+              <button
+                onClick={() => setRectificationSecs(0)}
+                className="px-3 py-2 rounded-xl bg-cyan-500 text-slate-950 font-bold"
+              >
+                Reset BTR
+              </button>
+              <button
+                onClick={() => setRectificationSecs(prev => prev + 10)}
+                className="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-bold"
+              >
+                +10s
+              </button>
+              <button
+                onClick={() => setRectificationSecs(prev => prev + 60)}
+                className="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 font-bold"
+              >
+                +1m
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+              <span className="text-slate-400 text-[10px] uppercase font-bold">D1 Rashi Lagna</span>
+              <div className="text-base font-bold text-white">{ascendantPlanet.sign} ({ascendantPlanet.degree})</div>
+            </div>
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+              <span className="text-slate-400 text-[10px] uppercase font-bold">D9 Navamsha Lagna</span>
+              <div className="text-base font-bold text-amber-300">{ascendantPlanet.sign} Navamsha</div>
+            </div>
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+              <span className="text-slate-400 text-[10px] uppercase font-bold">D60 Shashtiamsha Lagna</span>
+              <div className="text-base font-bold text-cyan-300">Amrita Shashtiamsha</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── TAB 6: PANCHADHA MAITRI (5-FOLD RELATIONSHIPS) ───────────── */}
       {activeStudioTab === 'friendship' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1310,7 +1459,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 5: PLANETARY AVASTHAS & DIGNITY ─────────────────────── */}
+      {/* ─── TAB 7: PLANETARY AVASTHAS & DIGNITY ─────────────────────── */}
       {activeStudioTab === 'avasthas' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1354,7 +1503,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 6: 27 NAKSHATRAS EXPLORER ───────────────────────────── */}
+      {/* ─── TAB 8: 27 NAKSHATRAS EXPLORER ───────────────────────────── */}
       {activeStudioTab === 'nakshatras' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1393,7 +1542,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 7: HANS COUSTO SOUND RESONATOR ───────────────────────── */}
+      {/* ─── TAB 9: HANS COUSTO SOUND RESONATOR ───────────────────────── */}
       {activeStudioTab === 'soundResonator' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 space-y-6 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1446,7 +1595,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 8: VIMSHOTTARI TREE ─────────────────────────────────── */}
+      {/* ─── TAB 10: VIMSHOTTARI TREE ────────────────────────────────── */}
       {activeStudioTab === 'dashaTree' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1483,7 +1632,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 9: ASHTAKAVARGA (SAV) POTENCY MATRIX ────────────────── */}
+      {/* ─── TAB 11: ASHTAKAVARGA (SAV) POTENCY MATRIX ───────────────── */}
       {activeStudioTab === 'ashtakavarga' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1517,7 +1666,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 10: SHADBALA POTENCY METERS ─────────────────────────── */}
+      {/* ─── TAB 12: SHADBALA POTENCY METERS ─────────────────────────── */}
       {activeStudioTab === 'shadbala' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1565,7 +1714,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 11: MULTI-SYSTEM SIDE-BY-SIDE ───────────────────────── */}
+      {/* ─── TAB 13: MULTI-SYSTEM SIDE-BY-SIDE ───────────────────────── */}
       {activeStudioTab === 'multisystem' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
@@ -1605,7 +1754,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 12: TIMING WORKSPACE ────────────────────────────────── */}
+      {/* ─── TAB 14: TIMING WORKSPACE ────────────────────────────────── */}
       {activeStudioTab === 'timing' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1638,7 +1787,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 13: PREDICTIONS & EVENT JOURNAL ─────────────────────── */}
+      {/* ─── TAB 15: PREDICTIONS & EVENT JOURNAL ─────────────────────── */}
       {activeStudioTab === 'predictions' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
@@ -1682,7 +1831,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 14: RESEARCH & ACCURACY LAB ─────────────────────────── */}
+      {/* ─── TAB 16: RESEARCH & ACCURACY LAB ─────────────────────────── */}
       {activeStudioTab === 'research' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-cyan-500/30 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1731,7 +1880,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 15: RULE & SOURCE EXPLORER ──────────────────────────── */}
+      {/* ─── TAB 17: RULE & SOURCE EXPLORER ──────────────────────────── */}
       {activeStudioTab === 'rules' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
