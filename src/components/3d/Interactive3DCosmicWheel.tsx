@@ -2,7 +2,7 @@ import React, { useRef, useState, useMemo, memo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, OrbitControls, Html } from '@react-three/drei';
 import * as THREE from 'three';
-import { Sparkles, Info, RotateCw, CheckCircle2, ChevronRight } from 'lucide-react';
+import { Sparkles, Info, RotateCw, CheckCircle2, Compass } from 'lucide-react';
 import type { UserProfile } from '../../types';
 import { calculatePlanetaryPositions, type PlanetPosition } from '../../lib/astroCalculations';
 
@@ -18,22 +18,34 @@ interface PlanetConfig {
   metalness: number;
   size: number;
   orbitRadius: number;
-  speed: number;
   symbol: string;
   title: string;
   simpleMeaning: string;
   lifeArea: string;
 }
 
+const ZODIAC_GLYPHS = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
+
 const PLANET_CONFIGS: Record<string, PlanetConfig> = {
+  'Ascendant': {
+    color: '#38BDF8',
+    emissive: '#0284C7',
+    roughness: 0.2,
+    metalness: 0.3,
+    size: 0.32,
+    orbitRadius: 1.6,
+    symbol: '⚡',
+    title: 'Ascendant (Lagna)',
+    simpleMeaning: 'Your Rising Sign: Physical Self, Health, Vitality & Direct Path in Life.',
+    lifeArea: 'Identity & Life Trajectory'
+  },
   'Sun': {
     color: '#FBBF24',
     emissive: '#D97706',
     roughness: 0.1,
     metalness: 0.2,
     size: 0.52,
-    orbitRadius: 1.8,
-    speed: 0.3,
+    orbitRadius: 2.3,
     symbol: '☉',
     title: 'Sun (Surya)',
     simpleMeaning: 'Your Core Vitality, True Confidence, Self-Worth & Natural Leadership.',
@@ -45,8 +57,7 @@ const PLANET_CONFIGS: Record<string, PlanetConfig> = {
     roughness: 0.3,
     metalness: 0.1,
     size: 0.38,
-    orbitRadius: 2.5,
-    speed: 0.7,
+    orbitRadius: 3.0,
     symbol: '☽',
     title: 'Moon (Chandra)',
     simpleMeaning: 'Your Inner Peace, Emotional Balance, Mind Stability & Intuition.',
@@ -58,8 +69,7 @@ const PLANET_CONFIGS: Record<string, PlanetConfig> = {
     roughness: 0.4,
     metalness: 0.5,
     size: 0.32,
-    orbitRadius: 3.2,
-    speed: 0.5,
+    orbitRadius: 3.7,
     symbol: '☿',
     title: 'Mercury (Budha)',
     simpleMeaning: 'Your Intelligence, Speech, Logical Reasoning & Business Acumen.',
@@ -71,8 +81,7 @@ const PLANET_CONFIGS: Record<string, PlanetConfig> = {
     roughness: 0.2,
     metalness: 0.3,
     size: 0.42,
-    orbitRadius: 3.9,
-    speed: 0.45,
+    orbitRadius: 4.4,
     symbol: '♀',
     title: 'Venus (Shukra)',
     simpleMeaning: 'Your Attraction, Love, Harmony, Artistic Joy & Refined Luxury.',
@@ -84,8 +93,7 @@ const PLANET_CONFIGS: Record<string, PlanetConfig> = {
     roughness: 0.3,
     metalness: 0.4,
     size: 0.36,
-    orbitRadius: 4.6,
-    speed: 0.38,
+    orbitRadius: 5.1,
     symbol: '♂',
     title: 'Mars (Mangala)',
     simpleMeaning: 'Your Physical Stamina, Drive, Courage & Decisive Action Power.',
@@ -97,8 +105,7 @@ const PLANET_CONFIGS: Record<string, PlanetConfig> = {
     roughness: 0.25,
     metalness: 0.3,
     size: 0.58,
-    orbitRadius: 5.4,
-    speed: 0.25,
+    orbitRadius: 5.8,
     symbol: '♃',
     title: 'Jupiter (Guru)',
     simpleMeaning: 'Your Luck, High Wisdom, Abundance, Spiritual Growth & Mentorship.',
@@ -110,8 +117,7 @@ const PLANET_CONFIGS: Record<string, PlanetConfig> = {
     roughness: 0.35,
     metalness: 0.4,
     size: 0.48,
-    orbitRadius: 6.2,
-    speed: 0.18,
+    orbitRadius: 6.5,
     symbol: '♄',
     title: 'Saturn (Shani)',
     simpleMeaning: 'Your Patience, Karmic Discipline, Focus & Long-Term Enduring Success.',
@@ -133,27 +139,27 @@ function LuxuryPlanetNode({
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
 
-  // Position on circle based on natal degree
+  // Angle from degree decimal
   const angleRad = ((planet.degreeDecimal - 90) * Math.PI) / 180;
   const x = config.orbitRadius * Math.cos(angleRad);
   const z = config.orbitRadius * Math.sin(angleRad);
 
   useFrame((_, delta) => {
     if (meshRef.current) {
-      meshRef.current.rotation.y += delta * (hovered ? 2.0 : 0.6);
+      meshRef.current.rotation.y += delta * (hovered ? 2.0 : 0.5);
     }
   });
 
   return (
     <group position={[x, 0, z]}>
-      {/* Selection / Hover Vertical Light Beam */}
-      {(isSelected || hovered) && (
-        <mesh position={[0, 1.2, 0]}>
-          <cylinderGeometry args={[0.02, 0.02, 2.4, 8]} />
+      {/* Selected Indicator Vertical Beam */}
+      {isSelected && (
+        <mesh position={[0, 1.4, 0]}>
+          <cylinderGeometry args={[0.02, 0.02, 2.8, 8]} />
           <meshBasicMaterial
             color={config.emissive}
             transparent
-            opacity={isSelected ? 0.75 : 0.4}
+            opacity={0.8}
           />
         </mesh>
       )}
@@ -170,71 +176,116 @@ function LuxuryPlanetNode({
           e.stopPropagation();
           onSelect(planet.name);
         }}
-        scale={isSelected ? [1.35, 1.35, 1.35] : hovered ? [1.2, 1.2, 1.2] : [1, 1, 1]}
+        scale={isSelected ? [1.4, 1.4, 1.4] : hovered ? [1.25, 1.25, 1.25] : [1, 1, 1]}
       >
         <sphereGeometry args={[config.size, 32, 32]} />
         <meshStandardMaterial
           color={config.color}
           emissive={config.emissive}
-          emissiveIntensity={isSelected ? 0.9 : hovered ? 0.6 : 0.25}
+          emissiveIntensity={isSelected ? 1.1 : hovered ? 0.7 : 0.3}
           roughness={config.roughness}
           metalness={config.metalness}
         />
       </mesh>
 
-      {/* Saturn Planetary Ring Mesh */}
+      {/* Saturn Planetary Ring */}
       {planet.name === 'Saturn' && (
         <mesh rotation={[-Math.PI / 3, 0, 0]}>
-          <ringGeometry args={[config.size * 1.4, config.size * 2.3, 32]} />
+          <ringGeometry args={[config.size * 1.35, config.size * 2.2, 32]} />
           <meshStandardMaterial
             color="#E9D5FF"
             emissive="#A855F7"
-            emissiveIntensity={0.2}
+            emissiveIntensity={0.25}
             transparent
-            opacity={0.7}
+            opacity={0.75}
             side={THREE.DoubleSide}
           />
         </mesh>
       )}
 
-      {/* 3D Floating Interactive HTML Pin Label */}
-      <Html position={[0, config.size + 0.35, 0]} center distanceFactor={14}>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onSelect(planet.name);
-          }}
-          className={`px-2 py-0.5 rounded-full text-[10px] font-mono font-bold flex items-center gap-1 transition-all whitespace-nowrap cursor-pointer shadow-md pointer-events-auto ${
-            isSelected
-              ? 'bg-amber-400 text-slate-950 ring-2 ring-amber-300 scale-110'
-              : hovered
-              ? 'bg-white/90 text-slate-900 scale-105'
-              : 'bg-black/75 text-slate-200 border border-white/20 hover:border-amber-400/50'
-          }`}
-        >
-          <span className="text-[11px]">{config.symbol}</span>
-          <span>{planet.name}</span>
-        </button>
+      {/* Floating 3D HTML Badge: Visible on Selected or Hovered, or subtle dot otherwise */}
+      <Html position={[0, config.size + 0.3, 0]} center distanceFactor={13}>
+        {isSelected || hovered ? (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelect(planet.name);
+            }}
+            className={`px-2.5 py-1 rounded-full text-[11px] font-mono font-bold flex items-center gap-1.5 whitespace-nowrap cursor-pointer shadow-xl transition-transform ${
+              isSelected
+                ? 'bg-amber-400 text-slate-950 ring-2 ring-amber-300 scale-110 z-30 font-black'
+                : 'bg-white text-slate-950 scale-105 z-20'
+            }`}
+          >
+            <span>{config.symbol}</span>
+            <span>{planet.name}</span>
+            <span className="opacity-75 text-[9.5px]">({planet.degree})</span>
+          </button>
+        ) : (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelect(planet.name);
+            }}
+            className="w-5 h-5 rounded-full bg-black/80 hover:bg-amber-400 text-slate-300 hover:text-slate-950 border border-white/20 hover:border-amber-400 flex items-center justify-center text-[10px] font-mono shadow-md cursor-pointer transition-colors"
+            title={`${planet.name} (${planet.sign})`}
+          >
+            {config.symbol}
+          </button>
+        )}
       </Html>
     </group>
   );
 }
 
 function OrbitTracks() {
-  const radii = [1.8, 2.5, 3.2, 3.9, 4.6, 5.4, 6.2];
+  const radii = [1.6, 2.3, 3.0, 3.7, 4.4, 5.1, 5.8, 6.5];
   return (
     <group rotation={[-Math.PI / 2, 0, 0]}>
       {radii.map((r, i) => (
         <mesh key={i}>
-          <ringGeometry args={[r - 0.015, r + 0.015, 96]} />
+          <ringGeometry args={[r - 0.012, r + 0.012, 128]} />
           <meshBasicMaterial
-            color={i % 2 === 0 ? '#F59E0B' : '#38BDF8'}
+            color={i === 0 ? '#38BDF8' : i % 2 === 0 ? '#F59E0B' : '#60A5FA'}
             transparent
-            opacity={0.18}
+            opacity={0.15}
             side={THREE.DoubleSide}
           />
         </mesh>
       ))}
+
+      {/* Outer 12-Zodiac Boundary Track */}
+      <mesh>
+        <ringGeometry args={[7.2 - 0.02, 7.2 + 0.02, 128]} />
+        <meshBasicMaterial
+          color="#F59E0B"
+          transparent
+          opacity={0.3}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+    </group>
+  );
+}
+
+function ZodiacGlyphRing() {
+  return (
+    <group>
+      {ZODIAC_GLYPHS.map((glyph, i) => {
+        const angle = ((i * 30 - 90) * Math.PI) / 180;
+        const radius = 7.2;
+        const x = radius * Math.cos(angle);
+        const z = radius * Math.sin(angle);
+        return (
+          <group key={i} position={[x, 0, z]}>
+            <Html center distanceFactor={14}>
+              <span className="text-amber-400/60 hover:text-amber-300 text-xs font-mono select-none pointer-events-none">
+                {glyph}
+              </span>
+            </Html>
+          </group>
+        );
+      })}
     </group>
   );
 }
@@ -288,11 +339,11 @@ export const Interactive3DCosmicWheel: React.FC<Interactive3DCosmicWheelProps> =
               Interactive 3D Planetary Orrery
             </h3>
             <span className="text-[10.5px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
-              Spin with Touch / Mouse
+              Touch & Spin
             </span>
           </div>
           <p className="text-xs text-slate-300 font-sans">
-            Real planetary positions calculated from your birth moment. Touch or click any planet to see what it means in plain English.
+            Real planetary positions calculated from your birth moment. Click or tap any planet to inspect its plain-English meaning.
           </p>
         </div>
 
@@ -324,12 +375,12 @@ export const Interactive3DCosmicWheel: React.FC<Interactive3DCosmicWheelProps> =
         {/* 3D WebGL Canvas (7 cols) */}
         <div className="lg:col-span-7 h-[300px] sm:h-[360px] relative rounded-2xl bg-[#03060C] border border-white/10 overflow-hidden shadow-inner">
           <Canvas
-            camera={{ position: [0, 8.5, 11], fov: 44 }}
+            camera={{ position: [0, 11, 8.5], fov: 46 }}
             gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
             className="w-full h-full cursor-grab active:cursor-grabbing"
           >
             <ambientLight intensity={0.9} />
-            <pointLight position={[0, 0, 0]} intensity={3} color="#FFFBEB" />
+            <pointLight position={[0, 0, 0]} intensity={3.5} color="#FFFBEB" />
             <pointLight position={[10, 15, 10]} intensity={1.5} color="#93C5FD" />
             <pointLight position={[-10, -10, -10]} intensity={0.8} color="#C084FC" />
 
@@ -338,9 +389,12 @@ export const Interactive3DCosmicWheel: React.FC<Interactive3DCosmicWheelProps> =
                 {/* Concentric Golden Orbit Guides */}
                 <OrbitTracks />
 
-                {/* Central Luminous Solar Core */}
+                {/* Outer 12-Zodiac Glyph Ring */}
+                <ZodiacGlyphRing />
+
+                {/* Central Luminous Solar Anchor */}
                 <mesh>
-                  <sphereGeometry args={[0.65, 32, 32]} />
+                  <sphereGeometry args={[0.5, 32, 32]} />
                   <meshStandardMaterial
                     color="#FDE047"
                     emissive="#F59E0B"
@@ -349,8 +403,8 @@ export const Interactive3DCosmicWheel: React.FC<Interactive3DCosmicWheelProps> =
                   />
                 </mesh>
 
-                {/* 7 Orbiting Planetary Meshes */}
-                {planets.slice(0, 7).map((p) => {
+                {/* 8 Orbiting Planetary Meshes (Includes Ascendant + 7 Planets) */}
+                {planets.slice(0, 8).map((p) => {
                   const cfg = PLANET_CONFIGS[p.name] || PLANET_CONFIGS['Sun'];
                   return (
                     <LuxuryPlanetNode
@@ -369,16 +423,16 @@ export const Interactive3DCosmicWheel: React.FC<Interactive3DCosmicWheelProps> =
               enableZoom={false}
               enablePan={false}
               autoRotate
-              autoRotateSpeed={0.6}
-              maxPolarAngle={Math.PI / 2.2}
-              minPolarAngle={Math.PI / 6}
+              autoRotateSpeed={0.5}
+              maxPolarAngle={Math.PI / 2.1}
+              minPolarAngle={Math.PI / 8}
             />
           </Canvas>
 
           {/* Floating Interaction Hint */}
-          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/70 backdrop-blur-md border border-white/10 text-[11px] font-mono text-slate-300 pointer-events-none">
+          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/75 backdrop-blur-md border border-white/10 text-[11px] font-mono text-slate-300 pointer-events-none">
             <RotateCw className="w-3.5 h-3.5 text-amber-400 animate-spin" />
-            <span>Drag to rotate • Click any planet to inspect</span>
+            <span>Drag to rotate 360° • Click any node to inspect</span>
           </div>
         </div>
 
