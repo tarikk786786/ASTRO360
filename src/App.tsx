@@ -476,7 +476,7 @@ export default function AppContent() {
     <div className="relative min-h-screen bg-[#090d16] text-slate-100 flex overflow-hidden font-sans">
       {/* ✨ High-Resolution Deep Space Animated Atmosphere (React Three Fiber & Constellations) */}
       <Suspense fallback={null}>
-        <CosmicAtmosphereCanvas />
+        <CosmicAtmosphereCanvas userProfile={userProfile} />
       </Suspense>
 
       {/* Redesigned Glassmorphic Sidebar Navigation (Desktop Static / Mobile Slide-Over) */}
