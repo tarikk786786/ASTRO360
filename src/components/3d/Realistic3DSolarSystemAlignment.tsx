@@ -1,10 +1,11 @@
-import React, { useRef, useState, useMemo, memo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import React, { useRef, useState, useMemo, useEffect, memo } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Float, OrbitControls, Html, Stars } from '@react-three/drei';
 import * as THREE from 'three';
 import { 
   Sparkles, RotateCw, Zap, ShieldCheck, CheckCircle2, 
-  Layers, Clock, Calendar, ArrowRight, Award, Compass, Heart, Briefcase, DollarSign
+  Layers, Clock, Calendar, ArrowRight, Award, Compass, Heart, Briefcase, DollarSign,
+  Play, Pause, FastForward, Volume2, VolumeX, Maximize2, Eye
 } from 'lucide-react';
 import type { UserProfile } from '../../types';
 import { calculatePlanetaryPositions, type PlanetPosition } from '../../lib/astroCalculations';
@@ -21,6 +22,7 @@ export interface RealisticPlanetData {
   radius: number;
   rotationSpeed: number;
   baseColor: string;
+  glowColor: string;
   roughness: number;
   metalness: number;
   hasRing?: boolean;
@@ -28,6 +30,7 @@ export interface RealisticPlanetData {
   ringOuter?: number;
   hasMoon?: boolean;
   textureType: 'sun' | 'mercury' | 'venus' | 'earth' | 'mars' | 'jupiter' | 'saturn' | 'uranus' | 'neptune';
+  frequency: number; // Hans Cousto Cosmic Octave in Hz
   lifeMeaning: string;
   careerImpact: string;
 }
@@ -109,10 +112,6 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
 
   } else if (type === 'earth') {
     // Vibrant Blue Marble Earth (Deep Oceans, Continents, Atmosphere)
-    ctx.fillStyle = '#1D4ED8';
-    ctx.fillRect(0, 0, 1024, 512);
-
-    // Deep Ocean shelf gradients
     const oceanGrad = ctx.createLinearGradient(0, 0, 0, 512);
     oceanGrad.addColorStop(0.0, '#1E3A8A');
     oceanGrad.addColorStop(0.5, '#2563EB');
@@ -120,7 +119,7 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
     ctx.fillStyle = oceanGrad;
     ctx.fillRect(0, 0, 1024, 512);
 
-    // Continents (Eurasia, Africa, Americas, Australia)
+    // Continents
     ctx.fillStyle = '#15803D';
     // Eurasia
     ctx.beginPath();
@@ -143,13 +142,10 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
     ctx.ellipse(820, 360, 70, 50, 0.1, 0, Math.PI * 2);
     ctx.fill();
 
-    // Desert regions (Sahara, Gobi, Australian Outback)
+    // Deserts
     ctx.fillStyle = '#CA8A04';
     ctx.beginPath();
     ctx.ellipse(500, 240, 70, 35, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.ellipse(820, 360, 45, 30, 0, 0, Math.PI * 2);
     ctx.fill();
 
     // Polar Ice Caps
@@ -157,7 +153,7 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
     ctx.fillRect(0, 0, 1024, 28);
     ctx.fillRect(0, 484, 1024, 28);
 
-    // Dynamic swirling white cloud layer
+    // Swirling white clouds
     ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
     for (let i = 0; i < 35; i++) {
       ctx.beginPath();
@@ -166,24 +162,22 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
     }
 
   } else if (type === 'mars') {
-    // Red Martian terrain with dark volcanic basins
+    // Red Martian terrain
     ctx.fillStyle = '#EA580C';
     ctx.fillRect(0, 0, 1024, 512);
-
     ctx.fillStyle = '#9A3412';
     for (let i = 0; i < 50; i++) {
       ctx.beginPath();
       ctx.arc(Math.random() * 1024, Math.random() * 512, Math.random() * 45 + 10, 0, Math.PI * 2);
       ctx.fill();
     }
-
     // Polar ice caps
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, 1024, 24);
     ctx.fillRect(0, 488, 1024, 24);
 
   } else if (type === 'venus') {
-    // Dense golden-amber swirling clouds
+    // Golden-amber dense atmosphere
     const grad = ctx.createLinearGradient(0, 0, 0, 512);
     grad.addColorStop(0.0, '#D97706');
     grad.addColorStop(0.25, '#F59E0B');
@@ -192,13 +186,6 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
     grad.addColorStop(1.0, '#92400E');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 1024, 512);
-
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-    for (let i = 0; i < 20; i++) {
-      ctx.beginPath();
-      ctx.ellipse(Math.random() * 1024, Math.random() * 512, Math.random() * 180 + 60, Math.random() * 25 + 8, 0, 0, Math.PI * 2);
-      ctx.fill();
-    }
 
   } else if (type === 'saturn') {
     // Saturn golden ochre gas bands
@@ -231,7 +218,6 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 1024, 512);
 
-    // High-altitude white methane cirrus clouds
     ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
     ctx.beginPath();
     ctx.ellipse(480, 220, 240, 16, -0.08, 0, Math.PI * 2);
@@ -295,9 +281,11 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     radius: 0.72,
     rotationSpeed: 0.008,
     baseColor: '#2563EB',
+    glowColor: '#3B82F6',
     roughness: 0.25,
     metalness: 0.1,
     textureType: 'neptune',
+    frequency: 211.44,
     lifeMeaning: 'Spiritual mysticism, cosmic imagination, dreams & divine transcendence.',
     careerImpact: 'Artistic vision, cinema, music, psychology, and global brand intuition.'
   },
@@ -312,9 +300,11 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     radius: 0.74,
     rotationSpeed: 0.009,
     baseColor: '#67E8F9',
+    glowColor: '#22D3EE',
     roughness: 0.3,
     metalness: 0.1,
     textureType: 'uranus',
+    frequency: 207.36,
     lifeMeaning: 'Breakthrough genius, sudden inventions, independence & radical innovation.',
     careerImpact: 'Quantum technology, AI architecture, aviation, and scientific disruption.'
   },
@@ -329,12 +319,14 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     radius: 0.98,
     rotationSpeed: 0.006,
     baseColor: '#D97706',
+    glowColor: '#F59E0B',
     roughness: 0.35,
     metalness: 0.2,
     hasRing: true,
     ringInner: 1.35,
     ringOuter: 2.35,
     textureType: 'saturn',
+    frequency: 147.85,
     lifeMeaning: 'Perseverance, karmic discipline, mastery over time, and permanent legacy.',
     careerImpact: 'Institutional leadership, real estate infrastructure, law, and enduring wealth.'
   },
@@ -349,9 +341,11 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     radius: 1.25,
     rotationSpeed: 0.012,
     baseColor: '#D97706',
+    glowColor: '#FBBF24',
     roughness: 0.2,
     metalness: 0.1,
     textureType: 'jupiter',
+    frequency: 183.58,
     lifeMeaning: 'Supreme wisdom, divine luck, financial expansion, mentorship & righteousness.',
     careerImpact: 'Executive counsel, banking, philanthropy, education, and venture capital.'
   },
@@ -366,9 +360,11 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     radius: 0.46,
     rotationSpeed: 0.007,
     baseColor: '#DC2626',
+    glowColor: '#EF4444',
     roughness: 0.55,
     metalness: 0.3,
     textureType: 'mars',
+    frequency: 144.72,
     lifeMeaning: 'Courage, physical stamina, decisive action, protection & victory over obstacles.',
     careerImpact: 'Defense, surgical precision, engineering, athletics, and executive execution.'
   },
@@ -383,10 +379,12 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     radius: 0.62,
     rotationSpeed: 0.008,
     baseColor: '#2563EB',
+    glowColor: '#38BDF8',
     roughness: 0.35,
     metalness: 0.2,
     hasMoon: true,
     textureType: 'earth',
+    frequency: 136.10, // Om Year Tone
     lifeMeaning: 'Physical embodiment, emotional nourishment, ancestral roots & sensory joy.',
     careerImpact: 'Ecological innovation, community leadership, and global communication.'
   },
@@ -401,9 +399,11 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     radius: 0.54,
     rotationSpeed: 0.004,
     baseColor: '#F59E0B',
+    glowColor: '#FDE047',
     roughness: 0.2,
     metalness: 0.2,
     textureType: 'venus',
+    frequency: 221.23,
     lifeMeaning: 'Magnetic attraction, romantic harmony, artistic elegance & refined luxury.',
     careerImpact: 'Design direction, luxury commerce, diplomacy, architecture, and fine arts.'
   },
@@ -418,24 +418,89 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     radius: 0.34,
     rotationSpeed: 0.005,
     baseColor: '#9CA3AF',
+    glowColor: '#E2E8F0',
     roughness: 0.65,
     metalness: 0.4,
     textureType: 'mercury',
+    frequency: 141.27,
     lifeMeaning: 'Sharp intellect, commercial eloquence, analytical agility & mental speed.',
     careerImpact: 'Media publishing, software engineering, financial trading, and strategic speech.'
   }
 ];
 
+// Instanced Asteroid Belt between Mars (0.9) and Jupiter (-2.4)
+function MainAsteroidBeltField() {
+  const count = 380;
+  const meshRef = useRef<THREE.InstancedMesh>(null);
+
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+
+  useEffect(() => {
+    if (!meshRef.current) return;
+    for (let i = 0; i < count; i++) {
+      // Scatter in the asteroid zone between Mars (X=0.9) and Jupiter (X=-2.4)
+      const x = -0.7 + (Math.random() - 0.5) * 1.8;
+      const y = (Math.random() - 0.5) * 1.4;
+      const z = (Math.random() - 0.5) * 2.2;
+      const scale = Math.random() * 0.035 + 0.012;
+
+      dummy.position.set(x, y, z);
+      dummy.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+      dummy.scale.set(scale, scale, scale);
+      dummy.updateMatrix();
+      meshRef.current.setMatrixAt(i, dummy.matrix);
+    }
+    meshRef.current.instanceMatrix.needsUpdate = true;
+  }, [dummy, count]);
+
+  useFrame((_, delta) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y += 0.001 * (delta * 60);
+    }
+  });
+
+  return (
+    <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
+      <dodecahedronGeometry args={[1, 0]} />
+      <meshStandardMaterial color="#94A3B8" roughness={0.9} metalness={0.1} />
+    </instancedMesh>
+  );
+}
+
+// Camera Flight Controller (Smooth zoom to planet when selected)
+function CameraFlightController({ targetPlanet }: { targetPlanet?: RealisticPlanetData | null }) {
+  const { camera } = useThree();
+  const targetPos = useRef<THREE.Vector3>(new THREE.Vector3(0, 0.8, 17.5));
+
+  useEffect(() => {
+    if (targetPlanet) {
+      // Zoom close to planet with offset
+      targetPos.current.set(targetPlanet.xPos, targetPlanet.yPos + 0.3, 4.5);
+    } else {
+      // Full view
+      targetPos.current.set(0, 0.8, 17.5);
+    }
+  }, [targetPlanet]);
+
+  useFrame(() => {
+    camera.position.lerp(targetPos.current, 0.05);
+  });
+
+  return null;
+}
+
 function RealisticPlanetMesh({
   planet,
   natalPosition,
   isSelected,
-  onSelect
+  onSelect,
+  speedMultiplier
 }: {
   planet: RealisticPlanetData;
   natalPosition?: PlanetPosition;
   isSelected: boolean;
   onSelect: (p: RealisticPlanetData) => void;
+  speedMultiplier: number;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const ringRef = useRef<THREE.Mesh>(null);
@@ -446,11 +511,11 @@ function RealisticPlanetMesh({
   const ringTexture = useMemo(() => planet.hasRing ? createSaturnRingTexture() : null, [planet.hasRing]);
 
   useFrame((_, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += planet.rotationSpeed * (delta * 60);
+    if (meshRef.current && speedMultiplier > 0) {
+      meshRef.current.rotation.y += planet.rotationSpeed * speedMultiplier * (delta * 60);
     }
-    if (moonGroupRef.current) {
-      moonGroupRef.current.rotation.y += 0.02 * (delta * 60);
+    if (moonGroupRef.current && speedMultiplier > 0) {
+      moonGroupRef.current.rotation.y += 0.02 * speedMultiplier * (delta * 60);
     }
   });
 
@@ -471,6 +536,18 @@ function RealisticPlanetMesh({
           metalness={planet.metalness}
           emissive={isSelected ? planet.baseColor : '#000000'}
           emissiveIntensity={isSelected ? 0.45 : 0}
+        />
+      </mesh>
+
+      {/* Atmospheric Halo Glow */}
+      <mesh scale={[1.05, 1.05, 1.05]}>
+        <sphereGeometry args={[planet.radius, 32, 32]} />
+        <meshBasicMaterial
+          color={planet.glowColor}
+          transparent
+          opacity={hovered || isSelected ? 0.35 : 0.12}
+          blending={THREE.AdditiveBlending}
+          side={THREE.BackSide}
         />
       </mesh>
 
@@ -532,13 +609,13 @@ function RealisticPlanetMesh({
 }
 
 // Giant Radiant Sun Sphere on the Far Right Edge
-function GiantSunOnRight() {
+function GiantSunOnRight({ speedMultiplier }: { speedMultiplier: number }) {
   const sunTexture = useMemo(() => createProceduralTexture('sun'), []);
   const sunMeshRef = useRef<THREE.Mesh>(null);
 
   useFrame((_, delta) => {
-    if (sunMeshRef.current) {
-      sunMeshRef.current.rotation.y += 0.002 * (delta * 60);
+    if (sunMeshRef.current && speedMultiplier > 0) {
+      sunMeshRef.current.rotation.y += 0.002 * speedMultiplier * (delta * 60);
     }
   });
 
@@ -569,8 +646,12 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
   userProfile?: UserProfile;
   onSelectPlanet?: (p: RealisticPlanetData) => void;
 }> = memo(({ userProfile, onSelectPlanet }) => {
-  const [selectedPlanet, setSelectedPlanet] = useState<RealisticPlanetData>(REALISTIC_PLANETS[3]); // Default Jupiter
+  const [selectedPlanet, setSelectedPlanet] = useState<RealisticPlanetData | null>(REALISTIC_PLANETS[3]); // Default Jupiter
   const [activeHorizon, setActiveHorizon] = useState<'today' | '7days' | '30days' | '12months' | '5years'>('today');
+  const [speedMultiplier, setSpeedMultiplier] = useState<number>(1);
+  const [isPlayingFrequency, setIsPlayingFrequency] = useState<boolean>(false);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const oscRef = useRef<OscillatorNode | null>(null);
 
   // Compute natal positions for overlay
   const natalPositions = useMemo(() => {
@@ -596,16 +677,56 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
     if (onSelectPlanet) onSelectPlanet(p);
   };
 
-  const activeNatal = natalPositions.find(pos => 
+  const handleResetCamera = () => {
+    setSelectedPlanet(null);
+  };
+
+  // Cosmic Octave Tone Synthesizer
+  const toggleFrequency = () => {
+    if (isPlayingFrequency) {
+      if (oscRef.current) {
+        oscRef.current.stop();
+        oscRef.current.disconnect();
+      }
+      setIsPlayingFrequency(false);
+    } else if (selectedPlanet) {
+      try {
+        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+        audioCtxRef.current = new AudioCtx();
+        const osc = audioCtxRef.current.createOscillator();
+        const gain = audioCtxRef.current.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(selectedPlanet.frequency, audioCtxRef.current.currentTime);
+        gain.gain.setValueAtTime(0.12, audioCtxRef.current.currentTime);
+        osc.connect(gain);
+        gain.connect(audioCtxRef.current.destination);
+        osc.start();
+        oscRef.current = osc;
+        setIsPlayingFrequency(true);
+      } catch (err) {
+        console.error('Audio synthesizer error:', err);
+      }
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (oscRef.current) {
+        try { oscRef.current.stop(); } catch {}
+      }
+    };
+  }, []);
+
+  const activeNatal = selectedPlanet ? natalPositions.find(pos => 
     pos.name.toLowerCase().includes(selectedPlanet.name.toLowerCase().split(' ')[0])
-  );
+  ) : null;
 
   const activeForecast = predictionReport.forecasts.find(f => f.horizon === activeHorizon) || predictionReport.forecasts[0];
 
   return (
     <div className="w-full rounded-3xl bg-gradient-to-b from-[#080E1C] via-[#040812] to-[#020308] border border-amber-400/40 p-4 sm:p-6 shadow-2xl space-y-5 text-left">
-      {/* 1. Header Row */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+      {/* 1. Header Row & Cinematic Controls */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/10 pb-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <span className="p-1.5 rounded-xl bg-amber-400/15 text-amber-300 border border-amber-400/30">
@@ -623,30 +744,80 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
           </p>
         </div>
 
-        {/* Quick Planet Filter Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
-          {REALISTIC_PLANETS.map((p) => {
-            const isSelected = selectedPlanet.id === p.id;
-            return (
+        {/* Speed & Overview Controls */}
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Reset Overview Button */}
+          <button
+            onClick={handleResetCamera}
+            className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer transition-all"
+            title="Reset to Full Solar System Overview"
+          >
+            <Maximize2 className="w-3.5 h-3.5 text-amber-400" />
+            <span>Overview</span>
+          </button>
+
+          {/* Time Warp Speed Selector */}
+          <div className="flex items-center bg-black/60 border border-white/10 rounded-xl p-1 text-xs font-mono">
+            {[
+              { val: 0, label: '0x' },
+              { val: 1, label: '1x' },
+              { val: 5, label: '5x' },
+              { val: 20, label: '20x' },
+            ].map((spd) => (
               <button
-                key={p.id}
-                onClick={() => handleSelect(p)}
-                className={`px-2.5 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1 ${
-                  isSelected
-                    ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/25 scale-105 font-black'
-                    : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
+                key={spd.val}
+                onClick={() => setSpeedMultiplier(spd.val)}
+                className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
+                  speedMultiplier === spd.val
+                    ? 'bg-amber-400 text-slate-950 font-bold'
+                    : 'text-slate-400 hover:text-white'
                 }`}
               >
-                <span>{p.symbol}</span>
-                <span>{p.name.split(' ')[0]}</span>
+                {spd.label}
               </button>
-            );
-          })}
+            ))}
+          </div>
+
+          {/* Cosmic Audio Resonator Toggle */}
+          {selectedPlanet && (
+            <button
+              onClick={toggleFrequency}
+              className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                isPlayingFrequency
+                  ? 'bg-emerald-400 text-slate-950 ring-2 ring-emerald-300 animate-pulse'
+                  : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
+              }`}
+            >
+              {isPlayingFrequency ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+              <span>{selectedPlanet.frequency} Hz</span>
+            </button>
+          )}
         </div>
       </div>
 
+      {/* Quick Planet Filter Pills */}
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+        {REALISTIC_PLANETS.map((p) => {
+          const isSelected = selectedPlanet?.id === p.id;
+          return (
+            <button
+              key={p.id}
+              onClick={() => handleSelect(p)}
+              className={`px-2.5 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1 ${
+                isSelected
+                  ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/25 scale-105 font-black'
+                  : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
+              }`}
+            >
+              <span>{p.symbol}</span>
+              <span>{p.name.split(' ')[0]}</span>
+            </button>
+          );
+        })}
+      </div>
+
       {/* 2. 3D WebGL Canvas (Cinematic Viewport) */}
-      <div className="w-full h-[360px] sm:h-[440px] relative rounded-2xl bg-[#020306] border border-white/10 overflow-hidden shadow-inner">
+      <div className="w-full h-[380px] sm:h-[460px] relative rounded-2xl bg-[#020306] border border-white/10 overflow-hidden shadow-inner">
         <Canvas
           camera={{ position: [0, 0.8, 17.5], fov: 42 }}
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
@@ -668,8 +839,14 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
           {/* Subtle deep space rim fill from left */}
           <directionalLight position={[-20, -2, -5]} intensity={0.8} color="#38BDF8" />
 
+          {/* Smooth Camera Flight Controller */}
+          <CameraFlightController targetPlanet={selectedPlanet} />
+
+          {/* Main Asteroid Belt between Mars & Jupiter */}
+          <MainAsteroidBeltField />
+
           {/* Giant Radiant Sun on the right */}
-          <GiantSunOnRight />
+          <GiantSunOnRight speedMultiplier={speedMultiplier} />
 
           {/* Realistic Alignment of Planets */}
           {REALISTIC_PLANETS.map((p) => {
@@ -681,16 +858,17 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
                 key={p.id}
                 planet={p}
                 natalPosition={natal}
-                isSelected={selectedPlanet.id === p.id}
+                isSelected={selectedPlanet?.id === p.id}
                 onSelect={handleSelect}
+                speedMultiplier={speedMultiplier}
               />
             );
           })}
 
           <OrbitControls
             enableZoom={true}
-            minDistance={4}
-            maxDistance={28}
+            minDistance={3}
+            maxDistance={32}
             enablePan={true}
             autoRotate={false}
             maxPolarAngle={Math.PI / 1.7}
@@ -701,7 +879,7 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
         {/* Floating Canvas Controls Overlay */}
         <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 text-[11px] font-mono text-slate-300 pointer-events-none">
           <RotateCw className="w-3.5 h-3.5 text-amber-400" />
-          <span>Interactive 3D Viewport • Drag to rotate • Scroll to zoom</span>
+          <span>Interactive 3D Viewport • Click planet to focus • Drag to rotate</span>
         </div>
       </div>
 
@@ -728,7 +906,7 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
 
             <div className="flex items-center gap-2">
               <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                Astronomical Transit Active
+                Astronomical Transit Active • {selectedPlanet.frequency} Hz
               </span>
             </div>
           </div>
