@@ -76,38 +76,34 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
     }
 
     // Great Red Spot Oval Storm
-    ctx.fillStyle = '#B91C1C';
+    ctx.fillStyle = '#7F1D1D';
     ctx.beginPath();
     ctx.ellipse(650, 320, 56, 32, 0.05, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = '#EF4444';
+    ctx.fillStyle = '#B91C1C';
     ctx.beginPath();
     ctx.ellipse(650, 320, 42, 22, 0.05, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.strokeStyle = '#FDE68A';
-    ctx.lineWidth = 3;
-    ctx.stroke();
-
   } else if (type === 'sun') {
     // Seamless Radiant Solar Photosphere
-    const grad = ctx.createRadialGradient(512, 256, 20, 512, 256, 512);
-    grad.addColorStop(0.00, '#FFFFFF');
-    grad.addColorStop(0.15, '#FFFBEB');
-    grad.addColorStop(0.40, '#FDE047');
-    grad.addColorStop(0.70, '#F59E0B');
-    grad.addColorStop(0.92, '#EA580C');
-    grad.addColorStop(1.00, '#DC2626');
+    const grad = ctx.createLinearGradient(0, 0, 0, 512);
+    grad.addColorStop(0.0, '#EA580C');
+    grad.addColorStop(0.2, '#F59E0B');
+    grad.addColorStop(0.5, '#FDE047');
+    grad.addColorStop(0.8, '#F59E0B');
+    grad.addColorStop(1.0, '#EA580C');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 1024, 512);
 
-    // Convective solar granules
-    for (let i = 0; i < 180; i++) {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-      ctx.beginPath();
-      ctx.arc(Math.random() * 1024, Math.random() * 512, Math.random() * 10 + 2, 0, Math.PI * 2);
-      ctx.fill();
+    // Soft convective horizontal bands instead of circles to prevent polar stretching
+    for (let y = 0; y < 512; y += 6) {
+      ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.15})`;
+      ctx.fillRect(0, y, 1024, Math.random() * 4 + 1);
+      
+      ctx.fillStyle = `rgba(220, 38, 38, ${Math.random() * 0.1})`;
+      ctx.fillRect(0, y + 2, 1024, Math.random() * 2 + 1);
     }
 
   } else if (type === 'earth') {
@@ -252,11 +248,11 @@ function createSaturnRingTexture(): THREE.CanvasTexture {
 
   const grad = ctx.createLinearGradient(0, 0, 512, 0);
   grad.addColorStop(0.00, 'rgba(0, 0, 0, 0)');
-  grad.addColorStop(0.08, 'rgba(180, 83, 9, 0.35)');
-  grad.addColorStop(0.35, 'rgba(253, 230, 138, 0.85)'); // Ring B
+  grad.addColorStop(0.08, 'rgba(180, 83, 9, 0.25)');
+  grad.addColorStop(0.35, 'rgba(253, 230, 138, 0.65)'); // Ring B
   grad.addColorStop(0.55, 'rgba(0, 0, 0, 0)'); // Cassini Division Gap
-  grad.addColorStop(0.65, 'rgba(217, 119, 6, 0.75)'); // Ring A
-  grad.addColorStop(0.95, 'rgba(254, 243, 199, 0.6)');
+  grad.addColorStop(0.65, 'rgba(217, 119, 6, 0.55)'); // Ring A
+  grad.addColorStop(0.95, 'rgba(254, 243, 199, 0.35)');
   grad.addColorStop(1.00, 'rgba(0, 0, 0, 0)');
 
   ctx.fillStyle = grad;
