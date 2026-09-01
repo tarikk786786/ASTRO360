@@ -26,87 +26,88 @@ import { AstroNavigationShell, OmniAppSidebar } from './components/navigation';
 import CosmicCelestialLoader from './components/ui/CosmicCelestialLoader';
 import { updatePageSEO } from './lib/seoManager';
 import { warmCosmicProfileCache, prefetchRouteData } from './lib/prefetchEngine';
+import { lazyWithRetry } from './lib/lazyWithRetry';
 
 // Code-split dynamic views for instant landing page load
-const LandingPage = lazy(() => import('./components/landing/LandingPage'));
-const OmniSimpleHome = lazy(() => import('./components/omni/OmniSimpleHome'));
-const OmniForecastView = lazy(() => import('./components/omni/OmniForecastView'));
-const OmniAskAssistant = lazy(() => import('./components/omni/OmniAskAssistant'));
-const OmniChartsView = lazy(() => import('./components/omni/OmniChartsView'));
-const OmniMoreHub = lazy(() => import('./components/omni/OmniMoreHub'));
-const OmniMeView = lazy(() => import('./components/omni/OmniMeView'));
-const OmniOnboardingWizard = lazy(() => import('./components/omni/OmniOnboardingWizard'));
-const OmniFreeToolsHub = lazy(() => import('./components/free-tools/OmniFreeToolsHub'));
-const OmniCompatibilityLab = lazy(() => import('./components/omni/OmniCompatibilityLab'));
-const SEOTopicHub = lazy(() => import('./components/seo/SEOTopicHub'));
-const OmniSEOGrowthSuite = lazy(() => import('./components/seo/OmniSEOGrowthSuite'));
-const KeywordResearchLab = lazy(() => import('./components/seo-lab/KeywordResearchLab'));
-const BacklinkOpportunityLab = lazy(() => import('./components/backlink-lab/BacklinkOpportunityLab'));
-const CosmicNewsIntelligenceHub = lazy(() => import('./components/news-prediction/CosmicNewsIntelligenceHub'));
+const LandingPage = lazyWithRetry(() => import('./components/landing/LandingPage'));
+const OmniSimpleHome = lazyWithRetry(() => import('./components/omni/OmniSimpleHome'));
+const OmniForecastView = lazyWithRetry(() => import('./components/omni/OmniForecastView'));
+const OmniAskAssistant = lazyWithRetry(() => import('./components/omni/OmniAskAssistant'));
+const OmniChartsView = lazyWithRetry(() => import('./components/omni/OmniChartsView'));
+const OmniMoreHub = lazyWithRetry(() => import('./components/omni/OmniMoreHub'));
+const OmniMeView = lazyWithRetry(() => import('./components/omni/OmniMeView'));
+const OmniOnboardingWizard = lazyWithRetry(() => import('./components/omni/OmniOnboardingWizard'));
+const OmniFreeToolsHub = lazyWithRetry(() => import('./components/free-tools/OmniFreeToolsHub'));
+const OmniCompatibilityLab = lazyWithRetry(() => import('./components/omni/OmniCompatibilityLab'));
+const SEOTopicHub = lazyWithRetry(() => import('./components/seo/SEOTopicHub'));
+const OmniSEOGrowthSuite = lazyWithRetry(() => import('./components/seo/OmniSEOGrowthSuite'));
+const KeywordResearchLab = lazyWithRetry(() => import('./components/seo-lab/KeywordResearchLab'));
+const BacklinkOpportunityLab = lazyWithRetry(() => import('./components/backlink-lab/BacklinkOpportunityLab'));
+const CosmicNewsIntelligenceHub = lazyWithRetry(() => import('./components/news-prediction/CosmicNewsIntelligenceHub'));
 
 // Heavy secondary astrology suites
-const CosmicIntelligenceCenter = lazy(() => import('./components/CosmicIntelligenceCenter'));
-const AstrologyChat = lazy(() => import('./components/AstrologyChat'));
-const TraditionView = lazy(() => import('./components/TraditionView'));
-const UnifiedChartEngine = lazy(() => import('./components/UnifiedChartEngine'));
-const UnifiedIslamicSuite = lazy(() => import('./components/UnifiedIslamicSuite'));
-const BirthChartGenerator = lazy(() => import('./components/BirthChartGenerator'));
-const HolisticAdvisor = lazy(() => import('./components/HolisticAdvisor'));
-const LiveCosmicDiagnostics = lazy(() => import('./components/LiveCosmicDiagnostics'));
-const CustomRemedialMediumEngine = lazy(() => import('./components/CustomRemedialMediumEngine'));
-const AstroMultiTraditionRemedySuite = lazy(() => import('./components/AstroMultiTraditionRemedySuite'));
-const GlobalWisdomSuite = lazy(() => import('./components/GlobalWisdomSuite'));
-const AstroSynastryMatchmaker = lazy(() => import('./components/AstroSynastryMatchmaker'));
-const Astro150ToolsCatalog = lazy(() => import('./components/Astro150ToolsCatalog'));
-const DreamInterpretationEngine = lazy(() => import('./components/DreamInterpretationEngine'));
-const UniversalProblemSolverSuite = lazy(() => import('./components/UniversalProblemSolverSuite'));
-const PremiumHoroscopeEngine = lazy(() => import('./components/PremiumHoroscopeEngine'));
-const SpiritualTraditionsModule = lazy(() => import('./components/SpiritualTraditionsModule'));
-const AstrologyControlCenter = lazy(() => import('./components/AstrologyControlCenter'));
-const CommunityConsultationHub = lazy(() => import('./components/CommunityConsultationHub'));
-const AuthScreen = lazy(() => import('./components/AuthScreen'));
-const DivisionalChartsSuite = lazy(() => import('./components/DivisionalChartsSuite'));
-const GemstoneRudrakshaSuite = lazy(() => import('./components/GemstoneRudrakshaSuite'));
-const NumerologyNameSuite = lazy(() => import('./components/NumerologyNameSuite'));
-const TarotIChingSuite = lazy(() => import('./components/TarotIChingSuite'));
-const TimeHorizonForecastSuite = lazy(() => import('./components/TimeHorizonForecastSuite'));
-const DoshaRemedyEngine = lazy(() => import('./components/DoshaRemedyEngine'));
-const CosmicBiorhythmTracker = lazy(() => import('./components/CosmicBiorhythmTracker'));
-const SacredChakraAlignment = lazy(() => import('./components/SacredChakraAlignment'));
-const CosmicFengShuiMatrix = lazy(() => import('./components/CosmicFengShuiMatrix'));
-const ElectionalMuhurtaEngine = lazy(() => import('./components/ElectionalMuhurtaEngine'));
-const PlanetaryHorasTracker = lazy(() => import('./components/PlanetaryHorasTracker'));
-const SacredMantraSoundboard = lazy(() => import('./components/SacredMantraSoundboard'));
-const PlanetaryTransitRadar = lazy(() => import('./components/PlanetaryTransitRadar'));
-const PanchangDeitiesEngine = lazy(() => import('./components/PanchangDeitiesEngine'));
-const CosmicCompassVisualizer = lazy(() => import('./components/CosmicCompassVisualizer'));
-const CosmicTransitCalendar = lazy(() => import('./components/CosmicTransitCalendar'));
-const SynastryOverlayChart = lazy(() => import('./components/SynastryOverlayChart'));
-const CosmicChartAnalytics = lazy(() => import('./components/CosmicChartAnalytics'));
-const AstrologyLearningHub = lazy(() => import('./components/AstrologyLearningHub'));
+const CosmicIntelligenceCenter = lazyWithRetry(() => import('./components/CosmicIntelligenceCenter'));
+const AstrologyChat = lazyWithRetry(() => import('./components/AstrologyChat'));
+const TraditionView = lazyWithRetry(() => import('./components/TraditionView'));
+const UnifiedChartEngine = lazyWithRetry(() => import('./components/UnifiedChartEngine'));
+const UnifiedIslamicSuite = lazyWithRetry(() => import('./components/UnifiedIslamicSuite'));
+const BirthChartGenerator = lazyWithRetry(() => import('./components/BirthChartGenerator'));
+const HolisticAdvisor = lazyWithRetry(() => import('./components/HolisticAdvisor'));
+const LiveCosmicDiagnostics = lazyWithRetry(() => import('./components/LiveCosmicDiagnostics'));
+const CustomRemedialMediumEngine = lazyWithRetry(() => import('./components/CustomRemedialMediumEngine'));
+const AstroMultiTraditionRemedySuite = lazyWithRetry(() => import('./components/AstroMultiTraditionRemedySuite'));
+const GlobalWisdomSuite = lazyWithRetry(() => import('./components/GlobalWisdomSuite'));
+const AstroSynastryMatchmaker = lazyWithRetry(() => import('./components/AstroSynastryMatchmaker'));
+const Astro150ToolsCatalog = lazyWithRetry(() => import('./components/Astro150ToolsCatalog'));
+const DreamInterpretationEngine = lazyWithRetry(() => import('./components/DreamInterpretationEngine'));
+const UniversalProblemSolverSuite = lazyWithRetry(() => import('./components/UniversalProblemSolverSuite'));
+const PremiumHoroscopeEngine = lazyWithRetry(() => import('./components/PremiumHoroscopeEngine'));
+const SpiritualTraditionsModule = lazyWithRetry(() => import('./components/SpiritualTraditionsModule'));
+const AstrologyControlCenter = lazyWithRetry(() => import('./components/AstrologyControlCenter'));
+const CommunityConsultationHub = lazyWithRetry(() => import('./components/CommunityConsultationHub'));
+const AuthScreen = lazyWithRetry(() => import('./components/AuthScreen'));
+const DivisionalChartsSuite = lazyWithRetry(() => import('./components/DivisionalChartsSuite'));
+const GemstoneRudrakshaSuite = lazyWithRetry(() => import('./components/GemstoneRudrakshaSuite'));
+const NumerologyNameSuite = lazyWithRetry(() => import('./components/NumerologyNameSuite'));
+const TarotIChingSuite = lazyWithRetry(() => import('./components/TarotIChingSuite'));
+const TimeHorizonForecastSuite = lazyWithRetry(() => import('./components/TimeHorizonForecastSuite'));
+const DoshaRemedyEngine = lazyWithRetry(() => import('./components/DoshaRemedyEngine'));
+const CosmicBiorhythmTracker = lazyWithRetry(() => import('./components/CosmicBiorhythmTracker'));
+const SacredChakraAlignment = lazyWithRetry(() => import('./components/SacredChakraAlignment'));
+const CosmicFengShuiMatrix = lazyWithRetry(() => import('./components/CosmicFengShuiMatrix'));
+const ElectionalMuhurtaEngine = lazyWithRetry(() => import('./components/ElectionalMuhurtaEngine'));
+const PlanetaryHorasTracker = lazyWithRetry(() => import('./components/PlanetaryHorasTracker'));
+const SacredMantraSoundboard = lazyWithRetry(() => import('./components/SacredMantraSoundboard'));
+const PlanetaryTransitRadar = lazyWithRetry(() => import('./components/PlanetaryTransitRadar'));
+const PanchangDeitiesEngine = lazyWithRetry(() => import('./components/PanchangDeitiesEngine'));
+const CosmicCompassVisualizer = lazyWithRetry(() => import('./components/CosmicCompassVisualizer'));
+const CosmicTransitCalendar = lazyWithRetry(() => import('./components/CosmicTransitCalendar'));
+const SynastryOverlayChart = lazyWithRetry(() => import('./components/SynastryOverlayChart'));
+const CosmicChartAnalytics = lazyWithRetry(() => import('./components/CosmicChartAnalytics'));
+const AstrologyLearningHub = lazyWithRetry(() => import('./components/AstrologyLearningHub'));
 
 // Studio tools
-const ExecutiveReportGenerator = lazy(() => import('./components/ExecutiveReportGenerator'));
-const AdminAnalyticsDashboard = lazy(() => import('./components/AdminAnalyticsDashboard'));
-const CosmicStudioSuite = lazy(() => import('./components/CosmicStudioSuite'));
-const CosmicAtmosphereCanvas = lazy(() => import('./components/3d/CosmicAtmosphereCanvas'));
-const AstroOmniResearchSuite = lazy(() => import('./components/AstroOmniResearchSuite').then(m => ({ default: m.AstroOmniResearchSuite })));
-const BirthTimeRectificationSuite = lazy(() => import('./components/BirthTimeRectificationSuite'));
-const AstrologicalMindMap = lazy(() => import('./components/AstrologicalMindMap'));
-const AstroCartographyMatrix = lazy(() => import('./components/AstroCartographyMatrix'));
-const CosmicPassportCard = lazy(() => import('./components/social/CosmicPassportCard'));
-const EmbeddableWidgetGenerator = lazy(() => import('./components/widgets/EmbeddableWidgetGenerator'));
-const ProgrammaticSeoDirectory = lazy(() => import('./components/seo/ProgrammaticSeoDirectory'));
-const InteractiveDualChartStudio = lazy(() => import('./components/charts/InteractiveDualChartStudio'));
-const ExecutiveCosmicDossierSuite = lazy(() => import('./components/dossier/ExecutiveCosmicDossierSuite'));
-const AstroDeterministicCopilot = lazy(() => import('./components/ai/AstroDeterministicCopilot'));
-const PwaCosmicBriefing = lazy(() => import('./components/pwa/PwaCosmicBriefing'));
-const ClassicalShlokaLibrary = lazy(() => import('./components/scripture/ClassicalShlokaLibrary'));
-const SabianSymbolsDegreeExplorer = lazy(() => import('./components/sabian/SabianSymbolsDegreeExplorer'));
-const MultiSystemEphemerisDiagnosticLab = lazy(() => import('./components/diagnostics/MultiSystemEphemerisDiagnosticLab'));
-const PlanetaryFrequencyStudio = lazy(() => import('./components/audio/PlanetaryFrequencyStudio'));
-const KundliMatchingSuite = lazy(() => import('./components/compatibility/KundliMatchingSuite'));
-const PlanetaryHoraClock = lazy(() => import('./components/timing/PlanetaryHoraClock'));
+const ExecutiveReportGenerator = lazyWithRetry(() => import('./components/ExecutiveReportGenerator'));
+const AdminAnalyticsDashboard = lazyWithRetry(() => import('./components/AdminAnalyticsDashboard'));
+const CosmicStudioSuite = lazyWithRetry(() => import('./components/CosmicStudioSuite'));
+const CosmicAtmosphereCanvas = lazyWithRetry(() => import('./components/3d/CosmicAtmosphereCanvas'));
+const AstroOmniResearchSuite = lazyWithRetry(() => import('./components/AstroOmniResearchSuite').then(m => ({ default: m.AstroOmniResearchSuite })));
+const BirthTimeRectificationSuite = lazyWithRetry(() => import('./components/BirthTimeRectificationSuite'));
+const AstrologicalMindMap = lazyWithRetry(() => import('./components/AstrologicalMindMap'));
+const AstroCartographyMatrix = lazyWithRetry(() => import('./components/AstroCartographyMatrix'));
+const CosmicPassportCard = lazyWithRetry(() => import('./components/social/CosmicPassportCard'));
+const EmbeddableWidgetGenerator = lazyWithRetry(() => import('./components/widgets/EmbeddableWidgetGenerator'));
+const ProgrammaticSeoDirectory = lazyWithRetry(() => import('./components/seo/ProgrammaticSeoDirectory'));
+const InteractiveDualChartStudio = lazyWithRetry(() => import('./components/charts/InteractiveDualChartStudio'));
+const ExecutiveCosmicDossierSuite = lazyWithRetry(() => import('./components/dossier/ExecutiveCosmicDossierSuite'));
+const AstroDeterministicCopilot = lazyWithRetry(() => import('./components/ai/AstroDeterministicCopilot'));
+const PwaCosmicBriefing = lazyWithRetry(() => import('./components/pwa/PwaCosmicBriefing'));
+const ClassicalShlokaLibrary = lazyWithRetry(() => import('./components/scripture/ClassicalShlokaLibrary'));
+const SabianSymbolsDegreeExplorer = lazyWithRetry(() => import('./components/sabian/SabianSymbolsDegreeExplorer'));
+const MultiSystemEphemerisDiagnosticLab = lazyWithRetry(() => import('./components/diagnostics/MultiSystemEphemerisDiagnosticLab'));
+const PlanetaryFrequencyStudio = lazyWithRetry(() => import('./components/audio/PlanetaryFrequencyStudio'));
+const KundliMatchingSuite = lazyWithRetry(() => import('./components/compatibility/KundliMatchingSuite'));
+const PlanetaryHoraClock = lazyWithRetry(() => import('./components/timing/PlanetaryHoraClock'));
 
 const STORAGE_KEY = 'astroverse_profile';
 const TAB_KEY = 'astroverse_tab';
@@ -597,7 +598,7 @@ export default function AppContent() {
                         setShowOnboarding(false);
                         if (activeTab === 'onboarding') setActiveTab('landing');
                       }}
-                      onComplete={(profile) => {
+                      onComplete={(profile: UserProfile) => {
                         setUserProfile(profile);
                         saveProfile(profile);
                         setHasOnboarded(true);
@@ -614,7 +615,7 @@ export default function AppContent() {
                   )}
                   {activeTab === 'landing' && (
                     <LandingPage
-                      onStartOnboarding={(preset) => {
+                      onStartOnboarding={(preset: any) => {
                         if (preset && preset.dob) {
                           const updated: UserProfile = {
                             ...userProfile,
@@ -640,7 +641,7 @@ export default function AppContent() {
                           setShowOnboarding(true);
                         }
                       }}
-                      onNavigateToTab={(tab) => {
+                      onNavigateToTab={(tab: string) => {
                         navigateTo(tab);
                       }}
                       userProfile={userProfile}
@@ -649,7 +650,7 @@ export default function AppContent() {
                   {activeTab === 'free-tools' && (
                     <OmniFreeToolsHub
                       userProfile={userProfile}
-                      onStartOnboarding={(preset) => {
+                      onStartOnboarding={(preset: any) => {
                         if (preset && preset.dob) {
                           const updated: UserProfile = {
                             ...userProfile,
@@ -676,14 +677,14 @@ export default function AppContent() {
                       userProfile={userProfile}
                       onNavigate={navigateTo}
                       onOpenProfile={() => setIsProfileModalOpen(true)}
-                      onUpdateProfile={(updated) => { setUserProfile(updated); saveProfile(updated); }}
+                      onUpdateProfile={(updated: UserProfile) => { setUserProfile(updated); saveProfile(updated); }}
                     />
                   )}
                   {(activeTab === 'dashboard' || activeTab === 'pro-dashboard' || activeTab === 'overview') && (
                     <CosmicIntelligenceCenter
                       onNavigate={navigateTo}
                       userProfile={userProfile}
-                      onUpdateProfile={(updated) => { setUserProfile(updated); saveProfile(updated); }}
+                      onUpdateProfile={(updated: UserProfile) => { setUserProfile(updated); saveProfile(updated); }}
                     />
                   )}
                   {activeTab === 'forecast' && (
@@ -824,7 +825,7 @@ export default function AppContent() {
               </button>
               <AuthScreen
                 userProfile={userProfile}
-                onAuthSuccess={(updated) => {
+                onAuthSuccess={(updated: UserProfile) => {
                   setUserProfile(updated);
                   saveProfile(updated);
                   setIsAuthModalOpen(false);
