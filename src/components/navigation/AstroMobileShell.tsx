@@ -1,0 +1,94 @@
+﻿import React, { memo, ReactNode } from 'react';
+import { AstroMobileHeader } from './AstroMobileHeader';
+import { AstroMobileBottomNav } from './AstroMobileBottomNav';
+import type { UserProfile } from '../../types';
+
+export interface AstroMobileShellProps {
+  activeTab: string;
+  onNavigate: (tabId: string) => void;
+  onBack?: () => void;
+  canGoBack?: boolean;
+  pageTitle?: string;
+  userProfile: UserProfile;
+  onOpenSearch?: () => void;
+  onOpenSystemSheet?: () => void;
+  onOpenMoreSheet?: () => void;
+  onOpenNotifications?: () => void;
+  notificationCount?: number;
+  activeSystem?: string;
+  children: ReactNode;
+  miniPlayerSlot?: ReactNode;
+  className?: string;
+}
+
+/**
+ * AstroMobileShell — Deliberate, High-Performance Mobile Shell
+ * 
+ * Features:
+ * 1. Memoized structural boundaries to prevent unnecessary re-renders.
+ * 2. Hardware-accelerated viewport containment with zero horizontal scroll leak.
+ * 3. Native safe-area insets for notches, Dynamic Island, and home indicator.
+ * 4. Contextual mobile header with back button support on secondary sub-routes.
+ * 5. Floating 5-tab bottom navigation with virtual keyboard avoidance.
+ */
+export const AstroMobileShell: React.FC<AstroMobileShellProps> = memo(({
+  activeTab,
+  onNavigate,
+  onBack,
+  canGoBack = false,
+  pageTitle,
+  userProfile,
+  onOpenSearch,
+  onOpenSystemSheet,
+  onOpenMoreSheet,
+  onOpenNotifications,
+  notificationCount = 0,
+  activeSystem = 'Vedic',
+  children,
+  miniPlayerSlot,
+  className = '',
+}) => {
+  const isSubPage = !['home', 'forecast', 'ask', 'charts', 'me', 'landing'].includes(activeTab);
+
+  return (
+    <div className={`md:hidden flex flex-col min-h-dvh w-full max-w-full overflow-x-hidden bg-[#040812] text-slate-100 ${className}`}>
+      {/* ── 1. Contextual Mobile Top Header ── */}
+      <AstroMobileHeader
+        title={pageTitle}
+        activeTab={activeTab}
+        isSubPage={isSubPage}
+        onBack={onBack}
+        onOpenSearch={onOpenSearch || (() => {})}
+        onOpenSystemSheet={onOpenSystemSheet || (() => {})}
+        onOpenMoreSheet={onOpenMoreSheet || (() => {})}
+        onOpenNotifications={onOpenNotifications || (() => {})}
+        notificationCount={notificationCount}
+        userProfile={userProfile}
+        activeSystem={activeSystem}
+      />
+
+      {/* ── 2. Fluid Scrollable Content Body ── */}
+      <main
+        id="astro-mobile-main-content"
+        className="flex-1 w-full px-2.5 sm:px-4 py-3 sm:py-4 pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] overflow-y-auto overflow-x-hidden gpu-accel"
+      >
+        {children}
+      </main>
+
+      {/* ── 3. Optional Mini Player / Quick Audio Slot ── */}
+      {miniPlayerSlot && (
+        <div className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom,0px))] inset-x-2.5 z-30 max-w-md mx-auto">
+          {miniPlayerSlot}
+        </div>
+      )}
+
+      {/* ── 4. Floating 5-Tab Bottom Dock ── */}
+      <AstroMobileBottomNav
+        activeTab={activeTab}
+        onNavigate={onNavigate}
+      />
+    </div>
+  );
+});
+
+AstroMobileShell.displayName = 'AstroMobileShell';
