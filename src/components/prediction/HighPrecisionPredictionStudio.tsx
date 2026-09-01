@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, Calendar, Clock, Compass, ShieldCheck, Heart, Briefcase, 
   DollarSign, CheckCircle2, ArrowRight, Layers, HelpCircle, Activity,
-  ChevronRight, Award, Zap, AlertTriangle, BookOpen, Filter, Eye, RefreshCw
+  ChevronRight, Award, Zap, AlertTriangle, BookOpen, Filter, Eye, RefreshCw,
+  Info
 } from 'lucide-react';
 import type { UserProfile } from '../../types';
 import { 
