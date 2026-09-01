@@ -2,7 +2,7 @@ import React, { useRef, useState, useMemo, memo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, OrbitControls, Html, Stars } from '@react-three/drei';
 import * as THREE from 'three';
-import { Sparkles, Info, RotateCw, CheckCircle2, Eye, Compass, Zap, Layers } from 'lucide-react';
+import { Sparkles, RotateCw, Zap } from 'lucide-react';
 import type { UserProfile } from '../../types';
 import { calculatePlanetaryPositions, type PlanetPosition } from '../../lib/astroCalculations';
 
@@ -28,128 +28,165 @@ export interface RealisticPlanetData {
   careerImpact: string;
 }
 
-// Procedural high-fidelity textures for realistic celestial bodies
+// Procedural high-fidelity photorealistic textures for celestial bodies
 function createProceduralTexture(type: string): THREE.CanvasTexture {
   const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 256;
+  canvas.width = 1024;
+  canvas.height = 512;
   const ctx = canvas.getContext('2d')!;
 
   if (type === 'jupiter') {
-    // Banded gas giant stripes
-    const grad = ctx.createLinearGradient(0, 0, 0, 256);
-    grad.addColorStop(0.0, '#B45309');
-    grad.addColorStop(0.18, '#D97706');
-    grad.addColorStop(0.32, '#FEF3C7');
-    grad.addColorStop(0.48, '#92400E');
-    grad.addColorStop(0.62, '#FDE68A');
-    grad.addColorStop(0.76, '#78350F');
-    grad.addColorStop(0.88, '#F59E0B');
-    grad.addColorStop(1.0, '#451A03');
+    // Rich photorealistic Jupiter cloud bands & storms
+    const grad = ctx.createLinearGradient(0, 0, 0, 512);
+    grad.addColorStop(0.00, '#5A2A0C');
+    grad.addColorStop(0.12, '#C26A20');
+    grad.addColorStop(0.22, '#F6DEC2');
+    grad.addColorStop(0.35, '#8C3D12');
+    grad.addColorStop(0.48, '#FCE8D3');
+    grad.addColorStop(0.60, '#6C2B0B');
+    grad.addColorStop(0.72, '#E28637');
+    grad.addColorStop(0.85, '#DDA15E');
+    grad.addColorStop(1.00, '#381608');
     ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 512, 256);
+    ctx.fillRect(0, 0, 1024, 512);
 
-    // Subtle atmospheric swirls
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.18)';
-    for (let i = 0; i < 15; i++) {
+    // Turbulent atmospheric bands & whorls
+    for (let y = 30; y < 480; y += 45) {
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.14)';
       ctx.beginPath();
-      ctx.ellipse(Math.random() * 512, Math.random() * 256, Math.random() * 90 + 30, Math.random() * 8 + 3, 0, 0, Math.PI * 2);
+      ctx.ellipse(512, y, 512, 12, 0, 0, Math.PI * 2);
       ctx.fill();
     }
-    // Great Red Spot
-    ctx.fillStyle = '#DC2626';
-    ctx.beginPath();
-    ctx.ellipse(320, 160, 26, 14, 0, 0, Math.PI * 2);
-    ctx.fill();
-  } else if (type === 'sun') {
-    // Fiery solar corona granulation
-    const grad = ctx.createRadialGradient(256, 128, 10, 256, 128, 256);
-    grad.addColorStop(0.0, '#FFFBEB');
-    grad.addColorStop(0.25, '#FDE047');
-    grad.addColorStop(0.55, '#F59E0B');
-    grad.addColorStop(0.85, '#DC2626');
-    grad.addColorStop(1.0, '#7F1D1D');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 512, 256);
 
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+    // Great Red Spot Oval Storm
+    ctx.fillStyle = '#B91C1C';
+    ctx.beginPath();
+    ctx.ellipse(680, 310, 48, 28, 0.05, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#FCA5A5';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+  } else if (type === 'sun') {
+    // Ultra-radiant solar plasma granulation
+    const grad = ctx.createRadialGradient(512, 256, 30, 512, 256, 512);
+    grad.addColorStop(0.00, '#FFFFFF');
+    grad.addColorStop(0.15, '#FFFBEB');
+    grad.addColorStop(0.35, '#FDE047');
+    grad.addColorStop(0.60, '#F59E0B');
+    grad.addColorStop(0.85, '#EA580C');
+    grad.addColorStop(1.00, '#991B1B');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 1024, 512);
+
+    // Solar flares & convective granules
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.28)';
+    for (let i = 0; i < 80; i++) {
+      ctx.beginPath();
+      ctx.arc(Math.random() * 1024, Math.random() * 512, Math.random() * 18 + 4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+  } else if (type === 'earth') {
+    // Realistic Blue Marble Earth
+    ctx.fillStyle = '#0F2A4A';
+    ctx.fillRect(0, 0, 1024, 512);
+
+    // Continents
+    ctx.fillStyle = '#2D6A4F';
+    // Eurasia & Africa
+    ctx.beginPath();
+    ctx.ellipse(540, 200, 160, 90, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(500, 340, 90, 120, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // Americas
+    ctx.beginPath();
+    ctx.ellipse(240, 180, 110, 80, 0.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(320, 380, 80, 110, -0.2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Swirling white clouds
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+    for (let i = 0; i < 28; i++) {
+      ctx.beginPath();
+      ctx.ellipse(Math.random() * 1024, Math.random() * 512, Math.random() * 140 + 40, Math.random() * 20 + 6, Math.random() * Math.PI, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+  } else if (type === 'mars') {
+    // Red Martian terrain
+    ctx.fillStyle = '#991B1B';
+    ctx.fillRect(0, 0, 1024, 512);
+    ctx.fillStyle = '#7F1D1D';
     for (let i = 0; i < 40; i++) {
       ctx.beginPath();
-      ctx.arc(Math.random() * 512, Math.random() * 256, Math.random() * 12 + 2, 0, Math.PI * 2);
+      ctx.arc(Math.random() * 1024, Math.random() * 512, Math.random() * 50 + 10, 0, Math.PI * 2);
       ctx.fill();
     }
-  } else if (type === 'earth') {
-    // Deep blue oceans and green-brown continents
-    ctx.fillStyle = '#1E3A8A';
-    ctx.fillRect(0, 0, 512, 256);
-    ctx.fillStyle = '#15803D';
-    for (let i = 0; i < 18; i++) {
-      ctx.beginPath();
-      ctx.ellipse(Math.random() * 512, Math.random() * 256, Math.random() * 60 + 20, Math.random() * 40 + 15, Math.random() * Math.PI, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    // White swirling clouds
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
-    for (let i = 0; i < 16; i++) {
-      ctx.beginPath();
-      ctx.ellipse(Math.random() * 512, Math.random() * 256, Math.random() * 90 + 30, Math.random() * 14 + 4, Math.random() * Math.PI, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  } else if (type === 'mars') {
-    // Rust red surface
-    ctx.fillStyle = '#991B1B';
-    ctx.fillRect(0, 0, 512, 256);
-    ctx.fillStyle = '#7F1D1D';
-    for (let i = 0; i < 20; i++) {
-      ctx.beginPath();
-      ctx.arc(Math.random() * 512, Math.random() * 256, Math.random() * 35 + 8, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    // White polar caps
+    // Polar ice caps
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, 512, 16);
-    ctx.fillRect(0, 240, 512, 16);
+    ctx.fillRect(0, 0, 1024, 30);
+    ctx.fillRect(0, 482, 1024, 30);
+
   } else if (type === 'venus') {
-    // Dense golden-cream atmosphere
-    const grad = ctx.createLinearGradient(0, 0, 0, 256);
-    grad.addColorStop(0.0, '#D97706');
-    grad.addColorStop(0.5, '#FDE68A');
-    grad.addColorStop(1.0, '#B45309');
+    // Dense golden atmosphere
+    const grad = ctx.createLinearGradient(0, 0, 0, 512);
+    grad.addColorStop(0.0, '#B45309');
+    grad.addColorStop(0.3, '#F59E0B');
+    grad.addColorStop(0.5, '#FEF3C7');
+    grad.addColorStop(0.7, '#D97706');
+    grad.addColorStop(1.0, '#78350F');
     ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 512, 256);
+    ctx.fillRect(0, 0, 1024, 512);
+
   } else if (type === 'saturn') {
-    // Golden ochre gas bands
-    const grad = ctx.createLinearGradient(0, 0, 0, 256);
-    grad.addColorStop(0.0, '#78350F');
-    grad.addColorStop(0.3, '#D97706');
-    grad.addColorStop(0.7, '#FCD34D');
-    grad.addColorStop(1.0, '#92400E');
+    // Saturn golden ochre cloud bands
+    const grad = ctx.createLinearGradient(0, 0, 0, 512);
+    grad.addColorStop(0.0, '#5E3A18');
+    grad.addColorStop(0.2, '#A16207');
+    grad.addColorStop(0.5, '#FDE68A');
+    grad.addColorStop(0.8, '#B45309');
+    grad.addColorStop(1.0, '#451A03');
     ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 512, 256);
+    ctx.fillRect(0, 0, 1024, 512);
+
   } else if (type === 'uranus') {
-    // Pale cyan ice
-    const grad = ctx.createLinearGradient(0, 0, 0, 256);
+    // Pale cyan ice giant
+    const grad = ctx.createLinearGradient(0, 0, 0, 512);
     grad.addColorStop(0.0, '#0E7490');
     grad.addColorStop(0.5, '#A5F3FC');
-    grad.addColorStop(1.0, '#155E75');
+    grad.addColorStop(1.0, '#164E63');
     ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 512, 256);
+    ctx.fillRect(0, 0, 1024, 512);
+
   } else if (type === 'neptune') {
-    // Deep royal azure blue
-    const grad = ctx.createLinearGradient(0, 0, 0, 256);
+    // Deep royal azure blue ice giant
+    const grad = ctx.createLinearGradient(0, 0, 0, 512);
     grad.addColorStop(0.0, '#1E1B4B');
-    grad.addColorStop(0.5, '#2563EB');
-    grad.addColorStop(1.0, '#1D4ED8');
+    grad.addColorStop(0.4, '#1D4ED8');
+    grad.addColorStop(0.6, '#3B82F6');
+    grad.addColorStop(1.0, '#1E3A8A');
     ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 512, 256);
+    ctx.fillRect(0, 0, 1024, 512);
+
+    // Subtle white methane cirrus streaks
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+    ctx.beginPath();
+    ctx.ellipse(450, 240, 220, 14, -0.05, 0, Math.PI * 2);
+    ctx.fill();
+
   } else {
-    // Mercury / cratered rocky
-    ctx.fillStyle = '#6B7280';
-    ctx.fillRect(0, 0, 512, 256);
-    ctx.fillStyle = '#374151';
-    for (let i = 0; i < 25; i++) {
+    // Mercury cratered rocky slate
+    ctx.fillStyle = '#64748B';
+    ctx.fillRect(0, 0, 1024, 512);
+    ctx.fillStyle = '#334155';
+    for (let i = 0; i < 50; i++) {
       ctx.beginPath();
-      ctx.arc(Math.random() * 512, Math.random() * 256, Math.random() * 20 + 4, 0, Math.PI * 2);
+      ctx.arc(Math.random() * 1024, Math.random() * 512, Math.random() * 30 + 6, 0, Math.PI * 2);
       ctx.fill();
     }
   }
@@ -167,13 +204,13 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     name: 'Neptune',
     vedicName: 'Varuna',
     symbol: '♆',
-    xPos: -12.2,
+    xPos: -12.6,
     yPos: 0,
     zPos: 0,
-    radius: 0.7,
+    radius: 0.72,
     rotationSpeed: 0.008,
     baseColor: '#2563EB',
-    roughness: 0.3,
+    roughness: 0.25,
     metalness: 0.1,
     textureType: 'neptune',
     lifeMeaning: 'Spiritual mysticism, cosmic imagination, dreams & divine transcendence.',
@@ -184,13 +221,13 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     name: 'Uranus',
     vedicName: 'Indra / Rahu Aspect',
     symbol: '♅',
-    xPos: -9.4,
+    xPos: -9.8,
     yPos: 0,
     zPos: 0.1,
-    radius: 0.72,
+    radius: 0.74,
     rotationSpeed: 0.009,
     baseColor: '#67E8F9',
-    roughness: 0.4,
+    roughness: 0.3,
     metalness: 0.1,
     textureType: 'uranus',
     lifeMeaning: 'Breakthrough genius, sudden inventions, independence & radical innovation.',
@@ -201,17 +238,17 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     name: 'Saturn',
     vedicName: 'Shani Dev',
     symbol: '♄',
-    xPos: -6.2,
+    xPos: -6.4,
     yPos: 0,
     zPos: 0.2,
-    radius: 0.95,
+    radius: 0.98,
     rotationSpeed: 0.006,
     baseColor: '#D97706',
-    roughness: 0.3,
+    roughness: 0.35,
     metalness: 0.2,
     hasRing: true,
-    ringInner: 1.25,
-    ringOuter: 2.2,
+    ringInner: 1.35,
+    ringOuter: 2.35,
     textureType: 'saturn',
     lifeMeaning: 'Perseverance, karmic discipline, mastery over time, and permanent legacy.',
     careerImpact: 'Institutional leadership, real estate infrastructure, law, and enduring wealth.'
@@ -221,10 +258,10 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     name: 'Jupiter',
     vedicName: 'Guru / Brihaspati',
     symbol: '♃',
-    xPos: -2.6,
+    xPos: -2.4,
     yPos: 0,
     zPos: 0.1,
-    radius: 1.15,
+    radius: 1.25,
     rotationSpeed: 0.012,
     baseColor: '#D97706',
     roughness: 0.2,
@@ -238,13 +275,13 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     name: 'Mars',
     vedicName: 'Mangala',
     symbol: '♂',
-    xPos: 0.6,
+    xPos: 0.9,
     yPos: 0,
     zPos: 0,
-    radius: 0.45,
+    radius: 0.46,
     rotationSpeed: 0.007,
     baseColor: '#DC2626',
-    roughness: 0.6,
+    roughness: 0.55,
     metalness: 0.3,
     textureType: 'mars',
     lifeMeaning: 'Courage, physical stamina, decisive action, protection & victory over obstacles.',
@@ -255,13 +292,13 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     name: 'Earth & Moon',
     vedicName: 'Bhumi & Chandra',
     symbol: '⊕',
-    xPos: 3.0,
+    xPos: 3.4,
     yPos: 0,
     zPos: 0,
-    radius: 0.58,
+    radius: 0.62,
     rotationSpeed: 0.008,
     baseColor: '#2563EB',
-    roughness: 0.4,
+    roughness: 0.35,
     metalness: 0.2,
     hasMoon: true,
     textureType: 'earth',
@@ -273,10 +310,10 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     name: 'Venus',
     vedicName: 'Shukra Dev',
     symbol: '♀',
-    xPos: 5.4,
+    xPos: 5.9,
     yPos: 0,
     zPos: 0,
-    radius: 0.52,
+    radius: 0.54,
     rotationSpeed: 0.004,
     baseColor: '#F59E0B',
     roughness: 0.2,
@@ -290,13 +327,13 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     name: 'Mercury',
     vedicName: 'Budha',
     symbol: '☿',
-    xPos: 7.5,
+    xPos: 8.1,
     yPos: 0,
     zPos: 0,
-    radius: 0.32,
+    radius: 0.34,
     rotationSpeed: 0.005,
     baseColor: '#9CA3AF',
-    roughness: 0.7,
+    roughness: 0.65,
     metalness: 0.4,
     textureType: 'mercury',
     lifeMeaning: 'Sharp intellect, commercial eloquence, analytical agility & mental speed.',
@@ -341,13 +378,13 @@ function RealisticPlanetMesh({
         onClick={(e) => { e.stopPropagation(); onSelect(planet); }}
         scale={isSelected ? [1.25, 1.25, 1.25] : hovered ? [1.12, 1.12, 1.12] : [1, 1, 1]}
       >
-        <sphereGeometry args={[planet.radius, 48, 48]} />
+        <sphereGeometry args={[planet.radius, 64, 64]} />
         <meshStandardMaterial
           map={texture}
           roughness={planet.roughness}
           metalness={planet.metalness}
           emissive={isSelected ? planet.baseColor : '#000000'}
-          emissiveIntensity={isSelected ? 0.4 : 0}
+          emissiveIntensity={isSelected ? 0.45 : 0}
         />
       </mesh>
 
@@ -355,15 +392,15 @@ function RealisticPlanetMesh({
       {planet.hasRing && (
         <mesh
           ref={ringRef}
-          rotation={[Math.PI / 2.6, 0, Math.PI / 8]}
+          rotation={[Math.PI / 2.5, 0, Math.PI / 7]}
           scale={isSelected ? [1.25, 1.25, 1.25] : [1, 1, 1]}
         >
-          <ringGeometry args={[planet.ringInner || 1.25, planet.ringOuter || 2.2, 64]} />
+          <ringGeometry args={[planet.ringInner || 1.35, planet.ringOuter || 2.35, 96]} />
           <meshStandardMaterial
             color="#D97706"
-            roughness={0.4}
+            roughness={0.3}
             transparent
-            opacity={0.85}
+            opacity={0.9}
             side={THREE.DoubleSide}
           />
         </mesh>
@@ -372,15 +409,15 @@ function RealisticPlanetMesh({
       {/* Orbiting Moon for Earth */}
       {planet.hasMoon && (
         <group ref={moonGroupRef}>
-          <mesh position={[1.1, 0.2, 0]}>
+          <mesh position={[1.15, 0.2, 0]}>
             <sphereGeometry args={[0.13, 16, 16]} />
-            <meshStandardMaterial color="#E5E7EB" roughness={0.8} />
+            <meshStandardMaterial color="#E2E8F0" roughness={0.8} />
           </mesh>
         </group>
       )}
 
       {/* Dynamic Smart Badge: Selective Expansion to avoid overlapping */}
-      <Html position={[0, planet.radius + 0.55, 0]} center distanceFactor={14}>
+      <Html position={[0, planet.radius + 0.65, 0]} center distanceFactor={14}>
         {isSelected || hovered ? (
           <button
             onClick={(e) => { e.stopPropagation(); onSelect(planet); }}
@@ -408,42 +445,36 @@ function RealisticPlanetMesh({
   );
 }
 
+// Giant Radiant Sun Sphere on the Far Right Edge
 function GiantSunOnRight() {
   const sunTexture = useMemo(() => createProceduralTexture('sun'), []);
   const sunMeshRef = useRef<THREE.Mesh>(null);
 
   useFrame((_, delta) => {
     if (sunMeshRef.current) {
-      sunMeshRef.current.rotation.y += 0.003 * (delta * 60);
+      sunMeshRef.current.rotation.y += 0.002 * (delta * 60);
     }
   });
 
   return (
-    <group position={[13.5, 0, 0]}>
+    <group position={[15.2, 0, 0]}>
       {/* Radiant Sun Sphere */}
       <mesh ref={sunMeshRef}>
-        <sphereGeometry args={[3.8, 64, 64]} />
+        <sphereGeometry args={[5.2, 64, 64]} />
         <meshBasicMaterial map={sunTexture} />
       </mesh>
 
-      {/* Atmospheric Corona Glow */}
-      <mesh scale={[1.08, 1.08, 1.08]}>
-        <sphereGeometry args={[3.8, 32, 32]} />
+      {/* Atmospheric Solar Corona Rim Glow */}
+      <mesh scale={[1.06, 1.06, 1.06]}>
+        <sphereGeometry args={[5.2, 32, 32]} />
         <meshBasicMaterial
           color="#F59E0B"
           transparent
-          opacity={0.35}
+          opacity={0.4}
           blending={THREE.AdditiveBlending}
           side={THREE.BackSide}
         />
       </mesh>
-
-      {/* Sun Minimal Badge */}
-      <Html position={[-3.5, 0, 0]} center distanceFactor={16}>
-        <div className="px-2.5 py-0.5 rounded-full bg-black/90 border border-amber-400/50 text-amber-300 font-mono text-[11px] font-bold shadow-xl flex items-center gap-1">
-          <span>☉ SUN</span>
-        </div>
-      </Html>
     </group>
   );
 }
@@ -516,7 +547,7 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
       {/* 3D WebGL Canvas (Cinematic Viewport) */}
       <div className="w-full h-[360px] sm:h-[440px] relative rounded-2xl bg-[#020306] border border-white/10 overflow-hidden shadow-inner">
         <Canvas
-          camera={{ position: [0, 1.2, 17], fov: 42 }}
+          camera={{ position: [0, 0.8, 17.5], fov: 42 }}
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
           className="w-full h-full cursor-grab active:cursor-grabbing"
         >
@@ -524,13 +555,13 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
           <Stars radius={100} depth={50} count={3500} factor={4} saturation={0.5} fade speed={1} />
 
           {/* Ambient space illumination */}
-          <ambientLight intensity={0.45} />
+          <ambientLight intensity={0.4} />
 
           {/* Powerful directional sunlight originating from the Sun on the right */}
-          <pointLight position={[13.0, 0, 0]} intensity={4.8} color="#FFFBEB" distance={45} decay={1.4} />
-          <pointLight position={[-18, 10, 10]} intensity={0.5} color="#38BDF8" />
+          <pointLight position={[15.0, 0, 0]} intensity={5.2} color="#FFFBEB" distance={50} decay={1.3} />
+          <pointLight position={[-18, 8, 8]} intensity={0.4} color="#38BDF8" />
 
-          {/* Sun on the right */}
+          {/* Giant Radiant Sun on the right */}
           <GiantSunOnRight />
 
           {/* Realistic Alignment of Planets */}
@@ -552,7 +583,7 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
           <OrbitControls
             enableZoom={true}
             minDistance={4}
-            maxDistance={25}
+            maxDistance={28}
             enablePan={true}
             autoRotate={false}
             maxPolarAngle={Math.PI / 1.7}
