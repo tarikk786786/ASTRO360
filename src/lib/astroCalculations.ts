@@ -285,11 +285,14 @@ export function calculatePlanetaryPositions(
 /**
  * Computes Panchang data (Tithi, Nakshatra, Yoga, Karana, Rahu Kalam, Muhurta) dynamically.
  */
-export function calculatePanchang(date = new Date()): PanchangInfo {
-  const panchangKey = `${date.toISOString().split('T')[0]}_${date.getHours()}`;
+export function calculatePanchang(dateInput: Date | string = new Date()): PanchangInfo {
+  const dateObj = typeof dateInput === 'string' ? new Date(dateInput) : (dateInput instanceof Date ? dateInput : new Date());
+  const dateValid = isNaN(dateObj.getTime()) ? new Date() : dateObj;
+  const isoDate = dateValid.toISOString().split('T')[0];
+  const panchangKey = `${isoDate}_${dateValid.getHours()}`;
   const cachedPanchang = PANCHANG_CACHE.get(panchangKey);
   if (cachedPanchang) return cachedPanchang;
-  const positions = calculatePlanetaryPositions(date.toISOString().split('T')[0]);
+  const positions = calculatePlanetaryPositions(isoDate);
   const sun = positions.find(p => p.name === 'Sun');
   const moon = positions.find(p => p.name === 'Moon');
 
@@ -323,7 +326,7 @@ export function calculatePanchang(date = new Date()): PanchangInfo {
   }
 
   // Weekday-dependent Rahu Kalam
-  const dayOfWeek = date.getDay(); // 0 = Sunday
+  const dayOfWeek = dateValid.getDay(); // 0 = Sunday
   const rahuKalamSlots = [
     '04:30 PM - 06:00 PM', // Sunday
     '07:30 AM - 09:00 AM', // Monday

@@ -14,7 +14,9 @@
     "test:backlinks": "tsx tests/backlink-lab/backlinkLabCore.test.ts",
     "test:canonical": "tsx tests/seo-lab/canonicalUrlAudit.test.ts",
     "test:news": "tsx tests/news-prediction/newsPredictionCore.test.ts",
-    "test:forensic": "tsx tests/forensicRunner.ts"
+    "test:forensic": "tsx tests/forensicRunner.ts",
+    "benchmark": "tsx scripts/benchmark-ephemeris.ts",
+    "audit:routes": "tsx scripts/audit-routes.ts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",
