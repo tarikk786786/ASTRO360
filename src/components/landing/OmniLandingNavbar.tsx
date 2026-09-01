@@ -101,25 +101,25 @@ export default function OmniLandingNavbar({
   return (
     <>
       {/* 1. Global Announcement Header */}
-      <div className="w-full bg-[#090E17] border-b border-white/8 py-2 px-4 text-center text-xs font-mono text-slate-300 flex flex-wrap items-center justify-center gap-2">
-        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-400/15 text-amber-300 text-[10px] font-bold uppercase tracking-wider border border-amber-400/25">
-          <Sparkles className="w-3 h-3 text-amber-400" /> Free-First Open Platform
+      <div className="w-full bg-[#0B0C10] border-b border-white/[0.08] py-2 px-4 text-center text-[11px] font-sans text-slate-400 flex flex-wrap items-center justify-center gap-2">
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm bg-white/[0.05] text-slate-300 text-[10px] font-medium border border-white/[0.08]">
+          <Sparkles className="w-2.5 h-2.5" /> Free-First Open Platform
         </span>
-        <span>All 150+ Astrological Ephemeris Calculators & Research Suites are <strong>100% Free</strong>.</span>
+        <span>All 150+ Astrological Ephemeris Calculators & Research Suites are 100% Free.</span>
         <button
           onClick={handleCreate}
-          className="text-amber-400 hover:text-amber-300 font-bold underline underline-offset-2 ml-1 cursor-pointer transition-colors"
+          className="text-white hover:text-gray-300 font-medium ml-1 cursor-pointer transition-colors"
         >
-          Create My Free Chart →
+          Create Chart →
         </button>
       </div>
 
       {/* 2. Glass Sticky Navigation Header */}
       <header
-        className={`sticky top-0 z-50 w-full transition-all duration-200 ${
+        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
           isScrolled
-            ? 'bg-[#060A12]/95 backdrop-blur-md border-b border-white/10 shadow-xl py-3'
-            : 'bg-[#060A12]/80 backdrop-blur-sm border-b border-white/5 py-3.5'
+            ? 'bg-[#0B0C10]/70 backdrop-blur-xl border-b border-white/[0.08] shadow-sm py-3'
+            : 'bg-transparent border-b border-transparent py-4'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
@@ -127,37 +127,34 @@ export default function OmniLandingNavbar({
           {/* Brand Logo */}
           <div 
             onClick={() => handleNavSection('hero')} 
-            className="flex items-center gap-3 cursor-pointer shrink-0 group"
+            className="flex items-center gap-2.5 cursor-pointer shrink-0 group"
           >
-            <div className="relative w-8 h-8 rounded-xl bg-slate-900 border border-white/15 flex items-center justify-center shadow-inner group-hover:border-amber-400/50 transition-colors">
-              <div className="w-4 h-4 rounded-full border border-amber-400/80 group-hover:scale-105 transition-transform" />
-              <div className="absolute w-1.5 h-1.5 rounded-full bg-amber-400 top-1.5 right-1.5 shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+            <div className="relative w-7 h-7 rounded-md bg-white border border-white/20 flex items-center justify-center shadow-sm">
+              <div className="w-2.5 h-2.5 rounded-sm bg-black group-hover:scale-105 transition-transform" />
             </div>
             <div className="flex flex-col text-left">
-              <span className="font-extrabold text-base tracking-tight text-white font-sans">ASTRO360</span>
-              <span className="text-[9px] font-mono text-slate-400 tracking-widest leading-none">INTELLIGENCE</span>
+              <span className="font-semibold text-[15px] tracking-tight text-white font-sans leading-none">Twenty360</span>
             </div>
           </div>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center gap-5 text-xs font-mono text-slate-300">
+          <nav className="hidden lg:flex items-center gap-6 text-[13px] font-sans font-medium text-slate-400">
             
             {/* Tools Mega Dropdown Toggle */}
             <div className="relative">
               <button
                 onClick={() => setToolsDropdownOpen(!toolsDropdownOpen)}
-                className="text-amber-300 hover:text-amber-200 font-bold transition-colors cursor-pointer flex items-center gap-1.5 py-1 px-2.5 rounded-lg hover:bg-white/5"
+                className="hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 py-1"
               >
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                <span>All Free Tools (150+)</span>
-                <ChevronDown className={`w-3 h-3 transition-transform ${toolsDropdownOpen ? 'rotate-180' : ''}`} />
+                <span>Product</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${toolsDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {/* Mega Dropdown Menu */}
               {toolsDropdownOpen && (
                 <div 
                   onMouseLeave={() => setToolsDropdownOpen(false)}
-                  className="absolute top-full left-0 mt-2 w-[520px] p-4 rounded-2xl bg-[#0B1220] border border-white/12 shadow-2xl grid grid-cols-2 gap-2 text-left z-50 animate-reveal-up"
+                  className="absolute top-full left-0 mt-2 w-[520px] p-3 rounded-xl bg-[#111315] border border-white/[0.08] shadow-2xl grid grid-cols-2 gap-1 text-left z-50 animate-reveal-up backdrop-blur-xl"
                 >
                   {ALL_TOOL_LINKS.slice(0, 10).map((tool, idx) => (
                     <button
@@ -166,23 +163,23 @@ export default function OmniLandingNavbar({
                         handleNavSection(tool.tab);
                         setToolsDropdownOpen(false);
                       }}
-                      className="p-2.5 rounded-xl hover:bg-white/5 transition-colors text-left group cursor-pointer"
+                      className="p-3 rounded-lg hover:bg-white/[0.04] transition-colors text-left group cursor-pointer flex flex-col gap-0.5"
                     >
-                      <span className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors block">{tool.name}</span>
-                      <span className="text-[10px] text-slate-400 font-sans block truncate">{tool.desc}</span>
+                      <span className="text-[13px] font-medium text-slate-200 group-hover:text-white transition-colors">{tool.name}</span>
+                      <span className="text-[11px] text-slate-500 font-sans truncate">{tool.desc}</span>
                     </button>
                   ))}
-                  <div className="col-span-2 pt-2 border-t border-white/8 flex justify-between items-center text-[11px] font-mono">
-                    <span className="text-slate-400">100% Free Calculations</span>
+                  <div className="col-span-2 pt-3 mt-1 border-t border-white/[0.06] flex justify-between items-center text-[11px] px-3 pb-1">
+                    <span className="text-slate-500">100% Free Calculations</span>
                     <button
                       onClick={() => {
                         handleNavSection('free-tools');
                         setToolsDropdownOpen(false);
                       }}
-                      className="text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1 cursor-pointer"
+                      className="text-slate-300 hover:text-white font-medium flex items-center gap-1 cursor-pointer transition-colors"
                     >
                       <span>View Full Catalog</span>
-                      <ArrowRight className="w-3 h-3" />
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
@@ -190,74 +187,49 @@ export default function OmniLandingNavbar({
             </div>
 
             <button onClick={() => handleNavSection('birth-chart')} className="hover:text-white transition-colors cursor-pointer">
-              Birth Chart (Kundli)
+              Resources
             </button>
             <button onClick={() => handleNavSection('compatibility')} className="hover:text-white transition-colors cursor-pointer">
-              36-Guna Matcher
+              Customers
             </button>
             <button onClick={() => handleNavSection('panchanga')} className="hover:text-white transition-colors cursor-pointer">
-              Daily Panchanga
-            </button>
-            <button onClick={() => handleNavSection('news-intelligence')} className="hover:text-white transition-colors cursor-pointer flex items-center gap-1">
-              <Activity className="w-3 h-3 text-cyan-400" />
-              <span>News Radar</span>
-            </button>
-            <button onClick={() => handleNavSection('methodology')} className="hover:text-white transition-colors cursor-pointer">
-              Methodology
+              Pricing
             </button>
           </nav>
 
           {/* Action Bar (Search + Language + Command Center + CTAs) */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* Global Multi-Language Selector */}
-            <div className="hidden sm:block">
-              <GlobalLanguageSelector compact={true} />
-            </div>
-
-            {/* Master Command Center Button */}
-            <button
-              onClick={() => setCommandCenterOpen(true)}
-              className="px-2.5 py-1.5 rounded-xl bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 hover:text-white border border-amber-400/30 text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer transition-all shadow-sm"
-              title="Open Command Center (⌘K)"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span className="hidden sm:inline">Command Center</span>
-              <kbd className="hidden lg:inline bg-amber-400/20 px-1 py-0.2 rounded text-[9px] text-amber-300">⌘K</kbd>
-            </button>
-
+          <div className="flex items-center gap-3">
             {/* Quick Search Button */}
             <button
               onClick={() => setSearchModalOpen(true)}
-              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/8 text-xs font-mono flex items-center gap-2 cursor-pointer transition-all"
+              className="px-2 py-1.5 rounded-md hover:bg-white/[0.06] text-slate-400 hover:text-white text-[13px] font-medium flex items-center gap-1.5 cursor-pointer transition-all"
               title="Search all tools"
             >
-              <Search className="w-3.5 h-3.5 text-amber-400" />
-              <span className="hidden md:inline text-[11px] text-slate-400">Search tools...</span>
+              <Search className="w-4 h-4" />
+              <span className="hidden md:inline">Search</span>
+              <kbd className="hidden lg:inline bg-white/10 px-1.5 py-0.5 rounded-sm text-[10px] text-slate-400 ml-1">⌘K</kbd>
             </button>
 
             {onOpenDashboard && (
               <button
                 onClick={onOpenDashboard}
-                className="hidden sm:inline-flex px-3.5 py-2 rounded-xl text-xs font-mono text-slate-300 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10 transition-all cursor-pointer min-h-[36px] items-center"
+                className="hidden sm:inline-flex px-3 py-1.5 text-[13px] font-medium text-slate-400 hover:text-white hover:bg-white/[0.06] rounded-md transition-all cursor-pointer items-center"
               >
-                Dashboard
+                Log in
               </button>
             )}
 
             <button
               onClick={handleCreate}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300 hover:from-amber-400 hover:to-amber-200 active:scale-95 text-slate-950 font-bold text-xs font-mono flex items-center gap-1.5 shadow-md shadow-amber-500/20 transition-all cursor-pointer min-h-[36px]"
+              className="px-4 py-1.5 rounded-md bg-white hover:bg-gray-100 text-black font-semibold text-[13px] shadow-sm transition-all cursor-pointer"
             >
-              <Sparkles className="w-3.5 h-3.5 fill-slate-950" />
-              <span className="hidden sm:inline">Create Free Chart</span>
-              <span className="sm:hidden">Chart</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              Get started
             </button>
 
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
+              className="lg:hidden p-1.5 rounded-md text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors cursor-pointer"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
