@@ -1,7 +1,8 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { 
   Sparkles, Download, Printer, Play, Pause, 
-  Clock, CheckCircle2, Award, Zap, Compass, Shield, Flame, Activity, BarChart3, Layers, BookOpen, Search
+  Clock, CheckCircle2, Award, Zap, Compass, Shield, Flame, Activity, BarChart3, Layers, BookOpen, Search,
+  Volume2, VolumeX, Moon, Sun, Star, Radio, RefreshCw
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { UserProfile } from '../types';
@@ -53,6 +54,46 @@ const DASHA_LORDS = [
   { name: 'Mercury (Budha)', years: 17, symbol: '☿', color: 'text-emerald-400' },
 ];
 
+const PLANETARY_FREQUENCIES: Record<string, { freq: number; octave: string; chakra: string; benefit: string }> = {
+  Sun: { freq: 126.22, octave: 'Cosmic Sun Ray', chakra: 'Solar Plexus (Manipura)', benefit: 'Vitality, Confidence, Leadership & Cellular Regeneration' },
+  Moon: { freq: 210.42, octave: 'Synodic Lunar Cycle', chakra: 'Sacral (Svadhisthana)', benefit: 'Emotional Balance, Intuition, Deep Sleep & Hormonal Harmony' },
+  Mars: { freq: 144.72, octave: 'Iron Resonant Pitch', chakra: 'Root (Muladhara)', benefit: 'Courage, Determination, Physical Stamina & Initiative' },
+  Mercury: { freq: 141.27, octave: 'Mercurial Frequency', chakra: 'Throat (Vishuddha)', benefit: 'Intellect, Communication, Neural Plasticity & Memory' },
+  Jupiter: { freq: 183.58, octave: 'Jovian Orbit Resonant', chakra: 'Third Eye (Ajna)', benefit: 'Expansion, Wisdom, Abundance & High Spiritual Intellect' },
+  Venus: { freq: 221.23, octave: 'Venusian Rotation', chakra: 'Heart (Anahata)', benefit: 'Love, Harmony, Artistic Creativity & Cellular Radiance' },
+  Saturn: { freq: 147.85, octave: 'Saturnian Orbit Base', chakra: 'Crown (Sahasrara)', benefit: 'Discipline, Karmic Grounding, Focus & Deep Stillness' },
+};
+
+const ALL_27_NAKSHATRAS = [
+  { name: 'Ashwini', lord: 'Ketu', deity: 'Ashwini Kumaras (Divine Healers)', symbol: 'Horse Head', gana: 'Deva', yoni: 'Horse', span: '0°00\' - 13°20\' Aries' },
+  { name: 'Bharani', lord: 'Venus', deity: 'Yama (Lord of Dharma)', symbol: 'Yoni / Triangle', gana: 'Manushya', yoni: 'Elephant', span: '13°20\' - 26°40\' Aries' },
+  { name: 'Krittika', lord: 'Sun', deity: 'Agni (Sacred Fire)', symbol: 'Razor / Flame', gana: 'Rakshasa', yoni: 'Sheep', span: '26°40\' Aries - 10°00\' Taurus' },
+  { name: 'Rohini', lord: 'Moon', deity: 'Brahma / Prajapati (Creator)', symbol: 'Chariot / Cart', gana: 'Manushya', yoni: 'Serpent', span: '10°00\' - 23°20\' Taurus' },
+  { name: 'Mrigashira', lord: 'Mars', deity: 'Soma (Moon God)', symbol: 'Deer Head', gana: 'Deva', yoni: 'Serpent', span: '23°20\' Taurus - 6°40\' Gemini' },
+  { name: 'Ardra', lord: 'Rahu', deity: 'Rudra (Storm God)', symbol: 'Teardrop / Diamond', gana: 'Manushya', yoni: 'Dog', span: '6°40\' - 20°00\' Gemini' },
+  { name: 'Punarvasu', lord: 'Jupiter', deity: 'Aditi (Cosmic Mother)', symbol: 'Bow & Quiver', gana: 'Deva', yoni: 'Cat', span: '20°00\' Gemini - 3°20\' Cancer' },
+  { name: 'Pushya', lord: 'Saturn', deity: 'Brihaspati (Divine Guru)', symbol: 'Cow Udder / Lotus', gana: 'Deva', yoni: 'Goat', span: '3°20\' - 16°40\' Cancer' },
+  { name: 'Ashlesha', lord: 'Mercury', deity: 'Sarpas (Nagas / Serpents)', symbol: 'Coiled Snake', gana: 'Rakshasa', yoni: 'Cat', span: '16°40\' - 30°00\' Cancer' },
+  { name: 'Magha', lord: 'Ketu', deity: 'Pitris (Ancestral Spirits)', symbol: 'Throne Room', gana: 'Rakshasa', yoni: 'Rat', span: '0°00\' - 13°20\' Leo' },
+  { name: 'Purva Phalguni', lord: 'Venus', deity: 'Bhaga (God of Prosperity)', symbol: 'Hammock / Couch', gana: 'Manushya', yoni: 'Rat', span: '13°20\' - 26°40\' Leo' },
+  { name: 'Uttara Phalguni', lord: 'Sun', deity: 'Aryaman (God of Patronage)', symbol: 'Bed Legs', gana: 'Manushya', yoni: 'Cow', span: '26°40\' Leo - 10°00\' Virgo' },
+  { name: 'Hasta', lord: 'Moon', deity: 'Savitur (Sun God of Skill)', symbol: 'Open Hand', gana: 'Deva', yoni: 'Buffalo', span: '10°00\' - 23°20\' Virgo' },
+  { name: 'Chitra', lord: 'Mars', deity: 'Vishwakarma (Divine Architect)', symbol: 'Bright Pearl / Gem', gana: 'Rakshasa', yoni: 'Tiger', span: '23°20\' Virgo - 6°40\' Libra' },
+  { name: 'Swati', lord: 'Rahu', deity: 'Vayu (Wind God)', symbol: 'Young Shoot / Coral', gana: 'Deva', yoni: 'Buffalo', span: '6°40\' - 20°00\' Libra' },
+  { name: 'Vishakha', lord: 'Jupiter', deity: 'Indragni (Lightning & Fire)', symbol: 'Triumphal Arch', gana: 'Rakshasa', yoni: 'Tiger', span: '20°00\' Libra - 3°20\' Scorpio' },
+  { name: 'Anuradha', lord: 'Saturn', deity: 'Mitra (God of Friendship)', symbol: 'Lotus / Staff', gana: 'Deva', yoni: 'Deer', span: '3°20\' - 16°40\' Scorpio' },
+  { name: 'Jyeshtha', lord: 'Mercury', deity: 'Indra (King of Gods)', symbol: 'Circular Amulet', gana: 'Rakshasa', yoni: 'Deer', span: '16°40\' - 30°00\' Scorpio' },
+  { name: 'Mula', lord: 'Ketu', deity: 'Nirriti (Goddess of Dissolution)', symbol: 'Tied Roots', gana: 'Rakshasa', yoni: 'Dog', span: '0°00\' - 13°20\' Sagittarius' },
+  { name: 'Purva Ashadha', lord: 'Venus', deity: 'Apas (Cosmic Waters)', symbol: 'Winnowing Fan / Tusk', gana: 'Manushya', yoni: 'Monkey', span: '13°20\' - 26°40\' Sagittarius' },
+  { name: 'Uttara Ashadha', lord: 'Sun', deity: 'Vishvadevas (Universal Gods)', symbol: 'Elephant Tusk', gana: 'Manushya', yoni: 'Mongoose', span: '26°40\' Sag - 10°00\' Capricorn' },
+  { name: 'Shravana', lord: 'Moon', deity: 'Vishnu (Preserver of Cosmos)', symbol: 'Ear / Three Footprints', gana: 'Deva', yoni: 'Monkey', span: '10°00\' - 23°20\' Capricorn' },
+  { name: 'Dhanishta', lord: 'Mars', deity: 'Ashta Vasus (8 Gods of Light)', symbol: 'Flute / Drum', gana: 'Rakshasa', yoni: 'Lion', span: '23°20\' Cap - 6°40\' Aquarius' },
+  { name: 'Shatabhisha', lord: 'Rahu', deity: 'Varuna (God of Cosmic Oceans)', symbol: 'Empty Circle / 100 Healers', gana: 'Rakshasa', yoni: 'Horse', span: '6°40\' - 20°00\' Aquarius' },
+  { name: 'Purva Bhadrapada', lord: 'Jupiter', deity: 'Aja Ekapada (One-Footed Goat)', symbol: 'Sword / Front of Funeral Cot', gana: 'Manushya', yoni: 'Lion', span: '20°00\' Aqu - 3°20\' Pisces' },
+  { name: 'Uttara Bhadrapada', lord: 'Saturn', deity: 'Ahirbudhnya (Serpent of Deep)', symbol: 'Twins / Deep Sea Serpent', gana: 'Manushya', yoni: 'Cow', span: '3°20\' - 16°40\' Pisces' },
+  { name: 'Revati', lord: 'Mercury', deity: 'Pushan (Nourisher & Guide)', symbol: 'Fish Pair / Drum', gana: 'Deva', yoni: 'Elephant', span: '16°40\' - 30°00\' Pisces' },
+];
+
 export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProps) {
   const { profiles, activeProfileId } = useProfileStore();
   
@@ -68,7 +109,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
   // Primary Studio Mode
   const [activeStudioTab, setActiveStudioTab] = useState<
-    'chart' | 'aspects' | 'avasthas' | 'dashaTree' | 'ashtakavarga' | 'shadbala' | 'multisystem' | 'timing' | 'predictions' | 'research' | 'rules'
+    'chart' | 'aspects' | 'avasthas' | 'nakshatras' | 'soundResonator' | 'dashaTree' | 'ashtakavarga' | 'shadbala' | 'multisystem' | 'timing' | 'predictions' | 'research' | 'rules'
   >('chart');
   
   // Density mode: 'comfortable' vs 'compact'
@@ -90,6 +131,13 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
   // Ayanamsha Configuration
   const [ayanamsha, setAyanamsha] = useState<'lahiri' | 'raman' | 'kp' | 'tropical'>('lahiri');
 
+  // Audio synthesis state
+  const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
+  const [activeAudioPlanet, setActiveAudioPlanet] = useState<string>('Sun');
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const oscillatorRef = useRef<OscillatorNode | null>(null);
+  const gainNodeRef = useRef<GainNode | null>(null);
+
   // Prediction Form State
   const [predictionQuestion, setPredictionQuestion] = useState('When is my strongest career growth window?');
   const [predictionCategory, setPredictionCategory] = useState('Career');
@@ -104,6 +152,67 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
     }
     return () => clearInterval(timer);
   }, [isLiveAnimating, animSpeed]);
+
+  // Cleanup WebAudio on unmount
+  useEffect(() => {
+    return () => {
+      if (oscillatorRef.current) {
+        try { oscillatorRef.current.stop(); } catch (e) {}
+      }
+      if (audioContextRef.current) {
+        try { audioContextRef.current.close(); } catch (e) {}
+      }
+    };
+  }, []);
+
+  const handleToggleSound = (planetName: string) => {
+    const config = PLANETARY_FREQUENCIES[planetName];
+    if (!config) return;
+
+    if (isPlayingAudio && activeAudioPlanet === planetName) {
+      if (oscillatorRef.current) {
+        try { oscillatorRef.current.stop(); } catch (e) {}
+        oscillatorRef.current = null;
+      }
+      setIsPlayingAudio(false);
+      toast.info('Acoustic frequency paused');
+      return;
+    }
+
+    if (oscillatorRef.current) {
+      try { oscillatorRef.current.stop(); } catch (e) {}
+      oscillatorRef.current = null;
+    }
+
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!audioContextRef.current) {
+        audioContextRef.current = new AudioCtx();
+      }
+      if (audioContextRef.current.state === 'suspended') {
+        audioContextRef.current.resume();
+      }
+
+      const osc = audioContextRef.current.createOscillator();
+      const gain = audioContextRef.current.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(config.freq, audioContextRef.current.currentTime);
+      gain.gain.setValueAtTime(0.08, audioContextRef.current.currentTime);
+
+      osc.connect(gain);
+      gain.connect(audioContextRef.current.destination);
+      osc.start();
+
+      oscillatorRef.current = osc;
+      gainNodeRef.current = gain;
+      setActiveAudioPlanet(planetName);
+      setIsPlayingAudio(true);
+      toast.success(`Playing ${planetName} Cosmic Octave: ${config.freq} Hz`);
+    } catch (err) {
+      toast.error('Audio synthesizer unavailable on this browser.');
+    }
+  };
 
   // Compute Active Studio Time
   const activeStudioDate = useMemo(() => {
@@ -459,7 +568,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               Astrological Workspace & Ephemeris Inspector
             </h1>
             <p className="text-xs sm:text-sm text-slate-300">
-              Interactive 12-house Kundli, real-time time-travel scrubbing, Aspect orbs, Planetary Avasthas, Dasha trees, SAV heatmaps, and Shadbala meters.
+              Interactive 12-house Kundli, real-time time-travel scrubbing, Aspect orbs, Planetary Avasthas, 27 Nakshatras, Sound synthesis, and Shadbala meters.
             </p>
           </div>
 
@@ -506,6 +615,8 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
           { id: 'chart', label: '🔭 Chart Workspace' },
           { id: 'aspects', label: '📐 Aspects & Drishti' },
           { id: 'avasthas', label: '🧘 Planetary Avasthas' },
+          { id: 'nakshatras', label: '✨ 27 Nakshatras' },
+          { id: 'soundResonator', label: '🎵 Sound Resonator' },
           { id: 'dashaTree', label: '🌳 Vimshottari Tree' },
           { id: 'ashtakavarga', label: '📊 Ashtakavarga (SAV)' },
           { id: 'shadbala', label: '⚡ Shadbala Potency' },
@@ -1012,7 +1123,99 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 4: VIMSHOTTARI TREE ─────────────────────────────────── */}
+      {/* ─── TAB 4: 27 NAKSHATRAS EXPLORER ───────────────────────────── */}
+      {activeStudioTab === 'nakshatras' && (
+        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
+          <div className="border-b border-white/10 pb-3 flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white">27 Vedic Nakshatras & Sacred Deity Matrix</h3>
+              <p className="text-slate-400">108 Padas, Ruling Deities, Yonis, Ganas, and Ecliptic spans.</p>
+            </div>
+            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-amber-400/20 font-bold">
+              27 Lunar Mansions
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {ALL_27_NAKSHATRAS.map((nak, idx) => (
+              <div key={nak.name} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-bold text-amber-300">
+                    #{idx + 1} {nak.name}
+                  </span>
+                  <span className="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded">
+                    Lord: {nak.lord}
+                  </span>
+                </div>
+                <div className="text-slate-300 text-[11px]">
+                  <strong>Deity:</strong> {nak.deity}
+                </div>
+                <div className="text-slate-400 text-[10px]">
+                  <strong>Symbol:</strong> {nak.symbol} • <strong>Gana:</strong> {nak.gana}
+                </div>
+                <div className="text-cyan-300 text-[10px] pt-1 border-t border-white/5">
+                  Span: {nak.span}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ─── TAB 5: HANS COUSTO SOUND RESONATOR ───────────────────────── */}
+      {activeStudioTab === 'soundResonator' && (
+        <div className="p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 space-y-6 font-mono text-xs">
+          <div className="border-b border-white/10 pb-3 flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white">Hans Cousto Cosmic Octave Acoustic Resonator</h3>
+              <p className="text-slate-400">Pure sinusoidal micro-tonal sound synthesis matching planetary orbital periods for meditation & remedial alignment.</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className={`text-xs px-3 py-1 rounded-xl font-bold flex items-center gap-1.5 ${isPlayingAudio ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 animate-pulse' : 'bg-slate-800 text-slate-400'}`}>
+                {isPlayingAudio ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+                {isPlayingAudio ? `Active: ${activeAudioPlanet}` : 'Idle'}
+              </span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {Object.entries(PLANETARY_FREQUENCIES).map(([pName, cfg]) => {
+              const isThisPlaying = isPlayingAudio && activeAudioPlanet === pName;
+              return (
+                <div key={pName} className={`p-4 rounded-2xl border transition-all space-y-3 ${isThisPlaying ? 'bg-amber-950/20 border-amber-400 shadow-lg shadow-amber-500/10' : 'bg-white/5 border-white/10'}`}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-bold text-white flex items-center gap-1.5">
+                      {pName}
+                    </span>
+                    <span className="text-xs font-black text-amber-400 bg-black/40 px-2 py-0.5 rounded">
+                      {cfg.freq} Hz
+                    </span>
+                  </div>
+
+                  <div className="text-slate-300 text-[11px] space-y-0.5">
+                    <div><strong>Chakra:</strong> {cfg.chakra}</div>
+                    <div className="text-slate-400 text-[10px]"><strong>Benefit:</strong> {cfg.benefit}</div>
+                  </div>
+
+                  <button
+                    onClick={() => handleToggleSound(pName)}
+                    className={`w-full py-2 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                      isThisPlaying
+                        ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/20 animate-pulse'
+                        : 'bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 hover:brightness-110 shadow-md'
+                    }`}
+                  >
+                    {isThisPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+                    <span>{isThisPlaying ? 'Stop Resonance' : 'Play Frequency'}</span>
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ─── TAB 6: VIMSHOTTARI TREE ─────────────────────────────────── */}
       {activeStudioTab === 'dashaTree' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1049,7 +1252,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 5: ASHTAKAVARGA (SAV) POTENCY MATRIX ────────────────── */}
+      {/* ─── TAB 7: ASHTAKAVARGA (SAV) POTENCY MATRIX ────────────────── */}
       {activeStudioTab === 'ashtakavarga' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1083,7 +1286,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 6: SHADBALA POTENCY METERS ──────────────────────────── */}
+      {/* ─── TAB 8: SHADBALA POTENCY METERS ──────────────────────────── */}
       {activeStudioTab === 'shadbala' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1131,7 +1334,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 7: MULTI-SYSTEM SIDE-BY-SIDE ────────────────────────── */}
+      {/* ─── TAB 9: MULTI-SYSTEM SIDE-BY-SIDE ────────────────────────── */}
       {activeStudioTab === 'multisystem' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
@@ -1171,7 +1374,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 8: TIMING WORKSPACE ─────────────────────────────────── */}
+      {/* ─── TAB 10: TIMING WORKSPACE ────────────────────────────────── */}
       {activeStudioTab === 'timing' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1204,7 +1407,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 9: PREDICTIONS & EVENT JOURNAL ──────────────────────── */}
+      {/* ─── TAB 11: PREDICTIONS & EVENT JOURNAL ─────────────────────── */}
       {activeStudioTab === 'predictions' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
@@ -1248,7 +1451,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 10: RESEARCH & ACCURACY LAB ─────────────────────────── */}
+      {/* ─── TAB 12: RESEARCH & ACCURACY LAB ─────────────────────────── */}
       {activeStudioTab === 'research' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-cyan-500/30 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1297,7 +1500,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 11: RULE & SOURCE EXPLORER ──────────────────────────── */}
+      {/* ─── TAB 13: RULE & SOURCE EXPLORER ──────────────────────────── */}
       {activeStudioTab === 'rules' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
