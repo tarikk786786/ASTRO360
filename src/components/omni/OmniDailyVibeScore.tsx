@@ -136,7 +136,7 @@ export default function OmniDailyVibeScore({ userProfile }: OmniDailyVibeScorePr
   };
 
   return (
-    <div className="rounded-3xl bg-gradient-to-br from-[#0B1220] via-[#0F182E] to-[#090E1A] border border-amber-400/30 p-5 sm:p-6 shadow-2xl space-y-5 text-left font-sans relative overflow-hidden">
+    <div className="rounded-3xl bg-[#111315] border border-white/[0.08] p-5 sm:p-6 shadow-2xl space-y-5 text-left font-sans relative overflow-hidden">
       {/* Background radial glow */}
       <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
 

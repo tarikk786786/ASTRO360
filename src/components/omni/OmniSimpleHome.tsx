@@ -230,19 +230,19 @@ export default function OmniSimpleHome({
         <motion.div
           animate={{ x: [0, 40, -20, 0], y: [0, -30, 20, 0], scale: [1, 1.15, 0.95, 1] }}
           transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -top-20 -left-20 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-amber-500/12 via-amber-600/6 to-transparent blur-[120px]"
+          className="absolute -top-20 -left-20 w-[500px] h-[500px] rounded-full hidden"
         />
         {/* Slow-orbiting indigo nebula glow — lower right */}
         <motion.div
           animate={{ x: [0, -30, 25, 0], y: [0, 35, -15, 0], scale: [1, 0.9, 1.1, 1] }}
           transition={{ duration: 28, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute bottom-[10%] -right-16 w-[450px] h-[450px] rounded-full bg-gradient-to-tl from-indigo-500/10 via-purple-600/5 to-transparent blur-[140px]"
+          className="absolute bottom-[10%] -right-16 w-[450px] h-[450px] rounded-full hidden"
         />
         {/* Cyan accent nebula — center */}
         <motion.div
           animate={{ x: [0, 20, -15, 0], y: [0, -20, 15, 0], opacity: [0.4, 0.7, 0.5, 0.4] }}
           transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-[40%] left-[30%] w-[350px] h-[350px] rounded-full bg-gradient-to-r from-cyan-500/8 via-teal-400/4 to-transparent blur-[100px]"
+          className="absolute top-[40%] left-[30%] w-[350px] h-[350px] rounded-full hidden"
         />
         {/* Floating micro-particle constellation dots */}
         {[...Array(12)].map((_, i) => (
@@ -280,7 +280,7 @@ export default function OmniSimpleHome({
                   backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
                 }}
                 transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
-                className="bg-gradient-to-r from-amber-300 via-amber-500 to-amber-200 bg-[length:200%_auto] bg-clip-text text-transparent"
+                className="text-white font-sans tracking-tight"
               >
                 {seekerName}
               </motion.span>
@@ -328,7 +328,7 @@ export default function OmniSimpleHome({
             animate={{ boxShadow: ['0 4px 14px rgba(251, 191, 36, 0.15)', '0 4px 24px rgba(251, 191, 36, 0.3)', '0 4px 14px rgba(251, 191, 36, 0.15)'] }}
             transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
             onClick={() => onNavigate('studio')}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 text-slate-950 text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-white hover:bg-slate-100 text-black text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer"
           >
             <Sparkles className="w-3.5 h-3.5 fill-slate-950" />
             <span>Master 152+ Studio Suite →</span>
@@ -341,7 +341,7 @@ export default function OmniSimpleHome({
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-indigo-950/40 to-cyan-500/10 border border-amber-400/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg"
+          className="p-3.5 sm:p-4 rounded-2xl bg-[#111315] border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg"
         >
           <div className="flex items-center gap-2.5">
             <span className="p-2 rounded-xl bg-amber-400/20 text-amber-300 border border-amber-400/30 shrink-0">
@@ -358,7 +358,7 @@ export default function OmniSimpleHome({
           </div>
           <button
             onClick={() => onOpenProfile ? onOpenProfile() : onNavigate('onboarding')}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-300 hover:from-amber-300 hover:to-amber-200 text-slate-950 font-bold text-xs font-mono shrink-0 flex items-center justify-center gap-1.5 shadow-md shadow-amber-400/20 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-white hover:bg-slate-100 text-black font-bold text-xs font-mono shrink-0 flex items-center justify-center gap-1.5 shadow-md shadow-amber-400/20 hover:scale-105 active:scale-95 transition-all cursor-pointer"
           >
             <span>Set My Birth Details</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -467,15 +467,10 @@ export default function OmniSimpleHome({
       ) : (
         <>
           {/* 2. Personalized Cosmic Placements Card (Live Computed) */}
-          <div className="relative p-[1px] rounded-2xl overflow-hidden shadow-xl">
+          <div className="relative rounded-2xl overflow-hidden shadow-xl">
             {/* Animated gradient border */}
-            <motion.div
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-              className="absolute inset-0 rounded-2xl bg-[conic-gradient(from_0deg,#F59E0B,#6366F1,#06B6D4,#F59E0B)]"
-              style={{ padding: '1px' }}
-            />
-            <div className="relative p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#0C1322] via-[#0F172A] to-[#0C1322] backdrop-blur-xl grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+            
+            <div className="relative p-4 sm:p-5 rounded-2xl bg-[#111315] border border-white/[0.08] grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
               {/* Card 1 */}
               <motion.div
                 whileHover={{ scale: 1.04, y: -2 }}
@@ -709,7 +704,7 @@ export default function OmniSimpleHome({
               onClick={() => onNavigate(card.id)}
               whileHover={{ scale: 1.03, y: -4 }}
               whileTap={{ scale: 0.97 }}
-              className={`p-4 sm:p-5 rounded-2xl bg-gradient-to-b ${card.color} bg-[#0A101D] border ${card.borderColor} transition-all duration-200 cursor-pointer shadow-lg space-y-2.5 group relative overflow-hidden`}
+              className={`p-4 sm:p-5 rounded-2xl bg-[#111315] border border-white/[0.08] transition-all duration-200 cursor-pointer shadow-lg space-y-2.5 group relative overflow-hidden`}
             >
               <div className="flex items-center justify-between">
                 <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${card.badgeBg}`}>
@@ -753,7 +748,7 @@ export default function OmniSimpleHome({
 
       {/* 4. Hero: Strongest Astronomical Alignment Today */}
       <div
-        className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500/15 via-indigo-950/40 to-[#090D16] border border-amber-500/40 p-6 sm:p-8 shadow-2xl space-y-5"
+        className="relative overflow-hidden rounded-3xl bg-[#111315] border border-white/[0.08] p-6 sm:p-8 shadow-2xl space-y-5"
       >
         <BorderBeam size={220} duration={12} colorFrom="#F59E0B" colorTo="#6366F1" />
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-4">
@@ -991,7 +986,7 @@ export default function OmniSimpleHome({
       {/* 10. AI Astrological Oracle Assistant Prompt Card */}
       <div 
         onClick={() => onNavigate('ask')}
-        className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-indigo-950/70 via-[#0F172A] to-[#090D16] border border-indigo-500/40 hover:border-indigo-500/70 shadow-xl transition-all cursor-pointer space-y-3 group"
+        className="p-5 sm:p-6 rounded-3xl bg-[#111315] border border-white/[0.08] hover:border-white/20 shadow-xl transition-all cursor-pointer space-y-3 group"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-indigo-300 font-mono font-bold text-xs">
