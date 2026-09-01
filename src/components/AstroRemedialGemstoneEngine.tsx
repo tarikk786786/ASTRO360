@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import type { UserProfile } from '../types';
 import { calculatePlanetaryPositions } from '../lib/astroCalculations';
+import { exportUniversalPdf } from '../lib/pdfReportEngine';
 
 interface AstroRemedialGemstoneEngineProps {
   userProfile: UserProfile;
@@ -430,66 +431,61 @@ export default function AstroRemedialGemstoneEngine({ userProfile }: AstroRemedi
     setIsExporting(true);
     setTimeout(() => {
       setIsExporting(false);
-      const printWin = window.open('', '_blank');
-      if (printWin) {
-        printWin.document.write(`
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <title>Gemstone Remedy Blueprint — ${gem.name}</title>
-              <style>
-                body { font-family: system-ui, sans-serif; padding: 40px; color: #0f172a; line-height: 1.6; }
-                .h { border-bottom: 3px double #d97706; padding-bottom: 16px; margin-bottom: 24px; }
-                .title { font-size: 24px; font-weight: 800; color: #b45309; }
-                .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
-                .card { border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; background: #f8fafc; }
-                .lbl { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; }
-                .val { font-size: 14px; font-weight: 700; color: #1e293b; }
-                .alert { background: #fef2f2; border: 1px solid #fca5a5; padding: 16px; border-radius: 12px; color: #991b1b; margin-bottom: 20px; }
-                .footer { text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 30px; }
-              </style>
-            </head>
-            <body>
-              <div class="h">
-                <div class="title">💎 ASTRO360 GEMSTONE & PLANETARY MINERAL BLUEPRINT</div>
-                <div>Personalized Prescribed Remedial Guide for ${userProfile?.name || 'Tarik Islam'}</div>
-              </div>
+      const htmlContent = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Gemstone Remedy Blueprint — ${gem.name}</title>
+            <style>
+              body { font-family: system-ui, sans-serif; padding: 40px; color: #0f172a; line-height: 1.6; }
+              .h { border-bottom: 3px double #d97706; padding-bottom: 16px; margin-bottom: 24px; }
+              .title { font-size: 24px; font-weight: 800; color: #b45309; }
+              .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+              .card { border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; background: #f8fafc; }
+              .lbl { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; }
+              .val { font-size: 14px; font-weight: 700; color: #1e293b; }
+              .alert { background: #fef2f2; border: 1px solid #fca5a5; padding: 16px; border-radius: 12px; color: #991b1b; margin-bottom: 20px; }
+              .footer { text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 30px; }
+            </style>
+          </head>
+          <body>
+            <div class="h">
+              <div class="title">💎 ASTRO360 GEMSTONE & PLANETARY MINERAL BLUEPRINT</div>
+              <div>Personalized Prescribed Remedial Guide for ${userProfile?.name || 'Seeker'}</div>
+            </div>
 
-              <div class="grid">
-                <div class="card"><div class="lbl">Prescribed Gemstone</div><div class="val">${gem.name} (${gem.sanskritName})</div></div>
-                <div class="card"><div class="lbl">Ruling Planet & Aspect</div><div class="val">${gem.rulingPlanet} ${gem.planetSymbol}</div></div>
-                <div class="card"><div class="lbl">Exact Body Carat Weight</div><div class="val">${gem.caratWeight} (Body Wt: ${userBodyWeightKg} kg)</div></div>
-                <div class="card"><div class="lbl">Wearing Finger & Metal</div><div class="val">${gem.idealFinger} (${gem.metal})</div></div>
-              </div>
+            <div class="grid">
+              <div class="card"><div class="lbl">Prescribed Gemstone</div><div class="val">${gem.name} (${gem.sanskritName})</div></div>
+              <div class="card"><div class="lbl">Ruling Planet & Aspect</div><div class="val">${gem.rulingPlanet} ${gem.planetSymbol}</div></div>
+              <div class="card"><div class="lbl">Exact Body Carat Weight</div><div class="val">${gem.caratWeight} (Body Wt: ${userBodyWeightKg} kg)</div></div>
+              <div class="card"><div class="lbl">Wearing Finger & Metal</div><div class="val">${gem.idealFinger} (${gem.metal})</div></div>
+            </div>
 
-              <div class="card" style="margin-bottom: 20px; background: #fffdf5; border-color: #fde68a;">
-                <div class="lbl" style="color: #b45309;">🔬 Why It Works (Root Cause Physics & Astro Diagnostics)</div>
-                <p style="font-size: 13px; color: #78350f; margin-top: 4px;"><strong>Root Cause Diagnosed:</strong> ${gem.rootCauseDiagnosed}</p>
-                <p style="font-size: 13px; color: #78350f;"><strong>Scientific & Bio-energetic Mechanism:</strong> ${gem.whyItWorks}</p>
-              </div>
+            <div class="card" style="margin-bottom: 20px; background: #fffdf5; border-color: #fde68a;">
+              <div class="lbl" style="color: #b45309;">🔬 Why It Works (Root Cause Physics & Astro Diagnostics)</div>
+              <p style="font-size: 13px; color: #78350f; margin-top: 4px;"><strong>Root Cause Diagnosed:</strong> ${gem.rootCauseDiagnosed}</p>
+              <p style="font-size: 13px; color: #78350f;"><strong>Scientific & Bio-energetic Mechanism:</strong> ${gem.whyItWorks}</p>
+            </div>
 
-              <div class="card" style="margin-bottom: 20px;">
-                <div class="lbl">✨ Activation Mantra & Purification Protocol</div>
-                <p style="font-size: 14px; font-weight: 700; color: #4f46e5; margin: 6px 0;">Mantra: ${gem.mantra}</p>
-                <p style="font-size: 12px; color: #334155;"><strong>Ritual:</strong> ${gem.purification}</p>
-                <p style="font-size: 12px; color: #334155;"><strong>Best Timing & Direction:</strong> ${gem.auspiciousDay} | Face ${gem.wearingDirection}</p>
-              </div>
+            <div class="card" style="margin-bottom: 20px;">
+              <div class="lbl">✨ Activation Mantra & Purification Protocol</div>
+              <p style="font-size: 14px; font-weight: 700; color: #4f46e5; margin: 6px 0;">Mantra: ${gem.mantra}</p>
+              <p style="font-size: 12px; color: #334155;"><strong>Ritual:</strong> ${gem.purification}</p>
+              <p style="font-size: 12px; color: #334155;"><strong>Best Timing & Direction:</strong> ${gem.auspiciousDay} | Face ${gem.wearingDirection}</p>
+            </div>
 
-              <div class="alert">
-                <strong>⚠️ INCOMPATIBILITY WARNING:</strong> NEVER wear <strong>${gem.name}</strong> together with: ${gem.incompatibleStones.join(', ')}. Combining incompatible gemstones causes severe energetic friction!
-              </div>
+            <div class="alert">
+              <strong>⚠️ INCOMPATIBILITY WARNING:</strong> NEVER wear <strong>${gem.name}</strong> together with: ${gem.incompatibleStones.join(', ')}. Combining incompatible gemstones causes severe energetic friction!
+            </div>
 
-              <div class="footer">
-                ASTRO360 Precision Remedial Engine · ${new Date().toLocaleDateString()}
-              </div>
-            </body>
-          </html>
-        `);
-        printWin.document.close();
-        printWin.focus();
-        setTimeout(() => printWin.print(), 500);
-      }
-    }, 300);
+            <div class="footer">
+              ASTRO360 Precision Remedial Engine · ${new Date().toLocaleDateString()}
+            </div>
+          </body>
+        </html>
+      `;
+      exportUniversalPdf(htmlContent, `ASTRO360_Gemstone_${gem.name}`);
+    }, 200);
   };
 
   return (

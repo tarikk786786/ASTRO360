@@ -9,6 +9,7 @@ import HadithExplorer from './HadithExplorer';
 import AlAzanPrayerSuite from './AlAzanPrayerSuite';
 import FalahHijriToolkit from './FalahHijriToolkit';
 import { IslamicKnowledgeEngine } from '../lib/islamicKnowledgeEngine';
+import { exportUniversalPdf } from '../lib/pdfReportEngine';
 
 export default function EnterpriseIslamicCenter() {
   const [activeModule, setActiveModule] = useState<'quran' | 'hadith' | 'prayer' | 'duas' | 'ramadan' | 'hajj' | 'ai' | 'reports'>('quran');
@@ -233,7 +234,42 @@ export default function EnterpriseIslamicCenter() {
           <motion.div key="reports" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-4 text-center">
             <h4 className="text-lg font-bold text-white font-display">Export Worship & Study Report (PDF)</h4>
             <p className="text-xs text-slate-400 font-sans">Generate a printable summary of your Quran reading progress, prayer logs, and bookmarked Hadiths.</p>
-            <button className="px-6 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-mono font-bold inline-flex items-center gap-2 transition-all cursor-pointer">
+            <button 
+              onClick={() => {
+                const html = `
+                  <!DOCTYPE html>
+                  <html>
+                    <head>
+                      <title>Islamic Study & Worship Dossier</title>
+                      <style>
+                        body { font-family: system-ui, sans-serif; padding: 40px; color: #0f172a; line-height: 1.6; }
+                        .h { border-bottom: 3px double #10b981; padding-bottom: 16px; margin-bottom: 24px; }
+                        .title { font-size: 24px; font-weight: 800; color: #065f46; }
+                        .card { border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; background: #f0fdf4; margin-bottom: 16px; }
+                        .footer { text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 30px; }
+                      </style>
+                    </head>
+                    <body>
+                      <div class="h">
+                        <div class="title">📖 ASTRO360 ISLAMIC WORSHIP & STUDY DOSSIER</div>
+                        <div>Comprehensive Celestial & Quranic Study Record · ${new Date().toLocaleDateString()}</div>
+                      </div>
+                      <div class="card">
+                        <h3>Daily Celestial Attunement (Ilm al-Falak)</h3>
+                        <p><strong>Primary Dhikr:</strong> Ya Hayyu Ya Qayyum (100x at Dawn)</p>
+                        <p><strong>Focus Surah:</strong> Surah Al-Mulk & Ayatul Kursi</p>
+                        <p><strong>Charity / Sadaqah:</strong> Friday Solar Noon Sadaqah to nourish spiritual light.</p>
+                      </div>
+                      <div class="footer">
+                        ASTRO360 Enterprise Islamic Celestial Center
+                      </div>
+                    </body>
+                  </html>
+                `;
+                exportUniversalPdf(html, 'ASTRO360_Islamic_Worship_Report');
+              }}
+              className="px-6 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-mono font-bold inline-flex items-center gap-2 transition-all cursor-pointer"
+            >
               <Download className="w-4 h-4" /> Download PDF Report
             </button>
           </motion.div>

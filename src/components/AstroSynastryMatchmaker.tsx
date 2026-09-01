@@ -7,6 +7,7 @@ import {
 import type { UserProfile } from '../types';
 import { calculateAshtaKootaScore, calculatePlanetaryPositions } from '../lib/astroCalculations';
 import { staggerContainer, staggerItem } from '../lib/animationPresets';
+import { exportUniversalPdf } from '../lib/pdfReportEngine';
 
 interface AstroSynastryMatchmakerProps {
   userProfile: UserProfile;
@@ -294,69 +295,64 @@ export default function AstroSynastryMatchmaker({ userProfile }: AstroSynastryMa
 
   // PDF Export Function for Compatibility / Team Report
   const handleExportPdf = () => {
-    const printWin = window.open('', '_blank');
-    if (printWin) {
-      printWin.document.write(`
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <title>ASTRO360 Compatibility & Team Matrix Report</title>
-            <style>
-              body { font-family: system-ui, sans-serif; padding: 40px; color: #0f172a; line-height: 1.6; }
-              .h { border-bottom: 3px double #ec4899; padding-bottom: 16px; margin-bottom: 24px; }
-              .title { font-size: 24px; font-weight: 800; color: #be185d; }
-              .card { border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; background: #f8fafc; margin-bottom: 16px; }
-              .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-              .footer { text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 30px; }
-            </style>
-          </head>
-          <body>
-            <div class="h">
-              <div class="title">ASTRO360 COSMIC COMPATIBILITY & TEAM MATRIX REPORT</div>
-              <div>Mode: ${activeMode === 'synastry' ? `1-on-1 Synastry (${seekerName} & ${partnerName})` : `Team Organizational Matrix (${teamMembers.length} Members)`}</div>
-            </div>
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>ASTRO360 Compatibility & Team Matrix Report</title>
+          <style>
+            body { font-family: system-ui, sans-serif; padding: 40px; color: #0f172a; line-height: 1.6; }
+            .h { border-bottom: 3px double #ec4899; padding-bottom: 16px; margin-bottom: 24px; }
+            .title { font-size: 24px; font-weight: 800; color: #be185d; }
+            .card { border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; background: #f8fafc; margin-bottom: 16px; }
+            .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .footer { text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 30px; }
+          </style>
+        </head>
+        <body>
+          <div class="h">
+            <div class="title">ASTRO360 COSMIC COMPATIBILITY & TEAM MATRIX REPORT</div>
+            <div>Mode: ${activeMode === 'synastry' ? `1-on-1 Synastry (${seekerName} & ${partnerName})` : `Team Organizational Matrix (${teamMembers.length} Members)`}</div>
+          </div>
 
-            ${activeMode === 'synastry' ? `
-              <div class="card" style="background: #fdf2f8; border-color: #fbcfe8;">
-                <h3 style="color: #9d174d; margin: 0 0 8px 0;">Compatibility Summary (${matchingSystem.toUpperCase()})</h3>
-                <p><strong>Overall Synergy Score:</strong> ${
-                  matchingSystem === 'vedic' ? `${vedicResult.totalScore}/36 (${Math.round((vedicResult.totalScore/36)*100)}%)` :
-                  matchingSystem === 'western' ? `${westernResult.totalScore}%` :
-                  matchingSystem === 'bazi' ? `${baziResult.totalScore}%` :
-                  matchingSystem === 'islamic' ? `${islamicResult.totalScore}%` : `${kabbalahResult.totalScore}%`
-                }</p>
-                <p><strong>Recommendation:</strong> ${
-                  matchingSystem === 'vedic' ? vedicResult.recommendation :
-                  matchingSystem === 'western' ? westernResult.recommendation :
-                  matchingSystem === 'bazi' ? baziResult.recommendation :
-                  matchingSystem === 'islamic' ? islamicResult.recommendation : kabbalahResult.recommendation
-                }</p>
-              </div>
-            ` : `
-              <div class="card">
-                <h3>Team Organizational Metrics</h3>
-                <p>Overall Cohesion: <strong>${teamSynergyResult?.cohesionScore}%</strong> | Leadership Alignment: <strong>${teamSynergyResult?.leadershipSynergy}%</strong></p>
-                <h4>Pairwise Matrix</h4>
-                <div class="grid">
-                  ${teamSynergyResult?.pairwiseMatrix.map(p => `
-                    <div style="background:#fff; border:1px solid #cbd5e1; padding:10px; border-radius:8px;">
-                      <strong>${p.m1} ↔ ${p.m2}:</strong> ${p.score}% (${p.status})
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            `}
-
-            <div class="footer">
-              ASTRO360 Universal Compatibility Engine · ${new Date().toLocaleDateString()}
+          ${activeMode === 'synastry' ? `
+            <div class="card" style="background: #fdf2f8; border-color: #fbcfe8;">
+              <h3 style="color: #9d174d; margin: 0 0 8px 0;">Compatibility Summary (${matchingSystem.toUpperCase()})</h3>
+              <p><strong>Overall Synergy Score:</strong> ${
+                matchingSystem === 'vedic' ? `${vedicResult.totalScore}/36 (${Math.round((vedicResult.totalScore/36)*100)}%)` :
+                matchingSystem === 'western' ? `${westernResult.totalScore}%` :
+                matchingSystem === 'bazi' ? `${baziResult.totalScore}%` :
+                matchingSystem === 'islamic' ? `${islamicResult.totalScore}%` : `${kabbalahResult.totalScore}%`
+              }</p>
+              <p><strong>Recommendation:</strong> ${
+                matchingSystem === 'vedic' ? vedicResult.recommendation :
+                matchingSystem === 'western' ? westernResult.recommendation :
+                matchingSystem === 'bazi' ? baziResult.recommendation :
+                matchingSystem === 'islamic' ? islamicResult.recommendation : kabbalahResult.recommendation
+              }</p>
             </div>
-          </body>
-        </html>
-      `);
-      printWin.document.close();
-      printWin.focus();
-      setTimeout(() => printWin.print(), 500);
-    }
+          ` : `
+            <div class="card">
+              <h3>Team Organizational Metrics</h3>
+              <p>Overall Cohesion: <strong>${teamSynergyResult?.cohesionScore}%</strong> | Leadership Alignment: <strong>${teamSynergyResult?.leadershipSynergy}%</strong></p>
+              <h4>Pairwise Matrix</h4>
+              <div class="grid">
+                ${teamSynergyResult?.pairwiseMatrix.map(p => `
+                  <div style="background:#fff; border:1px solid #cbd5e1; padding:10px; border-radius:8px;">
+                    <strong>${p.m1} ↔ ${p.m2}:</strong> ${p.score}% (${p.status})
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `}
+
+          <div class="footer">
+            ASTRO360 Universal Compatibility Engine · ${new Date().toLocaleDateString()}
+          </div>
+        </body>
+      </html>
+    `;
+    exportUniversalPdf(htmlContent, `ASTRO360_Compatibility_${activeMode}`);
   };
 
   return (

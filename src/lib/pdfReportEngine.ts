@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ASTRO360 Executive PDF Report & Dossier Engine
  * 
  * Generates pristine, print-ready, high-resolution vector PDF dossiers with:
@@ -529,18 +529,98 @@ export function generateExecutiveHtmlDossier(options: DossierGenerationOptions):
 }
 
 /**
+ * Universal Fail-Safe PDF & Print Export Engine
+ * Works across Desktop, Mobile Safari, Android Chrome, PWAs, and Popup-Blocked Browsers.
+ */
+export function exportUniversalPdf(html: string, title = 'ASTRO360_Report'): void {
+  try {
+    // 1. Primary Method: Open clean print window
+    const printWindow = window.open('', '_blank', 'width=1050,height=950');
+    if (printWindow) {
+      printWindow.document.open();
+      printWindow.document.write(html);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => {
+        try {
+          printWindow.print();
+        } catch {
+          // If print fails inside popup, no-op
+        }
+      }, 700);
+      return;
+    }
+  } catch {
+    // Popup blocked or window.open disallowed
+  }
+
+  // 2. Fallback Method: Hidden iframe print for blocked popups / iOS PWA
+  try {
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'fixed';
+    iframe.style.right = '0';
+    iframe.style.bottom = '0';
+    iframe.style.width = '0';
+    iframe.style.height = '0';
+    iframe.style.border = '0';
+    document.body.appendChild(iframe);
+
+    const doc = iframe.contentWindow?.document || iframe.contentDocument;
+    if (doc) {
+      doc.open();
+      doc.write(html);
+      doc.close();
+
+      setTimeout(() => {
+        try {
+          iframe.contentWindow?.focus();
+          iframe.contentWindow?.print();
+        } catch (e) {
+          triggerBlobDownload(html, `${title}.html`);
+        } finally {
+          setTimeout(() => {
+            if (document.body.contains(iframe)) {
+              document.body.removeChild(iframe);
+            }
+          }, 3000);
+        }
+      }, 600);
+      return;
+    }
+  } catch {
+    // Fallback to blob download
+  }
+
+  // 3. Ultimate Fallback: Instant Offline Printable HTML / Document Download
+  triggerBlobDownload(html, `${title}.html`);
+}
+
+/**
+ * Downloads standalone formatted HTML document with embedded auto-print
+ */
+function triggerBlobDownload(content: string, filename: string) {
+  try {
+    const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    setTimeout(() => {
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }, 100);
+  } catch (e) {
+    console.error('Failed to trigger report download:', e);
+  }
+}
+
+/**
  * Triggers clean print-to-PDF dialog in an isolated, high-res popup window
  */
 export function printExecutiveDossierPdf(options: DossierGenerationOptions): void {
   const html = generateExecutiveHtmlDossier(options);
-  const printWindow = window.open('', '_blank', 'width=1000,height=900');
-  if (printWindow) {
-    printWindow.document.open();
-    printWindow.document.write(html);
-    printWindow.document.close();
-    printWindow.focus();
-    setTimeout(() => {
-      printWindow.print();
-    }, 650);
-  }
+  const name = options.userProfile?.name ? `${options.userProfile.name.replace(/\s+/g, '_')}_Dossier` : 'ASTRO360_Master_Dossier';
+  exportUniversalPdf(html, name);
 }

@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import type { UserProfile } from '../types';
 import { calculatePlanetaryPositions } from '../lib/astroCalculations';
+import { exportUniversalPdf } from '../lib/pdfReportEngine';
 
 interface GlobalWisdomSuiteProps {
   userProfile: UserProfile;
@@ -169,51 +170,46 @@ export default function GlobalWisdomSuite({ userProfile }: GlobalWisdomSuiteProp
     setIsExporting(true);
     setTimeout(() => {
       setIsExporting(false);
-      const printWin = window.open('', '_blank');
-      if (printWin) {
-        printWin.document.write(`
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <title>ASTRO360 Global Universal Wisdom Blueprint — ${seekerName}</title>
-              <style>
-                body { font-family: system-ui, sans-serif; padding: 40px; color: #0f172a; line-height: 1.6; }
-                .h { border-bottom: 3px double #f59e0b; padding-bottom: 16px; margin-bottom: 24px; }
-                .title { font-size: 24px; font-weight: 800; color: #b45309; }
-                .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
-                .card { border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; background: #f8fafc; }
-                .footer { text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 30px; }
-              </style>
-            </head>
-            <body>
-              <div class="h">
-                <div class="title">🌐 ASTRO360 GLOBAL UNIVERSAL WISDOM BLUEPRINT</div>
-                <div>Seeker: ${seekerName} · Generated: ${new Date().toLocaleDateString()}</div>
-              </div>
+      const htmlContent = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>ASTRO360 Global Universal Wisdom Blueprint — ${seekerName}</title>
+            <style>
+              body { font-family: system-ui, sans-serif; padding: 40px; color: #0f172a; line-height: 1.6; }
+              .h { border-bottom: 3px double #f59e0b; padding-bottom: 16px; margin-bottom: 24px; }
+              .title { font-size: 24px; font-weight: 800; color: #b45309; }
+              .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+              .card { border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; background: #f8fafc; }
+              .footer { text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 16px; margin-top: 30px; }
+            </style>
+          </head>
+          <body>
+            <div class="h">
+              <div class="title">🌐 ASTRO360 GLOBAL UNIVERSAL WISDOM BLUEPRINT</div>
+              <div>Seeker: ${seekerName} · Generated: ${new Date().toLocaleDateString()}</div>
+            </div>
 
-              <h3>World Traditions Summary (${traditionsList.length} Traditions)</h3>
-              <div class="grid">
-                ${traditionsList.map(t => `
-                  <div class="card">
-                    <h4>${t.icon} ${t.name}</h4>
-                    <p style="font-size: 11px; color: #64748b;">Region: ${t.region}</p>
-                    <p style="font-size: 12px;">${t.desc}</p>
-                    <p style="font-size: 11px; color: #b45309;"><strong>Key Tools:</strong> ${t.keyTools.join(', ')}</p>
-                  </div>
-                `).join('')}
-              </div>
+            <h3>World Traditions Summary (${traditionsList.length} Traditions)</h3>
+            <div class="grid">
+              ${traditionsList.map(t => `
+                <div class="card">
+                  <h4>${t.icon} ${t.name}</h4>
+                  <p style="font-size: 11px; color: #64748b;">Region: ${t.region}</p>
+                  <p style="font-size: 12px;">${t.desc}</p>
+                  <p style="font-size: 11px; color: #b45309;"><strong>Key Tools:</strong> ${t.keyTools.join(', ')}</p>
+                </div>
+              `).join('')}
+            </div>
 
-              <div class="footer">
-                ASTRO360 Global Wisdom Engine · Universal Human Traditions Hub
-              </div>
-            </body>
-          </html>
-        `);
-        printWin.document.close();
-        printWin.focus();
-        setTimeout(() => printWin.print(), 500);
-      }
-    }, 300);
+            <div class="footer">
+              ASTRO360 Global Wisdom Engine · Universal Human Traditions Hub
+            </div>
+          </body>
+        </html>
+      `;
+      exportUniversalPdf(htmlContent, `ASTRO360_GlobalWisdom_${seekerName.replace(/\s+/g, '_')}`);
+    }, 200);
   };
 
   return (
