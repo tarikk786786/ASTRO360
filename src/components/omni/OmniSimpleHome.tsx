@@ -332,6 +332,36 @@ export default function OmniSimpleHome({
         </div>
       </div>
 
+      {/* 1.12 QUICK PERSONALIZATION PROMPT (For direct /?tab=home visitors) */}
+      {(!userProfile.dob || !userProfile.name) && (
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-indigo-950/40 to-cyan-500/10 border border-amber-400/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg"
+        >
+          <div className="flex items-center gap-2.5">
+            <span className="p-2 rounded-xl bg-amber-400/20 text-amber-300 border border-amber-400/30 shrink-0">
+              <Sparkles className="w-4 h-4 animate-spin" style={{ animationDuration: '8s' }} />
+            </span>
+            <div className="space-y-0.5">
+              <h4 className="text-xs sm:text-sm font-bold text-white font-sans flex items-center gap-1.5">
+                Personalize Your Real Life Birth Blueprint
+              </h4>
+              <p className="text-[11px] sm:text-xs text-slate-300 font-sans">
+                You are currently viewing live baseline coordinates. Enter your birth date & time for 100% exact sub-arcsecond chart accuracy.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => onOpenProfile ? onOpenProfile() : onNavigate('onboarding')}
+            className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-300 hover:from-amber-300 hover:to-amber-200 text-slate-950 font-bold text-xs font-mono shrink-0 flex items-center justify-center gap-1.5 shadow-md shadow-amber-400/20 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+          >
+            <span>Set My Birth Details</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </motion.div>
+      )}
+
       {/* 1.15 LIVE REAL-TIME SKY & EPHEMERIS TELEMETRY BAR */}
       <LiveRealtimeSkyTelemetryBar
         userProfile={userProfile}

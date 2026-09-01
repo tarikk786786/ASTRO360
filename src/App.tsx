@@ -286,7 +286,10 @@ export default function AppContent() {
   const navigateTo = useCallback((tabInput: string, replace = false, forceBypass = false) => {
     const tab = (tabInput || '').replace(/^\/+/, '').trim();
     const isPublicTab = (
+      tab === 'home' ||
       tab === 'landing' ||
+      tab === 'overview' ||
+      tab === 'dashboard' ||
       tab === 'free-tools' ||
       tab === 'tools-catalog' ||
       tab === 'birth-chart' ||
@@ -403,7 +406,10 @@ export default function AppContent() {
       tab === 'research' ||
       tab === 'master-chart' ||
       tab === 'kundli' ||
-      tab === 'nakshatra'
+      tab === 'nakshatra' ||
+      tab === 'me' ||
+      tab === 'profile' ||
+      tab === 'more'
     );
     const storedOnboarded = typeof window !== 'undefined' && (localStorage.getItem('astro_has_onboarded') === 'true' || localStorage.getItem('astro_user_profile') !== null);
     const isProfileConfigured = Boolean((userProfile && userProfile.name && userProfile.name.trim().length > 0 && userProfile.dob) || storedOnboarded);
