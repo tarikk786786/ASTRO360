@@ -741,11 +741,11 @@ export default function AppContent() {
 
 
 
-      {/* ✦ PERSISTENT FLOATING ASK BUTTON */}
+      {/* ✦ PERSISTENT FLOATING ASK BUTTON (Desktop only, mobile has central dock Ask button) */}
       {activeTab !== 'ask' && activeTab !== 'landing' && (
         <button
           onClick={() => navigateTo('ask')}
-          className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-30 flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-xs font-mono shadow-xl shadow-amber-500/25 border border-amber-300/40 transition-all active:scale-95 cursor-pointer"
+          className="hidden md:flex fixed bottom-6 right-6 z-30 items-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-xs font-mono shadow-xl shadow-amber-500/25 border border-amber-300/40 transition-all active:scale-95 cursor-pointer"
           title="Ask ASTRO360"
         >
           <Sparkles className="w-4 h-4 text-slate-950" />
