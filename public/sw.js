@@ -81,36 +81,45 @@ self.addEventListener('notificationclose', (event) => {
   // Silent dismissal
 });
 
-// FETCH HANDLER: Network-first for dynamic navigation and cache fallback for static assets
+// FETCH HANDLER: Stale-While-Revalidate for assets & Network-First for navigation documents
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+
+  const url = new URL(event.request.url);
+
+  // Exclude non-http(s) and external APIs if needed
+  if (!url.protocol.startsWith('http')) return;
 
   // Network-First for HTML navigation and documents
   if (event.request.mode === 'navigate' || event.request.destination === 'document') {
     event.respondWith(
       fetch(event.request)
         .then((response) => {
-          if (response.status === 200) {
+          if (response && response.status === 200) {
             const copy = response.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
           }
           return response;
         })
-        .catch(() => caches.match(event.request).then(res => res || caches.match('/index.html')))
+        .catch(() => caches.match(event.request).then((res) => res || caches.match('/index.html')))
     );
     return;
   }
 
-  // Network-first with cache fallback for assets
+  // Stale-While-Revalidate for Static Assets (JS, CSS, Images, Fonts)
   event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        if (response.status === 200) {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-        }
-        return response;
-      })
-      .catch(() => caches.match(event.request))
+    caches.match(event.request).then((cachedResponse) => {
+      const fetchPromise = fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const copy = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return networkResponse;
+        })
+        .catch(() => cachedResponse);
+
+      return cachedResponse || fetchPromise;
+    })
   );
 });
