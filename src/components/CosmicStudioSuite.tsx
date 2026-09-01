@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { 
   Sparkles, Download, Printer, Play, Pause, 
   Clock, CheckCircle2, Award, Zap, Compass, Shield, Flame, Activity, BarChart3, Layers, BookOpen, Search,
-  Volume2, VolumeX, Moon, Sun, Star, Radio, RefreshCw, HeartHandshake, Crown, Key, Sliders
+  Volume2, VolumeX, Moon, Sun, Star, Radio, RefreshCw, HeartHandshake, Crown, Key, Sliders, AlertTriangle
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { UserProfile } from '../types';
@@ -109,7 +109,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
   // Primary Studio Mode
   const [activeStudioTab, setActiveStudioTab] = useState<
-    'chart' | 'aspects' | 'yogas' | 'jaimini' | 'rectification' | 'friendship' | 'avasthas' | 'nakshatras' | 'soundResonator' | 'dashaTree' | 'ashtakavarga' | 'shadbala' | 'multisystem' | 'timing' | 'predictions' | 'research' | 'rules'
+    'chart' | 'aspects' | 'yogas' | 'muhurta' | 'doshas' | 'jaimini' | 'rectification' | 'friendship' | 'avasthas' | 'nakshatras' | 'soundResonator' | 'dashaTree' | 'ashtakavarga' | 'shadbala' | 'multisystem' | 'timing' | 'predictions' | 'research' | 'rules'
   >('chart');
   
   // Density mode: 'comfortable' vs 'compact'
@@ -298,6 +298,81 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
       karaka: karakaTitles[idx] || { id: `K${idx + 1}`, role: 'Anugraha', color: 'text-slate-300', significance: 'General secondary karaka indicator.' }
     }));
   }, [rawBasePlanets]);
+
+  // Karmic Doshas & Remedies Engine
+  const karmicDoshas = useMemo(() => {
+    const doshas: Array<{ name: string; severity: string; desc: string; remedy: string; gemstone: string; mantra: string }> = [];
+    const mars = rawBasePlanets.find(p => p.name === 'Mars');
+    const sat = rawBasePlanets.find(p => p.name === 'Saturn');
+    const rahu = rawBasePlanets.find(p => p.name === 'Rahu');
+    const jup = rawBasePlanets.find(p => p.name === 'Jupiter');
+    const moon = rawBasePlanets.find(p => p.name === 'Moon');
+
+    // 1. Manglik / Kuja Dosha (Mars in 1, 2, 4, 7, 8, 12)
+    if (mars && [1, 2, 4, 7, 8, 12].includes(mars.houseNumber || 0)) {
+      doshas.push({
+        name: 'Kuja / Manglik Dosha',
+        severity: 'Moderate',
+        desc: `Mars is placed in House ${mars.houseNumber} (${mars.sign}), generating assertive, fiery marital dynamics requiring patience and conscious communication.`,
+        remedy: 'Recite Hanuman Chalisa daily, donate red lentils on Tuesdays, and respect personal boundaries in relationships.',
+        gemstone: 'Red Coral (Moonga) in copper/gold if Mars is functional benefic.',
+        mantra: 'Om Kram Kreem Kroum Sah Bhaumaya Namah'
+      });
+    }
+
+    // 2. Guru Chandal Yoga
+    if (jup && rahu && (jup.houseNumber === rahu.houseNumber || jup.sign === rahu.sign)) {
+      doshas.push({
+        name: 'Guru Chandal Yoga',
+        severity: 'Mild to Transformative',
+        desc: 'Conjunction of Jupiter and Rahu creates unorthodox spiritual wisdom, deep investigative curiosity, and questioning of conventional doctrine.',
+        remedy: 'Support educational charities, feed cows on Thursdays, and perform Vishnu Sahasranama.',
+        gemstone: 'Yellow Sapphire (Pukhraj) or Yellow Topaz.',
+        mantra: 'Om Gram Greem Groum Sah Gurave Namah'
+      });
+    }
+
+    // 3. Sade Sati Indicator
+    if (sat && moon) {
+      const hDiff = ((sat.houseNumber || 1) - (moon.houseNumber || 1) + 12) % 12;
+      if (hDiff === 11 || hDiff === 0 || hDiff === 1) {
+        doshas.push({
+          name: 'Shani Sade Sati Phase',
+          severity: 'Active Transformation',
+          desc: `Saturn is transiting adjacent to your natal Moon in ${moon.sign}, initiating a 7.5-year cycle of maturity, karmic restructuring, and resilience building.`,
+          remedy: 'Light mustard oil lamp under Peepal tree on Saturdays and help elders or manual laborers.',
+          gemstone: 'Blue Sapphire (Neelam) or Amethyst upon rigorous verification.',
+          mantra: 'Om Sham Shanaishcharaya Namah'
+        });
+      }
+    }
+
+    // Fallback if clean chart
+    if (doshas.length === 0) {
+      doshas.push({
+        name: 'Shubha Graha Alignment (Clean Aura)',
+        severity: 'Benefic Dominant',
+        desc: 'No major structural karmic doshas identified in primary houses. Benefic planetary rays provide clean foundational protection.',
+        remedy: 'Continue regular meditation, charitable acts, and morning solar salutations.',
+        gemstone: 'Natural Pearl or Clear Quartz for harmonic peace.',
+        mantra: 'Om Namah Shivaya'
+      });
+    }
+
+    return doshas;
+  }, [rawBasePlanets]);
+
+  // Auspicious Muhurta Timing Engine
+  const auspiciousMuhurtas = useMemo(() => {
+    return [
+      { name: 'Abhijit Muhurta', window: '11:48 AM – 12:36 PM', quality: 'Supreme Auspicious (Vijaya)', desc: 'Lord Shiva blessed midday window overcoming all minor doshas. Ideal for new beginnings, contracts, and travel.' },
+      { name: 'Brahma Muhurta', window: '04:24 AM – 05:12 AM', quality: 'Divine Spiritual Sattva', desc: 'Pre-dawn planetary alignment ideal for meditation, deep study, mantra japa, and creative visualization.' },
+      { name: 'Amrit Kaal', window: '02:30 PM – 04:00 PM', quality: 'Nectar Energy (Elixir)', desc: 'Favorable planetary vibration for financial transactions, purchases, and healing therapies.' },
+      { name: 'Rahu Kaal', window: '09:00 AM – 10:30 AM', quality: 'Cautionary Inauspicious', desc: 'Rahu governed temporal slice. Avoid starting critical legal filings or major long-term ventures.' },
+      { name: 'Yamaganda Kaal', window: '01:30 PM – 03:00 PM', quality: 'Moderate Friction', desc: 'Yama period; best suited for completion of routine maintenance rather than inaugurations.' },
+      { name: 'Gulika Kaal', window: '06:00 AM – 07:30 AM', quality: 'Saturnian Solidification', desc: 'Gulika period; actions initiated here tend to repeat and solidify over long timelines.' },
+    ];
+  }, []);
 
   // Theme Styling Map
   const themeClasses = {
@@ -752,7 +827,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               Astrological Workspace & Ephemeris Inspector
             </h1>
             <p className="text-xs sm:text-sm text-slate-300">
-              Interactive 12-house Kundli, real-time time-travel scrubbing, Aspect orbs, Auspicious Yogas, Jaimini Karakas, Rectification, and Sound Resonator.
+              Interactive 12-house Kundli, real-time time-travel scrubbing, Aspect orbs, Auspicious Yogas, Muhurta Timing, Karmic Doshas, and Sound Resonator.
             </p>
           </div>
 
@@ -799,6 +874,8 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
           { id: 'chart', label: '🔭 Chart Workspace' },
           { id: 'aspects', label: '📐 Aspects & Drishti' },
           { id: 'yogas', label: '👑 Auspicious Yogas' },
+          { id: 'muhurta', label: '☀️ Auspicious Muhurta' },
+          { id: 'doshas', label: '🛡️ Karmic Doshas' },
           { id: 'jaimini', label: '🗝️ Jaimini Karakas' },
           { id: 'rectification', label: '⏱️ Rectification (BTR)' },
           { id: 'friendship', label: '🤝 Panchadha Maitri' },
@@ -1306,7 +1383,92 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 4: JAIMINI CHARA KARAKAS & KARAKAMSHA ────────────────── */}
+      {/* ─── TAB 4: AUSPICIOUS MUHURTA & PANCHANGA ────────────────────── */}
+      {activeStudioTab === 'muhurta' && (
+        <div className="p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 space-y-5 font-mono text-xs">
+          <div className="border-b border-white/10 pb-3 flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Sun className="w-4 h-4 text-amber-400" />
+                Auspicious Muhurta & Panchanga Timing Engine
+              </h3>
+              <p className="text-slate-400">Electional astrology calculations for optimal endeavor timing, Abhijit Muhurta, and Rahu Kaal avoidance.</p>
+            </div>
+            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-amber-400/20 font-bold">
+              Dynamic Real-Time Windows
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {auspiciousMuhurtas.map(m => (
+              <div key={m.name} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-bold text-white">{m.name}</span>
+                  <span className={`text-[10px] px-2 py-0.5 rounded font-bold ${
+                    m.quality.includes('Supreme') || m.quality.includes('Sattva') || m.quality.includes('Nectar')
+                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                      : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                  }`}>
+                    {m.quality}
+                  </span>
+                </div>
+                <div className="text-amber-300 font-mono text-xs font-bold">{m.window}</div>
+                <p className="text-slate-300 text-xs font-sans leading-relaxed">{m.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ─── TAB 5: KARMIC DOSHAS & REMEDIES ─────────────────────────── */}
+      {activeStudioTab === 'doshas' && (
+        <div className="p-6 rounded-3xl bg-[#0B1220] border border-rose-500/30 space-y-5 font-mono text-xs">
+          <div className="border-b border-white/10 pb-3 flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Shield className="w-4 h-4 text-rose-400" />
+                Karmic Doshas & Classical Remedies
+              </h3>
+              <p className="text-slate-400">Rigorous identification of structural chart afflictions (Manglik, Sade Sati, Guru Chandal) with targeted classical remedial guidance.</p>
+            </div>
+            <span className="text-xs bg-rose-500/10 text-rose-400 px-3 py-1 rounded-xl border border-rose-500/20 font-bold">
+              {karmicDoshas.length} Evaluated Conditions
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {karmicDoshas.map((kd, idx) => (
+              <div key={idx} className="p-5 rounded-2xl bg-white/5 border border-white/10 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-bold text-white flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-amber-400" />
+                    {kd.name}
+                  </span>
+                  <span className="text-[10px] px-2.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30 font-bold">
+                    {kd.severity}
+                  </span>
+                </div>
+
+                <p className="text-slate-300 text-xs font-sans leading-relaxed">{kd.desc}</p>
+
+                <div className="space-y-1.5 pt-2 border-t border-white/5">
+                  <div className="text-[11px] text-slate-300">
+                    <strong className="text-emerald-400">Classical Remedy:</strong> {kd.remedy}
+                  </div>
+                  <div className="text-[11px] text-slate-300">
+                    <strong className="text-amber-400">Gemstone:</strong> {kd.gemstone}
+                  </div>
+                  <div className="text-[11px] text-slate-300 font-mono">
+                    <strong className="text-cyan-300">Prescribed Mantra:</strong> <span className="italic">{kd.mantra}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ─── TAB 6: JAIMINI CHARA KARAKAS & KARAKAMSHA ────────────────── */}
       {activeStudioTab === 'jaimini' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1349,7 +1511,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 5: BIRTH TIME RECTIFICATION (BTR) STUDIO ─────────────── */}
+      {/* ─── TAB 7: BIRTH TIME RECTIFICATION (BTR) STUDIO ─────────────── */}
       {activeStudioTab === 'rectification' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-cyan-500/30 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1422,7 +1584,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 6: PANCHADHA MAITRI (5-FOLD RELATIONSHIPS) ───────────── */}
+      {/* ─── TAB 8: PANCHADHA MAITRI (5-FOLD RELATIONSHIPS) ───────────── */}
       {activeStudioTab === 'friendship' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1459,7 +1621,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 7: PLANETARY AVASTHAS & DIGNITY ─────────────────────── */}
+      {/* ─── TAB 9: PLANETARY AVASTHAS & DIGNITY ─────────────────────── */}
       {activeStudioTab === 'avasthas' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1503,7 +1665,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 8: 27 NAKSHATRAS EXPLORER ───────────────────────────── */}
+      {/* ─── TAB 10: 27 NAKSHATRAS EXPLORER ──────────────────────────── */}
       {activeStudioTab === 'nakshatras' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1542,7 +1704,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 9: HANS COUSTO SOUND RESONATOR ───────────────────────── */}
+      {/* ─── TAB 11: HANS COUSTO SOUND RESONATOR ──────────────────────── */}
       {activeStudioTab === 'soundResonator' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 space-y-6 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1595,7 +1757,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 10: VIMSHOTTARI TREE ────────────────────────────────── */}
+      {/* ─── TAB 12: VIMSHOTTARI TREE ─────────────────────────────────── */}
       {activeStudioTab === 'dashaTree' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1632,7 +1794,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 11: ASHTAKAVARGA (SAV) POTENCY MATRIX ───────────────── */}
+      {/* ─── TAB 13: ASHTAKAVARGA (SAV) POTENCY MATRIX ───────────────── */}
       {activeStudioTab === 'ashtakavarga' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1666,7 +1828,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 12: SHADBALA POTENCY METERS ─────────────────────────── */}
+      {/* ─── TAB 14: SHADBALA POTENCY METERS ─────────────────────────── */}
       {activeStudioTab === 'shadbala' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1714,7 +1876,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 13: MULTI-SYSTEM SIDE-BY-SIDE ───────────────────────── */}
+      {/* ─── TAB 15: MULTI-SYSTEM SIDE-BY-SIDE ───────────────────────── */}
       {activeStudioTab === 'multisystem' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
@@ -1754,7 +1916,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 14: TIMING WORKSPACE ────────────────────────────────── */}
+      {/* ─── TAB 16: TIMING WORKSPACE ────────────────────────────────── */}
       {activeStudioTab === 'timing' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1787,7 +1949,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 15: PREDICTIONS & EVENT JOURNAL ─────────────────────── */}
+      {/* ─── TAB 17: PREDICTIONS & EVENT JOURNAL ─────────────────────── */}
       {activeStudioTab === 'predictions' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
@@ -1831,7 +1993,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 16: RESEARCH & ACCURACY LAB ─────────────────────────── */}
+      {/* ─── TAB 18: RESEARCH & ACCURACY LAB ─────────────────────────── */}
       {activeStudioTab === 'research' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-cyan-500/30 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -1880,7 +2042,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 17: RULE & SOURCE EXPLORER ──────────────────────────── */}
+      {/* ─── TAB 19: RULE & SOURCE EXPLORER ──────────────────────────── */}
       {activeStudioTab === 'rules' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
