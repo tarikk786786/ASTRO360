@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { 
   Sparkles, ArrowRight, ShieldCheck, CheckCircle2, Compass, 
@@ -27,6 +27,7 @@ import LiveIngressAndRajaYogaSuite from './LiveIngressAndRajaYogaSuite';
 import LiveCombustionAndAshtakavargaSuite from './LiveCombustionAndAshtakavargaSuite';
 import LiveShodashavargaAndGemstoneSuite from './LiveShodashavargaAndGemstoneSuite';
 import LivePrashnaAndKPSubLordSuite from './LivePrashnaAndKPSubLordSuite';
+import Realistic3DSolarSystemAlignment from '../3d/Realistic3DSolarSystemAlignment';
 import { useScrollReveal, use3DTilt, useMagneticHover, useMouseGlow } from '../../hooks/useAnimations';
 import { QuestionIntentEngine } from '../../lib/questionRouter';
 import { calculatePlanetaryPositions, calculateAyanamsha } from '../../lib/astroCalculations';
@@ -53,21 +54,6 @@ function RevealSection({ children, className = '', delay = 0 }: {
       >
         {children}
       </motion.div>
-    </div>
-  );
-}
-
-/* ── 3D Tilt Card Wrapper ──────────────────────────────────────── */
-function TiltCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  const { ref, handlers } = use3DTilt(4);
-  return (
-    <div
-      ref={ref}
-      {...handlers}
-      className={className}
-      style={{ transition: 'transform 0.25s cubic-bezier(0.03, 0.98, 0.52, 0.99)' }}
-    >
-      {children}
     </div>
   );
 }
@@ -112,6 +98,11 @@ export default function LandingPage({
   
   // Section: Tradition Compare Selector
   const [selectedTradition, setSelectedTradition] = useState<'vedic' | 'western' | 'kp' | 'jaimini' | 'chinese' | 'hellenistic'>('vedic');
+
+  // Master Diagnostic Instruments Hub Tab Switcher
+  const [activeDiagnosticTab, setActiveDiagnosticTab] = useState<
+    'sky' | 'aspects' | 'bhavas' | 'shadbala' | 'traditions' | 'ingresses' | 'combustion' | 'vargas' | 'prashna'
+  >('sky');
 
   // Mouse glow for hero
   const { ref: heroGlowRef } = useMouseGlow();
@@ -178,29 +169,21 @@ export default function LandingPage({
     GROWTH: [
       { q: 'What is my primary life theme and purpose?', sub: 'Evaluates Atmakaraka (soul planet), Rahu-Ketu nodal axis, and Sun spiritual dignity', tag: 'Atmakaraka' },
       { q: 'What inner strengths are highlighted in my chart?', sub: '6-fold Shadbala planetary potency matrix (Sthana, Dik, Kala, Chesta, Naisargika, Drik)', tag: 'Shadbala Potency' },
-      { q: 'How can I work with my natural tendencies?', sub: 'D1 Rashi and D9 Navamsha harmonic integration and planetary archetypes', tag: 'Harmonic Synthesis' },
-    ],
-    'MY CHART': [
-      { q: 'What are my exact Sun, Moon, and Rising signs?', sub: 'Sub-arcsecond degrees, Nakshatras, Padas, and planetary house positions (DE440)', tag: 'Ephemeris Fact' },
-      { q: 'Which planets are in their strongest dignity?', sub: 'Exaltation, Moolatrikona, Own Sign vs Debilitation and cancellation calculation', tag: 'Essential Dignity' },
-      { q: 'What special combinations are present in my chart?', sub: 'Identifies Raja, Dhana, Gajakesari, Budhaditya, and Mahapurusha yogas', tag: 'Classical Yogas' },
     ],
     HEALTH: [
-      { q: 'How is my general vitality and constitutional balance?', sub: 'Evaluates 1st house (Lagna), Sun vitality, and constitutional planetary elements', tag: 'Constitutional Vitality' },
-      { q: 'What timing cycles indicate periods for rest and recovery?', sub: 'Tracks 6th, 8th, and 12th house transit activations and planetary sub-periods', tag: 'Recovery Timing' },
-      { q: 'What routines align with my planetary archetypes?', sub: 'Classical diurnal routines based on planetary horas and lunar cycles', tag: 'Traditional Routine' },
+      { q: 'What does my chart indicate about physical vitality and stamina?', sub: 'Analyzes 1st house (Lagna), 6th house (immunity), Sun vitality, and Mars strength', tag: 'Vitality & Prana' },
     ],
     FAMILY: [
-      { q: 'What does my chart suggest about family roots and home life?', sub: 'Analyzes 4th house (home/mother), 9th house (lineage), and domestic placements', tag: '4th & 9th Bhava' },
-      { q: 'What timing cycles influence domestic harmony?', sub: 'Evaluates Jupiter-Moon transit interactions across domestic houses', tag: 'Domestic Transits' },
+      { q: 'What are the indicators for domestic peace and real estate?', sub: 'Evaluates 4th house (Matru & Sukha Bhava), Moon emotional stability, and Mars land indicators', tag: '4th House Domain' },
     ],
     TRAVEL: [
-      { q: 'When are favorable windows for travel or relocation?', sub: 'Analyzes 3rd (short travel), 9th (long journeys), and 12th (relocation/residence)', tag: 'Relocation Timing' },
-      { q: 'What do different traditions indicate about distant residence?', sub: 'Nodal axis placements, 12th house planetary alignments, and relocation lines', tag: 'Astrocartography' },
+      { q: 'When is relocation or international travel highlighted?', sub: 'Analyzes 9th and 12th house planetary transits and Rahu foreign travel indicators', tag: 'AstroCartography' },
+    ],
+    'MY CHART': [
+      { q: 'What are the primary planetary dignities in my birth chart?', sub: 'Calculates exaltation, moolatrikona, own sign, debilitation, and combustions', tag: 'D1 Rashi Matrix' },
     ],
     EDUCATION: [
       { q: 'What fields of study align best with my intellectual strengths?', sub: 'Analyzes Mercury, Jupiter, 5th house (intellect), and learning yogas', tag: 'Intellectual Vocation' },
-      { q: 'When is supportive timing for certifications or exams?', sub: '5th and 10th house benefic dasha and transit activations', tag: 'Academic Timing' },
     ],
   };
 
@@ -368,7 +351,7 @@ export default function LandingPage({
           <motion.div style={{ y: heroParallax }} className="max-w-4xl mx-auto space-y-6 relative">
             
             {/* Eyebrow Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/25 text-amber-300 text-xs font-mono font-medium tracking-wide uppercase">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/25 text-amber-300 text-xs font-mono font-medium tracking-wide uppercase shadow-lg shadow-amber-500/10">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               <span>THE UNIVERSAL ASTROLOGICAL INTELLIGENCE PLATFORM</span>
             </div>
@@ -383,7 +366,7 @@ export default function LandingPage({
 
             {/* Supporting Statement */}
             <p className="text-base sm:text-lg lg:text-xl text-slate-300 font-sans max-w-2xl mx-auto leading-relaxed">
-              Ask your questions. Explore your chart. Understand the reasoning.
+              Ask your questions. Explore your chart. Understand the reasoning. Reach your own clarity.
             </p>
 
             {/* Primary and Secondary CTAs */}
@@ -422,54 +405,19 @@ export default function LandingPage({
           </motion.div>
 
           {/* ════════════════════════════════════════════════════════════
-              SECTION 1B: THE CORE NARRATIVE FLOW
+              SECTION 1B: PHOTOREALISTIC 3D SOLAR ALIGNMENT SHOWCASE
               ════════════════════════════════════════════════════════════ */}
-          <RevealSection className="mt-16 sm:mt-24 max-w-4xl mx-auto" delay={0.1}>
-            <div className="bg-[#0B1220]/80 border border-white/10 rounded-2xl p-6 sm:p-10 space-y-6 text-left relative overflow-hidden">
-              <div className="space-y-2">
-                <span className="text-[11px] font-mono text-amber-400 uppercase tracking-wider font-semibold">The ASTRO360 Philosophy</span>
-                <h2 className="text-2xl sm:text-3xl font-bold text-white leading-snug">
-                  You may have explored astrology in many places.
-                </h2>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono">
-                <div className="bg-[#060A12] border border-white/8 rounded-xl p-4 space-y-1">
-                  <span className="text-slate-500 block text-[10px]">PERSPECTIVE 01</span>
-                  <p className="font-semibold text-white">Different Readings</p>
-                  <p className="text-[11px] text-slate-400 font-sans">App interpretations that give isolated insights without context.</p>
-                </div>
-                <div className="bg-[#060A12] border border-white/8 rounded-xl p-4 space-y-1">
-                  <span className="text-slate-500 block text-[10px]">PERSPECTIVE 02</span>
-                  <p className="font-semibold text-white">Different Systems</p>
-                  <p className="text-[11px] text-slate-400 font-sans">Vedic Sidereal, Western Tropical, KP Stellar, and Jaimini.</p>
-                </div>
-                <div className="bg-[#060A12] border border-white/8 rounded-xl p-4 space-y-1">
-                  <span className="text-slate-500 block text-[10px]">PERSPECTIVE 03</span>
-                  <p className="font-semibold text-white">Different Questions</p>
-                  <p className="text-[11px] text-slate-400 font-sans">Career timing, relationships, wealth cycles, and life purpose.</p>
-                </div>
-              </div>
-
-              <div className="pt-2 border-t border-white/8 space-y-3">
-                <p className="text-sm sm:text-base text-slate-200 font-sans leading-relaxed">
-                  <strong>How does it all fit together?</strong> ASTRO360 calculates multiple classical traditions simultaneously, evaluates the underlying astronomical physics, and presents the reasoning so you can explore with confidence.
-                </p>
-                <div className="flex flex-wrap items-center gap-2 pt-1">
-                  {['Your chart', 'Your timing', 'Multiple perspectives', 'Why', 'Evidence', 'Explore'].map((tag, idx) => (
-                    <span key={idx} className="text-[11px] font-mono px-3 py-1 rounded-md bg-white/5 border border-white/10 text-slate-300">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
+          <RevealSection className="mt-14 max-w-5xl mx-auto" delay={0.15}>
+            <Realistic3DSolarSystemAlignment 
+              userProfile={userProfile}
+              onSelectPlanet={() => {}}
+            />
           </RevealSection>
 
           {/* ════════════════════════════════════════════════════════════
               SECTION 1C: REAL PRODUCT PREVIEW INTERACTION
               ════════════════════════════════════════════════════════════ */}
-          <RevealSection className="mt-12 sm:mt-16 max-w-5xl mx-auto" delay={0.15}>
+          <RevealSection className="mt-12 max-w-5xl mx-auto" delay={0.18}>
             <div
               ref={heroGlowRef}
               className="bg-[#0B1220] border border-white/12 rounded-2xl p-5 sm:p-7 shadow-2xl space-y-6 relative text-left"
@@ -722,15 +670,10 @@ export default function LandingPage({
               </div>
             </div>
           </RevealSection>
-
-          {/* Quick Chart Calculator Studio */}
-          <RevealSection className="mt-6 max-w-5xl mx-auto" delay={0.2}>
-            <OmniHeroChartStudio onCalculate={handleQuickCalculate} userProfile={userProfile} />
-          </RevealSection>
         </section>
 
         {/* ════════════════════════════════════════════════════════════
-            SECTION 2: "DON'T JUST GET A PREDICTION. ANALYZE IT YOURSELF."
+            SECTION 2: 6-STEP EVIDENCE REASONING JOURNEY
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8 text-center">
           <div className="max-w-3xl mx-auto space-y-3 mb-12">
@@ -751,7 +694,7 @@ export default function LandingPage({
               { step: '03', label: 'COMPARE', desc: 'Compare Vedic, Western, KP, and Jaimini perspectives.' },
               { step: '04', label: 'TIMELINE', desc: 'Scrub through near-term, mid-term, and epoch horizons.' },
               { step: '05', label: 'STABILITY', desc: 'Test birth-time sensitivity across ±15 minute variations.' },
-              { step: '06', label: 'NEXT QUESTION', desc: 'Follow the natural thread to your next inquiry.' },
+              { step: '06', label: 'NEXT INQUIRY', desc: 'Follow the natural thread to your next deep inquiry.' },
             ].map((item, idx) => (
               <div key={idx} className="bg-[#0B1220] border border-white/8 hover:border-amber-400/30 rounded-xl p-4 space-y-2 transition-colors">
                 <span className="text-[10px] font-mono text-amber-400 font-semibold block">{item.step}</span>
@@ -760,13 +703,6 @@ export default function LandingPage({
               </div>
             ))}
           </div>
-        </RevealSection>
-
-        {/* ════════════════════════════════════════════════════════════
-            SECTION 2B: INTERACTIVE 3D CELESTIAL ORBITAL WHEEL
-            ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
-          <AstroCelestialAnimation onExploreChart={() => onStartOnboarding()} />
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
@@ -784,66 +720,102 @@ export default function LandingPage({
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
-            SECTION 4B: LIVE CELESTIAL SKY TELEMETRY & GRAHAS STUDIO
+            SECTION 4B: MASTER UNIFIED INSTRUMENTS EXPLORER (TABBED)
             ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
-          <LiveCosmicSkyStudio onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
-        </RevealSection>
+        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8 text-left">
+          <div className="text-center max-w-3xl mx-auto mb-10 space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/25 text-cyan-300 text-xs font-mono font-bold">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Interactive Astrological Instruments Suite</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
+              PROFESSIONAL EPHEMERIS & DIAGNOSTIC LABS
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 font-sans">
+              Switch between our 9 specialized calculation instruments directly from your browser.
+            </p>
+          </div>
 
-        {/* ════════════════════════════════════════════════════════════
-            SECTION 4C: LIVE ASPECTARIUM & LUNAR PHASE TELEMETRY
-            ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
-          <LiveAspectariumAndLunarTracker onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
-        </RevealSection>
+          {/* Instrument Tab Switcher Bar */}
+          <div className="flex items-center gap-1.5 p-2 rounded-2xl bg-[#090E1A] border border-white/10 overflow-x-auto no-scrollbar mb-8 shadow-inner">
+            {[
+              { id: 'sky', label: '🔭 Cosmic Sky Telemetry', short: 'Sky & Grahas' },
+              { id: 'aspects', label: '📐 Aspectarium & Moon', short: 'Aspects & Lunar' },
+              { id: 'bhavas', label: '📜 12 Bhavas & Shlokas', short: 'Bhavas & Sutras' },
+              { id: 'shadbala', label: '⚖️ Shadbala Potency', short: '6-Fold Strength' },
+              { id: 'traditions', label: '🌐 6 World Traditions', short: 'Multi-Tradition' },
+              { id: 'ingresses', label: '👑 Ingresses & Raja Yogas', short: 'Yogas & Ingress' },
+              { id: 'combustion', label: '🔥 Combustion & Ashtakavarga', short: 'Combustion' },
+              { id: 'vargas', label: '💎 16 Vargas & Gemstones', short: 'Vargas & Gems' },
+              { id: 'prashna', label: '🔮 Prashna & KP Sub-Lords', short: 'Prashna & KP' },
+            ].map((tab) => {
+              const isSelected = activeDiagnosticTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveDiagnosticTab(tab.id as any)}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+                    isSelected
+                      ? 'bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-400/20 scale-105'
+                      : 'bg-transparent text-slate-400 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
 
-        {/* ════════════════════════════════════════════════════════════
-            SECTION 4D: 12 BHAVAS & SCRIPTURE REFERENCE LIBRARY
-            ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
-          <LiveScriptureAndBhavaExplorer onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
-        </RevealSection>
-
-        {/* ════════════════════════════════════════════════════════════
-            SECTION 4E: LIVE PLANETARY SPEEDS & SHADBALA POTENCY
-            ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
-          <LivePlanetarySpeedAndShadbalaSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
-        </RevealSection>
-
-        {/* ════════════════════════════════════════════════════════════
-            SECTION 4F: 6 WORLD TRADITIONS & 5-TATTVA CLOCK
-            ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
-          <LiveMultiTraditionAndTattvaSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
-        </RevealSection>
-
-        {/* ════════════════════════════════════════════════════════════
-            SECTION 4G: PLANETARY INGRESSES & CLASSICAL RAJA YOGAS
-            ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
-          <LiveIngressAndRajaYogaSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
-        </RevealSection>
-
-        {/* ════════════════════════════════════════════════════════════
-            SECTION 4H: PLANETARY COMBUSTION & ASHTAKAVARGA BINDUS
-            ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
-          <LiveCombustionAndAshtakavargaSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
-        </RevealSection>
-
-        {/* ════════════════════════════════════════════════════════════
-            SECTION 4I: 16 SHODASHAVARGA MATRIX & GEMSTONE PRANA
-            ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
-          <LiveShodashavargaAndGemstoneSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
-        </RevealSection>
-
-        {/* ════════════════════════════════════════════════════════════
-            SECTION 4J: LIVE PRASHNA HORARY & KP STELLAR MATRIX
-            ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
-          <LivePrashnaAndKPSubLordSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
+          {/* Active Diagnostic Instrument View */}
+          <div className="w-full">
+            <AnimatePresence mode="wait">
+              {activeDiagnosticTab === 'sky' && (
+                <motion.div key="sky" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.25 }}>
+                  <LiveCosmicSkyStudio onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
+                </motion.div>
+              )}
+              {activeDiagnosticTab === 'aspects' && (
+                <motion.div key="aspects" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.25 }}>
+                  <LiveAspectariumAndLunarTracker onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
+                </motion.div>
+              )}
+              {activeDiagnosticTab === 'bhavas' && (
+                <motion.div key="bhavas" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.25 }}>
+                  <LiveScriptureAndBhavaExplorer onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
+                </motion.div>
+              )}
+              {activeDiagnosticTab === 'shadbala' && (
+                <motion.div key="shadbala" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.25 }}>
+                  <LivePlanetarySpeedAndShadbalaSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
+                </motion.div>
+              )}
+              {activeDiagnosticTab === 'traditions' && (
+                <motion.div key="traditions" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.25 }}>
+                  <LiveMultiTraditionAndTattvaSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
+                </motion.div>
+              )}
+              {activeDiagnosticTab === 'ingresses' && (
+                <motion.div key="ingresses" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.25 }}>
+                  <LiveIngressAndRajaYogaSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
+                </motion.div>
+              )}
+              {activeDiagnosticTab === 'combustion' && (
+                <motion.div key="combustion" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.25 }}>
+                  <LiveCombustionAndAshtakavargaSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
+                </motion.div>
+              )}
+              {activeDiagnosticTab === 'vargas' && (
+                <motion.div key="vargas" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.25 }}>
+                  <LiveShodashavargaAndGemstoneSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
+                </motion.div>
+              )}
+              {activeDiagnosticTab === 'prashna' && (
+                <motion.div key="prashna" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.25 }}>
+                  <LivePrashnaAndKPSubLordSuite onNavigateToTab={onNavigateToTab} onStartOnboarding={onStartOnboarding} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
@@ -1097,75 +1069,7 @@ export default function LandingPage({
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
-            SECTION 10: SIMPLE VS EXPERT MODE TOGGLE
-            ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
-          <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-              SIMPLE WHEN YOU WANT CLARITY. DEEP WHEN YOU WANT DETAIL.
-            </h2>
-            <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
-              Switch between concise executive summaries and full ephemeris calculations at any time.
-            </p>
-          </div>
-
-          <div className="max-w-3xl mx-auto bg-[#0B1220] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-5 text-left">
-            <div className="flex items-center justify-between border-b border-white/8 pb-4">
-              <span className="text-xs font-mono text-slate-400 font-semibold">View Density:</span>
-              <div className="flex gap-2">
-                {(['simple', 'expert'] as const).map((mode) => (
-                  <button
-                    key={mode}
-                    onClick={() => setDemoDensity(mode)}
-                    className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer min-h-[34px] ${
-                      demoDensity === mode
-                        ? 'bg-amber-400 text-slate-950 font-bold'
-                        : 'bg-[#060A12] text-slate-400 hover:text-white border border-white/8'
-                    }`}
-                  >
-                    {mode === 'simple' ? 'Simple Mode' : 'Expert Mode'}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {demoDensity === 'simple' ? (
-              <div className="space-y-3">
-                <div className="bg-[#060A12] border border-white/8 rounded-xl p-5 space-y-2">
-                  <span className="text-xs font-mono text-amber-400 font-semibold uppercase">Executive Summary</span>
-                  <h3 className="text-lg font-bold text-white">Career activity is elevated.</h3>
-                  <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
-                    Your current timing window strongly supports initiative, structured growth, and long-term career commitments.
-                  </p>
-                  <button
-                    onClick={() => setDemoDensity('expert')}
-                    className="text-xs font-mono text-amber-400 hover:text-amber-300 underline font-medium cursor-pointer inline-flex items-center gap-1 pt-1"
-                  >
-                    <span>[ Why? Show Technical Details ]</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-3 font-mono text-xs">
-                <div className="bg-[#060A12] border border-white/8 rounded-xl p-5 space-y-3">
-                  <span className="text-[10px] text-amber-400 uppercase font-semibold">AstroCore Calculation Engine Output</span>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-[11px]">
-                    <div><span className="text-slate-500 block">Planet:</span> <strong className="text-white">Jupiter</strong></div>
-                    <div><span className="text-slate-500 block">Longitude:</span> <strong className="text-white">18°24' Taurus</strong></div>
-                    <div><span className="text-slate-500 block">House:</span> <strong className="text-white">10th House (Kendra)</strong></div>
-                    <div><span className="text-slate-500 block">Dasha:</span> <strong className="text-white">Jupiter-Saturn</strong></div>
-                    <div><span className="text-slate-500 block">Ayanamsha:</span> <strong className="text-white">Lahiri 24°13'08"</strong></div>
-                    <div><span className="text-slate-500 block">Source:</span> <strong className="text-white">BPHS Ch. 45 / S12</strong></div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </RevealSection>
-
-        {/* ════════════════════════════════════════════════════════════
-            SECTION 11: FREE TOOLS CATALOG
+            SECTION 10: FREE TOOLS CATALOG (12 INSTRUMENTS)
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-12">
@@ -1218,102 +1122,7 @@ export default function LandingPage({
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
-            SECTION 12: MATHEMATICAL ACCURACY & PROVENANCE
-            ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8 text-center">
-          <div className="max-w-3xl mx-auto space-y-3 mb-10">
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              CALCULATED FIRST. EXPLAINED SECOND.
-            </h2>
-            <p className="text-sm text-slate-400 font-sans max-w-xl mx-auto">
-              ASTRO360 operates under a strict four-layer architecture ensuring mathematical purity and complete transparency.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-5xl mx-auto text-left font-mono text-xs mb-8">
-            {[
-              { layer: 'LAYER 1', label: 'EPHEMERIS PHYSICS', desc: 'NASA JPL DE440 sub-arcsecond orbital dynamics.', color: 'text-amber-400' },
-              { layer: 'LAYER 2', label: 'CLASSICAL RULES', desc: 'BPHS, Phaladeepika, Tetrabiblos rules codified.', color: 'text-cyan-400' },
-              { layer: 'LAYER 3', label: 'CONSENSUS ENGINE', desc: 'Multi-system alignment and divergence mapped.', color: 'text-emerald-400' },
-              { layer: 'LAYER 4', label: 'EXPLAINABILITY', desc: 'Grounded, transparent natural language synthesis.', color: 'text-purple-400' },
-            ].map((l, idx) => (
-              <div key={idx} className="bg-[#0B1220] border border-white/8 rounded-xl p-4 space-y-1">
-                <span className={`text-[10px] font-bold ${l.color}`}>{l.layer}</span>
-                <p className="font-bold text-white">{l.label}</p>
-                <p className="text-[11px] text-slate-400 font-sans">{l.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-slate-400">
-            <span className="flex items-center gap-1.5"><ShieldCheck className="w-4 h-4 text-emerald-400" /> OWASP ASVS 5.0.0 Tested</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Zero PII Storage</span>
-            <span className="flex items-center gap-1.5"><Scale className="w-4 h-4 text-emerald-400" /> Scripture-Grounded Truth</span>
-          </div>
-        </RevealSection>
-
-        {/* ════════════════════════════════════════════════════════════
-            SECTION 12B: FREQUENTLY ASKED QUESTIONS (FAQ)
-            ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto border-t border-white/8 text-left">
-          <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/8 text-slate-300 text-xs font-mono">
-              <HelpCircle className="w-3.5 h-3.5 text-amber-400" />
-              <span>Clarity & Methodology</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              FREQUENTLY ASKED QUESTIONS
-            </h2>
-            <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
-              Everything you need to know about our ephemeris accuracy, privacy, and multi-tradition algorithms.
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            {[
-              {
-                q: 'Is ASTRO360 really 100% free?',
-                a: 'Yes. All 150+ computational calculators, Kundli generators, 36-Guna matchmakers, daily Panchanga, and deep analytical inquiry tools are completely free with zero paywalls, hidden tiers, or required credit cards.'
-              },
-              {
-                q: 'How are the planetary positions calculated?',
-                a: 'All positions are calculated using true geocentric NASA JPL DE440 ephemeris standards with Chitrapaksha (True Lahiri) ayanamsha down to sub-arcsecond accuracy, with smooth boundary transition handling across 0°/360° cusps.'
-              },
-              {
-                q: 'Do you store or sell my birth data?',
-                a: 'Never. All birth calculations are executed client-side with zero PII retention, adhering to OWASP ASVS 5.0.0 Level 3 privacy architecture.'
-              },
-              {
-                q: 'What is the difference between Vedic Sidereal and Western Tropical in ASTRO360?',
-                a: 'Vedic Sidereal aligns with the physical fixed stars (using Lahiri ayanamsha ~24° offset), whereas Western Tropical anchors to the Vernal Equinox (0° Aries on March 21). ASTRO360 computes and presents both systems simultaneously side-by-side so you can compare.'
-              },
-              {
-                q: 'Can I use ASTRO360 if I do not know my exact birth time?',
-                a: 'Yes. You can use the built-in Birth-Time Sensitivity Test and Tattva/Kunda rectification tools to test your psychological archetypes and past life milestones to identify your most probable Ascendant degree.'
-              },
-              {
-                q: 'How does the Natural Language Inquiry Sandbox work?',
-                a: 'Our QuestionIntentEngine classifies natural questions into 16 intent archetypes (Career, Marriage, Transit Timing, Sade Sati, Health), calculates active Dasha and Gochara factors, and produces an explainable 3-level synthesis with classical scripture citations.'
-              }
-            ].map((faq, idx) => (
-              <details
-                key={idx}
-                className="group bg-[#0B1220] border border-white/8 rounded-2xl p-5 open:border-amber-400/40 transition-all"
-              >
-                <summary className="font-bold text-white text-sm cursor-pointer list-none flex justify-between items-center font-mono">
-                  <span>{faq.q}</span>
-                  <ChevronDown className="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform shrink-0 ml-2" />
-                </summary>
-                <p className="mt-3 text-xs sm:text-sm text-slate-300 font-sans leading-relaxed border-t border-white/6 pt-3">
-                  {faq.a}
-                </p>
-              </details>
-            ))}
-          </div>
-        </RevealSection>
-
-        {/* ════════════════════════════════════════════════════════════
-            SECTION 11.5: THE COMPETITIVE SHOWDOWN MATRIX
+            SECTION 11: THE COMPETITIVE SHOWDOWN MATRIX
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-white/8 text-left">
           <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
@@ -1396,7 +1205,7 @@ export default function LandingPage({
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
-            SECTION 11.6: VERIFIED ASTROLOGER & USER TESTIMONIALS
+            SECTION 12: VERIFIED SCHOLARS & SEEKERS TESTIMONIALS
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-white/8 text-left">
           <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
@@ -1458,124 +1267,6 @@ export default function LandingPage({
                 <span className="text-[11px] text-slate-400 font-sans">Software Engineer & Astronomy Enthusiast, London</span>
               </div>
             </div>
-
-          </div>
-        </RevealSection>
-
-        {/* ════════════════════════════════════════════════════════════
-            SECTION 11.7: NEW INTERACTIVE SUITES QUICK LAUNCHPAD
-            ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-white/8 text-left">
-          <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/25 text-cyan-300 text-xs font-mono font-bold">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Newly Launched Core Instruments</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              EXPLORE OUR MASTER EXPANSION SUITES
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300 font-sans">
-              1-Click direct access to our most advanced astrological calculation and diagnostic tools.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs">
-            
-            <button
-              onClick={() => onNavigateToTab('chart-studio')}
-              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-amber-400/40 text-left transition-all cursor-pointer group space-y-2"
-            >
-              <div className="flex items-center justify-between">
-                <Compass className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
-              </div>
-              <strong className="text-sm text-white block">Dual Chart Wheel Studio</strong>
-              <p className="text-slate-400 font-sans text-xs">Toggle between North Indian Diamond, South Indian Square, and Western 360° Aspect Wheels.</p>
-            </button>
-
-            <button
-              onClick={() => onNavigateToTab('dossier')}
-              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-amber-400/40 text-left transition-all cursor-pointer group space-y-2"
-            >
-              <div className="flex items-center justify-between">
-                <FileText className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] text-emerald-300 bg-emerald-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
-              </div>
-              <strong className="text-sm text-white block">30-Page Executive PDF Dossier</strong>
-              <p className="text-slate-400 font-sans text-xs">Export a luxury, keepsake-grade 7-chapter life architecture report directly from your browser.</p>
-            </button>
-
-            <button
-              onClick={() => onNavigateToTab('copilot')}
-              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-amber-400/40 text-left transition-all cursor-pointer group space-y-2"
-            >
-              <div className="flex items-center justify-between">
-                <Search className="w-5 h-5 text-cyan-400 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] text-cyan-300 bg-cyan-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
-              </div>
-              <strong className="text-sm text-white block">Ask ASTRO360 AI Copilot</strong>
-              <p className="text-slate-400 font-sans text-xs">Deterministic AI assistant grounded in your exact birth ephemeris and classical scripture citations.</p>
-            </button>
-
-            <button
-              onClick={() => onNavigateToTab('passport')}
-              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-amber-400/40 text-left transition-all cursor-pointer group space-y-2"
-            >
-              <div className="flex items-center justify-between">
-                <Share2 className="w-5 h-5 text-purple-400 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] text-purple-300 bg-purple-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
-              </div>
-              <strong className="text-sm text-white block">Viral Cosmic Passport</strong>
-              <p className="text-slate-400 font-sans text-xs">Export your astronomical birth identity card formatted for Instagram Stories, WhatsApp, and Twitter.</p>
-            </button>
-
-            <button
-              onClick={() => onNavigateToTab('shlokas')}
-              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-amber-400/40 text-left transition-all cursor-pointer group space-y-2"
-            >
-              <div className="flex items-center justify-between">
-                <BookOpen className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
-              </div>
-              <strong className="text-sm text-white block">Classical Shloka Library</strong>
-              <p className="text-slate-400 font-sans text-xs">Explore Devanagari Sanskrit sutras, word-by-word etymology, and predictive rules from BPHS & Phaladeepika.</p>
-            </button>
-
-            <button
-              onClick={() => onNavigateToTab('ephemeris-lab')}
-              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-amber-400/40 text-left transition-all cursor-pointer group space-y-2"
-            >
-              <div className="flex items-center justify-between">
-                <Layers className="w-5 h-5 text-cyan-400 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] text-cyan-300 bg-cyan-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
-              </div>
-              <strong className="text-sm text-white block">Multi-System Ephemeris Lab</strong>
-              <p className="text-slate-400 font-sans text-xs">Compare planetary longitudes and ayanamsha shifts across True Lahiri, KP Stellar, Raman, and Tropical.</p>
-            </button>
-
-            <button
-              onClick={() => onNavigateToTab('frequencies')}
-              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-indigo-400/40 text-left transition-all cursor-pointer group space-y-2"
-            >
-              <div className="flex items-center justify-between">
-                <Radio className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] text-indigo-300 bg-indigo-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
-              </div>
-              <strong className="text-sm text-white block">Planetary Frequency & Binaural Studio</strong>
-              <p className="text-slate-400 font-sans text-xs">Live synthesized cosmic octave tuning frequencies (Sun 126.22 Hz, Om 136.10 Hz) with binaural beats.</p>
-            </button>
-
-            <button
-              onClick={() => onNavigateToTab('sabian')}
-              className="p-5 rounded-2xl bg-[#0B1220] hover:bg-[#0F1A2E] border border-white/10 hover:border-pink-400/40 text-left transition-all cursor-pointer group space-y-2"
-            >
-              <div className="flex items-center justify-between">
-                <Sparkles className="w-5 h-5 text-pink-400 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] text-pink-300 bg-pink-400/10 px-2 py-0.5 rounded font-bold">LAUNCH →</span>
-              </div>
-              <strong className="text-sm text-white block">Sabian Symbols 360° Degree Lab</strong>
-              <p className="text-slate-400 font-sans text-xs">Explore clairvoyant degree archetypes and evolutionary challenges across all 360 zodiac degrees.</p>
-            </button>
 
           </div>
         </RevealSection>
