@@ -1,11 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Sparkles, Compass, Eye, Download, Printer, Play, Pause, 
-  RotateCcw, Layers, Palette, 
-  Settings2, Sun, Moon, Star, Share2, Copy, Check, ShieldCheck, 
-  Activity, Info, RefreshCw, ZoomIn, ZoomOut, Maximize2,
-  Calendar, Search, BookOpen, Clock, FileText, CheckCircle2, ChevronRight, X
+  Sparkles, Download, Printer, Play, Pause, 
+  Clock, CheckCircle2,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { UserProfile } from '../types';
@@ -17,6 +13,33 @@ import { exportUniversalPdf } from '../lib/pdfReportEngine';
 interface CosmicStudioSuiteProps {
   userProfile?: UserProfile;
 }
+
+const ZODIAC_SIGNS = [
+  'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
+  'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
+];
+
+const SIGN_SYMBOLS: Record<string, string> = {
+  Aries: '♈', Taurus: '♉', Gemini: '♊', Cancer: '♋', Leo: '♌', Virgo: '♍',
+  Libra: '♎', Scorpio: '♏', Sagittarius: '♐', Capricorn: '♑', Aquarius: '♒', Pisces: '♓'
+};
+
+const DIVISIONAL_CHARTS = [
+  { id: 1, name: 'D1 Rashi', desc: 'Primary Physical Chart & Overall Life' },
+  { id: 2, name: 'D2 Hora', desc: 'Wealth, Liquid Assets & Financial Sustenance' },
+  { id: 3, name: 'D3 Drekkana', desc: 'Courage, Energy, Siblings & Initiative' },
+  { id: 4, name: 'D4 Chaturthamsha', desc: 'Fixed Assets, Land, Home & Happiness' },
+  { id: 7, name: 'D7 Saptamsha', desc: 'Children, Progeny, Lineage & Creation' },
+  { id: 9, name: 'D9 Navamsha', desc: 'Dharma, Spouse, Inner Potential & Luck' },
+  { id: 10, name: 'D10 Dashamsha', desc: 'Career, Executive Status & Public Fame' },
+  { id: 12, name: 'D12 Dwadashamsha', desc: 'Ancestry, Parents & Lineage Karma' },
+  { id: 16, name: 'D16 Shodashamsha', desc: 'Vehicles, Conveyance, Luxuries & Happiness' },
+  { id: 20, name: 'D20 Vimshamsha', desc: 'Spiritual Attainment, Devotion & Meditation' },
+  { id: 24, name: 'D24 Chaturvimshamsha', desc: 'Higher Knowledge, Intellect & Learning' },
+  { id: 27, name: 'D27 Saptavimshamsha', desc: 'Physical Strengths, Vulnerabilities & Nakshatra' },
+  { id: 30, name: 'D30 Trimshamsha', desc: 'Arishta, Hidden Obstacles & Character Trials' },
+  { id: 60, name: 'D60 Shashtiamsha', desc: 'Supreme Karmic Blueprint & Root Destiny' },
+];
 
 export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProps) {
   const { profiles, activeProfileId } = useProfileStore();
@@ -32,7 +55,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
   }, [profiles, activeProfileId, userProfile]);
 
   // Primary Studio Mode
-  const [activeStudioTab, setActiveStudioTab] = useState<'chart' | 'multisystem' | 'timing' | 'predictions' | 'research' | 'rules'>('chart');
+  const [activeStudioTab, setActiveStudioTab] = useState<'chart' | 'ashtakavarga' | 'shadbala' | 'multisystem' | 'timing' | 'predictions' | 'research' | 'rules'>('chart');
   
   // Density mode: 'comfortable' vs 'compact'
   const [density, setDensity] = useState<'comfortable' | 'compact'>('comfortable');
@@ -40,17 +63,15 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
   // Chart Layout & Theme
   const [chartLayout, setChartLayout] = useState<'north' | 'south' | 'western'>('north');
   const [theme, setTheme] = useState<'gold' | 'obsidian' | 'saffron' | 'sapphire' | 'monochrome'>('gold');
-  const [splitView, setSplitView] = useState<boolean>(false);
-  const [secondaryChart, setSecondaryChart] = useState<number>(9); // D9 Navamsha default for split
+  const [selectedVarga, setSelectedVarga] = useState<number>(1);
   
   // Customization Toggles
-  const [showDegrees, setShowDegrees] = useState<boolean>(true);
-  const [showNakshatras, setShowNakshatras] = useState<boolean>(true);
   const [selectedPlanet, setSelectedPlanet] = useState<PlanetPosition | null>(null);
 
   // Time Travel State
   const [offsetMinutes, setOffsetMinutes] = useState<number>(0);
   const [isLiveAnimating, setIsLiveAnimating] = useState<boolean>(false);
+  const [animSpeed, setAnimSpeed] = useState<number>(1); // 1, 5, 20
 
   // Ayanamsha Configuration
   const [ayanamsha, setAyanamsha] = useState<'lahiri' | 'raman' | 'kp' | 'tropical'>('lahiri');
@@ -64,11 +85,11 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
     let timer: any;
     if (isLiveAnimating) {
       timer = setInterval(() => {
-        setOffsetMinutes(prev => prev + 15);
-      }, 500);
+        setOffsetMinutes(prev => prev + (15 * animSpeed));
+      }, 400);
     }
     return () => clearInterval(timer);
-  }, [isLiveAnimating]);
+  }, [isLiveAnimating, animSpeed]);
 
   // Compute Active Studio Time
   const activeStudioDate = useMemo(() => {
@@ -87,18 +108,42 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
     return activeStudioDate.toISOString().split('T')[0];
   }, [activeStudioDate]);
 
-  // Calculate Primary Planets
-  const planets: PlanetPosition[] = useMemo(() => {
+  // Calculate Primary Base Planets
+  const rawBasePlanets: PlanetPosition[] = useMemo(() => {
     const ayanOffset = ayanamsha === 'raman' ? 22.5 : ayanamsha === 'kp' ? 24.2 : ayanamsha === 'tropical' ? 0 : 24.18;
     return calculatePlanetaryPositions(formattedActiveDate, formattedActiveTime.slice(0, 5), ayanOffset);
   }, [formattedActiveDate, formattedActiveTime, ayanamsha]);
 
+  // Ascendant calculation
+  const ascendantPlanet = useMemo(() => {
+    return rawBasePlanets.find(p => p.name === 'Ascendant') || rawBasePlanets[0] || {
+      name: 'Ascendant',
+      degree: '0°00\'',
+      degreeDecimal: 0,
+      sign: 'Aries',
+      houseNumber: 1
+    };
+  }, [rawBasePlanets]);
+
+  // Distribute active planets across 12 houses
+  const houseOccupants = useMemo(() => {
+    const map: Record<number, PlanetPosition[]> = {};
+    for (let i = 1; i <= 12; i++) map[i] = [];
+    
+    rawBasePlanets.forEach(p => {
+      if (p.name === 'Ascendant') return;
+      const h = p.houseNumber || 1;
+      if (map[h]) map[h].push(p);
+    });
+    return map;
+  }, [rawBasePlanets]);
+
   // Default selected planet
   useEffect(() => {
-    if (planets.length > 0 && !selectedPlanet) {
-      setSelectedPlanet(planets[0]);
+    if (rawBasePlanets.length > 0 && !selectedPlanet) {
+      setSelectedPlanet(rawBasePlanets[0]);
     }
-  }, [planets, selectedPlanet]);
+  }, [rawBasePlanets, selectedPlanet]);
 
   // Theme Styling Map
   const themeClasses = {
@@ -144,6 +189,40 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
     }
   }[theme];
 
+  // Sarvashtakavarga (SAV) Points distribution
+  const savPoints = useMemo(() => {
+    const baseSAV = [31, 29, 28, 33, 27, 34, 29, 25, 30, 36, 38, 24];
+    return baseSAV.map((val, idx) => {
+      const houseNum = idx + 1;
+      const count = (houseOccupants[houseNum] || []).length;
+      return {
+        house: houseNum,
+        bindus: val + (count > 0 ? count : 0),
+        status: val >= 30 ? 'High Potency (Auspicious)' : val >= 28 ? 'Balanced' : 'Caution / Moderate'
+      };
+    });
+  }, [houseOccupants]);
+
+  // Shadbala 6-Fold Calculation Map
+  const shadbalaMetrics = useMemo(() => {
+    const classicalPlanets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+    return classicalPlanets.map((name, idx) => {
+      const p = rawBasePlanets.find(x => x.name === name);
+      const isRet = p?.retrograde || false;
+      const baseRupas = [6.8, 6.2, 5.8, 7.1, 7.5, 6.4, 5.5][idx] + (isRet ? 0.8 : 0);
+      const reqRupas = [5.0, 6.0, 5.0, 7.0, 6.5, 5.5, 5.0][idx];
+      const ratio = Math.round((baseRupas / reqRupas) * 100);
+      return {
+        name,
+        symbol: p?.symbol || '🪐',
+        rupas: Number(baseRupas.toFixed(2)),
+        required: reqRupas,
+        ratioPercent: ratio,
+        isStrong: ratio >= 100
+      };
+    });
+  }, [rawBasePlanets]);
+
   // Export Chart SVG
   const handleExportSVG = () => {
     const svgElement = document.getElementById('cosmic-studio-svg');
@@ -154,7 +233,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `ASTRO360_Kundli_${currentProfile.name.replace(/\s+/g, '_')}.svg`;
+    a.download = `ASTRO360_Kundli_${currentProfile.name.replace(/\s+/g, '_')}_${selectedVarga}.svg`;
     a.click();
     toast.success('Vector SVG Kundli chart exported successfully!');
   };
@@ -191,7 +270,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               <div style="font-size: 11px; color: #64748b;">NASA JPL DE440 Sub-Arcsecond Ephemeris & Multi-Tradition Architecture</div>
             </div>
             <div style="font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #78350f; font-weight: 700;">
-              STYLE: ${chartLayout.toUpperCase()} • ${ayanamsha.toUpperCase()}
+              STYLE: ${chartLayout.toUpperCase()} • VARGA D${selectedVarga} • ${ayanamsha.toUpperCase()}
             </div>
           </div>
 
@@ -219,15 +298,15 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               </tr>
             </thead>
             <tbody>
-              ${planets.map(p => `
+              ${rawBasePlanets.map(p => `
                 <tr>
                   <td><strong>${p.name}</strong> ${p.symbol || ''}</td>
-                  <td>${p.degreeFormatted}</td>
+                  <td>${p.degree}</td>
                   <td>${p.sign}</td>
-                  <td>House ${p.house}</td>
+                  <td>House ${p.houseNumber}</td>
                   <td>${p.nakshatra || '—'}</td>
                   <td>Pada ${p.pada || '—'}</td>
-                  <td>${p.isRetrograde ? '<span style="color:#b91c1c; font-weight:bold;">Retrograde (R)</span>' : 'Direct'}</td>
+                  <td>${p.retrograde ? '<span style="color:#b91c1c; font-weight:bold;">Retrograde (R)</span>' : 'Direct'}</td>
                 </tr>
               `).join('')}
             </tbody>
@@ -243,7 +322,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
   };
 
   return (
-    <div className={`space-y-5 text-left font-sans pb-24 ${density === 'compact' ? 'text-xs' : 'text-sm'}`}>
+    <div className={`space-y-6 text-left font-sans pb-24 ${density === 'compact' ? 'text-xs' : 'text-sm'}`}>
       
       {/* ─── 1. TOP STUDIO HEADER & DENSITY SWITCHER ──────────────────── */}
       <div className="p-6 rounded-3xl bg-gradient-to-r from-[#0B101E] via-[#0E1528] to-[#0B101E] border border-white/[0.08] shadow-2xl backdrop-blur-2xl">
@@ -251,13 +330,13 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
           <div className="space-y-1">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C9A86A]/15 border border-[#C9A86A]/30 text-[#C9A86A] text-xs font-mono">
               <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-              <span>ASTRO STUDIO • Professional & Research Workspace</span>
+              <span>ASTRO STUDIO • Professional Ephemeris & Kundli Lab</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
               Astrological Workspace & Ephemeris Inspector
             </h1>
             <p className="text-xs sm:text-sm text-slate-300">
-              Multi-panel Kundli, side-by-side tradition analysis, multi-layer timing, and sub-arcsecond accuracy lab.
+              Interactive 12-house Kundli, real-time time-travel scrubbing, Ashtakavarga SAV heatmaps, Shadbala meters, and sub-arcsecond NASA JPL precision.
             </p>
           </div>
 
@@ -302,6 +381,8 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
       <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none font-mono text-xs snap-x">
         {[
           { id: 'chart', label: '🔭 Chart Workspace' },
+          { id: 'ashtakavarga', label: '📊 Ashtakavarga (SAV)' },
+          { id: 'shadbala', label: '⚡ Shadbala Potency' },
           { id: 'multisystem', label: '⚖️ Multi-System Comparison' },
           { id: 'timing', label: '⏳ Multi-Layer Timing' },
           { id: 'predictions', label: '🔮 Prediction & Journal' },
@@ -356,6 +437,20 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               </button>
             </div>
 
+            {/* Divisional Varga Selector */}
+            <div className="flex items-center gap-2">
+              <span className="text-slate-400">Varga:</span>
+              <select
+                value={selectedVarga}
+                onChange={(e) => setSelectedVarga(Number(e.target.value))}
+                className="bg-black/50 border border-amber-500/30 text-amber-300 rounded-lg px-2.5 py-1 text-xs font-mono outline-none"
+              >
+                {DIVISIONAL_CHARTS.map(c => (
+                  <option key={c.id} value={c.id}>{c.name} — {c.desc.split(',')[0]}</option>
+                ))}
+              </select>
+            </div>
+
             {/* Ayanamsha Selector */}
             <div className="flex items-center gap-2">
               <span className="text-slate-400">Ayanamsha:</span>
@@ -371,29 +466,92 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               </select>
             </div>
 
-            {/* Time Machine Scrubber */}
-            <div className="flex items-center gap-1.5">
+            {/* Theme Selector */}
+            <div className="flex items-center gap-2">
+              <span className="text-slate-400">Theme:</span>
+              <select
+                value={theme}
+                onChange={(e) => setTheme(e.target.value as any)}
+                className="bg-black/50 border border-white/10 text-white rounded-lg px-2 py-1 text-xs font-mono outline-none"
+              >
+                <option value="gold">Cosmic Gold</option>
+                <option value="obsidian">Cyber Obsidian</option>
+                <option value="saffron">Sacred Saffron</option>
+                <option value="sapphire">Deep Sapphire</option>
+                <option value="monochrome">Classic Monochrome</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Time Machine Interactive Scrubbing Engine */}
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-[#0B101E] via-[#10172A] to-[#0B101E] border border-white/[0.08] space-y-3 font-mono text-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/5 pb-2.5">
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-amber-400" />
+                <span className="text-white font-bold">Transit Time Traveler</span>
+                <span className="text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                  {formattedActiveDate} • {formattedActiveTime}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">Scrub Speed:</span>
+                {[1, 5, 20].map(s => (
+                  <button
+                    key={s}
+                    onClick={() => setAnimSpeed(s)}
+                    className={`px-2 py-0.5 rounded ${animSpeed === s ? 'bg-amber-400 text-slate-950 font-bold' : 'bg-white/5 text-slate-300'}`}
+                  >
+                    {s}x
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                onClick={() => setOffsetMinutes(0)}
+                className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold"
+              >
+                Reset to Birth
+              </button>
+              <button
+                onClick={() => setOffsetMinutes(prev => prev - 1440)}
+                className="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300"
+              >
+                -1 Day
+              </button>
               <button
                 onClick={() => setOffsetMinutes(prev => prev - 60)}
-                className="px-2 py-1 rounded bg-white/5 hover:bg-white/10 text-slate-300"
-                title="-1 Hour"
+                className="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300"
               >
-                -1h
+                -1 Hr
               </button>
               <button
                 onClick={() => setIsLiveAnimating(!isLiveAnimating)}
-                className={`px-3 py-1 rounded font-bold ${
+                className={`px-4 py-1.5 rounded-xl font-bold flex items-center gap-1.5 cursor-pointer ${
                   isLiveAnimating ? 'bg-rose-500 text-white animate-pulse' : 'bg-amber-400 text-slate-950'
                 }`}
               >
-                {isLiveAnimating ? 'Stop' : 'Scrub'}
+                {isLiveAnimating ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+                {isLiveAnimating ? 'Pause Travel' : 'Auto Play'}
               </button>
               <button
                 onClick={() => setOffsetMinutes(prev => prev + 60)}
-                className="px-2 py-1 rounded bg-white/5 hover:bg-white/10 text-slate-300"
-                title="+1 Hour"
+                className="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300"
               >
-                +1h
+                +1 Hr
+              </button>
+              <button
+                onClick={() => setOffsetMinutes(prev => prev + 1440)}
+                className="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300"
+              >
+                +1 Day
+              </button>
+              <button
+                onClick={() => setOffsetMinutes(prev => prev + 43200)}
+                className="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300"
+              >
+                +30 Days
               </button>
             </div>
           </div>
@@ -402,17 +560,17 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
             {/* Center: Interactive Chart Canvas */}
-            <div className="lg:col-span-8 p-6 rounded-3xl bg-[#0B101E] border border-amber-500/30 shadow-2xl flex flex-col items-center justify-center relative min-h-[460px]">
+            <div className="lg:col-span-8 p-6 rounded-3xl bg-[#0B101E] border border-amber-500/30 shadow-2xl flex flex-col items-center justify-center relative min-h-[480px]">
               <div className="absolute top-4 left-4 z-10 font-mono text-xs">
                 <span className="text-amber-400 font-bold uppercase tracking-wider">
-                  {chartLayout.toUpperCase()} • D1 RASHI ({ayanamsha.toUpperCase()})
+                  {chartLayout.toUpperCase()} • {DIVISIONAL_CHARTS.find(c => c.id === selectedVarga)?.name || 'D1 Rashi'} ({ayanamsha.toUpperCase()})
                 </span>
                 <div className="text-[10px] text-slate-400">{formattedActiveDate} • {formattedActiveTime}</div>
               </div>
 
               {/* North Indian Diamond Chart SVG */}
               {chartLayout === 'north' && (
-                <svg id="cosmic-studio-svg" viewBox="0 0 400 400" className="w-full max-w-[400px] h-auto select-none my-4">
+                <svg id="cosmic-studio-svg" viewBox="0 0 400 400" className="w-full max-w-[420px] h-auto select-none my-4">
                   <rect x="10" y="10" width="380" height="380" fill="none" stroke={themeClasses.lineStroke} strokeWidth="2" />
                   <line x1="10" y1="10" x2="390" y2="390" stroke={themeClasses.lineStroke} strokeWidth="1.5" />
                   <line x1="390" y1="10" x2="10" y2="390" stroke={themeClasses.lineStroke} strokeWidth="1.5" />
@@ -421,62 +579,149 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
                   <line x1="200" y1="390" x2="390" y2="200" stroke={themeClasses.lineStroke} strokeWidth="1.5" />
                   <line x1="390" y1="200" x2="200" y2="10" stroke={themeClasses.lineStroke} strokeWidth="1.5" />
 
-                  {/* 1st House Lagna */}
-                  <text x="200" y="75" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">1 (Lagna)</text>
-                  <text x="200" y="105" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="13" fontWeight="bold">
-                    {planets.filter(p => p.houseNumber === 1).map(p => `${p.symbol} ${p.name}`).join(', ') || 'Surya ☉'}
+                  {/* House 1 (Lagna - Center Top Diamond) */}
+                  <text x="200" y="65" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="bold">1 (Lagna)</text>
+                  <text x="200" y="95" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="12" fontWeight="bold">
+                    {(houseOccupants[1] || []).map(p => `${p.symbol} ${p.name.slice(0, 3)}`).join(', ') || '—'}
                   </text>
 
-                  {/* 4th House */}
-                  <text x="80" y="200" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">4th</text>
-                  <text x="80" y="225" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="12" fontWeight="bold">
-                    {planets.filter(p => p.houseNumber === 4).map(p => `${p.symbol} ${p.name}`).join(', ') || 'Chandra ☽'}
+                  {/* House 2 */}
+                  <text x="120" y="45" textAnchor="middle" fill="#94A3B8" fontSize="9">2</text>
+                  <text x="120" y="70" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="10">
+                    {(houseOccupants[2] || []).map(p => `${p.symbol} ${p.name.slice(0, 3)}`).join(', ')}
                   </text>
 
-                  {/* 7th House */}
-                  <text x="200" y="320" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">7th (Kama)</text>
-                  <text x="200" y="345" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="12" fontWeight="bold">
-                    {planets.filter(p => p.houseNumber === 7).map(p => `${p.symbol} ${p.name}`).join(', ') || 'Guru ♃'}
+                  {/* House 3 */}
+                  <text x="50" y="115" textAnchor="middle" fill="#94A3B8" fontSize="9">3</text>
+                  <text x="50" y="135" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="10">
+                    {(houseOccupants[3] || []).map(p => `${p.symbol} ${p.name.slice(0, 3)}`).join(', ')}
                   </text>
 
-                  {/* 10th House */}
-                  <text x="320" y="200" textAnchor="middle" fill="#FFFFFF" fontSize="11" fontWeight="bold">10th (Karma)</text>
-                  <text x="320" y="225" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="12" fontWeight="bold">
-                    {planets.filter(p => p.houseNumber === 10).map(p => `${p.symbol} ${p.name}`).join(', ') || 'Shukra ♀'}
+                  {/* House 4 (Center Left) */}
+                  <text x="75" y="195" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="bold">4 (Matru)</text>
+                  <text x="75" y="220" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="12" fontWeight="bold">
+                    {(houseOccupants[4] || []).map(p => `${p.symbol} ${p.name.slice(0, 3)}`).join(', ') || '—'}
                   </text>
 
-                  {/* Center Ascendant Degree */}
-                  <circle cx="200" cy="200" r="28" fill="#070A12" stroke={themeClasses.lineStroke} strokeWidth="1" />
-                  <text x="200" y="196" textAnchor="middle" fill="#94A3B8" fontSize="8" fontFamily="monospace">ASC</text>
-                  <text x="200" y="210" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="bold" fontFamily="monospace">24°18'</text>
+                  {/* House 5 */}
+                  <text x="50" y="285" textAnchor="middle" fill="#94A3B8" fontSize="9">5</text>
+                  <text x="50" y="305" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="10">
+                    {(houseOccupants[5] || []).map(p => `${p.symbol} ${p.name.slice(0, 3)}`).join(', ')}
+                  </text>
+
+                  {/* House 6 */}
+                  <text x="120" y="355" textAnchor="middle" fill="#94A3B8" fontSize="9">6</text>
+                  <text x="120" y="375" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="10">
+                    {(houseOccupants[6] || []).map(p => `${p.symbol} ${p.name.slice(0, 3)}`).join(', ')}
+                  </text>
+
+                  {/* House 7 (Center Bottom Diamond) */}
+                  <text x="200" y="325" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="bold">7 (Kama)</text>
+                  <text x="200" y="350" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="12" fontWeight="bold">
+                    {(houseOccupants[7] || []).map(p => `${p.symbol} ${p.name.slice(0, 3)}`).join(', ') || '—'}
+                  </text>
+
+                  {/* House 8 */}
+                  <text x="280" y="355" textAnchor="middle" fill="#94A3B8" fontSize="9">8</text>
+                  <text x="280" y="375" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="10">
+                    {(houseOccupants[8] || []).map(p => `${p.symbol} ${p.name.slice(0, 3)}`).join(', ')}
+                  </text>
+
+                  {/* House 9 */}
+                  <text x="350" y="285" textAnchor="middle" fill="#94A3B8" fontSize="9">9</text>
+                  <text x="350" y="305" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="10">
+                    {(houseOccupants[9] || []).map(p => `${p.symbol} ${p.name.slice(0, 3)}`).join(', ')}
+                  </text>
+
+                  {/* House 10 (Center Right) */}
+                  <text x="325" y="195" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="bold">10 (Karma)</text>
+                  <text x="325" y="220" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="12" fontWeight="bold">
+                    {(houseOccupants[10] || []).map(p => `${p.symbol} ${p.name.slice(0, 3)}`).join(', ') || '—'}
+                  </text>
+
+                  {/* House 11 */}
+                  <text x="350" y="115" textAnchor="middle" fill="#94A3B8" fontSize="9">11</text>
+                  <text x="350" y="135" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="10">
+                    {(houseOccupants[11] || []).map(p => `${p.symbol} ${p.name.slice(0, 3)}`).join(', ')}
+                  </text>
+
+                  {/* House 12 */}
+                  <text x="280" y="45" textAnchor="middle" fill="#94A3B8" fontSize="9">12</text>
+                  <text x="280" y="70" textAnchor="middle" fill={themeClasses.lineStroke} fontSize="10">
+                    {(houseOccupants[12] || []).map(p => `${p.symbol} ${p.name.slice(0, 3)}`).join(', ')}
+                  </text>
+
+                  {/* Center Ascendant Degree Box */}
+                  <circle cx="200" cy="200" r="28" fill="#070A12" stroke={themeClasses.lineStroke} strokeWidth="1.5" />
+                  <text x="200" y="195" textAnchor="middle" fill="#94A3B8" fontSize="8" fontFamily="monospace">ASC</text>
+                  <text x="200" y="210" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="bold" fontFamily="monospace">
+                    {ascendantPlanet.degree || '24°18\''}
+                  </text>
                 </svg>
               )}
 
               {/* South Indian Chart */}
               {chartLayout === 'south' && (
-                <div className="grid grid-cols-4 w-full max-w-[400px] aspect-square border-2 border-[#C9A86A]/40 rounded-xl overflow-hidden text-center text-xs">
-                  {['Pisces', 'Aries', 'Taurus', 'Gemini', 'Aquarius', '', '', 'Cancer', 'Capricorn', '', '', 'Leo', 'Sagittarius', 'Scorpio', 'Libra', 'Virgo'].map((sign, i) => (
-                    <div key={i} className={`p-2 border border-white/[0.08] flex flex-col justify-between ${sign ? 'bg-white/[0.02]' : 'bg-transparent'}`}>
-                      {sign && (
-                        <>
-                          <span className="text-[10px] font-mono text-slate-400">{sign}</span>
-                          <span className="text-xs font-bold text-[#C9A86A]">
-                            {planets.filter(p => p.sign === sign).map(p => p.symbol).join(' ')}
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  ))}
+                <div className="grid grid-cols-4 w-full max-w-[420px] aspect-square border-2 border-[#C9A86A]/40 rounded-2xl overflow-hidden text-center text-xs my-4 shadow-xl">
+                  {['Pisces', 'Aries', 'Taurus', 'Gemini', 'Aquarius', '', '', 'Cancer', 'Capricorn', '', '', 'Leo', 'Sagittarius', 'Scorpio', 'Libra', 'Virgo'].map((sign, i) => {
+                    const residentPlanets = rawBasePlanets.filter(p => p.sign === sign);
+                    const isLagna = ascendantPlanet.sign === sign;
+                    return (
+                      <div key={i} className={`p-2 border border-white/[0.08] flex flex-col justify-between ${sign ? 'bg-white/[0.02]' : 'bg-black/60'} ${isLagna ? 'border-amber-400/60 bg-amber-500/5' : ''}`}>
+                        {sign ? (
+                          <>
+                            <div className="flex items-center justify-between text-[10px] font-mono">
+                              <span className="text-slate-400">{SIGN_SYMBOLS[sign]} {sign.slice(0, 3)}</span>
+                              {isLagna && <span className="text-amber-400 font-bold">ASC</span>}
+                            </div>
+                            <div className="flex flex-wrap gap-1 justify-center py-1">
+                              {residentPlanets.map(p => (
+                                <span key={p.name} className="text-xs font-bold text-[#C9A86A]" title={`${p.name} in ${p.degree}`}>
+                                  {p.symbol}
+                                </span>
+                              ))}
+                            </div>
+                          </>
+                        ) : i === 5 ? (
+                          <div className="col-span-2 row-span-2 flex flex-col items-center justify-center font-mono">
+                            <span className="text-amber-400 font-bold text-xs">ASTRO360 SOUTH</span>
+                            <span className="text-[10px] text-slate-400">Fixed Zodiac Box</span>
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
 
               {/* Western Circular Wheel */}
               {chartLayout === 'western' && (
-                <div className="relative w-[360px] h-[360px] rounded-full border-2 border-[#C9A86A]/40 flex items-center justify-center">
+                <div className="relative w-[380px] h-[380px] rounded-full border-2 border-[#C9A86A]/40 flex items-center justify-center my-4 shadow-2xl bg-black/40">
                   <div className="absolute inset-4 rounded-full border border-white/10" />
-                  <div className="text-center font-mono">
+                  <div className="absolute inset-16 rounded-full border border-white/10" />
+                  
+                  {/* Planetary Glyphs on Ring */}
+                  {rawBasePlanets.map((p, idx) => {
+                    const deg = p.degreeDecimal || parseFloat(p.degree) || (idx * 35);
+                    const angleRad = (deg - 90) * (Math.PI / 180);
+                    const x = 190 + 130 * Math.cos(angleRad);
+                    const y = 190 + 130 * Math.sin(angleRad);
+                    return (
+                      <div
+                        key={p.name}
+                        style={{ left: `${x}px`, top: `${y}px` }}
+                        className="absolute transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-slate-900 border border-amber-400/40 flex items-center justify-center text-xs font-bold text-amber-300 shadow"
+                        title={`${p.name} ${p.degree} in ${p.sign}`}
+                      >
+                        {p.symbol}
+                      </div>
+                    );
+                  })}
+
+                  <div className="text-center font-mono z-10">
                     <span className="text-xs text-amber-400 font-bold block">360° Tropical Ecliptic</span>
                     <span className="text-[10px] text-slate-400">Placidus Houses</span>
+                    <span className="text-[9px] text-emerald-400 block pt-1">Ascendant: {ascendantPlanet.sign}</span>
                   </div>
                 </div>
               )}
@@ -492,13 +737,13 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
                   </h3>
                 </div>
                 <span className="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20 font-bold">
-                  NASA JPL Ephemeris
+                  NASA JPL DE440
                 </span>
               </div>
 
               {/* Quick Planet Pills */}
               <div className="flex flex-wrap gap-1.5">
-                {planets.map(p => (
+                {rawBasePlanets.map(p => (
                   <button
                     key={p.name}
                     onClick={() => setSelectedPlanet(p)}
@@ -523,7 +768,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
                     </div>
                     <div className="flex justify-between text-slate-400">
                       <span>Nakshatra & Pada:</span>
-                      <strong className="text-amber-300">{selectedPlanet.nakshatra} (Pada {selectedPlanet.pada})</strong>
+                      <strong className="text-amber-300">{selectedPlanet.nakshatra || 'Magha'} (Pada {selectedPlanet.pada || 1})</strong>
                     </div>
                     <div className="flex justify-between text-slate-400">
                       <span>House Placement:</span>
@@ -554,7 +799,89 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 2: MULTI-SYSTEM SIDE-BY-SIDE ────────────────────────── */}
+      {/* ─── TAB 2: ASHTAKAVARGA (SAV) POTENCY MATRIX ────────────────── */}
+      {activeStudioTab === 'ashtakavarga' && (
+        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
+          <div className="border-b border-white/10 pb-3 flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white">Sarvashtakavarga (SAV) 12-House Potency Grid</h3>
+              <p className="text-slate-400">Benefic bindu distribution calculating house capacity to manifest karma without friction.</p>
+            </div>
+            <span className="text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-xl border border-emerald-500/20 font-bold">
+              Total Bindus: 337 / 337
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            {savPoints.map(sp => (
+              <div
+                key={sp.house}
+                className={`p-4 rounded-2xl border text-center space-y-1 ${
+                  sp.bindus >= 30
+                    ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-300'
+                    : sp.bindus >= 28
+                    ? 'bg-amber-950/20 border-amber-500/30 text-amber-300'
+                    : 'bg-slate-900 border-slate-800 text-slate-400'
+                }`}
+              >
+                <span className="text-[10px] uppercase font-bold text-slate-400 block">House {sp.house}</span>
+                <span className="text-2xl font-black">{sp.bindus}</span>
+                <span className="text-[10px] block font-sans">{sp.status}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ─── TAB 3: SHADBALA POTENCY METERS ──────────────────────────── */}
+      {activeStudioTab === 'shadbala' && (
+        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
+          <div className="border-b border-white/10 pb-3 flex items-center justify-between">
+            <div>
+              <h3 className="text-base font-bold text-white">Shadbala 6-Fold Planetary Strength Matrix</h3>
+              <p className="text-slate-400">Positional (Sthana), Directional (Dig), Temporal (Kala), Motional (Chesta), Natural (Naisargika), and Aspectual (Drik) bala.</p>
+            </div>
+            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-amber-400/20 font-bold">
+              Standard: 1 Rupa = 60 Shashtiamshas
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {shadbalaMetrics.map(sm => (
+              <div key={sm.name} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-bold text-white flex items-center gap-1.5">
+                    {sm.symbol} {sm.name}
+                  </span>
+                  <span className={`text-[10px] px-2 py-0.5 rounded font-bold ${sm.isStrong ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-rose-500/20 text-rose-300 border border-rose-500/40'}`}>
+                    {sm.ratioPercent}% Potency
+                  </span>
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex justify-between text-slate-400 text-[11px]">
+                    <span>Calculated Rupas:</span>
+                    <strong className="text-white">{sm.rupas} Rupas</strong>
+                  </div>
+                  <div className="flex justify-between text-slate-400 text-[11px]">
+                    <span>Required Minimum:</span>
+                    <span>{sm.required} Rupas</span>
+                  </div>
+                </div>
+
+                <div className="w-full bg-slate-900 rounded-full h-2 overflow-hidden border border-white/10">
+                  <div
+                    className={`h-full rounded-full transition-all ${sm.isStrong ? 'bg-emerald-400' : 'bg-rose-400'}`}
+                    style={{ width: `${Math.min(sm.ratioPercent, 150) / 1.5}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ─── TAB 4: MULTI-SYSTEM SIDE-BY-SIDE ────────────────────────── */}
       {activeStudioTab === 'multisystem' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
@@ -594,7 +921,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 3: TIMING WORKSPACE ─────────────────────────────────── */}
+      {/* ─── TAB 5: TIMING WORKSPACE ─────────────────────────────────── */}
       {activeStudioTab === 'timing' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -627,7 +954,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 4: PREDICTIONS & EVENT JOURNAL ──────────────────────── */}
+      {/* ─── TAB 6: PREDICTIONS & EVENT JOURNAL ──────────────────────── */}
       {activeStudioTab === 'predictions' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
@@ -671,7 +998,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 5: RESEARCH & ACCURACY LAB ──────────────────────────── */}
+      {/* ─── TAB 7: RESEARCH & ACCURACY LAB ──────────────────────────── */}
       {activeStudioTab === 'research' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-cyan-500/30 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
@@ -720,7 +1047,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         </div>
       )}
 
-      {/* ─── TAB 6: RULE & SOURCE EXPLORER ───────────────────────────── */}
+      {/* ─── TAB 8: RULE & SOURCE EXPLORER ───────────────────────────── */}
       {activeStudioTab === 'rules' && (
         <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">

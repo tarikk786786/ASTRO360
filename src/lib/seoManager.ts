@@ -15,7 +15,7 @@ export const SEO_REGISTRY: Record<string, SEOMetadata> = {
     title: 'ASTRO360: Precision Astrology & Ephemeris Platform',
     description: 'Free high-precision birth charts, Vedic Jyotish, Western astrology, compatibility, Panchanga, and multi-tradition planetary forecasts.',
     keywords: 'astrology, birth chart, vedic astrology, western astrology, kundli, panchang, dasha, astrology forecast, synastry',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/',
+    canonicalUrl: 'https://astro.tarikislam.in/',
     ogType: 'website',
     schemaType: 'SoftwareApplication',
   },
@@ -23,7 +23,7 @@ export const SEO_REGISTRY: Record<string, SEOMetadata> = {
     title: 'ASTRO360: Precision Astrology & Ephemeris Platform',
     description: 'Free high-precision birth charts, Vedic Jyotish, Western astrology, compatibility, Panchanga, and multi-tradition planetary forecasts.',
     keywords: 'astrology, birth chart, vedic astrology, western astrology, kundli, panchang, dasha, astrology forecast, synastry',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/',
+    canonicalUrl: 'https://astro.tarikislam.in/',
     ogType: 'website',
     schemaType: 'SoftwareApplication',
   },
@@ -31,12 +31,12 @@ export const SEO_REGISTRY: Record<string, SEOMetadata> = {
     title: 'Free Birth Chart Calculator & Natal Placements',
     description: 'Generate your free high-precision birth chart with exact planetary coordinates, Ascendant rising sign, and house interpretations.',
     keywords: 'birth chart calculator, free natal chart, rising sign calculator, moon sign, kundli generator, planetary positions',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/birth-chart',
+    canonicalUrl: 'https://astro.tarikislam.in/birth-chart',
     ogType: 'website',
     schemaType: 'SoftwareApplication',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Birth Chart', item: 'https://astro-360-neon.vercel.app/birth-chart' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Birth Chart', item: 'https://astro.tarikislam.in/birth-chart' }
     ],
     faqs: [
       {
@@ -53,196 +53,196 @@ export const SEO_REGISTRY: Record<string, SEOMetadata> = {
     title: 'Vedic Astrology: Janam Kundli & Nakshatra Suite',
     description: 'Comprehensive Vedic astrology platform: Janam Kundli, 27 Nakshatras, D1–D60 Divisional Vargas, and Vimshottari Dasha timeline.',
     keywords: 'vedic astrology, jyotish, janam kundli, nakshatra, vimshottari dasha, navamsa, d10 dashamsha, parashari',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/vedic-astrology',
+    canonicalUrl: 'https://astro.tarikislam.in/vedic-astrology',
     ogType: 'article',
     schemaType: 'Article',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Vedic Astrology', item: 'https://astro-360-neon.vercel.app/vedic-astrology' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Vedic Astrology', item: 'https://astro.tarikislam.in/vedic-astrology' }
     ]
   },
   'western-astrology': {
     title: 'Western Astrology: Natal Wheels & Planetary Aspects',
     description: 'Explore Western tropical astrology with Placidus houses, planetary aspects, major transits, progressions, and archetype analysis.',
     keywords: 'western astrology, tropical astrology, natal wheel, placidus houses, planetary aspects, progressions, solar return',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/western-astrology',
+    canonicalUrl: 'https://astro.tarikislam.in/western-astrology',
     ogType: 'article',
     schemaType: 'Article',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Western Astrology', item: 'https://astro-360-neon.vercel.app/western-astrology' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Western Astrology', item: 'https://astro.tarikislam.in/western-astrology' }
     ]
   },
   compatibility: {
     title: 'Astrology Compatibility & Synastry Calculator',
     description: 'Compare birth charts across 36-Guna Ashta Koota Vedic matchmaking, Western synastry aspect overlays, and relationship scores.',
     keywords: 'astrology compatibility, synastry calculator, 36 guna match, kundli matching, relationship astrology, composite chart',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/compatibility',
+    canonicalUrl: 'https://astro.tarikislam.in/compatibility',
     ogType: 'website',
     schemaType: 'SoftwareApplication',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Compatibility', item: 'https://astro-360-neon.vercel.app/compatibility' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Compatibility', item: 'https://astro.tarikislam.in/compatibility' }
     ]
   },
   panchanga: {
     title: 'Live Daily Panchang: Tithi, Nakshatra & Muhurta',
     description: 'Real-time Vedic Panchanga with accurate Tithi, Nakshatra, Karana, Yoga, Abhijit Muhurta, and Rahu Kalam timings for any location.',
     keywords: 'panchang today, panchangam, tithi today, nakshatra today, rahu kalam, choghadiya, abhijit muhurta',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/panchanga',
+    canonicalUrl: 'https://astro.tarikislam.in/panchanga',
     ogType: 'website',
     schemaType: 'SoftwareApplication',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Panchanga', item: 'https://astro-360-neon.vercel.app/panchanga' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Panchanga', item: 'https://astro.tarikislam.in/panchanga' }
     ]
   },
   transits: {
     title: 'Planetary Transits: Real-Time Ephemeris Tracker',
     description: 'Track live planetary transits, retrogrades, sign ingresses, and exact degree aspects with JPL DE440 ephemeris precision.',
     keywords: 'planetary transits, transit calculator, retrograde planets, planet ingress, transit aspects',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/transits',
+    canonicalUrl: 'https://astro.tarikislam.in/transits',
     ogType: 'website',
     schemaType: 'SoftwareApplication',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Transits', item: 'https://astro-360-neon.vercel.app/transits' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Transits', item: 'https://astro.tarikislam.in/transits' }
     ]
   },
   dasha: {
     title: 'Vimshottari Dasha Calculator & Life Timeline',
     description: 'Calculate your personal Vimshottari Dasha periods with active Mahadasha, Antardasha sub-periods, and life event forecasting.',
     keywords: 'vimshottari dasha calculator, dasha periods, mahadasha, antardasha, dasha timeline',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/dasha',
+    canonicalUrl: 'https://astro.tarikislam.in/dasha',
     ogType: 'website',
     schemaType: 'SoftwareApplication',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Dasha', item: 'https://astro-360-neon.vercel.app/dasha' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Dasha', item: 'https://astro.tarikislam.in/dasha' }
     ]
   },
   muhurta: {
     title: 'Auspicious Muhurta Calculator: Timing Engine',
     description: 'Calculate favorable Muhurta timings for marriage, business, travel, and new beginnings with Vedic Panchanga algorithms.',
     keywords: 'muhurta calculator, auspicious timings, shubh muhurat, abhijit muhurta, electional astrology',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/muhurta',
+    canonicalUrl: 'https://astro.tarikislam.in/muhurta',
     ogType: 'website',
     schemaType: 'SoftwareApplication',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Muhurta', item: 'https://astro-360-neon.vercel.app/muhurta' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Muhurta', item: 'https://astro.tarikislam.in/muhurta' }
     ]
   },
   astrocartography: {
     title: 'Astrocartography: Planetary Location Lines',
     description: 'Discover your planetary power lines across the globe with interactive AC, MC, DC, and IC planetary line astrocartography mapping.',
     keywords: 'astrocartography, astro map, planetary lines, relocation astrology, locational astrology',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/astrocartography',
+    canonicalUrl: 'https://astro.tarikislam.in/astrocartography',
     ogType: 'website',
     schemaType: 'SoftwareApplication',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Astrocartography', item: 'https://astro-360-neon.vercel.app/astrocartography' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Astrocartography', item: 'https://astro.tarikislam.in/astrocartography' }
     ]
   },
   methodology: {
     title: 'ASTRO360 Calculation Methodology & Ephemeris',
     description: 'Learn how ASTRO360 calculates: UTC time normalization, JPL DE440 ephemeris, classical tradition rules, and AI explainability.',
     keywords: 'astrology methodology, astronomical calculations, ephemeris computation, explainable AI astrology, ASTRO360 architecture',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/methodology',
+    canonicalUrl: 'https://astro.tarikislam.in/methodology',
     ogType: 'article',
     schemaType: 'Article',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Methodology', item: 'https://astro-360-neon.vercel.app/methodology' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Methodology', item: 'https://astro.tarikislam.in/methodology' }
     ]
   },
   'learn/nakshatra': {
     title: '27 Nakshatras Guide: Vedic Lunar Mansions',
     description: 'Complete guide to the 27 Vedic Nakshatras, 108 Padas, ruling deities, planetary lords, Gana, Yoni, and personality traits.',
     keywords: 'nakshatra guide, 27 nakshatras, lunar mansions, pada, nakshatra lords, vedic nakshatra',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/learn/nakshatra',
+    canonicalUrl: 'https://astro.tarikislam.in/learn/nakshatra',
     ogType: 'article',
     schemaType: 'Article',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Learn', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Nakshatras', item: 'https://astro-360-neon.vercel.app/learn/nakshatra' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Learn', item: 'https://astro.tarikislam.in/' },
+      { name: 'Nakshatras', item: 'https://astro.tarikislam.in/learn/nakshatra' }
     ]
   },
   'learn/navamsa': {
     title: 'D9 Navamsa Chart: Vedic Divisional Astrology',
     description: 'Master the D9 Navamsha chart for marriage timing, inner dharma, soul purpose, and planetary strength assessment in Jyotish.',
     keywords: 'navamsa chart, d9 chart, navamsha reading, divisional charts, marriage astrology jyotish',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/learn/navamsa',
+    canonicalUrl: 'https://astro.tarikislam.in/learn/navamsa',
     ogType: 'article',
     schemaType: 'Article',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Learn', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Navamsa', item: 'https://astro-360-neon.vercel.app/learn/navamsa' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Learn', item: 'https://astro.tarikislam.in/' },
+      { name: 'Navamsa', item: 'https://astro.tarikislam.in/learn/navamsa' }
     ]
   },
   'learn/vimshottari-dasha': {
     title: 'Vimshottari Dasha: Planetary Timeline Guide',
     description: 'Understand the 120-year Vimshottari Dasha cycle: Mahadasha, Antardasha, and Pratyantardasha timing in classical Jyotish.',
     keywords: 'vimshottari dasha guide, dasha system, mahadasha meaning, antardasha calculation, jyotish timeline',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/learn/vimshottari-dasha',
+    canonicalUrl: 'https://astro.tarikislam.in/learn/vimshottari-dasha',
     ogType: 'article',
     schemaType: 'Article',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Learn', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Vimshottari Dasha', item: 'https://astro-360-neon.vercel.app/learn/vimshottari-dasha' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Learn', item: 'https://astro.tarikislam.in/' },
+      { name: 'Vimshottari Dasha', item: 'https://astro.tarikislam.in/learn/vimshottari-dasha' }
     ]
   },
   'learn/astrology-houses': {
     title: '12 Astrology Houses: Meanings & Placements',
     description: 'Explore the 12 astrology houses: Bhavas in Vedic astrology, quadrant house systems (Placidus, Whole Sign), and house lords.',
     keywords: '12 astrology houses, bhavas, placidus houses, whole sign houses, kendra trikona, house lords',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/learn/astrology-houses',
+    canonicalUrl: 'https://astro.tarikislam.in/learn/astrology-houses',
     ogType: 'article',
     schemaType: 'Article',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Learn', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Astrology Houses', item: 'https://astro-360-neon.vercel.app/learn/astrology-houses' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Learn', item: 'https://astro.tarikislam.in/' },
+      { name: 'Astrology Houses', item: 'https://astro.tarikislam.in/learn/astrology-houses' }
     ]
   },
   'seo-lab': {
     title: 'Free SEO Keyword Research Lab: Real Data Discovery',
     description: 'Free-first SEO keyword discovery, deterministic Google Trends momentum, 16 classical astrology clusters, and content briefs.',
     keywords: 'free keyword research, astrology seo, keyword clusters, google trends momentum, search intent analysis',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/seo-lab',
+    canonicalUrl: 'https://astro.tarikislam.in/seo-lab',
     ogType: 'website',
     schemaType: 'SoftwareApplication',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'SEO Lab', item: 'https://astro-360-neon.vercel.app/seo-lab' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'SEO Lab', item: 'https://astro.tarikislam.in/seo-lab' }
     ]
   },
   'backlink-lab': {
     title: 'Backlink Opportunity & Digital PR Lab',
     description: 'Ethical backlink discovery, competitor link gaps, unlinked brand mentions, transparent embed widgets, and live verification.',
     keywords: 'backlink discovery, digital pr astrology, competitor link gaps, unlinked brand mentions, ethical link building',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/backlink-lab',
+    canonicalUrl: 'https://astro.tarikislam.in/backlink-lab',
     ogType: 'website',
     schemaType: 'SoftwareApplication',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Backlink Lab', item: 'https://astro-360-neon.vercel.app/backlink-lab' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Backlink Lab', item: 'https://astro.tarikislam.in/backlink-lab' }
     ]
   },
   'free-tools': {
     title: 'Free Online Astrology Tools & Ephemeris Calculators',
     description: 'Access 8 free, ad-free astronomical calculators: Birth Chart, Moon Sign, Rising Sign, Nakshatra, Panchanga, and Compatibility.',
     keywords: 'free astrology tools, free birth chart, free kundli, free panchang, astrology calculators',
-    canonicalUrl: 'https://astro-360-neon.vercel.app/?tab=free-tools',
+    canonicalUrl: 'https://astro.tarikislam.in/free-tools',
     ogType: 'website',
     schemaType: 'SoftwareApplication',
     breadcrumbs: [
-      { name: 'Home', item: 'https://astro-360-neon.vercel.app/' },
-      { name: 'Free Tools', item: 'https://astro-360-neon.vercel.app/?tab=free-tools' }
+      { name: 'Home', item: 'https://astro.tarikislam.in/' },
+      { name: 'Free Tools', item: 'https://astro.tarikislam.in/free-tools' }
     ]
   },
   passport: {
