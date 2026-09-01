@@ -21,8 +21,9 @@ import { fadeInUp, staggerContainer, staggerItem } from '../../lib/animationPres
 import { calculatePlanetaryPositions, calculatePanchang, calculateVimshottariDasha } from '../../lib/astroCalculations';
 import TrustAndExplainabilityBanner from '../ui/TrustAndExplainabilityBanner';
 import { LiveRealtimeSkyTelemetryBar } from '../telemetry/LiveRealtimeSkyTelemetryBar';
-import GlobalLanguageSelector from '../GlobalLanguageSelector';
 import { Interactive3DCosmicWheel } from '../3d/Interactive3DCosmicWheel';
+import { Interactive3DAstroCartographyGlobe } from '../3d/Interactive3DAstroCartographyGlobe';
+import { Interactive3DAspectariumGraph } from '../3d/Interactive3DAspectariumGraph';
 import { BeginnerQuickGuideModal } from '../ui/BeginnerQuickGuideModal';
 
 interface OmniSimpleHomeProps {
@@ -41,6 +42,7 @@ export default function OmniSimpleHome({
   const [whyModalOpen, setWhyModalOpen] = useState(false);
   const [selectedWhyPayload, setSelectedWhyPayload] = useState<Partial<OmniWhyDrawerProps>>({});
   const [activeViewMode, setActiveViewMode] = useState<'simple' | 'master' | 'vargas' | 'analytics'>('simple');
+  const [active3DMode, setActive3DMode] = useState<'orrery' | 'globe' | 'aspectarium'>('orrery');
   const [isControlDrawerOpen, setIsControlDrawerOpen] = useState(false);
   const [isBeginnerGuideOpen, setIsBeginnerGuideOpen] = useState(false);
   const { config } = useGlobalConfig();
@@ -554,13 +556,69 @@ export default function OmniSimpleHome({
       {/* Trust & Sub-Arcsecond Ephemeris Explainability Banner */}
       <TrustAndExplainabilityBanner />
 
-      {/* 2.5 INTERACTIVE 3D CELESTIAL WHEEL (Spin, Touch & Inspect) */}
-      <Interactive3DCosmicWheel
-        userProfile={userProfile}
-        onSelectPlanet={(planetName) => {
-          // When a planet is clicked, offer quick insight or route
-        }}
-      />
+      {/* 2.5 INTERACTIVE 3D COSMIC STUDIO (Orrery, Earth Globe, Aspectarium) */}
+      <div className="space-y-3">
+        {/* 3D Studio Mode Selector Tabs */}
+        <div className="flex items-center justify-between border-b border-white/10 pb-2">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-amber-400" />
+            <h3 className="text-sm sm:text-base font-black text-white font-sans tracking-tight">
+              Interactive 3D Visual Cosmic Studio
+            </h3>
+          </div>
+
+          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-black/50 border border-white/10">
+            <button
+              onClick={() => setActive3DMode('orrery')}
+              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
+                active3DMode === 'orrery'
+                  ? 'bg-amber-400 text-slate-950 shadow-md font-black'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              🪐 3D Orrery
+            </button>
+            <button
+              onClick={() => setActive3DMode('globe')}
+              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
+                active3DMode === 'globe'
+                  ? 'bg-cyan-400 text-slate-950 shadow-md font-black'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              🌐 3D Earth Globe
+            </button>
+            <button
+              onClick={() => setActive3DMode('aspectarium')}
+              className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
+                active3DMode === 'aspectarium'
+                  ? 'bg-purple-400 text-slate-950 shadow-md font-black'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              📐 3D Aspect Web
+            </button>
+          </div>
+        </div>
+
+        {/* Dynamic 3D Studio Rendering */}
+        {active3DMode === 'orrery' ? (
+          <Interactive3DCosmicWheel
+            userProfile={userProfile}
+            onSelectPlanet={(planetName) => {
+              // Quick planetary insight
+            }}
+          />
+        ) : active3DMode === 'globe' ? (
+          <Interactive3DAstroCartographyGlobe
+            userProfile={userProfile}
+          />
+        ) : (
+          <Interactive3DAspectariumGraph
+            userProfile={userProfile}
+          />
+        )}
+      </div>
 
       {/* 2.75 6-CARD 3D ILLUSTRATED ACTION LAUNCHPAD (Super Easy For Non-Tech Users) */}
       <div className="space-y-3">
