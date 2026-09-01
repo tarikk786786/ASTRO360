@@ -22,6 +22,8 @@ import { calculatePlanetaryPositions, calculatePanchang, calculateVimshottariDas
 import TrustAndExplainabilityBanner from '../ui/TrustAndExplainabilityBanner';
 import { LiveRealtimeSkyTelemetryBar } from '../telemetry/LiveRealtimeSkyTelemetryBar';
 import GlobalLanguageSelector from '../GlobalLanguageSelector';
+import { Interactive3DCosmicWheel } from '../3d/Interactive3DCosmicWheel';
+import { BeginnerQuickGuideModal } from '../ui/BeginnerQuickGuideModal';
 
 interface OmniSimpleHomeProps {
   userProfile: UserProfile;
@@ -40,6 +42,7 @@ export default function OmniSimpleHome({
   const [selectedWhyPayload, setSelectedWhyPayload] = useState<Partial<OmniWhyDrawerProps>>({});
   const [activeViewMode, setActiveViewMode] = useState<'simple' | 'master' | 'vargas' | 'analytics'>('simple');
   const [isControlDrawerOpen, setIsControlDrawerOpen] = useState(false);
+  const [isBeginnerGuideOpen, setIsBeginnerGuideOpen] = useState(false);
   const { config } = useGlobalConfig();
 
   // Dynamic greeting based on current local hour
@@ -296,6 +299,16 @@ export default function OmniSimpleHome({
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2.5">
+          {/* Beginner Friendly Quick Guide Trigger */}
+          <button
+            onClick={() => setIsBeginnerGuideOpen(true)}
+            className="px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 hover:text-white border border-cyan-500/30 text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
+            title="How to use ASTRO360 in 3 simple steps"
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-cyan-400" />
+            <span>New to Astrology? Start Here</span>
+          </button>
+
           <GlobalLanguageSelector compact={true} />
           
           <motion.span
@@ -510,6 +523,115 @@ export default function OmniSimpleHome({
 
       {/* Trust & Sub-Arcsecond Ephemeris Explainability Banner */}
       <TrustAndExplainabilityBanner />
+
+      {/* 2.5 INTERACTIVE 3D CELESTIAL WHEEL (Spin, Touch & Inspect) */}
+      <Interactive3DCosmicWheel
+        userProfile={userProfile}
+        onSelectPlanet={(planetName) => {
+          // When a planet is clicked, offer quick insight or route
+        }}
+      />
+
+      {/* 2.75 6-CARD 3D ILLUSTRATED ACTION LAUNCHPAD (Super Easy For Non-Tech Users) */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between border-b border-white/10 pb-2">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-amber-400" />
+            <h3 className="text-sm sm:text-base font-black text-white font-sans tracking-tight">
+              Beginner-Friendly Quick Actions (1-Tap Launch)
+            </h3>
+          </div>
+          <span className="text-xs font-mono text-slate-400 hidden sm:inline">No astrology jargon required</span>
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3.5">
+          {[
+            {
+              id: 'birth-chart',
+              badge: 'My Birth Map',
+              title: '🌟 Full Birth Chart',
+              desc: 'Discover your true rising sign, strengths & personality blueprint in 1 second.',
+              color: 'from-amber-500/20 via-amber-500/5 to-transparent',
+              borderColor: 'border-amber-400/40 hover:border-amber-400',
+              accentColor: 'text-amber-300',
+              badgeBg: 'bg-amber-400/15 text-amber-300 border-amber-400/30'
+            },
+            {
+              id: 'muhurta',
+              badge: 'Lucky Hours',
+              title: '⏰ Today\'s Good Hours',
+              desc: 'Find the exact golden hours for meetings, signing contracts, travel & shopping.',
+              color: 'from-cyan-500/20 via-cyan-500/5 to-transparent',
+              borderColor: 'border-cyan-400/40 hover:border-cyan-400',
+              accentColor: 'text-cyan-300',
+              badgeBg: 'bg-cyan-400/15 text-cyan-300 border-cyan-400/30'
+            },
+            {
+              id: 'compatibility',
+              badge: 'Love & Marriage',
+              title: '💑 36-Guna Matchmaker',
+              desc: 'Check romantic chemistry, trust & long-term marriage harmony with any partner.',
+              color: 'from-pink-500/20 via-pink-500/5 to-transparent',
+              borderColor: 'border-pink-400/40 hover:border-pink-400',
+              accentColor: 'text-pink-300',
+              badgeBg: 'bg-pink-400/15 text-pink-300 border-pink-400/30'
+            },
+            {
+              id: 'frequencies',
+              badge: 'Sound Healing',
+              title: '🧘 Frequencies & Gems',
+              desc: 'Listen to your personalized planetary soundwaves & discover your lucky gemstone.',
+              color: 'from-purple-500/20 via-purple-500/5 to-transparent',
+              borderColor: 'border-purple-400/40 hover:border-purple-400',
+              accentColor: 'text-purple-300',
+              badgeBg: 'bg-purple-400/15 text-purple-300 border-purple-400/30'
+            },
+            {
+              id: 'ask',
+              badge: 'AI Astrologer',
+              title: '🤖 Ask Any Question',
+              desc: 'Ask anything about your career, money, or love life in plain, simple English.',
+              color: 'from-indigo-500/20 via-indigo-500/5 to-transparent',
+              borderColor: 'border-indigo-400/40 hover:border-indigo-400',
+              accentColor: 'text-indigo-300',
+              badgeBg: 'bg-indigo-400/15 text-indigo-300 border-indigo-400/30'
+            },
+            {
+              id: 'dossier',
+              badge: 'Royal PDF Book',
+              title: '📜 5-Page PDF Dossier',
+              desc: 'Download and print your keepsake royal golden horoscope life book in 1 click.',
+              color: 'from-emerald-500/20 via-emerald-500/5 to-transparent',
+              borderColor: 'border-emerald-400/40 hover:border-emerald-400',
+              accentColor: 'text-emerald-300',
+              badgeBg: 'bg-emerald-400/15 text-emerald-300 border-emerald-400/30'
+            },
+          ].map((card, idx) => (
+            <motion.div
+              key={card.id}
+              onClick={() => onNavigate(card.id)}
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.97 }}
+              className={`p-4 sm:p-5 rounded-2xl bg-gradient-to-b ${card.color} bg-[#0A101D] border ${card.borderColor} transition-all duration-200 cursor-pointer shadow-lg space-y-2.5 group relative overflow-hidden`}
+            >
+              <div className="flex items-center justify-between">
+                <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${card.badgeBg}`}>
+                  {card.badge}
+                </span>
+                <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-white group-hover:translate-x-1 transition-all" />
+              </div>
+              <div>
+                <h4 className="text-sm sm:text-base font-bold text-white font-sans group-hover:text-amber-300 transition-colors">
+                  {card.title}
+                </h4>
+                <p className="text-xs text-slate-300 pt-1 leading-snug font-sans">
+                  {card.desc}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
 
       {/* 3. Quick Action Navigation Jump Dock */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
@@ -869,6 +991,13 @@ export default function OmniSimpleHome({
         onUpdateProfile={onUpdateProfile}
         activeViewMode={activeViewMode}
         onChangeViewMode={setActiveViewMode}
+        onNavigate={onNavigate}
+      />
+
+      {/* Non-Tech User 3-Step Guided Quickstart Modal */}
+      <BeginnerQuickGuideModal
+        isOpen={isBeginnerGuideOpen}
+        onClose={() => setIsBeginnerGuideOpen(false)}
         onNavigate={onNavigate}
       />
     </div>
