@@ -1,8 +1,8 @@
 import React, { useRef, useState, useMemo, memo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, OrbitControls, Html } from '@react-three/drei';
+import { Float, OrbitControls, Html, Stars } from '@react-three/drei';
 import * as THREE from 'three';
-import { Globe, MapPin, Sparkles, Compass, ArrowRight, RotateCw, CheckCircle2, Award } from 'lucide-react';
+import { Globe, MapPin, Sparkles, Compass, ArrowRight, RotateCw, CheckCircle2, Award, Zap, Navigation } from 'lucide-react';
 import type { UserProfile } from '../../types';
 
 export interface WorldCityPin {
@@ -178,6 +178,75 @@ export const WORLD_CITIES: WorldCityPin[] = [
   }
 ];
 
+// Procedural high-resolution Earth map texture
+function createProceduralEarthTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d')!;
+
+  // Deep ocean gradient
+  const oceanGrad = ctx.createLinearGradient(0, 0, 0, 512);
+  oceanGrad.addColorStop(0, '#061325');
+  oceanGrad.addColorStop(0.5, '#0B2545');
+  oceanGrad.addColorStop(1, '#061325');
+  ctx.fillStyle = oceanGrad;
+  ctx.fillRect(0, 0, 1024, 512);
+
+  // Latitude and Longitude Grid Lines
+  ctx.strokeStyle = 'rgba(56, 189, 248, 0.12)';
+  ctx.lineWidth = 1;
+  for (let lat = 0; lat <= 512; lat += 64) {
+    ctx.beginPath();
+    ctx.moveTo(0, lat);
+    ctx.lineTo(1024, lat);
+    ctx.stroke();
+  }
+  for (let lng = 0; lng <= 1024; lng += 64) {
+    ctx.beginPath();
+    ctx.moveTo(lng, 0);
+    ctx.lineTo(lng, 512);
+    ctx.stroke();
+  }
+
+  // Major Continents
+  ctx.fillStyle = '#10B981';
+  // North America
+  ctx.beginPath();
+  ctx.ellipse(220, 150, 110, 80, 0.3, 0, Math.PI * 2);
+  ctx.fill();
+  // South America
+  ctx.beginPath();
+  ctx.ellipse(320, 350, 70, 110, -0.2, 0, Math.PI * 2);
+  ctx.fill();
+  // Europe & Africa
+  ctx.beginPath();
+  ctx.ellipse(530, 140, 60, 50, 0, 0, Math.PI * 2);
+  ctx.ellipse(540, 290, 80, 110, 0.1, 0, Math.PI * 2);
+  ctx.fill();
+  // Asia
+  ctx.beginPath();
+  ctx.ellipse(730, 160, 140, 90, -0.1, 0, Math.PI * 2);
+  ctx.fill();
+  // Australia
+  ctx.beginPath();
+  ctx.ellipse(860, 380, 65, 45, 0.1, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Swirling cloud atmosphere
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.22)';
+  for (let i = 0; i < 24; i++) {
+    ctx.beginPath();
+    ctx.ellipse(Math.random() * 1024, Math.random() * 512, Math.random() * 120 + 40, Math.random() * 18 + 5, Math.random() * Math.PI, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.ClampToEdgeWrapping;
+  return texture;
+}
+
 // Convert Lat/Lng to 3D Cartesian coordinates on sphere of radius R
 function latLngToVector3(lat: number, lng: number, radius: number): [number, number, number] {
   const phi = (90 - lat) * (Math.PI / 180);
@@ -207,31 +276,31 @@ function CityPin3D({
         onPointerOver={(e) => { e.stopPropagation(); setHovered(true); }}
         onPointerOut={() => setHovered(false)}
         onClick={(e) => { e.stopPropagation(); onSelect(city); }}
-        scale={isSelected ? [1.6, 1.6, 1.6] : hovered ? [1.3, 1.3, 1.3] : [1, 1, 1]}
+        scale={isSelected ? [1.7, 1.7, 1.7] : hovered ? [1.4, 1.4, 1.4] : [1, 1, 1]}
       >
-        <sphereGeometry args={[0.07, 16, 16]} />
+        <sphereGeometry args={[0.075, 16, 16]} />
         <meshStandardMaterial
           color={city.color}
           emissive={city.color}
-          emissiveIntensity={isSelected ? 1.5 : 0.8}
-          roughness={0.2}
+          emissiveIntensity={isSelected ? 2.0 : 1.0}
+          roughness={0.1}
         />
       </mesh>
 
       {/* Floating 3D City Tag */}
       {(isSelected || hovered) && (
-        <Html position={[0, 0.25, 0]} center distanceFactor={11}>
+        <Html position={[0, 0.28, 0]} center distanceFactor={11}>
           <button
             onClick={(e) => { e.stopPropagation(); onSelect(city); }}
-            className={`px-2.5 py-1 rounded-full text-[10.5px] font-mono font-bold whitespace-nowrap shadow-xl flex items-center gap-1 cursor-pointer transition-transform ${
+            className={`px-3 py-1 rounded-full text-xs font-mono font-bold whitespace-nowrap shadow-2xl flex items-center gap-1.5 cursor-pointer transition-transform ${
               isSelected
-                ? 'bg-amber-400 text-slate-950 ring-2 ring-amber-300 scale-110'
-                : 'bg-black/90 text-white border border-white/30'
+                ? 'bg-amber-400 text-slate-950 ring-2 ring-amber-300 scale-110 shadow-amber-400/50'
+                : 'bg-black/90 text-white border border-white/40 hover:border-amber-400'
             }`}
           >
-            <span>{city.planetSymbol}</span>
+            <span className="font-black">{city.planetSymbol}</span>
             <span>{city.name}</span>
-            <span className="text-[9px] opacity-80">({city.powerScore}%)</span>
+            <span className="text-[10px] opacity-90">({city.powerScore}%)</span>
           </button>
         </Html>
       )}
@@ -244,16 +313,16 @@ function PlanetaryMeridianLines() {
     <group>
       {/* Golden Sun & Jupiter Meridian Rings */}
       <mesh rotation={[0, 0, Math.PI / 4]}>
-        <ringGeometry args={[3.04, 3.05, 96]} />
-        <meshBasicMaterial color="#F59E0B" transparent opacity={0.25} side={THREE.DoubleSide} />
+        <ringGeometry args={[3.04, 3.06, 96]} />
+        <meshBasicMaterial color="#F59E0B" transparent opacity={0.35} side={THREE.DoubleSide} />
       </mesh>
       <mesh rotation={[Math.PI / 6, 0, -Math.PI / 3]}>
-        <ringGeometry args={[3.04, 3.05, 96]} />
-        <meshBasicMaterial color="#10B981" transparent opacity={0.25} side={THREE.DoubleSide} />
+        <ringGeometry args={[3.04, 3.06, 96]} />
+        <meshBasicMaterial color="#10B981" transparent opacity={0.35} side={THREE.DoubleSide} />
       </mesh>
       <mesh rotation={[-Math.PI / 4, Math.PI / 3, 0]}>
-        <ringGeometry args={[3.04, 3.05, 96]} />
-        <meshBasicMaterial color="#EC4899" transparent opacity={0.25} side={THREE.DoubleSide} />
+        <ringGeometry args={[3.04, 3.06, 96]} />
+        <meshBasicMaterial color="#EC4899" transparent opacity={0.35} side={THREE.DoubleSide} />
       </mesh>
     </group>
   );
@@ -263,7 +332,8 @@ export const Interactive3DAstroCartographyGlobe: React.FC<{
   userProfile?: UserProfile;
   onSelectCity?: (city: WorldCityPin) => void;
 }> = memo(({ userProfile, onSelectCity }) => {
-  const [selectedCity, setSelectedCity] = useState<WorldCityPin>(WORLD_CITIES[0]);
+  const [selectedCity, setSelectedCity] = useState<WorldCityPin>(WORLD_CITIES[0]); // Default New York
+  const earthTexture = useMemo(() => createProceduralEarthTexture(), []);
 
   const handleSelect = (city: WorldCityPin) => {
     setSelectedCity(city);
@@ -293,18 +363,19 @@ export const Interactive3DAstroCartographyGlobe: React.FC<{
 
         {/* Quick City Filters */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
-          {WORLD_CITIES.slice(0, 6).map((c) => {
+          {WORLD_CITIES.map((c) => {
             const isSelected = selectedCity.name === c.name;
             return (
               <button
                 key={c.name}
                 onClick={() => handleSelect(c)}
-                className={`px-2.5 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1 ${
                   isSelected
-                    ? 'bg-cyan-400 text-slate-950 shadow-md shadow-cyan-400/25 scale-105'
+                    ? 'bg-cyan-400 text-slate-950 shadow-md shadow-cyan-400/25 scale-105 font-black'
                     : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
                 }`}
               >
+                <span>{c.planetSymbol}</span>
                 <span>{c.name}</span>
               </button>
             );
@@ -315,26 +386,26 @@ export const Interactive3DAstroCartographyGlobe: React.FC<{
       {/* 3D WebGL Globe & Detailed City Intel Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
         {/* Left: 3D WebGL Earth Globe (7 cols) */}
-        <div className="lg:col-span-7 h-[320px] sm:h-[380px] relative rounded-2xl bg-[#03060C] border border-white/10 overflow-hidden shadow-inner">
+        <div className="lg:col-span-7 h-[340px] sm:h-[400px] relative rounded-2xl bg-[#02050B] border border-white/10 overflow-hidden shadow-inner">
           <Canvas
-            camera={{ position: [0, 2, 7.5], fov: 45 }}
+            camera={{ position: [0, 1.8, 7.2], fov: 45 }}
             gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
             className="w-full h-full cursor-grab active:cursor-grabbing"
           >
-            <ambientLight intensity={0.8} />
-            <pointLight position={[10, 10, 10]} intensity={2.5} color="#E0F2FE" />
-            <pointLight position={[-10, -10, -10]} intensity={1.2} color="#FBBF24" />
+            <Stars radius={100} depth={50} count={2000} factor={3} saturation={0.5} fade />
+            <ambientLight intensity={0.9} />
+            <pointLight position={[12, 10, 10]} intensity={3.0} color="#E0F2FE" />
+            <pointLight position={[-12, -10, -10]} intensity={1.5} color="#FBBF24" />
 
-            <Float speed={0.8} rotationIntensity={0.1} floatIntensity={0.15}>
+            <Float speed={0.6} rotationIntensity={0.08} floatIntensity={0.12}>
               <group position={[0, 0, 0]}>
-                {/* 3D Earth Globe Sphere */}
+                {/* 3D Earth Globe Sphere with Procedural Map */}
                 <mesh>
                   <sphereGeometry args={[3.0, 64, 64]} />
                   <meshStandardMaterial
-                    color="#0F1F3D"
-                    emissive="#081426"
-                    roughness={0.4}
-                    metalness={0.3}
+                    map={earthTexture}
+                    roughness={0.45}
+                    metalness={0.2}
                   />
                 </mesh>
 
@@ -344,7 +415,7 @@ export const Interactive3DAstroCartographyGlobe: React.FC<{
                   <meshBasicMaterial
                     color="#38BDF8"
                     transparent
-                    opacity={0.12}
+                    opacity={0.16}
                     blending={THREE.AdditiveBlending}
                     side={THREE.BackSide}
                   />
@@ -366,51 +437,53 @@ export const Interactive3DAstroCartographyGlobe: React.FC<{
             </Float>
 
             <OrbitControls
-              enableZoom={false}
+              enableZoom={true}
+              minDistance={4.5}
+              maxDistance={12}
               enablePan={false}
-              autoRotate
-              autoRotateSpeed={0.5}
-              maxPolarAngle={Math.PI / 1.6}
-              minPolarAngle={Math.PI / 4}
+              autoRotate={true}
+              autoRotateSpeed={0.6}
+              maxPolarAngle={Math.PI / 1.5}
+              minPolarAngle={Math.PI / 3.5}
             />
           </Canvas>
 
           {/* Floating Hint */}
-          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/75 backdrop-blur-md border border-white/10 text-[11px] font-mono text-slate-300 pointer-events-none">
-            <RotateCw className="w-3.5 h-3.5 text-cyan-400 animate-spin" />
+          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 text-[11px] font-mono text-slate-300 pointer-events-none">
+            <RotateCw className="w-3.5 h-3.5 text-cyan-400 animate-spin" style={{ animationDuration: '6s' }} />
             <span>Spin globe in 3D • Tap any glowing pin to inspect</span>
           </div>
         </div>
 
         {/* Right: Selected Relocation City Intelligence Card (5 cols) */}
         <div className="lg:col-span-5 space-y-3.5">
-          <div className="p-5 rounded-2xl bg-white/[0.04] border border-cyan-400/40 space-y-4 shadow-xl relative overflow-hidden">
+          <div className="p-5 rounded-2xl bg-gradient-to-b from-white/[0.06] to-white/[0.02] border border-cyan-400/40 space-y-4 shadow-xl relative overflow-hidden">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="flex items-center gap-3">
                 <div 
-                  className="w-10 h-10 rounded-2xl flex items-center justify-center text-lg font-black shadow-lg"
+                  className="w-11 h-11 rounded-2xl flex items-center justify-center text-xl font-black shadow-lg"
                   style={{ background: selectedCity.color, color: '#090D16' }}
                 >
                   {selectedCity.planetSymbol}
                 </div>
                 <div>
-                  <h4 className="text-base font-bold text-white font-sans flex items-center gap-1.5">
+                  <h4 className="text-base font-black text-white font-sans flex items-center gap-1.5">
                     <MapPin className="w-4 h-4 text-amber-400" /> {selectedCity.name}, {selectedCity.country}
                   </h4>
-                  <span className="text-xs font-mono text-cyan-300">
+                  <span className="text-xs font-mono text-cyan-300 font-bold">
                     {selectedCity.dominantPlanet} • {selectedCity.lineType}
                   </span>
                 </div>
               </div>
               <div className="text-right">
-                <span className="text-sm font-mono font-black text-emerald-400 block">{selectedCity.powerScore}%</span>
+                <span className="text-base font-mono font-black text-emerald-400 block">{selectedCity.powerScore}%</span>
                 <span className="text-[10px] font-mono text-slate-400 uppercase">Power Level</span>
               </div>
             </div>
 
             {/* Recommendation Narrative */}
-            <div className="p-3.5 rounded-xl bg-black/50 border border-white/10 space-y-1.5">
-              <span className="text-[10.5px] font-mono font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
+            <div className="p-3.5 rounded-xl bg-black/60 border border-white/10 space-y-1.5">
+              <span className="text-[10.5px] font-mono font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1">
                 <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Relocation Impact & Energy:
               </span>
               <p className="text-xs sm:text-sm text-slate-100 font-sans leading-relaxed">
@@ -421,14 +494,14 @@ export const Interactive3DAstroCartographyGlobe: React.FC<{
             {/* Best For Life Area Badge */}
             <div className="flex items-center justify-between text-xs font-mono pt-1">
               <span className="text-slate-400">Best Life Domain:</span>
-              <span className="font-bold text-amber-300 bg-amber-400/10 px-2.5 py-1 rounded-lg border border-amber-400/20">
+              <span className="font-bold text-amber-300 bg-amber-400/15 px-3 py-1 rounded-lg border border-amber-400/30">
                 {selectedCity.category}
               </span>
             </div>
           </div>
 
           {/* Non-Tech Explanation Tip */}
-          <div className="p-3.5 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-xs font-sans text-slate-200 flex items-start gap-2.5">
+          <div className="p-3.5 rounded-2xl bg-cyan-500/10 border border-cyan-500/25 text-xs font-sans text-slate-200 flex items-start gap-2.5">
             <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
             <p className="leading-snug">
               <strong>How this works:</strong> As the Earth rotates, planets align with your zenith over specific geographical lines. Moving, traveling, or remote-working in these zones activates those specific planetary gifts.
