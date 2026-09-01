@@ -707,79 +707,78 @@ export default function AppContent() {
                   {activeTab === 'more' && (
                     <OmniMoreHub onNavigate={navigateTo} userProfile={userProfile} />
                   )}
-                  {activeTab === 'live-diagnostics' && <LiveCosmicDiagnostics userProfile={userProfile} />}
-                  {activeTab === 'advisor' && <HolisticAdvisor userProfile={userProfile} />}
-                  {(activeTab === 'remedies' || activeTab === 'remedy') && <AstroMultiTraditionRemedySuite userProfile={userProfile} />}
-                  {activeTab === 'custom-remedies' && <CustomRemedialMediumEngine userProfile={userProfile} />}
-                  {(activeTab === 'synastry' || activeTab === 'match') && <AstroSynastryMatchmaker userProfile={userProfile} />}
-                  {(activeTab === 'compatibility' || activeTab === 'ashta-koota') && <OmniCompatibilityLab userProfile={userProfile} />}
-                  {activeTab === 'global-suite' && <GlobalWisdomSuite userProfile={userProfile} />}
-                  {(activeTab === 'omni-research' || activeTab === 'comparative-mode' || activeTab === 'consensus' || activeTab === 'research') && <AstroOmniResearchSuite userProfile={userProfile} />}
-                  {activeTab === 'tools-catalog' && <Astro150ToolsCatalog userProfile={userProfile} onNavigate={navigateTo} activeCategory={activeTab} initialCategory={activeTab} />}
-                  {(activeTab === 'birth-chart' || activeTab === 'kundli' || activeTab === 'nakshatra') && <BirthChartGenerator userProfile={userProfile} />}
-                  {activeTab === 'master-chart' && <UnifiedChartEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
-                  {activeTab === 'dasha' && <UnifiedChartEngine userProfile={userProfile} activeTab="dasha" initialTab="dasha" />}
-                  {(activeTab === 'islamic-astrology' || activeTab === 'islamic-suite' || activeTab === 'islamic') && <UnifiedIslamicSuite userProfile={userProfile} />}
-                  {activeTab === 'chat' && <AstrologyChat />}
-                  {(activeTab === 'dream-interpreter' || activeTab === 'dream') && <DreamInterpretationEngine userProfile={userProfile} />}
-                  {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
-                  {activeTab === 'spiritual-traditions' && <SpiritualTraditionsModule userProfile={userProfile} />}
-                  {activeTab === 'consultation-hub' && <CommunityConsultationHub />}
-                  {(activeTab === 'divisional-charts' || activeTab === 'vargas') && <DivisionalChartsSuite userProfile={userProfile} />}
-                  {(activeTab === 'shadbala' || activeTab === 'planetary-strengths') && <UnifiedChartEngine userProfile={userProfile} activeTab="shadbala" initialTab="shadbala" />}
-                  {(activeTab === 'sadesati' || activeTab === 'saturn-transit') && <TimeHorizonForecastSuite userProfile={userProfile} />}
-                  {(activeTab === 'report-generator' || activeTab === 'executive-report') && <ExecutiveReportGenerator userProfile={userProfile} />}
-                  {activeTab === 'btr-suite' && <BirthTimeRectificationSuite />}
-                  {(activeTab === 'gemstone-suite' || activeTab === 'gemstones') && <GemstoneRudrakshaSuite />}
-                  {(activeTab === 'numerology' || activeTab === 'numerology-suite') && <NumerologyNameSuite />}
-                  {(activeTab === 'tarot-iching' || activeTab === 'tarot') && <TarotIChingSuite />}
-                  {(activeTab === 'time-horizon' || activeTab === 'career') && <TimeHorizonForecastSuite userProfile={userProfile} />}
-                  {activeTab === 'dosha-engine' && <DoshaRemedyEngine userProfile={userProfile} />}
-                  {activeTab === 'biorhythm-tracker' && <CosmicBiorhythmTracker userProfile={userProfile} />}
-                  {(activeTab === 'chakras' || activeTab === 'chakra-alignment') && <SacredChakraAlignment />}
-                  {(activeTab === 'feng-shui' || activeTab === 'fengshui-matrix') && <CosmicFengShuiMatrix userProfile={userProfile} />}
-                  {(activeTab === 'muhurta' || activeTab === 'electional-muhurta') && <ElectionalMuhurtaEngine />}
-                  {(activeTab === 'horas' || activeTab === 'planetary-horas') && <PlanetaryHorasTracker />}
-                  {(activeTab === 'mantras' || activeTab === 'mantra-soundboard') && <SacredMantraSoundboard />}
-                  {activeTab === 'transit-radar' && <PlanetaryTransitRadar />}
-                  {(activeTab === 'panchang-deities' || activeTab === 'panchang') && <PanchangDeitiesEngine />}
-                  {activeTab === 'cosmic-compass' && <CosmicCompassVisualizer userProfile={userProfile} />}
-                  {(activeTab === 'astrocartography' || activeTab === 'astro-cartography') && <AstroCartographyMatrix userProfile={userProfile} />}
-                  {(activeTab === 'vedic-astrology' || activeTab === 'western-astrology' || activeTab === 'panchanga' || activeTab === 'methodology') && (
-                    <SEOTopicHub
-                      hubId={activeTab as any}
-                      onStartChart={() => setShowOnboarding(true)}
-                      onNavigate={navigateTo}
+                  {/* Core Hub Views */}
+                  {(activeTab === 'home' || activeTab === 'overview') && (
+                    <OmniSimpleHome
                       userProfile={userProfile}
+                      onNavigate={navigateTo}
+                      onOpenProfile={() => setIsProfileModalOpen(true)}
+                      onUpdateProfile={(updated: UserProfile) => { setUserProfile(updated); saveProfile(updated); }}
                     />
                   )}
-                  {activeTab === 'transit-calendar' && <CosmicTransitCalendar />}
-                  {activeTab === 'synastry-overlay' && <SynastryOverlayChart userProfile={userProfile} />}
-                  {activeTab === 'mind-map' && <AstrologicalMindMap />}
-                  {activeTab === 'chart-analytics' && <CosmicChartAnalytics userProfile={userProfile} />}
-                  {activeTab === 'learning-hub' && <AstrologyLearningHub />}
-                  {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
-                  {(activeTab === 'seo' || activeTab === 'seo-suite' || activeTab === 'seo-auditor' || activeTab === 'seo-growth') && <OmniSEOGrowthSuite />}
-                  {(activeTab === 'seo-lab' || activeTab === 'keyword-lab' || activeTab === 'keywords' || activeTab === 'seo-lab/keywords') && <KeywordResearchLab onNavigate={navigateTo} />}
-                  {(activeTab === 'backlink-lab' || activeTab === 'backlinks' || activeTab === 'link-lab' || activeTab === 'seo-lab/backlinks') && <BacklinkOpportunityLab onNavigate={navigateTo} />}
-                  {(activeTab === 'news-intelligence' || activeTab === 'cosmic-news' || activeTab === 'mundane' || activeTab === 'news-prediction') && <CosmicNewsIntelligenceHub userProfile={userProfile} onNavigate={navigateTo} />}
-                  {activeTab === 'control-center' && <AstrologyControlCenter />}
-                  {activeTab === 'studio' && <CosmicStudioSuite userProfile={userProfile} />}
-                  {activeTab === 'horoscope' && <PremiumHoroscopeEngine userProfile={userProfile} />}
-                  {activeTab === 'passport' && <CosmicPassportCard userProfile={userProfile} onNavigateToTab={navigateTo} />}
-                  {(activeTab === 'widgets' || activeTab === 'embed') && <EmbeddableWidgetGenerator onNavigateToTab={navigateTo} />}
-                  {(activeTab === 'directory' || activeTab === 'celebrities') && <ProgrammaticSeoDirectory onNavigateToTab={navigateTo} />}
-                  {(activeTab === 'chart-studio' || activeTab === 'dual-chart') && <InteractiveDualChartStudio userProfile={userProfile} onNavigateToTab={navigateTo} />}
-                  {(activeTab === 'dossier' || activeTab === 'pdf-report') && <ExecutiveCosmicDossierSuite userProfile={userProfile} onNavigateToTab={navigateTo} />}
-                  {(activeTab === 'copilot' || activeTab === 'ask') && <AstroDeterministicCopilot userProfile={userProfile} onNavigateToTab={navigateTo} />}
-                  {(activeTab === 'pwa' || activeTab === 'briefing') && <PwaCosmicBriefing onNavigateToTab={navigateTo} />}
-                  {(activeTab === 'shlokas' || activeTab === 'scripture') && <ClassicalShlokaLibrary />}
-                  {(activeTab === 'sabian' || activeTab === 'sabian-symbols') && <SabianSymbolsDegreeExplorer />}
-                  {(activeTab === 'ephemeris-lab' || activeTab === 'diagnostic-lab') && <MultiSystemEphemerisDiagnosticLab userProfile={userProfile} />}
+                  {(activeTab === 'dashboard' || activeTab === 'pro-dashboard') && (
+                    <CosmicIntelligenceCenter
+                      onNavigate={navigateTo}
+                      userProfile={userProfile}
+                      onUpdateProfile={(updated: UserProfile) => { setUserProfile(updated); saveProfile(updated); }}
+                    />
+                  )}
+                  {activeTab === 'forecast' && (
+                    <OmniForecastView userProfile={userProfile} />
+                  )}
+                  {(activeTab === 'copilot' || activeTab === 'ask' || activeTab === 'oracle') && (
+                    <AstroDeterministicCopilot userProfile={userProfile} onNavigateToTab={navigateTo} />
+                  )}
+                  {activeTab === 'charts' && (
+                    <OmniChartsView userProfile={userProfile} />
+                  )}
+                  {(activeTab === 'me' || activeTab === 'profile' || activeTab === 'account') && (
+                    <OmniMeView
+                      userProfile={userProfile}
+                      onEditProfile={() => setIsProfileModalOpen(true)}
+                      onNavigate={navigateTo}
+                      onResetAllData={handleResetAllData}
+                    />
+                  )}
+                  {activeTab === 'more' && (
+                    <OmniMoreHub onNavigate={navigateTo} userProfile={userProfile} />
+                  )}
+
+                  {/* Overview & Core Tools */}
+                  {(activeTab === 'radar' || activeTab === 'transit-radar') && <PlanetaryTransitRadar />}
+                  {(activeTab === '3d' || activeTab === 'studio' || activeTab === 'cosmic-studio') && <CosmicStudioSuite userProfile={userProfile} />}
+                  {(activeTab === 'omni-research' || activeTab === 'comparative-mode' || activeTab === 'consensus' || activeTab === 'research') && <AstroOmniResearchSuite userProfile={userProfile} />}
+
+                  {/* Ephemeris & Charts */}
+                  {(activeTab === 'birth-chart' || activeTab === 'kundli' || activeTab === 'nakshatra') && <BirthChartGenerator userProfile={userProfile} />}
+                  {(activeTab === 'dual-wheel' || activeTab === 'chart-studio' || activeTab === 'dual-chart') && <InteractiveDualChartStudio userProfile={userProfile} onNavigateToTab={navigateTo} />}
+                  {(activeTab === 'divisional' || activeTab === 'divisional-charts' || activeTab === 'vargas') && <DivisionalChartsSuite userProfile={userProfile} />}
+                  {(activeTab === 'shadbala' || activeTab === 'planetary-strengths') && <UnifiedChartEngine userProfile={userProfile} activeTab="shadbala" initialTab="shadbala" />}
                   {(activeTab === 'frequencies' || activeTab === 'binaural' || activeTab === 'sound-studio' || activeTab === 'planetary-frequencies') && <PlanetaryFrequencyStudio />}
-                  {(activeTab === 'compatibility' || activeTab === 'synastry' || activeTab === 'kundli-matching' || activeTab === 'match') && <KundliMatchingSuite userProfile={userProfile} onNavigateToTab={navigateTo} />}
-                  {(activeTab === 'planetary-horas' || activeTab === 'horas' || activeTab === 'hora-clock') && <PlanetaryHoraClock />}
-                  {TRADITIONS[activeTab] && (
+                  {(activeTab === 'ephemeris-lab' || activeTab === 'diagnostic-lab') && <MultiSystemEphemerisDiagnosticLab userProfile={userProfile} />}
+                  {(activeTab === 'sabian' || activeTab === 'sabian-symbols') && <SabianSymbolsDegreeExplorer />}
+                  {activeTab === 'master-chart' && <UnifiedChartEngine userProfile={userProfile} activeTab={activeTab} initialTab={activeTab} />}
+                  {activeTab === 'dasha' && <UnifiedChartEngine userProfile={userProfile} activeTab="dasha" initialTab="dasha" />}
+                  {activeTab === 'chart-analytics' && <CosmicChartAnalytics userProfile={userProfile} />}
+
+                  {/* Forecasts & Timing */}
+                  {(activeTab === 'time-horizon' || activeTab === 'transits' || activeTab === 'sadesati' || activeTab === 'saturn-transit' || activeTab === 'career') && <TimeHorizonForecastSuite userProfile={userProfile} />}
+                  {(activeTab === 'dossier' || activeTab === 'pdf-report' || activeTab === 'executive-dossier') && <ExecutiveCosmicDossierSuite userProfile={userProfile} onNavigateToTab={navigateTo} />}
+                  {(activeTab === 'news-radar' || activeTab === 'news-intelligence' || activeTab === 'cosmic-news' || activeTab === 'mundane' || activeTab === 'news-prediction') && <CosmicNewsIntelligenceHub userProfile={userProfile} onNavigate={navigateTo} />}
+                  {(activeTab === 'muhurta' || activeTab === 'electional-muhurta') && <ElectionalMuhurtaEngine />}
+                  {(activeTab === 'horas' || activeTab === 'planetary-horas' || activeTab === 'hora-clock') && <PlanetaryHoraClock />}
+                  {(activeTab === 'btr' || activeTab === 'btr-suite' || activeTab === 'rectification') && <BirthTimeRectificationSuite />}
+                  {activeTab === 'transit-calendar' && <CosmicTransitCalendar />}
+
+                  {/* 7-Fold Traditions */}
+                  {(activeTab === 'islamic-astrology' || activeTab === 'islamic-suite' || activeTab === 'islamic') && <UnifiedIslamicSuite userProfile={userProfile} />}
+                  {(activeTab === 'vedic' || activeTab === 'vedic-astrology') && <TraditionView tradition={TRADITIONS.vedic} category={TRADITIONS.vedic} onNavigate={navigateTo} userProfile={userProfile} onUpdateProfile={setUserProfile} />}
+                  {(activeTab === 'western' || activeTab === 'western-astrology') && <TraditionView tradition={TRADITIONS.western || TRADITIONS.hellenistic || TRADITIONS.vedic} category={TRADITIONS.western || TRADITIONS.vedic} onNavigate={navigateTo} userProfile={userProfile} onUpdateProfile={setUserProfile} />}
+                  {(activeTab === 'chinese' || activeTab === 'bazi') && <TraditionView tradition={TRADITIONS.chinese || TRADITIONS.vedic} category={TRADITIONS.chinese || TRADITIONS.vedic} onNavigate={navigateTo} userProfile={userProfile} onUpdateProfile={setUserProfile} />}
+                  {activeTab === 'kp' && <UnifiedChartEngine userProfile={userProfile} activeTab="kp" initialTab="kp" />}
+                  {activeTab === 'jaimini' && <UnifiedChartEngine userProfile={userProfile} activeTab="jaimini" initialTab="jaimini" />}
+                  {activeTab === 'mayan' && <TraditionView tradition={TRADITIONS.mayan || TRADITIONS.mesoamerican || TRADITIONS.vedic} category={TRADITIONS.mayan || TRADITIONS.vedic} onNavigate={navigateTo} userProfile={userProfile} onUpdateProfile={setUserProfile} />}
+                  {TRADITIONS[activeTab] && !['vedic', 'western', 'chinese'].includes(activeTab) && (
                     <TraditionView
                       tradition={TRADITIONS[activeTab]}
                       category={TRADITIONS[activeTab]}
@@ -788,6 +787,58 @@ export default function AppContent() {
                       onUpdateProfile={setUserProfile}
                     />
                   )}
+
+                  {/* Mystic & Healing Suites */}
+                  {(activeTab === 'gemstone' || activeTab === 'gemstone-suite' || activeTab === 'gemstones') && <GemstoneRudrakshaSuite />}
+                  {(activeTab === 'mantras' || activeTab === 'mantra-soundboard') && <SacredMantraSoundboard />}
+                  {(activeTab === 'chakra' || activeTab === 'chakras' || activeTab === 'chakra-alignment') && <SacredChakraAlignment />}
+                  {(activeTab === 'tarot' || activeTab === 'tarot-iching') && <TarotIChingSuite />}
+                  {(activeTab === 'numerology' || activeTab === 'numerology-suite') && <NumerologyNameSuite />}
+                  {(activeTab === 'fengshui' || activeTab === 'feng-shui' || activeTab === 'fengshui-matrix') && <CosmicFengShuiMatrix userProfile={userProfile} />}
+                  {(activeTab === 'shlokas' || activeTab === 'scripture') && <ClassicalShlokaLibrary />}
+
+                  {/* Secondary Specialized Engines */}
+                  {activeTab === 'live-diagnostics' && <LiveCosmicDiagnostics userProfile={userProfile} />}
+                  {activeTab === 'advisor' && <HolisticAdvisor userProfile={userProfile} />}
+                  {(activeTab === 'remedies' || activeTab === 'remedy') && <AstroMultiTraditionRemedySuite userProfile={userProfile} />}
+                  {activeTab === 'custom-remedies' && <CustomRemedialMediumEngine userProfile={userProfile} />}
+                  {(activeTab === 'synastry' || activeTab === 'match' || activeTab === 'compatibility' || activeTab === 'ashta-koota' || activeTab === 'kundli-matching') && (
+                    <KundliMatchingSuite userProfile={userProfile} onNavigateToTab={navigateTo} />
+                  )}
+                  {activeTab === 'global-suite' && <GlobalWisdomSuite userProfile={userProfile} />}
+                  {activeTab === 'tools-catalog' && <Astro150ToolsCatalog userProfile={userProfile} onNavigate={navigateTo} activeCategory={activeTab} initialCategory={activeTab} />}
+                  {activeTab === 'chat' && <AstrologyChat />}
+                  {(activeTab === 'dream-interpreter' || activeTab === 'dream') && <DreamInterpretationEngine userProfile={userProfile} />}
+                  {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
+                  {activeTab === 'spiritual-traditions' && <SpiritualTraditionsModule userProfile={userProfile} />}
+                  {activeTab === 'consultation-hub' && <CommunityConsultationHub />}
+                  {(activeTab === 'report-generator' || activeTab === 'executive-report') && <ExecutiveReportGenerator userProfile={userProfile} />}
+                  {activeTab === 'dosha-engine' && <DoshaRemedyEngine userProfile={userProfile} />}
+                  {activeTab === 'biorhythm-tracker' && <CosmicBiorhythmTracker userProfile={userProfile} />}
+                  {(activeTab === 'panchang-deities' || activeTab === 'panchang') && <PanchangDeitiesEngine />}
+                  {activeTab === 'cosmic-compass' && <CosmicCompassVisualizer userProfile={userProfile} />}
+                  {(activeTab === 'astrocartography' || activeTab === 'astro-cartography') && <AstroCartographyMatrix userProfile={userProfile} />}
+                  {(activeTab === 'panchanga' || activeTab === 'methodology') && (
+                    <SEOTopicHub
+                      hubId={activeTab as any}
+                      onStartChart={() => setShowOnboarding(true)}
+                      onNavigate={navigateTo}
+                      userProfile={userProfile}
+                    />
+                  )}
+                  {activeTab === 'synastry-overlay' && <SynastryOverlayChart userProfile={userProfile} />}
+                  {activeTab === 'mind-map' && <AstrologicalMindMap />}
+                  {activeTab === 'learning-hub' && <AstrologyLearningHub />}
+                  {activeTab === 'admin-dashboard' && <AdminAnalyticsDashboard />}
+                  {(activeTab === 'seo' || activeTab === 'seo-suite' || activeTab === 'seo-auditor' || activeTab === 'seo-growth') && <OmniSEOGrowthSuite />}
+                  {(activeTab === 'seo-lab' || activeTab === 'keyword-lab' || activeTab === 'keywords' || activeTab === 'seo-lab/keywords') && <KeywordResearchLab onNavigate={navigateTo} />}
+                  {(activeTab === 'backlink-lab' || activeTab === 'backlinks' || activeTab === 'link-lab' || activeTab === 'seo-lab/backlinks') && <BacklinkOpportunityLab onNavigate={navigateTo} />}
+                  {activeTab === 'control-center' && <AstrologyControlCenter />}
+                  {activeTab === 'horoscope' && <PremiumHoroscopeEngine userProfile={userProfile} />}
+                  {activeTab === 'passport' && <CosmicPassportCard userProfile={userProfile} onNavigateToTab={navigateTo} />}
+                  {(activeTab === 'widgets' || activeTab === 'embed') && <EmbeddableWidgetGenerator onNavigateToTab={navigateTo} />}
+                  {(activeTab === 'directory' || activeTab === 'celebrities') && <ProgrammaticSeoDirectory onNavigateToTab={navigateTo} />}
+                  {(activeTab === 'pwa' || activeTab === 'briefing') && <PwaCosmicBriefing onNavigateToTab={navigateTo} />}
                 </ErrorBoundary>
                 <Footer />
               </div>

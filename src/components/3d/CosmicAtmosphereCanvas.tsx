@@ -1,10 +1,9 @@
-﻿import React, { memo, useRef, useMemo, useState, useEffect } from 'react';
+import React, { memo, useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
-import { calculatePlanetaryPositions, type PlanetPosition } from '../../lib/astroCalculations';
 import type { UserProfile } from '../../types';
 
-// Pre-allocated static vectors to eliminate garbage collector freezes
+// Pre-allocated static vectors to eliminate GC freezes
 const STATIC_TARGET_POS = new THREE.Vector2(0, 0);
 const STATIC_HEAD = new THREE.Vector3();
 const STATIC_TAIL = new THREE.Vector3();
@@ -18,9 +17,9 @@ function createSoftGlowTexture(): any {
   if (ctx) {
     const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
     gradient.addColorStop(0.0, 'rgba(255, 255, 255, 1.0)');
-    gradient.addColorStop(0.15, 'rgba(245, 250, 255, 0.85)');
-    gradient.addColorStop(0.4, 'rgba(180, 220, 255, 0.35)');
-    gradient.addColorStop(0.7, 'rgba(100, 160, 255, 0.08)');
+    gradient.addColorStop(0.2, 'rgba(240, 248, 255, 0.9)');
+    gradient.addColorStop(0.5, 'rgba(180, 220, 255, 0.3)');
+    gradient.addColorStop(0.8, 'rgba(100, 160, 255, 0.05)');
     gradient.addColorStop(1.0, 'rgba(0, 0, 0, 0.0)');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 128, 128);
@@ -31,7 +30,7 @@ function createSoftGlowTexture(): any {
   return texture;
 }
 
-// Tradition-based thematic color harmony
+// Tradition-based thematic color spectrums
 function getTraditionSpectrum(traditionId?: string) {
   const sys = (traditionId || 'vedic').toLowerCase();
 
@@ -42,7 +41,6 @@ function getTraditionSpectrum(traditionId?: string) {
       warm: new THREE.Color('#FCD34D'),
       nebula1: '#0D9488',
       nebula2: '#0284C7',
-      ringColor: '#2DD4BF',
     };
   }
   if (sys.includes('chinese') || sys.includes('bazi')) {
@@ -52,7 +50,6 @@ function getTraditionSpectrum(traditionId?: string) {
       warm: new THREE.Color('#34D399'),
       nebula1: '#E11D48',
       nebula2: '#D97706',
-      ringColor: '#FB7185',
     };
   }
   if (sys.includes('western') || sys.includes('hellenistic')) {
@@ -62,7 +59,6 @@ function getTraditionSpectrum(traditionId?: string) {
       warm: new THREE.Color('#C084FC'),
       nebula1: '#4F46E5',
       nebula2: '#9333EA',
-      ringColor: '#818CF8',
     };
   }
 
@@ -73,7 +69,6 @@ function getTraditionSpectrum(traditionId?: string) {
     warm: new THREE.Color('#F43F5E'),
     nebula1: '#D97706',
     nebula2: '#2563EB',
-    ringColor: '#F59E0B',
   };
 }
 
@@ -82,8 +77,8 @@ function SmoothParallaxCamera() {
   const { camera, pointer } = useThree();
 
   useFrame((_, delta) => {
-    STATIC_TARGET_POS.x = THREE.MathUtils.lerp(STATIC_TARGET_POS.x, pointer.x * 2.5, delta * 1.2);
-    STATIC_TARGET_POS.y = THREE.MathUtils.lerp(STATIC_TARGET_POS.y, pointer.y * 1.5, delta * 1.2);
+    STATIC_TARGET_POS.x = THREE.MathUtils.lerp(STATIC_TARGET_POS.x, pointer.x * 2.0, delta * 1.0);
+    STATIC_TARGET_POS.y = THREE.MathUtils.lerp(STATIC_TARGET_POS.y, pointer.y * 1.2, delta * 1.0);
     camera.position.x = STATIC_TARGET_POS.x;
     camera.position.y = STATIC_TARGET_POS.y;
     camera.lookAt(0, 0, -25);
@@ -92,7 +87,7 @@ function SmoothParallaxCamera() {
   return null;
 }
 
-// Tier-1: Deep Field Multi-Spectral Stars (Dense, Sub-pixel, Twinkling)
+// Layer 1: Dense Deep Space Multi-Spectral Starfield
 function DeepSpaceStars({ 
   texture, 
   spectrum 
@@ -102,15 +97,16 @@ function DeepSpaceStars({
 }) {
   const pointsRef = useRef<any>(null);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const count = isMobile ? 650 : 2600;
+  const count = isMobile ? 800 : 3200;
 
-  const [positions, colors] = useMemo(() => {
+  const [positions, colors, scales] = useMemo(() => {
     const pos = new Float32Array(count * 3);
     const col = new Float32Array(count * 3);
+    const sca = new Float32Array(count);
     const palette = [
       new THREE.Color('#FFFFFF'),
       new THREE.Color('#F8FAFC'),
-      new THREE.Color('#E2E8F0'),
+      new THREE.Color('#E0F2FE'),
       spectrum.core,
       spectrum.accent,
       spectrum.warm
@@ -118,7 +114,7 @@ function DeepSpaceStars({
 
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
-      const radius = 35 + Math.random() * 160;
+      const radius = 25 + Math.random() * 180;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random() * 2 - 1);
 
@@ -130,15 +126,16 @@ function DeepSpaceStars({
       col[i3] = chosen.r;
       col[i3 + 1] = chosen.g;
       col[i3 + 2] = chosen.b;
+      sca[i] = 0.2 + Math.random() * 0.6;
     }
 
-    return [pos, col];
+    return [pos, col, sca];
   }, [count, spectrum]);
 
   useFrame((state, delta) => {
     if (pointsRef.current) {
-      pointsRef.current.rotation.y += delta * 0.0025;
-      pointsRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.01) * 0.005;
+      pointsRef.current.rotation.y += delta * 0.0018;
+      pointsRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.008) * 0.004;
     }
   });
 
@@ -153,7 +150,7 @@ function DeepSpaceStars({
         map={texture}
         vertexColors
         transparent
-        opacity={0.7}
+        opacity={0.8}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
         depthWrite={false}
@@ -162,101 +159,70 @@ function DeepSpaceStars({
   );
 }
 
-// Tier-2: Realistic 3D Planetary Celestial Spheres at Natal Longitudes
-function CelestialPlanetaryOrbits({ 
-  userProfile,
-  spectrum
-}: { 
-  userProfile?: UserProfile;
-  spectrum: ReturnType<typeof getTraditionSpectrum>;
-}) {
-  const groupRef = useRef<any>(null);
+// Layer 2: Subtle Sacred Geometry Constellation Lines (Soft, Faint, Elegant)
+function ConstellationWeb({ spectrum }: { spectrum: ReturnType<typeof getTraditionSpectrum> }) {
+  const lineRef = useRef<any>(null);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
-  const planets: PlanetPosition[] = useMemo(() => {
-    try {
-      return calculatePlanetaryPositions(
-        userProfile?.dob || '1998-06-15',
-        userProfile?.time || '12:00'
-      );
-    } catch {
-      return [];
+  const geometry = useMemo(() => {
+    const nodesCount = isMobile ? 12 : 24;
+    const nodes: THREE.Vector3[] = [];
+    for (let i = 0; i < nodesCount; i++) {
+      const theta = (i / nodesCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.3;
+      const radius = 20 + Math.random() * 25;
+      const z = -25 - Math.random() * 20;
+      nodes.push(new THREE.Vector3(
+        radius * Math.cos(theta),
+        radius * Math.sin(theta) * 0.6 + (Math.random() - 0.5) * 8,
+        z
+      ));
     }
-  }, [userProfile?.dob, userProfile?.time]);
+
+    const linePositions: number[] = [];
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dist = nodes[i].distanceTo(nodes[j]);
+        if (dist < 16) {
+          linePositions.push(nodes[i].x, nodes[i].y, nodes[i].z);
+          linePositions.push(nodes[j].x, nodes[j].y, nodes[j].z);
+        }
+      }
+    }
+
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(linePositions), 3));
+    return g;
+  }, [isMobile]);
 
   useFrame((_, delta) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.0018;
+    if (lineRef.current) {
+      lineRef.current.rotation.z += delta * 0.0008;
+      lineRef.current.rotation.y += delta * 0.0005;
     }
   });
 
-  const PLANET_COLORS: Record<string, { base: string; glow: string; size: number }> = {
-    'Sun': { base: '#FDE047', glow: '#F59E0B', size: 0.38 },
-    'Moon': { base: '#E2E8F0', glow: '#94A3B8', size: 0.28 },
-    'Mars': { base: '#F87171', glow: '#DC2626', size: 0.25 },
-    'Mercury': { base: '#34D399', glow: '#059669', size: 0.22 },
-    'Jupiter': { base: '#FBBF24', glow: '#D97706', size: 0.36 },
-    'Venus': { base: '#F472B6', glow: '#DB2777', size: 0.30 },
-    'Saturn': { base: '#A78BFA', glow: '#7C3AED', size: 0.34 },
-  };
-
-  const orbitRadius = 45;
-
   return (
-    <group ref={groupRef} position={[0, -2, -35]} rotation={[Math.PI * 0.18, 0, Math.PI * 0.05]}>
-      {/* Delicate Golden Ecliptic Ring */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[orbitRadius - 0.03, orbitRadius + 0.03, 128]} />
-        <meshBasicMaterial
-          color={spectrum.ringColor}
-          transparent
-          opacity={0.08}
-          side={THREE.DoubleSide}
-          blending={THREE.AdditiveBlending}
-        />
-      </mesh>
-
-      {/* Realistic 3D Glowing Planetary Spheres */}
-      {planets.slice(0, 7).map((p) => {
-        const rad = ((p.degreeDecimal - 90) * Math.PI) / 180;
-        const x = orbitRadius * Math.cos(rad);
-        const z = orbitRadius * Math.sin(rad);
-        const info = PLANET_COLORS[p.name] || { base: '#FCD34D', glow: '#F59E0B', size: 0.26 };
-
-        return (
-          <group key={p.name} position={[x, 0, z]}>
-            {/* Core Sphere */}
-            <mesh>
-              <sphereGeometry args={[info.size, 16, 16]} />
-              <meshBasicMaterial color={info.base} />
-            </mesh>
-
-            {/* Soft Outer Atmospheric Halo */}
-            <mesh scale={[2.2, 2.2, 2.2]}>
-              <sphereGeometry args={[info.size, 16, 16]} />
-              <meshBasicMaterial
-                color={info.glow}
-                transparent
-                opacity={0.18}
-                blending={THREE.AdditiveBlending}
-                depthWrite={false}
-              />
-            </mesh>
-          </group>
-        );
-      })}
-    </group>
+    <lineSegments ref={lineRef} geometry={geometry}>
+      <lineBasicMaterial
+        color={spectrum.accent}
+        transparent
+        opacity={0.06}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+      />
+    </lineSegments>
   );
 }
 
-// Tier-3: Delicate Natural Meteor Shooters
-function ShootingMeteor() {
+// Layer 3: Natural Random Shooting Meteors
+function ShootingMeteors() {
   const lineRef = useRef<any>(null);
   const meteor = useRef({
     active: false,
     progress: 0,
     start: new THREE.Vector3(),
     end: new THREE.Vector3(),
-    nextTime: 4,
+    nextTime: 3,
   });
 
   const geom = useMemo(() => {
@@ -271,16 +237,16 @@ function ShootingMeteor() {
     if (!meteor.current.active && t > meteor.current.nextTime) {
       meteor.current.active = true;
       meteor.current.progress = 0;
-      const sx = (Math.random() - 0.5) * 55;
-      const sy = 16 + Math.random() * 14;
-      const sz = -22 + (Math.random() - 0.5) * 12;
+      const sx = (Math.random() - 0.5) * 60;
+      const sy = 18 + Math.random() * 16;
+      const sz = -20 + (Math.random() - 0.5) * 15;
       meteor.current.start.set(sx, sy, sz);
-      meteor.current.end.set(sx + (Math.random() - 0.3) * 26, sy - 22 - Math.random() * 8, sz);
-      meteor.current.nextTime = t + 7 + Math.random() * 9;
+      meteor.current.end.set(sx + (Math.random() - 0.3) * 30, sy - 25 - Math.random() * 10, sz);
+      meteor.current.nextTime = t + 5 + Math.random() * 8;
     }
 
     if (meteor.current.active && lineRef.current) {
-      meteor.current.progress += delta * 1.5;
+      meteor.current.progress += delta * 1.6;
       const p = meteor.current.progress;
 
       if (p >= 1) {
@@ -289,20 +255,20 @@ function ShootingMeteor() {
       } else {
         lineRef.current.visible = true;
         STATIC_HEAD.lerpVectors(meteor.current.start, meteor.current.end, Math.min(1, p));
-        STATIC_TAIL.lerpVectors(meteor.current.start, meteor.current.end, Math.max(0, p - 0.2));
+        STATIC_TAIL.lerpVectors(meteor.current.start, meteor.current.end, Math.max(0, p - 0.22));
 
         const arr = lineRef.current.geometry.attributes.position.array;
         arr[0] = STATIC_HEAD.x; arr[1] = STATIC_HEAD.y; arr[2] = STATIC_HEAD.z;
         arr[3] = STATIC_TAIL.x; arr[4] = STATIC_TAIL.y; arr[5] = STATIC_TAIL.z;
         lineRef.current.geometry.attributes.position.needsUpdate = true;
-        lineRef.current.material.opacity = Math.sin(p * Math.PI) * 0.5;
+        lineRef.current.material.opacity = Math.sin(p * Math.PI) * 0.6;
       }
     }
   });
 
   return (
     <lineSegments ref={lineRef} geometry={geom} visible={false}>
-      <lineBasicMaterial color="#E0F2FE" transparent opacity={0.5} blending={THREE.AdditiveBlending} />
+      <lineBasicMaterial color="#F0F9FF" transparent opacity={0.6} blending={THREE.AdditiveBlending} />
     </lineSegments>
   );
 }
@@ -318,7 +284,7 @@ export const CosmicAtmosphereCanvas: React.FC<CosmicAtmosphereCanvasProps> = mem
   const spectrum = useMemo(() => getTraditionSpectrum(userProfile?.preferredSystem), [userProfile?.preferredSystem]);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
-  // Conserve 100% GPU when browser tab is inactive
+  // Conserve GPU when tab is inactive
   useEffect(() => {
     const handleVisibility = () => {
       setIsVisible(!document.hidden);
@@ -333,26 +299,26 @@ export const CosmicAtmosphereCanvas: React.FC<CosmicAtmosphereCanvasProps> = mem
       aria-hidden="true" 
       className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none"
     >
-      {/* Deep Space Indigo-Black Velvet Foundation */}
-      <div className="absolute inset-0 bg-[#04060E]" />
+      {/* Deep Space Indigo-Black Foundation */}
+      <div className="absolute inset-0 bg-[#060913]" />
 
-      {/* Volumetric Radial Aurora Hues */}
+      {/* Volumetric Radial Aurora Glows */}
       <div 
-        className="absolute -top-[15%] left-[20%] w-[65vw] h-[65vw] rounded-full blur-[140px] transition-colors duration-1000 opacity-40 pointer-events-none"
+        className="absolute -top-[15%] left-[20%] w-[65vw] h-[65vw] rounded-full blur-[140px] transition-colors duration-1000 opacity-30 pointer-events-none"
         style={{ background: `radial-gradient(circle, ${spectrum.nebula1} 0%, transparent 70%)` }}
       />
       <div 
-        className="absolute -bottom-[20%] right-[15%] w-[60vw] h-[60vw] rounded-full blur-[140px] transition-colors duration-1000 opacity-35 pointer-events-none"
+        className="absolute -bottom-[20%] right-[15%] w-[60vw] h-[60vw] rounded-full blur-[140px] transition-colors duration-1000 opacity-25 pointer-events-none"
         style={{ background: `radial-gradient(circle, ${spectrum.nebula2} 0%, transparent 70%)` }}
       />
 
       {/* 3D WebGL Observatory Canvas */}
       {isVisible && (
         <Canvas
-          camera={{ position: [0, 0, 16], fov: 52, near: 0.1, far: 300 }}
+          camera={{ position: [0, 0, 16], fov: 50, near: 0.1, far: 300 }}
           dpr={isMobile ? [1, 1.1] : [1, 1.5]}
           gl={{
-            antialias: !isMobile,
+            antialias: false,
             powerPreference: 'high-performance',
             alpha: true,
             stencil: false,
@@ -362,13 +328,13 @@ export const CosmicAtmosphereCanvas: React.FC<CosmicAtmosphereCanvasProps> = mem
         >
           <SmoothParallaxCamera />
           <DeepSpaceStars texture={starTexture} spectrum={spectrum} />
-          <CelestialPlanetaryOrbits userProfile={userProfile} spectrum={spectrum} />
-          <ShootingMeteor />
+          <ConstellationWeb spectrum={spectrum} />
+          <ShootingMeteors />
         </Canvas>
       )}
 
       {/* Soft Vignette Mask for High Contrast Readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#04060E]/80 via-transparent to-[#04060E]/60 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#060913]/90 via-transparent to-[#060913]/60 pointer-events-none" />
     </div>
   );
 });
