@@ -91,22 +91,22 @@ function createProceduralTexture(type: string): THREE.CanvasTexture {
     ctx.stroke();
 
   } else if (type === 'sun') {
-    // Radiant Incandescent Solar Photosphere
-    const grad = ctx.createRadialGradient(512, 256, 10, 512, 256, 512);
+    // Seamless Radiant Solar Photosphere
+    const grad = ctx.createRadialGradient(512, 256, 20, 512, 256, 512);
     grad.addColorStop(0.00, '#FFFFFF');
-    grad.addColorStop(0.12, '#FFFBEB');
-    grad.addColorStop(0.35, '#FDE047');
-    grad.addColorStop(0.65, '#F59E0B');
-    grad.addColorStop(0.88, '#EA580C');
+    grad.addColorStop(0.15, '#FFFBEB');
+    grad.addColorStop(0.40, '#FDE047');
+    grad.addColorStop(0.70, '#F59E0B');
+    grad.addColorStop(0.92, '#EA580C');
     grad.addColorStop(1.00, '#DC2626');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 1024, 512);
 
     // Convective solar granules
-    for (let i = 0; i < 150; i++) {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+    for (let i = 0; i < 180; i++) {
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
       ctx.beginPath();
-      ctx.arc(Math.random() * 1024, Math.random() * 512, Math.random() * 12 + 3, 0, Math.PI * 2);
+      ctx.arc(Math.random() * 1024, Math.random() * 512, Math.random() * 10 + 2, 0, Math.PI * 2);
       ctx.fill();
     }
 
@@ -252,7 +252,7 @@ function createSaturnRingTexture(): THREE.CanvasTexture {
 
   const grad = ctx.createLinearGradient(0, 0, 512, 0);
   grad.addColorStop(0.00, 'rgba(0, 0, 0, 0)');
-  grad.addColorStop(0.08, 'rgba(180, 83, 9, 0.4)');
+  grad.addColorStop(0.08, 'rgba(180, 83, 9, 0.35)');
   grad.addColorStop(0.35, 'rgba(253, 230, 138, 0.85)'); // Ring B
   grad.addColorStop(0.55, 'rgba(0, 0, 0, 0)'); // Cassini Division Gap
   grad.addColorStop(0.65, 'rgba(217, 119, 6, 0.75)'); // Ring A
@@ -268,7 +268,7 @@ function createSaturnRingTexture(): THREE.CanvasTexture {
   return texture;
 }
 
-// Well-spaced linear cinematic visual alignment matching the user reference
+// Well-spaced linear cinematic visual alignment with realistic matte scattering
 const REALISTIC_PLANETS: RealisticPlanetData[] = [
   {
     id: 'neptune',
@@ -282,8 +282,8 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     rotationSpeed: 0.008,
     baseColor: '#2563EB',
     glowColor: '#3B82F6',
-    roughness: 0.25,
-    metalness: 0.1,
+    roughness: 0.85,
+    metalness: 0.05,
     textureType: 'neptune',
     frequency: 211.44,
     lifeMeaning: 'Spiritual mysticism, cosmic imagination, dreams & divine transcendence.',
@@ -301,8 +301,8 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     rotationSpeed: 0.009,
     baseColor: '#67E8F9',
     glowColor: '#22D3EE',
-    roughness: 0.3,
-    metalness: 0.1,
+    roughness: 0.85,
+    metalness: 0.05,
     textureType: 'uranus',
     frequency: 207.36,
     lifeMeaning: 'Breakthrough genius, sudden inventions, independence & radical innovation.',
@@ -320,8 +320,8 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     rotationSpeed: 0.006,
     baseColor: '#D97706',
     glowColor: '#F59E0B',
-    roughness: 0.35,
-    metalness: 0.2,
+    roughness: 0.85,
+    metalness: 0.05,
     hasRing: true,
     ringInner: 1.35,
     ringOuter: 2.35,
@@ -342,8 +342,8 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     rotationSpeed: 0.012,
     baseColor: '#D97706',
     glowColor: '#FBBF24',
-    roughness: 0.2,
-    metalness: 0.1,
+    roughness: 0.88,
+    metalness: 0.05,
     textureType: 'jupiter',
     frequency: 183.58,
     lifeMeaning: 'Supreme wisdom, divine luck, financial expansion, mentorship & righteousness.',
@@ -361,8 +361,8 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     rotationSpeed: 0.007,
     baseColor: '#DC2626',
     glowColor: '#EF4444',
-    roughness: 0.55,
-    metalness: 0.3,
+    roughness: 0.92,
+    metalness: 0.05,
     textureType: 'mars',
     frequency: 144.72,
     lifeMeaning: 'Courage, physical stamina, decisive action, protection & victory over obstacles.',
@@ -380,8 +380,8 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     rotationSpeed: 0.008,
     baseColor: '#2563EB',
     glowColor: '#38BDF8',
-    roughness: 0.35,
-    metalness: 0.2,
+    roughness: 0.85,
+    metalness: 0.05,
     hasMoon: true,
     textureType: 'earth',
     frequency: 136.10, // Om Year Tone
@@ -400,8 +400,8 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     rotationSpeed: 0.004,
     baseColor: '#F59E0B',
     glowColor: '#FDE047',
-    roughness: 0.2,
-    metalness: 0.2,
+    roughness: 0.85,
+    metalness: 0.05,
     textureType: 'venus',
     frequency: 221.23,
     lifeMeaning: 'Magnetic attraction, romantic harmony, artistic elegance & refined luxury.',
@@ -419,53 +419,14 @@ const REALISTIC_PLANETS: RealisticPlanetData[] = [
     rotationSpeed: 0.005,
     baseColor: '#9CA3AF',
     glowColor: '#E2E8F0',
-    roughness: 0.65,
-    metalness: 0.4,
+    roughness: 0.95,
+    metalness: 0.05,
     textureType: 'mercury',
     frequency: 141.27,
     lifeMeaning: 'Sharp intellect, commercial eloquence, analytical agility & mental speed.',
     careerImpact: 'Media publishing, software engineering, financial trading, and strategic speech.'
   }
 ];
-
-// Instanced Asteroid Belt between Mars (0.9) and Jupiter (-2.4)
-function MainAsteroidBeltField() {
-  const count = 380;
-  const meshRef = useRef<THREE.InstancedMesh>(null);
-
-  const dummy = useMemo(() => new THREE.Object3D(), []);
-
-  useEffect(() => {
-    if (!meshRef.current) return;
-    for (let i = 0; i < count; i++) {
-      // Scatter in the asteroid zone between Mars (X=0.9) and Jupiter (X=-2.4)
-      const x = -0.7 + (Math.random() - 0.5) * 1.8;
-      const y = (Math.random() - 0.5) * 1.4;
-      const z = (Math.random() - 0.5) * 2.2;
-      const scale = Math.random() * 0.035 + 0.012;
-
-      dummy.position.set(x, y, z);
-      dummy.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
-      dummy.scale.set(scale, scale, scale);
-      dummy.updateMatrix();
-      meshRef.current.setMatrixAt(i, dummy.matrix);
-    }
-    meshRef.current.instanceMatrix.needsUpdate = true;
-  }, [dummy, count]);
-
-  useFrame((_, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += 0.001 * (delta * 60);
-    }
-  });
-
-  return (
-    <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
-      <dodecahedronGeometry args={[1, 0]} />
-      <meshStandardMaterial color="#94A3B8" roughness={0.9} metalness={0.1} />
-    </instancedMesh>
-  );
-}
 
 // Camera Flight Controller (Smooth zoom to planet when selected)
 function CameraFlightController({ targetPlanet }: { targetPlanet?: RealisticPlanetData | null }) {
@@ -474,10 +435,8 @@ function CameraFlightController({ targetPlanet }: { targetPlanet?: RealisticPlan
 
   useEffect(() => {
     if (targetPlanet) {
-      // Zoom close to planet with offset
       targetPos.current.set(targetPlanet.xPos, targetPlanet.yPos + 0.3, 4.5);
     } else {
-      // Full view
       targetPos.current.set(0, 0.8, 17.5);
     }
   }, [targetPlanet]);
@@ -535,17 +494,17 @@ function RealisticPlanetMesh({
           roughness={planet.roughness}
           metalness={planet.metalness}
           emissive={isSelected ? planet.baseColor : '#000000'}
-          emissiveIntensity={isSelected ? 0.45 : 0}
+          emissiveIntensity={isSelected ? 0.3 : 0}
         />
       </mesh>
 
       {/* Atmospheric Halo Glow */}
-      <mesh scale={[1.05, 1.05, 1.05]}>
+      <mesh scale={[1.04, 1.04, 1.04]}>
         <sphereGeometry args={[planet.radius, 32, 32]} />
         <meshBasicMaterial
           color={planet.glowColor}
           transparent
-          opacity={hovered || isSelected ? 0.35 : 0.12}
+          opacity={hovered || isSelected ? 0.35 : 0.1}
           blending={THREE.AdditiveBlending}
           side={THREE.BackSide}
         />
@@ -555,15 +514,15 @@ function RealisticPlanetMesh({
       {planet.hasRing && ringTexture && (
         <mesh
           ref={ringRef}
-          rotation={[Math.PI / 2.4, 0, Math.PI / 6]}
+          rotation={[Math.PI / 2.3, 0, Math.PI / 5]}
           scale={isSelected ? [1.25, 1.25, 1.25] : [1, 1, 1]}
         >
           <ringGeometry args={[planet.ringInner || 1.35, planet.ringOuter || 2.35, 128]} />
           <meshStandardMaterial
             map={ringTexture}
-            roughness={0.2}
+            roughness={0.6}
             transparent
-            opacity={0.95}
+            opacity={0.92}
             side={THREE.DoubleSide}
           />
         </mesh>
@@ -574,7 +533,7 @@ function RealisticPlanetMesh({
         <group ref={moonGroupRef}>
           <mesh position={[1.15, 0.2, 0]}>
             <sphereGeometry args={[0.13, 16, 16]} />
-            <meshStandardMaterial color="#E2E8F0" roughness={0.8} />
+            <meshStandardMaterial color="#E2E8F0" roughness={0.9} />
           </mesh>
         </group>
       )}
@@ -584,7 +543,7 @@ function RealisticPlanetMesh({
         {isSelected || hovered ? (
           <button
             onClick={(e) => { e.stopPropagation(); onSelect(planet); }}
-            className="px-3 py-1 rounded-full text-xs font-mono font-bold whitespace-nowrap shadow-2xl flex items-center gap-1.5 bg-amber-400 text-slate-950 ring-2 ring-amber-300 scale-110 shadow-amber-400/50 cursor-pointer transition-transform"
+            className="px-3 py-1 rounded-full text-xs font-mono font-bold whitespace-nowrap shadow-2xl flex items-center gap-1.5 bg-amber-400 text-slate-950 ring-2 ring-amber-300 scale-110 shadow-amber-400/50 cursor-pointer transition-transform select-none"
           >
             <span className="font-black">{planet.symbol}</span>
             <span>{planet.name}</span>
@@ -597,7 +556,7 @@ function RealisticPlanetMesh({
         ) : (
           <button
             onClick={(e) => { e.stopPropagation(); onSelect(planet); }}
-            className="w-6 h-6 rounded-full bg-black/80 hover:bg-black/95 text-slate-200 hover:text-amber-300 border border-white/20 hover:border-amber-400 text-xs font-mono flex items-center justify-center shadow-lg transition-all cursor-pointer hover:scale-125"
+            className="w-6 h-6 rounded-full bg-black/80 hover:bg-black/95 text-slate-200 hover:text-amber-300 border border-white/20 hover:border-amber-400 text-xs font-mono flex items-center justify-center shadow-lg transition-all cursor-pointer hover:scale-125 select-none"
             title={`${planet.name} (${natalPosition ? `${natalPosition.sign} ${natalPosition.degree}` : ''})`}
           >
             <span>{planet.symbol}</span>
@@ -628,12 +587,12 @@ function GiantSunOnRight({ speedMultiplier }: { speedMultiplier: number }) {
       </mesh>
 
       {/* Atmospheric Solar Corona Rim Glow */}
-      <mesh scale={[1.08, 1.08, 1.08]}>
+      <mesh scale={[1.1, 1.1, 1.1]}>
         <sphereGeometry args={[5.2, 32, 32]} />
         <meshBasicMaterial
           color="#F59E0B"
           transparent
-          opacity={0.45}
+          opacity={0.5}
           blending={THREE.AdditiveBlending}
           side={THREE.BackSide}
         />
@@ -745,19 +704,19 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
         </div>
 
         {/* Speed & Overview Controls */}
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap select-none">
           {/* Reset Overview Button */}
           <button
             onClick={handleResetCamera}
-            className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer transition-all"
+            className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap select-none"
             title="Reset to Full Solar System Overview"
           >
-            <Maximize2 className="w-3.5 h-3.5 text-amber-400" />
+            <Maximize2 className="w-3.5 h-3.5 text-amber-400 shrink-0" />
             <span>Overview</span>
           </button>
 
           {/* Time Warp Speed Selector */}
-          <div className="flex items-center bg-black/60 border border-white/10 rounded-xl p-1 text-xs font-mono">
+          <div className="flex items-center bg-black/60 border border-white/10 rounded-xl p-1 text-xs font-mono select-none">
             {[
               { val: 0, label: '0x' },
               { val: 1, label: '1x' },
@@ -767,7 +726,7 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
               <button
                 key={spd.val}
                 onClick={() => setSpeedMultiplier(spd.val)}
-                className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
+                className={`px-2 py-1 rounded-lg transition-all cursor-pointer select-none ${
                   speedMultiplier === spd.val
                     ? 'bg-amber-400 text-slate-950 font-bold'
                     : 'text-slate-400 hover:text-white'
@@ -782,7 +741,7 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
           {selectedPlanet && (
             <button
               onClick={toggleFrequency}
-              className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer select-none whitespace-nowrap ${
                 isPlayingFrequency
                   ? 'bg-emerald-400 text-slate-950 ring-2 ring-emerald-300 animate-pulse'
                   : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
@@ -796,14 +755,14 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
       </div>
 
       {/* Quick Planet Filter Pills */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar select-none">
         {REALISTIC_PLANETS.map((p) => {
           const isSelected = selectedPlanet?.id === p.id;
           return (
             <button
               key={p.id}
               onClick={() => handleSelect(p)}
-              className={`px-2.5 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1 ${
+              className={`px-2.5 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1 select-none ${
                 isSelected
                   ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/25 scale-105 font-black'
                   : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
@@ -826,24 +785,21 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
           {/* Deep Space Background Stars */}
           <Stars radius={100} depth={50} count={3500} factor={4} saturation={0.5} fade speed={1} />
 
-          {/* Ambient space illumination */}
-          <ambientLight intensity={0.6} />
+          {/* Soft ambient space illumination */}
+          <ambientLight intensity={0.65} />
 
-          {/* Camera front fill light to clearly illuminate textures, continents and rings */}
-          <directionalLight position={[0, 4, 20]} intensity={1.8} color="#FFFFFF" />
+          {/* Soft camera front diffuse fill (no specular glare) */}
+          <directionalLight position={[0, 2, 18]} intensity={1.1} color="#FFFFFF" />
 
-          {/* Powerful directional sunlight originating from the Sun on the right */}
-          <directionalLight position={[20, 2, 5]} intensity={3.5} color="#FFF5EB" />
-          <pointLight position={[15.0, 0, 0]} intensity={5.2} color="#FFFBEB" distance={50} decay={1.3} />
+          {/* Cinematic sunlight from the Sun on the right */}
+          <directionalLight position={[18, 0, 3]} intensity={3.6} color="#FFF8E7" />
+          <pointLight position={[15.2, 0, 0]} intensity={4.5} color="#FFF8E7" distance={45} decay={1.2} />
 
           {/* Subtle deep space rim fill from left */}
-          <directionalLight position={[-20, -2, -5]} intensity={0.8} color="#38BDF8" />
+          <directionalLight position={[-18, -1, -3]} intensity={0.6} color="#38BDF8" />
 
           {/* Smooth Camera Flight Controller */}
           <CameraFlightController targetPlanet={selectedPlanet} />
-
-          {/* Main Asteroid Belt between Mars & Jupiter */}
-          <MainAsteroidBeltField />
 
           {/* Giant Radiant Sun on the right */}
           <GiantSunOnRight speedMultiplier={speedMultiplier} />
@@ -877,7 +833,7 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
         </Canvas>
 
         {/* Floating Canvas Controls Overlay */}
-        <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 text-[11px] font-mono text-slate-300 pointer-events-none">
+        <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 text-[11px] font-mono text-slate-300 pointer-events-none select-none">
           <RotateCw className="w-3.5 h-3.5 text-amber-400" />
           <span>Interactive 3D Viewport • Click planet to focus • Drag to rotate</span>
         </div>
