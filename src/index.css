@@ -407,15 +407,111 @@ body {
   }
 }
 
-/* Print Styles for PDF Dossier */
+/* Comprehensive Print & PDF Export Stylesheet */
 @media print {
-  body { background: white !important; color: black !important; }
-  .no-print { display: none !important; }
-  .glass-card, .glass-card-premium, .glass-card-elevated {
-    background: white !important;
-    border: 1px solid #e2e8f0 !important;
+  @page {
+    size: auto;
+    margin: 12mm 12mm 15mm 12mm;
+  }
+
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    text-shadow: none !important;
+  }
+
+  /* 1. Complete Navigation & Interactive Chrome Suppression */
+  header,
+  nav,
+  footer,
+  aside,
+  button,
+  input,
+  select,
+  textarea,
+  [role="navigation"],
+  [role="tablist"],
+  .no-print,
+  .mobile-bottom-nav,
+  .app-sidebar,
+  .command-finder,
+  .more-sheet,
+  .toast,
+  .fixed:not(.printable-fixed) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+
+  /* 2. Page & Surface Reset */
+  html, body, #root {
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* 3. Neutralize Dark Glass Surfaces to Clean Vector White */
+  .glass-card, 
+  .glass-card-premium, 
+  .glass-card-elevated,
+  .bento-card,
+  div[class*="bg-slate-900"],
+  div[class*="bg-slate-950"],
+  div[class*="bg-[#0B1220]"],
+  div[class*="bg-[#060A12]"],
+  div[class*="bg-[#070D1A]"] {
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+    border: 1px solid #CBD5E1 !important;
     box-shadow: none !important;
     backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* 4. High-Contrast Text Color Normalization */
+  h1, h2, h3, h4, h5, h6,
+  span[class*="text-white"],
+  div[class*="text-white"],
+  p[class*="text-slate-200"],
+  p[class*="text-slate-300"],
+  p[class*="text-slate-400"] {
+    color: #0F172A !important;
+  }
+
+  span[class*="text-amber-"],
+  div[class*="text-amber-"] {
+    color: #B45309 !important;
+    font-weight: 700 !important;
+  }
+
+  span[class*="text-cyan-"],
+  div[class*="text-cyan-"] {
+    color: #0369A1 !important;
+  }
+
+  span[class*="text-emerald-"],
+  div[class*="text-emerald-"] {
+    color: #047857 !important;
+  }
+
+  /* 5. Chart SVG Crisp Print Outlines */
+  svg {
+    max-width: 100% !important;
+    height: auto !important;
+    page-break-inside: avoid !important;
+  }
+
+  path, line, circle, rect, polygon {
+    stroke-opacity: 1 !important;
+  }
+
+  /* 6. Avoid Awkward Breaks */
+  .card, .bento-card, table, tr, figure {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 }
 

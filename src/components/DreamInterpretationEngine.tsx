@@ -6,6 +6,7 @@ import {
   Clock, Zap, Eye, Mountain, Droplets, Smile, Frown, TrendingUp
 } from 'lucide-react';
 import type { UserProfile } from '../types';
+import { exportUniversalPdf } from '../lib/pdfReportEngine';
 
 interface DreamInterpretationEngineProps {
   userProfile?: UserProfile;
@@ -467,37 +468,32 @@ export default function DreamInterpretationEngine({ userProfile }: DreamInterpre
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => {
-            const printWindow = window.open('', '_blank');
-            if (printWindow) {
-              printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                  <title>AstroVerse Dream Analysis Report</title>
-                  <style>
-                    body { font-family: system-ui, sans-serif; padding: 40px; color: #0f172a; line-height: 1.6; }
-                    .card { border: 1px solid #e2e8f0; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
-                    h1 { color: #4338ca; }
-                  </style>
-                </head>
-                <body>
-                  <h1>🌙 AstroVerse Dream Interpretation Report</h1>
-                  <p>Dream: ${dreamTitle || 'Untitled'}</p>
-                  <p>Emotions: ${selectedEmotions.join(', ')}</p>
-                  ${currentAnalysisSymbols.map(sym => `
-                    <div class="card">
-                      <h3>${sym.symbol}</h3>
-                      <p><strong>Psychology:</strong> ${sym.psychological}</p>
-                      <p><strong>Sleep Science:</strong> ${sym.sleepScience}</p>
-                    </div>
-                  `).join('')}
-                </body>
-                </html>
-              `);
-              printWindow.document.close();
-              printWindow.focus();
-              setTimeout(() => { printWindow.print(); }, 500);
-            }
+            const htmlContent = `
+              <!DOCTYPE html>
+              <html>
+              <head>
+                <title>ASTRO360 Dream Analysis Report</title>
+                <style>
+                  body { font-family: system-ui, sans-serif; padding: 40px; color: #0f172a; line-height: 1.6; }
+                  .card { border: 1px solid #e2e8f0; padding: 15px; border-radius: 10px; margin-bottom: 15px; background: #faf5ff; }
+                  h1 { color: #6b21a8; border-bottom: 2px solid #e9d5ff; padding-bottom: 10px; }
+                </style>
+              </head>
+              <body>
+                <h1>🌙 ASTRO360 Dream Interpretation & Subconscious Analysis</h1>
+                <p><strong>Dream Title:</strong> ${dreamTitle || 'Untitled Dream Record'}</p>
+                <p><strong>Dominant Emotions:</strong> ${selectedEmotions.join(', ')}</p>
+                ${currentAnalysisSymbols.map(sym => `
+                  <div class="card">
+                    <h3 style="margin-top:0; color:#581c87;">${sym.symbol}</h3>
+                    <p><strong>Psychological Meaning:</strong> ${sym.psychological}</p>
+                    <p><strong>Sleep & Neurological Science:</strong> ${sym.sleepScience}</p>
+                  </div>
+                `).join('')}
+              </body>
+              </html>
+            `;
+            exportUniversalPdf(htmlContent, `ASTRO360_Dream_Analysis_${(dreamTitle || 'Record').replace(/\s+/g, '_')}`);
           }}
           className="px-5 py-2.5 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/40 hover:bg-purple-500/30 hover:border-purple-500/60 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-[0_0_15px_rgba(168,85,247,0.15)] shrink-0"
         >

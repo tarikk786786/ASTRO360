@@ -2,18 +2,19 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { FileText, Download, Printer, ShieldCheck, Sparkles, Sun, Moon, MapPin } from 'lucide-react';
 import type { UserProfile } from '../types';
+import { printExecutiveDossierPdf } from '../lib/pdfReportEngine';
 
 interface ExecutivePDFDossierProps {
   userProfile: UserProfile;
 }
 
 export default function ExecutivePDFDossier({ userProfile }: ExecutivePDFDossierProps) {
-  const name = userProfile?.name || 'Tarik Islam';
-  const email = userProfile?.email || 'princetarikislam@gmail.com';
-  const location = userProfile?.location || 'Mecca, Saudi Arabia';
+  const name = userProfile?.name || 'Seeker';
+  const email = userProfile?.email || 'seeker@astro360.com';
+  const location = userProfile?.location || 'Universal Meridian';
 
   const handlePrintPDF = () => {
-    window.print();
+    printExecutiveDossierPdf({ userProfile });
   };
 
   return (

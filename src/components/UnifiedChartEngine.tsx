@@ -7,6 +7,7 @@ import type { UserProfile } from '../types';
 import { calculatePlanetaryPositions } from '../lib/astroCalculations';
 import { useGlobalConfig } from '../context/GlobalConfigContext';
 import { AstronomyEngine } from '../lib/astronomyEngine';
+import { exportUniversalPdf } from '../lib/pdfReportEngine';
 
 interface UnifiedChartEngineProps {
   userProfile?: UserProfile;
@@ -137,57 +138,52 @@ export default function UnifiedChartEngine({ userProfile, activeTab, initialTab 
     setIsExporting(true);
     setTimeout(() => {
       setIsExporting(false);
-      const printWindow = window.open('', '_blank');
-      if (printWindow) {
-        printWindow.document.write(`
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <title>Master Overall Chart Certificate — ${userProfile?.name || 'Tarik Islam'}</title>
-            <style>
-              body { font-family: system-ui, sans-serif; padding: 40px; color: #0f172a; background: #ffffff; line-height: 1.6; }
-              .header { text-align: center; border-bottom: 3px double #6366f1; padding-bottom: 20px; margin-bottom: 30px; }
-              .header h1 { font-size: 26px; color: #4f46e5; margin: 0; }
-              .header p { font-size: 13px; color: #64748b; margin-top: 5px; }
-              .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
-              .card { border: 1px solid #e2e8f0; padding: 15px; border-radius: 10px; background: #f8fafc; }
-              .card-title { font-size: 14px; font-weight: bold; color: #1e293b; margin-bottom: 5px; }
-              .footer { text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px; margin-top: 40px; }
-            </style>
-          </head>
-          <body>
-            <div class="header">
-              <h1>🌌 ASTRO360 MASTER OVERALL CHART CERTIFICATE</h1>
-              <p>Unified Multi-Tradition Ephemeris Certificate for ${userProfile?.name || 'Tarik Islam'}</p>
-            </div>
+      const htmlContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Master Overall Chart Certificate — ${userProfile?.name || 'Seeker'}</title>
+          <style>
+            body { font-family: system-ui, sans-serif; padding: 40px; color: #0f172a; background: #ffffff; line-height: 1.6; }
+            .header { text-align: center; border-bottom: 3px double #6366f1; padding-bottom: 20px; margin-bottom: 30px; }
+            .header h1 { font-size: 26px; color: #4f46e5; margin: 0; }
+            .header p { font-size: 13px; color: #64748b; margin-top: 5px; }
+            .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
+            .card { border: 1px solid #e2e8f0; padding: 15px; border-radius: 10px; background: #f8fafc; }
+            .card-title { font-size: 14px; font-weight: bold; color: #1e293b; margin-bottom: 5px; }
+            .footer { text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 20px; margin-top: 40px; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>🌌 ASTRO360 MASTER OVERALL CHART CERTIFICATE</h1>
+            <p>Unified Multi-Tradition Ephemeris Certificate for ${userProfile?.name || 'Seeker'}</p>
+          </div>
 
-            <div class="card" style="margin-bottom: 20px; background: #eef2ff; border-color: #c7d2fe;">
-              <div class="card-title">👤 Subject Profile & Resonance Index</div>
-              <p style="font-size: 13px; margin: 0;">Date of Birth: ${userProfile?.dob || '1998-06-15'} | Overall Resonance Score: <strong>${overallResonanceScore}%</strong></p>
-            </div>
+          <div class="card" style="margin-bottom: 20px; background: #eef2ff; border-color: #c7d2fe;">
+            <div class="card-title">👤 Subject Profile & Resonance Index</div>
+            <p style="font-size: 13px; margin: 0;">Date of Birth: ${userProfile?.dob || '1998-06-15'} | Overall Resonance Score: <strong>${overallResonanceScore}%</strong></p>
+          </div>
 
-            <div class="grid">
-              ${synthesisLayers.map(l => `
-                <div class="card">
-                  <div class="card-title">${l.symbol} ${l.tradition}</div>
-                  <p style="font-size: 13px; font-weight: bold; color: #4338ca; margin: 3px 0;">${l.signOrPillar}</p>
-                  <p style="font-size: 12px; color: #64748b; margin-bottom: 8px;">${l.rulerOrElement}</p>
-                  <p style="font-size: 12px; color: #334155;">${l.insight}</p>
-                </div>
-              `).join('')}
-            </div>
+          <div class="grid">
+            ${synthesisLayers.map(l => `
+              <div class="card">
+                <div class="card-title">${l.symbol} ${l.tradition}</div>
+                <p style="font-size: 13px; font-weight: bold; color: #4338ca; margin: 3px 0;">${l.signOrPillar}</p>
+                <p style="font-size: 12px; color: #64748b; margin-bottom: 8px;">${l.rulerOrElement}</p>
+                <p style="font-size: 12px; color: #334155;">${l.insight}</p>
+              </div>
+            `).join('')}
+          </div>
 
-            <div class="footer">
-              Official Master Overall Chart Synthesis Certificate | ASTRO360 Multi-Tradition Ephemeris Engine
-            </div>
-          </body>
-          </html>
-        `);
-        printWindow.document.close();
-        printWindow.focus();
-        setTimeout(() => { printWindow.print(); }, 500);
-      }
-    }, 300);
+          <div class="footer">
+            Official Master Overall Chart Synthesis Certificate | ASTRO360 Multi-Tradition Ephemeris Engine
+          </div>
+        </body>
+        </html>
+      `;
+      exportUniversalPdf(htmlContent, `ASTRO360_MasterChart_${userProfile?.name ? userProfile.name.replace(/\s+/g, '_') : 'Seeker'}`);
+    }, 200);
   };
 
   return (
