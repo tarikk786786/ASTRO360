@@ -679,426 +679,114 @@ export const Realistic3DSolarSystemAlignment: React.FC<{
   const activeForecast = predictionReport.forecasts.find(f => f.horizon === activeHorizon) || predictionReport.forecasts[0];
 
   return (
-    <div className="w-full rounded-3xl bg-gradient-to-b from-[#080E1C] via-[#040812] to-[#020308] border border-amber-400/40 p-4 sm:p-6 shadow-2xl space-y-5 text-left">
-      {/* 1. Header Row & Cinematic Controls */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/10 pb-4">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <span className="p-1.5 rounded-xl bg-amber-400/15 text-amber-300 border border-amber-400/30">
-              <Sparkles className="w-4 h-4" />
-            </span>
-            <h3 className="text-base sm:text-lg font-black text-white font-sans tracking-tight">
-              Photorealistic 3D Solar System Alignment Studio
-            </h3>
-            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-400/15 text-emerald-300 border border-emerald-400/30">
-              True Cosmic Scale
-            </span>
-          </div>
-          <p className="text-xs text-slate-300 font-sans">
-            Cinematic alignment of all planets illuminated by the Sun. Drag to orbit, zoom into Saturn's rings or Earth, and tap any celestial body to inspect your birth chart placements.
-          </p>
-        </div>
+    <div className="w-full h-full min-h-[400px] sm:min-h-[500px] relative bg-[#0B0C10] overflow-hidden">
+      {/* 3D WebGL Canvas (Cinematic Viewport) */}
+      <Canvas
+        camera={{ position: [0, 0.8, 17.5], fov: 42 }}
+        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+        className="w-full h-full cursor-grab active:cursor-grabbing"
+      >
+        {/* Deep Space Background Stars */}
+        <Stars radius={100} depth={50} count={3500} factor={4} saturation={0.5} fade speed={1} />
 
-        {/* Speed & Overview Controls */}
-        <div className="flex items-center gap-2 flex-wrap select-none">
-          {/* Reset Overview Button */}
-          <button
-            onClick={handleResetCamera}
-            className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer transition-all whitespace-nowrap select-none"
-            title="Reset to Full Solar System Overview"
-          >
-            <Maximize2 className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-            <span>Overview</span>
-          </button>
+        {/* Soft ambient space illumination */}
+        <ambientLight intensity={0.65} />
 
-          {/* Time Warp Speed Selector */}
-          <div className="flex items-center bg-black/60 border border-white/10 rounded-xl p-1 text-xs font-mono select-none">
-            {[
-              { val: 0, label: '0x' },
-              { val: 1, label: '1x' },
-              { val: 5, label: '5x' },
-              { val: 20, label: '20x' },
-            ].map((spd) => (
-              <button
-                key={spd.val}
-                onClick={() => setSpeedMultiplier(spd.val)}
-                className={`px-2 py-1 rounded-lg transition-all cursor-pointer select-none ${
-                  speedMultiplier === spd.val
-                    ? 'bg-amber-400 text-slate-950 font-bold'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                {spd.label}
-              </button>
-            ))}
-          </div>
+        {/* Soft camera front diffuse fill (no specular glare) */}
+        <directionalLight position={[0, 2, 18]} intensity={1.1} color="#FFFFFF" />
 
-          {/* Cosmic Audio Resonator Toggle */}
-          {selectedPlanet && (
-            <button
-              onClick={toggleFrequency}
-              className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer select-none whitespace-nowrap ${
-                isPlayingFrequency
-                  ? 'bg-emerald-400 text-slate-950 ring-2 ring-emerald-300 animate-pulse'
-                  : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
-              }`}
-            >
-              {isPlayingFrequency ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
-              <span>{selectedPlanet.frequency} Hz</span>
-            </button>
-          )}
-        </div>
-      </div>
+        {/* Cinematic sunlight from the Sun on the right */}
+        <directionalLight position={[18, 0, 3]} intensity={3.6} color="#FFF8E7" />
+        <pointLight position={[15.2, 0, 0]} intensity={4.5} color="#FFF8E7" distance={45} decay={1.2} />
 
-      {/* Quick Planet Filter Pills */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar select-none">
+        {/* Subtle deep space rim fill from left */}
+        <directionalLight position={[-18, -1, -3]} intensity={0.6} color="#38BDF8" />
+
+        {/* Smooth Camera Flight Controller */}
+        <CameraFlightController targetPlanet={selectedPlanet} />
+
+        {/* Giant Radiant Sun on the right */}
+        <GiantSunOnRight speedMultiplier={1} />
+
+        {/* Realistic Alignment of Planets */}
         {REALISTIC_PLANETS.map((p) => {
-          const isSelected = selectedPlanet?.id === p.id;
+          const natal = natalPositions.find(pos => 
+            pos.name.toLowerCase().includes(p.name.toLowerCase().split(' ')[0])
+          );
           return (
-            <button
+            <RealisticPlanetMesh
               key={p.id}
-              onClick={() => handleSelect(p)}
-              className={`px-2.5 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1 select-none ${
-                isSelected
-                  ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/25 scale-105 font-black'
-                  : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
-              }`}
-            >
-              <span>{p.symbol}</span>
-              <span>{p.name.split(' ')[0]}</span>
-            </button>
+              planet={p}
+              natalPosition={natal}
+              isSelected={selectedPlanet?.id === p.id}
+              onSelect={handleSelect}
+              speedMultiplier={1}
+            />
           );
         })}
+
+        <OrbitControls
+          enableZoom={true}
+          minDistance={3}
+          maxDistance={32}
+          enablePan={true}
+          autoRotate={false}
+          maxPolarAngle={Math.PI / 1.7}
+          minPolarAngle={Math.PI / 3}
+        />
+      </Canvas>
+
+      {/* Floating Canvas Controls Overlay */}
+      <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-md bg-black/60 backdrop-blur-md border border-white/10 text-[11px] font-sans font-medium text-slate-300 pointer-events-none select-none">
+        <RotateCw className="w-3.5 h-3.5 text-slate-400" />
+        <span>Drag to orbit • Scroll to zoom • Click planet to focus</span>
       </div>
-
-      {/* 2. 3D WebGL Canvas (Cinematic Viewport) */}
-      <div className="w-full h-[380px] sm:h-[460px] relative rounded-2xl bg-[#020306] border border-white/10 overflow-hidden shadow-inner">
-        <Canvas
-          camera={{ position: [0, 0.8, 17.5], fov: 42 }}
-          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-          className="w-full h-full cursor-grab active:cursor-grabbing"
-        >
-          {/* Deep Space Background Stars */}
-          <Stars radius={100} depth={50} count={3500} factor={4} saturation={0.5} fade speed={1} />
-
-          {/* Soft ambient space illumination */}
-          <ambientLight intensity={0.65} />
-
-          {/* Soft camera front diffuse fill (no specular glare) */}
-          <directionalLight position={[0, 2, 18]} intensity={1.1} color="#FFFFFF" />
-
-          {/* Cinematic sunlight from the Sun on the right */}
-          <directionalLight position={[18, 0, 3]} intensity={3.6} color="#FFF8E7" />
-          <pointLight position={[15.2, 0, 0]} intensity={4.5} color="#FFF8E7" distance={45} decay={1.2} />
-
-          {/* Subtle deep space rim fill from left */}
-          <directionalLight position={[-18, -1, -3]} intensity={0.6} color="#38BDF8" />
-
-          {/* Smooth Camera Flight Controller */}
-          <CameraFlightController targetPlanet={selectedPlanet} />
-
-          {/* Giant Radiant Sun on the right */}
-          <GiantSunOnRight speedMultiplier={speedMultiplier} />
-
-          {/* Realistic Alignment of Planets */}
-          {REALISTIC_PLANETS.map((p) => {
-            const natal = natalPositions.find(pos => 
-              pos.name.toLowerCase().includes(p.name.toLowerCase().split(' ')[0])
-            );
-            return (
-              <RealisticPlanetMesh
-                key={p.id}
-                planet={p}
-                natalPosition={natal}
-                isSelected={selectedPlanet?.id === p.id}
-                onSelect={handleSelect}
-                speedMultiplier={speedMultiplier}
-              />
-            );
-          })}
-
-          <OrbitControls
-            enableZoom={true}
-            minDistance={3}
-            maxDistance={32}
-            enablePan={true}
-            autoRotate={false}
-            maxPolarAngle={Math.PI / 1.7}
-            minPolarAngle={Math.PI / 3}
-          />
-        </Canvas>
-
-        {/* Floating Canvas Controls Overlay */}
-        <div className="absolute bottom-3 left-3 flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/80 backdrop-blur-md border border-white/10 text-[11px] font-mono text-slate-300 pointer-events-none select-none">
-          <RotateCw className="w-3.5 h-3.5 text-amber-400" />
-          <span>Interactive 3D Viewport • Click planet to focus • Drag to rotate</span>
-        </div>
-      </div>
-
-      {/* 3. Selected Celestial Body Dossier */}
+      
+      {/* Sleek Minimalist Celestial HUD Overlay */}
       {selectedPlanet && (
-        <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-[#0C1527] via-[#09101E] to-[#060A14] border border-amber-400/40 shadow-xl space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
-            <div className="flex items-center gap-3">
-              <div 
-                className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg"
-                style={{ background: selectedPlanet.baseColor, color: '#090D16' }}
-              >
-                {selectedPlanet.symbol}
-              </div>
-              <div>
-                <h4 className="text-lg font-black text-white font-sans flex items-center gap-2">
-                  {selectedPlanet.name} ({selectedPlanet.vedicName})
-                </h4>
-                <p className="text-xs font-mono text-amber-300">
-                  {activeNatal ? `Natal Placement: ${activeNatal.sign} at ${activeNatal.degree} • House ${activeNatal.house || 1}` : 'Celestial Body'}
-                </p>
-              </div>
-            </div>
+        <div className="absolute top-4 left-4 max-w-[280px] p-4 rounded-xl bg-[#0B0C10]/80 backdrop-blur-xl border border-white/10 shadow-2xl pointer-events-auto">
+          {/* Close / Reset Camera Button */}
+          <button
+            onClick={handleResetCamera}
+            className="absolute top-3 right-3 text-slate-400 hover:text-white transition-colors cursor-pointer"
+            title="Reset View"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
 
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                Astronomical Transit Active • {selectedPlanet.frequency} Hz
-              </span>
+          <div className="flex items-center gap-3 border-b border-white/10 pb-3 mb-3 pr-6">
+            <div 
+              className="w-10 h-10 rounded-lg flex items-center justify-center text-xl font-bold shadow-inner shrink-0"
+              style={{ background: selectedPlanet.baseColor, color: '#090D16' }}
+            >
+              {selectedPlanet.symbol}
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-white font-sans flex items-center gap-1.5 leading-tight">
+                {selectedPlanet.name}
+              </h4>
+              <p className="text-[10px] font-mono text-emerald-400 truncate w-[160px]">
+                {activeNatal ? `${activeNatal.sign} ${activeNatal.degree} • H${activeNatal.house || 1}` : 'Transit Active'}
+              </p>
             </div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-sans">
-            <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-1.5">
-              <span className="text-[10.5px] font-mono font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1">
-                <Sparkles className="w-3.5 h-3.5" /> Soul & Psychological Essence:
-              </span>
-              <p className="text-slate-100 leading-relaxed">
+          
+          <div className="space-y-2">
+            <div>
+              <span className="text-[9px] font-mono font-bold uppercase text-slate-500">Core Essence</span>
+              <p className="text-[11px] text-slate-300 leading-snug line-clamp-2">
                 {selectedPlanet.lifeMeaning}
               </p>
             </div>
-
-            <div className="p-4 rounded-xl bg-black/40 border border-white/10 space-y-1.5">
-              <span className="text-[10.5px] font-mono font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1">
-                <Zap className="w-3.5 h-3.5" /> Career & Worldly Manifestation:
-              </span>
-              <p className="text-slate-100 leading-relaxed">
-                {selectedPlanet.careerImpact}
+            <div>
+              <span className="text-[9px] font-mono font-bold uppercase text-slate-500">Frequency</span>
+              <p className="text-[11px] font-mono text-amber-400">
+                {selectedPlanet.frequency} Hz Cosmic Resonator
               </p>
             </div>
           </div>
         </div>
       )}
-
-      {/* 4. LIVE MULTI-HORIZON PREDICTIONS & 7-ENGINE CONSENSUS SUITE */}
-      <div className="p-5 sm:p-7 rounded-3xl bg-gradient-to-b from-[#0B1426] to-[#060B16] border border-cyan-500/30 space-y-5 shadow-2xl">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-white/10 pb-4">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-xl bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
-                <Clock className="w-4 h-4" />
-              </span>
-              <h3 className="text-base sm:text-lg font-black text-white font-sans tracking-tight">
-                Live Multi-Horizon Predictions & 7-Engine Consensus
-              </h3>
-            </div>
-            <p className="text-xs text-slate-300 font-sans">
-              Sub-arcsecond multi-tradition forecast showing today's timing, long-term life horizons, and the exact percentage of agreement across all 7 traditional calculation engines.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <div className="px-3.5 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-mono font-black flex items-center gap-1.5">
-              <Award className="w-4 h-4" />
-              <span>94.8% Overall Convergence</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Time Horizon Selector Tabs */}
-        <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-black/60 border border-white/10 overflow-x-auto no-scrollbar shadow-inner">
-          {[
-            { id: 'today', label: '⚡ Today (24 Hours)', desc: 'Daily Transit & Horas' },
-            { id: '7days', label: '📅 Next 7 Days', desc: 'Weekly Lunar Wave' },
-            { id: '30days', label: '🌙 Next 30 Days', desc: 'Monthly Ingress' },
-            { id: '12months', label: '🪐 Next 12 Months', desc: 'Annual Solar Return' },
-            { id: '5years', label: '🔮 Next 5 Years', desc: 'Macro Dasha Horizon' },
-          ].map((tab) => {
-            const isSelected = activeHorizon === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveHorizon(tab.id as any)}
-                className={`flex-1 min-w-[140px] py-2 px-3 rounded-xl text-xs font-mono font-bold flex flex-col items-center justify-center transition-all cursor-pointer ${
-                  isSelected
-                    ? 'bg-amber-400 text-slate-950 font-black shadow-md scale-[1.02]'
-                    : 'bg-transparent text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <span>{tab.label}</span>
-                <span className={`text-[10px] font-normal ${isSelected ? 'text-slate-900' : 'text-slate-500'}`}>
-                  {tab.desc}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Active Prediction Card */}
-        {activeForecast && (
-          <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-amber-500/10 via-indigo-950/30 to-cyan-500/10 border border-amber-400/40 shadow-xl space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
-              <div>
-                <span className="text-[10px] font-mono uppercase tracking-wider text-amber-300 bg-amber-400/20 px-2 py-0.5 rounded-full border border-amber-400/30">
-                  {activeForecast.timeframe} • {activeForecast.category.toUpperCase()}
-                </span>
-                <h4 className="text-base sm:text-lg font-black text-white font-sans pt-1.5">
-                  {activeForecast.title}
-                </h4>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-emerald-400/15 text-emerald-300 border border-emerald-400/30">
-                  {activeForecast.confidenceScore}% Confidence ({activeForecast.confidenceLevel})
-                </span>
-              </div>
-            </div>
-
-            <p className="text-xs sm:text-sm text-slate-100 font-sans leading-relaxed">
-              {activeForecast.plainEnglishMeaning}
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-sans pt-1">
-              <div className="p-3.5 rounded-xl bg-black/50 border border-white/10 space-y-1">
-                <span className="text-[10.5px] font-mono font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> High-Impact Recommended Action:
-                </span>
-                <p className="text-slate-200 leading-snug">
-                  {activeForecast.actionableAdvice}
-                </p>
-              </div>
-
-              <div className="p-3.5 rounded-xl bg-black/50 border border-white/10 space-y-1">
-                <span className="text-[10.5px] font-mono font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5" /> Optimal Cosmic Time Window:
-                </span>
-                <p className="text-slate-200 leading-snug font-mono text-xs">
-                  {activeForecast.timingWindow}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 7-ENGINE MULTI-TRADITION PERCENTAGE OF AGREEMENT RADAR */}
-        <div className="space-y-3 pt-2">
-          <div className="flex items-center justify-between border-b border-white/10 pb-2">
-            <h4 className="text-xs sm:text-sm font-black text-white font-sans flex items-center gap-2">
-              <Layers className="w-4 h-4 text-amber-400" />
-              7-Engine Multi-Tradition Calculation Percentage of Agreement
-            </h4>
-            <span className="text-xs font-mono text-emerald-400 font-bold">Grade A+ Consensus</span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {[
-              {
-                name: 'Vedic / Parashari Jyotish',
-                flag: '🇮🇳',
-                pct: 96,
-                status: 'High Harmonic Alignment',
-                citation: 'Brihat Parashara Hora Shastra',
-                color: 'text-amber-400',
-                barColor: 'from-amber-400 to-amber-300'
-              },
-              {
-                name: 'KP Stellar Sub-Lords',
-                flag: '⭐',
-                pct: 98,
-                status: 'Exact Sub-Lord Verification',
-                citation: 'KP Readers I-VI (Prof. Krishnamurti)',
-                color: 'text-cyan-400',
-                barColor: 'from-cyan-400 to-cyan-300'
-              },
-              {
-                name: 'Western Tropical & Hellenistic',
-                flag: '🏛️',
-                pct: 92,
-                status: 'Trine & Sextile Concordance',
-                citation: 'Ptolemy Tetrabiblos & Dorotheus',
-                color: 'text-purple-400',
-                barColor: 'from-purple-400 to-purple-300'
-              },
-              {
-                name: 'Jaimini Chara Sutras',
-                flag: '☸️',
-                pct: 94,
-                status: 'Atmakaraka & Chara Dasha Accord',
-                citation: 'Upadesha Sutras of Maharishi Jaimini',
-                color: 'text-rose-400',
-                barColor: 'from-rose-400 to-rose-300'
-              },
-              {
-                name: 'Chinese BaZi 4-Pillars',
-                flag: '🐉',
-                pct: 90,
-                status: 'Yang Fire Day Master Strength',
-                citation: 'San Ming Tong Hui & Di Tian Sui',
-                color: 'text-emerald-400',
-                barColor: 'from-emerald-400 to-emerald-300'
-              },
-              {
-                name: 'Islamic Ilm al-Falak',
-                flag: '🌙',
-                pct: 93,
-                status: 'Al-Biruni Mansions Harmony',
-                citation: 'Kitab al-Tafhim (Al-Biruni 1029 CE)',
-                color: 'text-blue-400',
-                barColor: 'from-blue-400 to-blue-300'
-              },
-              {
-                name: 'Mayan & Mesoamerican',
-                flag: '☀️',
-                pct: 89,
-                status: 'Tzolk\'in Kin Solar Alignment',
-                citation: 'Dresden & Madrid Codices',
-                color: 'text-yellow-400',
-                barColor: 'from-yellow-400 to-yellow-300'
-              },
-              {
-                name: 'NASA JPL DE440 Core',
-                flag: '🚀',
-                pct: 99,
-                status: 'Sub-Arcsecond Mathematical Parallax',
-                citation: 'JPL Planetary & Lunar Ephemeris DE440',
-                color: 'text-teal-400',
-                barColor: 'from-teal-400 to-teal-300'
-              }
-            ].map((eng) => (
-              <div 
-                key={eng.name}
-                className="p-3.5 rounded-2xl bg-black/40 border border-white/10 space-y-2 text-left"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-white font-sans flex items-center gap-1.5 truncate">
-                    <span>{eng.flag}</span>
-                    <span className="truncate">{eng.name}</span>
-                  </span>
-                  <span className={`text-xs font-mono font-black ${eng.color}`}>
-                    {eng.pct}%
-                  </span>
-                </div>
-
-                <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                  <div 
-                    className={`h-full rounded-full bg-gradient-to-r ${eng.barColor}`}
-                    style={{ width: `${eng.pct}%` }}
-                  />
-                </div>
-
-                <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 pt-0.5">
-                  <span className="truncate text-emerald-400">{eng.status}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   );
 });
