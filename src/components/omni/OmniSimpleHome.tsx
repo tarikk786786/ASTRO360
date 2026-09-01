@@ -466,13 +466,6 @@ export default function OmniSimpleHome({
         </div>
       ) : (
         <>
-          {/* 1.5 UNIVERSAL ENTRY EXPERIENCE: ASK ASTRO360 HERO */}
-          <OmniAskUniversalHero
-            userProfile={userProfile}
-            onNavigate={onNavigate}
-            onOpenProfile={onOpenProfile}
-          />
-
           {/* 2. Personalized Cosmic Placements Card (Live Computed) */}
           <div className="relative p-[1px] rounded-2xl overflow-hidden shadow-xl">
             {/* Animated gradient border */}
@@ -941,6 +934,13 @@ export default function OmniSimpleHome({
           </div>
         </div>
       </div>
+
+      {/* 7.5 UNIVERSAL ENTRY EXPERIENCE: ASK ASTRO360 HERO */}
+      <OmniAskUniversalHero
+        userProfile={userProfile}
+        onNavigate={onNavigate}
+        onOpenProfile={onOpenProfile}
+      />
 
       {/* 8. Practical Advice: Favorable vs Caution */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
