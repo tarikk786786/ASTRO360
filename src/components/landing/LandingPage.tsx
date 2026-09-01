@@ -409,31 +409,6 @@ export default function LandingPage({
             </div>
           </motion.div>
 
-          {/* ════════════════════════════════════════════════════════════
-              SECTION 1B: MAC MOCKUP WINDOW SHOWCASE
-              ════════════════════════════════════════════════════════════ */}
-          <RevealSection className="mt-16 w-full relative z-10" delay={0.1}>
-            <div className="w-full bg-[#111315]/80 backdrop-blur-2xl border border-white/[0.08] rounded-xl shadow-[0_0_80px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col">
-              
-              {/* Mac-style Window Header */}
-              <div className="h-10 bg-[#1A1D21] border-b border-white/[0.05] flex items-center px-4 gap-2">
-                <div className="w-3 h-3 rounded-full bg-[#FF5F57] border border-[#E0443E]/50" />
-                <div className="w-3 h-3 rounded-full bg-[#FEBC2E] border border-[#DEA123]/50" />
-                <div className="w-3 h-3 rounded-full bg-[#28C840] border border-[#1AAB29]/50" />
-                <div className="flex-1 flex justify-center">
-                  <span className="text-[12px] font-sans font-medium text-slate-400">ASTRO360 Interactive 3D Studio</span>
-                </div>
-              </div>
-
-              {/* Window Content (3D Studio) */}
-              <div className="relative w-full aspect-video bg-[#0B0C10]">
-                <Realistic3DSolarSystemAlignment 
-                  userProfile={userProfile}
-                  onSelectPlanet={() => {}}
-                />
-              </div>
-            </div>
-          </RevealSection>
 
           {/* ════════════════════════════════════════════════════════════
               SECTION 1C: REAL PRODUCT PREVIEW INTERACTION (Moved below window)
