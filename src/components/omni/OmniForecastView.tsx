@@ -1,3 +1,4 @@
+import PredictionCenterSuite from "../prediction/PredictionCenterSuite";
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -1152,6 +1153,7 @@ function getTraditionForecastData(tradition: string, userProfile: UserProfile): 
 }
 
 export default function OmniForecastView({ userProfile }: { userProfile: UserProfile }) {
+  const [activeForecastTab, setActiveForecastTab] = useState<'calendar' | 'themes'>('calendar');
   const [activeHorizon, setActiveHorizon] = useState<'7days' | '30days' | '12months' | '5years'>('30days');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [expandedCardId, setExpandedCardId] = useState<string | null>(null);
