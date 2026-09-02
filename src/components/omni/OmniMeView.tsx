@@ -8,6 +8,9 @@ import {
 import { UserProfile } from '../../types';
 import OmniShareCardGenerator from './OmniShareCardGenerator';
 import { AstroNotificationSettings } from '../notifications';
+import { AstroCalculationContext } from '../../lib/prediction/astroCalculationContext';
+import { Download, Check, Shield } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface OmniMeViewProps {
   userProfile: UserProfile;
@@ -194,6 +197,68 @@ export default function OmniMeView({
               className="text-amber-400 hover:text-amber-300 text-xs font-bold underline cursor-pointer"
             >
               View →
+            </button>
+          </div>
+
+          {/* Export Complete Personal Data Dossier */}
+          <div className="p-3.5 rounded-2xl bg-white/5 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <Download className="w-4 h-4 text-cyan-400 shrink-0" />
+              <div>
+                <span className="font-bold text-white block">Export Complete Personal Dossier (.JSON)</span>
+                <span className="text-[10.5px] text-slate-400 block">Download all verified birth parameters, ephemeris calculations, and telemetry.</span>
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                const ctx = AstroCalculationContext.getOrCreate(userProfile);
+                const exportData = {
+                  profile: userProfile,
+                  astrocoreTelemetry: {
+                    julianDay: ctx.julianDay,
+                    utcTime: ctx.utcTime,
+                    ascendant: ctx.ascendant,
+                    sun: ctx.sun,
+                    moon: ctx.moon,
+                    positions: ctx.positions,
+                    dasha: ctx.dasha,
+                    panchang: ctx.panchang
+                  },
+                  exportedAt: new Date().toISOString(),
+                  version: '3.6.0-DE440'
+                };
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `ASTRO360_${(userProfile.name || 'Seeker').replace(/\s+/g, '_')}_Dossier.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                toast.success('Exported complete personal dossier successfully!');
+              }}
+              className="px-3.5 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 hover:text-white border border-cyan-500/30 text-xs font-bold font-mono transition-colors cursor-pointer shrink-0"
+            >
+              Download JSON
+            </button>
+          </div>
+
+          {/* Clear AI & Chat Memory */}
+          <div className="p-3.5 rounded-2xl bg-white/5 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <RefreshCw className="w-4 h-4 text-amber-400 shrink-0" />
+              <div>
+                <span className="font-bold text-white block">Clear Conversation & Query Cache</span>
+                <span className="text-[10.5px] text-slate-400 block">Wipe in-memory Ask conversation history and cache keys.</span>
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                AstroCalculationContext.clearAll();
+                toast.success('In-memory calculation and conversation cache cleared!');
+              }}
+              className="px-3.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 hover:text-white border border-amber-500/30 text-xs font-bold font-mono transition-colors cursor-pointer shrink-0"
+            >
+              Clear Cache
             </button>
           </div>
 
