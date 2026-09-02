@@ -2,6 +2,7 @@ import React, { memo, useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import type { UserProfile } from '../../types';
+import AnimatedStarfield from '../landing/AnimatedStarfield';
 
 // Pre-allocated static vectors to eliminate GC freezes
 const STATIC_TARGET_POS = new THREE.Vector2(0, 0);
@@ -9,7 +10,7 @@ const STATIC_HEAD = new THREE.Vector3();
 const STATIC_TAIL = new THREE.Vector3();
 
 // Soft radial star & glow texture generator
-function createSoftGlowTexture(): any {
+function createSoftGlowTexture(): THREE.CanvasTexture {
   const canvas = document.createElement('canvas');
   canvas.width = 128;
   canvas.height = 128;
@@ -17,9 +18,9 @@ function createSoftGlowTexture(): any {
   if (ctx) {
     const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
     gradient.addColorStop(0.0, 'rgba(255, 255, 255, 1.0)');
-    gradient.addColorStop(0.2, 'rgba(240, 248, 255, 0.9)');
-    gradient.addColorStop(0.5, 'rgba(180, 220, 255, 0.3)');
-    gradient.addColorStop(0.8, 'rgba(100, 160, 255, 0.05)');
+    gradient.addColorStop(0.2, 'rgba(240, 248, 255, 0.95)');
+    gradient.addColorStop(0.5, 'rgba(180, 220, 255, 0.4)');
+    gradient.addColorStop(0.8, 'rgba(100, 160, 255, 0.1)');
     gradient.addColorStop(1.0, 'rgba(0, 0, 0, 0.0)');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 128, 128);
@@ -77,8 +78,8 @@ function SmoothParallaxCamera() {
   const { camera, pointer } = useThree();
 
   useFrame((_, delta) => {
-    STATIC_TARGET_POS.x = THREE.MathUtils.lerp(STATIC_TARGET_POS.x, pointer.x * 2.0, delta * 1.0);
-    STATIC_TARGET_POS.y = THREE.MathUtils.lerp(STATIC_TARGET_POS.y, pointer.y * 1.2, delta * 1.0);
+    STATIC_TARGET_POS.x = THREE.MathUtils.lerp(STATIC_TARGET_POS.x, pointer.x * 2.5, delta * 1.2);
+    STATIC_TARGET_POS.y = THREE.MathUtils.lerp(STATIC_TARGET_POS.y, pointer.y * 1.5, delta * 1.2);
     camera.position.x = STATIC_TARGET_POS.x;
     camera.position.y = STATIC_TARGET_POS.y;
     camera.lookAt(0, 0, -25);
@@ -92,21 +93,21 @@ function DeepSpaceStars({
   texture, 
   spectrum 
 }: { 
-  texture: any; 
+  texture: THREE.CanvasTexture; 
   spectrum: ReturnType<typeof getTraditionSpectrum>;
 }) {
-  const pointsRef = useRef<any>(null);
+  const pointsRef = useRef<THREE.Points>(null);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const count = isMobile ? 800 : 3200;
+  const count = isMobile ? 1200 : 4000;
 
-  const [positions, colors, scales] = useMemo(() => {
+  const [positions, colors] = useMemo(() => {
     const pos = new Float32Array(count * 3);
     const col = new Float32Array(count * 3);
-    const sca = new Float32Array(count);
     const palette = [
       new THREE.Color('#FFFFFF'),
       new THREE.Color('#F8FAFC'),
       new THREE.Color('#E0F2FE'),
+      new THREE.Color('#FEF08A'),
       spectrum.core,
       spectrum.accent,
       spectrum.warm
@@ -114,7 +115,7 @@ function DeepSpaceStars({
 
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
-      const radius = 25 + Math.random() * 180;
+      const radius = 20 + Math.random() * 200;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(Math.random() * 2 - 1);
 
@@ -126,16 +127,15 @@ function DeepSpaceStars({
       col[i3] = chosen.r;
       col[i3 + 1] = chosen.g;
       col[i3 + 2] = chosen.b;
-      sca[i] = 0.2 + Math.random() * 0.6;
     }
 
-    return [pos, col, sca];
+    return [pos, col];
   }, [count, spectrum]);
 
   useFrame((state, delta) => {
     if (pointsRef.current) {
-      pointsRef.current.rotation.y += delta * 0.0018;
-      pointsRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.008) * 0.004;
+      pointsRef.current.rotation.y += delta * 0.0022;
+      pointsRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.01) * 0.005;
     }
   });
 
@@ -146,11 +146,11 @@ function DeepSpaceStars({
         <bufferAttribute attach="attributes-color" count={count} array={colors} itemSize={3} />
       </bufferGeometry>
       <pointsMaterial
-        size={isMobile ? 0.35 : 0.45}
+        size={isMobile ? 0.75 : 0.95}
         map={texture}
         vertexColors
         transparent
-        opacity={0.8}
+        opacity={0.9}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
         depthWrite={false}
@@ -159,17 +159,17 @@ function DeepSpaceStars({
   );
 }
 
-// Layer 2: Subtle Sacred Geometry Constellation Lines (Soft, Faint, Elegant)
+// Layer 2: Subtle Sacred Geometry Constellation Lines
 function ConstellationWeb({ spectrum }: { spectrum: ReturnType<typeof getTraditionSpectrum> }) {
-  const lineRef = useRef<any>(null);
+  const lineRef = useRef<THREE.LineSegments>(null);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   const geometry = useMemo(() => {
-    const nodesCount = isMobile ? 12 : 24;
+    const nodesCount = isMobile ? 16 : 32;
     const nodes: THREE.Vector3[] = [];
     for (let i = 0; i < nodesCount; i++) {
-      const theta = (i / nodesCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.3;
-      const radius = 20 + Math.random() * 25;
+      const theta = (i / nodesCount) * Math.PI * 2 + (Math.random() - 0.5) * 0.35;
+      const radius = 22 + Math.random() * 28;
       const z = -25 - Math.random() * 20;
       nodes.push(new THREE.Vector3(
         radius * Math.cos(theta),
@@ -182,7 +182,7 @@ function ConstellationWeb({ spectrum }: { spectrum: ReturnType<typeof getTraditi
     for (let i = 0; i < nodes.length; i++) {
       for (let j = i + 1; j < nodes.length; j++) {
         const dist = nodes[i].distanceTo(nodes[j]);
-        if (dist < 16) {
+        if (dist < 18) {
           linePositions.push(nodes[i].x, nodes[i].y, nodes[i].z);
           linePositions.push(nodes[j].x, nodes[j].y, nodes[j].z);
         }
@@ -196,8 +196,8 @@ function ConstellationWeb({ spectrum }: { spectrum: ReturnType<typeof getTraditi
 
   useFrame((_, delta) => {
     if (lineRef.current) {
-      lineRef.current.rotation.z += delta * 0.0008;
-      lineRef.current.rotation.y += delta * 0.0005;
+      lineRef.current.rotation.z += delta * 0.001;
+      lineRef.current.rotation.y += delta * 0.0006;
     }
   });
 
@@ -206,7 +206,7 @@ function ConstellationWeb({ spectrum }: { spectrum: ReturnType<typeof getTraditi
       <lineBasicMaterial
         color={spectrum.accent}
         transparent
-        opacity={0.06}
+        opacity={0.08}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
       />
@@ -216,13 +216,13 @@ function ConstellationWeb({ spectrum }: { spectrum: ReturnType<typeof getTraditi
 
 // Layer 3: Natural Random Shooting Meteors
 function ShootingMeteors() {
-  const lineRef = useRef<any>(null);
+  const lineRef = useRef<THREE.LineSegments>(null);
   const meteor = useRef({
     active: false,
     progress: 0,
     start: new THREE.Vector3(),
     end: new THREE.Vector3(),
-    nextTime: 3,
+    nextTime: 2.5,
   });
 
   const geom = useMemo(() => {
@@ -237,16 +237,16 @@ function ShootingMeteors() {
     if (!meteor.current.active && t > meteor.current.nextTime) {
       meteor.current.active = true;
       meteor.current.progress = 0;
-      const sx = (Math.random() - 0.5) * 60;
-      const sy = 18 + Math.random() * 16;
+      const sx = (Math.random() - 0.5) * 70;
+      const sy = 20 + Math.random() * 18;
       const sz = -20 + (Math.random() - 0.5) * 15;
       meteor.current.start.set(sx, sy, sz);
-      meteor.current.end.set(sx + (Math.random() - 0.3) * 30, sy - 25 - Math.random() * 10, sz);
-      meteor.current.nextTime = t + 5 + Math.random() * 8;
+      meteor.current.end.set(sx + (Math.random() - 0.3) * 35, sy - 28 - Math.random() * 12, sz);
+      meteor.current.nextTime = t + 4 + Math.random() * 6;
     }
 
     if (meteor.current.active && lineRef.current) {
-      meteor.current.progress += delta * 1.6;
+      meteor.current.progress += delta * 1.8;
       const p = meteor.current.progress;
 
       if (p >= 1) {
@@ -255,20 +255,20 @@ function ShootingMeteors() {
       } else {
         lineRef.current.visible = true;
         STATIC_HEAD.lerpVectors(meteor.current.start, meteor.current.end, Math.min(1, p));
-        STATIC_TAIL.lerpVectors(meteor.current.start, meteor.current.end, Math.max(0, p - 0.22));
+        STATIC_TAIL.lerpVectors(meteor.current.start, meteor.current.end, Math.max(0, p - 0.25));
 
-        const arr = lineRef.current.geometry.attributes.position.array;
+        const arr = lineRef.current.geometry.attributes.position.array as Float32Array;
         arr[0] = STATIC_HEAD.x; arr[1] = STATIC_HEAD.y; arr[2] = STATIC_HEAD.z;
         arr[3] = STATIC_TAIL.x; arr[4] = STATIC_TAIL.y; arr[5] = STATIC_TAIL.z;
         lineRef.current.geometry.attributes.position.needsUpdate = true;
-        lineRef.current.material.opacity = Math.sin(p * Math.PI) * 0.6;
+        (lineRef.current.material as THREE.LineBasicMaterial).opacity = Math.sin(p * Math.PI) * 0.8;
       }
     }
   });
 
   return (
     <lineSegments ref={lineRef} geometry={geom} visible={false}>
-      <lineBasicMaterial color="#F0F9FF" transparent opacity={0.6} blending={THREE.AdditiveBlending} />
+      <lineBasicMaterial color="#FFFFFF" transparent opacity={0.8} blending={THREE.AdditiveBlending} />
     </lineSegments>
   );
 }
@@ -279,6 +279,7 @@ export interface CosmicAtmosphereCanvasProps {
 
 export const CosmicAtmosphereCanvas: React.FC<CosmicAtmosphereCanvasProps> = memo(({ userProfile }) => {
   const [isVisible, setIsVisible] = useState(true);
+  const [hasWebGL, setHasWebGL] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const starTexture = useMemo(() => createSoftGlowTexture(), []);
   const spectrum = useMemo(() => getTraditionSpectrum(userProfile?.preferredSystem), [userProfile?.preferredSystem]);
@@ -299,30 +300,33 @@ export const CosmicAtmosphereCanvas: React.FC<CosmicAtmosphereCanvasProps> = mem
       aria-hidden="true" 
       className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none"
     >
-      {/* Deep Space Indigo-Black Foundation */}
-      <div className="absolute inset-0 bg-[#060913]" />
+      {/* Deep Space Dark Foundation */}
+      <div className="absolute inset-0 bg-[#090A0C]" />
 
       {/* Volumetric Radial Aurora Glows */}
       <div 
-        className="absolute -top-[15%] left-[20%] w-[65vw] h-[65vw] rounded-full blur-[140px] transition-colors duration-1000 opacity-30 pointer-events-none"
-        style={{ background: `radial-gradient(circle, ${spectrum.nebula1} 0%, transparent 70%)` }}
+        className="absolute -top-[15%] left-[20%] w-[70vw] h-[70vw] rounded-full blur-[140px] transition-colors duration-1000 opacity-25 pointer-events-none animate-pulse"
+        style={{ background: `radial-gradient(circle, ${spectrum.nebula1} 0%, transparent 70%)`, animationDuration: '8s' }}
       />
       <div 
-        className="absolute -bottom-[20%] right-[15%] w-[60vw] h-[60vw] rounded-full blur-[140px] transition-colors duration-1000 opacity-25 pointer-events-none"
-        style={{ background: `radial-gradient(circle, ${spectrum.nebula2} 0%, transparent 70%)` }}
+        className="absolute -bottom-[20%] right-[15%] w-[65vw] h-[65vw] rounded-full blur-[140px] transition-colors duration-1000 opacity-20 pointer-events-none animate-pulse"
+        style={{ background: `radial-gradient(circle, ${spectrum.nebula2} 0%, transparent 70%)`, animationDuration: '10s' }}
       />
 
-      {/* 3D WebGL Observatory Canvas */}
-      {isVisible && (
+      {/* 3D WebGL Observatory Canvas or 2D Starfield Fallback */}
+      {isVisible && hasWebGL ? (
         <Canvas
           camera={{ position: [0, 0, 16], fov: 50, near: 0.1, far: 300 }}
-          dpr={isMobile ? [1, 1.1] : [1, 1.5]}
+          dpr={isMobile ? [1, 1.2] : [1, 1.5]}
           gl={{
             antialias: false,
             powerPreference: 'high-performance',
             alpha: true,
             stencil: false,
             depth: false,
+          }}
+          onCreated={({ gl }) => {
+            if (!gl) setHasWebGL(false);
           }}
           className="w-full h-full"
         >
@@ -331,10 +335,12 @@ export const CosmicAtmosphereCanvas: React.FC<CosmicAtmosphereCanvasProps> = mem
           <ConstellationWeb spectrum={spectrum} />
           <ShootingMeteors />
         </Canvas>
+      ) : (
+        <AnimatedStarfield />
       )}
 
       {/* Soft Vignette Mask for High Contrast Readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#060913]/90 via-transparent to-[#060913]/60 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#090A0C]/90 via-transparent to-[#090A0C]/60 pointer-events-none" />
     </div>
   );
 });
