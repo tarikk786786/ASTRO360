@@ -90,20 +90,20 @@ export default function OmniSimpleHome({
       };
     } catch {
       return {
-        sunSign: 'Cancer ♋ (28°)',
-        moonSign: 'Gemini ♊ (14°)',
-        nakshatra: 'Mrigashira (Pada 2)',
-        ascendant: 'Aries ♈',
-        dasha: 'Rahu - Jupiter',
-        dashaProgress: 65,
-        tithi: 'Shukla Navami',
-        yoga: 'Siddhi Yoga',
+        sunSign: "Aquarius ♒ (10° 07')",
+        moonSign: "Sagittarius ♐ (17° 35')",
+        nakshatra: 'Purva Ashadha (Pada 2)',
+        ascendant: 'Libra ♎',
+        dasha: 'Moon - Saturn',
+        dashaProgress: 55,
+        tithi: 'Krishna Shashti',
+        yoga: 'Dhruva Yoga',
         abhijit: '11:48 AM - 12:36 PM',
-        rahuKalam: '04:30 PM - 06:00 PM',
-        loveScore: 84,
-        careerScore: 91,
-        moneyScore: 78,
-        travelScore: 82,
+        rahuKalam: '12:00 PM - 01:30 PM',
+        loveScore: 85,
+        careerScore: 82,
+        moneyScore: 90,
+        travelScore: 75,
       };
     }
   }, [userProfile.dob, userProfile.time]);
