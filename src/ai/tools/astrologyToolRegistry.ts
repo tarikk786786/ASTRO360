@@ -5,6 +5,7 @@
  */
 
 import { calculatePlanetaryPositions, calculatePanchang, calculateVimshottariDasha, calculateAshtaKootaScore } from '../../lib/astroCalculations';
+import { AstroCalculationContext } from '../../lib/prediction/astroCalculationContext';
 import { UserProfile } from '../../types';
 
 export interface ToolOutputContract<T = any> {
