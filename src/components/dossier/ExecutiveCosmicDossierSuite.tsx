@@ -111,9 +111,9 @@ export default function ExecutiveCosmicDossierSuite({ userProfile, onNavigateToT
   return (
     <div className="space-y-6 max-w-5xl mx-auto text-left select-none">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/25 text-amber-300 text-xs font-mono font-bold">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-white/[0.08] text-amber-300 text-xs font-mono font-bold">
             <FileText className="w-3.5 h-3.5 text-amber-400" />
             <span>Print-Ready Executive Astrological Book</span>
           </div>
@@ -130,7 +130,7 @@ export default function ExecutiveCosmicDossierSuite({ userProfile, onNavigateToT
           <button
             onClick={handlePrint}
             disabled={isGenerating}
-            className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-300 hover:from-amber-400 hover:to-amber-200 text-slate-950 font-mono font-bold text-xs flex items-center gap-2 shadow-xl shadow-amber-500/20 transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+            className="px-5 py-2.5 rounded-2xl bg-white hover:bg-slate-100 text-black font-mono font-bold text-xs flex items-center gap-2 shadow-xl shadow-amber-500/20 transition-all cursor-pointer active:scale-95 disabled:opacity-50"
           >
             <Printer className="w-4 h-4" />
             <span>{isGenerating ? 'Compiling Dossier...' : 'Print / Export PDF'}</span>
@@ -148,8 +148,8 @@ export default function ExecutiveCosmicDossierSuite({ userProfile, onNavigateToT
               onClick={() => setSelectedChapter(ch)}
               className={`p-4 rounded-2xl border text-left transition-all space-y-2 cursor-pointer ${
                 isSelected
-                  ? 'bg-amber-400/10 border-amber-400/60 shadow-lg shadow-amber-400/10 text-white'
-                  : 'bg-[#080E1A] hover:bg-white/5 border-white/10 text-slate-400 hover:text-slate-200'
+                  ? 'bg-white text-black font-semibold shadow-sm'
+                  : 'bg-[#111315]/80 hover:bg-white/5 border-white/10 text-slate-400 hover:text-slate-200'
               }`}
             >
               <div className="flex items-center justify-between text-[11px]">
@@ -164,8 +164,8 @@ export default function ExecutiveCosmicDossierSuite({ userProfile, onNavigateToT
       </div>
 
       {/* Chapter Deep Dive Preview Card */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-[#080E1A] border border-white/10 shadow-2xl space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+      <div className="p-6 sm:p-8 rounded-3xl bg-[#111315]/80 border border-white/[0.08] shadow-2xl space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-4">
           <div>
             <span className="text-xs font-mono font-bold text-amber-400">
               CHAPTER 0{selectedChapter.id} PREVIEW
@@ -177,7 +177,7 @@ export default function ExecutiveCosmicDossierSuite({ userProfile, onNavigateToT
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono text-cyan-300 bg-cyan-400/10 px-3 py-1.5 rounded-xl border border-cyan-400/20 font-bold">
+            <span className="text-xs font-mono text-cyan-300 bg-cyan-400/10 px-3 py-1.5 rounded-xl border border-white/[0.08] font-bold">
               Included in PDF
             </span>
           </div>

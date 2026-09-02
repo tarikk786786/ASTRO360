@@ -99,12 +99,12 @@ export default function CosmicNewsIntelligenceHub({
     <div className="max-w-6xl mx-auto space-y-6 text-left font-sans pb-24">
       
       {/* ─── 1. TOP HEADER BANNER ────────────────────────────────────────── */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#0B1220] via-[#0E172A] to-[#070B14] border border-amber-500/30 shadow-2xl space-y-4 relative overflow-hidden">
+      <div className="p-6 sm:p-8 rounded-3xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] shadow-2xl space-y-4 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 font-mono text-xs font-bold uppercase">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-white/[0.08] text-amber-300 font-mono text-xs font-bold uppercase">
               <Radio className="w-3.5 h-3.5 text-amber-400 animate-pulse" /> Live Cosmic News & Prediction Intelligence
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
@@ -119,7 +119,7 @@ export default function CosmicNewsIntelligenceHub({
             <button
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className="px-4 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 transition-all flex items-center gap-2 cursor-pointer font-bold disabled:opacity-50"
+              className="px-4 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-white/[0.08] transition-all flex items-center gap-2 cursor-pointer font-bold disabled:opacity-50"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
               <span>{isRefreshing ? 'Syncing Feeds...' : 'Sync Live Feeds'}</span>
@@ -129,7 +129,7 @@ export default function CosmicNewsIntelligenceHub({
 
         {/* Live Metrics Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 font-mono text-xs">
-          <div className="p-3 rounded-2xl bg-black/40 border border-white/10 space-y-0.5">
+          <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.08] space-y-0.5">
             <span className="text-slate-400 text-[10px] uppercase font-bold block flex items-center gap-1">
               <Sun className="w-3 h-3 text-amber-400" /> NOAA Geomagnetic Kp
             </span>
@@ -138,7 +138,7 @@ export default function CosmicNewsIntelligenceHub({
             </span>
           </div>
 
-          <div className="p-3 rounded-2xl bg-black/40 border border-white/10 space-y-0.5">
+          <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.08] space-y-0.5">
             <span className="text-slate-400 text-[10px] uppercase font-bold block flex items-center gap-1">
               <Activity className="w-3 h-3 text-cyan-400" /> Global Sentiment Pulse
             </span>
@@ -147,7 +147,7 @@ export default function CosmicNewsIntelligenceHub({
             </span>
           </div>
 
-          <div className="p-3 rounded-2xl bg-black/40 border border-white/10 space-y-0.5">
+          <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.08] space-y-0.5">
             <span className="text-slate-400 text-[10px] uppercase font-bold block flex items-center gap-1">
               <Database className="w-3 h-3 text-purple-400" /> Active Free Feeds
             </span>
@@ -156,7 +156,7 @@ export default function CosmicNewsIntelligenceHub({
             </span>
           </div>
 
-          <div className="p-3 rounded-2xl bg-black/40 border border-white/10 space-y-0.5">
+          <div className="p-3 rounded-2xl bg-black/40 border border-white/[0.08] space-y-0.5">
             <span className="text-slate-400 text-[10px] uppercase font-bold block flex items-center gap-1">
               <Flame className="w-3 h-3 text-emerald-400" /> Key Celestial Driver
             </span>
@@ -168,12 +168,12 @@ export default function CosmicNewsIntelligenceHub({
       </div>
 
       {/* ─── 2. NAVIGATION TABS ──────────────────────────────────────────── */}
-      <div className="flex items-center gap-1.5 border-b border-white/10 pb-2 overflow-x-auto font-mono text-xs">
+      <div className="flex items-center gap-1.5 border-b border-white/[0.08] pb-2 overflow-x-auto font-mono text-xs">
         <button
           onClick={() => setActiveTab('news')}
           className={`px-4 py-2 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
             activeTab === 'news'
-              ? 'bg-amber-500/20 text-amber-300 border border-amber-400/40 shadow-sm'
+              ? 'bg-white text-black font-semibold shadow-sm'
               : 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
           }`}
         >
@@ -185,7 +185,7 @@ export default function CosmicNewsIntelligenceHub({
           onClick={() => setActiveTab('mundane')}
           className={`px-4 py-2 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
             activeTab === 'mundane'
-              ? 'bg-amber-500/20 text-amber-300 border border-amber-400/40 shadow-sm'
+              ? 'bg-white text-black font-semibold shadow-sm'
               : 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
           }`}
         >
@@ -197,7 +197,7 @@ export default function CosmicNewsIntelligenceHub({
           onClick={() => setActiveTab('personal')}
           className={`px-4 py-2 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
             activeTab === 'personal'
-              ? 'bg-amber-500/20 text-amber-300 border border-amber-400/40 shadow-sm'
+              ? 'bg-white text-black font-semibold shadow-sm'
               : 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
           }`}
         >
@@ -209,7 +209,7 @@ export default function CosmicNewsIntelligenceHub({
           onClick={() => setActiveTab('space_seismic')}
           className={`px-4 py-2 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
             activeTab === 'space_seismic'
-              ? 'bg-amber-500/20 text-amber-300 border border-amber-400/40 shadow-sm'
+              ? 'bg-white text-black font-semibold shadow-sm'
               : 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
           }`}
         >
@@ -221,7 +221,7 @@ export default function CosmicNewsIntelligenceHub({
           onClick={() => setActiveTab('providers')}
           className={`px-4 py-2 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
             activeTab === 'providers'
-              ? 'bg-amber-500/20 text-amber-300 border border-amber-400/40 shadow-sm'
+              ? 'bg-white text-black font-semibold shadow-sm'
               : 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
           }`}
         >
@@ -236,7 +236,7 @@ export default function CosmicNewsIntelligenceHub({
       {activeTab === 'news' && (
         <div className="space-y-4">
           {/* Filters Bar */}
-          <div className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 space-y-3 font-mono text-xs">
+          <div className="p-4 rounded-2xl bg-[#111315]/80 border border-white/[0.08] space-y-3 font-mono text-xs">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
@@ -245,7 +245,7 @@ export default function CosmicNewsIntelligenceHub({
                   placeholder="Search live events by keyword, region, or source..."
                   value={state.searchQuery}
                   onChange={(e) => setState(prev => ({ ...prev, searchQuery: e.target.value }))}
-                  className="w-full pl-9 pr-3 py-2 rounded-xl bg-black/40 border border-white/10 focus:border-amber-400 text-white placeholder-slate-500 outline-none text-xs"
+                  className="w-full pl-9 pr-3 py-2 rounded-xl bg-black/40 border border-white/[0.08] focus:border-amber-400 text-white placeholder-slate-500 outline-none text-xs"
                 />
               </div>
 
@@ -254,7 +254,7 @@ export default function CosmicNewsIntelligenceHub({
                 <select
                   value={state.selectedPlanet}
                   onChange={(e) => setState(prev => ({ ...prev, selectedPlanet: e.target.value as any }))}
-                  className="px-2.5 py-2 rounded-xl bg-black/40 border border-white/10 text-white text-xs outline-none"
+                  className="px-2.5 py-2 rounded-xl bg-black/40 border border-white/[0.08] text-white text-xs outline-none"
                 >
                   {planets.map(p => (
                     <option key={p} value={p}>{p === 'ALL' ? 'All Planetary Rulers' : `🪐 ${p}`}</option>
@@ -291,11 +291,11 @@ export default function CosmicNewsIntelligenceHub({
             {filteredNews.map(item => (
               <div
                 key={item.id}
-                className="p-5 rounded-2xl bg-[#0B1220] border border-white/10 hover:border-amber-500/40 transition-all space-y-3 flex flex-col justify-between"
+                className="p-5 rounded-2xl bg-[#111315]/80 border border-white/[0.08] hover:border-white/[0.08] transition-all space-y-3 flex flex-col justify-between"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2 font-mono text-[10px]">
-                    <span className="px-2.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-300 font-bold uppercase">
+                    <span className="px-2.5 py-0.5 rounded bg-amber-500/10 border border-white/[0.08] text-amber-300 font-bold uppercase">
                       {item.category.replace('_', ' ')}
                     </span>
                     <span className="text-slate-400">{item.publishedAt.slice(0, 10)} • {item.source}</span>
@@ -311,7 +311,7 @@ export default function CosmicNewsIntelligenceHub({
                 </div>
 
                 {/* Planetary Correlation Box */}
-                <div className="p-3 rounded-xl bg-black/40 border border-white/10 space-y-2 font-mono text-xs">
+                <div className="p-3 rounded-xl bg-black/40 border border-white/[0.08] space-y-2 font-mono text-xs">
                   <div className="flex items-center justify-between text-[11px]">
                     <span className="text-amber-400 font-bold flex items-center gap-1.5">
                       🪐 Primary Celestial Ruler: <span className="text-white underline">{item.primaryPlanet}</span>
@@ -333,7 +333,7 @@ export default function CosmicNewsIntelligenceHub({
                 <div className="flex items-center justify-between pt-1 font-mono text-xs">
                   <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
                     item.sentimentLabel === 'VERY_BULLISH' || item.sentimentLabel === 'BULLISH'
-                      ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20'
+                      ? 'bg-emerald-500/10 text-emerald-300 border border-white/[0.08]'
                       : item.sentimentLabel === 'CRISIS_ALERT' || item.sentimentLabel === 'BEARISH'
                       ? 'bg-rose-500/10 text-rose-300 border border-rose-500/20'
                       : 'bg-slate-500/10 text-slate-300 border border-slate-500/20'
@@ -360,7 +360,7 @@ export default function CosmicNewsIntelligenceHub({
       {/* TAB 2: MUNDANE WORLD FORECASTS */}
       {activeTab === 'mundane' && (
         <div className="space-y-4">
-          <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs font-mono">
+          <div className="p-4 rounded-2xl bg-amber-500/10 border border-white/[0.08] text-amber-200 text-xs font-mono">
             <strong>Classical Mundane Principles (Samhita Jyotish):</strong> Planetary ingresses and aspect configurations govern macroeconomic liquidity, sovereign boundary shifts, and technological breakthroughs.
           </div>
 
@@ -368,11 +368,11 @@ export default function CosmicNewsIntelligenceHub({
             {state.mundaneForecasts.map(forecast => (
               <div
                 key={forecast.id}
-                className="p-6 rounded-2xl bg-[#0B1220] border border-white/10 space-y-4"
+                className="p-6 rounded-2xl bg-[#111315]/80 border border-white/[0.08] space-y-4"
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/[0.08] pb-3">
                   <div className="space-y-1">
-                    <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30 font-bold uppercase">
+                    <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-white/[0.08] font-bold uppercase">
                       {forecast.domain.replace('_', ' ')}
                     </span>
                     <h3 className="text-lg font-bold text-white">{forecast.title}</h3>
@@ -380,7 +380,7 @@ export default function CosmicNewsIntelligenceHub({
                   </div>
 
                   <div className="flex items-center gap-2 font-mono text-xs">
-                    <span className="px-3 py-1 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 font-bold">
+                    <span className="px-3 py-1 rounded-xl bg-emerald-500/10 border border-white/[0.08] text-emerald-300 font-bold">
                       {forecast.confidenceScore}% Confidence
                     </span>
                   </div>
@@ -392,12 +392,12 @@ export default function CosmicNewsIntelligenceHub({
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 font-mono text-xs">
-                  <div className="p-3 rounded-xl bg-black/40 border border-white/10 space-y-1">
+                  <div className="p-3 rounded-xl bg-black/40 border border-white/[0.08] space-y-1">
                     <span className="text-[10px] text-slate-400 uppercase font-bold block">Classical Treatise Source</span>
                     <span className="text-white text-xs">{forecast.classicalSource}</span>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-black/40 border border-white/10 space-y-1">
+                  <div className="p-3 rounded-xl bg-black/40 border border-white/[0.08] space-y-1">
                     <span className="text-[10px] text-slate-400 uppercase font-bold block">Live Verified Evidence</span>
                     <span className="text-white text-xs">{forecast.realWorldEvidence}</span>
                   </div>
@@ -420,7 +420,7 @@ export default function CosmicNewsIntelligenceHub({
                 </div>
 
                 {/* Actionable Strategy */}
-                <div className="p-3 rounded-xl bg-amber-500/5 border border-amber-500/20 space-y-1 font-mono text-xs">
+                <div className="p-3 rounded-xl bg-amber-500/5 border border-white/[0.08] space-y-1 font-mono text-xs">
                   <span className="text-amber-300 font-bold text-xs block">Strategic Actionable Counsel:</span>
                   <ul className="list-disc list-inside space-y-0.5 text-slate-300 text-xs font-sans">
                     {forecast.actionableInsights.map((ins, i) => (
@@ -437,7 +437,7 @@ export default function CosmicNewsIntelligenceHub({
       {/* TAB 3: PERSONAL IMPACT SYNTHESIZER */}
       {activeTab === 'personal' && (
         <div className="space-y-4">
-          <div className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="p-4 rounded-2xl bg-[#111315]/80 border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h3 className="text-base font-bold text-white">Natal Chart vs Macro World News</h3>
               <p className="text-xs text-slate-400 font-mono">
@@ -446,7 +446,7 @@ export default function CosmicNewsIntelligenceHub({
             </div>
 
             {userProfile?.name && (
-              <span className="px-3 py-1 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold">
+              <span className="px-3 py-1 rounded-xl bg-cyan-500/10 border border-white/[0.08] text-cyan-300 text-xs font-mono font-bold">
                 Profile Active: {userProfile.name}
               </span>
             )}
@@ -456,10 +456,10 @@ export default function CosmicNewsIntelligenceHub({
             {personalSyntheses.map((item, idx) => (
               <div
                 key={idx}
-                className="p-5 rounded-2xl bg-[#0B1220] border border-white/10 hover:border-cyan-500/40 transition-all space-y-3"
+                className="p-5 rounded-2xl bg-[#111315]/80 border border-white/[0.08] hover:border-white/[0.08] transition-all space-y-3"
               >
                 <div className="flex items-center justify-between font-mono text-xs">
-                  <span className="px-2.5 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 font-bold">
+                  <span className="px-2.5 py-0.5 rounded bg-cyan-500/10 border border-white/[0.08] text-cyan-300 font-bold">
                     House {item.activatedNatalHouse}: {item.houseTheme.split(',')[0]}
                   </span>
                   <span className="text-slate-400 text-[10px]">{item.primaryPlanet} Activated</span>
@@ -471,7 +471,7 @@ export default function CosmicNewsIntelligenceHub({
                   {item.strategicAdvice}
                 </p>
 
-                <div className="p-3 rounded-xl bg-black/40 border border-white/10 font-mono text-[11px] space-y-1">
+                <div className="p-3 rounded-xl bg-black/40 border border-white/[0.08] font-mono text-[11px] space-y-1">
                   <span className="text-amber-400 font-bold block">Personal Guidance:</span>
                   <span className="text-slate-300 font-sans block">{item.personalImpactSummary}</span>
                 </div>
@@ -485,44 +485,44 @@ export default function CosmicNewsIntelligenceHub({
       {activeTab === 'space_seismic' && (
         <div className="space-y-6">
           {/* NOAA Space Weather SWPC Live Dashboard */}
-          <div className="p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+          <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/[0.08] space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/[0.08] pb-3">
               <div className="space-y-1">
-                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30 font-bold uppercase">
+                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-white/[0.08] font-bold uppercase">
                   NOAA SWPC Open Science Feed
                 </span>
                 <h3 className="text-xl font-bold text-white">Geomagnetic Kp-Index & Solar Activity Radar</h3>
                 <p className="text-xs text-slate-400 font-mono">Real-time solar wind, coronal mass ejections, and terrestrial magnetic flux</p>
               </div>
 
-              <span className="text-xs font-mono text-amber-300 bg-amber-500/20 px-3 py-1 rounded-xl border border-amber-500/40 font-bold">
+              <span className="text-xs font-mono text-amber-300 bg-amber-500/20 px-3 py-1 rounded-xl border border-white/[0.08] font-bold">
                 {state.spaceWeather.stormLevel.replace('_', ' ')}
               </span>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
-              <div className="p-3.5 rounded-2xl bg-black/40 border border-white/10 space-y-1">
+              <div className="p-3.5 rounded-2xl bg-black/40 border border-white/[0.08] space-y-1">
                 <span className="text-slate-400 text-[10px] uppercase font-bold block">Geomagnetic Kp Index</span>
                 <span className="text-2xl font-bold text-amber-400">{state.spaceWeather.kpIndex.toFixed(1)} / 9.0</span>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-black/40 border border-white/10 space-y-1">
+              <div className="p-3.5 rounded-2xl bg-black/40 border border-white/[0.08] space-y-1">
                 <span className="text-slate-400 text-[10px] uppercase font-bold block">Solar Flux (10.7cm)</span>
                 <span className="text-2xl font-bold text-white">{state.spaceWeather.solarFlux} sfu</span>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-black/40 border border-white/10 space-y-1">
+              <div className="p-3.5 rounded-2xl bg-black/40 border border-white/[0.08] space-y-1">
                 <span className="text-slate-400 text-[10px] uppercase font-bold block">Active Solar Flare Class</span>
                 <span className="text-2xl font-bold text-rose-400">Class {state.spaceWeather.solarFlareClass}</span>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-black/40 border border-white/10 space-y-1">
+              <div className="p-3.5 rounded-2xl bg-black/40 border border-white/[0.08] space-y-1">
                 <span className="text-slate-400 text-[10px] uppercase font-bold block">Solar Wind Speed</span>
                 <span className="text-2xl font-bold text-cyan-400">{state.spaceWeather.solarWindSpeedKmS} km/s</span>
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-black/40 border border-white/10 space-y-2 font-mono text-xs">
+            <div className="p-4 rounded-2xl bg-black/40 border border-white/[0.08] space-y-2 font-mono text-xs">
               <span className="text-amber-400 font-bold block text-sm">Astrological Ephemeris Synthesis:</span>
               <p className="text-slate-300 font-sans text-xs leading-relaxed">
                 {state.spaceWeather.astrologicalSignificance}
@@ -534,8 +534,8 @@ export default function CosmicNewsIntelligenceHub({
           </div>
 
           {/* USGS Real-Time Global Earthquake Feed */}
-          <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+          <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/[0.08] space-y-4">
+            <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
               <div>
                 <span className="text-[10px] font-mono text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded border border-rose-500/30 font-bold uppercase">
                   USGS Real-Time GeoJSON Feed
@@ -549,7 +549,7 @@ export default function CosmicNewsIntelligenceHub({
               {state.recentSeismic.map(seismic => (
                 <div
                   key={seismic.id}
-                  className="p-4 rounded-2xl bg-white/5 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs"
+                  className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
@@ -573,7 +573,7 @@ export default function CosmicNewsIntelligenceHub({
       {/* TAB 5: FREE OPEN APIS & RSS CATALOG */}
       {activeTab === 'providers' && (
         <div className="space-y-4">
-          <div className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 space-y-1 font-mono text-xs">
+          <div className="p-4 rounded-2xl bg-[#111315]/80 border border-white/[0.08] space-y-1 font-mono text-xs">
             <h3 className="text-base font-bold text-white">100% Free Open News & Science Feeds</h3>
             <p className="text-slate-400">
               All feeds operate without paid paywalls or mandatory private credentials. You can enable or disable feeds as needed.
@@ -584,7 +584,7 @@ export default function CosmicNewsIntelligenceHub({
             {state.providers.map(prov => (
               <div
                 key={prov.id}
-                className="p-5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-3 flex flex-col justify-between"
+                className="p-5 rounded-2xl bg-[#111315]/80 border border-white/[0.08] space-y-3 flex flex-col justify-between"
               >
                 <div className="space-y-2 font-mono text-xs">
                   <div className="flex items-center justify-between">
@@ -595,7 +595,7 @@ export default function CosmicNewsIntelligenceHub({
                       onClick={() => toggleProvider(prov.id)}
                       className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                         prov.isEnabled
-                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                          ? 'bg-emerald-500/20 text-emerald-300 border border-white/[0.08]'
                           : 'bg-slate-700/30 text-slate-400 border border-slate-600/30'
                       }`}
                     >
@@ -607,7 +607,7 @@ export default function CosmicNewsIntelligenceHub({
                   <p className="text-xs text-slate-300 font-sans leading-relaxed">{prov.description}</p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-black/40 border border-white/10 space-y-1 font-mono text-[10px] text-slate-400">
+                <div className="p-3 rounded-xl bg-black/40 border border-white/[0.08] space-y-1 font-mono text-[10px] text-slate-400">
                   <div><strong>Endpoint:</strong> <span className="text-slate-300 truncate block">{prov.endpointUrl}</span></div>
                   <div><strong>Rate Limit:</strong> <span className="text-slate-300">{prov.rateLimitInfo}</span></div>
                 </div>
