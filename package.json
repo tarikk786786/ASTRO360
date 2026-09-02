@@ -9,7 +9,7 @@
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.app.json",
     "typecheck:app": "tsc -p tsconfig.app.json",
-    "test": "tsx tests/islamic/islamicEngine.test.ts && tsx tests/ai_astrology_eval/aiAstrologyEval.test.ts && tsx tests/ai/aiFreeFirstOrchestrator.test.ts && tsx tests/prediction/multiEngineAgreement.test.ts && tsx src/lib/astroCalculations.test.ts && tsx src/backend/dashaEngine.test.ts && tsx src/backend/doshaEngine.test.ts && tsx src/lib/goldenDataset.test.ts && tsx src/lib/seoGrowthEngine.test.ts && tsx tests/realUserSimulation.test.ts && tsx tests/ai/questionIntentEngine.test.ts && tsx tests/prediction/predictionEngine.test.ts && tsx tests/astrocore/astroCoreRunner.ts && tsx tests/seo-lab/keywordLabCore.test.ts && tsx tests/backlink-lab/backlinkLabCore.test.ts && tsx tests/seo-lab/canonicalUrlAudit.test.ts && tsx tests/news-prediction/newsPredictionCore.test.ts",
+    "test": "tsx tests/islamic/islamicEngine.test.ts && tsx tests/ai_astrology_eval/aiAstrologyEval.test.ts && tsx tests/ai/aiFreeFirstOrchestrator.test.ts && tsx tests/prediction/multiEngineAgreement.test.ts && tsx src/lib/astroCalculations.test.ts && tsx src/backend/dashaEngine.test.ts && tsx src/backend/doshaEngine.test.ts && tsx src/lib/goldenDataset.test.ts && tsx src/lib/seoGrowthEngine.test.ts && tsx tests/realUserSimulation.test.ts && tsx tests/ai/questionIntentEngine.test.ts && tsx tests/prediction/predictionEngine.test.ts && tsx tests/astrocore/astroCoreRunner.ts && tsx tests/seo-lab/keywordLabCore.test.ts && tsx tests/backlink-lab/backlinkLabCore.test.ts && tsx tests/seo-lab/canonicalUrlAudit.test.ts && tsx tests/news-prediction/newsPredictionCore.test.ts && npm run test:intake && npm run test:omni",
     "test:seo-lab": "tsx tests/seo-lab/keywordLabCore.test.ts",
     "test:backlinks": "tsx tests/backlink-lab/backlinkLabCore.test.ts",
     "test:canonical": "tsx tests/seo-lab/canonicalUrlAudit.test.ts",
@@ -19,7 +19,9 @@
     "audit:routes": "tsx scripts/audit-routes.ts",
     "ai:detect": "tsx scripts/detect-ai-hardware.ts",
     "ai:test": "tsx tests/ai/aiFreeFirstOrchestrator.test.ts",
-    "test:islamic": "tsx tests/islamic/islamicEngine.test.ts"
+    "test:islamic": "tsx tests/islamic/islamicEngine.test.ts",
+    "test:intake": "tsx tests/intake/userIntake.test.ts",
+    "test:omni": "tsx tests/prediction/omniPredictionPlatform.test.ts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",
