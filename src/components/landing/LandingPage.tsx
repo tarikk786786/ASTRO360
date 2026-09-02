@@ -1013,7 +1013,78 @@ export default function LandingPage({
             </p>
           </div>
 
-          <div className="p-6 sm:p-8 rounded-2xl bg-[#111315]/80 border border-white/[0.08] shadow-2xl overflow-x-auto font-mono text-xs backdrop-blur-xl">
+          {/* 1. MOBILE RESPONSIVE COMPARISON CARDS (Viewports < 640px) */}
+          <div className="block sm:hidden space-y-3.5">
+            {[
+              {
+                metric: 'Mathematical Ephemeris',
+                astro: 'NASA JPL DE440 (0.0001° Sub-Arcsecond)',
+                others: 'Co-Star: Mean Approximations • Astro-Seek: Swiss Ephemeris • AstroSage: Sidereal',
+                highlight: true
+              },
+              {
+                metric: 'Core Tool Pricing',
+                astro: '100% Free Forever (Zero Token Bills)',
+                others: 'Co-Star: $19.99/mo Paywalls • Astro-Seek: Ads • AstroSage: Upselling',
+                highlight: true
+              },
+              {
+                metric: 'Data Privacy & Storage',
+                astro: 'Zero-PII Client Encrypted In-Browser',
+                others: 'Co-Star: Central DB • Astro-Seek: Unencrypted • AstroSage: Ad Trackers',
+                highlight: true
+              },
+              {
+                metric: 'Multi-Tradition Synthesis',
+                astro: '9 World Systems Unified (Vedic, Western, KP, etc.)',
+                others: 'Co-Star: Western Only • Astro-Seek: Split • AstroSage: Vedic Only',
+                highlight: false
+              },
+              {
+                metric: 'Explainability & Citations',
+                astro: 'BPHS, Phaladeepika, Ptolemy, KP Readers',
+                others: 'Co-Star: 0 Citations • Astro-Seek: Minimal • AstroSage: Generic',
+                highlight: false
+              },
+              {
+                metric: 'Interactive Chart Formats',
+                astro: 'North, South & Western 360° Zoom/Pan',
+                others: 'Co-Star: No Wheels • Astro-Seek: Static PNGs • AstroSage: Static',
+                highlight: true
+              },
+              {
+                metric: 'Keepsake PDF Dossiers',
+                astro: '30-Page 1-Click Vector PDF Export',
+                others: 'Co-Star: None • Astro-Seek: None • AstroSage: Paid Upsell',
+                highlight: true
+              }
+            ].map((item, idx) => (
+              <div
+                key={idx}
+                className="p-4 rounded-xl bg-[#111315] border border-white/[0.08] shadow-lg space-y-2.5"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-white font-mono">{item.metric}</span>
+                  <span className="text-[10px] font-mono bg-emerald-400/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-400/20">
+                    ASTRO360 Advantage
+                  </span>
+                </div>
+
+                <div className="p-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06] space-y-1">
+                  <span className="text-[10px] text-slate-400 font-mono uppercase tracking-wider block">ASTRO360 OMNI</span>
+                  <p className="text-xs font-bold text-emerald-300 font-mono leading-tight">{item.astro}</p>
+                </div>
+
+                <div className="text-[11px] text-slate-400 font-sans leading-relaxed pt-0.5">
+                  <span className="text-slate-500 font-mono text-[10px] block mb-0.5">LEGACY APPS & WEBSITES:</span>
+                  {item.others}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* 2. DESKTOP / TABLET COMPARISON TABLE (Viewports >= 640px) */}
+          <div className="hidden sm:block p-6 sm:p-8 rounded-2xl bg-[#111315]/80 border border-white/[0.08] shadow-2xl overflow-x-auto font-mono text-xs backdrop-blur-xl">
             <table className="w-full text-left border-collapse min-w-[640px]">
               <thead>
                 <tr className="border-b border-white/[0.08] text-slate-400 text-[11px]">
