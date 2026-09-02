@@ -10,6 +10,7 @@ import { CurrentThemeEngine, TodayForYouBriefing, ActiveLifeTheme } from '../../
 import { PredictionDiffEngine, PredictionDiffItem } from '../../lib/prediction/predictionDiffEngine';
 import { AstrologyJournalEngine, JournalEntry, OutcomeVerdict } from '../../lib/prediction/astrologyJournalEngine';
 import { toast } from 'sonner';
+import { downloadIcsFile, getGoogleCalendarUrl, CalendarEventPayload } from '../../lib/icsCalendarExporter';
 
 interface PersonalDailyDashboardProps {
   userProfile: UserProfile;
@@ -264,14 +265,64 @@ export const PersonalDailyDashboard: React.FC<PersonalDailyDashboardProps> = ({
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-white/10 flex items-center justify-between">
+              <div className="pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
                 <span className="text-emerald-400 font-bold">Auspicious: {selectedThemeWhy.auspiciousHours}</span>
-                <button
-                  onClick={() => setSelectedThemeWhy(null)}
-                  className="px-4 py-2 rounded-xl bg-white text-black font-bold font-sans cursor-pointer hover:bg-slate-200"
-                >
-                  Got It
-                </button>
+                
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      const payload: CalendarEventPayload = {
+                        title: `ASTRO360: Auspicious Window for ${selectedThemeWhy.label}`,
+                        description: `${selectedThemeWhy.whyReason}\n\nTriggers: ${selectedThemeWhy.planetaryTriggers.join(', ')}`,
+                        startDate: '2026-09-03T10:00:00Z',
+                        endDate: '2026-09-03T13:00:00Z',
+                        category: 'Astrology - Auspicious Hours'
+                      };
+                      downloadIcsFile([payload], `ASTRO360_${selectedThemeWhy.id}.ics`);
+                      toast.success('Downloaded auspicious hours to .ics calendar!');
+                    }}
+                    className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
+                    title="Export .ics to Apple / Outlook Calendar"
+                  >
+                    <Download className="w-3.5 h-3.5 text-indigo-400" />
+                    <span>Sync (.ics)</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      const payload: CalendarEventPayload = {
+                        title: `ASTRO360: Auspicious Window for ${selectedThemeWhy.label}`,
+                        description: `${selectedThemeWhy.whyReason}`,
+                        startDate: '2026-09-03T10:00:00Z',
+                        endDate: '2026-09-03T13:00:00Z',
+                        category: 'Astrology - Auspicious Hours'
+                      };
+                      window.open(getGoogleCalendarUrl(payload), '_blank', 'noopener,noreferrer');
+                      toast.success('Opening Google Calendar in new tab!');
+                    }}
+                    className="px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
+                    title="Add directly to Google Calendar Web"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Google Cal</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      const query = `Why is ${selectedThemeWhy.label} ${selectedThemeWhy.activityLevel} today and how should I navigate it?`;
+                      setSelectedThemeWhy(null);
+                      if (onSelectProblem) {
+                        onSelectProblem(query);
+                      } else {
+                        onNavigate('ask');
+                      }
+                    }}
+                    className="px-3.5 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Ask AI</span>
+                  </button>
+                </div>
               </div>
             </motion.div>
           </div>
