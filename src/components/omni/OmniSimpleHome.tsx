@@ -12,6 +12,7 @@ import OmniTransitAlertCenter from './OmniTransitAlertCenter';
 import OmniDailyVibeScore from './OmniDailyVibeScore';
 import OmniAskUniversalHero from './OmniAskUniversalHero';
 import ProblemToSolutionHero from '../home/ProblemToSolutionHero';
+import PersonalDailyDashboard from '../home/PersonalDailyDashboard';
 import AstroDashboardControlDrawer from '../dashboard/AstroDashboardControlDrawer';
 import CosmicIntelligenceCenter from '../CosmicIntelligenceCenter';
 import BirthChartGenerator from '../BirthChartGenerator';
@@ -451,6 +452,12 @@ export default function OmniSimpleHome({
             userProfile={userProfile}
             onNavigate={onNavigate}
             onOpenProfile={onOpenProfile}
+          />
+
+          {/* ═══ PERSONAL DAILY INTELLIGENCE & THEME DASHBOARD ═══ */}
+          <PersonalDailyDashboard
+            userProfile={userProfile}
+            onNavigate={onNavigate}
           />
 
           {/* 2. Personalized Cosmic Placements Card (Live Computed) */}
