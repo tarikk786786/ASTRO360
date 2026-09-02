@@ -35,6 +35,12 @@ export default function OmniAskAssistant({
   const questionPresets = [
     { cat: 'CAREER', label: 'Career', q: 'Why is my career stuck and when will it improve?', icon: Briefcase, color: 'text-amber-400' },
     { cat: 'DECISION', label: 'Decision', q: 'Should I quit my job or stay?', icon: Scale, color: 'text-indigo-400' },
+    { cat: 'PRAYER', label: 'Prayer Times', q: 'When are today\'s exact prayer times for my location?', icon: Clock, color: 'text-emerald-400' },
+    { cat: 'QIBLA', label: 'Qibla', q: 'Which direction is Qibla from my coordinates?', icon: Compass, color: 'text-cyan-400' },
+    { cat: 'ISLAMIC', label: 'Islamic Guidance', q: 'What does Islam teach about overcoming worry and anxiety?', icon: BookOpen, color: 'text-teal-400' },
+    { cat: 'COMPARE', label: 'Mixed View', q: 'What does astrology say about marriage, and what does Islam teach?', icon: Layers, color: 'text-blue-400' },
+    { cat: 'CAREER', label: 'Career', q: 'Why is my career stuck and when will it improve?', icon: Briefcase, color: 'text-amber-400' },
+    { cat: 'DECISION', label: 'Decision', q: 'Should I quit my job or stay?', icon: Scale, color: 'text-indigo-400' },
     { cat: 'LOVE', label: 'Love', q: 'What does my chart indicate for long-term marriage & timing?', icon: Heart, color: 'text-rose-400' },
     { cat: 'MONEY', label: 'Wealth', q: 'When are my strongest financial timing cycles?', icon: DollarSign, color: 'text-emerald-400' },
     { cat: 'TIMING', label: 'Timing', q: 'When will my career improve?', icon: Clock, color: 'text-cyan-400' },
@@ -54,7 +60,7 @@ export default function OmniAskAssistant({
   const [inputQuery, setInputQuery] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [activeTabMap, setActiveTabMap] = useState<Record<string, 'all' | 'astrology' | 'practical' | 'compare' | 'evidence'>>({});
+  const [activeTabMap, setActiveTabMap] = useState<Record<string, 'all' | 'islamic' | 'astrology' | 'practical' | 'compare' | 'evidence'>>({});
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const calculationSteps = [
@@ -272,9 +278,10 @@ export default function OmniAskAssistant({
                     <div className="flex items-center gap-1.5 border-b border-white/[0.08] pb-2 text-xs font-mono overflow-x-auto no-scrollbar">
                       {[
                         { id: 'all', label: 'All In One' },
+                        ...(a.islamicGuidanceView ? [{ id: 'islamic', label: '🌙 Islamic Guidance' }] : []),
                         { id: 'astrology', label: '🪐 Astrological Mechanics' },
                         { id: 'practical', label: '🛠️ Practical Playbook' },
-                        { id: 'compare', label: '🌐 4-Traditions' },
+                        { id: 'compare', label: '🌐 4-Traditions / Comparisons' },
                         { id: 'evidence', label: '📜 Classical Evidence' },
                       ].map(t => (
                         <button
@@ -377,7 +384,67 @@ export default function OmniAskAssistant({
                       </div>
                     )}
 
-                    {/* VIEW 2: Astrological Mechanics */}
+                    
+                    {/* VIEW: Islamic Guidance (Sourced) */}
+                    {activeSubTab === 'islamic' && a.islamicGuidanceView && (
+                      <div className="space-y-4">
+                        <div className="p-4 rounded-xl bg-[#090E1A] border border-teal-500/20 space-y-3">
+                          <span className="text-xs font-mono font-bold text-teal-400 uppercase block">
+                            🌙 SOURCED ISLAMIC GUIDANCE & SCRIPTURAL FOUNDATIONS:
+                          </span>
+                          <p className="text-sm font-semibold text-white font-sans">
+                            {a.islamicGuidanceView.primaryTheme}
+                          </p>
+
+                          {/* Core Principles */}
+                          <div className="space-y-1.5 pt-2 border-t border-white/5 text-xs text-slate-300 font-sans">
+                            {a.islamicGuidanceView.corePrinciples.map((cp: string, cpIdx: number) => (
+                              <div key={cpIdx} className="flex items-start gap-2">
+                                <span className="text-teal-400 font-bold">•</span>
+                                <span>{cp}</span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Sourced Evidence Chain */}
+                          <div className="pt-2 border-t border-white/5 space-y-2">
+                            <span className="text-[10px] font-mono text-slate-400 uppercase block font-bold">
+                              Verified Scripture & Hadith Evidence:
+                            </span>
+                            {a.islamicGuidanceView.evidenceChain.map((ev: any, evIdx: number) => (
+                              <div key={evIdx} className="p-3 rounded-lg bg-white/[0.02] border border-white/[0.06] space-y-1.5 text-xs">
+                                <div className="flex items-center justify-between">
+                                  <span className="font-bold text-teal-300 font-mono">
+                                    {ev.sourceType === 'QURAN' ? "📖 Holy Quran" : '📜 Hadith'}: {ev.citation}
+                                  </span>
+                                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-teal-500/10 text-teal-300 border border-teal-500/20">
+                                    Tier {ev.tier} Source
+                                  </span>
+                                </div>
+                                {ev.arabicText && (
+                                  <p className="text-sm text-amber-200 font-serif leading-relaxed text-right py-1 dir-rtl" dir="rtl">
+                                    {ev.arabicText}
+                                  </p>
+                                )}
+                                <p className="text-slate-200 font-sans italic">"{ev.translation}"</p>
+                                {ev.authenticityOrSchool && (
+                                  <span className="text-[10px] font-mono text-emerald-400 block pt-0.5">
+                                    ✓ {ev.authenticityOrSchool}
+                                  </span>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Scholarly Consensus */}
+                          <div className="p-2.5 rounded-lg bg-white/[0.03] text-[11px] font-mono text-slate-300">
+                            <strong>Scholarly Foundation:</strong> {a.islamicGuidanceView.scholarlyConsensusOrIkhtilaf}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+{/* VIEW 2: Astrological Mechanics */}
                     {activeSubTab === 'astrology' && (
                       <div className="space-y-3 text-xs font-mono">
                         <div className="p-4 rounded-xl bg-[#090E1A] border border-white/[0.08] space-y-3">

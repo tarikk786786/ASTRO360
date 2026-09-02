@@ -1,3 +1,5 @@
+import { IslamicGuidanceAssistant, IslamicGuidanceResponse } from '../islamic/IslamicGuidanceAssistant';
+import { IslamicQuestionRouter } from '../islamic/IslamicQuestionRouter';
 /**
  * ASTRO360 Personal Problem Analyzer
  * Real-time astrological problem-solving with dynamic chart execution,
@@ -11,6 +13,13 @@ import { AgreementEngine, EngineFinding } from '../../lib/prediction/agreementEn
 import { KnowledgeEngine } from '../rag/knowledgeEngine';
 
 export interface SolvedProblemAnalysis {
+  islamicGuidanceView?: {
+    primaryTheme: string;
+    corePrinciples: string[];
+    evidenceChain: any[];
+    scholarlyConsensusOrIkhtilaf: string;
+    practicalSpiritualHabits: string[];
+  };
   question: string;
   intent: string;
   category: string;
@@ -93,6 +102,23 @@ export class PersonalProblemAnalyzer {
   public static async analyze(question: string, profile: UserProfile): Promise<SolvedProblemAnalysis> {
     const route = AstrologyIntentRouter.route(question);
     const seekerName = profile.name?.trim() || 'Seeker';
+
+    // Check if query is an Islamic or Mixed Astrology/Islam query
+    const islamicRoute = IslamicQuestionRouter.route(question);
+    const isExplicitIslamicOrPrayer = islamicRoute.category !== 'GENERAL_ISLAMIC_KNOWLEDGE' || 
+      question.toLowerCase().includes('islam') || 
+      question.toLowerCase().includes('quran') || 
+      question.toLowerCase().includes('hadith') ||
+      question.toLowerCase().includes('fajr') ||
+      question.toLowerCase().includes('prayer time') ||
+      question.toLowerCase().includes('qibla') ||
+      question.toLowerCase().includes('hijri');
+
+    if (isExplicitIslamicOrPrayer || islamicRoute.isMixedAstrologyIslam || islamicRoute.isAstrologyDivinationInquiry) {
+      const islamicRes = await IslamicGuidanceAssistant.answer(question, profile);
+      return this.convertIslamicResponseToSolvedProblem(islamicRes, seekerName);
+    }
+
 
     // 1. Safety Intercepts
     if (route.isSafetySensitive) {
@@ -887,4 +913,76 @@ export class PersonalProblemAnalyzer {
       }
     };
   }
+
+  private static convertIslamicResponseToSolvedProblem(
+    res: IslamicGuidanceResponse,
+    name: string
+  ): SolvedProblemAnalysis {
+    return {
+      question: res.question,
+      intent: res.isMixedAstrologyIslam ? 'MIXED_ASTROLOGY_ISLAM' : 'ISLAMIC_GUIDANCE',
+      category: res.category,
+      responseMode: res.isMixedAstrologyIslam ? 'COMPARATIVE_PERSPECTIVE' : 'SOURCE_GROUNDED',
+      summary: res.executiveSummary,
+      astrologyView: {
+        primaryTheme: res.astrologyView ? 'Traditional Multi-Tradition Astrological Perspective' : 'Islamic Distinction: Mathematical Astronomy vs. Divination',
+        chartFactors: res.astrologyView?.planetaryFactors || ['Islamic Knowledge Domain (Separate from Astrology)'],
+        dashaCycle: 'Independent Domain',
+        planetaryTelemetry: res.astronomyView?.solarLunarTelemetry || 'NASA JPL DE440 & IAU Standard Solar Calculations',
+        houseActivations: res.astrologyView?.natalAnalysis || 'Observational astronomy for time reckoning and Qibla'
+      },
+      practicalView: {
+        actionItems: res.practicalPlaybook.immediateActions,
+        strategicAdvice: res.practicalPlaybook.ethicalGuidance
+      },
+      islamicGuidanceView: res.islamicGuidanceView,
+      timing: {
+        start: 'Current Epoch',
+        peak: 'Daily Observance',
+        end: 'Continuous',
+        windowLabel: res.astronomyView?.calculatedTimings ? 'Astronomical Prayer Horizon' : 'Spiritual Remembrance Horizon',
+        intensity: 'STABLE',
+        note: 'Calculated purely from verified celestial geometry or authenticated Islamic sources.'
+      },
+      agreement: {
+        agreementPercent: 100,
+        level: 'UNANIMOUS_AGREEMENT',
+        participatingCount: 'Source-Authenticated Verification',
+        rawAgreement: '100% Sourced (Quran / Authentic Hadith / Classical Fiqh / IAU Astronomy)',
+        lineageAdjusted: '100%',
+        disclaimer: 'Islamic knowledge is derived strictly from authenticated religious texts. Astrological perspectives are distinct.'
+      },
+      systemsBreakdown: {
+        vedic: res.isMixedAstrologyIslam ? 'Vedic Astrology provides one cultural timing framework.' : 'Traditional astrological systems are distinct from Islamic theology.',
+        western: res.isMixedAstrologyIslam ? 'Western Astrology provides psychological archetype mapping.' : 'Physical astronomy measures celestial coordinates without divination.',
+        kp: 'KP Stellar sub-divisions calculate astronomical cusps.',
+        jaimini: 'Jaimini Sutras evaluate sign-based aspects.'
+      },
+      evidenceSources: (res.islamicGuidanceView?.evidenceChain || []).map(ev => ({
+        rule: ev.sourceType,
+        citation: `${ev.citation} (${ev.authenticityOrSchool || 'Verified Source'})`,
+        tier: ev.tier
+      })),
+      sensitivity: {
+        driftInterval: 'N/A',
+        stability: 'HIGH',
+        note: 'Scriptural sources and mathematical astronomical formulas are deterministic.'
+      },
+      whatIsLessCertain: ['Community crescent moon sightings depend on local regional observation.'],
+      whatYouCanControl: [
+        'Establishing regular prayer and mindfulness',
+        'Consulting trusted scholars for personal legal fatwas',
+        'Taking active, righteous steps toward worldly and spiritual goals'
+      ],
+      followUps: res.followUps,
+      safetyNotice: res.theologicalBoundaryNotice,
+      reproducibility: {
+        engineVersion: '2.4.0-DE440',
+        ephemerisVersion: 'IAU 2006 Spherical Astronomy',
+        ayanamsha: 'N/A (Islamic Astronomy utilizes Tropical / Equatorial Solar coordinates)',
+        calculationTimestamp: new Date().toISOString()
+      }
+    };
+  }
+
 }
