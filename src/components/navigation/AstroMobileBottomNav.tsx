@@ -1,10 +1,10 @@
-﻿import React, { useCallback, memo } from 'react';
+import React, { useCallback, memo } from 'react';
 import { 
   Home, 
   Calendar, 
   Sparkles, 
   Compass, 
-  Layers,
+  User,
   LucideIcon 
 } from 'lucide-react';
 
@@ -25,9 +25,9 @@ interface MobileNavItem {
 const MOBILE_NAV_ITEMS: MobileNavItem[] = [
   { id: 'home', label: 'Home', icon: Home },
   { id: 'forecast', label: 'Forecast', icon: Calendar },
-  { id: 'ask', label: 'Ask AI', icon: Sparkles, isHero: true },
+  { id: 'ask', label: 'Ask', icon: Sparkles, isHero: true },
   { id: 'charts', label: 'Charts', icon: Compass },
-  { id: 'tools-catalog', label: '152+ Tools', icon: Layers },
+  { id: 'me', label: 'Me', icon: User },
 ];
 
 export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = memo(({
@@ -46,11 +46,11 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = memo(({
       aria-label="Mobile Navigation Bar"
       className={`md:hidden fixed bottom-0 inset-x-0 z-40 select-none px-3 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] pt-1 pointer-events-auto ${className}`}
     >
-      {/* Solid High-Contrast Glass Dock */}
+      {/* Solid High-Contrast Twenty HQ Dock */}
       <div className="mx-auto max-w-md bg-[#111315]/96 backdrop-blur-2xl border border-white/[0.12] rounded-3xl shadow-[0_12px_40px_rgba(0,0,0,0.9)] p-1.5 flex items-center justify-around ring-1 ring-white/10">
         {MOBILE_NAV_ITEMS.map((item) => {
           const Icon = item.icon;
-          const isActive = activeTab === item.id || (item.id === 'tools-catalog' && (activeTab === 'more' || activeTab === 'tools-catalog'));
+          const isActive = activeTab === item.id || (item.id === 'me' && (activeTab === 'profile' || activeTab === 'settings'));
           const isHero = Boolean(item.isHero);
 
           return (
@@ -74,7 +74,7 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = memo(({
                 <div className="absolute inset-0 rounded-2xl bg-white/10 border border-white/20 -z-10 shadow-sm" />
               )}
 
-              {/* Central "Ask AI" Hero Button */}
+              {/* Central "Ask" Hero Button */}
               {isHero ? (
                 <div
                   className={`flex items-center justify-center w-11 h-11 rounded-2xl transition-all shadow-md ${
@@ -99,10 +99,10 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = memo(({
                 </div>
               )}
 
-              {/* Crystal-Clear Typography Label */}
+              {/* Label */}
               <span
-                className={`text-[10.5px] mt-0.5 tracking-tight font-sans ${
-                  isActive ? 'font-black text-white' : 'font-medium text-slate-400'
+                className={`text-[10px] font-sans tracking-tight mt-0.5 transition-colors ${
+                  isActive ? 'text-white font-bold' : 'text-slate-400 font-medium'
                 }`}
               >
                 {item.label}
