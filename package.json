@@ -23,6 +23,8 @@
     "@react-three/fiber": "^9.7.0",
     "@react-three/postprocessing": "^3.1.0",
     "@replit/connectors-sdk": "^0.4.1",
+    "@supabase/ssr": "^0.12.5",
+    "@supabase/supabase-js": "^2.112.4",
     "@types/three": "^0.185.4",
     "ai": "^7.0.66",
     "astronomy-engine": "^2.1.19",
