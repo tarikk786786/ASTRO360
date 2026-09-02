@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, Send, Compass, Clock, CheckCircle2, AlertTriangle, 
   HelpCircle, ArrowRight, Calendar as CalendarIcon, Download, 
   ExternalLink, Copy, Check, ChevronRight, Layers, ShieldCheck, 
   BookOpen, Activity, Zap, Heart, Briefcase, DollarSign, Globe2, 
-  Sliders, User, RefreshCw, Eye, MessageSquare, History, FileText
+  Sliders, User, RefreshCw, Eye, MessageSquare, History, FileText,
+  ZapOff, CheckCircle
 } from 'lucide-react';
 import { UserProfile } from '../../types';
 import { ProblemDomain, ProblemIntentRouter } from '../../lib/prediction/problemIntentRouter';
@@ -49,6 +50,8 @@ export const ProblemToSolutionHero: React.FC<ProblemToSolutionHeroProps> = ({
 }) => {
   const [problemQuery, setProblemQuery] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisStageText, setAnalysisStageText] = useState('Analyzing Chart...');
+  const [executionLatencyMs, setExecutionLatencyMs] = useState<number | null>(null);
   const [analysisResult, setAnalysisResult] = useState<SolvedMainScreenProblem | null>(null);
   const [selectedEngine, setSelectedEngine] = useState<'ALL' | 'vedic' | 'western' | 'kp' | 'jaimini' | 'tajika'>('ALL');
   const [isWhyDrawerOpen, setIsWhyDrawerOpen] = useState(false);
@@ -59,23 +62,53 @@ export const ProblemToSolutionHero: React.FC<ProblemToSolutionHeroProps> = ({
   ]);
   const [copiedText, setCopiedText] = useState(false);
 
+  // AbortController ref for request cancellation & race prevention
+  const abortControllerRef = useRef<AbortController | null>(null);
+
   const seekerName = userProfile.name?.trim() || 'Seeker';
-  const hasBirthTime = Boolean(userProfile.time);
 
   // Auto-solve default career question on initial render if no result yet
   useEffect(() => {
     if (!analysisResult) {
       handleAnalyze("My career feels stuck. When will things improve?");
     }
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
   }, []);
 
   const handleAnalyze = async (queryText?: string) => {
     const q = (queryText || problemQuery).trim();
     if (!q) return;
 
+    // Abort previous in-flight calculation
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
     setIsAnalyzing(true);
+    setAnalysisStageText('Understanding question intent...');
+    const startTime = performance.now();
+
     try {
-      const res = await MainScreenProblemSolver.solve(q, userProfile, selectedEngine);
+      const res = await MainScreenProblemSolver.solve(
+        q,
+        userProfile,
+        selectedEngine,
+        {
+          signal: controller.signal,
+          onStageChange: (_stage, message) => {
+            setAnalysisStageText(message);
+          }
+        }
+      );
+
+      const elapsed = Math.round(performance.now() - startTime);
+      setExecutionLatencyMs(elapsed);
       setAnalysisResult(res);
       setProblemQuery(q);
       
@@ -84,7 +117,11 @@ export const ProblemToSolutionHero: React.FC<ProblemToSolutionHeroProps> = ({
         const filtered = prev.filter(item => item.toLowerCase() !== q.toLowerCase());
         return [q, ...filtered].slice(0, 5);
       });
-    } catch (err) {
+    } catch (err: any) {
+      if (err?.name === 'AbortError' || err?.message?.includes('aborted') || err?.message?.includes('cancelled')) {
+        // Ignored, user submitted newer query
+        return;
+      }
       console.error('Problem solver error:', err);
       toast.error('Unable to complete chart analysis. Please verify your birth details.');
     } finally {
@@ -95,7 +132,7 @@ export const ProblemToSolutionHero: React.FC<ProblemToSolutionHeroProps> = ({
   const handleDownloadIcs = (res: SolvedMainScreenProblem) => {
     const payload: CalendarEventPayload = {
       title: `ASTRO360: ${res.executionPlan.normalizedTitle}`,
-      description: `${res.summary}\\n\\nStrategic Advice: ${res.practicalView.strategicAdvice}\\nTiming Window: ${res.timing.window}\\nAgreement: ${res.agreement.agreementPercent}% Directional Consensus`,
+      description: `${res.summary}\n\nStrategic Advice: ${res.practicalView.strategicAdvice}\nTiming Window: ${res.timing.window}\nAgreement: ${res.agreement.agreementPercent}% Directional Consensus`,
       startDate: res.timing.startDate,
       endDate: res.timing.endDate,
       category: `Astrology - ${res.executionPlan.domain}`,
@@ -108,7 +145,7 @@ export const ProblemToSolutionHero: React.FC<ProblemToSolutionHeroProps> = ({
   const handleOpenGoogleCalendar = (res: SolvedMainScreenProblem) => {
     const payload: CalendarEventPayload = {
       title: `ASTRO360: ${res.executionPlan.normalizedTitle}`,
-      description: `${res.summary}\\n\\nStrategic Advice: ${res.practicalView.strategicAdvice}\\nTiming Window: ${res.timing.window}`,
+      description: `${res.summary}\n\nStrategic Advice: ${res.practicalView.strategicAdvice}\nTiming Window: ${res.timing.window}`,
       startDate: res.timing.startDate,
       endDate: res.timing.endDate,
       category: `Astrology - ${res.executionPlan.domain}`
@@ -132,7 +169,7 @@ export const ProblemToSolutionHero: React.FC<ProblemToSolutionHeroProps> = ({
         {/* Ambient Top Glow */}
         <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
         
-        {/* Active Chart Context Pill */}
+        {/* Active Chart Context Pill & Latency Telemetry */}
         <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-white/[0.08]">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -142,6 +179,11 @@ export const ProblemToSolutionHero: React.FC<ProblemToSolutionHeroProps> = ({
           </div>
 
           <div className="flex items-center gap-2">
+            {executionLatencyMs !== null && (
+              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-bold hidden sm:inline-block">
+                ⚡ {executionLatencyMs}ms (AstroCalculationContext)
+              </span>
+            )}
             <span className="text-[11px] font-mono text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-full border border-amber-400/20 font-bold">
               NASA JPL DE440 Sub-Arcsec
             </span>
@@ -191,7 +233,7 @@ export const ProblemToSolutionHero: React.FC<ProblemToSolutionHeroProps> = ({
                 {isAnalyzing ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin text-black" />
-                    <span>Analyzing Chart...</span>
+                    <span className="truncate max-w-[140px]">{analysisStageText}</span>
                   </>
                 ) : (
                   <>
