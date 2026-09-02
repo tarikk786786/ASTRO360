@@ -754,18 +754,18 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
     <div className={`space-y-6 text-left font-sans pb-24 ${density === 'compact' ? 'text-xs' : 'text-sm'}`}>
       
       {/* ─── 1. TOP STUDIO HEADER & DENSITY SWITCHER ──────────────────── */}
-      <div className="p-6 rounded-3xl bg-gradient-to-r from-[#0B101E] via-[#0E1528] to-[#0B101E] border border-white/[0.08] shadow-2xl backdrop-blur-2xl">
+      <div className="p-6 rounded-2xl bg-[#111315]/80 border border-white/[0.08] shadow-2xl backdrop-blur-xl">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C9A86A]/15 border border-[#C9A86A]/30 text-[#C9A86A] text-xs font-mono">
-              <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+          <div className="space-y-1.5">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-white text-xs font-mono">
+              <Sparkles className="w-3.5 h-3.5 text-white" />
               <span>ASTRO STUDIO • Professional Ephemeris & Kundli Lab</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
               Astrological Workspace & Ephemeris Inspector
             </h1>
-            <p className="text-xs sm:text-sm text-slate-300">
-              Interactive 12-house Kundli, real-time time-travel scrubbing, Aspect orbs, Auspicious Yogas, Muhurta Timing, Karmic Doshas, and Sound Resonator.
+            <p className="text-xs sm:text-sm text-slate-400">
+              Interactive 12-house Kundli, real-time time scrubbing, Aspect orbs, Auspicious Yogas, Muhurta Timing, Karmic Doshas, and Sound Resonator.
             </p>
           </div>
 
@@ -777,7 +777,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               <button
                 onClick={() => setDensity('comfortable')}
                 className={`px-2.5 py-1 rounded-lg transition-colors cursor-pointer ${
-                  density === 'comfortable' ? 'bg-amber-400 text-slate-950 font-bold' : 'text-slate-400 hover:text-white'
+                  density === 'comfortable' ? 'bg-white text-black font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 Comfortable
@@ -785,7 +785,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               <button
                 onClick={() => setDensity('compact')}
                 className={`px-2.5 py-1 rounded-lg transition-colors cursor-pointer ${
-                  density === 'compact' ? 'bg-amber-400 text-slate-950 font-bold' : 'text-slate-400 hover:text-white'
+                  density === 'compact' ? 'bg-white text-black font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 Compact
@@ -800,7 +800,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
             </button>
             <button
               onClick={handleExportPDF}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#C9A86A] to-[#DFBF7A] text-[#070A12] font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-md shadow-[#C9A86A]/20"
+              className="px-4 py-2 rounded-xl bg-white text-black font-semibold transition-all flex items-center gap-1.5 cursor-pointer shadow-sm hover:bg-slate-100"
             >
               <Printer className="w-3.5 h-3.5" /> Print / Export PDF
             </button>
@@ -836,8 +836,8 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
             onClick={() => setActiveStudioTab(tab.id as any)}
             className={`px-4 py-2.5 rounded-2xl border transition-all cursor-pointer whitespace-nowrap snap-start ${
               activeStudioTab === tab.id
-                ? 'bg-amber-400 text-slate-950 font-bold border-amber-400 shadow-md'
-                : 'bg-[#0B1220] text-slate-400 hover:text-white border-white/10 hover:border-white/20'
+                ? 'bg-white text-black font-semibold border-white shadow-sm'
+                : 'bg-[#111315]/80 text-slate-400 hover:text-white border-white/10 hover:border-white/20'
             }`}
           >
             {tab.label}
@@ -850,13 +850,13 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
         <div className="space-y-4">
           
           {/* Controls Bar: Layout, Ayanamsha, Theme & Visibility */}
-          <div className="p-4 rounded-2xl bg-[#0D1220] border border-white/[0.08] flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
+          <div className="p-4 rounded-2xl bg-[#111315]/80 border border-white/[0.08] flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
             {/* Layout */}
             <div className="flex items-center gap-1 bg-white/[0.04] p-1 rounded-xl border border-white/[0.06]">
               <button
                 onClick={() => setChartLayout('north')}
                 className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
-                  chartLayout === 'north' ? 'bg-[#C9A86A] text-[#070A12]' : 'text-slate-400 hover:text-white'
+                  chartLayout === 'north' ? 'bg-white text-black font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 North Diamond
@@ -864,7 +864,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               <button
                 onClick={() => setChartLayout('south')}
                 className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
-                  chartLayout === 'south' ? 'bg-[#C9A86A] text-[#070A12]' : 'text-slate-400 hover:text-white'
+                  chartLayout === 'south' ? 'bg-white text-black font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 South Square
@@ -872,7 +872,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               <button
                 onClick={() => setChartLayout('western')}
                 className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
-                  chartLayout === 'western' ? 'bg-[#C9A86A] text-[#070A12]' : 'text-slate-400 hover:text-white'
+                  chartLayout === 'western' ? 'bg-white text-black font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 Western Wheel
@@ -941,7 +941,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
                   <button
                     key={s}
                     onClick={() => setAnimSpeed(s)}
-                    className={`px-2 py-0.5 rounded ${animSpeed === s ? 'bg-amber-400 text-slate-950 font-bold' : 'bg-white/5 text-slate-300'}`}
+                    className={`px-2 py-0.5 rounded ${animSpeed === s ? 'bg-white text-black font-semibold shadow-sm' : 'bg-white/5 text-slate-300'}`}
                   >
                     {s}x
                   </button>
@@ -1170,7 +1170,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
             </div>
 
             {/* Right: Selected Object / Evidence Inspector */}
-            <div className="lg:col-span-4 p-5 rounded-3xl bg-[#0B1220] border border-white/10 shadow-xl space-y-4 font-mono text-xs">
+            <div className="lg:col-span-4 p-5 rounded-3xl bg-[#111315]/80 border border-white/10 shadow-xl space-y-4 font-mono text-xs">
               <div className="border-b border-white/10 pb-3 flex items-center justify-between">
                 <div>
                   <span className="text-[10px] uppercase text-amber-400 font-bold block">Object Inspector</span>
@@ -1191,7 +1191,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
                     onClick={() => setSelectedPlanet(p)}
                     className={`px-2 py-1 rounded-lg border transition-all cursor-pointer ${
                       selectedPlanet?.name === p.name
-                        ? 'bg-amber-400 text-slate-950 font-bold border-amber-400'
+                        ? 'bg-white text-black font-semibold shadow-sm border-amber-400'
                         : 'bg-white/5 text-slate-300 border-white/10 hover:bg-white/10'
                     }`}
                   >
@@ -1243,7 +1243,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 2: ASPECTS & DRISHTI MATRIX ─────────────────────────── */}
       {activeStudioTab === 'aspects' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white">Planetary Aspects & Vedic Drishti Orbit Matrix</h3>
@@ -1286,7 +1286,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 3: AUSPICIOUS YOGAS ANALYZER ─────────────────────────── */}
       {activeStudioTab === 'yogas' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-amber-500/30 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white flex items-center gap-2">
@@ -1325,7 +1325,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 4: AUSPICIOUS MUHURTA & PANCHANGA ────────────────────── */}
       {activeStudioTab === 'muhurta' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-amber-500/30 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white flex items-center gap-2">
@@ -1362,7 +1362,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 5: KARMIC DOSHAS & REMEDIES ─────────────────────────── */}
       {activeStudioTab === 'doshas' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-rose-500/30 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-rose-500/30 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white flex items-center gap-2">
@@ -1410,7 +1410,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 6: JAIMINI CHARA KARAKAS & KARAKAMSHA ────────────────── */}
       {activeStudioTab === 'jaimini' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-amber-500/30 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white flex items-center gap-2">
@@ -1453,7 +1453,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 7: BIRTH TIME RECTIFICATION (BTR) STUDIO ─────────────── */}
       {activeStudioTab === 'rectification' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-cyan-500/30 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-cyan-500/30 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white flex items-center gap-2">
@@ -1526,7 +1526,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 8: PANCHADHA MAITRI (5-FOLD RELATIONSHIPS) ───────────── */}
       {activeStudioTab === 'friendship' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white flex items-center gap-2">
@@ -1563,7 +1563,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 9: PLANETARY AVASTHAS & DIGNITY ─────────────────────── */}
       {activeStudioTab === 'avasthas' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white">Planetary Avasthas (Baladi & Jagratadi States)</h3>
@@ -1607,7 +1607,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 10: 27 NAKSHATRAS EXPLORER ──────────────────────────── */}
       {activeStudioTab === 'nakshatras' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white">27 Vedic Nakshatras & Sacred Deity Matrix</h3>
@@ -1646,7 +1646,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 11: HANS COUSTO SOUND RESONATOR ──────────────────────── */}
       {activeStudioTab === 'soundResonator' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 space-y-6 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-amber-500/30 space-y-6 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white">Hans Cousto Cosmic Octave Acoustic Resonator</h3>
@@ -1699,7 +1699,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 12: VIMSHOTTARI TREE ─────────────────────────────────── */}
       {activeStudioTab === 'dashaTree' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white">Vimshottari Dasha 120-Year Master Timeline</h3>
@@ -1736,7 +1736,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 13: ASHTAKAVARGA (SAV) POTENCY MATRIX ───────────────── */}
       {activeStudioTab === 'ashtakavarga' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white">Sarvashtakavarga (SAV) 12-House Potency Grid</h3>
@@ -1770,7 +1770,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 14: SHADBALA POTENCY METERS ─────────────────────────── */}
       {activeStudioTab === 'shadbala' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/10 space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white">Shadbala 6-Fold Planetary Strength Matrix</h3>
@@ -1818,7 +1818,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 15: MULTI-SYSTEM SIDE-BY-SIDE ───────────────────────── */}
       {activeStudioTab === 'multisystem' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
             <h3 className="text-base font-bold text-white">Multi-Tradition Side-by-Side Synthesis</h3>
             <p className="text-slate-400">One birth chart evaluated independently across 5 classical astrological traditions.</p>
@@ -1858,7 +1858,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 16: TIMING WORKSPACE ────────────────────────────────── */}
       {activeStudioTab === 'timing' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white">Multi-Layer Temporal Timeline (1y–10y)</h3>
@@ -1891,7 +1891,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 17: PREDICTIONS & EVENT JOURNAL ─────────────────────── */}
       {activeStudioTab === 'predictions' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
             <h3 className="text-base font-bold text-white">Prediction Formulation & Outcome Calibration Journal</h3>
             <p className="text-slate-400">Formulate verifiable questions, record life events, and calibrate astrological accuracy.</p>
@@ -1935,7 +1935,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 18: RESEARCH & ACCURACY LAB ─────────────────────────── */}
       {activeStudioTab === 'research' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-cyan-500/30 space-y-4 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-cyan-500/30 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white">Sub-Arcsecond Accuracy Lab & Benchmarking</h3>
@@ -1984,7 +1984,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 19: RULE & SOURCE EXPLORER ──────────────────────────── */}
       {activeStudioTab === 'rules' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/10 space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3">
             <h3 className="text-base font-bold text-white">Classical Rule & Source Treatise Explorer</h3>
             <p className="text-slate-400">Verifiable scripture citations, rules, and mathematical formulas powering ASTRO360.</p>
