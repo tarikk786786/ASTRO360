@@ -71,7 +71,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
   return (
     <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8 text-left pb-16 select-none">
       {/* Header & Mode Toggle */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.08] pb-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2">
             <Compass className="w-7 h-7 text-amber-400" />
@@ -83,7 +83,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
         </div>
 
         {/* 3-Way Mode Switcher */}
-        <div className="flex items-center gap-1 bg-[#0B1220] p-1 rounded-xl border border-white/10 self-start sm:self-auto">
+        <div className="flex items-center gap-1 bg-[#111315]/80 p-1 rounded-xl border border-white/[0.08] self-start sm:self-auto">
           {[
             { id: 'simple', label: 'SIMPLE' },
             { id: 'technical', label: 'TECHNICAL' },
@@ -97,14 +97,14 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
                 onClick={() => setChartMode(mode.id as any)}
                 className={`relative px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-colors cursor-pointer ${
                   isSelected
-                    ? 'text-slate-950 font-black'
+                    ? 'text-black font-bold'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
                 {isSelected && (
                   <motion.div
                     layoutId="chartModePill"
-                    className="absolute inset-0 rounded-lg bg-amber-400 shadow-md"
+                    className="absolute inset-0 rounded-lg bg-white shadow-sm"
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -118,7 +118,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
       {/* Main Placement Hero Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         {/* Sun */}
-        <div className="p-5 rounded-3xl bg-[#0F172A] border border-amber-500/30 space-y-2">
+        <div className="p-5 rounded-3xl bg-[#111315]/80 border border-white/[0.08] space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono font-bold text-amber-400 flex items-center gap-1.5">
               <Sun className="w-4 h-4 text-amber-400" /> Sun Sign
@@ -130,7 +130,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
         </div>
 
         {/* Moon */}
-        <div className="p-5 rounded-3xl bg-[#0F172A] border border-cyan-500/30 space-y-2">
+        <div className="p-5 rounded-3xl bg-[#111315]/80 border border-white/[0.08] space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono font-bold text-cyan-400 flex items-center gap-1.5">
               <Moon className="w-4 h-4 text-cyan-400" /> Moon Sign
@@ -142,7 +142,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
         </div>
 
         {/* Ascendant */}
-        <div className="p-5 rounded-3xl bg-[#0F172A] border border-indigo-500/30 space-y-2">
+        <div className="p-5 rounded-3xl bg-[#111315]/80 border border-indigo-500/30 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono font-bold text-indigo-400 flex items-center gap-1.5">
               <Compass className="w-4 h-4 text-indigo-400" /> Ascendant (Lagna)
@@ -161,22 +161,22 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
           animate={{ opacity: 1, y: 0 }}
           className="space-y-6"
         >
-          <div className="p-6 rounded-3xl bg-gradient-to-br from-[#0B132B] via-[#080E1C] to-[#040812] border border-amber-400/30 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+          <div className="p-6 rounded-3xl bg-gradient-to-br from-[#0B132B] via-[#080E1C] to-[#040812] border border-white/[0.08] shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
               <div className="flex items-center gap-2 text-amber-300">
                 <Globe2 className="w-5 h-5" />
                 <h3 className="text-base font-extrabold font-sans">
                   Cross-Tradition Unified Convergence Matrix
                 </h3>
               </div>
-              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20 font-bold">
+              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-white/[0.08] font-bold">
                 HIGH CONVERGENCE (88%)
               </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
               {/* 1. Vedic */}
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+              <div className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] space-y-2">
                 <div className="text-xs font-mono text-amber-400 font-bold flex items-center justify-between">
                   <span>1. Vedic / Parashari</span>
                   <span className="text-[9px] text-slate-400">Sidereal</span>
@@ -186,7 +186,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
               </div>
 
               {/* 2. Western */}
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+              <div className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] space-y-2">
                 <div className="text-xs font-mono text-cyan-400 font-bold flex items-center justify-between">
                   <span>2. Western Hellenistic</span>
                   <span className="text-[9px] text-slate-400">Tropical</span>
@@ -196,7 +196,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
               </div>
 
               {/* 3. KP Stellar */}
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+              <div className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] space-y-2">
                 <div className="text-xs font-mono text-emerald-400 font-bold flex items-center justify-between">
                   <span>3. KP System</span>
                   <span className="text-[9px] text-slate-400">249 Sub-Lords</span>
@@ -206,7 +206,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
               </div>
 
               {/* 4. Jaimini */}
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+              <div className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] space-y-2">
                 <div className="text-xs font-mono text-purple-400 font-bold flex items-center justify-between">
                   <span>4. Jaimini Sutra</span>
                   <span className="text-[9px] text-slate-400">Chara Karaka</span>
@@ -216,7 +216,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
               </div>
 
               {/* 5. Chinese BaZi */}
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+              <div className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] space-y-2">
                 <div className="text-xs font-mono text-rose-400 font-bold flex items-center justify-between">
                   <span>5. Chinese BaZi</span>
                   <span className="text-[9px] text-slate-400">Four Pillars</span>
@@ -226,7 +226,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
               </div>
 
               {/* 6. Islamic */}
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+              <div className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] space-y-2">
                 <div className="text-xs font-mono text-teal-400 font-bold flex items-center justify-between">
                   <span>6. Islamic Ilm al-Falak</span>
                   <span className="text-[9px] text-slate-400">Manazil</span>
@@ -240,7 +240,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
       )}
 
       {/* Interactive 9 Planets Matrix with Click-to-Inspect Telemetry Modal */}
-      <div className="p-6 rounded-3xl bg-[#0F172A]/90 border border-white/10 space-y-4">
+      <div className="p-6 rounded-3xl bg-[#111315]/80/90 border border-white/[0.08] space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-amber-400" />
@@ -258,7 +258,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
             <button
               key={idx}
               onClick={() => setSelectedPlanet(p)}
-              className="p-3.5 rounded-2xl bg-[#091122] hover:bg-white/10 border border-white/5 hover:border-amber-400/50 transition-all text-left space-y-1 group cursor-pointer active:scale-95 shadow-md"
+              className="p-3.5 rounded-2xl bg-[#091122] hover:bg-white/10 border border-white/5 hover:border-white/[0.08] transition-all text-left space-y-1 group cursor-pointer active:scale-95 shadow-md"
             >
               <div className="flex items-center justify-between">
                 <span className={`text-base font-bold ${p.color}`}>{p.symbol}</span>
@@ -283,9 +283,9 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
-          className="p-6 rounded-3xl bg-[#0B1220] border border-indigo-500/30 space-y-3"
+          className="p-6 rounded-3xl bg-[#111315]/80 border border-indigo-500/30 space-y-3"
         >
-          <div className="flex items-center justify-between border-b border-white/10 pb-2">
+          <div className="flex items-center justify-between border-b border-white/[0.08] pb-2">
             <h4 className="text-xs font-mono font-bold text-indigo-400 uppercase tracking-wider">
               Exact Ephemeris Coordinates (DE440 / Lahiri Ayanamsha)
             </h4>
@@ -295,7 +295,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
           <div className="overflow-x-auto">
             <table className="w-full text-xs text-left font-mono">
               <thead>
-                <tr className="border-b border-white/10 text-slate-400">
+                <tr className="border-b border-white/[0.08] text-slate-400">
                   <th className="py-2 px-2">Planet</th>
                   <th className="py-2 px-2">Zodiac Sign</th>
                   <th className="py-2 px-2">Degree</th>
@@ -340,7 +340,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
               initial={{ opacity: 0, scale: 0.92, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.92, y: 15 }}
-              className="relative w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-[#091122] border border-amber-400/40 shadow-2xl space-y-5 text-left z-10 overflow-hidden"
+              className="relative w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-[#091122] border border-white/[0.08] shadow-2xl space-y-5 text-left z-10 overflow-hidden"
             >
               <button
                 onClick={() => setSelectedPlanet(null)}
@@ -351,7 +351,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
 
               {/* Header */}
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-2xl font-bold text-amber-400">
+                <div className="w-12 h-12 rounded-2xl bg-amber-400/10 border border-white/[0.08] flex items-center justify-center text-2xl font-bold text-amber-400">
                   {selectedPlanet.symbol}
                 </div>
                 <div>
@@ -365,7 +365,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
               </div>
 
               {/* Solfeggio Audio Trigger */}
-              <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between gap-3">
+              <div className="p-3.5 rounded-2xl bg-white/5 border border-white/[0.08] flex items-center justify-between gap-3">
                 <div>
                   <span className="text-xs font-mono font-bold text-white block">
                     Planetary Resonance Frequency

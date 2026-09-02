@@ -1188,13 +1188,13 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
   return (
     <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 text-left pb-16">
       {/* Header */}
-      <div className="border-b border-white/10 pb-4 space-y-1">
+      <div className="border-b border-white/[0.08] pb-4 space-y-1">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2">
             <Calendar className="w-7 h-7 text-amber-400" />
             Astrological Forecast & Prediction Radar
           </h1>
-          <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/30 font-bold self-start sm:self-auto uppercase">
+          <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-full border border-white/[0.08] font-bold self-start sm:self-auto uppercase">
             {currentTradition} Engine Active
           </span>
         </div>
@@ -1204,9 +1204,9 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
       </div>
 
       {/* Prediction Reliability & Sensitivity Banner */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-[#0C1322] via-[#0F172A] to-[#0C1322] border border-amber-500/30 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+      <div className="p-4 sm:p-5 rounded-2xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-white/[0.08] flex items-center justify-center shrink-0">
             <ShieldCheck className="w-4 h-4 text-amber-400" />
           </div>
           <div>
@@ -1216,7 +1216,7 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-white/[0.08] flex items-center justify-center shrink-0">
             <Activity className="w-4 h-4 text-emerald-400" />
           </div>
           <div>
@@ -1226,7 +1226,7 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-white/[0.08] flex items-center justify-center shrink-0">
             <Zap className="w-4 h-4 text-cyan-400" />
           </div>
           <div>
@@ -1237,7 +1237,7 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
       </div>
 
       {/* Time Horizon Selector Tabs */}
-      <div className="flex items-center gap-2 bg-[#0B1220] p-1.5 rounded-2xl border border-white/10 overflow-x-auto no-scrollbar">
+      <div className="flex items-center gap-2 bg-[#111315]/80 p-1.5 rounded-2xl border border-white/[0.08] overflow-x-auto no-scrollbar">
         {[
           { id: '7days', label: '7 DAYS' },
           { id: '30days', label: '30 DAYS' },
@@ -1252,14 +1252,14 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
               onClick={() => setActiveHorizon(h.id as any)}
               className={`relative flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-xs font-mono font-bold transition-colors cursor-pointer text-center ${
                 isSelected
-                  ? 'text-slate-950 font-black'
+                  ? 'text-black font-bold'
                   : 'text-slate-400 hover:text-white hover:bg-white/5'
               }`}
             >
               {isSelected && (
                 <motion.div
                   layoutId="forecastHorizonPill"
-                  className="absolute inset-0 rounded-xl bg-amber-400 shadow-md"
+                  className="absolute inset-0 rounded-xl bg-white shadow-sm"
                   transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                 />
               )}
@@ -1303,12 +1303,12 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
               key={event.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="p-6 rounded-3xl bg-[#0F172A] border border-white/10 hover:border-amber-500/30 transition-all space-y-4 shadow-xl relative overflow-hidden"
+              className="p-6 rounded-3xl bg-[#111315]/80 border border-white/[0.08] hover:border-white/[0.08] transition-all space-y-4 shadow-xl relative overflow-hidden"
             >
               {/* Top Row: Category, Title & Period */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/[0.08] flex items-center justify-center">
                     {getCategoryIcon(event.category)}
                   </div>
                   <div>
@@ -1320,10 +1320,10 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
                 </div>
 
                 <div className="flex items-center gap-2 self-start sm:self-auto">
-                  <span className="text-[10px] font-mono text-cyan-300 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-cyan-500/30 font-bold">
+                  <span className="text-[10px] font-mono text-cyan-300 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-white/[0.08] font-bold">
                     {event.traditionLabel}
                   </span>
-                  <span className="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/30 font-bold">
+                  <span className="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-white/[0.08] font-bold">
                     {event.systemsCount} systems agree
                   </span>
                 </div>
@@ -1351,7 +1351,7 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
               </p>
 
               {/* Classical Scripture & Provenance Citation */}
-              <div className="flex items-center gap-2 text-[11px] font-mono text-slate-400 bg-[#0B1220] p-2.5 rounded-xl border border-white/5">
+              <div className="flex items-center gap-2 text-[11px] font-mono text-slate-400 bg-[#111315]/80 p-2.5 rounded-xl border border-white/5">
                 <BookOpen className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                 <span className="truncate"><strong className="text-slate-300">Scriptural Provenance:</strong> {event.classicalCitation}</span>
               </div>
@@ -1364,7 +1364,7 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
                   </span>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
                     {event.crossTraditionConsensus.map((ct, idx) => (
-                      <div key={idx} className="p-2 rounded-xl bg-[#0B1220] border border-white/5 text-[11px] font-mono">
+                      <div key={idx} className="p-2 rounded-xl bg-[#111315]/80 border border-white/5 text-[11px] font-mono">
                         <span className="text-amber-300 font-bold block">{ct.tradition}:</span>
                         <span className="text-slate-300">{ct.verdict}</span>
                       </div>
@@ -1377,7 +1377,7 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
               <div className="flex items-center justify-between pt-2 border-t border-white/10">
                 <button
                   onClick={() => handleOpenWhy(event.whyPayload)}
-                  className="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-amber-300 hover:text-amber-200 border border-amber-500/20 text-xs font-mono font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                  className="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-amber-300 hover:text-amber-200 border border-white/[0.08] text-xs font-mono font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <HelpCircle className="w-3.5 h-3.5 text-amber-400" /> Why? Explain Calculation
                 </button>
@@ -1396,7 +1396,7 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 space-y-2 pt-3"
+                  className="p-4 rounded-2xl bg-[#111315]/80 border border-white/[0.08] space-y-2 pt-3"
                 >
                   <h4 className="text-xs font-mono font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Recommended Strategic Actions:
@@ -1417,7 +1417,7 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
 
         {/* Empty State Fallback */}
         {events.length === 0 && (
-          <div className="p-8 rounded-3xl bg-[#0F172A] border border-white/10 text-center space-y-3">
+          <div className="p-8 rounded-3xl bg-[#111315]/80 border border-white/[0.08] text-center space-y-3">
             <Sparkles className="w-8 h-8 text-amber-400 mx-auto" />
             <h3 className="text-base font-bold text-white">Baseline Cosmic Equilibrium in {selectedCategory.toUpperCase()}</h3>
             <p className="text-xs text-slate-300 max-w-md mx-auto">
@@ -1425,7 +1425,7 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
             </p>
             <button
               onClick={() => setSelectedCategory('all')}
-              className="px-4 py-2 rounded-xl bg-amber-400 text-slate-950 text-xs font-mono font-bold hover:bg-amber-300 transition-colors cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-white text-black text-xs font-mono font-semibold shadow-sm hover:bg-amber-300 transition-colors cursor-pointer"
             >
               View All Themes
             </button>
