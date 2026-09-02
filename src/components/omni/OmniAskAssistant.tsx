@@ -644,36 +644,33 @@ export default function OmniAskAssistant({
         )}
       </div>
 
-      {/* Suggested Question Chips (when only initial message exists) */}
-      {messages.length <= 1 && (
-        <div className="px-2 py-2 shrink-0">
-          <span className="text-[10px] font-mono text-slate-400 block mb-1.5 uppercase font-bold">
-            ⚡ Quick-Launch Astrological Inquiries:
+      {/* Permanent Quick-Launch Astrological Inquiry Carousel */}
+      <div className="px-1 py-1.5 shrink-0">
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 text-xs font-mono">
+          <span className="text-[10px] text-amber-400 uppercase font-bold shrink-0 flex items-center gap-1 pl-1">
+            <Sparkles className="w-3 h-3 text-amber-400" /> Ask Quick:
           </span>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5">
-            {questionPresets.slice(0, 6).map((preset, pIdx) => {
-              const Icon = preset.icon;
-              return (
-                <button
-                  key={pIdx}
-                  onClick={() => handleSend(preset.q)}
-                  className="p-2.5 rounded-xl bg-[#0D1424] hover:bg-white/[0.08] border border-white/[0.08] text-left flex items-start gap-2.5 transition-all cursor-pointer group shadow-sm"
-                >
-                  <Icon className={`w-4 h-4 ${preset.color} shrink-0 mt-0.5 group-hover:scale-110 transition-transform`} />
-                  <div className="min-w-0">
-                    <span className="text-xs font-bold text-slate-200 group-hover:text-white block truncate">
-                      {preset.label}
-                    </span>
-                    <span className="text-[11px] text-slate-400 block truncate font-sans">
-                      {preset.q}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
+          {[
+            { label: '💼 Career Stuck', q: 'Why is my career stuck and when will it improve?' },
+            { label: '⚖️ Job Decision', q: 'Should I quit my job or stay?' },
+            { label: '❤️ Marriage Timing', q: 'What does my chart indicate for long-term marriage & timing?' },
+            { label: '💰 Wealth Cycles', q: 'When are my strongest financial timing cycles?' },
+            { label: '🌙 Prayer Times', q: "When are today's exact prayer times for my location?" },
+            { label: '🧭 Qibla Direction', q: 'Which direction is Qibla from my coordinates?' },
+            { label: '🪐 My Ascendant & Moon', q: 'What is my ascendant and Moon sign?' },
+            { label: '🌐 4-System Compare', q: 'Compare my career timing using Vedic, Western and KP.' },
+          ].map((item, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => handleSend(item.q)}
+              className="px-2.5 py-1 rounded-xl bg-[#0E1524] hover:bg-white/10 text-slate-300 hover:text-white border border-white/[0.08] transition-all cursor-pointer shrink-0 text-[11px] font-medium active:scale-95 shadow-sm"
+            >
+              {item.label}
+            </button>
+          ))}
         </div>
-      )}
+      </div>
 
       {/* Input Form Box */}
       <form 

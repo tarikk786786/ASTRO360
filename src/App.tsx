@@ -726,7 +726,7 @@ export default function AppContent() {
                   {(activeTab === 'forecast' || activeTab === 'predictions' || activeTab === 'prediction' || activeTab === 'precision-forecast' || activeTab === 'forecast-studio') && (
                     <OmniForecastView userProfile={userProfile} />
                   )}
-                  {(activeTab === 'copilot' || activeTab === 'ask' || activeTab === 'oracle') && (
+                  {(activeTab === 'copilot' || activeTab === 'ask' || activeTab === 'oracle' || activeTab === 'chat') && (
                     <OmniAskAssistant userProfile={userProfile} onNavigate={navigateTo} />
                   )}
                   {activeTab === 'charts' && (
@@ -807,7 +807,7 @@ export default function AppContent() {
                   )}
                   {activeTab === 'global-suite' && <GlobalWisdomSuite userProfile={userProfile} />}
                   {activeTab === 'tools-catalog' && <Astro150ToolsCatalog userProfile={userProfile} onNavigate={navigateTo} activeCategory={activeTab} initialCategory={activeTab} />}
-                  {activeTab === 'chat' && <AstrologyChat />}
+                  
                   {(activeTab === 'dream-interpreter' || activeTab === 'dream') && <DreamInterpretationEngine userProfile={userProfile} />}
                   {activeTab === 'problem-solver' && <UniversalProblemSolverSuite userProfile={userProfile} />}
                   {activeTab === 'spiritual-traditions' && <SpiritualTraditionsModule userProfile={userProfile} />}

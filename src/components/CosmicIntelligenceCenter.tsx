@@ -737,7 +737,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
           <div className="flex items-center gap-3 w-full lg:w-auto justify-end">
             <div className="w-full sm:w-auto">
               <ShimmerButton
-                onClick={() => onNavigate('chat')}
+                onClick={() => onNavigate('ask')}
                 shimmerColor="#06B6D4"
                 background="#111315"
                 className="w-full sm:w-auto justify-center"
@@ -1611,7 +1611,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
 
       {/* 🔮 FLOATING AI ORACLE BUTTON (Mobile Safe & Animated) */}
       <motion.button
-        onClick={() => onNavigate('chat')}
+        onClick={() => onNavigate('ask')}
         whileHover={{ scale: 1.1, rotate: 5 }}
         whileTap={{ scale: 0.9 }}
         className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 p-3.5 sm:p-4 rounded-full bg-white hover:bg-slate-100 text-black shadow-md cursor-pointer border border-white/20 flex items-center justify-center group z-40"
