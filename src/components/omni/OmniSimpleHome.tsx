@@ -169,46 +169,46 @@ export default function OmniSimpleHome({
   const traditionTimingData = useMemo(() => {
     if (currentTradition.includes('islamic')) {
       return {
-        box1: { label: "Today's Hijri Date & Manzil", value: "14 Safar 1448 AH • Al-Thurayya", icon: Moon, color: "text-cyan-400", border: "border-cyan-500/30", bg: "bg-cyan-500/10" },
-        box2: { label: "Saat al-Ikhtiyar (Auspicious Window)", value: "Duha to Dhuhr • Peak Barakah", icon: CheckCircle2, color: "text-emerald-400", border: "border-emerald-500/30", bg: "bg-emerald-500/10" },
-        box3: { label: "Prophetic Sunnah & Dhikr", value: "Ya Hayyu Ya Qayyum (33x)", icon: ShieldCheck, color: "text-amber-400", border: "border-amber-500/30", bg: "bg-amber-500/10" }
+        box1: { label: "Today's Hijri Date & Manzil", value: "14 Safar 1448 AH • Al-Thurayya", icon: Moon, color: "text-cyan-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" },
+        box2: { label: "Saat al-Ikhtiyar (Auspicious Window)", value: "Duha to Dhuhr • Peak Barakah", icon: CheckCircle2, color: "text-emerald-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" },
+        box3: { label: "Prophetic Sunnah & Dhikr", value: "Ya Hayyu Ya Qayyum (33x)", icon: ShieldCheck, color: "text-amber-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" }
       };
     } else if (currentTradition.includes('western') || currentTradition.includes('hellenistic')) {
       return {
-        box1: { label: "Planetary Day & Hour Ruler", value: "Solar Day • Jupiter Hour (11:15 - 12:20)", icon: Sun, color: "text-amber-400", border: "border-amber-500/30", bg: "bg-amber-500/10" },
-        box2: { label: "Applying Peak Aspect", value: "Sun Sextile Mars (Orb 0°14' Exact)", icon: CheckCircle2, color: "text-emerald-400", border: "border-emerald-500/30", bg: "bg-emerald-500/10" },
-        box3: { label: "Void-of-Course Moon Alert", value: "Moon Direct • Clear Commercial Focus", icon: ShieldCheck, color: "text-indigo-400", border: "border-indigo-500/30", bg: "bg-indigo-500/10" }
+        box1: { label: "Planetary Day & Hour Ruler", value: "Solar Day • Jupiter Hour (11:15 - 12:20)", icon: Sun, color: "text-amber-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" },
+        box2: { label: "Applying Peak Aspect", value: "Sun Sextile Mars (Orb 0°14' Exact)", icon: CheckCircle2, color: "text-emerald-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" },
+        box3: { label: "Void-of-Course Moon Alert", value: "Moon Direct • Clear Commercial Focus", icon: ShieldCheck, color: "text-indigo-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" }
       };
     } else if (currentTradition.includes('chinese') || currentTradition.includes('bazi')) {
       return {
-        box1: { label: "Daily Solar Pillar & Term", value: "Wood Dragon Day • Jie Qi Chushu", icon: Star, color: "text-cyan-400", border: "border-cyan-500/30", bg: "bg-cyan-500/10" },
-        box2: { label: "12 Day Officer (黄道吉日)", value: "Officer: Cheng (Success) • Ideal for Deals", icon: CheckCircle2, color: "text-emerald-400", border: "border-emerald-500/30", bg: "bg-emerald-500/10" },
-        box3: { label: "Daily Clash Animal (日冲)", value: "Clash: Dog (戌) • Caution Facing NW", icon: AlertTriangle, color: "text-rose-400", border: "border-rose-500/30", bg: "bg-rose-500/10" }
+        box1: { label: "Daily Solar Pillar & Term", value: "Wood Dragon Day • Jie Qi Chushu", icon: Star, color: "text-cyan-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" },
+        box2: { label: "12 Day Officer (黄道吉日)", value: "Officer: Cheng (Success) • Ideal for Deals", icon: CheckCircle2, color: "text-emerald-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" },
+        box3: { label: "Daily Clash Animal (日冲)", value: "Clash: Dog (戌) • Caution Facing NW", icon: AlertTriangle, color: "text-rose-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" }
       };
     } else if (currentTradition.includes('kp')) {
       return {
-        box1: { label: "KP Current Sub-Lord", value: "Jupiter Sub-Lord in 10th House", icon: Star, color: "text-amber-400", border: "border-amber-500/30", bg: "bg-amber-500/10" },
-        box2: { label: "Auspicious Star Transit", value: "Pushya Star Transit: 11:30 AM - 02:15 PM", icon: CheckCircle2, color: "text-emerald-400", border: "border-emerald-500/30", bg: "bg-emerald-500/10" },
-        box3: { label: "Ruling Planets (RP) Sync", value: "Sun (L1) + Mercury (L2) Active", icon: ShieldCheck, color: "text-cyan-400", border: "border-cyan-500/30", bg: "bg-cyan-500/10" }
+        box1: { label: "KP Current Sub-Lord", value: "Jupiter Sub-Lord in 10th House", icon: Star, color: "text-amber-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" },
+        box2: { label: "Auspicious Star Transit", value: "Pushya Star Transit: 11:30 AM - 02:15 PM", icon: CheckCircle2, color: "text-emerald-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" },
+        box3: { label: "Ruling Planets (RP) Sync", value: "Sun (L1) + Mercury (L2) Active", icon: ShieldCheck, color: "text-cyan-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" }
       };
     } else if (currentTradition.includes('jaimini')) {
       return {
-        box1: { label: "Chara Dasha Sign Period", value: "Pisces-Scorpio • 1st & 9th Pada Active", icon: Star, color: "text-purple-400", border: "border-purple-500/30", bg: "bg-purple-500/10" },
-        box2: { label: "Arudha Pada Harmony", value: "AL aspected by Benefic Venus & Jupiter", icon: CheckCircle2, color: "text-emerald-400", border: "border-emerald-500/30", bg: "bg-emerald-500/10" },
-        box3: { label: "Karakamsha Focus", value: "Karakamsha in Sagittarius • Wisdom & Law", icon: ShieldCheck, color: "text-amber-400", border: "border-amber-500/30", bg: "bg-amber-500/10" }
+        box1: { label: "Chara Dasha Sign Period", value: "Pisces-Scorpio • 1st & 9th Pada Active", icon: Star, color: "text-purple-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" },
+        box2: { label: "Arudha Pada Harmony", value: "AL aspected by Benefic Venus & Jupiter", icon: CheckCircle2, color: "text-emerald-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" },
+        box3: { label: "Karakamsha Focus", value: "Karakamsha in Sagittarius • Wisdom & Law", icon: ShieldCheck, color: "text-amber-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" }
       };
     } else if (currentTradition.includes('mayan')) {
       return {
-        box1: { label: "Tzolk'in Kin & Seal", value: "Kin 14 • White Magnetic Wizard", icon: Star, color: "text-amber-400", border: "border-amber-500/30", bg: "bg-amber-500/10" },
-        box2: { label: "Galactic Resonance", value: "Tone 1 Unification • Intention Setting", icon: CheckCircle2, color: "text-cyan-400", border: "border-cyan-500/30", bg: "bg-cyan-500/10" },
-        box3: { label: "Guide Kin Energy", value: "White Worldbridger • Transcendence", icon: ShieldCheck, color: "text-emerald-400", border: "border-emerald-500/30", bg: "bg-emerald-500/10" }
+        box1: { label: "Tzolk'in Kin & Seal", value: "Kin 14 • White Magnetic Wizard", icon: Star, color: "text-amber-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" },
+        box2: { label: "Galactic Resonance", value: "Tone 1 Unification • Intention Setting", icon: CheckCircle2, color: "text-cyan-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" },
+        box3: { label: "Guide Kin Energy", value: "White Worldbridger • Transcendence", icon: ShieldCheck, color: "text-emerald-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" }
       };
     } else {
       // Vedic Default
       return {
-        box1: { label: "Today's Tithi & Yoga", value: `${astroData.tithi} • ${astroData.yoga}`, icon: Star, color: "text-cyan-400", border: "border-cyan-500/30", bg: "bg-cyan-500/10" },
-        box2: { label: "Abhijit Muhurta (Auspicious)", value: astroData.abhijit, icon: CheckCircle2, color: "text-emerald-400", border: "border-emerald-500/30", bg: "bg-emerald-500/10" },
-        box3: { label: "Rahu Kalam (Caution Window)", value: astroData.rahuKalam, icon: AlertTriangle, color: "text-rose-400", border: "border-rose-500/30", bg: "bg-rose-500/10" }
+        box1: { label: "Today's Tithi & Yoga", value: `${astroData.tithi} • ${astroData.yoga}`, icon: Star, color: "text-cyan-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" },
+        box2: { label: "Abhijit Muhurta (Auspicious)", value: astroData.abhijit, icon: CheckCircle2, color: "text-emerald-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" },
+        box3: { label: "Rahu Kalam (Caution Window)", value: astroData.rahuKalam, icon: AlertTriangle, color: "text-rose-400", border: "border-white/[0.08]", bg: "bg-white/[0.04]" }
       };
     }
   }, [currentTradition, astroData]);
@@ -222,24 +222,7 @@ export default function OmniSimpleHome({
     <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8 text-left pb-20 pt-2 sm:pt-4 relative">
       {/* ═══ LIVING AMBIENT BACKGROUND LAYER ═══ */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
-        {/* Slow-orbiting amber nebula glow — upper left */}
-        <motion.div
-          animate={{ x: [0, 40, -20, 0], y: [0, -30, 20, 0], scale: [1, 1.15, 0.95, 1] }}
-          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -top-20 -left-20 w-[500px] h-[500px] rounded-full hidden"
-        />
-        {/* Slow-orbiting indigo nebula glow — lower right */}
-        <motion.div
-          animate={{ x: [0, -30, 25, 0], y: [0, 35, -15, 0], scale: [1, 0.9, 1.1, 1] }}
-          transition={{ duration: 28, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute bottom-[10%] -right-16 w-[450px] h-[450px] rounded-full hidden"
-        />
-        {/* Cyan accent nebula — center */}
-        <motion.div
-          animate={{ x: [0, 20, -15, 0], y: [0, -20, 15, 0], opacity: [0.4, 0.7, 0.5, 0.4] }}
-          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-[40%] left-[30%] w-[350px] h-[350px] rounded-full hidden"
-        />
+        
         {/* Floating micro-particle constellation dots */}
         {[...Array(12)].map((_, i) => (
           <motion.div
@@ -727,7 +710,7 @@ export default function OmniSimpleHome({
       </div>
 
       {/* 6. Today's Auspicious Timing & Framework Indicators */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-[#0B1220] border border-cyan-500/30 grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+      <div className="p-4 sm:p-5 rounded-2xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
         {/* Box 1 */}
         <div className="flex items-center gap-3">
           <div className={`w-9 h-9 rounded-xl ${traditionTimingData.box1.bg} border ${traditionTimingData.box1.border} flex items-center justify-center shrink-0`}>
