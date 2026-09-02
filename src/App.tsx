@@ -679,42 +679,7 @@ export default function AppContent() {
                       onNavigate={navigateTo}
                     />
                   )}
-                  {activeTab === 'home' && (
-                    <OmniSimpleHome
-                      userProfile={userProfile}
-                      onNavigate={navigateTo}
-                      onOpenProfile={() => setIsProfileModalOpen(true)}
-                      onUpdateProfile={(updated: UserProfile) => { setUserProfile(updated); saveProfile(updated); }}
-                    />
-                  )}
-                  {(activeTab === 'dashboard' || activeTab === 'pro-dashboard' || activeTab === 'overview') && (
-                    <CosmicIntelligenceCenter
-                      onNavigate={navigateTo}
-                      userProfile={userProfile}
-                      onUpdateProfile={(updated: UserProfile) => { setUserProfile(updated); saveProfile(updated); }}
-                    />
-                  )}
-                  {activeTab === 'forecast' && (
-                    <OmniForecastView userProfile={userProfile} />
-                  )}
-                  {activeTab === 'ask' && (
-                    <OmniAskAssistant userProfile={userProfile} onNavigate={navigateTo} />
-                  )}
-                  {activeTab === 'charts' && (
-                    <OmniChartsView userProfile={userProfile} />
-                  )}
-                  {(activeTab === 'me' || activeTab === 'profile') && (
-                    <OmniMeView
-                      userProfile={userProfile}
-                      onEditProfile={() => setIsProfileModalOpen(true)}
-                      onNavigate={navigateTo}
-                      onResetAllData={handleResetAllData}
-                    />
-                  )}
-                  {activeTab === 'more' && (
-                    <OmniMoreHub onNavigate={navigateTo} userProfile={userProfile} />
-                  )}
-                  {/* Core Hub Views */}
+                                    {/* Core 5-Root Views */}
                   {(activeTab === 'home' || activeTab === 'overview') && (
                     <OmniSimpleHome
                       userProfile={userProfile}
@@ -731,14 +696,10 @@ export default function AppContent() {
                     />
                   )}
                   {(activeTab === 'forecast' || activeTab === 'predictions' || activeTab === 'prediction' || activeTab === 'precision-forecast' || activeTab === 'forecast-studio') && (
-                    <HighPrecisionPredictionStudio
-                      userProfile={userProfile}
-                      onNavigate={navigateTo}
-                      onOpenProfile={() => setIsProfileModalOpen(true)}
-                    />
+                    <OmniForecastView userProfile={userProfile} />
                   )}
                   {(activeTab === 'copilot' || activeTab === 'ask' || activeTab === 'oracle') && (
-                    <AstroDeterministicCopilot userProfile={userProfile} onNavigateToTab={navigateTo} />
+                    <OmniAskAssistant userProfile={userProfile} onNavigate={navigateTo} />
                   )}
                   {activeTab === 'charts' && (
                     <OmniChartsView userProfile={userProfile} />

@@ -93,7 +93,7 @@ export default function OmniAppSidebar({
         { id: 'dashboard', label: 'Dashboard Overview', icon: LayoutDashboard },
         { id: 'live-diagnostics', label: 'Live Cosmic Radar', icon: Activity, badge: 'Live', badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
         { id: 'copilot', label: 'AI Oracle Copilot', icon: MessageCircle, badge: 'AI', badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30' },
-        { id: 'studio', label: 'Cosmic 3D Studio', icon: Sparkles, badge: '3D', badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
+        { id: 'studio', label: 'Master Studio Suite', icon: Sparkles, badge: '152+', badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
         { id: 'omni-research', label: 'Consensus Core', icon: Cpu, badge: 'Research', badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' },
       ]
     },
