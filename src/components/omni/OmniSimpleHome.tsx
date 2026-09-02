@@ -11,6 +11,7 @@ import OmniWhyDrawer, { type OmniWhyDrawerProps } from './OmniWhyDrawer';
 import OmniTransitAlertCenter from './OmniTransitAlertCenter';
 import OmniDailyVibeScore from './OmniDailyVibeScore';
 import OmniAskUniversalHero from './OmniAskUniversalHero';
+import ProblemToSolutionHero from '../home/ProblemToSolutionHero';
 import AstroDashboardControlDrawer from '../dashboard/AstroDashboardControlDrawer';
 import CosmicIntelligenceCenter from '../CosmicIntelligenceCenter';
 import BirthChartGenerator from '../BirthChartGenerator';
@@ -445,6 +446,13 @@ export default function OmniSimpleHome({
         </div>
       ) : (
         <>
+          {/* ═══ MASTER PROBLEM → ASTROLOGY → ENGINES → WHY → SOLUTION HERO ═══ */}
+          <ProblemToSolutionHero
+            userProfile={userProfile}
+            onNavigate={onNavigate}
+            onOpenProfile={onOpenProfile}
+          />
+
           {/* 2. Personalized Cosmic Placements Card (Live Computed) */}
           <div className="relative rounded-2xl overflow-hidden shadow-xl">
             {/* Animated gradient border */}
