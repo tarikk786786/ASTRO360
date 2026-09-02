@@ -65,11 +65,11 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset, onClos
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#060A12]/92 backdrop-blur-xl overflow-y-auto flex items-center justify-center p-4 sm:p-6 text-left">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xl overflow-y-auto flex items-center justify-center p-4 sm:p-6 text-left">
       <motion.div
         initial={{ opacity: 0, scale: 0.96, y: 12 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="w-full max-w-2xl bg-[#0B1220] border-2 border-amber-400/35 rounded-3xl p-6 sm:p-9 shadow-2xl shadow-black/90 space-y-6 text-white relative overflow-hidden my-auto"
+        className="w-full max-w-2xl bg-[#111315]/95 backdrop-blur-2xl border border-white/[0.08] rounded-3xl p-6 sm:p-9 shadow-2xl shadow-black/90 space-y-6 text-white relative overflow-hidden my-auto"
       >
         {/* Close Button if onClose is provided */}
         {onClose && (
@@ -84,7 +84,7 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset, onClos
         )}
 
         {/* Header */}
-        <div className="space-y-2 border-b border-white/10 pb-5 relative z-10">
+        <div className="space-y-2 border-b border-white/[0.08] pb-5 relative z-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 border border-white/[0.08] text-amber-300 text-[11px] font-mono font-bold tracking-wider uppercase">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
             <span>Visitor Customization • 100% Free Forever</span>
