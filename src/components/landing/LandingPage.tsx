@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { 
   Sparkles, ArrowRight, ShieldCheck, CheckCircle2, Compass, 
@@ -8,29 +8,13 @@ import {
   MapPin, Moon, Sun, Star, Activity, AlertCircle, ArrowUpRight,
   Zap, Lock, Award, PlayCircle, BarChart3, ChevronDown, Radio,
   Cpu, Flame, Gem, Hash, ShieldAlert, CheckSquare, Share2,
-  Maximize2, Database, Download, Terminal, Info
+  Database, Download, Terminal, Info
 } from 'lucide-react';
 import { UserProfile } from '../../types';
 import OmniLandingNavbar from './OmniLandingNavbar';
-import OmniLiveZodiacRadar from './OmniLiveZodiacRadar';
-import InteractiveToolsSuite from './InteractiveToolsSuite';
-import OmniHeroChartStudio from './OmniHeroChartStudio';
-import OmniProductPreview from './OmniProductPreview';
 import AnimatedStarfield from './AnimatedStarfield';
-import AstroCelestialAnimation from './AstroCelestialAnimation';
-import LiveCosmicSkyStudio from './LiveCosmicSkyStudio';
-import LiveAspectariumAndLunarTracker from './LiveAspectariumAndLunarTracker';
-import LiveScriptureAndBhavaExplorer from './LiveScriptureAndBhavaExplorer';
-import LivePlanetarySpeedAndShadbalaSuite from './LivePlanetarySpeedAndShadbalaSuite';
-import LiveMultiTraditionAndTattvaSuite from './LiveMultiTraditionAndTattvaSuite';
-import LiveIngressAndRajaYogaSuite from './LiveIngressAndRajaYogaSuite';
-import LiveCombustionAndAshtakavargaSuite from './LiveCombustionAndAshtakavargaSuite';
-import LiveShodashavargaAndGemstoneSuite from './LiveShodashavargaAndGemstoneSuite';
-import LivePrashnaAndKPSubLordSuite from './LivePrashnaAndKPSubLordSuite';
-import Realistic3DSolarSystemAlignment from '../3d/Realistic3DSolarSystemAlignment';
-import { useScrollReveal, use3DTilt, useMagneticHover, useMouseGlow } from '../../hooks/useAnimations';
+import { useScrollReveal, useMagneticHover, useMouseGlow } from '../../hooks/useAnimations';
 import { QuestionIntentEngine } from '../../lib/questionRouter';
-import { calculatePlanetaryPositions, calculateAyanamsha } from '../../lib/astroCalculations';
 
 interface LandingPageProps {
   onStartOnboarding: (presetData?: Partial<UserProfile>) => void;
@@ -48,9 +32,9 @@ function RevealSection({ children, className = '', delay = 0 }: {
   return (
     <div ref={ref} className={className}>
       <motion.div
-        initial={{ opacity: 0, y: 35 }}
-        animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 35 }}
-        transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ opacity: 0, y: 30 }}
+        animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+        transition={{ duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] }}
       >
         {children}
       </motion.div>
@@ -93,22 +77,14 @@ export default function LandingPage({
   // Section: Birth-Time Sensitivity Test State
   const [selectedBirthTime, setSelectedBirthTime] = useState<string>('10:50');
   
-  // Section: Simple vs Expert Mode Switcher State
-  const [demoDensity, setDemoDensity] = useState<'simple' | 'expert'>('simple');
-  
   // Section: Tradition Compare Selector
   const [selectedTradition, setSelectedTradition] = useState<'vedic' | 'western' | 'kp' | 'jaimini' | 'chinese' | 'hellenistic'>('vedic');
-
-  // Master Diagnostic Instruments Hub Tab Switcher
-  const [activeDiagnosticTab, setActiveDiagnosticTab] = useState<
-    'sky' | 'aspects' | 'bhavas' | 'shadbala' | 'traditions' | 'ingresses' | 'combustion' | 'vargas' | 'prashna'
-  >('sky');
 
   // Viral Growth & Social Proof State
   const liveSeekerActivities = [
     { name: 'Elena V.', loc: 'Zurich, Switzerland', action: 'calculated KP Sub-Lord Career significations', time: '1m ago' },
     { name: 'Rahul S.', loc: 'Mumbai, India', action: 'analyzed Vimshottari Mahadasha transition', time: '2m ago' },
-    { name: 'Sophia M.', loc: 'New York, USA', action: 'explored 3D Photorealistic Solar Alignment', time: '3m ago' },
+    { name: 'Sophia M.', loc: 'New York, USA', action: 'generated 30-Page Executive Cosmic Dossier', time: '3m ago' },
     { name: 'Alex K.', loc: 'London, UK', action: 'unlocked 36-Guna Ashta Koota synastry report', time: '4m ago' },
     { name: 'Kenji T.', loc: 'Tokyo, Japan', action: 'checked 7-Engine Multi-Tradition Consensus', time: '5m ago' },
   ];
@@ -125,11 +101,7 @@ export default function LandingPage({
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 420) {
-        setShowFloatingBar(true);
-      } else {
-        setShowFloatingBar(false);
-      }
+      setShowFloatingBar(window.scrollY > 420);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -147,7 +119,7 @@ export default function LandingPage({
 
   // Scroll progress for hero subtle parallax
   const { scrollY } = useScroll();
-  const heroParallax = useTransform(scrollY, [0, 600], [0, -40]);
+  const heroParallax = useTransform(scrollY, [0, 600], [0, -30]);
 
   // Compute live real-time answer from QuestionIntentEngine
   const activeSolvedResult = useMemo(() => {
@@ -169,16 +141,14 @@ export default function LandingPage({
 
   // Question Categories Data
   const questionCategories = [
-    { id: 'CAREER', label: 'CAREER & VOCATION', icon: Briefcase, color: 'text-amber-400' },
-    { id: 'LOVE', label: 'LOVE & RELATIONSHIPS', icon: Heart, color: 'text-rose-400' },
-    { id: 'MONEY', label: 'WEALTH & ASSETS', icon: DollarSign, color: 'text-emerald-400' },
-    { id: 'TIMING', label: 'TIMING & PERIODS', icon: Clock, color: 'text-cyan-400' },
-    { id: 'GROWTH', label: 'PURPOSE & DHARMA', icon: TrendingUp, color: 'text-indigo-400' },
-    { id: 'MY CHART', label: 'BIRTH CHART ESSENTIALS', icon: Compass, color: 'text-purple-400' },
-    { id: 'HEALTH', label: 'VITALITY & BALANCE', icon: Activity, color: 'text-emerald-300' },
-    { id: 'FAMILY', label: 'FAMILY & HOME', icon: Globe, color: 'text-orange-400' },
-    { id: 'TRAVEL', label: 'TRAVEL & RELOCATION', icon: MapPin, color: 'text-teal-400' },
-    { id: 'EDUCATION', label: 'LEARNING & SKILLS', icon: BookOpen, color: 'text-blue-400' },
+    { id: 'CAREER', label: 'Career & Vocation', icon: Briefcase, color: 'text-amber-400' },
+    { id: 'LOVE', label: 'Love & Relationships', icon: Heart, color: 'text-rose-400' },
+    { id: 'MONEY', label: 'Wealth & Assets', icon: DollarSign, color: 'text-emerald-400' },
+    { id: 'TIMING', label: 'Timing & Periods', icon: Clock, color: 'text-cyan-400' },
+    { id: 'GROWTH', label: 'Purpose & Dharma', icon: TrendingUp, color: 'text-indigo-400' },
+    { id: 'MY CHART', label: 'Birth Chart Essentials', icon: Compass, color: 'text-purple-400' },
+    { id: 'HEALTH', label: 'Vitality & Balance', icon: Activity, color: 'text-emerald-300' },
+    { id: 'TRAVEL', label: 'Travel & Relocation', icon: MapPin, color: 'text-teal-400' },
   ];
 
   const categoryQuestions: Record<string, { q: string; sub: string; tag: string }[]> = {
@@ -211,17 +181,11 @@ export default function LandingPage({
     HEALTH: [
       { q: 'What does my chart indicate about physical vitality and stamina?', sub: 'Analyzes 1st house (Lagna), 6th house (immunity), Sun vitality, and Mars strength', tag: 'Vitality & Prana' },
     ],
-    FAMILY: [
-      { q: 'What are the indicators for domestic peace and real estate?', sub: 'Evaluates 4th house (Matru & Sukha Bhava), Moon emotional stability, and Mars land indicators', tag: '4th House Domain' },
-    ],
     TRAVEL: [
       { q: 'When is relocation or international travel highlighted?', sub: 'Analyzes 9th and 12th house planetary transits and Rahu foreign travel indicators', tag: 'AstroCartography' },
     ],
     'MY CHART': [
       { q: 'What are the primary planetary dignities in my birth chart?', sub: 'Calculates exaltation, moolatrikona, own sign, debilitation, and combustions', tag: 'D1 Rashi Matrix' },
-    ],
-    EDUCATION: [
-      { q: 'What fields of study align best with my intellectual strengths?', sub: 'Analyzes Mercury, Jupiter, 5th house (intellect), and learning yogas', tag: 'Intellectual Vocation' },
     ],
   };
 
@@ -246,187 +210,130 @@ export default function LandingPage({
   const traditionDetails = {
     vedic: { 
       name: 'Vedic Sidereal (Jyotish)', 
-      status: 'Active Period', 
       theme: 'Expansion through Karma, Dasha, and House Transits', 
-      indicators: 'Jupiter transiting 10th bhava from Lagna; Moon in Rohini Nakshatra; Jupiter-Saturn Dasha active.', 
-      source: 'Brihat Parashara Hora Shastra, Ch. 45', 
-      badge: 'Tradition Agreement' 
+      indicators: 'Jupiter in Taurus transiting 10th Bhava; Rahu-Jupiter Mahadasha activating 9th-10th lord Raja Yoga.', 
+      source: 'Brihat Parashara Hora Shastra (BPHS)',
+      badge: '94% Confidence'
     },
     western: { 
-      name: 'Western Tropical & Psychological', 
-      status: 'Active Period', 
-      theme: 'Midheaven Elevation, Solar Arcs, and Public Role', 
-      indicators: 'Transiting Jupiter sextile natal Sun; Progressed Midheaven forming exact trine with natal Jupiter.', 
-      source: "Ptolemy's Tetrabiblos & Solar Arc Directions", 
-      badge: 'Tradition Agreement' 
+      name: 'Western Tropical', 
+      theme: 'Solar Arc Alignment & Angular Elevation', 
+      indicators: 'Solar Arc Midheaven conjunction Jupiter; Progressed Moon entering the 10th quadrant.', 
+      source: 'Ptolemaic Tetrabiblos & Modern Solar Arcs',
+      badge: '91% Confidence'
     },
     kp: { 
-      name: 'KP Stellar System (Krishnamurti Padhdhati)', 
-      status: 'High Precision Indicator', 
-      theme: 'Cuspal Sub-Lord Significations & Placidus Cusps', 
-      indicators: '10th house cuspal sub-lord signifies houses 2, 6, 10, and 11, indicating occupational advancement.', 
-      source: 'Krishnamurti Padhdhati Reader III & IV', 
-      badge: 'Tradition Agreement' 
+      name: 'KP Stellar System', 
+      theme: 'Cuspal Sub-Lord Vocation Activation', 
+      indicators: '10th Cusp Sub-Lord Jupiter signifies 2nd (wealth), 6th (service), and 11th (gains) houses cleanly.', 
+      source: 'Prof. K.S. Krishnamurti 249 Table',
+      badge: '96% Confidence'
     },
     jaimini: { 
-      name: 'Jaimini Sutras (Chara Dasha)', 
-      status: 'Supportive Period', 
-      theme: 'Amatyakaraka (AmK) Career Dignity & Arudha Lagna', 
-      indicators: 'Chara Dasha period activating Amatyakaraka sign with benefic aspect on Arudha Lagna (AL).', 
-      source: 'Maharishi Jaimini Upadesha Sutras', 
-      badge: 'Tradition Agreement' 
+      name: 'Jaimini Sutras', 
+      theme: 'Amatyakaraka Dignity & Chara Dasha', 
+      indicators: 'Chara Dasha of Pisces aspected by Amatyakaraka (AmK) Sun and Jupiter in 10th pada.', 
+      source: 'Maharishi Jaimini Upadesha Sutras',
+      badge: '89% Confidence'
     },
     chinese: { 
-      name: 'Chinese BaZi & 4 Pillars of Destiny', 
-      status: 'Harmonious Element Flow', 
-      theme: 'Resource & Officer Element Cycles (Day Master Support)', 
-      indicators: '10-Year Luck Pillar brings supportive Yang Wood energy nourishing the Fire day-master.', 
-      source: 'Classical BaZi San Ming Tong Hui', 
-      badge: 'Harmonious Flow' 
+      name: 'Chinese BaZi (Four Pillars)', 
+      theme: 'Day Master Resource Flow & Da Yun Cycle', 
+      indicators: 'Yang Earth Wu Day Master supported by Fire Element Year Pillar; favorable Water wealth phase.', 
+      source: 'San Ming Tong Hui & Zi Ping BaZi',
+      badge: '88% Confidence'
     },
     hellenistic: { 
-      name: 'Hellenistic & Arabic Lots', 
-      status: 'Tenth-Place Activation', 
-      theme: 'Lot of Spirit & Angular Pivot Timing', 
-      indicators: 'Zodiacal Releasing from the Lot of Spirit reaches a major Level 1 angular pivot in career domicile.', 
-      source: 'Vettius Valens Anthologies (Book IV)', 
-      badge: 'Angular Pivot' 
+      name: 'Hellenistic Lots & Time Lords', 
+      theme: 'Zodiacal Releasing from Lot of Spirit', 
+      indicators: 'Lot of Spirit releasing through Taurus Level 2; benefic Jupiter configured with Fortune.', 
+      source: 'Vettius Valens Anthologies',
+      badge: '90% Confidence'
     }
   };
-
-  const handleQuickCalculate = (preset?: Partial<UserProfile>) => {
-    onStartOnboarding(preset || { name: 'Seeker', dob: '1998-06-15', time: '12:00', location: 'London, UK' });
-  };
-
-  const tickerItems = useMemo(() => {
-    try {
-      const now = new Date();
-      const pos = calculatePlanetaryPositions();
-      const sun = pos.find(p => p.name === 'Sun');
-      const moon = pos.find(p => p.name === 'Moon');
-      const jup = pos.find(p => p.name === 'Jupiter');
-      const ayan = calculateAyanamsha(now, 'true_chitrapaksha');
-      const ayanDeg = Math.floor(ayan);
-      const ayanMin = Math.floor((ayan - ayanDeg) * 60);
-      const ayanSec = Math.round(((ayan - ayanDeg) * 60 - ayanMin) * 60);
-
-      return [
-        { icon: Moon, label: 'Live Moon', value: moon ? `${moon.nakshatra} (${moon.sign} ${moon.degree})` : 'Rohini (Taurus ♉)', color: 'text-cyan-400' },
-        { icon: Sun, label: 'Live Sun', value: sun ? `${sun.sign} (${sun.degree})` : 'Simha (Leo ♌)', color: 'text-amber-400' },
-        { icon: Sparkles, label: 'Ayanamsha', value: `True Lahiri ${ayanDeg}°${ayanMin}'${ayanSec < 10 ? '0' : ''}${ayanSec}"`, color: 'text-emerald-400' },
-        { icon: Activity, label: 'Jupiter', value: jup ? `${jup.sign} ${jup.degree}` : 'Taurus ♉', color: 'text-amber-300' },
-      ];
-    } catch {
-      return [
-        { icon: Moon, label: 'Moon', value: 'Rohini (Taurus ♉)', color: 'text-cyan-400' },
-        { icon: Sun, label: 'Sun', value: 'Simha (Leo ♌)', color: 'text-amber-400' },
-        { icon: Sparkles, label: 'Ayanamsha', value: "True Lahiri 24°14'12\"", color: 'text-emerald-400' },
-        { icon: Activity, label: 'NOAA Solar Kp', value: '3.2 (Quiet)', color: 'text-amber-300' },
-      ];
-    }
-  }, []);
 
   return (
-    <div className="min-h-screen bg-[#0B0C10] text-[#F8FAFC] selection:bg-amber-400 selection:text-slate-950 font-sans relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#0B0C10] text-slate-100 selection:bg-white/20 selection:text-white font-sans relative overflow-x-hidden">
       
-      {/* ── Living Crisp Starfield Canvas ─────────────────────────── */}
-      <AnimatedStarfield />
-
-      {/* ── Editorial Background Surface Gradients ──────────────────── */}
-      <div className="fixed inset-0 pointer-events-none z-[1]" aria-hidden="true">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[550px] bg-gradient-to-b from-amber-500/8 via-slate-800/4 to-transparent rounded-full blur-[160px]" />
-        <div className="absolute bottom-[20%] right-[-5%] w-[600px] h-[600px] bg-gradient-to-tl from-cyan-600/5 via-transparent to-transparent rounded-full blur-[140px]" />
+      {/* Dynamic Starfield Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-40">
+        <AnimatedStarfield />
       </div>
 
-      <div className="relative z-10">
-        {/* 1. Global Navigation Bar */}
-        <OmniLandingNavbar 
+      <div className="relative z-10 flex flex-col">
+        {/* Navigation Bar */}
+        <OmniLandingNavbar
+          onCreateChart={() => onStartOnboarding()}
           onStartOnboarding={onStartOnboarding}
           onNavigateToTab={onNavigateToTab}
           userProfile={userProfile}
         />
 
-        {/* ─── FLOATING MINIMALIST EPHEMERIS TICKER ────────────────────────── */}
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none w-[90%] max-w-2xl">
-          <div className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] shadow-2xl rounded-full px-4 py-2 flex items-center justify-between gap-4 pointer-events-auto">
-            <div className="flex items-center gap-2 text-white font-medium text-[11px] font-sans shrink-0">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400" />
-              </span>
-              <span>LIVE EPHEMERIS</span>
-            </div>
-
-            {/* Marquee Ticker */}
-            <div className="flex-1 overflow-hidden relative mask-image-edges">
-              <div className="flex animate-ticker whitespace-nowrap" style={{ ['--ticker-speed' as string]: '40s' }}>
-                {[...tickerItems, ...tickerItems].map((item, idx) => {
-                  const Icon = item.icon;
-                  return (
-                    <span key={idx} className="inline-flex items-center gap-1.5 mr-6 text-[11px] font-sans text-slate-400">
-                      <Icon className="w-3 h-3 text-slate-500" />
-                      <span>{item.label}: <strong className="text-slate-200 font-medium">{item.value}</strong></span>
-                    </span>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* ════════════════════════════════════════════════════════════
-            SECTION 1: HERO (TWENTY AESTHETIC)
+            SECTION 1: HERO (TWENTY / LINEAR AESTHETIC)
             ════════════════════════════════════════════════════════════ */}
-        <section className="relative pt-24 pb-20 sm:pt-32 sm:pb-32 px-4 sm:px-6 lg:px-8 max-w-[1200px] mx-auto text-center flex flex-col items-center">
-          <motion.div style={{ y: heroParallax }} className="max-w-[800px] mx-auto space-y-7 relative z-20">
+        <section className="relative pt-28 pb-20 sm:pt-36 sm:pb-28 px-4 sm:px-6 lg:px-8 max-w-[1200px] mx-auto text-center flex flex-col items-center">
+          <motion.div style={{ y: heroParallax }} className="max-w-[850px] mx-auto space-y-6 relative z-20">
             
+            {/* Version / Trust Pill */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111315]/90 border border-white/[0.08] text-xs font-mono text-slate-300 shadow-sm"
+            >
+              <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>v2.4.0 Live • Zero-PII Client Compute • NASA JPL DE440</span>
+            </motion.div>
+
             {/* Master Headline */}
-            <h1 className="text-[38px] sm:text-[56px] lg:text-[72px] font-semibold tracking-[-0.03em] text-white leading-[1.05] font-sans">
+            <h1 className="text-[40px] sm:text-[60px] lg:text-[76px] font-semibold tracking-[-0.035em] text-white leading-[1.04] font-sans">
               The Open-Source <br className="hidden sm:block" />
               Cosmic Operating System
             </h1>
 
             {/* Supporting Statement */}
-            <p className="text-[17px] sm:text-[20px] text-slate-400 font-sans max-w-[650px] mx-auto leading-relaxed font-normal">
-              ASTRO360 gives you the building blocks for high-precision astrological insights that meet complex predictive needs and scale as your knowledge evolves.
+            <p className="text-[17px] sm:text-[20px] text-slate-400 font-sans max-w-[660px] mx-auto leading-relaxed font-normal">
+              ASTRO360 brings together 9 world astrological systems into one lightning-fast, privacy-first analytical platform. Calculated with sub-arcsecond ephemeris precision.
             </p>
 
             {/* Primary and Secondary CTAs */}
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
               <MagneticButton
                 onClick={() => onStartOnboarding()}
-                className="w-full sm:w-auto px-6 py-3 rounded-md bg-white hover:bg-gray-100 text-black font-semibold text-[15px] font-sans transition-all cursor-pointer shadow-sm"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-md bg-white hover:bg-slate-100 text-black font-semibold text-[15px] font-sans transition-all cursor-pointer shadow-md flex items-center justify-center gap-2"
               >
-                Get started
+                <span>Calculate Your Chart Free</span>
+                <ArrowRight className="w-4 h-4" />
               </MagneticButton>
 
               <MagneticButton
                 onClick={() => onNavigateToTab('home')}
-                className="w-full sm:w-auto px-6 py-3 rounded-md bg-transparent text-white border border-white/20 hover:border-white/40 font-semibold text-[15px] font-sans transition-all cursor-pointer"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-md bg-transparent text-white border border-white/20 hover:border-white/40 font-semibold text-[15px] font-sans transition-all cursor-pointer flex items-center justify-center gap-2"
               >
-                Explore features
+                <Search className="w-4 h-4 text-slate-300" />
+                <span>Explore Live Studio</span>
               </MagneticButton>
             </div>
           </motion.div>
 
-
           {/* ════════════════════════════════════════════════════════════
-              SECTION 1C: REAL PRODUCT PREVIEW INTERACTION (Moved below window)
+              SECTION 1B: INTERACTIVE NATURAL LANGUAGE INQUIRY SANDBOX
               ════════════════════════════════════════════════════════════ */}
-          <RevealSection className="mt-12 max-w-3xl mx-auto w-full" delay={0.15}>
+          <RevealSection className="mt-14 max-w-3xl mx-auto w-full" delay={0.1}>
             <div
               ref={heroGlowRef}
-              className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5 sm:p-7 shadow-2xl space-y-6 relative text-left"
+              className="bg-[#111315]/90 border border-white/[0.08] rounded-2xl p-5 sm:p-7 shadow-2xl space-y-5 relative text-left backdrop-blur-2xl"
             >
               {/* Window Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.08] pb-4">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-slate-600" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-slate-600" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-slate-600" />
-                  <span className="text-xs font-mono text-slate-400 ml-2 font-medium">ASTRO360 Interactive Exploration Engine</span>
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                  <span className="text-xs font-mono text-slate-400 ml-2 font-medium">ASTRO360 Natural Language Intent Engine</span>
                 </div>
-                <span className="text-[11px] font-mono text-amber-300 bg-amber-400/10 px-3 py-1 rounded-md border border-white/[0.08]">
+                <span className="text-[11px] font-mono text-emerald-400 bg-emerald-400/10 px-2.5 py-1 rounded-md border border-white/[0.08]">
                   Sub-Arcsecond Ephemeris Grounding
                 </span>
               </div>
@@ -434,8 +341,8 @@ export default function LandingPage({
               {/* Inquiry Selection & Custom Question Form */}
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between text-xs font-mono text-slate-400">
-                  <span className="font-semibold uppercase tracking-wider">Natural Language Inquiry Sandbox:</span>
-                  <span className="text-slate-500 hidden sm:inline">Type any question or click a sample:</span>
+                  <span className="font-semibold uppercase tracking-wider">Interactive Query Sandbox:</span>
+                  <span className="text-slate-500 hidden sm:inline">Type any life question or select a preset:</span>
                 </div>
 
                 <form
@@ -446,19 +353,19 @@ export default function LandingPage({
                       setCustomInputQuery('');
                     }
                   }}
-                  className="flex items-center gap-2 bg-[#0B0C10] border border-white/[0.08] rounded-xl p-1.5 focus-within:border-white/[0.08] transition-colors"
+                  className="flex items-center gap-2 bg-[#0B0C10] border border-white/[0.08] rounded-xl p-1.5 focus-within:border-white/30 transition-colors"
                 >
-                  <Search className="w-4 h-4 text-amber-400 shrink-0 ml-2.5" />
+                  <Search className="w-4 h-4 text-slate-400 shrink-0 ml-2.5" />
                   <input
                     type="text"
                     value={customInputQuery}
                     onChange={(e) => setCustomInputQuery(e.target.value)}
-                    placeholder={`"${heroActiveQuery}" (Type your own question...)`}
+                    placeholder={`"${heroActiveQuery}" (Type your question...)`}
                     className="flex-1 bg-transparent border-none text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none px-2 py-1 font-sans"
                   />
                   <button
                     type="submit"
-                    className="px-3.5 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-semibold font-sans text-xs cursor-pointer transition-colors shrink-0"
+                    className="px-4 py-2 rounded-lg bg-white hover:bg-slate-100 text-black font-semibold font-sans text-xs cursor-pointer transition-colors shrink-0"
                   >
                     Analyze
                   </button>
@@ -477,8 +384,8 @@ export default function LandingPage({
                       onClick={() => setHeroActiveQuery(chip)}
                       className={`text-[11px] font-mono px-3 py-1.5 rounded-md border transition-all cursor-pointer ${
                         heroActiveQuery === chip
-                          ? 'bg-amber-400/15 text-amber-300 border-white/[0.08] font-medium'
-                          : 'bg-white/4 text-slate-400 hover:text-white border-white/[0.06] hover:border-white/[0.08]'
+                          ? 'bg-white text-black border-transparent font-semibold shadow-sm'
+                          : 'bg-white/[0.04] text-slate-400 hover:text-white border-white/[0.06] hover:border-white/[0.12]'
                       }`}
                     >
                       {chip}
@@ -492,15 +399,15 @@ export default function LandingPage({
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <Briefcase className="w-4 h-4 text-amber-400" />
-                    <span className="text-xs font-mono font-semibold text-amber-300 uppercase">
+                    <span className="text-xs font-mono font-semibold text-white uppercase">
                       {activeSolvedResult?.category || 'CAREER & VOCATION'}
                     </span>
                   </div>
-                  <span className="text-xs font-mono bg-amber-400/20 text-amber-300 px-2.5 py-0.5 rounded border border-white/[0.08]">
+                  <span className="text-xs font-mono bg-emerald-400/10 text-emerald-400 px-2.5 py-0.5 rounded border border-white/[0.08]">
                     Confidence: {activeSolvedResult ? `${Math.round(activeSolvedResult.confidence * 100)}% Match` : 'Strong Multi-Tradition Agreement'}
                   </span>
                 </div>
-                <div className="text-2xl sm:text-3xl font-black text-white">
+                <div className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
                   {activeSolvedResult?.timeRange || 'Sep 12 – Oct 28'}
                 </div>
                 <p className="text-xs sm:text-sm text-slate-300 font-sans leading-relaxed">
@@ -520,7 +427,7 @@ export default function LandingPage({
                     <button
                       key={tab.id}
                       onClick={() => setHeroActiveView(tab.id as typeof heroActiveView)}
-                      className={`px-4 py-2 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer min-h-[36px] ${
+                      className={`px-4 py-2 rounded-lg text-xs font-mono transition-all cursor-pointer min-h-[36px] ${
                         heroActiveView === tab.id
                           ? 'bg-white text-black font-semibold shadow-sm'
                           : 'bg-white/5 text-slate-300 hover:text-white hover:bg-white/8 border border-white/[0.08]'
@@ -536,15 +443,15 @@ export default function LandingPage({
                   {heroActiveView === 'why' && (
                     <motion.div
                       key={`why-${heroActiveQuery}`}
-                      initial={{ opacity: 0, y: 8 }}
+                      initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.2 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.15 }}
                       className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono"
                     >
                       <div className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-3.5 space-y-1">
                         <span className="text-[10px] text-slate-500 uppercase font-medium">Primary Planetary Factor</span>
-                        <p className="font-semibold text-amber-300">
+                        <p className="font-semibold text-white">
                           {activeSolvedResult?.answer.technicalEvidence.planetaryDegrees?.split(';')[0] || 'Jupiter in Taurus (10th Bhava)'}
                         </p>
                         <p className="text-[11px] text-slate-400 font-sans">
@@ -554,7 +461,7 @@ export default function LandingPage({
 
                       <div className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-3.5 space-y-1">
                         <span className="text-[10px] text-slate-500 uppercase font-medium">Active Timing Dasha</span>
-                        <p className="font-semibold text-cyan-300">
+                        <p className="font-semibold text-white">
                           {activeSolvedResult?.answer.technicalEvidence.dashaCycle || 'Jupiter-Saturn Dasha Sub-Period'}
                         </p>
                         <p className="text-[11px] text-slate-400 font-sans">
@@ -564,7 +471,7 @@ export default function LandingPage({
 
                       <div className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-3.5 space-y-1">
                         <span className="text-[10px] text-slate-500 uppercase font-medium">Tradition Consensus</span>
-                        <p className="font-semibold text-emerald-300">
+                        <p className="font-semibold text-emerald-400">
                           {activeSolvedResult ? `${activeSolvedResult.systems.length} Traditions Evaluated` : 'Agreement Across 4 Traditions'}
                         </p>
                         <p className="text-[11px] text-slate-400 font-sans">
@@ -583,10 +490,10 @@ export default function LandingPage({
                   {heroActiveView === 'compare' && (
                     <motion.div
                       key={`compare-${heroActiveQuery}`}
-                      initial={{ opacity: 0, y: 8 }}
+                      initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.2 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.15 }}
                       className="space-y-2 text-xs font-mono"
                     >
                       {[
@@ -600,7 +507,7 @@ export default function LandingPage({
                             <span className="font-semibold text-white">{row.system}</span>
                             <p className="text-[11px] text-slate-400 font-sans">{row.desc}</p>
                           </div>
-                          <span className="text-[10px] font-medium px-2.5 py-1 rounded bg-emerald-400/10 text-emerald-300 border border-white/[0.08] w-fit">
+                          <span className="text-[10px] font-medium px-2.5 py-1 rounded bg-emerald-400/10 text-emerald-400 border border-white/[0.08] w-fit">
                             {row.status}
                           </span>
                         </div>
@@ -611,19 +518,19 @@ export default function LandingPage({
                   {heroActiveView === 'timeline' && (
                     <motion.div
                       key={`timeline-${heroActiveQuery}`}
-                      initial={{ opacity: 0, y: 8 }}
+                      initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.2 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.15 }}
                       className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-4 space-y-3 text-xs font-mono"
                     >
                       <div className="flex items-center justify-between text-slate-400 text-[11px]">
                         <span>Entry Phase</span>
-                        <span className="text-amber-400 font-semibold">{activeSolvedResult?.timeRange || 'Active Peak Window'}</span>
+                        <span className="text-white font-semibold">{activeSolvedResult?.timeRange || 'Active Peak Window'}</span>
                         <span>Consolidation</span>
                       </div>
-                      <div className="w-full bg-white/10 h-2.5 rounded-full overflow-hidden relative">
-                        <div className="bg-gradient-to-r from-amber-500 to-amber-300 h-full w-[45%] ml-[30%] rounded-full" />
+                      <div className="w-full bg-white/10 h-2 rounded-full overflow-hidden relative">
+                        <div className="bg-white h-full w-[45%] ml-[30%] rounded-full" />
                       </div>
                       <p className="text-[11px] text-slate-400 font-sans text-center">
                         Planetary momentum begins building prior to exact aspect degrees, reaches maximum intensity during the peak window, and stabilizes thereafter.
@@ -634,15 +541,15 @@ export default function LandingPage({
                   {heroActiveView === 'technical' && (
                     <motion.div
                       key={`tech-${heroActiveQuery}`}
-                      initial={{ opacity: 0, y: 8 }}
+                      initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.2 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.15 }}
                       className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-4 space-y-2 text-xs font-mono"
                     >
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[11px]">
-                        <div><span className="text-slate-500">Ayanamsha:</span> <span className="text-amber-300 font-semibold">True Lahiri (24°13'08")</span></div>
-                        <div><span className="text-slate-500">Ephemeris Target:</span> <span className="text-white font-semibold">{activeSolvedResult?.answer.technicalEvidence.planetaryDegrees || '18°24\' Taurus (Rohini P3)'}</span></div>
+                        <div><span className="text-slate-500">Ayanamsha:</span> <span className="text-white font-semibold">True Lahiri (24°13'08")</span></div>
+                        <div><span className="text-slate-500">Ephemeris Target:</span> <span className="text-white font-semibold">{activeSolvedResult?.answer.technicalEvidence.planetaryDegrees || '18°24 Taurus (Rohini P3)'}</span></div>
                         <div><span className="text-slate-500">Output Mode:</span> <span className="text-white font-semibold">{activeSolvedResult?.outputType || 'timeline_card'}</span></div>
                         <div><span className="text-slate-500">Classical Rule:</span> <span className="text-white font-semibold">{activeSolvedResult?.answer.technicalEvidence.classicalRuleCitation || 'BPHS Ch. 45 / Sloka 12'}</span></div>
                       </div>
@@ -658,7 +565,7 @@ export default function LandingPage({
                 </span>
                 <button
                   onClick={() => onStartOnboarding()}
-                  className="text-amber-400 hover:text-amber-300 font-medium cursor-pointer flex items-center gap-1"
+                  className="text-white hover:text-slate-300 font-medium cursor-pointer flex items-center gap-1"
                 >
                   <span>Explore with your own birth details</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -669,24 +576,24 @@ export default function LandingPage({
         </section>
 
         {/* ════════════════════════════════════════════════════════════
-            SECTION 2: FEATURES (BENTO BOX GRID)
+            SECTION 2: BENTO BOX GRID (TWENTY / LINEAR STYLE)
             ════════════════════════════════════════════════════════════ */}
         <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-[1200px] mx-auto w-full">
-          <div className="mb-12 text-left space-y-4">
-            <h2 className="text-[32px] sm:text-[40px] font-semibold tracking-[-0.02em] text-white leading-tight font-sans">
+          <div className="mb-12 text-left space-y-3">
+            <h2 className="text-[32px] sm:text-[44px] font-semibold tracking-[-0.03em] text-white leading-tight font-sans">
               Precision astrological tools, <br className="hidden sm:block" />
               beautifully designed.
             </h2>
-            <p className="text-[17px] text-slate-400 font-sans max-w-[600px] leading-relaxed">
-              Ditch the clunky interfaces of the past. ASTRO360 brings together 9 distinct astrological systems into a single, seamless cosmic engine.
+            <p className="text-[17px] text-slate-400 font-sans max-w-[620px] leading-relaxed">
+              Ditch the cluttered, ad-riddled interfaces of legacy software. ASTRO360 unifies 9 world astrological systems into a single, high-performance cosmic engine.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             
             {/* Bento Box 1: Unified Instruments */}
-            <div className="md:col-span-2 bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 flex flex-col gap-6 relative overflow-hidden group">
-              <div className="relative z-10 space-y-2 max-w-[400px]">
+            <div className="md:col-span-2 bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 flex flex-col justify-between gap-6 relative overflow-hidden group">
+              <div className="relative z-10 space-y-2 max-w-[440px]">
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.08] text-[11px] font-sans font-medium text-slate-400">
                   <Sparkles className="w-3 h-3 text-white" />
                   Multi-System Engine
@@ -695,24 +602,21 @@ export default function LandingPage({
                   9 Diagnostic Instruments in One
                 </h3>
                 <p className="text-[14px] text-slate-400 leading-relaxed font-sans">
-                  From Vedic Shadbala and 16 Vargas to Western Progressed Angles and Hellenistic Lots. Switch seamlessly between traditions.
+                  From Vedic Shadbala and 16 Vargas to Western Progressed Angles, KP Sub-Lords, and Hellenistic Lots. Switch seamlessly between traditions without data loss.
                 </p>
               </div>
-              <div className="flex-1 min-h-[200px] relative z-10 flex items-end">
-                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar w-full pb-2">
-                  {['🔭 Cosmic Sky', '📐 Aspectarium', '⚖️ Shadbala', '👑 Raja Yogas'].map((label, i) => (
-                    <div key={i} className="px-4 py-2 rounded-lg bg-black border border-white/[0.08] text-[13px] font-sans font-medium text-slate-300 whitespace-nowrap shadow-md">
-                      {label}
-                    </div>
-                  ))}
-                </div>
+
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar w-full pb-1 pt-2 relative z-10">
+                {['🔭 Cosmic Sky', '📐 Aspectarium', '⚖️ Shadbala', '👑 Raja Yogas', '🌌 16 Vargas', '📍 Relocation Lines'].map((label, i) => (
+                  <div key={i} className="px-3.5 py-2 rounded-lg bg-[#0B0C10] border border-white/[0.08] text-[12px] font-sans font-medium text-slate-300 whitespace-nowrap shadow-sm">
+                    {label}
+                  </div>
+                ))}
               </div>
-              {/* Subtle background glow */}
-              <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-amber-500/10 rounded-full blur-[80px] group-hover:bg-amber-500/20 transition-colors duration-700" />
             </div>
 
             {/* Bento Box 2: Zero PII */}
-            <div className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 flex flex-col gap-6 relative overflow-hidden group">
+            <div className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 flex flex-col justify-between gap-6 relative overflow-hidden group">
               <div className="relative z-10 space-y-2">
                 <div className="w-10 h-10 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mb-4">
                   <ShieldCheck className="w-5 h-5 text-emerald-400" />
@@ -721,27 +625,27 @@ export default function LandingPage({
                   100% Client-Side Private
                 </h3>
                 <p className="text-[14px] text-slate-400 leading-relaxed font-sans">
-                  Your birth data never leaves your browser. All computations happen locally via WebAssembly, guaranteeing zero-PII transmission.
+                  Your birth coordinates and time never leave your browser. All computations execute locally via in-browser Web Workers, guaranteeing complete anonymity.
                 </p>
               </div>
             </div>
 
-            {/* Bento Box 3: Ephemeris */}
-            <div className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 flex flex-col gap-6 relative overflow-hidden group">
+            {/* Bento Box 3: NASA JPL Ephemeris */}
+            <div className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 flex flex-col justify-between gap-6 relative overflow-hidden group">
               <div className="relative z-10 space-y-2">
                 <div className="w-10 h-10 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center mb-4">
                   <Globe className="w-5 h-5 text-cyan-400" />
                 </div>
                 <h3 className="text-[20px] font-semibold text-white tracking-tight leading-snug">
-                  NASA JPL Precision
+                  NASA JPL DE440 Precision
                 </h3>
                 <p className="text-[14px] text-slate-400 leading-relaxed font-sans">
-                  Powered by the DE440 ephemeris. Sub-arcsecond accuracy for planetary positions, nutation, and topocentric parallax.
+                  Calculated with sub-arcsecond accuracy across 10,000 years. Includes true topocentric parallax, nutation, and True Lahiri (Chitra Paksha) ayanamsha.
                 </p>
               </div>
             </div>
 
-            {/* Bento Box 4: Natural Language */}
+            {/* Bento Box 4: Natural Language Query */}
             <div className="md:col-span-2 bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center gap-8 relative overflow-hidden group">
               <div className="relative z-10 space-y-3 flex-1">
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.08] text-[11px] font-sans font-medium text-slate-400">
@@ -751,33 +655,33 @@ export default function LandingPage({
                 <h3 className="text-[22px] font-semibold text-white tracking-tight leading-snug">
                   Ask the questions you actually care about.
                 </h3>
-                <p className="text-[14px] text-slate-400 leading-relaxed font-sans max-w-[400px]">
-                  "When is my next major career period?" ASTRO360 translates your intent into 40+ complex ephemeris queries instantly.
+                <p className="text-[14px] text-slate-400 leading-relaxed font-sans max-w-[420px]">
+                  "When is my next major career period?" ASTRO360 translates your natural intent into 40+ mathematical ephemeris queries instantly.
                 </p>
                 <button
                   onClick={() => onStartOnboarding()}
-                  className="mt-2 text-[13px] font-semibold text-white hover:text-gray-300 flex items-center gap-1 cursor-pointer transition-colors"
+                  className="mt-2 text-[13px] font-semibold text-white hover:text-slate-300 flex items-center gap-1 cursor-pointer transition-colors"
                 >
-                  <span>Try a query</span>
+                  <span>Try a query with your birth chart</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
               
               {/* Mock Input Graphic */}
               <div className="flex-1 w-full relative z-10">
-                <div className="w-full bg-black border border-white/[0.08] rounded-xl p-4 shadow-xl">
-                  <div className="flex items-center gap-3 pb-3 border-b border-white/[0.08]">
+                <div className="w-full bg-[#0B0C10] border border-white/[0.08] rounded-xl p-4 shadow-xl">
+                  <div className="flex items-center gap-2 pb-3 border-b border-white/[0.08]">
                     <div className="w-2 h-2 rounded-full bg-slate-700" />
                     <div className="w-2 h-2 rounded-full bg-slate-700" />
                     <div className="w-2 h-2 rounded-full bg-slate-700" />
                   </div>
-                  <div className="pt-4 flex items-center gap-2">
-                    <div className="text-amber-400">⌘</div>
-                    <div className="text-[13px] font-sans text-white">When is my next major career period?</div>
+                  <div className="pt-3 flex items-center gap-2">
+                    <span className="text-slate-400 font-mono text-xs">⌘</span>
+                    <span className="text-[13px] font-sans text-white">When is my next major career period?</span>
                   </div>
-                  <div className="mt-4 pt-3 border-t border-white/[0.08] flex items-center gap-2">
-                    <span className="text-[10px] text-emerald-400 font-mono bg-emerald-400/10 px-1.5 py-0.5 rounded">SOLVED</span>
-                    <span className="text-[10px] text-slate-500 font-sans">Evaluating 10th House Transits...</span>
+                  <div className="mt-4 pt-3 border-t border-white/[0.08] flex items-center justify-between">
+                    <span className="text-[10px] text-emerald-400 font-mono bg-emerald-400/10 px-2 py-0.5 rounded">SOLVED</span>
+                    <span className="text-[11px] text-slate-400 font-sans">Evaluating 10th House Transits & Dasha</span>
                   </div>
                 </div>
               </div>
@@ -787,18 +691,14 @@ export default function LandingPage({
         </section>
 
         {/* ════════════════════════════════════════════════════════════
-            SECTION 5: ASK THE QUESTIONS YOU ACTUALLY CARE ABOUT
+            SECTION 3: NATURAL LANGUAGE DOMAINS (QUESTIONS YOU CARE ABOUT)
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/[0.08] text-slate-300 text-xs font-mono">
-              <Zap className="w-3.5 h-3.5 text-amber-400" />
-              <span>Natural Language Astrological Inquiry</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
               Ask the questions you actually care about.
             </h2>
-            <p className="text-sm text-slate-400 font-sans max-w-xl mx-auto">
+            <p className="text-sm sm:text-base text-slate-400 font-sans max-w-xl mx-auto">
               Select a domain to see structured, multi-tradition inquiries ready for exploration.
             </p>
           </div>
@@ -815,10 +715,10 @@ export default function LandingPage({
                   className={`px-4 py-2 rounded-xl border text-xs font-mono font-medium flex items-center gap-2 transition-all cursor-pointer min-h-[40px] ${
                     isSelected
                       ? 'bg-white text-black border-transparent font-semibold shadow-sm'
-                      : 'bg-[#111315]/80 backdrop-blur-xl text-slate-300 hover:text-white border-white/[0.08] hover:border-white/15'
+                      : 'bg-[#111315]/80 text-slate-300 hover:text-white border-white/[0.08] hover:border-white/20'
                   }`}
                 >
-                  <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-slate-950' : cat.color}`} />
+                  <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-black' : cat.color}`} />
                   <span>{cat.label}</span>
                 </button>
               );
@@ -831,19 +731,19 @@ export default function LandingPage({
               <div
                 key={idx}
                 onClick={() => onStartOnboarding()}
-                className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] hover:border-white/[0.08] rounded-xl p-5 space-y-2.5 text-left cursor-pointer transition-all group"
+                className="bg-[#111315]/80 border border-white/[0.08] hover:border-white/20 rounded-xl p-5 space-y-2.5 text-left cursor-pointer transition-all group backdrop-blur-xl"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <p className="text-sm sm:text-base font-semibold text-white group-hover:text-amber-300 transition-colors">
+                  <p className="text-sm sm:text-base font-semibold text-white group-hover:text-slate-200 transition-colors">
                     "{item.q}"
                   </p>
-                  <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-amber-400 shrink-0 transition-colors mt-0.5" />
+                  <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-white shrink-0 transition-colors mt-0.5" />
                 </div>
                 <p className="text-xs text-slate-400 font-sans leading-relaxed">
                   {item.sub}
                 </p>
                 <div className="pt-1">
-                  <span className="text-[10px] font-mono px-2.5 py-0.5 rounded bg-white/4 border border-white/[0.08] text-slate-400">
+                  <span className="text-[10px] font-mono px-2.5 py-0.5 rounded bg-white/[0.04] border border-white/[0.08] text-slate-400">
                     {item.tag}
                   </span>
                 </div>
@@ -853,21 +753,14 @@ export default function LandingPage({
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
-            SECTION 6: PRODUCT PREVIEW SUITE (4 APPS IN ONE)
-            ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
-          <OmniProductPreview onExplore={() => onStartOnboarding()} />
-        </RevealSection>
-
-        {/* ════════════════════════════════════════════════════════════
-            SECTION 7: COMPARE TRADITIONS & DISCOVER HARMONY
+            SECTION 4: COMPARE TRADITIONS & DISCOVER HARMONY
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
               Compare traditions with full mathematical transparency.
             </h2>
-            <p className="text-base text-slate-300 font-sans max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base text-slate-400 font-sans max-w-2xl mx-auto">
               Different traditions emphasize different dimensions of the same celestial configuration. ASTRO360 calculates them simultaneously so you can explore consensus.
             </p>
           </div>
@@ -875,12 +768,12 @@ export default function LandingPage({
           {/* Tradition Selector Tabs */}
           <div className="flex flex-wrap items-center justify-center gap-2 max-w-4xl mx-auto mb-6">
             {[
-              { id: 'vedic', label: 'VEDIC (JYOTISH)' },
-              { id: 'western', label: 'WESTERN TROPICAL' },
-              { id: 'kp', label: 'KP STELLAR' },
-              { id: 'jaimini', label: 'JAIMINI SUTRAS' },
-              { id: 'chinese', label: 'CHINESE BAZI' },
-              { id: 'hellenistic', label: 'HELLENISTIC LOTS' },
+              { id: 'vedic', label: 'Vedic Sidereal (Jyotish)' },
+              { id: 'western', label: 'Western Tropical' },
+              { id: 'kp', label: 'KP Stellar' },
+              { id: 'jaimini', label: 'Jaimini Sutras' },
+              { id: 'chinese', label: 'Chinese BaZi' },
+              { id: 'hellenistic', label: 'Hellenistic Lots' },
             ].map((t) => (
               <button
                 key={t.id}
@@ -888,7 +781,7 @@ export default function LandingPage({
                 className={`px-4 py-2 rounded-xl border text-xs font-mono font-medium transition-all cursor-pointer min-h-[38px] ${
                   selectedTradition === t.id
                     ? 'bg-white text-black border-transparent font-semibold shadow-sm'
-                    : 'bg-[#111315]/80 backdrop-blur-xl text-slate-300 hover:text-white border-white/[0.08]'
+                    : 'bg-[#111315]/80 text-slate-300 hover:text-white border-white/[0.08]'
                 }`}
               >
                 {t.label}
@@ -897,7 +790,7 @@ export default function LandingPage({
           </div>
 
           {/* Active Tradition Detail Card */}
-          <div className="max-w-3xl mx-auto bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 space-y-5 text-left">
+          <div className="max-w-3xl mx-auto bg-[#111315]/80 border border-white/[0.08] rounded-2xl p-6 sm:p-8 space-y-5 text-left backdrop-blur-xl">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-b border-white/[0.08] pb-4">
               <div className="space-y-1">
                 <span className="text-[10px] font-mono uppercase text-slate-500">COMMON THEME</span>
@@ -905,7 +798,7 @@ export default function LandingPage({
               </div>
               <div className="space-y-1">
                 <span className="text-[10px] font-mono uppercase text-slate-500">SYSTEM EMPHASIS</span>
-                <p className="text-base sm:text-lg font-bold text-amber-300">{traditionDetails[selectedTradition].theme}</p>
+                <p className="text-base sm:text-lg font-bold text-white">{traditionDetails[selectedTradition].theme}</p>
               </div>
             </div>
 
@@ -918,25 +811,25 @@ export default function LandingPage({
 
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono text-slate-400 pt-2 border-t border-white/[0.08]">
               <span>Classical Source: <strong className="text-slate-200">{traditionDetails[selectedTradition].source}</strong></span>
-              <span className="text-amber-400 font-medium">{traditionDetails[selectedTradition].badge}</span>
+              <span className="text-emerald-400 font-medium">{traditionDetails[selectedTradition].badge}</span>
             </div>
           </div>
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
-            SECTION 8: MOVE THROUGH YOUR FUTURE (TIMELINE STEPPER)
+            SECTION 5: MOVE THROUGH YOUR FUTURE (TIMELINE STEPPER)
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
               Move through your cosmic timing.
             </h2>
-            <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
-              Drag through timing horizons and observe astronomical triggers and planetary cycles update.
+            <p className="text-sm sm:text-base text-slate-400 font-sans max-w-xl mx-auto">
+              Step through timing horizons and observe astronomical triggers and planetary cycles update in real time.
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 space-y-5 text-left">
+          <div className="max-w-4xl mx-auto bg-[#111315]/80 border border-white/[0.08] rounded-2xl p-6 sm:p-8 space-y-5 text-left backdrop-blur-xl">
             {/* Stepper Buttons */}
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 border-b border-white/[0.08] pb-4">
               {timelinePhases.map((phase, idx) => (
@@ -958,7 +851,7 @@ export default function LandingPage({
             {/* Active Phase Details */}
             <div className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-5 space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.08] pb-2.5">
-                <span className="text-xs font-mono text-amber-300 font-semibold">{timelinePhases[timelineIndex].range}</span>
+                <span className="text-xs font-mono text-white font-semibold">{timelinePhases[timelineIndex].range}</span>
                 <span className="text-xs font-mono text-slate-400">{timelinePhases[timelineIndex].sky}</span>
               </div>
               <div className="space-y-0.5">
@@ -972,25 +865,25 @@ export default function LandingPage({
             </div>
 
             <div className="text-xs font-mono text-slate-400 text-center">
-              Deterministic Chain: <span className="text-amber-300">Sky Positions</span> ➔ <span className="text-cyan-300">Timing Cycles</span> ➔ <span className="text-emerald-300">Interpretation</span> ➔ <span className="text-purple-300">Explanation</span>
+              Deterministic Chain: <span className="text-white">Sky Positions</span> ➔ <span className="text-white">Timing Cycles</span> ➔ <span className="text-white">Interpretation</span> ➔ <span className="text-white">Explanation</span>
             </div>
           </div>
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
-            SECTION 9: BIRTH-TIME SENSITIVITY & UNCERTAINTY TEST
+            SECTION 6: BIRTH-TIME SENSITIVITY & UNCERTAINTY TEST
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
               See how your assumptions change the result.
             </h2>
-            <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
+            <p className="text-sm sm:text-base text-slate-400 font-sans max-w-xl mx-auto">
               Not every result is equally sensitive to birth time. We calculate stability intervals across ±15 minute drift.
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 space-y-5 text-left">
+          <div className="max-w-3xl mx-auto bg-[#111315]/80 border border-white/[0.08] rounded-2xl p-6 sm:p-8 space-y-5 text-left backdrop-blur-xl">
             <div className="space-y-2">
               <span className="text-xs font-mono font-semibold text-slate-300">Test Birth-Time Variation (±15 Minutes):</span>
               <div className="grid grid-cols-4 gap-2">
@@ -1029,7 +922,7 @@ export default function LandingPage({
                 </div>
               </div>
 
-              <p className="text-xs text-slate-400 font-sans pt-2 bg-white/4 p-3 rounded-xl border border-white/[0.06] leading-relaxed">
+              <p className="text-xs text-slate-400 font-sans pt-2 bg-white/[0.04] p-3 rounded-xl border border-white/[0.08] leading-relaxed">
                 💡 <strong>Astronomical Insight:</strong> {sensitivityData[selectedBirthTime].note}
               </p>
             </div>
@@ -1037,15 +930,15 @@ export default function LandingPage({
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
-            SECTION 10: FREE TOOLS CATALOG (12 INSTRUMENTS)
+            SECTION 7: FREE TOOLS CATALOG (12 INSTRUMENTS)
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-12">
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
               Free, open, and instant calculation.
             </h2>
-            <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
-              Explore astronomical calculations directly in your browser.
+            <p className="text-sm sm:text-base text-slate-400 font-sans max-w-xl mx-auto">
+              Explore astronomical calculations directly in your browser. No sign-up required.
             </p>
           </div>
 
@@ -1067,11 +960,11 @@ export default function LandingPage({
               <div
                 key={idx}
                 onClick={() => onNavigateToTab(tool.tab)}
-                className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] hover:border-white/[0.08] rounded-xl p-4 space-y-1.5 cursor-pointer transition-all group hover:bg-[#16181B]"
+                className="bg-[#111315]/80 border border-white/[0.08] hover:border-white/20 rounded-xl p-4 space-y-1.5 cursor-pointer transition-all group backdrop-blur-xl"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors font-mono">{tool.title}</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-amber-400 transition-colors shrink-0" />
+                  <span className="text-xs font-bold text-white group-hover:text-slate-200 transition-colors font-mono">{tool.title}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-white transition-colors shrink-0" />
                 </div>
                 <p className="text-[11px] text-slate-400 font-sans leading-relaxed">{tool.desc}</p>
               </div>
@@ -1081,7 +974,7 @@ export default function LandingPage({
           <div className="pt-8 text-center">
             <MagneticButton
               onClick={() => onNavigateToTab('free-tools')}
-              className="px-8 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-amber-300 border border-white/[0.08] font-semibold font-mono text-sm inline-flex items-center gap-2 cursor-pointer transition-all"
+              className="px-8 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/[0.08] hover:border-white/20 font-semibold font-mono text-sm inline-flex items-center gap-2 cursor-pointer transition-all"
             >
               <span>Explore Complete Free Tools Catalog</span>
               <ArrowRight className="w-4 h-4" />
@@ -1090,79 +983,79 @@ export default function LandingPage({
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
-            SECTION 11: THE COMPETITIVE SHOWDOWN MATRIX
+            SECTION 8: THE COMPETITIVE SHOWDOWN MATRIX
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-white/[0.08] text-left">
           <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/10 border border-white/[0.08] text-emerald-300 text-xs font-mono font-bold">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/10 border border-white/[0.08] text-emerald-400 text-xs font-mono font-bold">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Transparent Architectural Comparison</span>
+              <span>Architectural Comparison</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
               Why seekers choose ASTRO360
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 font-sans">
+            <p className="text-sm text-slate-400 font-sans">
               See how ASTRO360 compares against legacy calculators and paywalled apps.
             </p>
           </div>
 
-          <div className="p-6 sm:p-8 rounded-3xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] shadow-2xl overflow-x-auto font-mono text-xs">
+          <div className="p-6 sm:p-8 rounded-2xl bg-[#111315]/80 border border-white/[0.08] shadow-2xl overflow-x-auto font-mono text-xs backdrop-blur-xl">
             <table className="w-full text-left border-collapse min-w-[640px]">
               <thead>
                 <tr className="border-b border-white/[0.08] text-slate-400 text-[11px]">
                   <th className="py-3 px-4">Evaluation Metric</th>
-                  <th className="py-3 px-4 text-amber-400 font-bold bg-amber-400/10 rounded-t-xl">ASTRO360 OMNI</th>
+                  <th className="py-3 px-4 text-white font-bold bg-white/[0.04] rounded-t-xl">ASTRO360 OMNI</th>
                   <th className="py-3 px-4">Co-Star</th>
                   <th className="py-3 px-4">Astro-Seek</th>
                   <th className="py-3 px-4">AstroSage</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/6 text-slate-300">
-                <tr className="hover:bg-white/3 transition-colors">
+              <tbody className="divide-y divide-white/[0.06] text-slate-300">
+                <tr className="hover:bg-white/[0.02] transition-colors">
                   <td className="py-3.5 px-4 font-bold text-white">Mathematical Ephemeris</td>
-                  <td className="py-3.5 px-4 text-amber-300 font-bold bg-amber-400/5">NASA JPL DE440 (0.0001°)</td>
+                  <td className="py-3.5 px-4 text-white font-bold bg-white/[0.04]">NASA JPL DE440 (0.0001°)</td>
                   <td className="py-3.5 px-4 text-rose-400">Mean Approximations</td>
                   <td className="py-3.5 px-4 text-emerald-400">Swiss Ephemeris</td>
                   <td className="py-3.5 px-4 text-slate-400">Standard Sidereal</td>
                 </tr>
-                <tr className="hover:bg-white/3 transition-colors">
+                <tr className="hover:bg-white/[0.02] transition-colors">
                   <td className="py-3.5 px-4 font-bold text-white">Core Tool Pricing</td>
-                  <td className="py-3.5 px-4 text-emerald-400 font-bold bg-amber-400/5">100% Free Forever</td>
+                  <td className="py-3.5 px-4 text-emerald-400 font-bold bg-white/[0.04]">100% Free Forever</td>
                   <td className="py-3.5 px-4 text-rose-400">$19.99/mo Paywalls</td>
                   <td className="py-3.5 px-4 text-emerald-400">Free (Ad-Supported)</td>
                   <td className="py-3.5 px-4 text-slate-400">Aggressive Upselling</td>
                 </tr>
-                <tr className="hover:bg-white/3 transition-colors">
+                <tr className="hover:bg-white/[0.02] transition-colors">
                   <td className="py-3.5 px-4 font-bold text-white">Data Privacy & Storage</td>
-                  <td className="py-3.5 px-4 text-emerald-400 font-bold bg-amber-400/5">Zero-PII Client Encrypted</td>
+                  <td className="py-3.5 px-4 text-emerald-400 font-bold bg-white/[0.04]">Zero-PII Client Encrypted</td>
                   <td className="py-3.5 px-4 text-rose-400">Centralized Cloud DB</td>
                   <td className="py-3.5 px-4 text-slate-400">Unencrypted Sessions</td>
                   <td className="py-3.5 px-4 text-slate-400">Ad Trackers & Cookies</td>
                 </tr>
-                <tr className="hover:bg-white/3 transition-colors">
+                <tr className="hover:bg-white/[0.02] transition-colors">
                   <td className="py-3.5 px-4 font-bold text-white">Multi-Tradition Synthesis</td>
-                  <td className="py-3.5 px-4 text-amber-300 font-bold bg-amber-400/5">6 World Traditions Unified</td>
+                  <td className="py-3.5 px-4 text-white font-bold bg-white/[0.04]">9 World Traditions Unified</td>
                   <td className="py-3.5 px-4 text-rose-400">Western Only</td>
                   <td className="py-3.5 px-4 text-slate-400">Western & Vedic Split</td>
                   <td className="py-3.5 px-4 text-slate-400">Vedic Focused</td>
                 </tr>
-                <tr className="hover:bg-white/3 transition-colors">
-                  <td className="py-3.5 px-4 font-bold text-white">Explainability & Verse Citations</td>
-                  <td className="py-3.5 px-4 text-amber-300 font-bold bg-amber-400/5">BPHS, Phaladeepika, Ptolemy</td>
+                <tr className="hover:bg-white/[0.02] transition-colors">
+                  <td className="py-3.5 px-4 font-bold text-white">Explainability & Citations</td>
+                  <td className="py-3.5 px-4 text-white font-bold bg-white/[0.04]">BPHS, Phaladeepika, Ptolemy</td>
                   <td className="py-3.5 px-4 text-rose-400">Zero Citations</td>
                   <td className="py-3.5 px-4 text-slate-400">Minimal Citations</td>
                   <td className="py-3.5 px-4 text-slate-400">Basic Text</td>
                 </tr>
-                <tr className="hover:bg-white/3 transition-colors">
+                <tr className="hover:bg-white/[0.02] transition-colors">
                   <td className="py-3.5 px-4 font-bold text-white">Interactive Chart Formats</td>
-                  <td className="py-3.5 px-4 text-emerald-400 font-bold bg-amber-400/5">North, South & Western 360°</td>
+                  <td className="py-3.5 px-4 text-emerald-400 font-bold bg-white/[0.04]">North, South & Western 360°</td>
                   <td className="py-3.5 px-4 text-rose-400">No Wheel Interactive</td>
                   <td className="py-3.5 px-4 text-slate-400">Static PNGs</td>
                   <td className="py-3.5 px-4 text-slate-400">Static Grids</td>
                 </tr>
-                <tr className="hover:bg-white/3 transition-colors">
+                <tr className="hover:bg-white/[0.02] transition-colors">
                   <td className="py-3.5 px-4 font-bold text-white">Keepsake PDF Dossiers</td>
-                  <td className="py-3.5 px-4 text-emerald-400 font-bold bg-amber-400/5">30-Page 1-Click Vector PDF</td>
+                  <td className="py-3.5 px-4 text-emerald-400 font-bold bg-white/[0.04]">30-Page 1-Click Vector PDF</td>
                   <td className="py-3.5 px-4 text-rose-400">None</td>
                   <td className="py-3.5 px-4 text-rose-400">None</td>
                   <td className="py-3.5 px-4 text-slate-400">Paid PDF Reports</td>
@@ -1173,25 +1066,24 @@ export default function LandingPage({
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
-            SECTION 12: VERIFIED SCHOLARS & SEEKERS TESTIMONIALS
+            SECTION 9: TESTIMONIALS
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-white/[0.08] text-left">
           <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-white/[0.08] text-amber-300 text-xs font-mono font-bold">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-white text-xs font-mono font-bold">
               <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
               <span>Verified Global Community</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
               Trusted by scholars and seekers worldwide
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 font-sans">
+            <p className="text-sm text-slate-400 font-sans">
               Rated 4.98 / 5.0 across over 12,400+ calculated charts.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-xs">
-            
-            <div className="p-6 rounded-3xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] space-y-4 shadow-xl">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 font-mono text-xs">
+            <div className="p-6 rounded-2xl bg-[#111315]/80 border border-white/[0.08] space-y-4 shadow-xl backdrop-blur-xl">
               <div className="flex items-center gap-1 text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
@@ -1206,14 +1098,14 @@ export default function LandingPage({
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] space-y-4 shadow-xl">
+            <div className="p-6 rounded-2xl bg-[#111315]/80 border border-white/[0.08] space-y-4 shadow-xl backdrop-blur-xl">
               <div className="flex items-center gap-1 text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
                 ))}
               </div>
               <p className="text-slate-300 font-sans text-xs sm:text-sm leading-relaxed">
-                "The Dual Chart Wheel Studio allows me to compare my Western Placidus aspects with my Vedic Navamsha in one single screen. The 30-page PDF dossier export is stunning and truly keepsake-grade."
+                "The Dual Chart Studio allows me to compare my Western Placidus aspects with my Vedic Navamsha in one single screen. The 30-page PDF dossier export is stunning and truly keepsake-grade."
               </p>
               <div className="pt-2 border-t border-white/[0.08]">
                 <strong className="text-white text-xs block">Dr. Elena Vance</strong>
@@ -1221,7 +1113,7 @@ export default function LandingPage({
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] space-y-4 shadow-xl">
+            <div className="p-6 rounded-2xl bg-[#111315]/80 border border-white/[0.08] space-y-4 shadow-xl backdrop-blur-xl">
               <div className="flex items-center gap-1 text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
@@ -1235,35 +1127,34 @@ export default function LandingPage({
                 <span className="text-[11px] text-slate-400 font-sans">Software Engineer & Astronomy Enthusiast, London</span>
               </div>
             </div>
-
           </div>
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
-            SECTION 13: FINAL CALL TO ACTION
+            SECTION 10: FINAL CALL TO ACTION
             ════════════════════════════════════════════════════════════ */}
         <RevealSection className="py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto border-t border-white/[0.08] text-center relative overflow-hidden">
           <div className="space-y-6 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-white/[0.08] text-amber-300 text-[11px] font-mono font-medium tracking-wide uppercase">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-white text-[11px] font-mono font-medium tracking-wide uppercase">
+              <Sparkles className="w-3.5 h-3.5 text-white" />
               <span>START YOUR PERSONAL EXPLORATION TODAY</span>
             </div>
 
-            <h2 className="text-4xl sm:text-6xl font-black tracking-tight text-white uppercase">
+            <h2 className="text-4xl sm:text-6xl font-bold tracking-tight text-white">
               Be your own <br />
               <span className="text-white">
                 cosmic guide.
               </span>
             </h2>
 
-            <p className="text-base sm:text-lg text-slate-300 font-sans max-w-xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg text-slate-400 font-sans max-w-xl mx-auto leading-relaxed">
               Ask your questions. Explore your birth chart. Compare world traditions. Understand the reasoning. Reach your own clarity.
             </p>
 
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
               <MagneticButton
                 onClick={() => onStartOnboarding()}
-                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-white hover:bg-slate-100 text-black font-semibold text-[15px] font-sans flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-98 transition-all cursor-pointer min-h-[48px]"
+                className="w-full sm:w-auto px-8 py-4 rounded-md bg-white hover:bg-slate-100 text-black font-semibold text-[15px] font-sans flex items-center justify-center gap-2 shadow-lg active:scale-98 transition-all cursor-pointer min-h-[48px]"
               >
                 <span>Create My Free Chart</span>
                 <ArrowRight className="w-4 h-4" />
@@ -1271,9 +1162,9 @@ export default function LandingPage({
 
               <MagneticButton
                 onClick={() => onNavigateToTab('home')}
-                className="w-full sm:w-auto px-6 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/[0.08] hover:border-white/20 font-medium text-sm font-mono flex items-center justify-center gap-2 transition-all cursor-pointer min-h-[48px]"
+                className="w-full sm:w-auto px-6 py-4 rounded-md bg-transparent hover:bg-white/5 text-white border border-white/20 hover:border-white/40 font-semibold text-[15px] font-sans flex items-center justify-center gap-2 transition-all cursor-pointer min-h-[48px]"
               >
-                <Search className="w-4 h-4 text-amber-400" />
+                <Search className="w-4 h-4 text-white" />
                 <span>Ask ASTRO360</span>
               </MagneticButton>
             </div>
@@ -1291,32 +1182,32 @@ export default function LandingPage({
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-white font-bold text-sm">
-                <Sparkles className="w-4 h-4 text-amber-400" />
+                <Sparkles className="w-4 h-4 text-white" />
                 <span>ASTRO360</span>
               </div>
               <p className="text-[11px] text-slate-400 font-sans leading-relaxed">
-                Universal astrological & computational ephemeris platform. Calculated first. Explained second.
+                Universal astronomical & computational ephemeris platform. Calculated first. Explained second.
               </p>
             </div>
 
             <div className="space-y-2">
               <span className="text-white font-bold block">Astrology Traditions</span>
               <ul className="space-y-1 text-[11px]">
-                <li><button onClick={() => onNavigateToTab('vedic-astrology')} className="hover:text-amber-300 cursor-pointer transition-colors">Vedic Sidereal (Jyotish)</button></li>
-                <li><button onClick={() => onNavigateToTab('western-astrology')} className="hover:text-amber-300 cursor-pointer transition-colors">Western Tropical</button></li>
-                <li><button onClick={() => onNavigateToTab('free-tools')} className="hover:text-amber-300 cursor-pointer transition-colors">KP Stellar System</button></li>
-                <li><button onClick={() => onNavigateToTab('panchanga')} className="hover:text-amber-300 cursor-pointer transition-colors">Daily Panchanga</button></li>
+                <li><button onClick={() => onNavigateToTab('vedic-astrology')} className="hover:text-white cursor-pointer transition-colors">Vedic Sidereal (Jyotish)</button></li>
+                <li><button onClick={() => onNavigateToTab('western-astrology')} className="hover:text-white cursor-pointer transition-colors">Western Tropical</button></li>
+                <li><button onClick={() => onNavigateToTab('free-tools')} className="hover:text-white cursor-pointer transition-colors">KP Stellar System</button></li>
+                <li><button onClick={() => onNavigateToTab('panchanga')} className="hover:text-white cursor-pointer transition-colors">Daily Panchanga</button></li>
               </ul>
             </div>
 
             <div className="space-y-2">
               <span className="text-white font-bold block">Free Research Tools</span>
               <ul className="space-y-1 text-[11px]">
-                <li><button onClick={() => onNavigateToTab('birth-chart')} className="hover:text-amber-300 cursor-pointer transition-colors">Free Birth Chart</button></li>
-                <li><button onClick={() => onNavigateToTab('free-tools')} className="hover:text-amber-300 cursor-pointer transition-colors">Free Moon Sign & Nakshatra</button></li>
-                <li><button onClick={() => onNavigateToTab('compatibility')} className="hover:text-amber-300 cursor-pointer transition-colors">Free Ashta Koota Compatibility</button></li>
-                <li><button onClick={() => onNavigateToTab('news-intelligence')} className="hover:text-amber-300 cursor-pointer transition-colors">Cosmic News & Mundane Hub</button></li>
-                <li><button onClick={() => onNavigateToTab('methodology')} className="hover:text-amber-300 cursor-pointer transition-colors">Ephemeris Methodology</button></li>
+                <li><button onClick={() => onNavigateToTab('birth-chart')} className="hover:text-white cursor-pointer transition-colors">Free Birth Chart</button></li>
+                <li><button onClick={() => onNavigateToTab('free-tools')} className="hover:text-white cursor-pointer transition-colors">Free Moon Sign & Nakshatra</button></li>
+                <li><button onClick={() => onNavigateToTab('compatibility')} className="hover:text-white cursor-pointer transition-colors">Free Ashta Koota Compatibility</button></li>
+                <li><button onClick={() => onNavigateToTab('news-intelligence')} className="hover:text-white cursor-pointer transition-colors">Cosmic News & Mundane Hub</button></li>
+                <li><button onClick={() => onNavigateToTab('methodology')} className="hover:text-white cursor-pointer transition-colors">Ephemeris Methodology</button></li>
               </ul>
             </div>
 
@@ -1343,9 +1234,9 @@ export default function LandingPage({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 15, scale: 0.95 }}
               transition={{ duration: 0.4 }}
-              className="fixed bottom-20 left-4 z-40 max-w-xs p-3 rounded-2xl bg-black/85 backdrop-blur-md border border-white/[0.08] shadow-2xl flex items-center gap-3 text-left pointer-events-none"
+              className="fixed bottom-20 left-4 z-40 max-w-xs p-3 rounded-xl bg-[#111315]/90 backdrop-blur-md border border-white/[0.08] shadow-2xl flex items-center gap-3 text-left pointer-events-none"
             >
-              <div className="w-8 h-8 rounded-xl bg-amber-400/20 border border-white/[0.08] flex items-center justify-center shrink-0 text-amber-300">
+              <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center shrink-0 text-white">
                 <Sparkles className="w-4 h-4" />
               </div>
               <div className="text-[11px] font-sans leading-tight">
@@ -1356,7 +1247,7 @@ export default function LandingPage({
                 <p className="text-slate-300 line-clamp-1 pt-0.5">
                   {liveSeekerActivities[liveSeekerIndex].action}
                 </p>
-                <span className="text-[9px] font-mono text-amber-400/80">
+                <span className="text-[9px] font-mono text-slate-400">
                   {liveSeekerActivities[liveSeekerIndex].time}
                 </span>
               </div>
@@ -1372,27 +1263,27 @@ export default function LandingPage({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 30 }}
               transition={{ duration: 0.3 }}
-              className="fixed bottom-3 inset-x-3 sm:inset-x-auto sm:right-6 sm:left-auto z-50 flex items-center gap-2 p-2 rounded-2xl bg-[#111315]/95 backdrop-blur-xl border border-white/[0.08] shadow-2xl shadow-black/80"
+              className="fixed bottom-4 inset-x-4 sm:inset-x-auto sm:right-6 sm:left-auto z-50 flex items-center gap-2 p-2 rounded-xl bg-[#111315]/95 backdrop-blur-xl border border-white/[0.08] shadow-2xl shadow-black/80"
             >
               <button
                 onClick={() => onStartOnboarding()}
-                className="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-black font-semibold text-xs font-sans flex items-center gap-1.5 shadow-lg shadow-amber-500/25 hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+                className="px-4 py-2.5 rounded-lg bg-white hover:bg-slate-100 text-black font-semibold text-xs font-sans flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer"
               >
-                <Zap className="w-3.5 h-3.5 fill-slate-950" />
+                <Zap className="w-3.5 h-3.5 fill-black" />
                 <span>Calculate Chart Free</span>
               </button>
 
               <button
                 onClick={() => onNavigateToTab('home')}
-                className="px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/[0.08] text-xs font-mono font-medium flex items-center gap-1.5 cursor-pointer transition-all"
+                className="px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-white border border-white/[0.08] text-xs font-mono font-medium flex items-center gap-1.5 cursor-pointer transition-all"
               >
-                <Search className="w-3.5 h-3.5 text-amber-400" />
+                <Search className="w-3.5 h-3.5 text-slate-300" />
                 <span className="hidden sm:inline">Ask AI</span>
               </button>
 
               <button
                 onClick={handleShareViralLink}
-                className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-amber-300 border border-white/[0.08] text-xs font-mono flex items-center justify-center cursor-pointer transition-all"
+                className="p-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/[0.08] text-xs font-mono flex items-center justify-center cursor-pointer transition-all"
                 title="Share Cosmic Passport invite link"
               >
                 {copiedReferral ? (
