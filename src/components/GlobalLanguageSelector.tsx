@@ -151,7 +151,7 @@ export default function GlobalLanguageSelector({ compact = false, align = 'right
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.96 }}
             transition={{ duration: 0.15, ease: 'easeOut' }}
-            className={`absolute ${align === 'right' ? 'right-0' : 'left-0'} mt-2 w-80 sm:w-96 max-h-[460px] overflow-hidden rounded-2xl bg-[#090E17]/98 border border-amber-500/40 p-3 shadow-2xl space-y-2.5 backdrop-blur-2xl`}
+            className={`absolute ${align === 'right' ? 'right-0' : 'left-0'} mt-2 w-80 sm:w-96 max-h-[460px] overflow-hidden rounded-2xl bg-[#090E17]/98 border border-white/[0.12] p-3 shadow-2xl space-y-2.5 backdrop-blur-2xl`}
           >
             {/* Header Badge */}
             <div className="flex items-center justify-between border-b border-white/10 pb-2">
@@ -185,7 +185,7 @@ export default function GlobalLanguageSelector({ compact = false, align = 'right
                   onClick={() => setSelectedRegion(r)}
                   className={`px-2 py-0.5 rounded-lg whitespace-nowrap transition-colors cursor-pointer ${
                     selectedRegion === r
-                      ? 'bg-amber-400 text-slate-950 font-bold'
+                      ? 'bg-white text-black font-semibold shadow-sm font-bold'
                       : 'bg-white/5 text-slate-400 hover:text-white'
                   }`}
                 >
@@ -204,7 +204,7 @@ export default function GlobalLanguageSelector({ compact = false, align = 'right
                     onClick={() => handleSelectLanguage(lang)}
                     className={`w-full text-left px-3 py-2 rounded-xl text-xs font-mono flex items-center justify-between transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-amber-400/15 text-amber-300 font-bold border border-amber-400/40 shadow-sm'
+                        ? 'bg-amber-400/15 text-amber-300 font-bold border border-white/[0.12] shadow-sm'
                         : 'text-slate-300 hover:bg-white/5 hover:text-white border border-transparent'
                     }`}
                   >

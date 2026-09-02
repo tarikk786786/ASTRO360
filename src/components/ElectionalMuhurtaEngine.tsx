@@ -24,7 +24,7 @@ const MUHURTA_WINDOWS: Record<MuhurtaCategory, MuhurtaWindow[]> = {
       category: "Business",
       optimalTime: "11:48 AM - 12:36 PM (Abhijit Sol Hora)",
       quality: "Exalted Golden",
-      qualityColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
+      qualityColor: "text-emerald-400 bg-emerald-500/10 border-white/[0.08]",
       panchangFactor: "Shukla Navami + Rohini Nakshatra + Siddhi Yoga",
       choghadiya: "Amrit & Labh Window",
       recommendation: "Execute legal contracts, publish code releases, and initiate high-profile corporate partnerships.",
@@ -35,7 +35,7 @@ const MUHURTA_WINDOWS: Record<MuhurtaCategory, MuhurtaWindow[]> = {
       category: "Business",
       optimalTime: "08:15 AM - 09:30 AM (Mercury Hora)",
       quality: "Auspicious",
-      qualityColor: "text-cyan-400 bg-cyan-500/10 border-cyan-500/30",
+      qualityColor: "text-cyan-400 bg-cyan-500/10 border-white/[0.08]",
       panchangFactor: "Bava Karana + Exalted Mercury Transit",
       choghadiya: "Shubh Window",
       recommendation: "Best for commercial presentations, pricing discussions, and strategic negotiation.",
@@ -49,7 +49,7 @@ const MUHURTA_WINDOWS: Record<MuhurtaCategory, MuhurtaWindow[]> = {
       category: "Marriage",
       optimalTime: "06:15 PM - 07:45 PM (Twilight Godhuli Muhurta)",
       quality: "Exalted Golden",
-      qualityColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
+      qualityColor: "text-emerald-400 bg-emerald-500/10 border-white/[0.08]",
       panchangFactor: "Uttara Phalguni Nakshatra + Saubhagya Yoga",
       choghadiya: "Amrit Window",
       recommendation: "Perfect for vows, engagement rings, and eternal marital harmony.",
@@ -63,7 +63,7 @@ const MUHURTA_WINDOWS: Record<MuhurtaCategory, MuhurtaWindow[]> = {
       category: "Property",
       optimalTime: "07:30 AM - 09:15 AM (Prithvi Hora)",
       quality: "Exalted Golden",
-      qualityColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
+      qualityColor: "text-emerald-400 bg-emerald-500/10 border-white/[0.08]",
       panchangFactor: "Rohini Nakshatra + Dhriti Yoga",
       choghadiya: "Shubh Window",
       recommendation: "Ideal for land registry, key handover, and first entry into new home.",
@@ -77,7 +77,7 @@ const MUHURTA_WINDOWS: Record<MuhurtaCategory, MuhurtaWindow[]> = {
       category: "Investment",
       optimalTime: "10:00 AM - 11:30 AM (Jupiter Hora)",
       quality: "Exalted Golden",
-      qualityColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
+      qualityColor: "text-emerald-400 bg-emerald-500/10 border-white/[0.08]",
       panchangFactor: "Pushya Nakshatra + Siddhi Yoga",
       choghadiya: "Labh Window",
       recommendation: "Maximize compound asset growth and long-term financial security.",
@@ -91,7 +91,7 @@ const MUHURTA_WINDOWS: Record<MuhurtaCategory, MuhurtaWindow[]> = {
       category: "Travel",
       optimalTime: "02:00 PM - 03:30 PM (Air Hora)",
       quality: "Auspicious",
-      qualityColor: "text-cyan-400 bg-cyan-500/10 border-cyan-500/30",
+      qualityColor: "text-cyan-400 bg-cyan-500/10 border-white/[0.08]",
       panchangFactor: "Swati Nakshatra + Chara Rashi Transit",
       choghadiya: "Char Window",
       recommendation: "Ensures smooth transit, zero delays, and safe arrival.",
@@ -105,7 +105,7 @@ const MUHURTA_WINDOWS: Record<MuhurtaCategory, MuhurtaWindow[]> = {
       category: "Medical",
       optimalTime: "06:45 AM - 08:00 AM (Sun Hora)",
       quality: "Auspicious",
-      qualityColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
+      qualityColor: "text-emerald-400 bg-emerald-500/10 border-white/[0.08]",
       panchangFactor: "Ashwini Nakshatra (Divine Healers)",
       choghadiya: "Amrit Window",
       recommendation: "Rapid physical recovery, cellular regeneration, and successful treatment.",
@@ -120,7 +120,7 @@ export default function ElectionalMuhurtaEngine() {
   const activeWindows = MUHURTA_WINDOWS[selectedCategory] || MUHURTA_WINDOWS['Business'];
 
   return (
-    <div className="p-6 rounded-3xl bg-[#111827] border border-amber-500/40 shadow-2xl space-y-6 text-left relative overflow-hidden">
+    <div className="p-6 rounded-3xl bg-[#111827] border border-white/[0.12] shadow-2xl space-y-6 text-left relative overflow-hidden">
       {/* HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
         <div>
@@ -131,7 +131,7 @@ export default function ElectionalMuhurtaEngine() {
             Astronomical Electional Windows for Business, Marriage, Property & Wealth Investment
           </p>
         </div>
-        <span className="text-[10px] font-mono text-amber-300 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/30 font-bold">
+        <span className="text-[10px] font-mono text-amber-300 bg-amber-500/10 px-3 py-1 rounded-full border border-white/[0.08] font-bold">
           Choghadiya & Panchang Sync
         </span>
       </div>
@@ -162,7 +162,7 @@ export default function ElectionalMuhurtaEngine() {
       {/* MUHURTA CARDS LIST */}
       <div className="space-y-4">
         {activeWindows.map((mw, idx) => (
-          <div key={idx} className="p-5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-3 hover:border-amber-500/40 transition-all">
+          <div key={idx} className="p-5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-3 hover:border-white/[0.12] transition-all">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-2.5">
               <div>
                 <h4 className="text-sm font-bold text-white flex items-center gap-2">{mw.activity}</h4>
@@ -189,7 +189,7 @@ export default function ElectionalMuhurtaEngine() {
               <strong className="text-amber-300 font-mono">Recommendation:</strong> {mw.recommendation}
             </p>
 
-            <div className="p-2.5 rounded-xl bg-amber-950/40 border border-amber-500/30 text-[11px] text-amber-200 font-mono">
+            <div className="p-2.5 rounded-xl bg-amber-950/40 border border-white/[0.08] text-[11px] text-amber-200 font-mono">
               <strong className="text-amber-400">Sacred Remedy:</strong> {mw.remedy}
             </div>
           </div>

@@ -46,7 +46,7 @@ export default function EmbedWidgetModal({ isOpen, onClose }: EmbedWidgetModalPr
 
         {/* Header */}
         <div className="border-b border-white/10 pb-3 space-y-1">
-          <span className="text-[10px] font-bold font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-cyan-500/30">
+          <span className="text-[10px] font-bold font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-white/[0.08]">
             TRANSPARENT EMBEDDABLE WIDGET
           </span>
           <h3 className="text-xl font-bold text-white tracking-tight">
@@ -58,7 +58,7 @@ export default function EmbedWidgetModal({ isOpen, onClose }: EmbedWidgetModalPr
         </div>
 
         {/* Ethical attribution badge */}
-        <div className="p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-start gap-2.5 text-slate-300">
+        <div className="p-3 rounded-2xl bg-cyan-500/10 border border-white/[0.08] flex items-start gap-2.5 text-slate-300">
           <ShieldCheck className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
           <p className="text-[11px] leading-relaxed">
             Zero hidden CSS links or deceptive anchor text. Every embed provides clear, optional "Powered by ASTRO360" attribution adhering to Google Search Essentials.

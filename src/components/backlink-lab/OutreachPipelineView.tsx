@@ -12,11 +12,11 @@ interface OutreachPipelineViewProps {
 }
 
 const PIPELINE_STAGES: Array<{ id: OutreachStatus; label: string; color: string }> = [
-  { id: 'DRAFT_READY', label: 'Draft Ready', color: 'border-cyan-500/30 text-cyan-400 bg-cyan-500/10' },
+  { id: 'DRAFT_READY', label: 'Draft Ready', color: 'border-white/[0.08] text-cyan-400 bg-cyan-500/10' },
   { id: 'CONTACTED', label: 'Contacted / Sent', color: 'border-blue-500/30 text-blue-400 bg-blue-500/10' },
   { id: 'REPLIED', label: 'In Discussion', color: 'border-purple-500/30 text-purple-400 bg-purple-500/10' },
-  { id: 'ACCEPTED', label: 'Accepted', color: 'border-amber-500/30 text-amber-400 bg-amber-500/10' },
-  { id: 'LIVE', label: 'Live & Earned', color: 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10' }
+  { id: 'ACCEPTED', label: 'Accepted', color: 'border-white/[0.08] text-amber-400 bg-amber-500/10' },
+  { id: 'LIVE', label: 'Live & Earned', color: 'border-white/[0.08] text-emerald-400 bg-emerald-500/10' }
 ];
 
 export default function OutreachPipelineView({

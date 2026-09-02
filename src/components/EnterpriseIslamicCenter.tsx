@@ -41,7 +41,7 @@ export default function EnterpriseIslamicCenter() {
   ];
 
   return (
-    <div className="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-500/30 shadow-2xl space-y-8 text-left">
+    <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/[0.08] shadow-2xl space-y-8 text-left">
       {/* HEADER & ISLAMIC KNOWLEDGE CENTER BADGE */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
@@ -53,14 +53,14 @@ export default function EnterpriseIslamicCenter() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono text-emerald-300 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30 flex items-center gap-1.5 font-bold">
+          <span className="text-[10px] font-mono text-emerald-300 bg-emerald-500/10 px-3 py-1 rounded-full border border-white/[0.08] flex items-center gap-1.5 font-bold">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Authentic References (Qur'an & Sunnah)
           </span>
         </div>
       </div>
 
       {/* STRICT ISLAMIC SEPARATION & SOURCE VERIFICATION BANNER */}
-      <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 space-y-1 text-xs text-emerald-200 font-sans">
+      <div className="p-4 rounded-2xl bg-emerald-950/40 border border-white/[0.08] space-y-1 text-xs text-emerald-200 font-sans">
         <div className="flex items-center gap-2 text-emerald-400 font-bold font-mono uppercase tracking-wider text-[11px]">
           <ShieldCheck className="w-4 h-4 text-emerald-400" />
           <span>Strict Principle: Evidence-Based Islamic Module</span>
@@ -180,7 +180,7 @@ export default function EnterpriseIslamicCenter() {
 
         {activeModule === 'ai' && (
           <motion.div key="ai" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-4">
-            <div className="p-5 rounded-2xl bg-slate-950 border border-emerald-500/30 space-y-3">
+            <div className="p-5 rounded-2xl bg-slate-950 border border-white/[0.08] space-y-3">
               <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono font-bold">
                 <Bot className="w-4 h-4" /> AI Islamic Knowledge Search Assistant (Strict References Only)
               </div>

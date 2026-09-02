@@ -97,7 +97,7 @@ export default function QuranComExplorer() {
   );
 
   return (
-    <div className="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-500/30 shadow-2xl space-y-6">
+    <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/[0.08] shadow-2xl space-y-6">
       {/* HEADER WITH TARTEEL AI HIFZ BADGE */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
@@ -220,7 +220,7 @@ export default function QuranComExplorer() {
 
               {/* TARTEEL HIFZ NOTICE IF ENABLED */}
               {hifzMode && (
-                <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-300 font-mono flex items-center gap-2">
+                <div className="p-3 rounded-xl bg-amber-500/10 border border-white/[0.08] text-xs text-amber-300 font-mono flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-amber-400 flex-shrink-0" />
                   <span>Tarteel Hifz Self-Test: Recite Ayah from memory, then click "Reveal Verse" to check for mistakes!</span>
                 </div>

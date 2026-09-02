@@ -35,7 +35,7 @@ export default function DailyHoroscopeCard({ sunSign = 'Leo', moonSign = 'Taurus
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-white/[0.08] flex items-center justify-center">
             <Sun className="w-5 h-5 text-amber-400" />
           </div>
           <div>

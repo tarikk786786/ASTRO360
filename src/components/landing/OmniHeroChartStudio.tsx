@@ -35,7 +35,7 @@ export default function OmniHeroChartStudio({ onCalculate, userProfile }: OmniHe
       initial={{ opacity: 0, scale: 0.96, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ delay: 0.2, duration: 0.6 }}
-      className="p-5 sm:p-7 rounded-3xl bg-gradient-to-br from-[#0B1220] via-[#0E172A] to-[#070B14] border-2 border-amber-400/40 shadow-2xl text-left space-y-4 relative overflow-hidden"
+      className="p-5 sm:p-7 rounded-3xl bg-gradient-to-br from-[#0B1220] via-[#0E172A] to-[#070B14] border-2 border-white/[0.12] shadow-2xl text-left space-y-4 relative overflow-hidden"
     >
       {/* Ambient background blur */}
       <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
@@ -46,7 +46,7 @@ export default function OmniHeroChartStudio({ onCalculate, userProfile }: OmniHe
           <button
             onClick={() => setActiveTab('calculator')}
             className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
-              activeTab === 'calculator' ? 'bg-amber-400 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'
+              activeTab === 'calculator' ? 'bg-white text-black font-semibold shadow-sm shadow-md' : 'text-slate-400 hover:text-white'
             }`}
           >
             Instant Calculator
@@ -54,7 +54,7 @@ export default function OmniHeroChartStudio({ onCalculate, userProfile }: OmniHe
           <button
             onClick={() => setActiveTab('today')}
             className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
-              activeTab === 'today' ? 'bg-amber-400 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'
+              activeTab === 'today' ? 'bg-white text-black font-semibold shadow-sm shadow-md' : 'text-slate-400 hover:text-white'
             }`}
           >
             Today's Theme
@@ -62,7 +62,7 @@ export default function OmniHeroChartStudio({ onCalculate, userProfile }: OmniHe
           <button
             onClick={() => setActiveTab('placements')}
             className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
-              activeTab === 'placements' ? 'bg-amber-400 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'
+              activeTab === 'placements' ? 'bg-white text-black font-semibold shadow-sm shadow-md' : 'text-slate-400 hover:text-white'
             }`}
           >
             Big 3
@@ -185,7 +185,7 @@ export default function OmniHeroChartStudio({ onCalculate, userProfile }: OmniHe
 
           <button
             onClick={() => setActiveTab('calculator')}
-            className="w-full py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-xs font-mono flex items-center justify-center gap-1 cursor-pointer shadow-md"
+            className="w-full py-2.5 rounded-xl bg-white text-black font-semibold shadow-sm font-bold text-xs font-mono flex items-center justify-center gap-1 cursor-pointer shadow-md"
           >
             <span>Personalize for My Birth Chart →</span>
           </button>
@@ -200,12 +200,12 @@ export default function OmniHeroChartStudio({ onCalculate, userProfile }: OmniHe
           </span>
 
           <div className="grid grid-cols-3 gap-2">
-            <div className="p-3 rounded-2xl bg-white/5 border border-amber-400/30 text-center space-y-1">
+            <div className="p-3 rounded-2xl bg-white/5 border border-white/[0.08] text-center space-y-1">
               <span className="text-[10px] text-amber-400 uppercase font-bold block">Sun</span>
               <div className="text-base font-black text-white">Aries ♈</div>
               <span className="text-[10px] text-slate-400 block">Exalted Dignity</span>
             </div>
-            <div className="p-3 rounded-2xl bg-white/5 border border-cyan-400/30 text-center space-y-1">
+            <div className="p-3 rounded-2xl bg-white/5 border border-white/[0.08] text-center space-y-1">
               <span className="text-[10px] text-cyan-400 uppercase font-bold block">Moon</span>
               <div className="text-base font-black text-white">Scorpio ♏</div>
               <span className="text-[10px] text-slate-400 block">Anuradha</span>
@@ -219,7 +219,7 @@ export default function OmniHeroChartStudio({ onCalculate, userProfile }: OmniHe
 
           <button
             onClick={() => setActiveTab('calculator')}
-            className="w-full py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-xs font-mono flex items-center justify-center gap-1 cursor-pointer shadow-md"
+            className="w-full py-2.5 rounded-xl bg-white text-black font-semibold shadow-sm font-bold text-xs font-mono flex items-center justify-center gap-1 cursor-pointer shadow-md"
           >
             <span>Calculate My Big 3 (Free) →</span>
           </button>

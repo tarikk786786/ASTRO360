@@ -153,7 +153,7 @@ export const AstroAudioHubModal: React.FC<AstroAudioHubModalProps> = ({
           {/* Header */}
           <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between gap-3 bg-[#0B1220]/90">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-amber-400/10 border border-amber-400/20 text-amber-400">
+              <div className="p-2 rounded-xl bg-amber-400/10 border border-white/[0.08] text-amber-400">
                 <Volume2 className="w-5 h-5" />
               </div>
               <div className="text-left">
@@ -189,7 +189,7 @@ export const AstroAudioHubModal: React.FC<AstroAudioHubModalProps> = ({
                 onClick={() => setActiveDomain(tab.id as any)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer ${
                   activeDomain === tab.id
-                    ? 'bg-amber-400 text-slate-950 shadow-md font-black'
+                    ? 'bg-white text-black font-semibold shadow-sm shadow-md font-black'
                     : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
                 }`}
               >
@@ -243,7 +243,7 @@ export const AstroAudioHubModal: React.FC<AstroAudioHubModalProps> = ({
                 </div>
 
                 {/* Daily Audio Briefing Launcher Card */}
-                <div className="p-5 rounded-3xl bg-gradient-to-br from-[#0B1220] via-[#0E172A] to-[#080E1A] border border-amber-500/30 space-y-3 shadow-xl">
+                <div className="p-5 rounded-3xl bg-gradient-to-br from-[#0B1220] via-[#0E172A] to-[#080E1A] border border-white/[0.08] space-y-3 shadow-xl">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-mono font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
                       <Sparkles className="w-4 h-4 text-amber-400" /> Daily Ephemeris Audio Briefing
@@ -282,7 +282,7 @@ export const AstroAudioHubModal: React.FC<AstroAudioHubModalProps> = ({
                   ].map(sound => (
                     <div
                       key={sound.hz}
-                      className="p-4 rounded-2xl bg-[#0D1526] border border-white/10 hover:border-amber-400/40 transition-all flex items-start justify-between gap-3"
+                      className="p-4 rounded-2xl bg-[#0D1526] border border-white/10 hover:border-white/[0.12] transition-all flex items-start justify-between gap-3"
                     >
                       <div className="space-y-1 min-w-0">
                         <h4 className="text-xs font-bold text-white truncate">{sound.name}</h4>
@@ -291,7 +291,7 @@ export const AstroAudioHubModal: React.FC<AstroAudioHubModalProps> = ({
                       <button
                         type="button"
                         onClick={() => handlePlaySolfeggio(sound.hz, sound.name)}
-                        className="flex items-center justify-center min-w-[36px] min-h-[36px] rounded-xl bg-amber-400 text-slate-950 hover:bg-amber-300 cursor-pointer active:scale-90 shadow-md shrink-0"
+                        className="flex items-center justify-center min-w-[36px] min-h-[36px] rounded-xl bg-white text-black font-semibold shadow-sm hover:bg-amber-300 cursor-pointer active:scale-90 shadow-md shrink-0"
                       >
                         <Play className="w-3.5 h-3.5 fill-slate-950 translate-x-0.5" />
                       </button>
@@ -315,13 +315,13 @@ export const AstroAudioHubModal: React.FC<AstroAudioHubModalProps> = ({
                   {mantras.map(m => (
                     <div
                       key={m.id}
-                      className="p-4 rounded-2xl bg-[#0D1526] border border-white/10 hover:border-amber-400/40 transition-all space-y-2.5"
+                      className="p-4 rounded-2xl bg-[#0D1526] border border-white/10 hover:border-white/[0.12] transition-all space-y-2.5"
                     >
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-bold text-white">{m.name}</span>
                           {m.associatedPlanet && (
-                            <span className="text-[9.5px] font-mono text-amber-300 bg-amber-400/10 px-1.5 py-0.2 rounded border border-amber-400/20">
+                            <span className="text-[9.5px] font-mono text-amber-300 bg-amber-400/10 px-1.5 py-0.2 rounded border border-white/[0.08]">
                               {m.associatedPlanet}
                             </span>
                           )}
@@ -345,7 +345,7 @@ export const AstroAudioHubModal: React.FC<AstroAudioHubModalProps> = ({
                         <button
                           type="button"
                           onClick={() => handlePlayMantra(m, 108)}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-xs font-mono cursor-pointer active:scale-95 shadow-md"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white text-black font-semibold shadow-sm font-bold text-xs font-mono cursor-pointer active:scale-95 shadow-md"
                         >
                           <Play className="w-3.5 h-3.5 fill-slate-950" />
                           <span>Recite (108x)</span>

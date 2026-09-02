@@ -40,9 +40,9 @@ export default function NasaLiveTelemetry() {
   return (
     <div className="space-y-6">
       {/* NASA API Key Authorization Badge Banner */}
-      <div className="glass-card rounded-2xl p-4 border border-emerald-500/30 flex flex-wrap items-center justify-between gap-4 shadow-xl">
+      <div className="glass-card rounded-2xl p-4 border border-white/[0.08] flex flex-wrap items-center justify-between gap-4 shadow-xl">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+          <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-white/[0.08] text-emerald-400">
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
@@ -51,7 +51,7 @@ export default function NasaLiveTelemetry() {
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 NASA Open API Authorized
               </span>
-              <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">
+              <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-white/[0.08]">
                 Official Key Verified
               </span>
             </div>

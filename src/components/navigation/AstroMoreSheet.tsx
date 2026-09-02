@@ -78,7 +78,7 @@ export const AstroMoreSheet: React.FC<AstroMoreSheetProps> = ({
           {/* Header & Close Button */}
           <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-amber-400/10 border border-amber-400/20 text-amber-400">
+              <div className="p-2 rounded-xl bg-amber-400/10 border border-white/[0.08] text-amber-400">
                 <Layers className="w-5 h-5" />
               </div>
               <div className="text-left">
@@ -123,7 +123,7 @@ export const AstroMoreSheet: React.FC<AstroMoreSheetProps> = ({
                   onClick={() => setActiveCategory(cat)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold capitalize whitespace-nowrap transition-all cursor-pointer ${
                     activeCategory === cat
-                      ? 'bg-amber-400 text-slate-950 font-black shadow-md'
+                      ? 'bg-white text-black font-semibold shadow-sm font-black shadow-md'
                       : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
                   }`}
                 >
@@ -162,10 +162,10 @@ export const AstroMoreSheet: React.FC<AstroMoreSheetProps> = ({
                       onNavigate(item.route);
                       onClose();
                     }}
-                    className="w-full p-3 rounded-2xl bg-[#0D1526] hover:bg-white/[0.08] active:bg-white/[0.12] border border-white/10 hover:border-amber-400/30 transition-all flex items-center justify-between gap-3 text-left cursor-pointer group"
+                    className="w-full p-3 rounded-2xl bg-[#0D1526] hover:bg-white/[0.08] active:bg-white/[0.12] border border-white/10 hover:border-white/[0.08] transition-all flex items-center justify-between gap-3 text-left cursor-pointer group"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <div className="p-2.5 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/20 group-hover:scale-105 transition-transform shrink-0">
+                      <div className="p-2.5 rounded-xl bg-amber-400/10 text-amber-400 border border-white/[0.08] group-hover:scale-105 transition-transform shrink-0">
                         <Icon className="w-5 h-5" />
                       </div>
                       <div className="min-w-0">
@@ -174,7 +174,7 @@ export const AstroMoreSheet: React.FC<AstroMoreSheetProps> = ({
                             {item.label}
                           </span>
                           {item.badge && (
-                            <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                            <span className="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-amber-400/20 text-amber-300 border border-white/[0.08]">
                               {item.badge}
                             </span>
                           )}

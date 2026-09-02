@@ -49,7 +49,7 @@ export default function OmniShareCardGenerator({ userProfile }: OmniShareCardGen
       {/* 9:16 Story Card Preview Container */}
       <div className="flex flex-col md:flex-row items-center justify-center gap-6 pt-2">
         {/* The Card */}
-        <div className="w-full max-w-[280px] sm:max-w-[300px] aspect-[9/16] rounded-3xl bg-gradient-to-b from-[#0F172A] via-[#090D16] to-[#04060A] border-2 border-amber-400/40 p-5 flex flex-col justify-between shadow-2xl relative overflow-hidden text-center">
+        <div className="w-full max-w-[280px] sm:max-w-[300px] aspect-[9/16] rounded-3xl bg-gradient-to-b from-[#0F172A] via-[#090D16] to-[#04060A] border-2 border-white/[0.12] p-5 flex flex-col justify-between shadow-2xl relative overflow-hidden text-center">
           {/* Top Brand & Timestamp */}
           <div className="space-y-1 relative z-10">
             <span className="text-[10px] font-mono tracking-widest uppercase text-amber-400 font-black">
@@ -85,7 +85,7 @@ export default function OmniShareCardGenerator({ userProfile }: OmniShareCardGen
             </div>
 
             {/* Core Gift Badge */}
-            <div className="p-2.5 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-[10px] font-mono text-amber-300">
+            <div className="p-2.5 rounded-2xl bg-amber-400/10 border border-white/[0.08] text-[10px] font-mono text-amber-300">
               ✨ Core Gift: Strategic Vision & Decisive Leadership
             </div>
           </div>

@@ -115,7 +115,7 @@ export default function EmbeddableWidgetGenerator({ onNavigateToTab }: Embeddabl
               onClick={() => setSelectedWidget(widget)}
               className={`p-4 rounded-2xl border text-left transition-all cursor-pointer space-y-2 ${
                 isSelected
-                  ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-lg font-bold'
+                  ? 'bg-white text-black font-semibold shadow-sm border-amber-400 shadow-lg font-bold'
                   : 'bg-[#0B1220] text-slate-300 hover:text-white border-white/10 hover:border-white/20'
               }`}
             >
@@ -154,7 +154,7 @@ export default function EmbeddableWidgetGenerator({ onNavigateToTab }: Embeddabl
                 onClick={() => setTheme(t.id as any)}
                 className={`px-2.5 py-1 rounded-lg text-xs transition-all cursor-pointer ${
                   theme === t.id
-                    ? 'bg-amber-400 text-slate-950 font-bold'
+                    ? 'bg-white text-black font-semibold shadow-sm font-bold'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >

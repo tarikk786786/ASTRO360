@@ -150,7 +150,7 @@ export default function CommunityConsultationHub() {
               setEditSettings(merchantSettings);
               setShowMerchantConfigModal(true);
             }}
-            className="px-3 py-1 rounded-xl bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20 text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5"
+            className="px-3 py-1 rounded-xl bg-amber-500/10 text-amber-300 border border-white/[0.08] hover:bg-amber-500/20 text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5"
           >
             <Clock className="w-3.5 h-3.5 text-amber-400" /> Customise Gateway & Rates
           </button>
@@ -182,12 +182,12 @@ export default function CommunityConsultationHub() {
       </div>
 
       {/* 🏦 WHERE & WHEN PAYMENT IS RECEIVED TELEMETRY BANNER */}
-      <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-950/50 via-[#0B1220] to-purple-950/40 border border-amber-500/30 space-y-2 text-xs font-mono">
+      <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-950/50 via-[#0B1220] to-purple-950/40 border border-white/[0.08] space-y-2 text-xs font-mono">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-500/20 pb-2">
           <span className="font-bold text-amber-300 flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-amber-400" /> OwnPay Gateway Settlement Status & Payout Ledger
           </span>
-          <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30 font-bold">
+          <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-white/[0.08] font-bold">
             Live Settlement Active
           </span>
         </div>
@@ -402,7 +402,7 @@ export default function CommunityConsultationHub() {
                     Your appointment with <strong className="text-amber-300">{bookingAstrologer.name}</strong> is confirmed for <strong className="text-emerald-400">{selectedSlot}</strong>.
                   </p>
                   {lastTransaction && (
-                    <div className="p-3 rounded-2xl bg-[#0B1220] border border-emerald-500/30 text-[10px] text-left space-y-1 text-slate-300">
+                    <div className="p-3 rounded-2xl bg-[#0B1220] border border-white/[0.08] text-[10px] text-left space-y-1 text-slate-300">
                       <div className="flex items-center justify-between text-emerald-400 font-bold border-b border-white/10 pb-1">
                         <span>OwnPay Protocol Receipt</span>
                         <span>Status: Verified</span>
@@ -500,9 +500,9 @@ export default function CommunityConsultationHub() {
               initial={{ scale: 0.95 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.95 }}
-              className="max-w-lg w-full rounded-3xl bg-[#111827] border border-amber-500/40 p-6 space-y-4 shadow-2xl relative text-left text-xs font-mono"
+              className="max-w-lg w-full rounded-3xl bg-[#111827] border border-white/[0.12] p-6 space-y-4 shadow-2xl relative text-left text-xs font-mono"
             >
-              <div className="flex items-center justify-between border-b border-amber-500/30 pb-3">
+              <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
                 <div>
                   <h3 className="text-sm font-bold text-white flex items-center gap-2">
                     <Clock className="w-4 h-4 text-amber-400" /> Payment Gateway & Merchant Payout Control Panel
@@ -576,7 +576,7 @@ export default function CommunityConsultationHub() {
 
                 <button
                   type="submit"
-                  className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-lg"
+                  className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-white text-black font-semibold shadow-sm font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-lg"
                 >
                   Save Payment Gateway Payout Configuration
                 </button>

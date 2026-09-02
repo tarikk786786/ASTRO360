@@ -41,7 +41,7 @@ export default function TrendMonitoringView({
             {alerts.map((alert) => (
               <div
                 key={alert.id}
-                className="p-4 rounded-2xl bg-[#0B1220] border border-amber-500/30 space-y-2 font-mono text-xs shadow-lg"
+                className="p-4 rounded-2xl bg-[#0B1220] border border-white/[0.08] space-y-2 font-mono text-xs shadow-lg"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2">
@@ -100,7 +100,7 @@ export default function TrendMonitoringView({
             {watchlist.map((kw) => (
               <div
                 key={kw}
-                className="p-3 rounded-xl bg-[#0B1220]/80 border border-white/[0.08] hover:border-cyan-500/30 flex items-center justify-between gap-2 font-mono text-xs transition-all"
+                className="p-3 rounded-xl bg-[#0B1220]/80 border border-white/[0.08] hover:border-white/[0.08] flex items-center justify-between gap-2 font-mono text-xs transition-all"
               >
                 <button
                   onClick={() => onSearchKeyword(kw)}

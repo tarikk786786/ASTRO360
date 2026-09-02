@@ -19,7 +19,7 @@ export default function TarikIslamCosmicPassport({ userProfile, onEditProfile }:
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#1E1B4B] to-[#0F172A] border border-amber-500/40 shadow-2xl space-y-4 text-left relative overflow-hidden"
+      className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#1E1B4B] to-[#0F172A] border border-white/[0.12] shadow-2xl space-y-4 text-left relative overflow-hidden"
     >
       {/* BACKGROUND GLOW ACCENT */}
       <div className="absolute -top-12 -right-12 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -36,7 +36,7 @@ export default function TarikIslamCosmicPassport({ userProfile, onEditProfile }:
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">{name}</h2>
-              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30 font-bold flex items-center gap-1">
+              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-white/[0.08] font-bold flex items-center gap-1">
                 <UserCheck className="w-3 h-3" /> VERIFIED SEEKER PROFILE
               </span>
             </div>
@@ -53,14 +53,14 @@ export default function TarikIslamCosmicPassport({ userProfile, onEditProfile }:
         </div>
 
         <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-          <span className="text-xs font-mono text-amber-300 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/30 font-bold flex items-center gap-1.5">
+          <span className="text-xs font-mono text-amber-300 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-white/[0.08] font-bold flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Focus: {focus}
           </span>
 
           {onEditProfile && (
             <button
               onClick={onEditProfile}
-              className="px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer transition-all shrink-0"
+              className="px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-white/[0.12] text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer transition-all shrink-0"
               title="Edit Profile, Date of Birth, Time, Location & Customisations"
             >
               <Settings className="w-3.5 h-3.5 text-amber-400" /> Edit Profile & Birth Data ⚙️

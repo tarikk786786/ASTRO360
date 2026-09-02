@@ -124,7 +124,7 @@ export default function ProgrammaticSeoDirectory({ onNavigateToTab }: Programmat
                 onClick={() => setActiveCategory(tab.id as any)}
                 className={`px-3.5 py-2.5 rounded-xl border flex items-center gap-1.5 transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold shadow-md'
+                    ? 'bg-white text-black font-semibold shadow-sm border-amber-400 font-bold shadow-md'
                     : 'bg-[#0B1220] text-slate-400 hover:text-white border-white/10'
                 }`}
               >
@@ -175,7 +175,7 @@ export default function ProgrammaticSeoDirectory({ onNavigateToTab }: Programmat
                 {filteredCelebrities.map((item) => (
                   <div
                     key={item.name}
-                    className="p-4 rounded-2xl bg-[#060A12] border border-white/8 space-y-2 hover:border-amber-400/30 transition-all"
+                    className="p-4 rounded-2xl bg-[#060A12] border border-white/8 space-y-2 hover:border-white/[0.08] transition-all"
                   >
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/6 pb-2">
                       <div>
@@ -240,7 +240,7 @@ export default function ProgrammaticSeoDirectory({ onNavigateToTab }: Programmat
                 ].map((p, idx) => (
                   <div key={idx} className="p-4 rounded-xl bg-[#060A12] border border-white/8 space-y-1.5">
                     <strong className="text-xs text-white block">{p.title}</strong>
-                    <span className="text-[10px] text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20 inline-block font-bold">
+                    <span className="text-[10px] text-amber-300 bg-amber-400/10 px-2 py-0.5 rounded border border-white/[0.08] inline-block font-bold">
                       {p.tag}
                     </span>
                     <p className="text-xs text-slate-400 font-sans pt-1 leading-relaxed">{p.desc}</p>

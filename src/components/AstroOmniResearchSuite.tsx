@@ -273,7 +273,7 @@ export const AstroOmniResearchSuite: React.FC<AstroOmniResearchSuiteProps> = ({ 
 
           {/* Explicit Contradiction & Resolution Panel (PRD Section 43) */}
           {(consensusItem?.explicitContradictions || []).length > 0 && (
-            <div className="glass-card p-6 rounded-3xl border border-amber-500/30 space-y-4 bg-amber-950/10">
+            <div className="glass-card p-6 rounded-3xl border border-white/[0.08] space-y-4 bg-amber-950/10">
               <div className="flex items-center gap-2 text-amber-400 font-bold text-sm">
                 <AlertTriangle className="w-4 h-4" />
                 <span>Explicit Traditional Divergence Detected & Resolved (Zero Masking)</span>
@@ -482,7 +482,7 @@ export const AstroOmniResearchSuite: React.FC<AstroOmniResearchSuiteProps> = ({ 
                     </div>
                     <span className={`text-[10px] font-mono font-bold px-2.5 py-1 rounded-full border ${
                       eng.status === 'PRODUCTION'
-                        ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+                        ? 'bg-emerald-500/20 text-emerald-300 border-white/[0.08]'
                         : 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30'
                     }`}>
                       {eng.status}

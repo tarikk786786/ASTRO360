@@ -303,7 +303,7 @@ export default function OmniLiveZodiacRadar({ onSelectSign }: { onSelectSign: (s
       {/* Section Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-4">
         <div className="space-y-1.5">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 font-mono text-xs font-bold uppercase">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-white/[0.08] text-amber-300 font-mono text-xs font-bold uppercase">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" /> All 12 Signs • Live Daily Horoscope & Cosmic Transit Radar
           </div>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
@@ -330,7 +330,7 @@ export default function OmniLiveZodiacRadar({ onSelectSign }: { onSelectSign: (s
               whileTap={{ scale: 0.94 }}
               className={`p-2.5 sm:p-2 rounded-2xl border transition-all flex flex-col items-center justify-center gap-1 cursor-pointer min-w-[78px] sm:min-w-0 shrink-0 sm:shrink snap-start relative ${
                 isSelected
-                  ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-lg shadow-amber-400/20 font-black'
+                  ? 'bg-white text-black font-semibold shadow-sm border-amber-400 shadow-lg shadow-amber-400/20 font-black'
                   : 'bg-[#0B1220] hover:bg-[#0F182E] text-slate-300 hover:text-white border-white/10 hover:border-white/20'
               }`}
             >
@@ -353,7 +353,7 @@ export default function OmniLiveZodiacRadar({ onSelectSign }: { onSelectSign: (s
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#0B1220] via-[#0E172A] to-[#080E1A] border border-amber-500/40 shadow-2xl space-y-6 relative overflow-hidden"
+          className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#0B1220] via-[#0E172A] to-[#080E1A] border border-white/[0.12] shadow-2xl space-y-6 relative overflow-hidden"
         >
           {/* Ambient Glow */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -361,7 +361,7 @@ export default function OmniLiveZodiacRadar({ onSelectSign }: { onSelectSign: (s
           {/* Top Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4 relative z-10">
             <div className="flex items-center gap-3">
-              <span className="w-12 h-12 rounded-2xl bg-amber-400 text-slate-950 font-serif text-2xl font-black flex items-center justify-center shadow-lg shadow-amber-400/25">
+              <span className="w-12 h-12 rounded-2xl bg-white text-black font-semibold shadow-sm font-serif text-2xl font-black flex items-center justify-center shadow-lg shadow-amber-400/25">
                 {selectedZodiac.symbol}
               </span>
               <div>
@@ -381,7 +381,7 @@ export default function OmniLiveZodiacRadar({ onSelectSign }: { onSelectSign: (s
               </div>
               <button
                 onClick={() => setWhyModalSign(selectedZodiac)}
-                className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-cyan-300 hover:text-cyan-200 border border-cyan-400/30 text-xs font-mono font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-cyan-300 hover:text-cyan-200 border border-white/[0.08] text-xs font-mono font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
                 title="View ancient scripture provenance and exact transit degrees"
               >
                 <HelpCircle className="w-3.5 h-3.5 text-cyan-400" />
@@ -417,7 +417,7 @@ export default function OmniLiveZodiacRadar({ onSelectSign }: { onSelectSign: (s
               </div>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-white/5 border border-cyan-500/30 space-y-1.5">
+            <div className="p-3.5 rounded-2xl bg-white/5 border border-white/[0.08] space-y-1.5">
               <div className="flex items-center justify-between font-mono text-xs">
                 <span className="text-cyan-400 font-bold flex items-center gap-1">
                   <Briefcase className="w-3.5 h-3.5" /> Career Focus
@@ -429,7 +429,7 @@ export default function OmniLiveZodiacRadar({ onSelectSign }: { onSelectSign: (s
               </div>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-white/5 border border-emerald-500/30 space-y-1.5">
+            <div className="p-3.5 rounded-2xl bg-white/5 border border-white/[0.08] space-y-1.5">
               <div className="flex items-center justify-between font-mono text-xs">
                 <span className="text-emerald-400 font-bold flex items-center gap-1">
                   <DollarSign className="w-3.5 h-3.5" /> Wealth & Barakah

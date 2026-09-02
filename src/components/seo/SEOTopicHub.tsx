@@ -213,7 +213,7 @@ export default function SEOTopicHub({
       </div>
 
       {/* 3. Primary Action Card (Interactive Quick Launcher) */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-[#0B1220] border border-amber-500/30 shadow-2xl space-y-4">
+      <div className="p-6 sm:p-8 rounded-3xl bg-[#0B1220] border border-white/[0.08] shadow-2xl space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
@@ -321,7 +321,7 @@ export default function SEOTopicHub({
         </div>
         <button
           onClick={onStartChart}
-          className="px-4 py-2 rounded-xl bg-amber-400 text-slate-950 font-bold font-mono text-xs flex items-center gap-1.5 shadow-md shrink-0 cursor-pointer"
+          className="px-4 py-2 rounded-xl bg-white text-black font-semibold shadow-sm font-bold font-mono text-xs flex items-center gap-1.5 shadow-md shrink-0 cursor-pointer"
         >
           <span>Calculate Now</span>
           <ArrowRight className="w-3.5 h-3.5" />

@@ -71,7 +71,7 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = memo(({
             >
               {/* Active Tab Highlight Pill */}
               {isActive && !isHero && (
-                <div className="absolute inset-0 rounded-2xl bg-amber-400/15 border border-amber-400/30 -z-10 shadow-[0_0_12px_rgba(251,191,36,0.2)]" />
+                <div className="absolute inset-0 rounded-2xl bg-amber-400/15 border border-white/[0.08] -z-10 shadow-[0_0_12px_rgba(251,191,36,0.2)]" />
               )}
 
               {/* Central "Ask AI" Hero Button */}
@@ -80,7 +80,7 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = memo(({
                   className={`flex items-center justify-center w-11 h-11 rounded-2xl transition-all shadow-md ${
                     isActive
                       ? 'bg-gradient-to-tr from-amber-400 to-amber-300 text-slate-950 shadow-amber-400/40 scale-105 font-black ring-2 ring-amber-300/50'
-                      : 'bg-amber-400/10 text-amber-300 border border-amber-400/40 hover:bg-amber-400/20'
+                      : 'bg-amber-400/10 text-amber-300 border border-white/[0.12] hover:bg-amber-400/20'
                   }`}
                 >
                   <Icon className="w-5 h-5" aria-hidden="true" />

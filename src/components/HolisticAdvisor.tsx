@@ -986,11 +986,11 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
                     <span className="text-xs font-bold uppercase tracking-wider text-indigo-300 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/40">
                       {activeProblem.category}
                     </span>
-                    <span className="text-xs font-mono text-emerald-400 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30">
+                    <span className="text-xs font-mono text-emerald-400 px-3 py-1 rounded-full bg-emerald-500/10 border border-white/[0.08]">
                       {activeProblem.badge}
                     </span>
                   </div>
-                  <span className="text-xs font-mono text-amber-300 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30">
+                  <span className="text-xs font-mono text-amber-300 px-3 py-1 rounded-full bg-amber-500/10 border border-white/[0.08]">
                     Urgency: {customUrgency}
                   </span>
                 </div>
@@ -1046,7 +1046,7 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
                       <span className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 text-lg">🕌</span> 
                       Authentic Sunnah & Qur'anic Remedy
                     </h3>
-                    <span className="text-[10px] font-mono text-emerald-300 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30">
+                    <span className="text-[10px] font-mono text-emerald-300 px-3 py-1 rounded-full bg-emerald-500/10 border border-white/[0.08]">
                       {activeProblem.islamicRemedy.source}
                     </span>
                   </div>
@@ -1055,7 +1055,7 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
                     <h4 className="text-sm font-bold text-emerald-300">{activeProblem.islamicRemedy.title}</h4>
 
                     {activeProblem.islamicRemedy.duaArabic && (
-                      <div className="p-5 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 space-y-3 text-right">
+                      <div className="p-5 rounded-2xl bg-emerald-950/40 border border-white/[0.08] space-y-3 text-right">
                         <p className="text-xl sm:text-2xl font-serif text-emerald-200 leading-loose" style={{ direction: 'rtl' }}>
                           {activeProblem.islamicRemedy.duaArabic}
                         </p>
@@ -1128,7 +1128,7 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
                       <span className="p-2 rounded-xl bg-cyan-500/20 text-cyan-400 text-lg">🧠</span> 
                       Psychological Framework & Mindset Shift
                     </h3>
-                    <span className="text-[10px] font-mono text-cyan-300 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30">
+                    <span className="text-[10px] font-mono text-cyan-300 px-3 py-1 rounded-full bg-cyan-500/10 border border-white/[0.08]">
                       CBT & Behavioral Science
                     </span>
                   </div>
@@ -1156,7 +1156,7 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
               <motion.div 
                 initial={{ opacity: 0, y: 12 }} 
                 animate={{ opacity: 1, y: 0 }} 
-                className="glass-card p-6 sm:p-8 rounded-3xl border border-amber-500/40 space-y-6"
+                className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.12] space-y-6"
               >
                 <div className="flex items-center justify-between border-b border-amber-500/20 pb-4">
                   <div>
@@ -1166,7 +1166,7 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
                     </h3>
                     <p className="text-xs text-slate-400 mt-1">Check off daily action steps as you complete them</p>
                   </div>
-                  <span className="text-xs font-mono px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                  <span className="text-xs font-mono px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-white/[0.12]">
                     {currentPlanDoneCount}/7 Days Checked
                   </span>
                 </div>
@@ -1191,7 +1191,7 @@ export default function HolisticAdvisor({ userProfile }: HolisticAdvisorProps) {
                         className={`w-full p-4 rounded-2xl border text-left flex items-start gap-3 transition-all cursor-pointer ${
                           isDone 
                             ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-200 line-through opacity-75' 
-                            : 'bg-white/5 border-white/10 text-slate-200 hover:bg-white/10 hover:border-amber-500/40'
+                            : 'bg-white/5 border-white/10 text-slate-200 hover:bg-white/10 hover:border-white/[0.12]'
                         }`}
                       >
                         <div className={`w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 mt-0.5 transition-colors ${

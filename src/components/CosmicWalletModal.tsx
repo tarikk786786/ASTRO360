@@ -262,7 +262,7 @@ export default function CosmicWalletModal({ isOpen, onClose, userProfile }: Cosm
           <div className="p-5 sm:p-6 space-y-5">
             
             {verifyError && (
-              <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-start gap-2">
+              <div className="p-3 rounded-xl bg-amber-500/10 border border-white/[0.08] text-amber-300 text-xs flex items-start gap-2">
                 <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <span className="leading-relaxed">{verifyError}</span>
               </div>

@@ -35,12 +35,12 @@ export const BeginnerQuickGuideModal: React.FC<BeginnerQuickGuideModalProps> = (
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar rounded-3xl bg-gradient-to-b from-[#0F172A] via-[#0B1220] to-[#060A14] border border-amber-400/30 p-5 sm:p-7 shadow-2xl space-y-6 text-left"
+          className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar rounded-3xl bg-gradient-to-b from-[#0F172A] via-[#0B1220] to-[#060A14] border border-white/[0.08] p-5 sm:p-7 shadow-2xl space-y-6 text-left"
         >
           {/* Header */}
           <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-4">
             <div className="space-y-1">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400/15 text-amber-300 text-[10.5px] font-mono font-bold uppercase tracking-wider border border-amber-400/30">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400/15 text-amber-300 text-[10.5px] font-mono font-bold uppercase tracking-wider border border-white/[0.08]">
                 <Sparkles className="w-3 h-3 text-amber-400" /> New to Astrology?
               </div>
               <h3 className="text-xl sm:text-2xl font-black text-white font-sans tracking-tight">
@@ -63,7 +63,7 @@ export const BeginnerQuickGuideModal: React.FC<BeginnerQuickGuideModalProps> = (
           <div className="space-y-4">
             {/* Step 1 */}
             <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/8 flex items-start gap-4">
-              <div className="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 font-black text-base flex items-center justify-center shrink-0 shadow-md">
+              <div className="w-10 h-10 rounded-2xl bg-white text-black font-semibold shadow-sm font-black text-base flex items-center justify-center shrink-0 shadow-md">
                 1
               </div>
               <div className="space-y-1">

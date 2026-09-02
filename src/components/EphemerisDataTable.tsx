@@ -121,7 +121,7 @@ export default function EphemerisDataTable({ planetPositions }: EphemerisDataTab
                       Retrograde (Rx)
                     </span>
                   ) : (
-                    <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+                    <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-white/[0.08]">
                       Direct ({p.speed})
                     </span>
                   )}

@@ -144,12 +144,12 @@ export default function KeywordResearchLab({ onNavigate }: KeywordResearchLabPro
     <div className="max-w-6xl mx-auto space-y-6 text-left font-sans pb-20">
       
       {/* ─── 1. TOP HEADER BANNER ────────────────────────────────────────── */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#0B1220] via-[#0E172A] to-[#070B14] border border-cyan-500/30 shadow-2xl space-y-4 relative overflow-hidden">
+      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#0B1220] via-[#0E172A] to-[#070B14] border border-white/[0.08] shadow-2xl space-y-4 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 font-mono text-xs font-bold uppercase">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-400/10 border border-white/[0.08] text-cyan-300 font-mono text-xs font-bold uppercase">
               <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" /> Free-First Keyword Research Lab
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">

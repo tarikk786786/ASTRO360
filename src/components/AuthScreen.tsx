@@ -85,7 +85,7 @@ export default function AuthScreen({ userProfile, onAuthSuccess, onSkip }: AuthS
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-md p-8 rounded-3xl bg-[#111827] border border-amber-500/30 shadow-2xl space-y-6 relative z-10"
+        className="w-full max-w-md p-8 rounded-3xl bg-[#111827] border border-white/[0.08] shadow-2xl space-y-6 relative z-10"
       >
         {/* LOGO & TITLE */}
         <div className="text-center space-y-2">
@@ -110,7 +110,7 @@ export default function AuthScreen({ userProfile, onAuthSuccess, onSkip }: AuthS
           </div>
         )}
         {successMsg && (
-          <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-mono flex items-center gap-2">
+          <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-white/[0.08] text-emerald-300 text-xs font-mono flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 shrink-0" />
             <span>{successMsg}</span>
           </div>
@@ -169,7 +169,7 @@ export default function AuthScreen({ userProfile, onAuthSuccess, onSkip }: AuthS
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold font-mono transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20 disabled:opacity-50"
+            className="w-full py-3 rounded-xl bg-amber-500 hover:bg-white text-black font-semibold shadow-sm font-bold font-mono transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20 disabled:opacity-50"
           >
             <span>{isLoading ? 'Synchronizing...' : isSignUp ? 'Create Cosmic Account' : 'Sign In to COSMOS'}</span>
             <ArrowRight className="w-4 h-4" />

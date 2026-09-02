@@ -28,7 +28,7 @@ export default function CosmicCompassVisualizer({ userProfile }: CosmicCompassVi
             Real-Time 9 Graha Angular Degrees & Celestial Coordinate Tracking
           </p>
         </div>
-        <span className="text-[10px] font-mono text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/30 font-bold">
+        <span className="text-[10px] font-mono text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-white/[0.08] font-bold">
           360° Sidereal Alignment
         </span>
       </div>

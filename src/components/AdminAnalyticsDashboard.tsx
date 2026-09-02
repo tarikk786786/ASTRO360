@@ -59,7 +59,7 @@ export default function AdminAnalyticsDashboard() {
           <span className="text-[9px] font-mono text-emerald-400 block">+12.4% this week</span>
         </div>
 
-        <div className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 space-y-1 hover:border-amber-500/40 transition-colors">
+        <div className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 space-y-1 hover:border-white/[0.12] transition-colors">
           <span className="text-[10px] font-mono text-slate-400 block flex items-center gap-1">
             <Zap className="w-3.5 h-3.5 text-amber-400" /> AI Token Usage (Langfuse)
           </span>

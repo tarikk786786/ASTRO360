@@ -106,7 +106,7 @@ export default function AIAstrologySection({ onOpenChat }: AIAstrologySectionPro
                 <div className="max-w-[80%] p-3.5 rounded-2xl rounded-tr-sm bg-white/[0.06] border border-white/[0.08] text-xs text-slate-200">
                   {selectedPrompt}
                 </div>
-                <div className="w-7 h-7 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center flex-shrink-0">
+                <div className="w-7 h-7 rounded-full bg-cyan-500/20 border border-white/[0.08] flex items-center justify-center flex-shrink-0">
                   <User className="w-3.5 h-3.5 text-cyan-300" />
                 </div>
               </div>

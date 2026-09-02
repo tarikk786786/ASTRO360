@@ -303,7 +303,7 @@ export default function AstrologyEarningsHub({ userProfile }: AstrologyEarningsH
                   href={`https://api.whatsapp.com/send?text=${encodeURIComponent(`Namaste ${clientName || 'Ji'}, here is your secure payment link for ${servicePurpose}: ${generatedLink.url}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 py-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/30 text-emerald-300 font-bold text-xs flex items-center justify-center gap-1.5 transition-all"
+                  className="flex-1 py-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 border border-white/[0.08] text-emerald-300 font-bold text-xs flex items-center justify-center gap-1.5 transition-all"
                 >
                   <Share2 className="w-3.5 h-3.5" />
                   <span>Share on WhatsApp</span>

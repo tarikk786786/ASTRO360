@@ -98,7 +98,7 @@ export const AstroNotificationCenterModal: React.FC<AstroNotificationCenterModal
           {/* Header */}
           <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between gap-3 bg-[#0B1220]/90">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-amber-400/10 border border-amber-400/20 text-amber-400">
+              <div className="p-2 rounded-xl bg-amber-400/10 border border-white/[0.08] text-amber-400">
                 <Bell className="w-5 h-5" />
               </div>
               <div className="text-left">
@@ -107,7 +107,7 @@ export const AstroNotificationCenterModal: React.FC<AstroNotificationCenterModal
                     Astrology Notifications
                   </h2>
                   {unreadCount > 0 && (
-                    <span className="text-[10px] font-mono font-bold bg-amber-400 text-slate-950 px-2 py-0.2 rounded-full shadow-sm">
+                    <span className="text-[10px] font-mono font-bold bg-white text-black font-semibold shadow-sm px-2 py-0.2 rounded-full shadow-sm">
                       {unreadCount} unread
                     </span>
                   )}
@@ -141,7 +141,7 @@ export const AstroNotificationCenterModal: React.FC<AstroNotificationCenterModal
 
           {/* Browser Permission Prompt Banner if Default */}
           {permissionState !== 'granted' && (
-            <div className="p-3 bg-gradient-to-r from-amber-500/20 via-amber-400/10 to-transparent border-b border-amber-400/20 flex items-center justify-between gap-3 text-left">
+            <div className="p-3 bg-gradient-to-r from-amber-500/20 via-amber-400/10 to-transparent border-b border-white/[0.08] flex items-center justify-between gap-3 text-left">
               <div className="flex items-center gap-2 text-xs font-mono text-amber-200">
                 <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
                 <span>Enable push notifications to receive timing alerts when closed.</span>
@@ -152,7 +152,7 @@ export const AstroNotificationCenterModal: React.FC<AstroNotificationCenterModal
                   closeCenter();
                   openPrePermission();
                 }}
-                className="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-bold text-xs font-mono shrink-0 cursor-pointer shadow-sm hover:bg-amber-300"
+                className="px-2.5 py-1 rounded-lg bg-white text-black font-semibold shadow-sm font-bold text-xs font-mono shrink-0 cursor-pointer shadow-sm hover:bg-amber-300"
               >
                 Enable
               </button>
@@ -171,7 +171,7 @@ export const AstroNotificationCenterModal: React.FC<AstroNotificationCenterModal
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`py-2 rounded-xl transition-all cursor-pointer ${
                   activeTab === tab.id
-                    ? 'bg-amber-400 text-slate-950 shadow-md font-black'
+                    ? 'bg-white text-black font-semibold shadow-sm shadow-md font-black'
                     : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -200,7 +200,7 @@ export const AstroNotificationCenterModal: React.FC<AstroNotificationCenterModal
                     key={item.id}
                     className={`p-4 rounded-2xl border transition-all space-y-2.5 relative group ${
                       !item.read
-                        ? 'bg-[#0E172B] border-amber-400/40 shadow-lg'
+                        ? 'bg-[#0E172B] border-white/[0.12] shadow-lg'
                         : 'bg-[#090F1C] border-white/10 hover:border-white/20'
                     }`}
                   >
@@ -213,10 +213,10 @@ export const AstroNotificationCenterModal: React.FC<AstroNotificationCenterModal
 
                         <span className={`text-[9.5px] font-mono font-bold px-2 py-0.5 rounded border ${
                           isSupportive
-                            ? 'text-emerald-300 bg-emerald-500/10 border-emerald-500/30'
+                            ? 'text-emerald-300 bg-emerald-500/10 border-white/[0.08]'
                             : isChallenging
-                            ? 'text-amber-300 bg-amber-500/10 border-amber-500/30'
-                            : 'text-cyan-300 bg-cyan-500/10 border-cyan-500/30'
+                            ? 'text-amber-300 bg-amber-500/10 border-white/[0.08]'
+                            : 'text-cyan-300 bg-cyan-500/10 border-white/[0.08]'
                         }`}>
                           {isSupportive ? 'Supportive' : isChallenging ? 'Attention Window' : 'Transition'}
                         </span>

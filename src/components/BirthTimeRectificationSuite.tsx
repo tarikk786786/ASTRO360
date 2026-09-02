@@ -56,7 +56,7 @@ export default function BirthTimeRectificationSuite() {
             Pinpoint Exact Birth Minute using Life Event Milestones, Tattva Shodhana & Kunda Alignment
           </p>
         </div>
-        <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/30 font-bold">
+        <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-white/[0.08] font-bold">
           Tattva Shodhana Algorithm
         </span>
       </div>
@@ -148,7 +148,7 @@ export default function BirthTimeRectificationSuite() {
 
             {rectifiedTime ? (
               <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="space-y-3">
-                <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-center space-y-1">
+                <div className="p-4 rounded-xl bg-amber-500/10 border border-white/[0.08] text-center space-y-1">
                   <span className="text-[10px] font-mono text-slate-400 block">Original Given Time: {givenTime}</span>
                   <span className="text-2xl font-bold font-mono text-amber-300 block">{rectifiedTime} AM</span>
                   <span className="text-[11px] font-mono text-emerald-400 font-bold block">

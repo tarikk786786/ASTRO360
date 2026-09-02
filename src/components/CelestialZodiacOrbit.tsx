@@ -102,7 +102,7 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
-          className="absolute top-2 left-2 z-40 px-2.5 py-1 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-mono font-bold flex items-center gap-1.5 shadow-lg"
+          className="absolute top-2 left-2 z-40 px-2.5 py-1 rounded-xl bg-amber-500/20 text-amber-300 border border-white/[0.12] text-[10px] font-mono font-bold flex items-center gap-1.5 shadow-lg"
         >
           <Volume2 className="w-3.5 h-3.5 animate-pulse text-amber-400" />
           <span>Resonating {activeFrequency} Hz</span>
@@ -166,7 +166,7 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
         </div>
 
         {/* Middle Orbit Track */}
-        <div className="absolute inset-10 rounded-full border border-dashed border-cyan-500/30 flex items-center justify-center pointer-events-none" />
+        <div className="absolute inset-10 rounded-full border border-dashed border-white/[0.08] flex items-center justify-center pointer-events-none" />
 
         {/* Inner Orbit Track */}
         <div className="absolute inset-20 rounded-full border border-purple-500/30 flex items-center justify-center pointer-events-none" />
@@ -236,7 +236,7 @@ export default function CelestialZodiacOrbit({ planetPositions, onSelectPlanet }
                 <span className={`text-base font-bold ${hoveredPlanet.color}`}>{hoveredPlanet.symbol}</span>
                 <span className="text-xs font-bold text-white font-mono">{hoveredPlanet.name}</span>
               </div>
-              <span className="text-[9px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30">
+              <span className="text-[9px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-white/[0.08]">
                 {hoveredPlanet.retrograde ? 'Retrograde (Rx)' : 'Direct Motion'}
               </span>
             </div>

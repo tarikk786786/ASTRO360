@@ -64,7 +64,7 @@ export default function KeywordSearchInput({
   return (
     <div className="w-full space-y-4">
       <form onSubmit={handleSubmit} className="relative">
-        <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-2 sm:p-2.5 rounded-2xl bg-white/[0.03] border border-cyan-500/30 focus-within:border-cyan-400 focus-within:ring-2 focus-within:ring-cyan-500/20 backdrop-blur-xl transition-all shadow-xl">
+        <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-2 sm:p-2.5 rounded-2xl bg-white/[0.03] border border-white/[0.08] focus-within:border-cyan-400 focus-within:ring-2 focus-within:ring-cyan-500/20 backdrop-blur-xl transition-all shadow-xl">
           <div className="flex items-center flex-1 px-3 gap-2.5">
             <Search className="w-5 h-5 text-cyan-400 shrink-0" />
             <input
@@ -114,7 +114,7 @@ export default function KeywordSearchInput({
 
         {/* Progress Bar during mining */}
         {isLoading && (
-          <div className="mt-2 px-3 py-2 rounded-xl bg-black/40 border border-cyan-500/30 space-y-1 text-left">
+          <div className="mt-2 px-3 py-2 rounded-xl bg-black/40 border border-white/[0.08] space-y-1 text-left">
             <div className="flex justify-between text-[11px] font-mono text-cyan-300">
               <span>{progressMessage || 'Synthesizing keyword graph...'}</span>
               <span>{progressPercent || 25}%</span>

@@ -34,7 +34,7 @@ const PERSONAS: Persona[] = [
     name: 'Sage Parashara',
     title: 'Vedic Jyotish Rishi',
     icon: '🕉️',
-    badgeColor: 'text-amber-300 bg-amber-500/10 border-amber-500/30',
+    badgeColor: 'text-amber-300 bg-amber-500/10 border-white/[0.08]',
     greeting: 'Namaste, seeker. I am **Sage Parashara**, master of Vedic Sidereal Jyotish, Vimshottari Dasha, and Navaratna Gemstones. Let us analyze your karma and planetary alignment.'
   },
   {
@@ -42,7 +42,7 @@ const PERSONAS: Persona[] = [
     name: 'Al-Biruni',
     title: 'Islamic Astronomy & Abjad Scholar',
     icon: '🕌',
-    badgeColor: 'text-emerald-300 bg-emerald-500/10 border-emerald-500/30',
+    badgeColor: 'text-emerald-300 bg-emerald-500/10 border-white/[0.08]',
     greeting: 'Assalamu Alaikum. I am **Al-Biruni**, scholar of 28 Manazil al-Qamar (Lunar Mansions), Ilm al-Nujum, Abjad numerology, and Istikhara. Ask me for sacred guidance and Barakah.'
   },
   {
@@ -50,7 +50,7 @@ const PERSONAS: Persona[] = [
     name: 'Claudius Ptolemy',
     title: 'Hellenistic & Tropical Master',
     icon: '🏛️',
-    badgeColor: 'text-cyan-300 bg-cyan-500/10 border-cyan-500/30',
+    badgeColor: 'text-cyan-300 bg-cyan-500/10 border-white/[0.08]',
     greeting: 'Greetings. I am **Claudius Ptolemy**, architect of the Tetrabiblos, Tropical transits, and Planetary Hours. Let us examine your natal houses and planetary aspects.'
   },
   {

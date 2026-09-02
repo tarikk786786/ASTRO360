@@ -378,7 +378,7 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
                   onClick={() => handlePlaySound(selectedPlanet.name)}
                   className={`px-3 py-1.5 rounded-xl font-mono text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                     isPlayingAudio
-                      ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/20'
+                      ? 'bg-white text-black font-semibold shadow-sm shadow-md shadow-amber-400/20'
                       : 'bg-white/10 hover:bg-white/15 text-white'
                   }`}
                 >

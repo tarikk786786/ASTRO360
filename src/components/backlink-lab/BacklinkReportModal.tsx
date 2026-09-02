@@ -65,7 +65,7 @@ export default function BacklinkReportModal({
         </button>
 
         <div className="border-b border-white/10 pb-3 space-y-1">
-          <span className="text-[10px] font-bold font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-cyan-500/30">
+          <span className="text-[10px] font-bold font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-white/[0.08]">
             EXPORT DATA & REPORTS
           </span>
           <h3 className="text-xl font-bold text-white tracking-tight">

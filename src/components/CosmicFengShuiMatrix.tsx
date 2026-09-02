@@ -49,14 +49,14 @@ export default function CosmicFengShuiMatrix({ userProfile }: CosmicFengShuiMatr
             Kua Number Calculation, Prosperity Directions, Lucky Colors & Wealth Horas
           </p>
         </div>
-        <span className="text-[10px] font-mono text-emerald-300 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30 font-bold">
+        <span className="text-[10px] font-mono text-emerald-300 bg-emerald-500/10 px-3 py-1 rounded-full border border-white/[0.08] font-bold">
           BaZi & Feng Shui Matrix
         </span>
       </div>
 
       {/* 4 FENG SHUI CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs font-mono">
-        <div className="p-4 rounded-2xl bg-[#0B1220] border border-emerald-500/30 space-y-1">
+        <div className="p-4 rounded-2xl bg-[#0B1220] border border-white/[0.08] space-y-1">
           <span className="text-[10px] text-slate-400 block flex items-center gap-1">
             <Compass className="w-3.5 h-3.5 text-emerald-400" /> Lucky Prosperity Direction
           </span>
@@ -64,7 +64,7 @@ export default function CosmicFengShuiMatrix({ userProfile }: CosmicFengShuiMatr
           <span className="text-[10px] text-slate-400 block pt-1">Position office desk facing this direction.</span>
         </div>
 
-        <div className="p-4 rounded-2xl bg-[#0B1220] border border-cyan-500/30 space-y-1">
+        <div className="p-4 rounded-2xl bg-[#0B1220] border border-white/[0.08] space-y-1">
           <span className="text-[10px] text-slate-400 block flex items-center gap-1">
             <Layers className="w-3.5 h-3.5 text-cyan-400" /> Dominant Feng Shui Element
           </span>
@@ -72,7 +72,7 @@ export default function CosmicFengShuiMatrix({ userProfile }: CosmicFengShuiMatr
           <span className="text-[10px] text-slate-400 block pt-1">Harmonizes personal Qi & workspace.</span>
         </div>
 
-        <div className="p-4 rounded-2xl bg-[#0B1220] border border-amber-500/30 space-y-1">
+        <div className="p-4 rounded-2xl bg-[#0B1220] border border-white/[0.08] space-y-1">
           <span className="text-[10px] text-slate-400 block flex items-center gap-1">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Lucky Color Frequency
           </span>

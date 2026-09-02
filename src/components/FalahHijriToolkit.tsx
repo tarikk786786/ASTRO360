@@ -61,7 +61,7 @@ export default function FalahHijriToolkit() {
   const ageRes = calcAge(birthDate);
 
   return (
-    <div className="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-500/30 shadow-2xl space-y-8">
+    <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/[0.08] shadow-2xl space-y-8">
       {/* HEADER & FALAH BADGE */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
@@ -95,7 +95,7 @@ export default function FalahHijriToolkit() {
             />
           </div>
 
-          <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1 text-center">
+          <div className="p-4 rounded-xl bg-emerald-500/10 border border-white/[0.08] space-y-1 text-center">
             <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block">Converted Hijri Date</span>
             <p className="text-xl font-serif text-emerald-300 font-bold">{convertedHijri}</p>
           </div>
@@ -127,7 +127,7 @@ export default function FalahHijriToolkit() {
               <span className="text-[10px] text-slate-400 font-mono block">Gregorian Solar Age</span>
               <span className="text-base font-bold font-mono text-white">{ageRes.gregYears} Yrs</span>
             </div>
-            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30">
+            <div className="p-3 rounded-xl bg-amber-500/10 border border-white/[0.08]">
               <span className="text-[10px] text-amber-400 font-mono block">Hijri Lunar Age</span>
               <span className="text-base font-bold font-mono text-amber-300">{ageRes.hijriYears} AH Yrs</span>
             </div>

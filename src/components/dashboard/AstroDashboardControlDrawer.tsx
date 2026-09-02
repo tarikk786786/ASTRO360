@@ -103,7 +103,7 @@ export const AstroDashboardControlDrawer: React.FC<AstroDashboardControlDrawerPr
           {/* Header */}
           <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between gap-3 bg-[#0B1220]/90">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-amber-400/10 border border-amber-400/20 text-amber-400">
+              <div className="p-2 rounded-xl bg-amber-400/10 border border-white/[0.08] text-amber-400">
                 <Sliders className="w-5 h-5" />
               </div>
               <div className="text-left">
@@ -140,7 +140,7 @@ export const AstroDashboardControlDrawer: React.FC<AstroDashboardControlDrawerPr
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer ${
                   activeTab === tab.id
-                    ? 'bg-amber-400 text-slate-950 shadow-md font-black'
+                    ? 'bg-white text-black font-semibold shadow-sm shadow-md font-black'
                     : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
                 }`}
               >
@@ -209,7 +209,7 @@ export const AstroDashboardControlDrawer: React.FC<AstroDashboardControlDrawerPr
                         </p>
                       </div>
                       {isSelected && (
-                        <div className="p-1 rounded-full bg-amber-400 text-slate-950 shrink-0 mt-0.5">
+                        <div className="p-1 rounded-full bg-white text-black font-semibold shadow-sm shrink-0 mt-0.5">
                           <Check className="w-3.5 h-3.5 stroke-[3]" />
                         </div>
                       )}
@@ -254,7 +254,7 @@ export const AstroDashboardControlDrawer: React.FC<AstroDashboardControlDrawerPr
                         </p>
                       </div>
                       {isSelected && (
-                        <div className="p-1 rounded-full bg-amber-400 text-slate-950 shrink-0 mt-0.5">
+                        <div className="p-1 rounded-full bg-white text-black font-semibold shadow-sm shrink-0 mt-0.5">
                           <Check className="w-3.5 h-3.5 stroke-[3]" />
                         </div>
                       )}
@@ -295,7 +295,7 @@ export const AstroDashboardControlDrawer: React.FC<AstroDashboardControlDrawerPr
                         </p>
                       </div>
                       {isSelected && (
-                        <div className="p-1 rounded-full bg-amber-400 text-slate-950 shrink-0 mt-0.5">
+                        <div className="p-1 rounded-full bg-white text-black font-semibold shadow-sm shrink-0 mt-0.5">
                           <Check className="w-3.5 h-3.5 stroke-[3]" />
                         </div>
                       )}
@@ -336,7 +336,7 @@ export const AstroDashboardControlDrawer: React.FC<AstroDashboardControlDrawerPr
                         </span>
                       </div>
                       {isSelected && (
-                        <div className="p-1 rounded-full bg-amber-400 text-slate-950 shrink-0">
+                        <div className="p-1 rounded-full bg-white text-black font-semibold shadow-sm shrink-0">
                           <Check className="w-3.5 h-3.5 stroke-[3]" />
                         </div>
                       )}

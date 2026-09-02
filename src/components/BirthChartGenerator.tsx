@@ -600,7 +600,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
                   Exact Sidereal (Nirayana) & Tropical longitude equations, Julian Ephemeris Days, and Ayanamsha constants.
                 </p>
               </div>
-              <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-white/[0.08]">
                 100% MATH VERIFIED
               </span>
             </div>
@@ -688,7 +688,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
                   Evaluation of 100+ Parashari Yoga combinations and traditional remedies.
                 </p>
               </div>
-              <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-white/[0.08]">
                 98% CONFIDENCE
               </span>
             </div>
@@ -730,7 +730,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
                   Comprehensive breakdown of lunar constellation traits, deity, symbol, and element.
                 </p>
               </div>
-              <span className="text-xs font-bold px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-white/[0.08]">
                 NAKSHATRA 4 PADAS
               </span>
             </div>

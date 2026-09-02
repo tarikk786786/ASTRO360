@@ -395,7 +395,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
     },
     saffron: {
       bg: 'bg-[#150A05]',
-      border: 'border-amber-500/40',
+      border: 'border-white/[0.12]',
       accent: 'text-amber-400',
       accentBg: 'bg-amber-500/10',
       glow: 'shadow-[0_0_40px_rgba(245,158,11,0.15)]',
@@ -885,7 +885,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               <select
                 value={selectedVarga}
                 onChange={(e) => setSelectedVarga(Number(e.target.value))}
-                className="bg-black/50 border border-amber-500/30 text-amber-300 rounded-lg px-2.5 py-1 text-xs font-mono outline-none"
+                className="bg-black/50 border border-white/[0.08] text-amber-300 rounded-lg px-2.5 py-1 text-xs font-mono outline-none"
               >
                 {DIVISIONAL_CHARTS.map(c => (
                   <option key={c.id} value={c.id}>{c.name} — {c.desc.split(',')[0]}</option>
@@ -971,7 +971,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               <button
                 onClick={() => setIsLiveAnimating(!isLiveAnimating)}
                 className={`px-4 py-1.5 rounded-xl font-bold flex items-center gap-1.5 cursor-pointer ${
-                  isLiveAnimating ? 'bg-rose-500 text-white animate-pulse' : 'bg-amber-400 text-slate-950'
+                  isLiveAnimating ? 'bg-rose-500 text-white animate-pulse' : 'bg-white text-black font-semibold shadow-sm'
                 }`}
               >
                 {isLiveAnimating ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
@@ -1002,7 +1002,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
             {/* Center: Interactive Chart Canvas */}
-            <div className="lg:col-span-8 p-6 rounded-3xl bg-[#0B101E] border border-amber-500/30 shadow-2xl flex flex-col items-center justify-center relative min-h-[480px]">
+            <div className="lg:col-span-8 p-6 rounded-3xl bg-[#0B101E] border border-white/[0.08] shadow-2xl flex flex-col items-center justify-center relative min-h-[480px]">
               <div className="absolute top-4 left-4 z-10 font-mono text-xs">
                 <span className="text-amber-400 font-bold uppercase tracking-wider">
                   {chartLayout.toUpperCase()} • {DIVISIONAL_CHARTS.find(c => c.id === selectedVarga)?.name || 'D1 Rashi'} ({ayanamsha.toUpperCase()})
@@ -1152,7 +1152,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
                       <div
                         key={p.name}
                         style={{ left: `${x}px`, top: `${y}px` }}
-                        className="absolute transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-slate-900 border border-amber-400/40 flex items-center justify-center text-xs font-bold text-amber-300 shadow"
+                        className="absolute transform -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-slate-900 border border-white/[0.12] flex items-center justify-center text-xs font-bold text-amber-300 shadow"
                         title={`${p.name} ${p.degree} in ${p.sign}`}
                       >
                         {p.symbol}
@@ -1249,7 +1249,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               <h3 className="text-base font-bold text-white">Planetary Aspects & Vedic Drishti Orbit Matrix</h3>
               <p className="text-slate-400">Mutual geometric ray alignments, orb angles, and special Parashari Drishtis (Mars, Jupiter, Saturn).</p>
             </div>
-            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-amber-400/20 font-bold">
+            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-white/[0.08] font-bold">
               {aspectPairs.length} Active Configurations
             </span>
           </div>
@@ -1262,7 +1262,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
                     {a.p1} ⇄ {a.p2}
                   </span>
                   <span className={`text-[10px] px-2 py-0.5 rounded font-bold ${
-                    a.nature === 'Harmonic' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                    a.nature === 'Harmonic' ? 'bg-emerald-500/20 text-emerald-300 border border-white/[0.08]' : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
                   }`}>
                     {a.nature}
                   </span>
@@ -1286,7 +1286,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 3: AUSPICIOUS YOGAS ANALYZER ─────────────────────────── */}
       {activeStudioTab === 'yogas' && (
-        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-amber-500/30 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/[0.08] space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white flex items-center gap-2">
@@ -1295,7 +1295,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               </h3>
               <p className="text-slate-400">Pancha Mahapurusha, Gaja Kesari, Raja, Dhana, and planetary confluence yogas.</p>
             </div>
-            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-amber-400/20 font-bold">
+            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-white/[0.08] font-bold">
               {activeYogas.length} Formed Yogas
             </span>
           </div>
@@ -1308,7 +1308,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
                     <Crown className="w-3.5 h-3.5 text-amber-400" />
                     {yoga.name}
                   </span>
-                  <span className="text-[10px] px-2 py-0.5 rounded font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  <span className="text-[10px] px-2 py-0.5 rounded font-bold bg-emerald-500/20 text-emerald-300 border border-white/[0.08]">
                     {yoga.status}
                   </span>
                 </div>
@@ -1325,7 +1325,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 4: AUSPICIOUS MUHURTA & PANCHANGA ────────────────────── */}
       {activeStudioTab === 'muhurta' && (
-        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-amber-500/30 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/[0.08] space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white flex items-center gap-2">
@@ -1334,7 +1334,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               </h3>
               <p className="text-slate-400">Electional astrology calculations for optimal endeavor timing, Abhijit Muhurta, and Rahu Kaal avoidance.</p>
             </div>
-            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-amber-400/20 font-bold">
+            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-white/[0.08] font-bold">
               Dynamic Real-Time Windows
             </span>
           </div>
@@ -1346,7 +1346,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
                   <span className="text-sm font-bold text-white">{m.name}</span>
                   <span className={`text-[10px] px-2 py-0.5 rounded font-bold ${
                     m.quality.includes('Supreme') || m.quality.includes('Sattva') || m.quality.includes('Nectar')
-                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                      ? 'bg-emerald-500/20 text-emerald-300 border border-white/[0.08]'
                       : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
                   }`}>
                     {m.quality}
@@ -1410,7 +1410,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 6: JAIMINI CHARA KARAKAS & KARAKAMSHA ────────────────── */}
       {activeStudioTab === 'jaimini' && (
-        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-amber-500/30 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/[0.08] space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white flex items-center gap-2">
@@ -1419,7 +1419,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               </h3>
               <p className="text-slate-400">Hierarchical degree ranking determining soul evolution (Atmakaraka), career (Amatyakaraka), and partner (Darakaraka).</p>
             </div>
-            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-amber-400/20 font-bold">
+            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-white/[0.08] font-bold">
               Upadesha Sutras Standard
             </span>
           </div>
@@ -1453,7 +1453,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 7: BIRTH TIME RECTIFICATION (BTR) STUDIO ─────────────── */}
       {activeStudioTab === 'rectification' && (
-        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-cyan-500/30 space-y-5 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/[0.08] space-y-5 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white flex items-center gap-2">
@@ -1467,7 +1467,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
             </span>
           </div>
 
-          <div className="p-5 rounded-2xl bg-black/50 border border-cyan-500/30 flex flex-wrap items-center justify-between gap-4">
+          <div className="p-5 rounded-2xl bg-black/50 border border-white/[0.08] flex flex-wrap items-center justify-between gap-4">
             <div>
               <span className="text-slate-400 text-[10px] uppercase font-bold block">Rectified Birth Time</span>
               <strong className="text-xl text-cyan-300 font-mono">{formattedActiveTime}</strong>
@@ -1613,7 +1613,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               <h3 className="text-base font-bold text-white">27 Vedic Nakshatras & Sacred Deity Matrix</h3>
               <p className="text-slate-400">108 Padas, Ruling Deities, Yonis, Ganas, and Ecliptic spans.</p>
             </div>
-            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-amber-400/20 font-bold">
+            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-white/[0.08] font-bold">
               27 Lunar Mansions
             </span>
           </div>
@@ -1646,7 +1646,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 11: HANS COUSTO SOUND RESONATOR ──────────────────────── */}
       {activeStudioTab === 'soundResonator' && (
-        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-amber-500/30 space-y-6 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/[0.08] space-y-6 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white">Hans Cousto Cosmic Octave Acoustic Resonator</h3>
@@ -1705,7 +1705,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               <h3 className="text-base font-bold text-white">Vimshottari Dasha 120-Year Master Timeline</h3>
               <p className="text-slate-400">Complete 9-Mahadasha planetary cycle sequence, year durations, and active timeline progression.</p>
             </div>
-            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-amber-400/20 font-bold">
+            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-white/[0.08] font-bold">
               120 Years Total Cycle
             </span>
           </div>
@@ -1755,7 +1755,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
                   sp.bindus >= 30
                     ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-300'
                     : sp.bindus >= 28
-                    ? 'bg-amber-950/20 border-amber-500/30 text-amber-300'
+                    ? 'bg-amber-950/20 border-white/[0.08] text-amber-300'
                     : 'bg-slate-900 border-slate-800 text-slate-400'
                 }`}
               >
@@ -1776,7 +1776,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               <h3 className="text-base font-bold text-white">Shadbala 6-Fold Planetary Strength Matrix</h3>
               <p className="text-slate-400">Positional (Sthana), Directional (Dig), Temporal (Kala), Motional (Chesta), Natural (Naisargika), and Aspectual (Drik) bala.</p>
             </div>
-            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-amber-400/20 font-bold">
+            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-white/[0.08] font-bold">
               Standard: 1 Rupa = 60 Shashtiamshas
             </span>
           </div>
@@ -1825,13 +1825,13 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="p-4 rounded-2xl bg-white/5 border border-amber-500/30 space-y-1.5">
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] space-y-1.5">
               <span className="text-amber-400 font-bold block text-sm">1. Vedic Jyotish (Parashari)</span>
               <p className="text-slate-300 text-[11px] font-sans">Sidereal Lahiri Ayanamsha (24°13'). Sun in Scorpio, Moon in Leo (Magha). Vimshottari Mahadasha: Rahu-Jupiter.</p>
               <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded inline-block font-bold">Theme: High Dharma & Purpose</span>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white/5 border border-cyan-500/30 space-y-1.5">
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] space-y-1.5">
               <span className="text-cyan-400 font-bold block text-sm">2. Western Psychological</span>
               <p className="text-slate-300 text-[11px] font-sans">Tropical Placidus Wheel. Sun in Sagittarius (18°), Moon in Virgo. Jupiter Trine Midheaven indicator.</p>
               <span className="text-[10px] text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded inline-block font-bold">Theme: Career Expansion</span>
@@ -1864,7 +1864,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
               <h3 className="text-base font-bold text-white">Multi-Layer Temporal Timeline (1y–10y)</h3>
               <p className="text-slate-400">Concurrent planetary transits, Vimshottari dasha transitions, and major ingresses.</p>
             </div>
-            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-amber-400/20 font-bold">
+            <span className="text-xs bg-amber-400/10 text-amber-400 px-3 py-1 rounded-xl border border-white/[0.08] font-bold">
               Active Range: 2026 – 2031
             </span>
           </div>
@@ -1923,7 +1923,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
             </div>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white/5 border border-amber-500/30 space-y-2">
+          <div className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] space-y-2">
             <span className="text-amber-400 font-bold block text-sm">Calculated Prediction Window</span>
             <div className="text-slate-300 font-sans text-xs">
               <strong>Window:</strong> Sep 12, 2026 – Oct 28, 2026 (Peak: Oct 04, 2026)<br />
@@ -1935,7 +1935,7 @@ export default function CosmicStudioSuite({ userProfile }: CosmicStudioSuiteProp
 
       {/* ─── TAB 18: RESEARCH & ACCURACY LAB ─────────────────────────── */}
       {activeStudioTab === 'research' && (
-        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-cyan-500/30 space-y-4 font-mono text-xs">
+        <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/[0.08] space-y-4 font-mono text-xs">
           <div className="border-b border-white/10 pb-3 flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-white">Sub-Arcsecond Accuracy Lab & Benchmarking</h3>

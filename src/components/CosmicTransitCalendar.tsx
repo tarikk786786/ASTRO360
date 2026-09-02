@@ -31,7 +31,7 @@ export default function CosmicTransitCalendar() {
       description: 'Sun enters its own sign of Leo. Highly auspicious for executive leadership, personal branding, authority, and public recognition.',
       impactCategory: 'Career',
       remedy: 'Recite Aditya Hrudayam Stotram during sunrise & offer Arghya with copper vessel.',
-      badgeColor: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+      badgeColor: 'text-amber-400 bg-amber-500/10 border-white/[0.08]',
     },
     {
       id: 2,
@@ -43,7 +43,7 @@ export default function CosmicTransitCalendar() {
       description: 'Mercury ends retrograde motion and turns direct in its exaltation sign of Virgo. Accelerates trade, analytical contracts, coding, and strategic financial investments.',
       impactCategory: 'Wealth',
       remedy: 'Donate green mung beans on Wednesday morning & chant Vishnu Sahasranama.',
-      badgeColor: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+      badgeColor: 'text-emerald-400 bg-emerald-500/10 border-white/[0.08]',
     },
     {
       id: 3,
@@ -55,7 +55,7 @@ export default function CosmicTransitCalendar() {
       description: 'Illuminating 100 Healing Stars of Shatabhisha. Peak intuitive awareness, spiritual detachment, and breakthrough solutions for long-standing challenges.',
       impactCategory: 'Spirituality',
       remedy: 'Meditate during 11:48 AM - 12:36 PM Abhijit Muhurta & recite Surah Al-Waqi\'ah.',
-      badgeColor: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
+      badgeColor: 'text-cyan-400 bg-cyan-500/10 border-white/[0.08]',
     },
     {
       id: 4,
@@ -242,7 +242,7 @@ export default function CosmicTransitCalendar() {
                 <p>{selectedEvent.description}</p>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-emerald-500/30 text-xs space-y-1">
+              <div className="p-3.5 rounded-2xl bg-[#0B1220] border border-white/[0.08] text-xs space-y-1">
                 <span className="font-bold text-emerald-400 font-mono block flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Recommended Action & Sacred Remedy:
                 </span>

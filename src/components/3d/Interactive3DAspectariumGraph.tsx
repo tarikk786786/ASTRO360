@@ -90,7 +90,7 @@ function PlanetAspectNode({
           onClick={(e) => { e.stopPropagation(); onSelect(planet); }}
           className={`px-2.5 py-0.5 rounded-full text-xs font-mono font-bold whitespace-nowrap shadow-xl flex items-center gap-1 cursor-pointer transition-all ${
             isSelected
-              ? 'bg-amber-400 text-slate-950 ring-2 ring-amber-300 scale-110'
+              ? 'bg-white text-black font-semibold shadow-sm ring-2 ring-amber-300 scale-110'
               : 'bg-black/85 text-white border border-white/20 hover:border-amber-400'
           }`}
         >
@@ -180,12 +180,12 @@ export const Interactive3DAspectariumGraph: React.FC<{
   const activeAspect = selectedAspect || aspectLines[0];
 
   return (
-    <div className="w-full rounded-3xl bg-gradient-to-b from-[#0B1220] via-[#070D18] to-[#04060E] border border-amber-400/30 p-4 sm:p-6 shadow-2xl space-y-4 text-left">
+    <div className="w-full rounded-3xl bg-gradient-to-b from-[#0B1220] via-[#070D18] to-[#04060E] border border-white/[0.08] p-4 sm:p-6 shadow-2xl space-y-4 text-left">
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="p-1.5 rounded-xl bg-amber-400/15 text-amber-300 border border-amber-400/30">
+            <span className="p-1.5 rounded-xl bg-amber-400/15 text-amber-300 border border-white/[0.08]">
               <Layers className="w-4 h-4" />
             </span>
             <h3 className="text-base sm:text-lg font-black text-white font-sans tracking-tight">
@@ -279,10 +279,10 @@ export const Interactive3DAspectariumGraph: React.FC<{
         {/* Right: Active Aspect Psychological Meaning (5 cols) */}
         <div className="lg:col-span-5 space-y-3.5">
           {activeAspect && (
-            <div className="p-5 rounded-2xl bg-white/[0.04] border border-amber-400/40 space-y-4 shadow-xl relative overflow-hidden">
+            <div className="p-5 rounded-2xl bg-white/[0.04] border border-white/[0.12] space-y-4 shadow-xl relative overflow-hidden">
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
                 <div>
-                  <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded border border-amber-400/30">
+                  <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded border border-white/[0.08]">
                     {activeAspect.aspectType}
                   </span>
                   <h4 className="text-base font-bold text-white font-sans mt-1">

@@ -45,7 +45,7 @@ export const TraditionView: React.FC<TraditionViewProps> = ({
       {/* Header Banner */}
       <div className="relative p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#0B132B] via-[#070D1D] to-[#040813] border border-white/10 shadow-2xl overflow-hidden space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/20 text-amber-300 text-xs font-mono font-bold">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-white/[0.08] text-amber-300 text-xs font-mono font-bold">
             <Globe2 className="w-3.5 h-3.5" />
             <span>{diagnostics.traditionGroup}</span>
           </div>
@@ -74,7 +74,7 @@ export const TraditionView: React.FC<TraditionViewProps> = ({
                 onClick={() => setSelectedSystemId(sys.id)}
                 className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ${
                   isSelected
-                    ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/20'
+                    ? 'bg-white text-black font-semibold shadow-sm shadow-md shadow-amber-400/20'
                     : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
                 }`}
               >
@@ -101,7 +101,7 @@ export const TraditionView: React.FC<TraditionViewProps> = ({
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.05 }}
-              className="p-4 rounded-2xl bg-[#0B1220]/90 border border-white/10 hover:border-amber-400/30 transition-all space-y-1.5 shadow-lg"
+              className="p-4 rounded-2xl bg-[#0B1220]/90 border border-white/10 hover:border-white/[0.08] transition-all space-y-1.5 shadow-lg"
             >
               <span className="text-[11px] font-mono text-slate-400 block font-bold">
                 {hl.label}
@@ -161,7 +161,7 @@ export const TraditionView: React.FC<TraditionViewProps> = ({
             </p>
           </div>
 
-          <div className="p-3 rounded-xl bg-amber-400/10 border border-amber-400/20 text-[11px] font-mono text-amber-300 flex items-center gap-2">
+          <div className="p-3 rounded-xl bg-amber-400/10 border border-white/[0.08] text-[11px] font-mono text-amber-300 flex items-center gap-2">
             <BookOpen className="w-4 h-4 shrink-0 text-amber-400" />
             <span className="truncate">{diagnostics.powerRemedy.citation}</span>
           </div>

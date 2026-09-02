@@ -139,7 +139,7 @@ export const AstroCommandFinder: React.FC<AstroCommandFinderProps> = ({
           {/* Results / Default State */}
           <div className="p-3 sm:p-4 overflow-y-auto space-y-3 text-left">
             {query.trim() && directAnswer?.directAnswer && (
-              <div className="p-3.5 rounded-2xl bg-amber-400/10 border border-amber-400/30 space-y-1.5 shadow-lg">
+              <div className="p-3.5 rounded-2xl bg-amber-400/10 border border-white/[0.08] space-y-1.5 shadow-lg">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-widest flex items-center gap-1">
                     <Sparkles className="w-3 h-3" /> Direct Answer • {directAnswer.category}
@@ -169,7 +169,7 @@ export const AstroCommandFinder: React.FC<AstroCommandFinderProps> = ({
                       onNavigate('/ask');
                       onClose();
                     }}
-                    className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-xs font-mono cursor-pointer"
+                    className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white text-black font-semibold shadow-sm font-bold text-xs font-mono cursor-pointer"
                   >
                     <Sparkles className="w-3.5 h-3.5" />
                     <span>Ask ASTRO360 this question →</span>
@@ -191,10 +191,10 @@ export const AstroCommandFinder: React.FC<AstroCommandFinderProps> = ({
                           }
                           onClose();
                         }}
-                        className="w-full p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 hover:border-amber-400/30 flex items-center justify-between gap-3 text-left transition-all cursor-pointer group"
+                        className="w-full p-3 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 hover:border-white/[0.08] flex items-center justify-between gap-3 text-left transition-all cursor-pointer group"
                       >
                         <div className="flex items-center gap-3 min-w-0">
-                          <div className="p-2 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/20 shrink-0">
+                          <div className="p-2 rounded-xl bg-amber-400/10 text-amber-400 border border-white/[0.08] shrink-0">
                             <Icon className="w-4 h-4" />
                           </div>
                           <div className="min-w-0">

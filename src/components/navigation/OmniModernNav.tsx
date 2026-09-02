@@ -51,7 +51,7 @@ export default function OmniModernNav({
             </div>
             <div className="flex flex-col text-left">
               <span className="font-black text-sm tracking-tight text-white font-sans flex items-center gap-1.5">
-                ASTRO360 <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-400/10 px-1.5 py-0.2 rounded border border-amber-400/20">PRO</span>
+                ASTRO360 <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-400/10 px-1.5 py-0.2 rounded border border-white/[0.08]">PRO</span>
               </span>
               <span className="text-[8.5px] font-mono text-slate-400 tracking-widest leading-none hidden sm:inline">INTELLIGENCE</span>
             </div>
@@ -113,7 +113,7 @@ export default function OmniModernNav({
             onClick={onToggleStudio}
             className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-bold border transition-all cursor-pointer active:scale-95 ${
               isStudioOpen
-                ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md'
+                ? 'bg-white text-black font-semibold shadow-sm border-amber-400 shadow-md'
                 : 'bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border-white/10'
             }`}
             title="Open Master 152+ Classical Tools Studio"
@@ -127,7 +127,7 @@ export default function OmniModernNav({
             onClick={() => onNavigate('me')}
             className={`flex items-center gap-2 p-1 sm:px-2.5 sm:py-1.5 rounded-xl border transition-all text-xs font-mono font-bold cursor-pointer active:scale-95 ${
               activeTab === 'me'
-                ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md'
+                ? 'bg-white text-black font-semibold shadow-sm border-amber-400 shadow-md'
                 : 'bg-[#0B1220] border-white/10 text-slate-200 hover:text-white hover:border-white/20'
             }`}
             title="Profile & Settings"
@@ -173,7 +173,7 @@ export default function OmniModernNav({
                     }}
                     className={`flex items-center gap-2 p-3 rounded-2xl border transition-all cursor-pointer ${
                       isActive
-                        ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md font-black'
+                        ? 'bg-white text-black font-semibold shadow-sm border-amber-400 shadow-md font-black'
                         : 'bg-[#0D1526] text-slate-300 hover:text-white border-white/10'
                     }`}
                   >
@@ -190,7 +190,7 @@ export default function OmniModernNav({
                   onToggleStudio();
                   setMobileDrawerOpen(false);
                 }}
-                className="w-full py-2.5 rounded-xl bg-[#0F172A] text-amber-300 border border-amber-400/30 text-xs font-mono font-bold flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-2.5 rounded-xl bg-[#0F172A] text-amber-300 border border-white/[0.08] text-xs font-mono font-bold flex items-center justify-center gap-2 cursor-pointer"
               >
                 <LayoutDashboard className="w-4 h-4" />
                 <span>Open 152+ Tools Technical Catalog →</span>
@@ -220,7 +220,7 @@ export default function OmniModernNav({
             >
               {isHero ? (
                 <div className={`p-2 rounded-2xl transition-all shadow-md ${
-                  isActive ? 'bg-amber-400 text-slate-950 scale-110 shadow-amber-400/30' : 'bg-white/10 text-amber-300'
+                  isActive ? 'bg-white text-black font-semibold shadow-sm scale-110 shadow-amber-400/30' : 'bg-white/10 text-amber-300'
                 }`}>
                   <Icon className="w-4 h-4" />
                 </div>

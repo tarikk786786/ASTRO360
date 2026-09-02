@@ -85,7 +85,7 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset, onClos
 
         {/* Header */}
         <div className="space-y-2 border-b border-white/10 pb-5 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 border border-amber-400/30 text-amber-300 text-[11px] font-mono font-bold tracking-wider uppercase">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 border border-white/[0.08] text-amber-300 text-[11px] font-mono font-bold tracking-wider uppercase">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
             <span>Visitor Customization • 100% Free Forever</span>
           </div>
@@ -183,7 +183,7 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset, onClos
                   onClick={() => setLocation(city)}
                   className={`text-[10px] px-2 py-0.5 rounded-lg border transition-all cursor-pointer ${
                     location === city
-                      ? 'bg-amber-400/20 border-amber-400/40 text-amber-300 font-bold'
+                      ? 'bg-amber-400/20 border-white/[0.12] text-amber-300 font-bold'
                       : 'bg-[#060A12] border-white/10 text-slate-400 hover:text-white'
                   }`}
                 >
@@ -210,7 +210,7 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset, onClos
                     onClick={() => setPrimaryFocus(f.id as any)}
                     className={`p-2.5 rounded-xl border text-left flex items-center gap-2 transition-all cursor-pointer min-h-[42px] ${
                       isSelected
-                        ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold shadow-md'
+                        ? 'bg-white text-black font-semibold shadow-sm border-amber-400 font-bold shadow-md'
                         : 'bg-[#060A12] text-slate-300 hover:text-white border-white/10 hover:border-white/20'
                     }`}
                   >
@@ -240,7 +240,7 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset, onClos
                   onClick={() => setPreferredSystem(sys.id as any)}
                   className={`p-2.5 rounded-xl border text-center transition-all cursor-pointer min-h-[44px] ${
                     preferredSystem === sys.id
-                      ? 'bg-amber-400 text-slate-950 border-amber-400 font-black shadow-md'
+                      ? 'bg-white text-black font-semibold shadow-sm border-amber-400 font-black shadow-md'
                       : 'bg-[#060A12] text-slate-300 hover:text-white border-white/10 hover:border-white/20'
                   }`}
                 >

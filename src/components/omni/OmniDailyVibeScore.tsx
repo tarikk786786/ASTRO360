@@ -143,7 +143,7 @@ export default function OmniDailyVibeScore({ userProfile }: OmniDailyVibeScorePr
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3.5 relative z-10">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-300">
+          <div className="w-8 h-8 rounded-xl bg-amber-400/20 border border-white/[0.12] flex items-center justify-center text-amber-300">
             <Sparkles className="w-4 h-4 text-amber-400" />
           </div>
           <div>
@@ -208,7 +208,7 @@ export default function OmniDailyVibeScore({ userProfile }: OmniDailyVibeScorePr
       </div>
 
       {/* Daily Affirmation / Mantra Strip */}
-      <div className="p-4 rounded-2xl bg-black/40 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative z-10">
+      <div className="p-4 rounded-2xl bg-black/40 border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative z-10">
         <div className="space-y-0.5">
           <span className="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-bold flex items-center gap-1">
             <Star className="w-3 h-3 text-amber-400" /> {vibeData.mantraLabel}

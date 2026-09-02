@@ -491,7 +491,7 @@ export default function AstroRemedialGemstoneEngine({ userProfile }: AstroRemedi
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-8 text-left">
       {/* 🔮 ENGINE HEADER & LIVE BIRTH CHART CALCULATOR */}
-      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-amber-500/30 relative overflow-hidden space-y-6">
+      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] relative overflow-hidden space-y-6">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-amber-600/20 via-purple-600/10 to-transparent blur-3xl pointer-events-none" />
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
@@ -596,7 +596,7 @@ export default function AstroRemedialGemstoneEngine({ userProfile }: AstroRemedi
                   onClick={() => setSelectedTradition(t.id as any)}
                   className={`py-2 rounded-xl text-[11px] font-bold transition-all ${
                     selectedTradition === t.id
-                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                      ? 'bg-amber-500/20 text-amber-300 border border-white/[0.12]'
                       : 'bg-white/5 text-slate-400 hover:text-white'
                   }`}
                 >
@@ -648,7 +648,7 @@ export default function AstroRemedialGemstoneEngine({ userProfile }: AstroRemedi
           <motion.div
             key={gem.id}
             whileHover={{ scale: 1.02, y: -4 }}
-            className="glass-card rounded-3xl p-6 border border-white/10 space-y-5 flex flex-col justify-between hover:border-amber-500/40 transition-all shadow-xl relative overflow-hidden"
+            className="glass-card rounded-3xl p-6 border border-white/10 space-y-5 flex flex-col justify-between hover:border-white/[0.12] transition-all shadow-xl relative overflow-hidden"
           >
             <div className="space-y-4">
               {/* Gem Visual Box */}
@@ -692,7 +692,7 @@ export default function AstroRemedialGemstoneEngine({ userProfile }: AstroRemedi
 
               <button
                 onClick={() => handleExportGemstonePdf(gem)}
-                className="w-full py-2.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                className="w-full py-2.5 rounded-xl bg-amber-500/20 text-amber-300 border border-white/[0.12] hover:bg-amber-500/30 text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
               >
                 <Download className="w-4 h-4" /> Download Remedy PDF Report
               </button>
@@ -709,7 +709,7 @@ export default function AstroRemedialGemstoneEngine({ userProfile }: AstroRemedi
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="glass-card max-w-2xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar p-6 md:p-8 rounded-3xl border border-amber-500/30 space-y-6 text-left relative"
+              className="glass-card max-w-2xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar p-6 md:p-8 rounded-3xl border border-white/[0.08] space-y-6 text-left relative"
             >
               <button
                 onClick={() => setSelectedGemForModal(null)}
@@ -756,7 +756,7 @@ export default function AstroRemedialGemstoneEngine({ userProfile }: AstroRemedi
                 </div>
 
                 {/* INCOMPATIBILITY WARNING */}
-                <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-2">
+                <div className="p-4 rounded-2xl bg-amber-500/10 border border-white/[0.08] space-y-2">
                   <h4 className="text-xs font-bold uppercase text-amber-300 flex items-center gap-1.5">
                     <Shield className="w-4 h-4 text-amber-400" /> Incompatible Gemstones (NEVER Wear Together!)
                   </h4>

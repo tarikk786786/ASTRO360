@@ -23,7 +23,7 @@ const PLANET_METADATA: Record<string, { symbol: string; color: string; bgColor: 
     symbol: '☉',
     color: 'text-amber-400',
     bgColor: 'bg-amber-500/10',
-    borderColor: 'border-amber-500/30',
+    borderColor: 'border-white/[0.08]',
     energy: 'Executive Leadership, Authority, Vitality & Official Decisions',
     recommended: 'Apply for promotions, meet authority figures, launch campaigns & sign major contracts.',
     avoid: 'Submissive behavior or passive procrastination.'
@@ -41,7 +41,7 @@ const PLANET_METADATA: Record<string, { symbol: string; color: string; bgColor: 
     symbol: '☿',
     color: 'text-cyan-400',
     bgColor: 'bg-cyan-500/10',
-    borderColor: 'border-cyan-500/30',
+    borderColor: 'border-white/[0.08]',
     energy: 'Commerce, Technology, Data Analysis, Writing & Trade',
     recommended: 'Publishing software, sending pitch emails, trading stocks & studying complex data.',
     avoid: 'Careless contract reading or rushing without auditing.'
@@ -68,7 +68,7 @@ const PLANET_METADATA: Record<string, { symbol: string; color: string; bgColor: 
     symbol: '♃',
     color: 'text-emerald-400',
     bgColor: 'bg-emerald-500/10',
-    borderColor: 'border-emerald-500/30',
+    borderColor: 'border-white/[0.08]',
     energy: 'Higher Wisdom, Wealth Growth, Mentorship & Auspicious Deeds',
     recommended: 'Financial investments, seeking mentor advice, academic study & charity.',
     avoid: 'Greed or over-extending financial leverage.'
@@ -125,7 +125,7 @@ export default function PlanetaryHorasTracker() {
             Live 24-Hour Planetary Rulership Timeline (Sun ☉, Venus ♀, Mercury ☿, Moon ☽, Saturn ♄, Jupiter ♃, Mars ♂)
           </p>
         </div>
-        <span className="text-[10px] font-mono text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/30 font-bold">
+        <span className="text-[10px] font-mono text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-white/[0.08] font-bold">
           24-Hora Telemetry Sync
         </span>
       </div>
@@ -139,7 +139,7 @@ export default function PlanetaryHorasTracker() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30 flex items-center gap-1">
+                <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-white/[0.08] flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   CURRENT ACTIVE HORA
                 </span>
@@ -158,7 +158,7 @@ export default function PlanetaryHorasTracker() {
             <p className="text-slate-200 text-[11px] leading-relaxed">{currentHora.energy}</p>
           </div>
 
-          <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 space-y-1">
+          <div className="p-3 rounded-xl bg-emerald-950/40 border border-white/[0.08] text-emerald-300 space-y-1">
             <span className="text-[10px] font-bold block flex items-center gap-1 text-emerald-400">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> Prescribed Action Steps:
             </span>

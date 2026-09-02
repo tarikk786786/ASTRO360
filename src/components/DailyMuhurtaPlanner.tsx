@@ -38,18 +38,18 @@ export default function DailyMuhurtaPlanner() {
       let quality: TimeSlot['quality'] = 'Neutral';
       let periodName = `${planet} Hora`;
       let recommendation = 'Execute standard daily tasks, communications, and routine operations.';
-      let badgeColor = 'text-cyan-300 bg-cyan-500/10 border-cyan-500/30';
+      let badgeColor = 'text-cyan-300 bg-cyan-500/10 border-white/[0.08]';
 
       if (h === 6) {
         quality = 'Auspicious';
         periodName = 'Brahma Muhurta / Morning Adhkar';
         recommendation = 'Ideal for morning prayer, meditation, mantra recitation, and setting daily intentions.';
-        badgeColor = 'text-amber-300 bg-amber-500/10 border-amber-500/30';
+        badgeColor = 'text-amber-300 bg-amber-500/10 border-white/[0.08]';
       } else if (h === 12) {
         quality = 'Auspicious';
         periodName = 'Abhijit Muhurta (Golden Window)';
         recommendation = 'Peak auspicious window for major launches, contracts, business deals, and financial investments.';
-        badgeColor = 'text-emerald-300 bg-emerald-500/10 border-emerald-500/30';
+        badgeColor = 'text-emerald-300 bg-emerald-500/10 border-white/[0.08]';
       } else if (h === 16 || h === 17) {
         quality = 'Friction';
         periodName = 'Rahu Kalam (Friction Period)';
@@ -58,7 +58,7 @@ export default function DailyMuhurtaPlanner() {
       } else if (['Sun', 'Jupiter', 'Venus'].includes(planet)) {
         quality = 'Auspicious';
         recommendation = `Favorable for ${planet === 'Sun' ? 'leadership & strategy' : planet === 'Jupiter' ? 'finance & wisdom' : 'creative arts & diplomacy'}.`;
-        badgeColor = 'text-emerald-300 bg-emerald-500/10 border-emerald-500/30';
+        badgeColor = 'text-emerald-300 bg-emerald-500/10 border-white/[0.08]';
       }
 
       slots.push({
@@ -89,7 +89,7 @@ export default function DailyMuhurtaPlanner() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/30 font-bold flex items-center gap-1">
+          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-white/[0.08] font-bold flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             Live Hora Sync
           </span>

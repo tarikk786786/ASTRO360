@@ -166,7 +166,7 @@ export default function ProspectDiscoveryView({
                       vs {gap.competitor}
                     </span>
                   </div>
-                  <span className="px-2.5 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[10px] font-bold">
+                  <span className="px-2.5 py-0.5 rounded bg-cyan-500/10 border border-white/[0.08] text-cyan-300 text-[10px] font-bold">
                     {gap.actionRecommendation.replace('_', ' ')}
                   </span>
                 </div>
@@ -205,11 +205,11 @@ export default function ProspectDiscoveryView({
             {unlinkedMentions.map(mention => (
               <div
                 key={mention.id}
-                className="p-4 sm:p-5 rounded-2xl bg-[#0E172A] border border-cyan-500/30 space-y-3"
+                className="p-4 sm:p-5 rounded-2xl bg-[#0E172A] border border-white/[0.08] space-y-3"
               >
                 <div className="flex items-center justify-between border-b border-white/5 pb-2">
                   <span className="font-bold text-white text-sm">{mention.sourceDomain}</span>
-                  <span className="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded font-bold">
+                  <span className="text-[10px] text-emerald-400 bg-emerald-500/10 border border-white/[0.08] px-2 py-0.5 rounded font-bold">
                     UNLINKED MENTION DETECTED
                   </span>
                 </div>

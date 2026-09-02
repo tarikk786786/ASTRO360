@@ -124,9 +124,9 @@ export default function ExecutiveReportGenerator({ userProfile = {
   return (
     <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8 text-left pb-16 select-none">
       {/* Header Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#0B132B] via-[#080E1C] to-[#040812] border border-amber-400/30 shadow-2xl space-y-4">
+      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#0B132B] via-[#080E1C] to-[#040812] border border-white/[0.08] shadow-2xl space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/20 text-amber-300 text-xs font-mono font-bold">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-white/[0.08] text-amber-300 text-xs font-mono font-bold">
             <FileText className="w-3.5 h-3.5" />
             <span>EXECUTIVE PDF REPORT GENERATOR</span>
           </div>
@@ -245,7 +245,7 @@ export default function ExecutiveReportGenerator({ userProfile = {
         </div>
 
         {/* Prescribed Remedy Highlight */}
-        <div className="p-4 rounded-2xl bg-amber-400/10 border border-amber-400/20 space-y-1.5">
+        <div className="p-4 rounded-2xl bg-amber-400/10 border border-white/[0.08] space-y-1.5">
           <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-amber-300">
             <Flame className="w-4 h-4" />
             <span>Prescribed Remedial Protocol</span>

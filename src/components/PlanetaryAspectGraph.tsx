@@ -102,7 +102,7 @@ export default function PlanetaryAspectGraph({ planetPositions }: PlanetaryAspec
             Real-time Angular Aspects (Trine, Conjunction, Opposition, Square & Sextile)
           </p>
         </div>
-        <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-cyan-500/30 font-bold">
+        <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-white/[0.08] font-bold">
           {aspects.length} Active Aspects
         </span>
       </div>

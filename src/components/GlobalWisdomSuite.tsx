@@ -215,7 +215,7 @@ export default function GlobalWisdomSuite({ userProfile }: GlobalWisdomSuiteProp
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-8 text-left">
       {/* 🌐 ENGINE HEADER */}
-      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-amber-500/30 relative overflow-hidden space-y-6">
+      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] relative overflow-hidden space-y-6">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-amber-600/20 via-purple-600/10 to-transparent blur-3xl pointer-events-none" />
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
@@ -235,7 +235,7 @@ export default function GlobalWisdomSuite({ userProfile }: GlobalWisdomSuiteProp
           <div className="flex items-center gap-3 shrink-0 flex-wrap">
             <button
               onClick={handleExportPdf}
-              className="px-4 py-2.5 rounded-2xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+              className="px-4 py-2.5 rounded-2xl bg-amber-500/20 text-amber-300 border border-white/[0.12] hover:bg-amber-500/30 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
             >
               <Download className="w-4 h-4" /> Export Report (PDF)
             </button>
@@ -280,7 +280,7 @@ export default function GlobalWisdomSuite({ userProfile }: GlobalWisdomSuiteProp
               <motion.div
                 key={trad.id}
                 whileHover={{ scale: 1.02, y: -4 }}
-                className="glass-card rounded-3xl p-6 border border-white/10 space-y-4 flex flex-col justify-between hover:border-amber-500/40 transition-all shadow-xl relative overflow-hidden"
+                className="glass-card rounded-3xl p-6 border border-white/10 space-y-4 flex flex-col justify-between hover:border-white/[0.12] transition-all shadow-xl relative overflow-hidden"
               >
                 <div className="space-y-3">
                   <div className={`h-24 w-full rounded-2xl bg-gradient-to-br ${trad.colorGradient} flex items-center justify-between p-4 border border-white/10 shadow-inner`}>
@@ -312,7 +312,7 @@ export default function GlobalWisdomSuite({ userProfile }: GlobalWisdomSuiteProp
                 <div className="pt-3 border-t border-white/10">
                   <button
                     onClick={() => setSelectedTraditionModal(trad)}
-                    className="w-full py-2.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                    className="w-full py-2.5 rounded-xl bg-amber-500/20 text-amber-300 border border-white/[0.12] hover:bg-amber-500/30 text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
                   >
                     <Info className="w-4 h-4" /> Inspect Deep Blueprint
                   </button>
@@ -346,7 +346,7 @@ export default function GlobalWisdomSuite({ userProfile }: GlobalWisdomSuiteProp
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-              <div className="p-5 rounded-2xl bg-amber-950/30 border border-amber-500/30 space-y-2">
+              <div className="p-5 rounded-2xl bg-amber-950/30 border border-white/[0.08] space-y-2">
                 <div className="text-xs font-bold text-amber-400 uppercase font-mono">🕉️ Vedic Ashta Koota</div>
                 <div className="text-3xl font-bold text-white font-mono">31 / 36</div>
                 <p className="text-xs text-slate-300">Nadi & Bhakoot compatibility: Excellent soul harmony.</p>
@@ -391,7 +391,7 @@ export default function GlobalWisdomSuite({ userProfile }: GlobalWisdomSuiteProp
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="p-5 rounded-2xl bg-amber-950/30 border border-amber-500/30 space-y-2">
+              <div className="p-5 rounded-2xl bg-amber-950/30 border border-white/[0.08] space-y-2">
                 <span className="text-xs font-bold text-amber-400 uppercase font-mono">☀️ Morning Solar Energy Window (06:00 - 12:00)</span>
                 <p className="text-sm text-slate-200">High initiative solar window. Ideal for executing major business communications, executive decisions, and physical workout.</p>
               </div>
@@ -412,7 +412,7 @@ export default function GlobalWisdomSuite({ userProfile }: GlobalWisdomSuiteProp
             exit={{ opacity: 0, y: -12 }}
             className="space-y-6"
           >
-            <div className="glass-card p-6 sm:p-8 rounded-3xl border border-amber-500/30 space-y-4">
+            <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] space-y-4">
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div>
                   <h2 className="text-2xl font-bold text-white flex items-center gap-2">
@@ -422,14 +422,14 @@ export default function GlobalWisdomSuite({ userProfile }: GlobalWisdomSuiteProp
                     Powered by industry-standard open-source astrology calculation engines, ephemeris libraries, and spiritual APIs.
                   </p>
                 </div>
-                <span className="text-xs font-bold px-3 py-1.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono">
+                <span className="text-xs font-bold px-3 py-1.5 rounded-full bg-amber-500/20 text-amber-300 border border-white/[0.12] font-mono">
                   GITHUB INTEGRATED
                 </span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pt-2">
                 {openSourceEngines.map((engine, idx) => (
-                  <div key={idx} className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3 hover:border-amber-500/30 transition-all">
+                  <div key={idx} className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3 hover:border-white/[0.08] transition-all">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-mono font-bold text-amber-400 px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20">
                         {engine.domain}
@@ -454,7 +454,7 @@ export default function GlobalWisdomSuite({ userProfile }: GlobalWisdomSuiteProp
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="glass-card max-w-2xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar p-6 md:p-8 rounded-3xl border border-amber-500/30 space-y-6 text-left relative"
+              className="glass-card max-w-2xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar p-6 md:p-8 rounded-3xl border border-white/[0.08] space-y-6 text-left relative"
             >
               <button
                 onClick={() => setSelectedTraditionModal(null)}

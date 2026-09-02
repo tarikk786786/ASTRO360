@@ -138,11 +138,11 @@ export default function PlanetaryHoraClock() {
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12">
       {/* Header */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#1E1B4B] to-[#0F172A] border border-amber-500/30 relative overflow-hidden">
+      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#1E1B4B] to-[#0F172A] border border-white/[0.08] relative overflow-hidden">
         
         
         <div className="relative z-10 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-mono font-bold">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-white/[0.08] text-amber-300 text-xs font-mono font-bold">
             <Clock className="w-3.5 h-3.5" />
             <span>24-Hour Planetary Hora Precision Clock</span>
           </div>
@@ -162,7 +162,7 @@ export default function PlanetaryHoraClock() {
         <div className="lg:col-span-5 flex flex-col items-center justify-center p-6 rounded-2xl bg-gradient-to-br from-[#0F172A] to-[#070D18] border border-white/5 text-center space-y-3">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">Current Planetary Governor</span>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 animate-pulse">
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-white/[0.08] animate-pulse">
               ACTIVE NOW
             </span>
           </div>

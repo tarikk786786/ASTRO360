@@ -416,7 +416,7 @@ export default function SacredMantraSoundboard() {
   }, []);
 
   return (
-    <div className="p-6 rounded-3xl bg-[#111827] border border-amber-500/40 shadow-2xl space-y-6 text-left relative overflow-hidden">
+    <div className="p-6 rounded-3xl bg-[#111827] border border-white/[0.12] shadow-2xl space-y-6 text-left relative overflow-hidden">
       {/* HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
         <div>
@@ -428,14 +428,14 @@ export default function SacredMantraSoundboard() {
           </p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <span className="text-[10px] font-mono text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/30 font-bold flex items-center gap-1.5">
+          <span className="text-[10px] font-mono text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-white/[0.08] font-bold flex items-center gap-1.5">
             <Sparkles className="w-3 h-3 text-cyan-400" /> Real Audio & Web Audio Engine
           </span>
         </div>
       </div>
 
       {/* SCIENTIFIC DISTINCTION DISCLAIMER BANNER */}
-      <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-amber-500/30 text-xs font-mono space-y-1">
+      <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-white/[0.08] text-xs font-mono space-y-1">
         <div className="flex items-center gap-2 text-amber-400 font-bold">
           <ShieldCheck className="w-4 h-4 text-amber-400" />
           <span>Scientific Distinction & Tradition Framework</span>
@@ -468,11 +468,11 @@ export default function SacredMantraSoundboard() {
       </div>
 
       {/* MAIN PLAYER DASHBOARD PANEL */}
-      <div className="p-5 rounded-2xl bg-[#0B1220] border border-amber-500/40 space-y-5 shadow-xl relative overflow-hidden">
+      <div className="p-5 rounded-2xl bg-[#0B1220] border border-white/[0.12] space-y-5 shadow-xl relative overflow-hidden">
         {/* TITLE & QUICK AUDIO CONTROLS */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/10 pb-4">
           <div>
-            <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/30">
+            <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded border border-white/[0.08]">
               {selectedMantra.tradition} • {selectedMantra.deityOrEnergy}
             </span>
             <h4 className="text-base sm:text-lg font-bold text-white mt-1">{selectedMantra.title}</h4>
@@ -597,7 +597,7 @@ export default function SacredMantraSoundboard() {
                     playSolfeggioTone(extractHz(selectedMantra.frequency), volume, 'binaural', val);
                   }
                 }}
-                className="bg-slate-900 text-cyan-300 border border-cyan-500/30 rounded-lg px-2 py-0.5 text-xs font-mono"
+                className="bg-slate-900 text-cyan-300 border border-white/[0.08] rounded-lg px-2 py-0.5 text-xs font-mono"
               >
                 <option value={2.0}>Delta (2.0 Hz - Deep Sleep)</option>
                 <option value={4.0}>Theta (4.0 Hz - Meditation)</option>
@@ -625,7 +625,7 @@ export default function SacredMantraSoundboard() {
 
         {/* SCRIPT TEXT DISPLAY & PHONETIC */}
         <div className="space-y-2">
-          <div className="p-4 rounded-xl bg-black/60 border border-amber-500/30 text-center space-y-1">
+          <div className="p-4 rounded-xl bg-black/60 border border-white/[0.08] text-center space-y-1">
             <p className="text-xl sm:text-2xl font-serif text-amber-300 font-bold leading-relaxed">{selectedMantra.scriptText}</p>
           </div>
           <p className="text-xs font-mono text-slate-300 text-center italic">"{selectedMantra.phonetic}"</p>
@@ -670,7 +670,7 @@ export default function SacredMantraSoundboard() {
             <span className="text-[10px] text-slate-400 block font-bold uppercase">Translation & Meaning:</span>
             <p className="text-slate-200 text-[11px] leading-relaxed">{selectedMantra.meaning}</p>
           </div>
-          <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 space-y-1">
+          <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-white/[0.08] text-emerald-300 space-y-1">
             <span className="text-[10px] font-bold block text-emerald-400 uppercase">Cognitive & Spiritual Benefit:</span>
             <p className="text-[11px] leading-relaxed text-slate-200">{selectedMantra.benefit}</p>
           </div>

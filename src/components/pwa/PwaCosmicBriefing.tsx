@@ -108,7 +108,7 @@ export default function PwaCosmicBriefing({ onNavigateToTab }: PwaCosmicBriefing
           </div>
 
           {/* Active Tithi & Nakshatra */}
-          <div className="p-4 rounded-2xl bg-[#060A12] border border-cyan-400/30 space-y-2">
+          <div className="p-4 rounded-2xl bg-[#060A12] border border-white/[0.08] space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-cyan-400 text-xs font-bold flex items-center gap-1">
                 <Moon className="w-3.5 h-3.5" /> Today's Tithi

@@ -51,7 +51,7 @@ export default function AstroEcosystemConsole() {
   });
 
   return (
-    <div className="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-500/30 shadow-2xl space-y-8 text-left">
+    <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/[0.08] shadow-2xl space-y-8 text-left">
       {/* HEADER & ECOSYSTEM STATUS BAR */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
@@ -106,7 +106,7 @@ export default function AstroEcosystemConsole() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* 1. VedAstro & Swiss Ephemeris Panel */}
         {vedicOutput && (
-          <div className="p-4 rounded-2xl bg-slate-900/90 border border-emerald-500/30 space-y-2 text-left">
+          <div className="p-4 rounded-2xl bg-slate-900/90 border border-white/[0.08] space-y-2 text-left">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-emerald-300 font-mono flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" /> VedAstro & swisseph Engine
@@ -148,7 +148,7 @@ export default function AstroEcosystemConsole() {
 
         {/* 3. Skyfield & Astropy Astronomy Panel */}
         {astronomyOutput && (
-          <div className="p-4 rounded-2xl bg-slate-900/90 border border-cyan-500/30 space-y-2 text-left">
+          <div className="p-4 rounded-2xl bg-slate-900/90 border border-white/[0.08] space-y-2 text-left">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-cyan-300 font-mono flex items-center gap-1.5">
                 <Activity className="w-4 h-4 text-cyan-400" /> Skyfield & Astropy Engine
@@ -181,7 +181,7 @@ export default function AstroEcosystemConsole() {
           {filteredTools.map((tool) => (
             <div
               key={tool.id}
-              className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-emerald-500/30 transition-all space-y-2 flex flex-col justify-between group"
+              className="p-4 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-white/[0.08] transition-all space-y-2 flex flex-col justify-between group"
             >
               <div className="space-y-1">
                 <div className="flex items-center justify-between">

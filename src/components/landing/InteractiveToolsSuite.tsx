@@ -156,7 +156,7 @@ export default function InteractiveToolsSuite({ onNavigateToTab }: InteractiveTo
                 onClick={() => setActiveMiniTool(t.id as typeof activeMiniTool)}
                 className={`flex-1 min-w-[130px] flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-mono font-medium transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-amber-400 text-slate-950 font-bold shadow-md'
+                    ? 'bg-white text-black font-semibold shadow-sm font-bold shadow-md'
                     : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -216,7 +216,7 @@ export default function InteractiveToolsSuite({ onNavigateToTab }: InteractiveTo
                     <span className="text-slate-400">Calculated Transit Vector</span>
                     <span className={`px-2.5 py-0.5 rounded text-[11px] font-bold ${
                       sadeSatiSign.includes('Aquarius') || sadeSatiSign.includes('Capricorn') || sadeSatiSign.includes('Pisces')
-                        ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30'
+                        ? 'bg-amber-400/20 text-amber-300 border border-white/[0.08]'
                         : 'bg-emerald-400/20 text-emerald-300 border border-emerald-400/30'
                     }`}>
                       {sadeSatiSign.includes('Aquarius') ? 'Peak Sade Sati (Phase 2)' : sadeSatiSign.includes('Capricorn') ? 'Setting Sade Sati (Phase 3)' : sadeSatiSign.includes('Pisces') ? 'Rising Sade Sati (Phase 1)' : 'No Active Sade Sati (Clear Phase)'}
@@ -457,7 +457,7 @@ export default function InteractiveToolsSuite({ onNavigateToTab }: InteractiveTo
 
                 <div className="lg:col-span-6 p-6 rounded-xl bg-[#060A12] border border-white/8 space-y-4 font-mono text-xs">
                   <div className="flex items-center gap-3 border-b border-white/8 pb-3">
-                    <div className="w-10 h-10 rounded-lg bg-amber-400/15 border border-amber-400/30 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-lg bg-amber-400/15 border border-white/[0.08] flex items-center justify-center">
                       <Gem className="w-5 h-5 text-amber-300" />
                     </div>
                     <div>

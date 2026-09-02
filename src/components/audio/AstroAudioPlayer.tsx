@@ -84,7 +84,7 @@ export const AstroAudioPlayer: React.FC = () => {
           {/* Header */}
           <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between gap-3 bg-[#0B1220]/90">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="p-2 rounded-xl bg-amber-400/10 border border-amber-400/20 text-amber-400 shrink-0">
+              <div className="p-2 rounded-xl bg-amber-400/10 border border-white/[0.08] text-amber-400 shrink-0">
                 <Volume2 className="w-5 h-5" />
               </div>
               <div className="text-left min-w-0">
@@ -137,7 +137,7 @@ export const AstroAudioPlayer: React.FC = () => {
 
             {/* Repetition / Japa Counter (For Mantra / Dhikr Modes) */}
             {(activeTrack.targetCount && activeTrack.targetCount > 1) ? (
-              <div className="p-3.5 rounded-2xl bg-[#0D1526] border border-amber-400/30 flex items-center justify-between">
+              <div className="p-3.5 rounded-2xl bg-[#0D1526] border border-white/[0.08] flex items-center justify-between">
                 <div>
                   <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">
                     Traditional Repetition Tally
@@ -150,7 +150,7 @@ export const AstroAudioPlayer: React.FC = () => {
                   <button
                     type="button"
                     onClick={incrementCount}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 font-bold text-xs font-mono cursor-pointer active:scale-95 shadow-md"
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white text-black font-semibold shadow-sm font-bold text-xs font-mono cursor-pointer active:scale-95 shadow-md"
                   >
                     <Plus className="w-3.5 h-3.5" /> <span>Tally +1</span>
                   </button>
@@ -232,7 +232,7 @@ export const AstroAudioPlayer: React.FC = () => {
                     type="button"
                     onClick={() => setSpeed(s)}
                     className={`px-2 py-1 rounded-lg transition-colors cursor-pointer ${
-                      speed === s ? 'bg-amber-400 text-slate-950 font-bold' : 'text-slate-400 hover:text-white'
+                      speed === s ? 'bg-white text-black font-semibold shadow-sm font-bold' : 'text-slate-400 hover:text-white'
                     }`}
                   >
                     {s}x
@@ -247,7 +247,7 @@ export const AstroAudioPlayer: React.FC = () => {
                   onClick={toggleLoop}
                   aria-label={isLooping ? 'Disable loop' : 'Enable loop'}
                   className={`p-2 rounded-xl border transition-colors cursor-pointer ${
-                    isLooping ? 'bg-amber-400/15 border-amber-400/40 text-amber-300' : 'border-white/5 text-slate-400 hover:text-white'
+                    isLooping ? 'bg-amber-400/15 border-white/[0.12] text-amber-300' : 'border-white/5 text-slate-400 hover:text-white'
                   }`}
                 >
                   <Repeat className="w-4 h-4" />

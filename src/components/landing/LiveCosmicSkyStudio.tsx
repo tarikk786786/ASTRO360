@@ -241,7 +241,7 @@ export default function LiveCosmicSkyStudio({
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
                 className={`flex-1 py-2.5 px-3 rounded-xl border text-xs font-mono font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold shadow-md'
+                    ? 'bg-white text-black font-semibold shadow-sm border-amber-400 font-bold shadow-md'
                     : 'bg-[#0B1220] text-slate-400 hover:text-white border-white/8'
                 }`}
               >
@@ -275,7 +275,7 @@ export default function LiveCosmicSkyStudio({
                         onClick={() => setSelectedPlanetName(p.name)}
                         className={`p-3 rounded-xl border text-center transition-all cursor-pointer min-h-[64px] ${
                           isSelected
-                            ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md font-bold'
+                            ? 'bg-white text-black font-semibold shadow-sm border-amber-400 shadow-md font-bold'
                             : 'bg-[#060A12] text-slate-300 hover:text-white border-white/8 hover:border-white/15'
                         }`}
                       >
@@ -298,7 +298,7 @@ export default function LiveCosmicSkyStudio({
                       <p className="text-slate-400 text-xs font-sans">{selectedPlanet.signification}</p>
                     </div>
 
-                    <span className="text-xs font-bold px-3 py-1 rounded bg-amber-400/15 text-amber-300 border border-amber-400/30 w-fit">
+                    <span className="text-xs font-bold px-3 py-1 rounded bg-amber-400/15 text-amber-300 border border-white/[0.08] w-fit">
                       {selectedPlanet.dignity}
                     </span>
                   </div>
@@ -417,7 +417,7 @@ export default function LiveCosmicSkyStudio({
                         onClick={() => setSelectedCityIndex(idx)}
                         className={`p-3 rounded-xl border text-left transition-all cursor-pointer min-h-[56px] ${
                           isSelected
-                            ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md font-bold'
+                            ? 'bg-white text-black font-semibold shadow-sm border-amber-400 shadow-md font-bold'
                             : 'bg-[#060A12] text-slate-300 hover:text-white border-white/8'
                         }`}
                       >

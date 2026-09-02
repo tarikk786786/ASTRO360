@@ -76,7 +76,7 @@ export default function ContentBriefModal({
         {/* Top Header */}
         <div className="p-5 sm:p-6 border-b border-white/10 flex items-center justify-between gap-3 shrink-0 bg-[#0E172A]">
           <div className="space-y-1 truncate">
-            <span className="text-[10px] font-bold font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-cyan-500/30">
+            <span className="text-[10px] font-bold font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-white/[0.08]">
               EVIDENCE-GROUNDED CONTENT BRIEF
             </span>
             <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight truncate">
@@ -90,7 +90,7 @@ export default function ContentBriefModal({
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={handleDownloadMarkdown}
-              className="p-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer"
+              className="p-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-white/[0.08] text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer"
               title="Download Markdown Brief"
             >
               <Download className="w-3.5 h-3.5" />
@@ -163,7 +163,7 @@ export default function ContentBriefModal({
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <h4 className="text-white font-bold text-xs">{sec.heading}</h4>
                     {sec.scriptureCitation && (
-                      <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">
+                      <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-white/[0.08]">
                         📜 {sec.scriptureCitation}
                       </span>
                     )}

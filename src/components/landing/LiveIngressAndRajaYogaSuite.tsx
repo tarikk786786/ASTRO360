@@ -173,7 +173,7 @@ export default function LiveIngressAndRajaYogaSuite({
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
                 className={`flex-1 py-2.5 px-3 rounded-xl border text-xs font-mono font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold shadow-md'
+                    ? 'bg-white text-black font-semibold shadow-sm border-amber-400 font-bold shadow-md'
                     : 'bg-[#0B1220] text-slate-400 hover:text-white border-white/8'
                 }`}
               >
@@ -211,7 +211,7 @@ export default function LiveIngressAndRajaYogaSuite({
                   {MAJOR_INGRESSES_DATA.map((ingress, idx) => (
                     <div
                       key={idx}
-                      className="p-5 rounded-xl bg-[#060A12] border border-white/8 hover:border-amber-400/30 transition-all space-y-3"
+                      className="p-5 rounded-xl bg-[#060A12] border border-white/8 hover:border-white/[0.08] transition-all space-y-3"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
@@ -266,7 +266,7 @@ export default function LiveIngressAndRajaYogaSuite({
                         onClick={() => setSelectedYogaIndex(idx)}
                         className={`p-3 rounded-xl border text-left transition-all cursor-pointer min-h-[58px] ${
                           isSelected
-                            ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md font-bold'
+                            ? 'bg-white text-black font-semibold shadow-sm border-amber-400 shadow-md font-bold'
                             : 'bg-[#060A12] text-slate-300 hover:text-white border-white/8'
                         }`}
                       >
@@ -290,7 +290,7 @@ export default function LiveIngressAndRajaYogaSuite({
                       <span className="px-2.5 py-0.5 rounded bg-white/5 border border-white/10 text-cyan-300 text-xs font-bold">
                         {selectedYoga.category}
                       </span>
-                      <span className="px-2.5 py-0.5 rounded bg-amber-400/15 border border-amber-400/30 text-amber-300 text-xs font-bold">
+                      <span className="px-2.5 py-0.5 rounded bg-amber-400/15 border border-white/[0.08] text-amber-300 text-xs font-bold">
                         {selectedYoga.rarity}
                       </span>
                     </div>

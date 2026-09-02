@@ -64,7 +64,7 @@ export default function MultiSystemEphemerisDiagnosticLab({ userProfile }: Multi
               onClick={() => setHighlightSystem(sys.id as any)}
               className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
                 highlightSystem === sys.id
-                  ? 'bg-amber-400 text-slate-950 font-bold shadow-md'
+                  ? 'bg-white text-black font-semibold shadow-sm font-bold shadow-md'
                   : 'text-slate-400 hover:text-white'
               }`}
             >

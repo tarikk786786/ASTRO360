@@ -236,7 +236,7 @@ export default function SpiritualTraditionsModule({ userProfile }: SpiritualTrad
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-8 text-left">
       {/* 📜 ANCIENT MANUSCRIPT HEADER */}
-      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-amber-500/30 relative overflow-hidden space-y-6">
+      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] relative overflow-hidden space-y-6">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-amber-600/20 via-orange-600/10 to-transparent blur-3xl pointer-events-none" />
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
@@ -254,14 +254,14 @@ export default function SpiritualTraditionsModule({ userProfile }: SpiritualTrad
           </div>
 
           <div className="flex items-center gap-3 shrink-0 flex-wrap">
-            <span className="px-3.5 py-1.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-mono font-bold">
+            <span className="px-3.5 py-1.5 rounded-full bg-amber-500/20 text-amber-300 border border-white/[0.12] text-xs font-mono font-bold">
               📚 EDUCATIONAL ENCYCLOPEDIA
             </span>
           </div>
         </div>
 
         {/* ⚠️ REQUIRED DISCLAIMER BANNER */}
-        <div className="p-4 rounded-2xl bg-amber-950/40 border border-amber-500/30 text-amber-200/90 text-xs flex items-start gap-3 relative z-10 leading-relaxed font-sans shadow-inner">
+        <div className="p-4 rounded-2xl bg-amber-950/40 border border-white/[0.08] text-amber-200/90 text-xs flex items-start gap-3 relative z-10 leading-relaxed font-sans shadow-inner">
           <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
           <div>
             <span className="font-bold text-amber-300 block mb-1 uppercase font-mono tracking-wider text-[11px]">Educational Disclaimer</span>
@@ -300,7 +300,7 @@ export default function SpiritualTraditionsModule({ userProfile }: SpiritualTrad
       </div>
 
       {/* 🤖 AI KNOWLEDGE ASSISTANT SECTION */}
-      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-amber-500/30 space-y-4">
+      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] space-y-4">
         <div className="flex items-center gap-2 text-amber-400 font-bold text-sm uppercase tracking-wider font-mono">
           <Sparkles className="w-5 h-5" /> AI Spiritual & Cultural Knowledge Assistant
         </div>
@@ -340,7 +340,7 @@ export default function SpiritualTraditionsModule({ userProfile }: SpiritualTrad
           <button
             onClick={() => handleAskAiAssistant()}
             disabled={isAiLoading}
-            className="px-5 py-3 rounded-2xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer disabled:opacity-50"
+            className="px-5 py-3 rounded-2xl bg-amber-500/20 text-amber-300 border border-white/[0.12] hover:bg-amber-500/30 text-xs font-bold flex items-center gap-2 transition-all cursor-pointer disabled:opacity-50"
           >
             <Send className="w-4 h-4" /> Ask AI
           </button>
@@ -349,14 +349,14 @@ export default function SpiritualTraditionsModule({ userProfile }: SpiritualTrad
         {/* AI Output Response Box */}
         <AnimatePresence>
           {isAiLoading && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4 rounded-2xl bg-slate-950 border border-amber-500/30 text-xs text-amber-300 flex items-center gap-3">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4 rounded-2xl bg-slate-950 border border-white/[0.08] text-xs text-amber-300 flex items-center gap-3">
               <Sparkles className="w-4 h-4 animate-spin text-amber-400" />
               <span>Analyzing historical manuscripts and folklore databases...</span>
             </motion.div>
           )}
 
           {aiResponse && !isAiLoading && (
-            <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="p-5 rounded-2xl bg-slate-950 border border-amber-500/30 text-xs text-slate-200 leading-relaxed font-sans space-y-2 whitespace-pre-line">
+            <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="p-5 rounded-2xl bg-slate-950 border border-white/[0.08] text-xs text-slate-200 leading-relaxed font-sans space-y-2 whitespace-pre-line">
               {aiResponse}
             </motion.div>
           )}
@@ -377,7 +377,7 @@ export default function SpiritualTraditionsModule({ userProfile }: SpiritualTrad
               <button
                 onClick={() => setSelectedRegionFilter('all')}
                 className={`px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
-                  selectedRegionFilter === 'all' ? 'bg-amber-500/25 text-amber-300 border border-amber-500/40' : 'bg-white/5 text-slate-400 hover:text-white'
+                  selectedRegionFilter === 'all' ? 'bg-amber-500/25 text-amber-300 border border-white/[0.12]' : 'bg-white/5 text-slate-400 hover:text-white'
                 }`}
               >
                 All 10 Regions
@@ -387,7 +387,7 @@ export default function SpiritualTraditionsModule({ userProfile }: SpiritualTrad
                   key={r.id}
                   onClick={() => setSelectedRegionFilter(r.id)}
                   className={`px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all cursor-pointer ${
-                    selectedRegionFilter === r.id ? 'bg-amber-500/25 text-amber-300 border border-amber-500/40' : 'bg-white/5 text-slate-400 hover:text-white'
+                    selectedRegionFilter === r.id ? 'bg-amber-500/25 text-amber-300 border border-white/[0.12]' : 'bg-white/5 text-slate-400 hover:text-white'
                   }`}
                 >
                   {r.icon} {r.region}
@@ -403,7 +403,7 @@ export default function SpiritualTraditionsModule({ userProfile }: SpiritualTrad
                 key={item.id}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="glass-card p-6 rounded-3xl border border-white/10 space-y-4 hover:border-amber-500/40 transition-all"
+                className="glass-card p-6 rounded-3xl border border-white/10 space-y-4 hover:border-white/[0.12] transition-all"
               >
                 <div className="flex items-center justify-between border-b border-white/10 pb-3">
                   <div className="flex items-center gap-3">
@@ -494,7 +494,7 @@ export default function SpiritualTraditionsModule({ userProfile }: SpiritualTrad
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {protectiveSymbols.map((sym, idx) => (
-              <div key={idx} className="glass-card p-6 rounded-3xl border border-white/10 space-y-3 hover:border-amber-500/40 transition-all">
+              <div key={idx} className="glass-card p-6 rounded-3xl border border-white/10 space-y-3 hover:border-white/[0.12] transition-all">
                 <div className="flex items-center justify-between">
                   <span className="text-4xl">{sym.symbol}</span>
                   <span className="text-[10px] font-mono text-amber-400 uppercase bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">{sym.origin}</span>

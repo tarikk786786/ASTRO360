@@ -23,9 +23,9 @@ export default function CosmicAnalyticsKPI({
       suffix: '/100',
       change: '+4.2% today',
       icon: <Award className="w-5 h-5 text-amber-400" />,
-      color: 'from-amber-500/20 to-purple-500/10 border-amber-500/30',
+      color: 'from-amber-500/20 to-purple-500/10 border-white/[0.08]',
       badge: 'High Resonance',
-      badgeColor: 'text-amber-300 bg-amber-500/10 border-amber-500/30',
+      badgeColor: 'text-amber-300 bg-amber-500/10 border-white/[0.08]',
     },
     {
       title: 'Dignified Planets',
@@ -33,9 +33,9 @@ export default function CosmicAnalyticsKPI({
       suffix: ' active',
       change: `${exaltedCount} Exalted • ${ownSignCount} Own Sign`,
       icon: <ShieldCheck className="w-5 h-5 text-emerald-400" />,
-      color: 'from-emerald-500/20 to-cyan-500/10 border-emerald-500/30',
+      color: 'from-emerald-500/20 to-cyan-500/10 border-white/[0.08]',
       badge: 'Strong Assets',
-      badgeColor: 'text-emerald-300 bg-emerald-500/10 border-emerald-500/30',
+      badgeColor: 'text-emerald-300 bg-emerald-500/10 border-white/[0.08]',
     },
     {
       title: 'Retrograde Friction (Rx)',
@@ -53,9 +53,9 @@ export default function CosmicAnalyticsKPI({
       suffix: '%',
       change: '+6.8% momentum',
       icon: <Zap className="w-5 h-5 text-cyan-400" />,
-      color: 'from-cyan-500/20 to-blue-500/10 border-cyan-500/30',
+      color: 'from-cyan-500/20 to-blue-500/10 border-white/[0.08]',
       badge: 'Solar Peak',
-      badgeColor: 'text-cyan-300 bg-cyan-500/10 border-cyan-500/30',
+      badgeColor: 'text-cyan-300 bg-cyan-500/10 border-white/[0.08]',
     },
   ];
 

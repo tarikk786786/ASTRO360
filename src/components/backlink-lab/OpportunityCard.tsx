@@ -22,13 +22,13 @@ export default function OpportunityCard({
 }: OpportunityCardProps) {
   const tierColor =
     item.opportunityScore.tier === 'HIGH'
-      ? 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30'
+      ? 'text-cyan-400 bg-cyan-500/10 border-white/[0.08]'
       : item.opportunityScore.tier === 'MEDIUM'
-      ? 'text-amber-400 bg-amber-500/10 border-amber-500/30'
+      ? 'text-amber-400 bg-amber-500/10 border-white/[0.08]'
       : 'text-slate-400 bg-slate-500/10 border-slate-500/30';
 
   return (
-    <div className="p-4 sm:p-5 rounded-2xl bg-[#0E172A]/90 border border-white/10 hover:border-cyan-500/30 transition-all space-y-3.5 text-left text-xs font-sans shadow-lg relative overflow-hidden group">
+    <div className="p-4 sm:p-5 rounded-2xl bg-[#0E172A]/90 border border-white/10 hover:border-white/[0.08] transition-all space-y-3.5 text-left text-xs font-sans shadow-lg relative overflow-hidden group">
       {/* Top Bar */}
       <div className="flex items-start justify-between gap-2">
         <div className="space-y-1">
@@ -59,7 +59,7 @@ export default function OpportunityCard({
           onClick={() => onToggleSave(item)}
           className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${
             item.isSaved
-              ? 'bg-amber-400/20 text-amber-300 border-amber-400/40'
+              ? 'bg-amber-400/20 text-amber-300 border-white/[0.12]'
               : 'bg-white/5 text-slate-400 hover:text-white border-white/10'
           }`}
           title="Save to shortlist"

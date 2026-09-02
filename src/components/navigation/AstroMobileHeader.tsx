@@ -100,7 +100,7 @@ export const AstroMobileHeader: React.FC<AstroMobileHeaderProps> = memo(({
                   type="button"
                   onClick={onOpenSystemSheet}
                   aria-label={'Change system: ' + activeSystem}
-                  className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-400/15 active:bg-amber-400/30 border border-amber-400/30 text-[9.5px] font-mono font-bold text-amber-300 transition-colors cursor-pointer touch-manipulation"
+                  className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-400/15 active:bg-amber-400/30 border border-white/[0.08] text-[9.5px] font-mono font-bold text-amber-300 transition-colors cursor-pointer touch-manipulation"
                 >
                   <span>{activeSystem}</span>
                   <ChevronDown className="w-2.5 h-2.5 opacity-70" aria-hidden="true" />
@@ -114,7 +114,7 @@ export const AstroMobileHeader: React.FC<AstroMobileHeaderProps> = memo(({
         <div className="flex items-center gap-1.5 shrink-0">
           {/* Offline Warning */}
           {isOffline && (
-            <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-500/20 border border-amber-500/40 text-[9.5px] font-mono font-bold text-amber-300">
+            <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-500/20 border border-white/[0.12] text-[9.5px] font-mono font-bold text-amber-300">
               <WifiOff className="w-3 h-3" />
               <span className="hidden xs:inline">Offline</span>
             </div>

@@ -51,7 +51,7 @@ export default function NumerologyNameSuite() {
             Name Vibration Harmony, Life Path, Expression & Destiny Numbers
           </p>
         </div>
-        <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-cyan-500/30 font-bold">
+        <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-white/[0.08] font-bold">
           Chaldean Frequency Matrix
         </span>
       </div>
@@ -83,18 +83,18 @@ export default function NumerologyNameSuite() {
 
         {/* Results Cards */}
         <div className="lg:col-span-6 grid grid-cols-2 gap-4">
-          <div className="p-5 rounded-2xl bg-[#0B1220] border border-cyan-500/30 text-center space-y-2 flex flex-col items-center justify-center">
+          <div className="p-5 rounded-2xl bg-[#0B1220] border border-white/[0.08] text-center space-y-2 flex flex-col items-center justify-center">
             <span className="text-xs font-mono text-slate-400">Chaldean Name Number</span>
             <span className="text-4xl font-bold font-mono text-cyan-300">{nameNumber}</span>
-            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-white/[0.08]">
               Harmonious Vibration
             </span>
           </div>
 
-          <div className="p-5 rounded-2xl bg-[#0B1220] border border-amber-500/30 text-center space-y-2 flex flex-col items-center justify-center">
+          <div className="p-5 rounded-2xl bg-[#0B1220] border border-white/[0.08] text-center space-y-2 flex flex-col items-center justify-center">
             <span className="text-xs font-mono text-slate-400">Life Path Number</span>
             <span className="text-4xl font-bold font-mono text-amber-300">{lifePathNumber}</span>
-            <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">
+            <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-white/[0.08]">
               Destiny Alignment
             </span>
           </div>

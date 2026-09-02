@@ -438,7 +438,7 @@ export default function DreamInterpretationEngine({ userProfile }: DreamInterpre
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-8 space-y-10 relative overflow-hidden">
       {/* Disclaimer Banner */}
-      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3 backdrop-blur-md">
+      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="p-4 rounded-2xl bg-amber-500/10 border border-white/[0.08] flex items-start gap-3 backdrop-blur-md">
         <AlertCircle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
         <div className="text-xs text-slate-300 space-y-1">
           <p className="font-bold text-amber-300">Educational & Interpretive Purpose Only</p>
@@ -902,7 +902,7 @@ export default function DreamInterpretationEngine({ userProfile }: DreamInterpre
         {/* TAB 7: LUCID GUIDE */}
         {activeTab === 'lucid' && (
           <motion.div key="lucid" variants={containerVariants} initial="hidden" animate="show" className="space-y-6">
-            <motion.div variants={itemVariants} className="bg-slate-900/40 p-8 rounded-3xl border border-cyan-500/30 backdrop-blur-md relative overflow-hidden">
+            <motion.div variants={itemVariants} className="bg-slate-900/40 p-8 rounded-3xl border border-white/[0.08] backdrop-blur-md relative overflow-hidden">
               <div className="absolute top-0 right-0 p-12 opacity-10 pointer-events-none">
                 <Eye className="w-64 h-64 text-cyan-500" />
               </div>

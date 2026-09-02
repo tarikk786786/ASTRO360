@@ -22,7 +22,7 @@ const TRANSIT_ALERTS: TransitAlert[] = [
     toSign: 'Pisces ♓',
     date: 'March 2026',
     impactLevel: 'Major Impact',
-    impactColor: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+    impactColor: 'text-amber-400 bg-amber-500/10 border-white/[0.08]',
     description: 'Saturn enters Pisces, shifting karmic discipline from collective structures to deep emotional and spiritual purification.',
     prescribedRemedy: 'Perform Saturday oil lamp charity & meditate on Mahamrityunjaya Mantra (396Hz).'
   },
@@ -33,7 +33,7 @@ const TRANSIT_ALERTS: TransitAlert[] = [
     toSign: 'Gemini ♊',
     date: 'May 2026',
     impactLevel: 'High Opportunity',
-    impactColor: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+    impactColor: 'text-emerald-400 bg-emerald-500/10 border-white/[0.08]',
     description: 'Jupiter enters Gemini, expanding intellectual breakthroughs, technological innovations, and global commercial trade.',
     prescribedRemedy: 'Chant Vishnu Sahasranama & donate yellow grains on Thursdays.'
   },
@@ -44,7 +44,7 @@ const TRANSIT_ALERTS: TransitAlert[] = [
     toSign: 'Aquarius / Leo',
     date: 'November 2026',
     impactLevel: 'Caution Needed',
-    impactColor: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
+    impactColor: 'text-cyan-400 bg-cyan-500/10 border-white/[0.08]',
     description: 'Karmic nodes shift into Aquarius/Leo axis, amplifying AI technological evolution and personal identity transformation.',
     prescribedRemedy: 'Recite Durga Saptashati & feed stray dogs on Saturdays.'
   }
@@ -63,7 +63,7 @@ export default function PlanetaryTransitRadar() {
             2026/2027 Planetary Ingress Telemetry & Astronomical Shift Countermeasures
           </p>
         </div>
-        <span className="text-[10px] font-mono text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/30 font-bold">
+        <span className="text-[10px] font-mono text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-white/[0.08] font-bold">
           Live Radar Sweep
         </span>
       </div>
@@ -73,7 +73,7 @@ export default function PlanetaryTransitRadar() {
         {/* RADAR CIRCLE */}
         <div className="relative w-36 h-36 shrink-0 flex items-center justify-center">
           <div className="absolute inset-0 rounded-full border border-cyan-500/20" />
-          <div className="absolute inset-4 rounded-full border border-cyan-500/30" />
+          <div className="absolute inset-4 rounded-full border border-white/[0.08]" />
           <div className="absolute inset-8 rounded-full border border-cyan-500/40" />
           
           {/* ROTATING RADAR SWEEP LINE */}
@@ -121,7 +121,7 @@ export default function PlanetaryTransitRadar() {
 
             <p className="text-xs text-slate-300 leading-relaxed">{tr.description}</p>
 
-            <div className="p-2.5 rounded-xl bg-cyan-950/40 border border-cyan-500/30 text-[11px] text-cyan-200 font-mono">
+            <div className="p-2.5 rounded-xl bg-cyan-950/40 border border-white/[0.08] text-[11px] text-cyan-200 font-mono">
               <strong className="text-cyan-400">Prescribed Countermeasure & Remedy:</strong> {tr.prescribedRemedy}
             </div>
           </div>

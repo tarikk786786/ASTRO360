@@ -39,7 +39,7 @@ export default function CosmicBiorhythmTracker({ userProfile }: CosmicBiorhythmT
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-xs font-mono font-bold text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/30">
+          <span className="text-xs font-mono font-bold text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-white/[0.08]">
             Overall Energy: {biorhythm.overallScore}%
           </span>
         </div>
@@ -76,7 +76,7 @@ export default function CosmicBiorhythmTracker({ userProfile }: CosmicBiorhythmT
         </div>
 
         {/* INTELLECTUAL (33 DAYS) */}
-        <div className="p-4 rounded-2xl bg-[#0B1220] border border-cyan-500/30 space-y-2">
+        <div className="p-4 rounded-2xl bg-[#0B1220] border border-white/[0.08] space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-cyan-400 font-bold flex items-center gap-1.5">
               <Brain className="w-4 h-4 text-cyan-400" /> Intellectual Focus (33-Day Cycle)

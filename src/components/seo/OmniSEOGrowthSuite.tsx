@@ -36,12 +36,12 @@ export default function OmniSEOGrowthSuite() {
     <div className="max-w-6xl mx-auto space-y-6 text-left font-sans pb-20">
       
       {/* ─── 1. TOP HEADER & HEALTH SCORE BANNER ─────────────────────── */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#0B1220] via-[#0E172A] to-[#070B14] border border-cyan-500/30 shadow-2xl space-y-4 relative overflow-hidden">
+      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#0B1220] via-[#0E172A] to-[#070B14] border border-white/[0.08] shadow-2xl space-y-4 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 font-mono text-xs font-bold uppercase">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-400/10 border border-white/[0.08] text-cyan-300 font-mono text-xs font-bold uppercase">
               <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" /> ASTRO360 Growth & Technical SEO Engine
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
@@ -101,7 +101,7 @@ export default function OmniSEOGrowthSuite() {
             onClick={() => setActiveTab(tab.id as any)}
             className={`px-4 py-2.5 rounded-2xl border transition-all cursor-pointer whitespace-nowrap snap-start ${
               activeTab === tab.id
-                ? 'bg-amber-400 text-slate-950 font-bold border-amber-400 shadow-md'
+                ? 'bg-white text-black font-semibold shadow-sm font-bold border-amber-400 shadow-md'
                 : 'bg-[#0B1220] text-slate-400 hover:text-white border-white/10 hover:border-white/20'
             }`}
           >
@@ -210,7 +210,7 @@ export default function OmniSEOGrowthSuite() {
                 >
                   <div className="flex items-center justify-between">
                     <h4 className="text-sm font-bold text-white">{cluster.name}</h4>
-                    <span className="text-[10px] font-mono font-bold uppercase bg-amber-400/15 text-amber-300 px-2 py-0.5 rounded-full border border-amber-400/30">
+                    <span className="text-[10px] font-mono font-bold uppercase bg-amber-400/15 text-amber-300 px-2 py-0.5 rounded-full border border-white/[0.08]">
                       {cluster.searchIntent}
                     </span>
                   </div>
@@ -225,7 +225,7 @@ export default function OmniSEOGrowthSuite() {
           </div>
 
           {/* Selected Cluster Deep Dive */}
-          <div className="lg:col-span-7 p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 shadow-2xl space-y-4">
+          <div className="lg:col-span-7 p-6 rounded-3xl bg-[#0B1220] border border-white/[0.08] shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div>
                 <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold">
@@ -293,15 +293,15 @@ export default function OmniSEOGrowthSuite() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
-            <div className="p-4 rounded-2xl bg-white/5 border border-emerald-500/30 space-y-1">
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] space-y-1">
               <span className="text-emerald-400 font-bold block">✓ SoftwareApplication</span>
               <p className="text-[11px] text-slate-300">Free launch tier pricing, 4.9/5 rating, and astronomical feature specifications.</p>
             </div>
-            <div className="p-4 rounded-2xl bg-white/5 border border-cyan-500/30 space-y-1">
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] space-y-1">
               <span className="text-cyan-400 font-bold block">✓ Organization & Author</span>
               <p className="text-[11px] text-slate-300">Entity relationship linkage to founder, official logo, and social channels.</p>
             </div>
-            <div className="p-4 rounded-2xl bg-white/5 border border-amber-500/30 space-y-1">
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] space-y-1">
               <span className="text-amber-400 font-bold block">✓ FAQPage Microdata</span>
               <p className="text-[11px] text-slate-300">Eligible for expanded Google SERP rich accordion snippets.</p>
             </div>
@@ -311,7 +311,7 @@ export default function OmniSEOGrowthSuite() {
 
       {/* ─── TAB 4: GEO / AEO & AI SEARCH ENGINE OPTIMIZATION ─────────── */}
       {activeTab === 'aeo' && (
-        <div className="p-6 rounded-3xl bg-[#0B1220] border border-cyan-500/30 space-y-5">
+        <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/[0.08] space-y-5">
           <div className="border-b border-white/10 pb-3">
             <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-400 font-bold">
               Generative Engine Optimization (GEO) & Answer Engine Optimization (AEO)
@@ -354,19 +354,19 @@ export default function OmniSEOGrowthSuite() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
-            <div className="p-4 rounded-2xl bg-white/5 border border-emerald-500/30 space-y-1">
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] space-y-1">
               <span className="text-slate-400 text-[10px] uppercase font-bold">Largest Contentful Paint (LCP)</span>
               <div className="text-xl font-black text-emerald-400">1.2s – 1.4s</div>
               <span className="text-[10px] text-slate-400">Target: &lt; 2.5s (Passed)</span>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white/5 border border-emerald-500/30 space-y-1">
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] space-y-1">
               <span className="text-slate-400 text-[10px] uppercase font-bold">Interaction to Next Paint (INP)</span>
               <div className="text-xl font-black text-emerald-400">38ms – 55ms</div>
               <span className="text-[10px] text-slate-400">Target: &lt; 200ms (Passed)</span>
             </div>
 
-            <div className="p-4 rounded-2xl bg-white/5 border border-emerald-500/30 space-y-1">
+            <div className="p-4 rounded-2xl bg-white/5 border border-white/[0.08] space-y-1">
               <span className="text-slate-400 text-[10px] uppercase font-bold">Cumulative Layout Shift (CLS)</span>
               <div className="text-xl font-black text-emerald-400">0.00 – 0.01</div>
               <span className="text-[10px] text-slate-400">Target: &lt; 0.1 (Passed)</span>

@@ -29,7 +29,7 @@ export default function CompetitorGapView({
       case 'UPDATE':
         return <span className="px-2.5 py-1 rounded-xl text-[10px] font-mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">UPDATE PAGE</span>;
       case 'MERGE':
-        return <span className="px-2.5 py-1 rounded-xl text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">MERGE & REDIRECT</span>;
+        return <span className="px-2.5 py-1 rounded-xl text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-white/[0.12]">MERGE & REDIRECT</span>;
       default:
         return <span className="px-2.5 py-1 rounded-xl text-[10px] font-mono font-bold bg-slate-500/20 text-slate-400 border border-slate-500/40">IGNORE</span>;
     }
@@ -50,7 +50,7 @@ export default function CompetitorGapView({
         {gaps.map((gap) => (
           <div
             key={gap.id}
-            className="p-4 rounded-2xl bg-[#0B1220]/80 border border-white/[0.08] hover:border-cyan-500/30 transition-all space-y-3 font-mono text-xs"
+            className="p-4 rounded-2xl bg-[#0B1220]/80 border border-white/[0.08] hover:border-white/[0.08] transition-all space-y-3 font-mono text-xs"
           >
             <div className="flex items-start justify-between gap-2">
               <div className="space-y-0.5 truncate">

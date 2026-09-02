@@ -46,10 +46,10 @@ export default function PRDViewer() {
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-6">
       {/* Header Banner */}
-      <div className="glass-card p-6 rounded-3xl border border-amber-500/30 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950/40 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
+      <div className="glass-card p-6 rounded-3xl border border-white/[0.08] bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950/40 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold font-mono">
+            <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-white/[0.12] text-xs font-bold font-mono">
               OFFICIAL SPECIFICATION
             </span>
             <span className="text-xs font-mono text-emerald-400 font-bold flex items-center gap-1.5">
@@ -93,7 +93,7 @@ export default function PRDViewer() {
                   onClick={() => setActiveSection(sec.id)}
                   className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs transition-all text-left cursor-pointer ${
                     isActive
-                      ? 'bg-gradient-to-r from-amber-500/20 to-purple-500/20 text-amber-300 font-bold border border-amber-500/40 shadow-inner'
+                      ? 'bg-gradient-to-r from-amber-500/20 to-purple-500/20 text-amber-300 font-bold border border-white/[0.12] shadow-inner'
                       : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
                   }`}
                 >
@@ -127,7 +127,7 @@ export default function PRDViewer() {
                   <p className="text-slate-300 leading-relaxed">
                     Develop the world's most comprehensive AI-powered astrology platform that combines traditional astrology systems, AI analysis, modern UI/UX, personalized reports, and educational content into one ecosystem.
                   </p>
-                  <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs leading-relaxed">
+                  <div className="p-4 rounded-2xl bg-amber-500/10 border border-white/[0.08] text-amber-200 text-xs leading-relaxed">
                     💡 <strong>Core Principle:</strong> The platform provides accurate calculations according to each supported astrological tradition, while clearly distinguishing traditional astrological guidance from scientifically established advice.
                   </div>
                 </div>

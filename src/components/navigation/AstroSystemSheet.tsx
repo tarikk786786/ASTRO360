@@ -48,7 +48,7 @@ export const AstroSystemSheet: React.FC<AstroSystemSheetProps> = ({
           {/* Header */}
           <div className="p-4 sm:p-5 border-b border-white/10 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-amber-400/10 border border-amber-400/20 text-amber-400">
+              <div className="p-2 rounded-xl bg-amber-400/10 border border-white/[0.08] text-amber-400">
                 <Globe2 className="w-5 h-5" />
               </div>
               <div className="text-left">
@@ -108,7 +108,7 @@ export const AstroSystemSheet: React.FC<AstroSystemSheetProps> = ({
                   </div>
 
                   {isSelected && (
-                    <div className="p-1.5 rounded-full bg-amber-400 text-slate-950 shrink-0 mt-1">
+                    <div className="p-1.5 rounded-full bg-white text-black font-semibold shadow-sm shrink-0 mt-1">
                       <Check className="w-4 h-4 stroke-[3]" />
                     </div>
                   )}

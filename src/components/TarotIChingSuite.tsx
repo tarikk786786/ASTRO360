@@ -101,7 +101,7 @@ export default function TarotIChingSuite() {
       )}
 
       {hexagram && (
-        <div className="p-4 rounded-2xl bg-[#0B1220] border border-cyan-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="p-4 rounded-2xl bg-[#0B1220] border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <span className="text-[10px] font-mono text-cyan-400 font-bold block">Synchronized I Ching Hexagram #{hexagram.number}:</span>
             <h4 className="text-sm font-bold text-white flex items-center gap-2">
@@ -109,7 +109,7 @@ export default function TarotIChingSuite() {
             </h4>
             <p className="text-xs text-slate-300 pt-0.5">{hexagram.judgment}</p>
           </div>
-          <span className="text-xs font-mono text-amber-300 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-amber-500/30 shrink-0">
+          <span className="text-xs font-mono text-amber-300 bg-amber-500/10 px-3 py-1.5 rounded-xl border border-white/[0.08] shrink-0">
             {hexagram.image}
           </span>
         </div>

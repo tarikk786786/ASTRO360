@@ -42,7 +42,7 @@ export default function OmniAskUniversalHero({
       label: 'Career & Ambition',
       icon: Briefcase,
       color: 'text-amber-400',
-      bg: 'bg-amber-500/10 border-amber-500/20 hover:border-amber-400/40',
+      bg: 'bg-amber-500/10 border-amber-500/20 hover:border-white/[0.12]',
       sample: 'When is my next major career promotion window?'
     },
     {
@@ -136,7 +136,7 @@ export default function OmniAskUniversalHero({
       {/* ───────────────────────────────────────────────────────────── */}
       {/* 1. UNIVERSAL QUESTION HERO HEADER                            */}
       {/* ───────────────────────────────────────────────────────────── */}
-      <div className="p-6 sm:p-9 rounded-3xl bg-gradient-to-b from-[#0F172A] via-[#0C1324] to-[#080D1A] border border-amber-400/30 shadow-2xl space-y-6 text-left relative overflow-hidden">
+      <div className="p-6 sm:p-9 rounded-3xl bg-gradient-to-b from-[#0F172A] via-[#0C1324] to-[#080D1A] border border-white/[0.08] shadow-2xl space-y-6 text-left relative overflow-hidden">
         {/* Subtle cosmic background glow */}
         <div className="absolute top-0 right-0 w-80 h-80 bg-amber-400/5 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
@@ -173,7 +173,7 @@ export default function OmniAskUniversalHero({
             <button
               type="submit"
               disabled={isLoading || !query.trim()}
-              className="px-4 sm:px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 disabled:opacity-40 disabled:hover:bg-amber-400 text-slate-950 font-bold font-mono text-xs flex items-center gap-1.5 shadow-md cursor-pointer transition-all shrink-0 min-h-[44px]"
+              className="px-4 sm:px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 disabled:opacity-40 disabled:hover:bg-white text-black font-semibold shadow-sm font-bold font-mono text-xs flex items-center gap-1.5 shadow-md cursor-pointer transition-all shrink-0 min-h-[44px]"
             >
               {isLoading ? (
                 <RefreshCw className="w-4 h-4 animate-spin" />
@@ -197,7 +197,7 @@ export default function OmniAskUniversalHero({
               <button
                 key={idx}
                 onClick={() => handleAsk(sq)}
-                className="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 hover:border-amber-400/40 text-slate-300 hover:text-white border border-white/10 text-xs font-sans transition-all cursor-pointer select-none text-left min-h-[38px] flex items-center gap-1.5"
+                className="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 hover:border-white/[0.12] text-slate-300 hover:text-white border border-white/10 text-xs font-sans transition-all cursor-pointer select-none text-left min-h-[38px] flex items-center gap-1.5"
               >
                 <span>{sq}</span>
               </button>
@@ -214,7 +214,7 @@ export default function OmniAskUniversalHero({
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
-              className="p-5 sm:p-7 rounded-2xl bg-[#070D1A] border border-amber-400/40 space-y-5 shadow-2xl relative z-10"
+              className="p-5 sm:p-7 rounded-2xl bg-[#070D1A] border border-white/[0.12] space-y-5 shadow-2xl relative z-10"
             >
               {/* Intent Classification Meta Header */}
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3 font-mono text-[11px]">
@@ -303,7 +303,7 @@ export default function OmniAskUniversalHero({
               </div>
 
               {/* Next Best Action Card */}
-              <div className="p-4 rounded-xl bg-gradient-to-r from-amber-950/30 to-indigo-950/30 border border-amber-400/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="p-4 rounded-xl bg-gradient-to-r from-amber-950/30 to-indigo-950/30 border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="space-y-0.5">
                   <span className="text-[10px] font-mono uppercase text-amber-400 font-bold tracking-wider">
                     RECOMMENDED NEXT STEP

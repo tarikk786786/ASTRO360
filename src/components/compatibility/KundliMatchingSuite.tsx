@@ -155,9 +155,9 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
           </div>
           <span className={`px-3 py-1 rounded-full text-xs font-mono font-bold border ${
             matchData.totalScore >= 28 
-              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' 
+              ? 'bg-emerald-500/20 text-emerald-300 border-white/[0.08]' 
               : matchData.totalScore >= 18 
-              ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' 
+              ? 'bg-amber-500/20 text-amber-300 border-white/[0.08]' 
               : 'bg-rose-500/20 text-rose-300 border-rose-500/30'
           }`}>
             {matchData.totalScore >= 28 ? '🌟 Excellent Match' : matchData.totalScore >= 18 ? '⚡ Good Potential' : '⚠️ Requires Remedial Balance'}

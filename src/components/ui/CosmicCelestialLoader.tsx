@@ -58,7 +58,7 @@ export default function CosmicCelestialLoader({
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 40, ease: 'linear' }}
-          className="absolute inset-0 rounded-full border border-amber-400/30 flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.15)]"
+          className="absolute inset-0 rounded-full border border-white/[0.08] flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.15)]"
         >
           {ZODIAC_SYMBOLS.map((symbol, idx) => {
             const angle = (idx * 30) * (Math.PI / 180);

@@ -914,7 +914,7 @@ export default function PremiumHoroscopeEngine({ userProfile }: PremiumHoroscope
               <h3 className="text-lg font-bold text-white flex items-center gap-2">
                 <Orbit className="w-5 h-5 text-purple-400" />
                 Live Planetary Transits
-                <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 ml-2">LIVE</span>
+                <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-white/[0.08] ml-2">LIVE</span>
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {currentPositions.map((planet, idx) => (
@@ -978,9 +978,9 @@ export default function PremiumHoroscopeEngine({ userProfile }: PremiumHoroscope
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-sm font-bold text-white">{asp.planet1}</span>
                         <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${
-                          asp.nature === 'Harmonious' ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300' :
+                          asp.nature === 'Harmonious' ? 'bg-emerald-500/15 border-white/[0.08] text-emerald-300' :
                           asp.nature === 'Challenging' ? 'bg-red-500/15 border-red-500/30 text-red-300' :
-                          'bg-amber-500/15 border-amber-500/30 text-amber-300'
+                          'bg-amber-500/15 border-white/[0.08] text-amber-300'
                         }`}>{asp.aspectType}</span>
                         <span className="text-sm font-bold text-white">{asp.planet2}</span>
                       </div>
@@ -1103,7 +1103,7 @@ export default function PremiumHoroscopeEngine({ userProfile }: PremiumHoroscope
                         </span>
                       </div>
                       {isUserSign && (
-                        <span className="inline-block mt-1.5 text-[8px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold">
+                        <span className="inline-block mt-1.5 text-[8px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-white/[0.08] font-bold">
                           YOU
                         </span>
                       )}

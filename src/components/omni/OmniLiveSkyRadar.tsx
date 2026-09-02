@@ -28,7 +28,7 @@ export default function OmniLiveSkyRadar() {
   const ayanamsha = calculateAyanamsha(currentTime);
 
   return (
-    <div className="rounded-3xl bg-gradient-to-br from-[#0A101D] via-[#0D1629] to-[#070B14] border border-cyan-500/30 p-5 sm:p-6 shadow-2xl relative overflow-hidden text-left font-sans">
+    <div className="rounded-3xl bg-gradient-to-br from-[#0A101D] via-[#0D1629] to-[#070B14] border border-white/[0.08] p-5 sm:p-6 shadow-2xl relative overflow-hidden text-left font-sans">
       {/* Glow effect */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -41,7 +41,7 @@ export default function OmniLiveSkyRadar() {
           <div>
             <div className="flex items-center gap-2">
               <h3 className="text-sm font-extrabold text-white tracking-tight">Real-Time Celestial Sky Radar</h3>
-              <span className="flex items-center gap-1 text-[9px] font-mono font-bold bg-emerald-500/15 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">
+              <span className="flex items-center gap-1 text-[9px] font-mono font-bold bg-emerald-500/15 text-emerald-300 px-2 py-0.5 rounded-full border border-white/[0.08]">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> LIVE DE440
               </span>
             </div>

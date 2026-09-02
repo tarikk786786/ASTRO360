@@ -41,10 +41,10 @@ export const COMMAND_CENTER_SECTIONS: CommandSection[] = [
     id: 'dashboard',
     title: 'Dashboard Overview',
     items: [
-      { id: 'radar', name: 'Live Cosmic Radar', badge: 'Live', badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30', icon: Activity, description: 'Real-time celestial telemetry & transit radar' },
+      { id: 'radar', name: 'Live Cosmic Radar', badge: 'Live', badgeColor: 'bg-emerald-500/20 text-emerald-300 border-white/[0.08]', icon: Activity, description: 'Real-time celestial telemetry & transit radar' },
       { id: 'copilot', name: 'AI Oracle Copilot', badge: 'AI', badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/30', icon: Bot, description: 'Deterministic multi-tradition synthesis AI' },
-      { id: '3d', name: 'Cosmic 3D Studio', badge: '3D', badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30', icon: Box, description: 'WebGL planetary orbit & celestial sphere' },
-      { id: 'research', name: 'Consensus Core', badge: 'Research', badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30', icon: BookOpen, description: 'Multi-system convergence & statistical rigor' }
+      { id: '3d', name: 'Cosmic 3D Studio', badge: '3D', badgeColor: 'bg-cyan-500/20 text-cyan-300 border-white/[0.08]', icon: Box, description: 'WebGL planetary orbit & celestial sphere' },
+      { id: 'research', name: 'Consensus Core', badge: 'Research', badgeColor: 'bg-amber-500/20 text-amber-300 border-white/[0.08]', icon: BookOpen, description: 'Multi-system convergence & statistical rigor' }
     ]
   },
   {
@@ -54,7 +54,7 @@ export const COMMAND_CENTER_SECTIONS: CommandSection[] = [
       { id: 'charts', name: 'Birth Chart Engine', icon: Compass, description: 'North, South & Western high-res Kundli' },
       { id: 'dual-wheel', name: 'Dual Wheel Studio', badge: 'Dual', badgeColor: 'bg-blue-500/20 text-blue-300 border-blue-500/30', icon: RotateCcw, description: 'Synastry & transit overlay comparison' },
       { id: 'divisional', name: 'Divisional Charts (D1-D60)', icon: Layers, description: 'Harmonics from D1 Rashi to D60 Shashtiamsha' },
-      { id: 'shadbala', name: '6-Fold Shadbala Potency', badge: 'Bala', badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30', icon: Sliders, description: 'Sthana, Dik, Kala, Cheshta, Naisargika & Drik' },
+      { id: 'shadbala', name: '6-Fold Shadbala Potency', badge: 'Bala', badgeColor: 'bg-amber-500/20 text-amber-300 border-white/[0.08]', icon: Sliders, description: 'Sthana, Dik, Kala, Cheshta, Naisargika & Drik' },
       { id: 'frequencies', name: 'Planetary Frequencies', badge: 'Audio', badgeColor: 'bg-pink-500/20 text-pink-300 border-pink-500/30', icon: Volume2, description: 'Hans Cousto Cosmic Octave acoustic synthesis' },
       { id: 'ephemeris-lab', name: 'Ephemeris Comparison Lab', icon: Activity, description: 'NASA JPL DE440 sub-arcsecond validator' },
       { id: 'sabian', name: 'Sabian Symbols (360°)', icon: Sparkles, description: 'Marc Edmund Jones 360-degree archetypes' }
@@ -64,10 +64,10 @@ export const COMMAND_CENTER_SECTIONS: CommandSection[] = [
     id: 'forecasts',
     title: 'Forecasts & Timing',
     items: [
-      { id: 'forecast', name: 'Dasha & Time Horizon', badge: '120y', badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30', icon: Clock, description: '120-Year Vimshottari Mahadasha timeline' },
+      { id: 'forecast', name: 'Dasha & Time Horizon', badge: '120y', badgeColor: 'bg-amber-500/20 text-amber-300 border-white/[0.08]', icon: Clock, description: '120-Year Vimshottari Mahadasha timeline' },
       { id: 'transits', name: 'Sade Sati & Transits', icon: Moon, description: '7.5-year Saturn transit & Gochara movements' },
-      { id: 'dossier', name: 'Executive PDF Dossier', badge: 'PDF', badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30', icon: FileText, description: 'Gold-embossed 5-page publication-grade PDF' },
-      { id: 'news-radar', name: 'Cosmic News Hub', badge: 'Live', badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30', icon: Radio, description: 'Mundane world events & celestial correlations' },
+      { id: 'dossier', name: 'Executive PDF Dossier', badge: 'PDF', badgeColor: 'bg-emerald-500/20 text-emerald-300 border-white/[0.08]', icon: FileText, description: 'Gold-embossed 5-page publication-grade PDF' },
+      { id: 'news-radar', name: 'Cosmic News Hub', badge: 'Live', badgeColor: 'bg-cyan-500/20 text-cyan-300 border-white/[0.08]', icon: Radio, description: 'Mundane world events & celestial correlations' },
       { id: 'muhurta', name: 'Electional Muhurta', icon: Sun, description: 'Abhijit, Brahma Muhurta & Rahu Kaal calculations' },
       { id: 'horas', name: 'Planetary Horas Clock', icon: Clock, description: 'Hourly planetary rulers & auspicious activity timing' },
       { id: 'btr', name: 'Birth Time Rectification', icon: SlidersHorizontal, description: 'Life-event micro-tuner for exact Lagna' }
@@ -240,7 +240,7 @@ export const AstroCommandCenterDrawer: React.FC<AstroCommandCenterDrawerProps> =
                   onClick={() => setActiveCategory(cat.id)}
                   className={`px-2.5 py-1 rounded-lg whitespace-nowrap transition-colors cursor-pointer ${
                     activeCategory === cat.id
-                      ? 'bg-amber-400 text-slate-950 font-bold shadow-sm'
+                      ? 'bg-white text-black font-semibold shadow-sm font-bold shadow-sm'
                       : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
                   }`}
                 >
@@ -279,7 +279,7 @@ export const AstroCommandCenterDrawer: React.FC<AstroCommandCenterDrawerProps> =
                         }}
                         className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-mono flex items-center justify-between transition-all cursor-pointer group ${
                           isSelected
-                            ? 'bg-amber-400 text-slate-950 font-bold shadow-md shadow-amber-400/10'
+                            ? 'bg-white text-black font-semibold shadow-sm font-bold shadow-md shadow-amber-400/10'
                             : 'text-slate-200 hover:bg-white/[0.08] hover:text-white border border-transparent hover:border-white/5'
                         }`}
                       >

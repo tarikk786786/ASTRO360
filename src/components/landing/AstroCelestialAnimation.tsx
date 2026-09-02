@@ -137,7 +137,7 @@ export default function AstroCelestialAnimation({
               onClick={() => setStage(s.id as ViewStage)}
               className={`px-3 py-1.5 rounded-xl border transition-all cursor-pointer whitespace-nowrap snap-start ${
                 stage === s.id
-                  ? 'bg-amber-400 text-slate-950 font-bold border-amber-400 shadow-md'
+                  ? 'bg-white text-black font-semibold shadow-sm font-bold border-amber-400 shadow-md'
                   : 'bg-[#0B1220] text-slate-400 hover:text-white border-white/10 hover:border-white/20'
               }`}
             >
@@ -308,7 +308,7 @@ export default function AstroCelestialAnimation({
         {/* Right 5 Cols: Live Planet / Aspect Inspector Card */}
         <div className="lg:col-span-5 space-y-4">
           {activePlanetData ? (
-            <div className="p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 shadow-2xl space-y-4 text-left">
+            <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/[0.08] shadow-2xl space-y-4 text-left">
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
                 <div className="flex items-center gap-2.5">
                   <div 

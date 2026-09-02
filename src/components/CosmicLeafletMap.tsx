@@ -72,7 +72,7 @@ export default function CosmicLeafletMap({
           <h3 className="text-xl font-bold font-display text-white">Interactive Astrological Location Map</h3>
         </div>
 
-        <span className="px-3 py-1 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold flex items-center gap-1.5">
+        <span className="px-3 py-1 rounded-xl bg-cyan-500/10 border border-white/[0.08] text-cyan-300 text-xs font-mono font-bold flex items-center gap-1.5">
           <Navigation className="w-3.5 h-3.5 text-cyan-400" /> 100% Free API Stack
         </span>
       </div>
@@ -122,7 +122,7 @@ export default function CosmicLeafletMap({
       </form>
 
       {/* INTERACTIVE OPENSTREETMAP GLOBE CANVAS VISUALIZER */}
-      <div className="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden border border-cyan-500/30 bg-[#0B1220] shadow-inner group">
+      <div className="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden border border-white/[0.08] bg-[#0B1220] shadow-inner group">
         {/* OpenStreetMap Map Imagery Layer */}
         <div 
           className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-luminosity grayscale group-hover:grayscale-0 transition-all duration-700"

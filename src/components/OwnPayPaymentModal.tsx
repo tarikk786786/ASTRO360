@@ -145,7 +145,7 @@ export default function OwnPayPaymentModal({
           initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
-          className="max-w-xl w-full rounded-3xl bg-[#111827] border border-amber-500/40 p-6 space-y-5 shadow-2xl relative text-left text-xs font-sans my-8"
+          className="max-w-xl w-full rounded-3xl bg-[#111827] border border-white/[0.12] p-6 space-y-5 shadow-2xl relative text-left text-xs font-sans my-8"
         >
           {/* Header */}
           <div className="flex items-center justify-between border-b border-white/10 pb-3">
@@ -156,7 +156,7 @@ export default function OwnPayPaymentModal({
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-sm font-bold text-white font-mono tracking-tight">OwnPay Secure Gateway</h3>
-                  <span className="text-[9px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30 flex items-center gap-1">
+                  <span className="text-[9px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-white/[0.08] flex items-center gap-1">
                     <Lock className="w-2.5 h-2.5" /> 256-Bit Encrypted
                   </span>
                 </div>
@@ -169,7 +169,7 @@ export default function OwnPayPaymentModal({
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowConfigPanel(!showConfigPanel)}
-                className="px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20 font-mono text-[10px] font-bold flex items-center gap-1 cursor-pointer transition-all"
+                className="px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-300 border border-white/[0.08] hover:bg-amber-500/20 font-mono text-[10px] font-bold flex items-center gap-1 cursor-pointer transition-all"
               >
                 <Wrench className="w-3 h-3 text-amber-400" /> Merchant Setup
               </button>
@@ -185,8 +185,8 @@ export default function OwnPayPaymentModal({
 
           {/* EDIT MERCHANT PAYOUT CONFIGURATION DRAWER */}
           {showConfigPanel && (
-            <form onSubmit={handleSaveMerchantConfig} className="p-4 rounded-2xl bg-amber-950/40 border border-amber-500/40 space-y-3 font-mono text-xs">
-              <div className="flex items-center justify-between border-b border-amber-500/30 pb-2">
+            <form onSubmit={handleSaveMerchantConfig} className="p-4 rounded-2xl bg-amber-950/40 border border-white/[0.12] space-y-3 font-mono text-xs">
+              <div className="flex items-center justify-between border-b border-white/[0.08] pb-2">
                 <span className="font-bold text-amber-300 flex items-center gap-1.5">
                   <Building className="w-4 h-4 text-amber-400" /> Customise Merchant Payout Addresses & Gateway
                 </span>
@@ -254,12 +254,12 @@ export default function OwnPayPaymentModal({
           )}
 
           {/* 🏦 WHERE & WHEN PAYMENT IS RECEIVED LEDGER */}
-          <div className="p-3.5 rounded-2xl bg-amber-950/40 border border-amber-500/30 space-y-1.5 text-[11px] font-mono">
+          <div className="p-3.5 rounded-2xl bg-amber-950/40 border border-white/[0.08] space-y-1.5 text-[11px] font-mono">
             <div className="flex items-center justify-between border-b border-amber-500/20 pb-1">
               <span className="text-amber-400 font-bold flex items-center gap-1.5">
                 <Building className="w-3.5 h-3.5 text-amber-400" /> WHERE PAYMENT WILL BE RECEIVED:
               </span>
-              <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
+              <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-white/[0.08]">
                 Direct Merchant Payout
               </span>
             </div>
@@ -432,7 +432,7 @@ export default function OwnPayPaymentModal({
               <span className="text-[10px] font-mono text-slate-400 block font-bold">
                 Scan with your Banking App or OwnPay Mobile Wallet
               </span>
-              <div className="p-3 bg-white rounded-2xl w-fit mx-auto shadow-xl border border-amber-500/30">
+              <div className="p-3 bg-white rounded-2xl w-fit mx-auto shadow-xl border border-white/[0.08]">
                 <img src={transaction.qrCodeUrl} alt="OwnPay QR Code" className="w-36 h-36" />
               </div>
               <a

@@ -1551,7 +1551,7 @@ export default function CustomRemedialMediumEngine({ userProfile }: CustomRemedi
               onClick={() => setSelectedMedium(med.id as WisdomMedium)}
               className={`p-3 rounded-2xl text-[11px] font-semibold flex flex-col items-center gap-1.5 transition-all cursor-pointer ${
                 selectedMedium === med.id
-                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-lg shadow-amber-500/10 scale-105'
+                  ? 'bg-amber-500/20 text-amber-300 border border-white/[0.12] shadow-lg shadow-amber-500/10 scale-105'
                   : 'glass-card text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -1607,7 +1607,7 @@ export default function CustomRemedialMediumEngine({ userProfile }: CustomRemedi
           {/* Diagnostic Header */}
           <div className="border-b border-slate-800 pb-5 space-y-2">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs font-bold px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wider">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-white/[0.08] uppercase tracking-wider">
                 {selectedMedium.toUpperCase()} MEDIUM DIAGNOSTIC
               </span>
               <span className="text-xs text-slate-400 font-mono">Best Hour: {activeRemedy?.bestTime}</span>

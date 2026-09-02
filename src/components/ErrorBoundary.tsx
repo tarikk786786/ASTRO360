@@ -33,9 +33,9 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="min-h-[60vh] bg-[#0B1220] flex items-center justify-center p-6 text-left font-sans text-white">
-          <div className="max-w-xl w-full p-8 rounded-3xl bg-[#111827] border border-amber-500/40 shadow-2xl space-y-5">
+          <div className="max-w-xl w-full p-8 rounded-3xl bg-[#111827] border border-white/[0.12] shadow-2xl space-y-5">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-white/[0.08] flex items-center justify-center shrink-0">
                 <AlertTriangle className="w-6 h-6 text-amber-400" />
               </div>
               <div>
@@ -77,7 +77,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   try { localStorage.removeItem('astroverse_tab'); } catch {}
                   this.setState({ hasError: false, error: null, errorInfo: null, showDetails: false });
                 }}
-                className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20"
+                className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-white text-black font-semibold shadow-sm font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20"
               >
                 <RefreshCw className="w-4 h-4" /> Reset View Telemetry
               </button>

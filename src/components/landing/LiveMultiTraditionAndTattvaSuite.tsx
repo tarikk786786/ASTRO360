@@ -29,7 +29,7 @@ const TRADITIONS_DATA: TraditionComparison[] = [
     houseSystem: 'Equal House / Shripati / Bhava Chalit',
     uniqueStrength: 'Shodashavarga (D1 to D60 divisional harmonics) and 6-fold Shadbala planetary strength matrix.',
     exampleVerdict: 'Jupiter in Taurus in 10th Kendra signals strong long-term career growth, reinforced by Jupiter-Saturn Dasha.',
-    color: 'text-amber-400 border-amber-400/30 bg-amber-400/10'
+    color: 'text-amber-400 border-white/[0.08] bg-amber-400/10'
   },
   {
     name: 'Western Tropical (Modern & Psychological)',
@@ -38,7 +38,7 @@ const TRADITIONS_DATA: TraditionComparison[] = [
     houseSystem: 'Placidus / Koch / Porphyry',
     uniqueStrength: 'Deep psychological archetype synthesis, major Ptolemaic aspect orbs, and planetary midpoints.',
     exampleVerdict: 'Sun trine Midheaven in 10th house reflects expanding public recognition and executive autonomy.',
-    color: 'text-cyan-400 border-cyan-400/30 bg-cyan-400/10'
+    color: 'text-cyan-400 border-white/[0.08] bg-cyan-400/10'
   },
   {
     name: 'KP Stellar System (Krishnamurti Padhdhati)',
@@ -136,7 +136,7 @@ export default function LiveMultiTraditionAndTattvaSuite({
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
                 className={`flex-1 py-2.5 px-3 rounded-xl border text-xs font-mono font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold shadow-md'
+                    ? 'bg-white text-black font-semibold shadow-sm border-amber-400 font-bold shadow-md'
                     : 'bg-[#0B1220] text-slate-400 hover:text-white border-white/8'
                 }`}
               >
@@ -169,7 +169,7 @@ export default function LiveMultiTraditionAndTattvaSuite({
                         onClick={() => setSelectedTraditionIndex(idx)}
                         className={`p-3 rounded-xl border text-left transition-all cursor-pointer min-h-[58px] ${
                           isSelected
-                            ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md font-bold'
+                            ? 'bg-white text-black font-semibold shadow-sm border-amber-400 shadow-md font-bold'
                             : 'bg-[#060A12] text-slate-300 hover:text-white border-white/8'
                         }`}
                       >
@@ -294,7 +294,7 @@ export default function LiveMultiTraditionAndTattvaSuite({
                       <div
                         key={t.name}
                         className={`p-1.5 rounded-lg border ${
-                          activeTattvaIndex === idx ? 'bg-amber-400 text-slate-950 font-bold border-amber-400' : 'bg-white/2 border-white/6 text-slate-400'
+                          activeTattvaIndex === idx ? 'bg-white text-black font-semibold shadow-sm font-bold border-amber-400' : 'bg-white/2 border-white/6 text-slate-400'
                         }`}
                       >
                         <span className="block truncate">{t.name.split(' ')[0]}</span>

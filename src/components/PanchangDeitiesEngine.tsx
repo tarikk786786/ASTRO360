@@ -70,7 +70,7 @@ export default function PanchangDeitiesEngine() {
   const [selectedTithi, setSelectedTithi] = useState<TithiDetail>(TITHI_DATABASE[3]); // Ekadashi default
 
   return (
-    <div className="p-6 rounded-3xl bg-[#111827] border border-amber-500/40 shadow-2xl space-y-6 text-left relative overflow-hidden">
+    <div className="p-6 rounded-3xl bg-[#111827] border border-white/[0.12] shadow-2xl space-y-6 text-left relative overflow-hidden">
       {/* HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
         <div>
@@ -81,7 +81,7 @@ export default function PanchangDeitiesEngine() {
             30 Lunar Tithi Deities, Vedic Offerings, Fasting Protocols & Auspicious Energies
           </p>
         </div>
-        <span className="text-[10px] font-mono text-amber-300 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/30 font-bold">
+        <span className="text-[10px] font-mono text-amber-300 bg-amber-500/10 px-3 py-1 rounded-full border border-white/[0.08] font-bold">
           30-Tithi Telemetry Sync
         </span>
       </div>
@@ -104,15 +104,15 @@ export default function PanchangDeitiesEngine() {
       </div>
 
       {/* ACTIVE TITHI CARD DETAILS */}
-      <div className="p-5 rounded-2xl bg-[#0B1220] border border-amber-500/40 space-y-4 shadow-xl relative overflow-hidden">
+      <div className="p-5 rounded-2xl bg-[#0B1220] border border-white/[0.12] space-y-4 shadow-xl relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
           <div>
-            <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/30">
+            <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded border border-white/[0.08]">
               {selectedTithi.paksha} • Nature: {selectedTithi.nature}
             </span>
             <h4 className="text-lg font-bold text-white mt-1">{selectedTithi.name}</h4>
           </div>
-          <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30">
+          <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-white/[0.08]">
             Deity: {selectedTithi.rulingDeity}
           </span>
         </div>
@@ -123,13 +123,13 @@ export default function PanchangDeitiesEngine() {
             <p className="text-slate-200 text-[11px] leading-relaxed">{selectedTithi.recommendedActions}</p>
           </div>
 
-          <div className="p-3 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-200 space-y-1">
+          <div className="p-3 rounded-xl bg-amber-950/40 border border-white/[0.08] text-amber-200 space-y-1">
             <span className="text-[10px] font-bold block text-amber-400">Sacred Offering Protocol:</span>
             <p className="text-[11px] leading-relaxed">{selectedTithi.sacredOffering}</p>
           </div>
         </div>
 
-        <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-xs font-mono text-emerald-200">
+        <div className="p-3 rounded-xl bg-emerald-950/40 border border-white/[0.08] text-xs font-mono text-emerald-200">
           <strong className="text-emerald-400">Prescribed Fasting Rite (Vrat):</strong> {selectedTithi.fastingRite}
         </div>
       </div>

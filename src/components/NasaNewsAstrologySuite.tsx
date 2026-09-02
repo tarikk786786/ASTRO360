@@ -95,7 +95,7 @@ export default function NasaNewsAstrologySuite() {
   return (
     <div className="space-y-6">
       {/* REAL-TIME SPACE WEATHER & ASTROLOGICAL ENERGY BAR */}
-      <div className="glass-card rounded-3xl p-5 border border-amber-500/30 bg-gradient-to-r from-slate-950 via-amber-950/20 to-slate-950 shadow-2xl">
+      <div className="glass-card rounded-3xl p-5 border border-white/[0.08] bg-gradient-to-r from-slate-950 via-amber-950/20 to-slate-950 shadow-2xl">
         <div className="flex items-center justify-between flex-wrap gap-4 mb-4 pb-3 border-b border-slate-800/80">
           <div className="flex items-center gap-2">
             <Radio className="w-5 h-5 text-amber-400 animate-pulse" />
@@ -103,7 +103,7 @@ export default function NasaNewsAstrologySuite() {
               NASA Real-Time Space Weather & Astrological Impact
             </span>
           </div>
-          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30 flex items-center gap-1.5">
+          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-white/[0.08] flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block" />
             LIVE TELEMETRY SYNCED
           </span>
@@ -179,7 +179,7 @@ export default function NasaNewsAstrologySuite() {
                 key={item.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-amber-500/40 transition-all flex flex-col justify-between gap-3 text-left group"
+                className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-white/[0.12] transition-all flex flex-col justify-between gap-3 text-left group"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2">

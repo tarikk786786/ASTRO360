@@ -294,7 +294,7 @@ function CityPin3D({
             onClick={(e) => { e.stopPropagation(); onSelect(city); }}
             className={`px-3 py-1 rounded-full text-xs font-mono font-bold whitespace-nowrap shadow-2xl flex items-center gap-1.5 cursor-pointer transition-transform ${
               isSelected
-                ? 'bg-amber-400 text-slate-950 ring-2 ring-amber-300 scale-110 shadow-amber-400/50'
+                ? 'bg-white text-black font-semibold shadow-sm ring-2 ring-amber-300 scale-110 shadow-amber-400/50'
                 : 'bg-black/90 text-white border border-white/40 hover:border-amber-400'
             }`}
           >
@@ -341,18 +341,18 @@ export const Interactive3DAstroCartographyGlobe: React.FC<{
   };
 
   return (
-    <div className="w-full rounded-3xl bg-gradient-to-b from-[#0B1322] via-[#070D18] to-[#04060E] border border-cyan-500/30 p-4 sm:p-6 shadow-2xl space-y-4 text-left">
+    <div className="w-full rounded-3xl bg-gradient-to-b from-[#0B1322] via-[#070D18] to-[#04060E] border border-white/[0.08] p-4 sm:p-6 shadow-2xl space-y-4 text-left">
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="p-1.5 rounded-xl bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
+            <span className="p-1.5 rounded-xl bg-cyan-500/15 text-cyan-400 border border-white/[0.08]">
               <Globe className="w-4 h-4" />
             </span>
             <h3 className="text-base sm:text-lg font-black text-white font-sans tracking-tight">
               Interactive 3D AstroCartography Global Radar
             </h3>
-            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30">
+            <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-300 border border-white/[0.08]">
               Spin Earth Globe
             </span>
           </div>
@@ -494,7 +494,7 @@ export const Interactive3DAstroCartographyGlobe: React.FC<{
             {/* Best For Life Area Badge */}
             <div className="flex items-center justify-between text-xs font-mono pt-1">
               <span className="text-slate-400">Best Life Domain:</span>
-              <span className="font-bold text-amber-300 bg-amber-400/15 px-3 py-1 rounded-lg border border-amber-400/30">
+              <span className="font-bold text-amber-300 bg-amber-400/15 px-3 py-1 rounded-lg border border-white/[0.08]">
                 {selectedCity.category}
               </span>
             </div>

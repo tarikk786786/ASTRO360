@@ -84,7 +84,7 @@ export function Onboarding({ onComplete, initialProfile }: OnboardingProps) {
           
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold uppercase tracking-wider mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-white/[0.08] text-amber-300 text-xs font-semibold uppercase tracking-wider mb-3">
               <Sparkles className="w-3.5 h-3.5" /> Complete Seeker Registration & Analysis Setup
             </div>
             <h2 className="text-3xl font-display font-bold gradient-text">AstroVerse Login</h2>

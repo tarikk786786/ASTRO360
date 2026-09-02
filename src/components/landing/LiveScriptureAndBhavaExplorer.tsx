@@ -121,7 +121,7 @@ export default function LiveScriptureAndBhavaExplorer({
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
                 className={`flex-1 py-2.5 px-3 rounded-xl border text-xs font-mono font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold shadow-md'
+                    ? 'bg-white text-black font-semibold shadow-sm border-amber-400 font-bold shadow-md'
                     : 'bg-[#0B1220] text-slate-400 hover:text-white border-white/8'
                 }`}
               >
@@ -155,7 +155,7 @@ export default function LiveScriptureAndBhavaExplorer({
                         onClick={() => setSelectedBhavaNum(b.num)}
                         className={`p-3 rounded-xl border text-center transition-all cursor-pointer min-h-[58px] ${
                           isSelected
-                            ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md font-bold'
+                            ? 'bg-white text-black font-semibold shadow-sm border-amber-400 shadow-md font-bold'
                             : 'bg-[#060A12] text-slate-300 hover:text-white border-white/8 hover:border-white/15'
                         }`}
                       >
@@ -214,7 +214,7 @@ export default function LiveScriptureAndBhavaExplorer({
                         onClick={() => setSelectedScriptureIndex(idx)}
                         className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer min-h-[64px] ${
                           isSelected
-                            ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md font-bold'
+                            ? 'bg-white text-black font-semibold shadow-sm border-amber-400 shadow-md font-bold'
                             : 'bg-[#060A12] text-slate-300 hover:text-white border-white/8'
                         }`}
                       >

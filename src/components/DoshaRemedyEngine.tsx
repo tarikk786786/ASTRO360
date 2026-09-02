@@ -108,7 +108,7 @@ export default function DoshaRemedyEngine({ planetPositions = [], userProfile }:
   }, [planetPositions]);
 
   return (
-    <div className="p-6 rounded-3xl bg-[#111827] border border-amber-500/40 shadow-2xl space-y-6 text-left relative overflow-hidden">
+    <div className="p-6 rounded-3xl bg-[#111827] border border-white/[0.12] shadow-2xl space-y-6 text-left relative overflow-hidden">
       {/* HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
         <div>
@@ -125,7 +125,7 @@ export default function DoshaRemedyEngine({ planetPositions = [], userProfile }:
           <button
             onClick={() => setActiveTab('sadesati')}
             className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-              activeTab === 'sadesati' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'text-slate-400 hover:text-white'
+              activeTab === 'sadesati' ? 'bg-amber-500/20 text-amber-300 border border-white/[0.12]' : 'text-slate-400 hover:text-white'
             }`}
           >
             🪐 Sade Sati
@@ -152,7 +152,7 @@ export default function DoshaRemedyEngine({ planetPositions = [], userProfile }:
       {/* SADE SATI TAB */}
       {activeTab === 'sadesati' && (
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 rounded-2xl bg-[#0B1220] border border-amber-500/30">
+          <div className="flex items-center justify-between p-4 rounded-2xl bg-[#0B1220] border border-white/[0.08]">
             <div>
               <span className="text-[10px] font-mono text-slate-400 block">Natal Moon Sign</span>
               <span className="text-base font-bold text-amber-300 font-mono">{sadeSatiData.moonSign} ☽</span>
@@ -160,7 +160,7 @@ export default function DoshaRemedyEngine({ planetPositions = [], userProfile }:
             <div className="text-right">
               <span className="text-[10px] font-mono text-slate-400 block">Sade Sati Diagnosis</span>
               <span className={`text-xs font-bold font-mono px-2.5 py-1 rounded-full border ${
-                sadeSatiData.isSadeSati ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                sadeSatiData.isSadeSati ? 'bg-amber-500/20 text-amber-300 border-white/[0.12]' : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
               }`}>
                 {sadeSatiData.phase}
               </span>
@@ -174,11 +174,11 @@ export default function DoshaRemedyEngine({ planetPositions = [], userProfile }:
             <p className="text-xs text-slate-300 leading-relaxed">{sadeSatiData.desc}</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 text-[10px] font-mono">
-              <div className="p-2.5 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-300">
+              <div className="p-2.5 rounded-xl bg-amber-950/40 border border-white/[0.08] text-amber-300">
                 <span className="font-bold block">🕉️ Vedic Remedy:</span>
                 <span>Chant Shanti Stotram on Saturdays & light mustard oil lamp at sunset.</span>
               </div>
-              <div className="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300">
+              <div className="p-2.5 rounded-xl bg-emerald-950/40 border border-white/[0.08] text-emerald-300">
                 <span className="font-bold block">🕌 Islamic Remedy:</span>
                 <span>Give Saturday Sadaqah & recite Surah Yaseen after Fajr prayers.</span>
               </div>

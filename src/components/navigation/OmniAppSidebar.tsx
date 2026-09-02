@@ -91,9 +91,9 @@ export default function OmniAppSidebar({
       accentColor: 'text-amber-400',
       items: [
         { id: 'dashboard', label: 'Dashboard Overview', icon: LayoutDashboard },
-        { id: 'live-diagnostics', label: 'Live Cosmic Radar', icon: Activity, badge: 'Live', badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
-        { id: 'copilot', label: 'AI Oracle Copilot', icon: MessageCircle, badge: 'AI', badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30' },
-        { id: 'studio', label: 'Master Studio Suite', icon: Sparkles, badge: '152+', badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
+        { id: 'live-diagnostics', label: 'Live Cosmic Radar', icon: Activity, badge: 'Live', badgeColor: 'bg-emerald-500/20 text-emerald-300 border-white/[0.08]' },
+        { id: 'copilot', label: 'AI Oracle Copilot', icon: MessageCircle, badge: 'AI', badgeColor: 'bg-cyan-500/20 text-cyan-300 border-white/[0.08]' },
+        { id: 'studio', label: 'Master Studio Suite', icon: Sparkles, badge: '152+', badgeColor: 'bg-amber-500/20 text-amber-300 border-white/[0.08]' },
         { id: 'omni-research', label: 'Consensus Core', icon: Cpu, badge: 'Research', badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' },
       ]
     },
@@ -104,7 +104,7 @@ export default function OmniAppSidebar({
       accentColor: 'text-cyan-400',
       items: [
         { id: 'birth-chart', label: 'Birth Chart Engine', icon: Compass },
-        { id: 'chart-studio', label: 'Dual Wheel Studio', icon: Layers, badge: 'Dual', badgeColor: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30' },
+        { id: 'chart-studio', label: 'Dual Wheel Studio', icon: Layers, badge: 'Dual', badgeColor: 'bg-cyan-500/20 text-cyan-300 border-white/[0.08]' },
         { id: 'divisional-charts', label: 'Divisional Charts (D1-D60)', icon: Layers },
         { id: 'shadbala', label: '6-Fold Shadbala Potency', icon: Flame, badge: 'Bala', badgeColor: 'bg-rose-500/20 text-rose-300 border-rose-500/30' },
         { id: 'frequencies', label: 'Planetary Frequencies', icon: Volume2, badge: 'Audio', badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/30' },
@@ -120,8 +120,8 @@ export default function OmniAppSidebar({
       items: [
         { id: 'time-horizon', label: 'Dasha & Time Horizon', icon: Clock, badge: '120y', badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' },
         { id: 'transit-radar', label: 'Sade Sati & Transits', icon: Radio },
-        { id: 'dossier', label: 'Executive PDF Dossier', icon: FileText, badge: 'PDF', badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
-        { id: 'news-intelligence', label: 'Cosmic News Hub', icon: Radio, badge: 'Live', badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
+        { id: 'dossier', label: 'Executive PDF Dossier', icon: FileText, badge: 'PDF', badgeColor: 'bg-emerald-500/20 text-emerald-300 border-white/[0.08]' },
+        { id: 'news-intelligence', label: 'Cosmic News Hub', icon: Radio, badge: 'Live', badgeColor: 'bg-amber-500/20 text-amber-300 border-white/[0.08]' },
         { id: 'electional-muhurta', label: 'Electional Muhurta', icon: Clock },
         { id: 'planetary-horas', label: 'Planetary Horas Clock', icon: Activity },
         { id: 'btr-suite', label: 'Birth Time Rectification', icon: ShieldCheck },
@@ -186,12 +186,12 @@ export default function OmniAppSidebar({
           className="flex items-center gap-3 cursor-pointer group"
           onClick={() => onNavigate('home')}
         >
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400/20 via-cyan-400/20 to-indigo-500/20 border border-amber-400/30 flex items-center justify-center shadow-lg group-hover:border-amber-400 transition-colors">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400/20 via-cyan-400/20 to-indigo-500/20 border border-white/[0.08] flex items-center justify-center shadow-lg group-hover:border-amber-400 transition-colors">
             <div className="w-3.5 h-3.5 rounded-full border-2 border-amber-400 group-hover:scale-110 transition-transform" />
           </div>
           <div>
             <span className="font-black text-sm tracking-wider text-white flex items-center gap-1.5">
-              ASTRO360 <span className="text-amber-400 font-bold text-xs px-1.5 py-0.2 rounded bg-amber-400/10 border border-amber-400/20">OMNI</span>
+              ASTRO360 <span className="text-amber-400 font-bold text-xs px-1.5 py-0.2 rounded bg-amber-400/10 border border-white/[0.08]">OMNI</span>
             </span>
             <span className="text-[10px] font-mono text-slate-400 block -mt-0.5">Unified Ephemeris Core</span>
           </div>
@@ -209,7 +209,7 @@ export default function OmniAppSidebar({
       <div className="p-3 space-y-2.5 border-b border-white/5 shrink-0">
         <button
           onClick={() => onNavigate('landing')}
-          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-mono font-bold bg-gradient-to-r from-amber-500/10 via-white/5 to-cyan-500/10 hover:from-amber-500/20 hover:to-cyan-500/20 text-amber-300 border border-amber-400/20 hover:border-amber-400/40 transition-all cursor-pointer group shadow-sm"
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-mono font-bold bg-gradient-to-r from-amber-500/10 via-white/5 to-cyan-500/10 hover:from-amber-500/20 hover:to-cyan-500/20 text-amber-300 border border-white/[0.08] hover:border-white/[0.12] transition-all cursor-pointer group shadow-sm"
         >
           <Home className="w-3.5 h-3.5 text-amber-400 group-hover:-translate-x-0.5 transition-transform" />
           <span>Return to Landing Page</span>

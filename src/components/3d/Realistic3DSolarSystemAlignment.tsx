@@ -539,7 +539,7 @@ function RealisticPlanetMesh({
         {isSelected || hovered ? (
           <button
             onClick={(e) => { e.stopPropagation(); onSelect(planet); }}
-            className="px-3 py-1 rounded-full text-xs font-mono font-bold whitespace-nowrap shadow-2xl flex items-center gap-1.5 bg-amber-400 text-slate-950 ring-2 ring-amber-300 scale-110 shadow-amber-400/50 cursor-pointer transition-transform select-none"
+            className="px-3 py-1 rounded-full text-xs font-mono font-bold whitespace-nowrap shadow-2xl flex items-center gap-1.5 bg-white text-black font-semibold shadow-sm ring-2 ring-amber-300 scale-110 shadow-amber-400/50 cursor-pointer transition-transform select-none"
           >
             <span className="font-black">{planet.symbol}</span>
             <span>{planet.name}</span>

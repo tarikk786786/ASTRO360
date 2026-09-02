@@ -18,7 +18,7 @@ export default function ExecutivePDFDossier({ userProfile }: ExecutivePDFDossier
   };
 
   return (
-    <div className="p-6 rounded-3xl bg-[#111827] border border-amber-500/40 shadow-2xl space-y-6 text-left relative overflow-hidden">
+    <div className="p-6 rounded-3xl bg-[#111827] border border-white/[0.12] shadow-2xl space-y-6 text-left relative overflow-hidden">
       {/* HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
         <div>
@@ -32,7 +32,7 @@ export default function ExecutivePDFDossier({ userProfile }: ExecutivePDFDossier
 
         <button
           onClick={handlePrintPDF}
-          className="px-5 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20 shrink-0"
+          className="px-5 py-2.5 rounded-2xl bg-amber-500 hover:bg-white text-black font-semibold shadow-sm font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20 shrink-0"
         >
           <Printer className="w-4 h-4" /> Export / Print PDF Dossier
         </button>
@@ -40,12 +40,12 @@ export default function ExecutivePDFDossier({ userProfile }: ExecutivePDFDossier
 
       {/* PRINTABLE DOSSIER PREVIEW CONTAINER */}
       <div className="p-6 rounded-2xl bg-[#0B1220] border border-white/10 space-y-6 text-xs font-mono">
-        <div className="border-b border-amber-500/30 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div className="border-b border-white/[0.08] pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h4 className="text-base font-bold text-amber-300">ASTRO360 OMNI — MASTER EXECUTIVE DOSSIER</h4>
             <span className="text-[10px] text-slate-400">Subject: {name} • Location: {location}</span>
           </div>
-          <span className="text-[10px] text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/30 font-bold">
+          <span className="text-[10px] text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-white/[0.08] font-bold">
             Sidereal Lahiri Ayanamsha 24.2132°
           </span>
         </div>
@@ -67,7 +67,7 @@ export default function ExecutivePDFDossier({ userProfile }: ExecutivePDFDossier
           </div>
         </div>
 
-        <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 space-y-1">
+        <div className="p-4 rounded-xl bg-emerald-950/40 border border-white/[0.08] text-emerald-300 space-y-1">
           <span className="text-[10px] font-bold block text-emerald-400">Prescribed Remedial Protocol:</span>
           <p className="text-slate-200 leading-relaxed">
             Yellow Sapphire (Pukhraj) 4.5+ Carats set in Gold on Index Finger. Daily recitation of Ayatul Kursi (432 Hz) and Mahagayatri Mantra (528 Hz).

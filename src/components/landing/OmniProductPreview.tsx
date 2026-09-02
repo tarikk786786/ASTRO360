@@ -39,7 +39,7 @@ export default function OmniProductPreview({ onExplore }: OmniProductPreviewProp
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-4 py-2 rounded-2xl text-xs font-mono font-bold flex items-center gap-2 transition-all cursor-pointer border ${
                 isActive
-                  ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-lg shadow-amber-400/20'
+                  ? 'bg-white text-black font-semibold shadow-sm border-amber-400 shadow-lg shadow-amber-400/20'
                   : 'bg-[#0B1220] text-slate-400 hover:text-white border-white/10 hover:border-white/20'
               }`}
             >
@@ -69,7 +69,7 @@ export default function OmniProductPreview({ onExplore }: OmniProductPreviewProp
                   </span>
                   <h3 className="text-lg font-bold text-white">Strongest Theme: ✨ Personal Growth</h3>
                 </div>
-                <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30 font-bold self-start sm:self-auto">
+                <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-white/[0.08] font-bold self-start sm:self-auto">
                   Strong Resonance Today
                 </span>
               </div>
@@ -82,14 +82,14 @@ export default function OmniProductPreview({ onExplore }: OmniProductPreviewProp
                   <div className="text-sm font-bold text-white pt-1">Positive Flow</div>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-white/5 border border-cyan-500/30 text-slate-200">
+                <div className="p-3.5 rounded-2xl bg-white/5 border border-white/[0.08] text-slate-200">
                   <div className="text-cyan-400 font-bold flex items-center gap-1">
                     <Briefcase className="w-3.5 h-3.5" /> Career
                   </div>
                   <div className="text-sm font-bold text-white pt-1">High Focus</div>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-white/5 border border-emerald-500/30 text-slate-200">
+                <div className="p-3.5 rounded-2xl bg-white/5 border border-white/[0.08] text-slate-200">
                   <div className="text-emerald-400 font-bold flex items-center gap-1">
                     <DollarSign className="w-3.5 h-3.5" /> Money
                   </div>

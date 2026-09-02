@@ -213,7 +213,7 @@ function LuxuryPlanetNode({
             }}
             className={`px-2.5 py-1 rounded-full text-[11px] font-mono font-bold flex items-center gap-1.5 whitespace-nowrap cursor-pointer shadow-xl transition-transform ${
               isSelected
-                ? 'bg-amber-400 text-slate-950 ring-2 ring-amber-300 scale-110 z-30 font-black'
+                ? 'bg-white text-black font-semibold shadow-sm ring-2 ring-amber-300 scale-110 z-30 font-black'
                 : 'bg-white text-slate-950 scale-105 z-20'
             }`}
           >
@@ -327,18 +327,18 @@ export const Interactive3DCosmicWheel: React.FC<Interactive3DCosmicWheelProps> =
   };
 
   return (
-    <div className="relative w-full rounded-3xl bg-gradient-to-b from-[#0C1322] via-[#080D18] to-[#04060E] border border-amber-400/30 p-4 sm:p-6 shadow-2xl overflow-hidden text-left space-y-4">
+    <div className="relative w-full rounded-3xl bg-gradient-to-b from-[#0C1322] via-[#080D18] to-[#04060E] border border-white/[0.08] p-4 sm:p-6 shadow-2xl overflow-hidden text-left space-y-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="p-1.5 rounded-xl bg-amber-400/15 text-amber-400 border border-amber-400/30">
+            <span className="p-1.5 rounded-xl bg-amber-400/15 text-amber-400 border border-white/[0.08]">
               <Sparkles className="w-4 h-4" />
             </span>
             <h3 className="text-base sm:text-lg font-black text-white font-sans tracking-tight">
               Interactive 3D Planetary Orrery
             </h3>
-            <span className="text-[10.5px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+            <span className="text-[10.5px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-white/[0.08]">
               Touch & Spin
             </span>
           </div>
@@ -358,7 +358,7 @@ export const Interactive3DCosmicWheel: React.FC<Interactive3DCosmicWheelProps> =
                 onClick={() => handleSelect(pName)}
                 className={`px-2.5 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
                   isSelected
-                    ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/25 scale-105'
+                    ? 'bg-white text-black font-semibold shadow-sm shadow-md shadow-amber-400/25 scale-105'
                     : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
                 }`}
               >
@@ -438,7 +438,7 @@ export const Interactive3DCosmicWheel: React.FC<Interactive3DCosmicWheelProps> =
 
         {/* Right: Plain-English Meaning Card (5 cols) */}
         <div className="lg:col-span-5 space-y-3.5">
-          <div className="p-5 rounded-2xl bg-white/[0.04] border border-amber-400/40 space-y-4 shadow-xl relative overflow-hidden">
+          <div className="p-5 rounded-2xl bg-white/[0.04] border border-white/[0.12] space-y-4 shadow-xl relative overflow-hidden">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="flex items-center gap-3">
                 <div
@@ -459,7 +459,7 @@ export const Interactive3DCosmicWheel: React.FC<Interactive3DCosmicWheelProps> =
                   </span>
                 </div>
               </div>
-              <span className="text-[11px] font-mono font-bold px-2.5 py-1 rounded-lg bg-amber-400/15 text-amber-300 border border-amber-400/30">
+              <span className="text-[11px] font-mono font-bold px-2.5 py-1 rounded-lg bg-amber-400/15 text-amber-300 border border-white/[0.08]">
                 House {activePlanet.house || 1}
               </span>
             </div>
@@ -477,7 +477,7 @@ export const Interactive3DCosmicWheel: React.FC<Interactive3DCosmicWheelProps> =
             {/* Primary Impact Area */}
             <div className="flex items-center justify-between text-xs font-mono pt-1">
               <span className="text-slate-400">Primary Life Impact:</span>
-              <span className="font-bold text-amber-300 bg-amber-400/10 px-2.5 py-1 rounded-lg border border-amber-400/20">
+              <span className="font-bold text-amber-300 bg-amber-400/10 px-2.5 py-1 rounded-lg border border-white/[0.08]">
                 {activeConfig.lifeArea}
               </span>
             </div>

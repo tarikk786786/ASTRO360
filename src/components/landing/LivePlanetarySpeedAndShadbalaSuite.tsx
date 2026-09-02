@@ -29,7 +29,7 @@ const PLANETARY_SPEEDS_DATA: PlanetSpeedData[] = [
     speed: '0°59\'08" / day',
     meanSpeed: '0°59\'08"',
     state: 'Direct (Normal)',
-    statusColor: 'text-amber-400 bg-amber-400/15 border-amber-400/30',
+    statusColor: 'text-amber-400 bg-amber-400/15 border-white/[0.08]',
     potencyPct: 100,
     implication: 'Steady vitality, constitutional clarity, and administrative stamina.'
   },
@@ -49,7 +49,7 @@ const PLANETARY_SPEEDS_DATA: PlanetSpeedData[] = [
     speed: '1°28\'15" / day',
     meanSpeed: '0°59\'08"',
     state: 'Direct (Fast)',
-    statusColor: 'text-cyan-400 bg-cyan-400/15 border-cyan-400/30',
+    statusColor: 'text-cyan-400 bg-cyan-400/15 border-white/[0.08]',
     potencyPct: 148,
     implication: 'High cognitive agility. Exceptional for software engineering, writing, and trade.'
   },
@@ -79,7 +79,7 @@ const PLANETARY_SPEEDS_DATA: PlanetSpeedData[] = [
     speed: '0°08\'45" / day',
     meanSpeed: '0°04\'59"',
     state: 'Direct (Normal)',
-    statusColor: 'text-amber-400 bg-amber-400/15 border-amber-400/30',
+    statusColor: 'text-amber-400 bg-amber-400/15 border-white/[0.08]',
     potencyPct: 100,
     implication: 'Expansive philosophical discernment, ethical wealth compounding, and mentorship.'
   },
@@ -150,7 +150,7 @@ export default function LivePlanetarySpeedAndShadbalaSuite({
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
                 className={`flex-1 py-2.5 px-3 rounded-xl border text-xs font-mono font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold shadow-md'
+                    ? 'bg-white text-black font-semibold shadow-sm border-amber-400 font-bold shadow-md'
                     : 'bg-[#0B1220] text-slate-400 hover:text-white border-white/8'
                 }`}
               >
@@ -236,7 +236,7 @@ export default function LivePlanetarySpeedAndShadbalaSuite({
                     <h3 className="text-base font-bold text-white font-mono">Classical Shadbala 6-Fold Strength Matrix</h3>
                     <p className="text-xs text-slate-400 font-sans">Combines Sthana, Dig, Kala, Chesta, Naisargika, and Drik Bala in Rupas</p>
                   </div>
-                  <span className="text-[11px] font-mono text-amber-300 bg-amber-400/10 px-2.5 py-1 rounded border border-amber-400/20 w-fit">
+                  <span className="text-[11px] font-mono text-amber-300 bg-amber-400/10 px-2.5 py-1 rounded border border-white/[0.08] w-fit">
                     Parashari Classical Standard
                   </span>
                 </div>

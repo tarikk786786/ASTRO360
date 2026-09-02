@@ -57,7 +57,7 @@ export const LiveRealtimeSkyTelemetryBar: React.FC<LiveRealtimeSkyTelemetryBarPr
       <div className="w-full bg-[#070D1A]/90 border border-white/12 rounded-2xl p-3 sm:p-4 shadow-xl backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-3 text-left">
         {/* Left: Live Pulse + Ephemeris Status */}
         <div className="flex items-center gap-3 min-w-0">
-          <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 shrink-0 shadow-inner">
+          <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-emerald-500/10 border border-white/[0.08] text-emerald-400 shrink-0 shadow-inner">
             <Radio className="w-4 h-4 animate-pulse" />
             <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
           </div>
@@ -115,7 +115,7 @@ export const LiveRealtimeSkyTelemetryBar: React.FC<LiveRealtimeSkyTelemetryBarPr
               {/* Header */}
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-2xl bg-amber-400/10 border border-amber-400/30 text-amber-400">
+                  <div className="p-2.5 rounded-2xl bg-amber-400/10 border border-white/[0.08] text-amber-400">
                     <Compass className="w-5 h-5" />
                   </div>
                   <div>
@@ -141,7 +141,7 @@ export const LiveRealtimeSkyTelemetryBar: React.FC<LiveRealtimeSkyTelemetryBarPr
                 {livePlanets.map((planet: PlanetPosition) => (
                   <div
                     key={planet.name}
-                    className="p-3 rounded-2xl bg-white/[0.03] border border-white/8 hover:border-amber-400/30 flex items-center justify-between transition-colors"
+                    className="p-3 rounded-2xl bg-white/[0.03] border border-white/8 hover:border-white/[0.08] flex items-center justify-between transition-colors"
                   >
                     <div className="flex items-center gap-2.5">
                       <span className="text-lg">{planet.symbol}</span>
@@ -159,7 +159,7 @@ export const LiveRealtimeSkyTelemetryBar: React.FC<LiveRealtimeSkyTelemetryBarPr
               </div>
 
               {/* Classical Remedial Harmonizer */}
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 to-indigo-500/10 border border-amber-400/30 space-y-2">
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 to-indigo-500/10 border border-white/[0.08] space-y-2">
                 <div className="flex items-center gap-2 text-xs font-mono font-bold text-amber-300">
                   <Sparkles className="w-4 h-4" />
                   <span>Auspicious Time Horizon & Hora Directive</span>

@@ -502,7 +502,7 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
 
             <button
               onClick={handleExportPdf}
-              className="px-4 py-2.5 rounded-2xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+              className="px-4 py-2.5 rounded-2xl bg-amber-500/20 text-amber-300 border border-white/[0.12] hover:bg-amber-500/30 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
             >
               <Download className="w-4 h-4" /> Export Report (PDF)
             </button>
@@ -618,7 +618,7 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
               {/* CARD BODY BRIEF */}
               <div className="p-6 space-y-4 text-xs font-sans">
                 {/* 1. WHAT IS HAPPENING */}
-                <div className="p-4 rounded-2xl bg-amber-950/20 border border-amber-500/30 space-y-1">
+                <div className="p-4 rounded-2xl bg-amber-950/20 border border-white/[0.08] space-y-1">
                   <span className="text-[10px] font-mono text-amber-400 font-bold uppercase tracking-wider block">1. What is Happening (Symptom Experience)</span>
                   <p className="text-slate-200 leading-relaxed">{item.whatIsHappening}</p>
                 </div>
@@ -639,7 +639,7 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
 
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {/* 🕌 ISLAMIC SUNNAH & RUQYAH */}
-                        <div className="p-5 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 space-y-3">
+                        <div className="p-5 rounded-2xl bg-emerald-950/30 border border-white/[0.08] space-y-3">
                           <div className="flex items-center justify-between border-b border-emerald-500/20 pb-2">
                             <span className="font-bold text-emerald-300 font-mono text-xs flex items-center gap-1.5">
                               🕌 Islamic Sunnah & Ruqyah
@@ -654,7 +654,7 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
                           <div className="space-y-1.5">
                             <span className="font-bold text-white text-xs block">{item.solutions.islamic.title}</span>
                             {item.solutions.islamic.duaArabic && (
-                              <div className="p-2.5 rounded-xl bg-slate-950 border border-emerald-500/30 text-emerald-300 font-serif text-right text-sm dir-rtl">
+                              <div className="p-2.5 rounded-xl bg-slate-950 border border-white/[0.08] text-emerald-300 font-serif text-right text-sm dir-rtl">
                                 {item.solutions.islamic.duaArabic}
                               </div>
                             )}
@@ -665,7 +665,7 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
                         </div>
 
                         {/* 🕉️ VEDIC JYOTISH & RATNA */}
-                        <div className="p-5 rounded-2xl bg-amber-950/30 border border-amber-500/30 space-y-3">
+                        <div className="p-5 rounded-2xl bg-amber-950/30 border border-white/[0.08] space-y-3">
                           <div className="flex items-center justify-between border-b border-amber-500/20 pb-2">
                             <span className="font-bold text-amber-300 font-mono text-xs flex items-center gap-1.5">
                               🕉️ Vedic Jyotish & Ratna
@@ -729,7 +729,7 @@ export default function LiveCosmicDiagnostics({ userProfile }: LiveCosmicDiagnos
                         </div>
 
                         {/* ✡️ KABBALAH TREE OF LIFE */}
-                        <div className="p-5 rounded-2xl bg-cyan-950/30 border border-cyan-500/30 space-y-3">
+                        <div className="p-5 rounded-2xl bg-cyan-950/30 border border-white/[0.08] space-y-3">
                           <div className="flex items-center justify-between border-b border-cyan-500/20 pb-2">
                             <span className="font-bold text-cyan-300 font-mono text-xs flex items-center gap-1.5">
                               ✡️ Kabbalah Tree of Life

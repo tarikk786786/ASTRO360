@@ -480,7 +480,7 @@ https://astro.tarikislam.in
 
             {/* Error Message Alert */}
             {verifyError && (
-              <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-start gap-2.5">
+              <div className="p-3.5 rounded-xl bg-amber-500/10 border border-white/[0.08] text-amber-300 text-xs flex items-start gap-2.5">
                 <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <div className="flex-1 leading-relaxed">
                   <span>{verifyError}</span>

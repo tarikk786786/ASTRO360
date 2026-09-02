@@ -114,7 +114,7 @@ END:VCALENDAR`;
     <div className="space-y-4 text-left font-sans">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-xl bg-amber-400/20 border border-amber-400/30 flex items-center justify-center text-amber-300">
+          <div className="w-7 h-7 rounded-xl bg-amber-400/20 border border-white/[0.08] flex items-center justify-center text-amber-300">
             <Zap className="w-4 h-4 text-amber-400" />
           </div>
           <div>
@@ -130,7 +130,7 @@ END:VCALENDAR`;
               key={f}
               onClick={() => setFilter(f)}
               className={`px-2.5 py-1 rounded-lg capitalize transition-colors cursor-pointer ${
-                filter === f ? 'bg-amber-400 text-slate-950 font-bold' : 'text-slate-400 hover:text-white'
+                filter === f ? 'bg-white text-black font-semibold shadow-sm font-bold' : 'text-slate-400 hover:text-white'
               }`}
             >
               {f}
@@ -192,7 +192,7 @@ END:VCALENDAR`;
 
                 <button
                   onClick={() => setSelectedAlert(alert)}
-                  className="px-3 py-1 rounded-lg bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 border border-amber-400/40 text-[11px] font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                  className="px-3 py-1 rounded-lg bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 border border-white/[0.12] text-[11px] font-bold flex items-center gap-1 cursor-pointer transition-colors"
                 >
                   <HelpCircle className="w-3 h-3 text-amber-400" />
                   <span>Why this timing? →</span>

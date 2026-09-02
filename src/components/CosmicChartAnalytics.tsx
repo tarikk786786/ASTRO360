@@ -109,7 +109,7 @@ export default function CosmicChartAnalytics({
             5-Element Balance Radar & 7-Planetary Quantitative Virupa Scores
           </p>
         </div>
-        <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/30 font-bold">
+        <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-white/[0.08] font-bold">
           Recharts / Nivo Analytics Engine
         </span>
       </div>
@@ -119,7 +119,7 @@ export default function CosmicChartAnalytics({
         <div className="lg:col-span-6 p-4 rounded-2xl bg-[#0B1220] border border-white/10 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono font-bold text-cyan-400">5-Element (Pancha Mahabhuta) Harmony</span>
-            <span className="text-[10px] font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
+            <span className="text-[10px] font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-white/[0.08]">
               {dominantElement.name} ({dominantElement.percent}%)
             </span>
           </div>
@@ -140,7 +140,7 @@ export default function CosmicChartAnalytics({
         <div className="lg:col-span-6 p-4 rounded-2xl bg-[#0B1220] border border-white/10 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono font-bold text-amber-400">7-Planetary Shadbala Strength (Virupas)</span>
-            <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-full border border-cyan-500/30">
+            <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-full border border-white/[0.08]">
               Dynamic Astronomical Computation
             </span>
           </div>

@@ -137,7 +137,7 @@ export default function InteractiveDualChartStudio({ userProfile, onNavigateToTa
             <span className="text-xs font-mono font-bold text-amber-400 uppercase">
               Ascendant: {ascendantPlanet.sign} ({ascDegree.toFixed(2)}°)
             </span>
-            <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-full border border-cyan-500/30">
+            <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-full border border-white/[0.08]">
               {HOUSE_SYSTEMS.find(h => h.id === houseSystem)?.label} Cusp Trigonometry
             </span>
           </div>
@@ -145,10 +145,10 @@ export default function InteractiveDualChartStudio({ userProfile, onNavigateToTa
           {/* Interactive Chart Graphic */}
           <div className="w-full max-w-[360px] aspect-square rounded-2xl bg-[#070D18] border border-white/[0.08] relative flex items-center justify-center p-4 shadow-2xl">
             {chartStyle === 'north' && (
-              <div className="w-full h-full relative border border-amber-400/40">
+              <div className="w-full h-full relative border border-white/[0.12]">
                 {/* Diagonal Diamond Lines */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="w-full h-full rotate-45 border border-amber-400/40 scale-70" />
+                  <div className="w-full h-full rotate-45 border border-white/[0.12] scale-70" />
                   <div className="absolute w-full h-[1px] bg-amber-400/30 rotate-45" />
                   <div className="absolute w-full h-[1px] bg-amber-400/30 -rotate-45" />
                 </div>
@@ -171,7 +171,7 @@ export default function InteractiveDualChartStudio({ userProfile, onNavigateToTa
             )}
 
             {chartStyle === 'south' && (
-              <div className="w-full h-full grid grid-cols-4 grid-rows-4 border border-amber-400/40 text-[10px] font-mono font-bold text-center">
+              <div className="w-full h-full grid grid-cols-4 grid-rows-4 border border-white/[0.12] text-[10px] font-mono font-bold text-center">
                 <div className="p-1 border border-white/[0.08] text-amber-300">Pisces</div>
                 <div className="p-1 border border-white/[0.08] text-amber-300">Aries</div>
                 <div className="p-1 border border-white/[0.08] text-amber-300">Taurus</div>

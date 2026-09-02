@@ -120,7 +120,7 @@ export default function AlAzanPrayerSuite() {
   };
 
   return (
-    <div className="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-500/30 shadow-2xl space-y-6">
+    <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/[0.08] shadow-2xl space-y-6">
       {/* HEADER & AL-AZAN BADGE */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
@@ -152,7 +152,7 @@ export default function AlAzanPrayerSuite() {
       </div>
 
       {/* LOCATION & HIJRI DATE STATUS BAR */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-950 border border-emerald-500/30">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-slate-900 to-slate-950 border border-white/[0.08]">
         <div className="flex items-center gap-3">
           <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400">
             <Globe className="w-5 h-5" />

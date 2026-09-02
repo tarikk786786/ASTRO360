@@ -152,7 +152,7 @@ export default function ClassicalShlokaLibrary() {
               onClick={() => setSelectedCategory(cat)}
               className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer capitalize ${
                 selectedCategory === cat
-                  ? 'bg-amber-400 text-slate-950 font-bold shadow-md'
+                  ? 'bg-white text-black font-semibold shadow-sm font-bold shadow-md'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -187,7 +187,7 @@ export default function ClassicalShlokaLibrary() {
                 onClick={() => setSelectedShloka(shloka)}
                 className={`w-full p-4 rounded-2xl border text-left transition-all cursor-pointer space-y-1.5 ${
                   isSelected
-                    ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-lg font-bold'
+                    ? 'bg-white text-black font-semibold shadow-sm border-amber-400 shadow-lg font-bold'
                     : 'bg-[#0B1220] text-slate-300 hover:text-white border-white/8 hover:border-white/20'
                 }`}
               >
@@ -224,7 +224,7 @@ export default function ClassicalShlokaLibrary() {
           </div>
 
           {/* Original Devanagari Box */}
-          <div className="p-4 rounded-2xl bg-[#060A12] border border-amber-400/30 text-center space-y-2">
+          <div className="p-4 rounded-2xl bg-[#060A12] border border-white/[0.08] text-center space-y-2">
             <span className="text-[10px] text-amber-400 uppercase font-bold tracking-widest block">Original Sanskrit Devanagari</span>
             <p className="text-base sm:text-lg font-serif text-amber-200 leading-relaxed font-bold tracking-wide">
               {selectedShloka.devanagari}

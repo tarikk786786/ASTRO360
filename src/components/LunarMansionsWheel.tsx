@@ -18,16 +18,16 @@ export default function LunarMansionsWheel() {
   const [selectedMansion, setSelectedMansion] = useState<Mansion | null>(null);
 
   const mansions: Mansion[] = useMemo(() => [
-    { id: 1, arabicName: 'Al-Sharatan (الشَّرَطَان)', vedicName: 'Ashwini', symbol: '♈', degreeSpan: '00°00\' - 13°20\' Aries', element: 'Fire', spiritualFocus: 'Initiation, swift travel & healing', recommendedActions: 'Start new projects, medical treatments & bold actions.', color: 'text-amber-400 border-amber-500/30' },
+    { id: 1, arabicName: 'Al-Sharatan (الشَّرَطَان)', vedicName: 'Ashwini', symbol: '♈', degreeSpan: '00°00\' - 13°20\' Aries', element: 'Fire', spiritualFocus: 'Initiation, swift travel & healing', recommendedActions: 'Start new projects, medical treatments & bold actions.', color: 'text-amber-400 border-white/[0.08]' },
     { id: 2, arabicName: 'Al-Butayn (البُطَيْن)', vedicName: 'Bharani', symbol: '♈', degreeSpan: '13°20\' - 26°40\' Aries', element: 'Fire', spiritualFocus: 'Transformation, restraint & duty', recommendedActions: 'Financial audits, shadow work & completing pending tasks.', color: 'text-rose-400 border-rose-500/30' },
-    { id: 3, arabicName: 'Al-Thurayya (الثَّرَيَّا)', vedicName: 'Krittika', symbol: '♉', degreeSpan: '26°40\' Aries - 10°00\' Taurus', element: 'Earth', spiritualFocus: 'Purification, clarity & solar fire', recommendedActions: 'Decisive leadership, spiritual detox & cutting bad habits.', color: 'text-amber-300 border-amber-500/30' },
-    { id: 4, arabicName: 'Al-Dabaran (الدَّبَرَان)', vedicName: 'Rohini', symbol: '♉', degreeSpan: '10°00\' - 23°20\' Taurus', element: 'Earth', spiritualFocus: 'Abundance, beauty & commerce', recommendedActions: 'Trade negotiations, artistic creation & romance.', color: 'text-emerald-400 border-emerald-500/30' },
-    { id: 5, arabicName: 'Al-Haq\'ah (الهَقْعَة)', vedicName: 'Mrigashira', symbol: '♊', degreeSpan: '23°20\' Taurus - 06°40\' Gemini', element: 'Air', spiritualFocus: 'Curiosity, research & travel', recommendedActions: 'Study, writing, publishing & networking.', color: 'text-cyan-400 border-cyan-500/30' },
+    { id: 3, arabicName: 'Al-Thurayya (الثَّرَيَّا)', vedicName: 'Krittika', symbol: '♉', degreeSpan: '26°40\' Aries - 10°00\' Taurus', element: 'Earth', spiritualFocus: 'Purification, clarity & solar fire', recommendedActions: 'Decisive leadership, spiritual detox & cutting bad habits.', color: 'text-amber-300 border-white/[0.08]' },
+    { id: 4, arabicName: 'Al-Dabaran (الدَّبَرَان)', vedicName: 'Rohini', symbol: '♉', degreeSpan: '10°00\' - 23°20\' Taurus', element: 'Earth', spiritualFocus: 'Abundance, beauty & commerce', recommendedActions: 'Trade negotiations, artistic creation & romance.', color: 'text-emerald-400 border-white/[0.08]' },
+    { id: 5, arabicName: 'Al-Haq\'ah (الهَقْعَة)', vedicName: 'Mrigashira', symbol: '♊', degreeSpan: '23°20\' Taurus - 06°40\' Gemini', element: 'Air', spiritualFocus: 'Curiosity, research & travel', recommendedActions: 'Study, writing, publishing & networking.', color: 'text-cyan-400 border-white/[0.08]' },
     { id: 6, arabicName: 'Al-Han\'ah (الهَنْعَة)', vedicName: 'Ardra', symbol: '♊', degreeSpan: '06°40\' - 20°00\' Gemini', element: 'Air', spiritualFocus: 'Emotional breakthrough & storm', recommendedActions: 'Deep self-inquiry, resolving conflicts & detox.', color: 'text-indigo-400 border-indigo-500/30' },
     { id: 7, arabicName: 'Al-Dhira\' (الذِّرَاع)', vedicName: 'Punarvasu', symbol: '♋', degreeSpan: '20°00\' Gemini - 03°20\' Cancer', element: 'Water', spiritualFocus: 'Return of light, renewal & family', recommendedActions: 'Home optimization, reconciliation & spiritual retreat.', color: 'text-blue-400 border-blue-500/30' },
-    { id: 8, arabicName: 'Al-Nathrah (النَّثْرَة)', vedicName: 'Pushya', symbol: '♋', degreeSpan: '03°20\' - 16°40\' Cancer', element: 'Water', spiritualFocus: 'Nourishment, wisdom & auspiciousness', recommendedActions: 'Highest auspicious window for purchases & investments.', color: 'text-emerald-300 border-emerald-500/30' },
+    { id: 8, arabicName: 'Al-Nathrah (النَّثْرَة)', vedicName: 'Pushya', symbol: '♋', degreeSpan: '03°20\' - 16°40\' Cancer', element: 'Water', spiritualFocus: 'Nourishment, wisdom & auspiciousness', recommendedActions: 'Highest auspicious window for purchases & investments.', color: 'text-emerald-300 border-white/[0.08]' },
     { id: 9, arabicName: 'Al-Tarf (الطَّرْف)', vedicName: 'Ashlesha', symbol: '♋', degreeSpan: '16°40\' - 30°00\' Cancer', element: 'Water', spiritualFocus: 'Mystical wisdom & intuitive defense', recommendedActions: 'Occult study, protection prayers & strategy.', color: 'text-purple-400 border-purple-500/30' },
-    { id: 10, arabicName: 'Al-Jabhah (الجَبْهَة)', vedicName: 'Magha', symbol: '♌', degreeSpan: '00°00\' - 13°20\' Leo', element: 'Fire', spiritualFocus: 'Ancestral blessings & regal authority', recommendedActions: 'Honoring mentors, executive decisions & charity.', color: 'text-amber-400 border-amber-500/30' },
+    { id: 10, arabicName: 'Al-Jabhah (الجَبْهَة)', vedicName: 'Magha', symbol: '♌', degreeSpan: '00°00\' - 13°20\' Leo', element: 'Fire', spiritualFocus: 'Ancestral blessings & regal authority', recommendedActions: 'Honoring mentors, executive decisions & charity.', color: 'text-amber-400 border-white/[0.08]' },
   ], []);
 
   return (
@@ -41,7 +41,7 @@ export default function LunarMansionsWheel() {
             Semitic & Vedic Lunar Stations • Spiritual Intentions & Timing
           </p>
         </div>
-        <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-cyan-500/30 font-bold">
+        <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-full border border-white/[0.08] font-bold">
           28 Mansions Hub
         </span>
       </div>

@@ -24,7 +24,7 @@ interface Rudraksha {
 const GEMSTONES: Gemstone[] = [
   { type: 'Lagna', stone: 'Blue Sapphire (Neelam)', weight: '4.25 Carats', metal: 'White Gold / Silver', finger: 'Middle Finger (Saturn)', mantra: 'Om Sham Shanayscharaya Namah', benefit: 'Protection, focus, authority & karmic resilience.', color: 'border-blue-500/40 text-blue-300' },
   { type: 'Ishta', stone: 'Emerald (Panna)', weight: '5.50 Carats', metal: 'Yellow Gold', finger: 'Little Finger (Mercury)', mantra: 'Om Bum Budhaya Namah', benefit: 'Intellectual brilliance, business expansion & eloquence.', color: 'border-emerald-500/40 text-emerald-300' },
-  { type: 'Bhagya', stone: 'Yellow Sapphire (Pukhraj)', weight: '6.15 Carats', metal: 'Yellow Gold', finger: 'Index Finger (Jupiter)', mantra: 'Om Gram Greem Groom Sah Gurave Namah', benefit: 'Divine luck, spiritual wisdom & financial prosperity.', color: 'border-amber-500/40 text-amber-300' }
+  { type: 'Bhagya', stone: 'Yellow Sapphire (Pukhraj)', weight: '6.15 Carats', metal: 'Yellow Gold', finger: 'Index Finger (Jupiter)', mantra: 'Om Gram Greem Groom Sah Gurave Namah', benefit: 'Divine luck, spiritual wisdom & financial prosperity.', color: 'border-white/[0.12] text-amber-300' }
 ];
 
 const RUDRAKSHAS: Rudraksha[] = [
@@ -47,7 +47,7 @@ export default function GemstoneRudrakshaSuite() {
             Anukool (Lagna), Ishta (5th Lord) & Bhagya (9th Lord) Gemstones & 1–14 Mukhi Rudrakshas
           </p>
         </div>
-        <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/30 font-bold">
+        <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-white/[0.08] font-bold">
           Prana Pratishtha Energy Matched
         </span>
       </div>
@@ -66,7 +66,7 @@ export default function GemstoneRudrakshaSuite() {
               }`}
             >
               <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                <span className="text-[10px] font-mono font-bold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">
+                <span className="text-[10px] font-mono font-bold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-white/[0.08]">
                   {gem.type} Ratna
                 </span>
                 <span className="text-xs font-bold font-mono">{gem.weight}</span>

@@ -108,7 +108,7 @@ export default function SabianSymbolsDegreeExplorer() {
                 onClick={() => setSelectedSign(s)}
                 className={`p-2 rounded-xl border text-center transition-all cursor-pointer text-[11px] ${
                   selectedSign === s
-                    ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold shadow-md'
+                    ? 'bg-white text-black font-semibold shadow-sm border-amber-400 font-bold shadow-md'
                     : 'bg-[#060A12] text-slate-400 hover:text-white border-white/8'
                 }`}
               >
@@ -154,7 +154,7 @@ export default function SabianSymbolsDegreeExplorer() {
           </div>
 
           {/* Symbol Visualization Banner */}
-          <div className="p-5 rounded-2xl bg-gradient-to-br from-[#060A12] to-[#121B2D] border border-amber-400/30 text-center space-y-2">
+          <div className="p-5 rounded-2xl bg-gradient-to-br from-[#060A12] to-[#121B2D] border border-white/[0.08] text-center space-y-2">
             <span className="text-[10px] text-amber-400 font-bold uppercase tracking-widest block">Channeled Clairvoyant Vision</span>
             <p className="text-base sm:text-lg font-serif text-amber-200 font-bold leading-snug">
               "{currentDegree.symbolName}"

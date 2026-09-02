@@ -117,7 +117,7 @@ export default function IslamicAstrologyEngine({ userProfile, onNavigate }: Isla
           </p>
         </div>
 
-        <div className="glass-card px-5 py-3 rounded-2xl border border-emerald-500/30 flex items-center gap-3 shrink-0">
+        <div className="glass-card px-5 py-3 rounded-2xl border border-white/[0.08] flex items-center gap-3 shrink-0">
           <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg">
             🌙
           </div>
@@ -159,7 +159,7 @@ export default function IslamicAstrologyEngine({ userProfile, onNavigate }: Isla
       {/* TAB 1: 28 LUNAR MANSIONS */}
       {activeTab === 'mansions' && (
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-          <div className="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 relative overflow-hidden">
+          <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
             
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
@@ -226,7 +226,7 @@ export default function IslamicAstrologyEngine({ userProfile, onNavigate }: Isla
       {/* TAB 2: HISNUL MUSLIM DUAS DATASET */}
       {activeTab === 'duas' && (
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-          <div className="glass-card p-6 sm:p-8 rounded-3xl border border-amber-500/30 relative overflow-hidden space-y-4">
+          <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] relative overflow-hidden space-y-4">
             <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
               <BookMarked className="w-4 h-4" /> Fortress of the Muslim (Hisnul Muslim) Collection
             </div>
@@ -391,7 +391,7 @@ export default function IslamicAstrologyEngine({ userProfile, onNavigate }: Isla
                   <p className="text-xs text-slate-400">Calculated via AlAdhan API standards & Umm al-Qura calendar</p>
                 </div>
               </div>
-              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-white/[0.08]">
                 1447 AH (Umm al-Qura)
               </span>
             </div>
@@ -434,7 +434,7 @@ export default function IslamicAstrologyEngine({ userProfile, onNavigate }: Isla
                 <select
                   value={selectedCurrency}
                   onChange={(e) => setSelectedCurrency(e.target.value)}
-                  className="bg-slate-900 border border-amber-500/40 rounded-xl px-3 py-1.5 text-xs text-amber-300 font-bold focus:outline-none cursor-pointer"
+                  className="bg-slate-900 border border-white/[0.12] rounded-xl px-3 py-1.5 text-xs text-amber-300 font-bold focus:outline-none cursor-pointer"
                 >
                   {WORLD_CURRENCIES.map(c => (
                     <option key={c.code} value={c.code} className="bg-slate-950 text-slate-100">
@@ -460,7 +460,7 @@ export default function IslamicAstrologyEngine({ userProfile, onNavigate }: Isla
                 <p className="text-[11px] text-slate-400">Nisab Threshold (85g Gold equivalent): ~85g Gold Value in {curr.code}</p>
               </div>
 
-              <div className="p-6 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col justify-center space-y-2">
+              <div className="p-6 rounded-2xl bg-amber-500/10 border border-white/[0.08] flex flex-col justify-center space-y-2">
                 <p className="text-xs text-slate-400 uppercase tracking-wider">Calculated Zakat Due (2.5%)</p>
                 <p className="text-3xl sm:text-4xl font-bold font-display text-amber-400">
                   {curr.symbol}{(zakatAssetValue * 0.025).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {curr.code}

@@ -71,7 +71,7 @@ export default function GSCImportModal({
 
         {/* Header */}
         <div className="border-b border-white/10 pb-3 space-y-1">
-          <span className="text-[10px] font-bold font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-cyan-500/30">
+          <span className="text-[10px] font-bold font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-white/[0.08]">
             FIRST-PARTY DATA INGESTION
           </span>
           <h3 className="text-xl font-bold text-white tracking-tight">
@@ -90,7 +90,7 @@ export default function GSCImportModal({
           <button
             type="button"
             onClick={handleLoadSample}
-            className="px-2.5 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-mono text-[11px] flex items-center gap-1 transition-all cursor-pointer"
+            className="px-2.5 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-white/[0.08] font-mono text-[11px] flex items-center gap-1 transition-all cursor-pointer"
           >
             <Sparkles className="w-3 h-3" /> Load Sample ASTRO360 GSC Export
           </button>
@@ -107,7 +107,7 @@ export default function GSCImportModal({
 
         {/* Summary Card if data parsed */}
         {parsedItems.length > 0 && (
-          <div className="p-4 rounded-2xl bg-black/40 border border-cyan-500/30 space-y-3 font-mono">
+          <div className="p-4 rounded-2xl bg-black/40 border border-white/[0.08] space-y-3 font-mono">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
               <div className="p-2 rounded-xl bg-white/[0.02]">
                 <span className="text-slate-400 text-[10px] block">Queries</span>

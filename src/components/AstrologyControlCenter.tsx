@@ -94,7 +94,7 @@ export const CONTROL_CENTER_SECTIONS: ControlSectionMeta[] = [
 ];
 
 const ToggleSwitch = ({ checked, onChange, label, description, badge }: any) => (
-  <div className="flex items-center justify-between p-3.5 bg-[#0B1220]/80 border border-white/[0.06] rounded-2xl hover:border-cyan-500/30 transition-all group">
+  <div className="flex items-center justify-between p-3.5 bg-[#0B1220]/80 border border-white/[0.06] rounded-2xl hover:border-white/[0.08] transition-all group">
     <div className="pr-4">
       <div className="flex items-center gap-2">
         <span className="text-xs sm:text-sm font-bold text-slate-200 group-hover:text-white transition-colors">{label}</span>
@@ -119,13 +119,13 @@ const ToggleSwitch = ({ checked, onChange, label, description, badge }: any) => 
 );
 
 const SliderControl = ({ value, min, max, step, onChange, label, unit, description }: any) => (
-  <div className="p-3.5 bg-[#0B1220]/80 border border-white/[0.06] rounded-2xl hover:border-cyan-500/30 transition-all group">
+  <div className="p-3.5 bg-[#0B1220]/80 border border-white/[0.06] rounded-2xl hover:border-white/[0.08] transition-all group">
     <div className="flex justify-between items-center mb-1.5">
       <div>
         <span className="text-xs sm:text-sm font-bold text-slate-200 group-hover:text-white transition-colors">{label}</span>
         {description && <div className="text-[11px] text-slate-400 mt-0.5">{description}</div>}
       </div>
-      <span className="text-xs font-mono font-bold text-cyan-300 bg-cyan-500/15 border border-cyan-500/30 px-2.5 py-0.5 rounded-lg ml-2 shrink-0 shadow-sm">
+      <span className="text-xs font-mono font-bold text-cyan-300 bg-cyan-500/15 border border-white/[0.08] px-2.5 py-0.5 rounded-lg ml-2 shrink-0 shadow-sm">
         {value}{unit}
       </span>
     </div>
@@ -142,7 +142,7 @@ const SliderControl = ({ value, min, max, step, onChange, label, unit, descripti
 );
 
 const SelectControl = ({ value, onChange, label, options, description, badge }: any) => (
-  <div className="p-3.5 bg-[#0B1220]/80 border border-white/[0.06] rounded-2xl hover:border-cyan-500/30 transition-all group">
+  <div className="p-3.5 bg-[#0B1220]/80 border border-white/[0.06] rounded-2xl hover:border-white/[0.08] transition-all group">
     <div className="flex items-center justify-between mb-1">
       <label className="text-xs sm:text-sm font-bold text-slate-200 group-hover:text-white transition-colors block">{label}</label>
       {badge && <span className="text-[9px] font-mono font-bold text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">{badge}</span>}
@@ -161,7 +161,7 @@ const SelectControl = ({ value, onChange, label, options, description, badge }: 
 );
 
 const InputControl = ({ value, onChange, label, description, type = "text", placeholder = "", badge }: any) => (
-  <div className="p-3.5 bg-[#0B1220]/80 border border-white/[0.06] rounded-2xl hover:border-cyan-500/30 transition-all group">
+  <div className="p-3.5 bg-[#0B1220]/80 border border-white/[0.06] rounded-2xl hover:border-white/[0.08] transition-all group">
     <div className="flex items-center justify-between mb-1">
       <label className="text-xs sm:text-sm font-bold text-slate-200 group-hover:text-white transition-colors block">{label}</label>
       {badge && <span className="text-[9px] font-mono font-bold text-cyan-400 bg-cyan-500/10 px-1.5 py-0.5 rounded border border-cyan-500/20">{badge}</span>}
@@ -178,7 +178,7 @@ const InputControl = ({ value, onChange, label, description, type = "text", plac
 );
 
 const ColorPicker = ({ value, onChange, label, description }: any) => (
-  <div className="flex items-center justify-between p-3.5 bg-[#0B1220]/80 border border-white/[0.06] rounded-2xl hover:border-cyan-500/30 transition-all">
+  <div className="flex items-center justify-between p-3.5 bg-[#0B1220]/80 border border-white/[0.06] rounded-2xl hover:border-white/[0.08] transition-all">
     <div>
       <span className="text-xs sm:text-sm font-bold text-slate-200">{label}</span>
       {description && <p className="text-[11px] text-slate-400">{description}</p>}
@@ -405,7 +405,7 @@ export default function AstrologyControlCenter() {
       <motion.div 
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="p-6 sm:p-8 rounded-3xl bg-[#111827]/90 border border-cyan-500/30 backdrop-blur-2xl shadow-2xl flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative overflow-hidden"
+        className="p-6 sm:p-8 rounded-3xl bg-[#111827]/90 border border-white/[0.08] backdrop-blur-2xl shadow-2xl flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative overflow-hidden"
       >
         <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
         
@@ -603,7 +603,7 @@ export default function AstrologyControlCenter() {
             <div className="grid grid-cols-3 gap-2">
               <button 
                 onClick={() => handleApplyPreset('vedic')}
-                className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/30 hover:bg-amber-500/20 text-amber-300 text-center cursor-pointer transition-all"
+                className="p-2 rounded-xl bg-amber-500/10 border border-white/[0.08] hover:bg-amber-500/20 text-amber-300 text-center cursor-pointer transition-all"
               >
                 <span className="block text-[11px] font-bold">🕉️ Vedic</span>
                 <span className="text-[8.5px] text-slate-400">Lahiri/Sidereal</span>
@@ -617,7 +617,7 @@ export default function AstrologyControlCenter() {
               </button>
               <button 
                 onClick={() => handleApplyPreset('islamic')}
-                className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 text-emerald-300 text-center cursor-pointer transition-all"
+                className="p-2 rounded-xl bg-emerald-500/10 border border-white/[0.08] hover:bg-emerald-500/20 text-emerald-300 text-center cursor-pointer transition-all"
               >
                 <span className="block text-[11px] font-bold">☪️ Islamic</span>
                 <span className="text-[8.5px] text-slate-400">Hijri/Qibla</span>
@@ -640,7 +640,7 @@ export default function AstrologyControlCenter() {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/30 uppercase">
+                    <span className="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-white/[0.08] uppercase">
                       Module #{currentSectionMeta.id}
                     </span>
                     <span className="text-[10px] font-mono text-slate-400">Hash: {configStateHash}</span>
@@ -979,7 +979,7 @@ export default function AstrologyControlCenter() {
                 <div className="col-span-1 md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div 
                     onClick={() => handleApplyPreset('vedic')}
-                    className="p-5 rounded-2xl bg-[#0B1220] border border-amber-500/30 hover:border-amber-400 cursor-pointer transition-all space-y-2 group"
+                    className="p-5 rounded-2xl bg-[#0B1220] border border-white/[0.08] hover:border-amber-400 cursor-pointer transition-all space-y-2 group"
                   >
                     <span className="text-xl">🕉️</span>
                     <h4 className="text-sm font-bold text-amber-300">Vedic Scholar</h4>
@@ -997,7 +997,7 @@ export default function AstrologyControlCenter() {
 
                   <div 
                     onClick={() => handleApplyPreset('islamic')}
-                    className="p-5 rounded-2xl bg-[#0B1220] border border-emerald-500/30 hover:border-emerald-400 cursor-pointer transition-all space-y-2 group"
+                    className="p-5 rounded-2xl bg-[#0B1220] border border-white/[0.08] hover:border-emerald-400 cursor-pointer transition-all space-y-2 group"
                   >
                     <span className="text-xl">☪️</span>
                     <h4 className="text-sm font-bold text-emerald-300">Islamic Falak</h4>

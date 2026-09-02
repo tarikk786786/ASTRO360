@@ -42,14 +42,14 @@ export default function VerificationMonitorView({
     <div className="space-y-6 font-sans text-left">
       {/* Overview stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
-        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 space-y-1">
+        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-white/[0.08] space-y-1">
           <span className="text-[10px] text-emerald-300 uppercase font-bold flex items-center gap-1.5">
             <CheckCircle2 className="w-3.5 h-3.5" /> Verified Live (Dofollow)
           </span>
           <span className="text-2xl font-bold text-white">{liveCount}</span>
         </div>
 
-        <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-1">
+        <div className="p-4 rounded-2xl bg-amber-500/10 border border-white/[0.08] space-y-1">
           <span className="text-[10px] text-amber-300 uppercase font-bold flex items-center gap-1.5">
             <AlertTriangle className="w-3.5 h-3.5" /> rel="nofollow" / UGC
           </span>
@@ -109,9 +109,9 @@ export default function VerificationMonitorView({
         {verifications.map(item => {
           const statusBadge =
             item.status === 'LIVE'
-              ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30'
+              ? 'bg-emerald-500/10 text-emerald-300 border-white/[0.08]'
               : item.status === 'NOFOLLOW_ADDED'
-              ? 'bg-amber-500/10 text-amber-300 border-amber-500/30'
+              ? 'bg-amber-500/10 text-amber-300 border-white/[0.08]'
               : 'bg-rose-500/10 text-rose-300 border-rose-500/30';
 
           return (

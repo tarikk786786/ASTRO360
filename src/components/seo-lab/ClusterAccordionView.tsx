@@ -51,14 +51,14 @@ export default function ClusterAccordionView({
               className="w-full p-4 sm:p-5 flex items-center justify-between gap-3 text-left transition-colors cursor-pointer"
             >
               <div className="flex items-center gap-3 flex-1 min-w-0">
-                <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0 font-bold text-xs font-mono">
+                <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-white/[0.08] flex items-center justify-center text-cyan-400 shrink-0 font-bold text-xs font-mono">
                   {cluster.clusterKeywords.length}
                 </div>
                 <div className="space-y-0.5 truncate">
                   <h3 className="text-sm sm:text-base font-bold text-white tracking-tight truncate flex items-center gap-2">
                     <span>{cluster.pillar}</span>
                     {cluster.totalOpportunities > 0 && (
-                      <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/30">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-300 border border-white/[0.08]">
                         {cluster.totalOpportunities} High Priority
                       </span>
                     )}
@@ -133,7 +133,7 @@ export default function ClusterAccordionView({
                       {cluster.clusterKeywords.map(kw => (
                         <div
                           key={kw.id}
-                          className="p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-cyan-500/30 flex items-center justify-between gap-2 text-xs font-mono transition-all"
+                          className="p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.08] flex items-center justify-between gap-2 text-xs font-mono transition-all"
                         >
                           <div className="space-y-0.5 truncate">
                             <span className="text-white font-bold block truncate">{kw.rawKeyword}</span>

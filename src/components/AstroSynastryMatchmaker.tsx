@@ -400,7 +400,7 @@ export default function AstroSynastryMatchmaker({ userProfile }: AstroSynastryMa
 
             <button
               onClick={handleExportPdf}
-              className="px-4 py-2.5 rounded-2xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+              className="px-4 py-2.5 rounded-2xl bg-amber-500/20 text-amber-300 border border-white/[0.12] hover:bg-amber-500/30 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
             >
               <Download className="w-4 h-4" /> Export Report (PDF)
             </button>
@@ -645,7 +645,7 @@ export default function AstroSynastryMatchmaker({ userProfile }: AstroSynastryMa
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {islamicResult.items.map((it, idx) => (
-                    <div key={idx} className="p-5 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 space-y-2">
+                    <div key={idx} className="p-5 rounded-2xl bg-emerald-950/30 border border-white/[0.08] space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-white">{it.name}</span>
                         <span className="text-xs font-mono font-bold text-emerald-300">{it.score}</span>
@@ -693,7 +693,7 @@ export default function AstroSynastryMatchmaker({ userProfile }: AstroSynastryMa
             {/* Team Synergy Score Banner */}
             {teamSynergyResult && (
               <motion.div variants={staggerItem} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="glass-card p-5 rounded-2xl border border-cyan-500/30 flex items-center gap-4">
+                <div className="glass-card p-5 rounded-2xl border border-white/[0.08] flex items-center gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-300 font-bold text-lg font-mono shrink-0">
                     {teamSynergyResult.cohesionScore}%
                   </div>
@@ -713,7 +713,7 @@ export default function AstroSynastryMatchmaker({ userProfile }: AstroSynastryMa
                   </div>
                 </div>
 
-                <div className="glass-card p-5 rounded-2xl border border-emerald-500/30 flex items-center gap-4">
+                <div className="glass-card p-5 rounded-2xl border border-white/[0.08] flex items-center gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-300 font-bold text-lg font-mono shrink-0">
                     {teamSynergyResult.innovationBalance}%
                   </div>
@@ -841,11 +841,11 @@ export default function AstroSynastryMatchmaker({ userProfile }: AstroSynastryMa
                 <Shield className="w-5 h-5 text-purple-400" /> Multi-Religious Organizational Harmony & Conflict Mitigation
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs text-slate-300">
-                <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 space-y-1">
+                <div className="p-4 rounded-2xl bg-emerald-950/40 border border-white/[0.08] space-y-1">
                   <span className="font-bold text-emerald-300 block font-mono">🕌 Islamic Shura & Musharakah</span>
                   <p>Institute mutual consultation (Shura) before strategic pivots. Ensure profit-loss contracts honor equity and trust (Amanah).</p>
                 </div>
-                <div className="p-4 rounded-2xl bg-amber-950/40 border border-amber-500/30 space-y-1">
+                <div className="p-4 rounded-2xl bg-amber-950/40 border border-white/[0.08] space-y-1">
                   <span className="font-bold text-amber-300 block font-mono">🕉️ Vedic Karma & Dharma Alignment</span>
                   <p>Balance Fire (Leadership) and Air (Product/Tech) team members to ensure no individual experiences burn-out or unaddressed friction.</p>
                 </div>

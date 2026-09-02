@@ -57,7 +57,7 @@ export const AstroNotificationPrePermissionCard: React.FC = () => {
           }}
         >
           <div className="flex items-center justify-between">
-            <div className="w-10 h-10 rounded-2xl bg-amber-400/15 border border-amber-400/30 flex items-center justify-center text-amber-300">
+            <div className="w-10 h-10 rounded-2xl bg-amber-400/15 border border-white/[0.08] flex items-center justify-center text-amber-300">
               <Bell className="w-5 h-5" />
             </div>
             <button

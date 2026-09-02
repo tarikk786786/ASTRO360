@@ -34,7 +34,7 @@ export default function LinkAssetsAndPRView({
             >
               <div className="space-y-2">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-[10px] text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 px-2 py-0.5 rounded font-bold">
+                  <span className="text-[10px] text-cyan-300 bg-cyan-500/10 border border-white/[0.08] px-2 py-0.5 rounded font-bold">
                     {asset.type}
                   </span>
                   <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded font-bold">

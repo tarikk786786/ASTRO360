@@ -209,7 +209,7 @@ export default function UnifiedChartEngine({ userProfile, activeTab, initialTab 
           <div className="flex items-center gap-3 shrink-0 flex-wrap">
             <button
               onClick={handleExportPdf}
-              className="px-4 py-2.5 rounded-2xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+              className="px-4 py-2.5 rounded-2xl bg-amber-500/20 text-amber-300 border border-white/[0.12] hover:bg-amber-500/30 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
             >
               <Download className="w-4 h-4" /> Download Certificate (PDF)
             </button>

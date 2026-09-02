@@ -33,7 +33,7 @@ export default function ToxicAuditView({ toxicAudits }: ToxicAuditViewProps) {
             </h4>
             <p className="text-slate-400 text-xs">Conforming to Google Search Essentials & Natural Linking Guidelines</p>
           </div>
-          <span className="text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-xl border border-emerald-500/30 text-[10px] font-bold">
+          <span className="text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-xl border border-white/[0.08] text-[10px] font-bold">
             ✓ Healthy Natural Distribution
           </span>
         </div>
@@ -86,9 +86,9 @@ export default function ToxicAuditView({ toxicAudits }: ToxicAuditViewProps) {
           {toxicAudits.map(item => {
             const riskColor =
               item.riskLevel === 'CLEAN'
-                ? 'border-emerald-500/30 bg-emerald-500/5'
+                ? 'border-white/[0.08] bg-emerald-500/5'
                 : item.riskLevel === 'REVIEW'
-                ? 'border-amber-500/30 bg-amber-500/5'
+                ? 'border-white/[0.08] bg-amber-500/5'
                 : 'border-rose-500/30 bg-rose-500/5';
 
             return (

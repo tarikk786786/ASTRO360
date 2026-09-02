@@ -55,7 +55,7 @@ export default function OmniTopNav({
                 onClick={() => onNavigate(tab.id)}
                 className={`px-4 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-2 transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-amber-400 text-slate-950 shadow-md'
+                    ? 'bg-white text-black font-semibold shadow-sm shadow-md'
                     : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -83,7 +83,7 @@ export default function OmniTopNav({
             onClick={onOpenProfile}
             className="flex items-center gap-2 p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-xs font-mono transition-colors cursor-pointer"
           >
-            <div className="w-6 h-6 rounded-lg bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-[11px] font-bold text-amber-300">
+            <div className="w-6 h-6 rounded-lg bg-amber-400/20 border border-white/[0.12] flex items-center justify-center text-[11px] font-bold text-amber-300">
               {userProfile.name ? userProfile.name.charAt(0).toUpperCase() : 'S'}
             </div>
             <span className="hidden sm:inline font-bold truncate max-w-[100px]">

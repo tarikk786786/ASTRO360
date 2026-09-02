@@ -42,7 +42,7 @@ export default function BhagavadGitaSuite() {
   };
 
   return (
-    <div className="glass-card rounded-3xl p-6 sm:p-8 border border-amber-500/30 shadow-2xl space-y-8 text-left">
+    <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/[0.08] shadow-2xl space-y-8 text-left">
       {/* HEADER & VEDIC WISDOM BADGE */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
@@ -55,7 +55,7 @@ export default function BhagavadGitaSuite() {
 
         <button
           onClick={handleRandomWisdom}
-          className="px-4 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-mono font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md"
+          className="px-4 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-white/[0.08] text-amber-300 text-xs font-mono font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md"
         >
           <Sparkles className="w-4 h-4 text-amber-400" />
           Random Divine Wisdom
@@ -87,7 +87,7 @@ export default function BhagavadGitaSuite() {
                 className={`px-3 py-2 rounded-xl text-xs font-mono font-bold shrink-0 transition-all cursor-pointer border ${
                   isSelected
                     ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 border-amber-400 shadow-lg shadow-amber-500/20'
-                    : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:border-amber-500/40 hover:text-white'
+                    : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:border-white/[0.12] hover:text-white'
                 }`}
               >
                 Ch {chNum} {ch ? `(${ch.name})` : ''}
@@ -111,7 +111,7 @@ export default function BhagavadGitaSuite() {
               {activeChapterMeta.summary?.en}
             </p>
           </div>
-          <span className="text-xs font-mono text-amber-300 bg-amber-500/10 px-3 py-1.5 rounded-full border border-amber-500/30 shrink-0">
+          <span className="text-xs font-mono text-amber-300 bg-amber-500/10 px-3 py-1.5 rounded-full border border-white/[0.08] shrink-0">
             {activeChapterMeta.verses_count} Slokas
           </span>
         </div>
@@ -153,7 +153,7 @@ export default function BhagavadGitaSuite() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="p-6 rounded-3xl bg-slate-900/90 border border-amber-500/30 space-y-6 shadow-xl"
+              className="p-6 rounded-3xl bg-slate-900/90 border border-white/[0.08] space-y-6 shadow-xl"
             >
               {/* SANSKRIT SLOKA */}
               <div className="text-center space-y-2">

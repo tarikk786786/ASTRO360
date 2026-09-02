@@ -110,7 +110,7 @@ export const AstroNavigationShell: React.FC<AstroNavigationShellProps> = ({
             <div className="flex flex-col">
               <span className="font-black text-sm tracking-tight text-white font-sans flex items-center gap-1.5">
                 ASTRO360
-                <span className="text-[9.5px] font-mono font-bold text-amber-400 bg-amber-400/10 px-1.5 py-0.2 rounded border border-amber-400/20">
+                <span className="text-[9.5px] font-mono font-bold text-amber-400 bg-amber-400/10 px-1.5 py-0.2 rounded border border-white/[0.08]">
                   CALCULATED
                 </span>
               </span>
@@ -183,7 +183,7 @@ export const AstroNavigationShell: React.FC<AstroNavigationShellProps> = ({
           <button
             type="button"
             onClick={() => setIsCommandCenterOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 hover:text-white border border-amber-400/30 transition-all cursor-pointer shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 hover:text-white border border-white/[0.08] transition-all cursor-pointer shadow-sm"
             title="Open Master Command Center (⌘K)"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
@@ -210,7 +210,7 @@ export const AstroNavigationShell: React.FC<AstroNavigationShellProps> = ({
             onClick={() => onNavigate('me')}
             className={`flex items-center gap-2 p-1 px-2.5 py-1.5 rounded-xl border transition-all text-xs font-mono font-bold cursor-pointer ${
               activeTab === 'me'
-                ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md font-black'
+                ? 'bg-white text-black font-semibold shadow-sm border-amber-400 shadow-md font-black'
                 : 'bg-[#0B1220] border-white/10 text-slate-200 hover:text-white hover:border-white/20'
             }`}
             title="Account, Profile & Saved Items"

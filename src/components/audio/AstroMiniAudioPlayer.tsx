@@ -23,7 +23,7 @@ export const AstroMiniAudioPlayer: React.FC = () => {
       >
         <div
           onClick={openFullPlayer}
-          className="relative overflow-hidden rounded-2xl bg-[#090F1E]/95 backdrop-blur-2xl border border-amber-400/30 p-3 shadow-[0_10px_32px_rgba(0,0,0,0.75)] flex items-center justify-between gap-3 cursor-pointer group hover:border-amber-400/60 transition-all"
+          className="relative overflow-hidden rounded-2xl bg-[#090F1E]/95 backdrop-blur-2xl border border-white/[0.08] p-3 shadow-[0_10px_32px_rgba(0,0,0,0.75)] flex items-center justify-between gap-3 cursor-pointer group hover:border-amber-400/60 transition-all"
         >
           {/* Top Progress Line */}
           <div className="absolute top-0 inset-x-0 h-1 bg-white/10">
@@ -35,7 +35,7 @@ export const AstroMiniAudioPlayer: React.FC = () => {
 
           {/* Left info */}
           <div className="flex items-center gap-2.5 min-w-0 flex-1">
-            <div className="w-9 h-9 rounded-xl bg-amber-400/15 border border-amber-400/30 flex items-center justify-center text-amber-300 shrink-0 shadow-inner">
+            <div className="w-9 h-9 rounded-xl bg-amber-400/15 border border-white/[0.08] flex items-center justify-center text-amber-300 shrink-0 shadow-inner">
               <Volume2 className={`w-4 h-4 ${isPlaying ? 'animate-pulse text-amber-400' : ''}`} />
             </div>
             <div className="text-left min-w-0">
@@ -61,7 +61,7 @@ export const AstroMiniAudioPlayer: React.FC = () => {
               type="button"
               onClick={togglePlay}
               aria-label={isPlaying ? 'Pause audio' : 'Play audio'}
-              className="flex items-center justify-center min-w-[40px] min-h-[40px] rounded-xl bg-amber-400 text-slate-950 hover:bg-amber-300 active:scale-90 transition-all cursor-pointer shadow-md"
+              className="flex items-center justify-center min-w-[40px] min-h-[40px] rounded-xl bg-white text-black font-semibold shadow-sm hover:bg-amber-300 active:scale-90 transition-all cursor-pointer shadow-md"
             >
               {isPlaying ? <Pause className="w-4 h-4 fill-slate-950" /> : <Play className="w-4 h-4 fill-slate-950 translate-x-0.5" />}
             </button>

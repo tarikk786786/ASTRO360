@@ -140,7 +140,7 @@ export default function LiveAspectariumAndLunarTracker({
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
                 className={`flex-1 py-2.5 px-3 rounded-xl border text-xs font-mono font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold shadow-md'
+                    ? 'bg-white text-black font-semibold shadow-sm border-amber-400 font-bold shadow-md'
                     : 'bg-[#0B1220] text-slate-400 hover:text-white border-white/8'
                 }`}
               >
@@ -178,7 +178,7 @@ export default function LiveAspectariumAndLunarTracker({
                   {LIVE_ASPECTS_DATA.map((aspect, idx) => (
                     <div
                       key={idx}
-                      className="p-4 rounded-xl bg-[#060A12] border border-white/8 hover:border-amber-400/30 transition-all space-y-2"
+                      className="p-4 rounded-xl bg-[#060A12] border border-white/8 hover:border-white/[0.08] transition-all space-y-2"
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div className="flex items-center gap-2 flex-wrap">
@@ -304,7 +304,7 @@ export default function LiveAspectariumAndLunarTracker({
                         onClick={() => setSelectedOracleIndex(idx)}
                         className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer min-h-[64px] ${
                           isSelected
-                            ? 'bg-amber-400 text-slate-950 border-amber-400 shadow-md font-bold'
+                            ? 'bg-white text-black font-semibold shadow-sm border-amber-400 shadow-md font-bold'
                             : 'bg-[#060A12] text-slate-300 hover:text-white border-white/8'
                         }`}
                       >

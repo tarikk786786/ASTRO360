@@ -30,17 +30,17 @@ export default function TrustAndExplainabilityBanner({ currentAyanamsha = '24.23
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
         {/* Left: Trust & Precision Badges */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-mono font-bold">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-white/[0.08] text-emerald-300 text-xs font-mono font-bold">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             <span>100% Client-Side Private</span>
           </div>
 
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-500/15 border border-white/[0.08] text-cyan-300 text-xs font-mono font-bold">
             <Cpu className="w-3.5 h-3.5 text-cyan-400" />
             <span>NASA JPL DE440 Sub-Arcsecond Ephemeris</span>
           </div>
 
-          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-mono">
+          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/15 border border-white/[0.08] text-amber-300 text-xs font-mono">
             <Compass className="w-3.5 h-3.5 text-amber-400" />
             <span>JD: {julianDay}</span>
           </div>

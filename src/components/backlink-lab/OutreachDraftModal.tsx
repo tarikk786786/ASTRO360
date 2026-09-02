@@ -63,7 +63,7 @@ export default function OutreachDraftModal({
 
         {/* Header */}
         <div className="border-b border-white/10 pb-3 space-y-1">
-          <span className="text-[10px] font-bold font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-cyan-500/30">
+          <span className="text-[10px] font-bold font-mono text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded border border-white/[0.08]">
             PERSONALIZED OUTREACH DRAFT
           </span>
           <h3 className="text-xl font-bold text-white tracking-tight">
@@ -75,7 +75,7 @@ export default function OutreachDraftModal({
         </div>
 
         {/* Value-First Guardrail Banner */}
-        <div className="p-3.5 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 space-y-1 text-slate-300">
+        <div className="p-3.5 rounded-2xl bg-cyan-500/10 border border-white/[0.08] space-y-1 text-slate-300">
           <span className="text-[10px] font-bold font-mono text-cyan-300 uppercase flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" /> Value-First Editorial Guidelines
           </span>

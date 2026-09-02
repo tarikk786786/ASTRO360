@@ -78,7 +78,7 @@ export default function HadithExplorer() {
   });
 
   return (
-    <div className="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-500/30 shadow-2xl space-y-6">
+    <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/[0.08] shadow-2xl space-y-6">
       {/* HEADER & HADITH BOOK SELECTOR */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
@@ -133,7 +133,7 @@ export default function HadithExplorer() {
               return (
                 <div
                   key={num}
-                  className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/30 transition-all space-y-4 text-left group"
+                  className="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-white/[0.08] transition-all space-y-4 text-left group"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">

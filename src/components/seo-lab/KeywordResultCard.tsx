@@ -34,8 +34,8 @@ export default function KeywordResultCard({
 
   const getTierColor = (tier: string) => {
     switch (tier) {
-      case 'CRITICAL': return 'text-amber-400 bg-amber-500/10 border-amber-500/30';
-      case 'HIGH': return 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30';
+      case 'CRITICAL': return 'text-amber-400 bg-amber-500/10 border-white/[0.08]';
+      case 'HIGH': return 'text-cyan-400 bg-cyan-500/10 border-white/[0.08]';
       case 'MEDIUM': return 'text-blue-400 bg-blue-500/10 border-blue-500/30';
       default: return 'text-slate-400 bg-slate-500/10 border-slate-500/30';
     }
@@ -44,24 +44,24 @@ export default function KeywordResultCard({
   const getIntentColor = (intent: string) => {
     switch (intent) {
       case 'TOOL': return 'bg-purple-500/10 text-purple-300 border-purple-500/30';
-      case 'COMMERCIAL': return 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30';
-      case 'TRANSACTIONAL': return 'bg-amber-500/10 text-amber-300 border-amber-500/30';
+      case 'COMMERCIAL': return 'bg-emerald-500/10 text-emerald-300 border-white/[0.08]';
+      case 'TRANSACTIONAL': return 'bg-amber-500/10 text-amber-300 border-white/[0.08]';
       case 'NAVIGATIONAL': return 'bg-slate-500/10 text-slate-300 border-slate-500/30';
       case 'LOCAL': return 'bg-pink-500/10 text-pink-300 border-pink-500/30';
-      default: return 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30';
+      default: return 'bg-cyan-500/10 text-cyan-300 border-white/[0.08]';
     }
   };
 
   const getMappingStatusBadge = (status: string) => {
     switch (status) {
       case 'EXISTS_OPTIMIZED':
-        return <span className="inline-flex items-center gap-1 text-[10px] text-emerald-400 font-mono bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30"><CheckCircle2 className="w-3 h-3" /> Live Page</span>;
+        return <span className="inline-flex items-center gap-1 text-[10px] text-emerald-400 font-mono bg-emerald-500/10 px-2 py-0.5 rounded border border-white/[0.08]"><CheckCircle2 className="w-3 h-3" /> Live Page</span>;
       case 'TOOL_NEEDED':
         return <span className="inline-flex items-center gap-1 text-[10px] text-purple-400 font-mono bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/30"><Wrench className="w-3 h-3" /> New Tool Needed</span>;
       case 'MISSING_NEW_PAGE':
-        return <span className="inline-flex items-center gap-1 text-[10px] text-cyan-400 font-mono bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30"><FileText className="w-3 h-3" /> Content Gap</span>;
+        return <span className="inline-flex items-center gap-1 text-[10px] text-cyan-400 font-mono bg-cyan-500/10 px-2 py-0.5 rounded border border-white/[0.08]"><FileText className="w-3 h-3" /> Content Gap</span>;
       case 'CANNIBALIZATION_RISK':
-        return <span className="inline-flex items-center gap-1 text-[10px] text-amber-400 font-mono bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30"><AlertTriangle className="w-3 h-3" /> Cannibalization Risk</span>;
+        return <span className="inline-flex items-center gap-1 text-[10px] text-amber-400 font-mono bg-amber-500/10 px-2 py-0.5 rounded border border-white/[0.08]"><AlertTriangle className="w-3 h-3" /> Cannibalization Risk</span>;
       default:
         return null;
     }
@@ -106,7 +106,7 @@ export default function KeywordResultCard({
             onClick={() => onToggleSave(item)}
             className={`p-1.5 rounded-lg border transition-all cursor-pointer ${
               isSaved
-                ? 'bg-amber-500/20 text-amber-300 border-amber-400/40'
+                ? 'bg-amber-500/20 text-amber-300 border-white/[0.12]'
                 : 'bg-white/[0.02] text-slate-400 border-white/[0.06] hover:text-white hover:bg-white/[0.06]'
             }`}
             title={isSaved ? 'Remove from Watchlist' : 'Save to Watchlist'}
@@ -175,7 +175,7 @@ export default function KeywordResultCard({
         <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={() => onGenerateBrief(item)}
-            className="flex-1 sm:flex-none px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+            className="flex-1 sm:flex-none px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-white/[0.08] text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
           >
             <FileText className="w-3.5 h-3.5" />
             <span>Content Brief</span>

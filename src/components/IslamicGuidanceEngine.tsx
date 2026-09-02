@@ -48,7 +48,7 @@ export default function IslamicGuidanceEngine({ onBookmark, onNavigate }: Islami
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-8 font-sans">
       {/* Header Banner */}
-      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 bg-gradient-to-r from-slate-950 via-emerald-950/40 to-slate-950 shadow-2xl relative overflow-hidden">
+      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] bg-gradient-to-r from-slate-950 via-emerald-950/40 to-slate-950 shadow-2xl relative overflow-hidden">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -67,7 +67,7 @@ export default function IslamicGuidanceEngine({ onBookmark, onNavigate }: Islami
             </p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-emerald-950/60 border border-emerald-500/30 text-emerald-200 text-xs max-w-xs space-y-1">
+          <div className="p-4 rounded-2xl bg-emerald-950/60 border border-white/[0.08] text-emerald-200 text-xs max-w-xs space-y-1">
             <p className="font-bold flex items-center gap-1.5 text-amber-300">
               <Info className="w-4 h-4 shrink-0" /> Important Distinction Notice
             </p>
@@ -133,7 +133,7 @@ export default function IslamicGuidanceEngine({ onBookmark, onNavigate }: Islami
                   <h2 className="text-2xl font-display font-bold text-white flex items-center gap-2">
                     <BookOpen className="w-6 h-6 text-emerald-400" /> The Holy Qur'an Verses & Tafsir
                   </h2>
-                  <span className="text-xs font-mono px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">
+                  <span className="text-xs font-mono px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-white/[0.08] font-bold">
                     SAHIH INTERNATIONAL TRANSLATION
                   </span>
                 </div>
@@ -207,7 +207,7 @@ export default function IslamicGuidanceEngine({ onBookmark, onNavigate }: Islami
                     <div key={i} className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
                       <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                         <span className="text-xs font-mono font-bold text-amber-400">{h.book}</span>
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-white/[0.08]">
                           {h.grading}
                         </span>
                       </div>
@@ -306,7 +306,7 @@ export default function IslamicGuidanceEngine({ onBookmark, onNavigate }: Islami
           {/* MODULE 7: ZAKAT CALCULATOR */}
           {activeTab === 'zakat' && (
             <div className="space-y-6">
-              <div className="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 space-y-6">
+              <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
                   <div>
                     <h2 className="text-2xl font-display font-bold text-white flex items-center gap-2">
@@ -376,7 +376,7 @@ export default function IslamicGuidanceEngine({ onBookmark, onNavigate }: Islami
                       </div>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-slate-950 border border-emerald-500/30 space-y-1">
+                    <div className="p-4 rounded-xl bg-slate-950 border border-white/[0.08] space-y-1">
                       <p className="text-[11px] text-emerald-400 font-bold uppercase tracking-wider">Zakat Obligation Payable (2.5%)</p>
                       <p className="text-3xl font-bold font-mono text-white">{curr.symbol}{zakatDue.toLocaleString(undefined, { minimumFractionDigits: 2 })} {curr.code}</p>
                       <p className="text-[10px] text-slate-400">

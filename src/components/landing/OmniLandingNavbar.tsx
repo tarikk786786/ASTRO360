@@ -345,7 +345,7 @@ export default function OmniLandingNavbar({
                       handleNavSection(tool.tab);
                       setSearchModalOpen(false);
                     }}
-                    className="w-full p-3 rounded-xl bg-[#060A12] hover:bg-white/5 border border-white/8 hover:border-amber-400/40 text-left flex items-center justify-between gap-3 group cursor-pointer transition-all"
+                    className="w-full p-3 rounded-xl bg-[#060A12] hover:bg-white/5 border border-white/8 hover:border-white/[0.12] text-left flex items-center justify-between gap-3 group cursor-pointer transition-all"
                   >
                     <div className="space-y-0.5">
                       <span className="text-xs font-bold text-white group-hover:text-amber-300 font-mono block">{tool.name}</span>

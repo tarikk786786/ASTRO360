@@ -101,7 +101,7 @@ export default function CosmicPassportCard({ userProfile, onNavigateToTab }: Cos
       <div className="flex justify-center p-2 sm:p-6 bg-[#060A12] border border-white/8 rounded-3xl">
         <div
           ref={cardRef}
-          className={`w-full transition-all duration-300 rounded-3xl bg-gradient-to-br from-[#0B1220] via-[#0F1A2E] to-[#070C16] border-2 border-amber-400/40 p-6 sm:p-8 shadow-2xl relative overflow-hidden text-white font-mono ${
+          className={`w-full transition-all duration-300 rounded-3xl bg-gradient-to-br from-[#0B1220] via-[#0F1A2E] to-[#070C16] border-2 border-white/[0.12] p-6 sm:p-8 shadow-2xl relative overflow-hidden text-white font-mono ${
             format === 'story' ? 'max-w-sm aspect-[9/16] flex flex-col justify-between py-10' : 'max-w-xl space-y-6'
           }`}
         >

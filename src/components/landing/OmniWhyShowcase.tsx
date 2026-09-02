@@ -48,9 +48,9 @@ export default function OmniWhyShowcase({ onExploreMethodology }: OmniWhyShowcas
           <div className="space-y-1.5 text-xs font-mono text-slate-300">
             <div className="text-[10px] uppercase text-slate-500 font-bold">Supported By:</div>
             <div className="flex flex-wrap gap-1.5">
-              <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded">✓ Vedic (Jyotish)</span>
-              <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded">✓ Western Modern</span>
-              <span className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 px-2 py-0.5 rounded">✓ KP System</span>
+              <span className="bg-emerald-500/10 text-emerald-400 border border-white/[0.08] px-2 py-0.5 rounded">✓ Vedic (Jyotish)</span>
+              <span className="bg-emerald-500/10 text-emerald-400 border border-white/[0.08] px-2 py-0.5 rounded">✓ Western Modern</span>
+              <span className="bg-cyan-500/10 text-cyan-400 border border-white/[0.08] px-2 py-0.5 rounded">✓ KP System</span>
             </div>
           </div>
 
@@ -66,7 +66,7 @@ export default function OmniWhyShowcase({ onExploreMethodology }: OmniWhyShowcas
         </div>
 
         {/* Right: Transparent "Why?" Evidence Panel */}
-        <div className="lg:col-span-6 p-6 rounded-3xl bg-[#0B1220] border border-amber-500/30 space-y-4 shadow-xl">
+        <div className="lg:col-span-6 p-6 rounded-3xl bg-[#0B1220] border border-white/[0.08] space-y-4 shadow-xl">
           <div className="flex items-center justify-between border-b border-white/10 pb-2">
             <h4 className="text-xs font-mono font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
               <ShieldCheck className="w-4 h-4 text-emerald-400" /> Multi-Tradition Consensus Reason

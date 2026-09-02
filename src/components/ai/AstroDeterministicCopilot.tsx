@@ -122,7 +122,7 @@ export default function AstroDeterministicCopilot({ userProfile, onNavigateToTab
           <button
             key={idx}
             onClick={() => handleSendQuery(prompt)}
-            className="text-[11px] font-mono px-3 py-1.5 rounded-xl bg-[#0B1220] hover:bg-amber-400/15 border border-white/10 hover:border-amber-400/30 text-slate-300 hover:text-amber-300 transition-all cursor-pointer text-left"
+            className="text-[11px] font-mono px-3 py-1.5 rounded-xl bg-[#0B1220] hover:bg-amber-400/15 border border-white/10 hover:border-white/[0.08] text-slate-300 hover:text-amber-300 transition-all cursor-pointer text-left"
           >
             ✦ {prompt}
           </button>
@@ -137,7 +137,7 @@ export default function AstroDeterministicCopilot({ userProfile, onNavigateToTab
             className={`flex gap-3 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             {msg.sender === 'assistant' && (
-              <div className="w-7 h-7 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-bold text-xs shrink-0 mt-1">
+              <div className="w-7 h-7 rounded-xl bg-white text-black font-semibold shadow-sm flex items-center justify-center font-bold text-xs shrink-0 mt-1">
                 ✦
               </div>
             )}
@@ -145,7 +145,7 @@ export default function AstroDeterministicCopilot({ userProfile, onNavigateToTab
             <div
               className={`max-w-xl p-4 rounded-2xl space-y-2 ${
                 msg.sender === 'user'
-                  ? 'bg-amber-400 text-slate-950 font-bold ml-auto'
+                  ? 'bg-white text-black font-semibold shadow-sm font-bold ml-auto'
                   : 'bg-[#060A12] text-slate-200 border border-white/8'
               }`}
             >

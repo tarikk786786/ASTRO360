@@ -67,7 +67,7 @@ const ASHTAKAVARGA_DATA = [
   { sign: 'Aries (Mesha)', bindus: 31, rating: 'Auspicious (31 > 28)', color: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' },
   { sign: 'Taurus (Vrishabha)', bindus: 34, rating: 'Exalted Power (34 > 28)', color: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' },
   { sign: 'Gemini (Mithuna)', bindus: 29, rating: 'Auspicious (29 > 28)', color: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' },
-  { sign: 'Cancer (Karka)', bindus: 27, rating: 'Neutral (27 ≈ 28)', color: 'text-amber-300 bg-amber-400/10 border-amber-400/20' },
+  { sign: 'Cancer (Karka)', bindus: 27, rating: 'Neutral (27 ≈ 28)', color: 'text-amber-300 bg-amber-400/10 border-white/[0.08]' },
   { sign: 'Leo (Simha)', bindus: 30, rating: 'Auspicious (30 > 28)', color: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' },
   { sign: 'Virgo (Kanya)', bindus: 24, rating: 'Caution Window (24 < 28)', color: 'text-rose-400 bg-rose-400/10 border-rose-400/20' },
   { sign: 'Libra (Tula)', bindus: 32, rating: 'Auspicious (32 > 28)', color: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' },
@@ -117,7 +117,7 @@ export default function LiveCombustionAndAshtakavargaSuite({
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
                 className={`flex-1 py-2.5 px-3 rounded-xl border text-xs font-mono font-medium flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold shadow-md'
+                    ? 'bg-white text-black font-semibold shadow-sm border-amber-400 font-bold shadow-md'
                     : 'bg-[#0B1220] text-slate-400 hover:text-white border-white/8'
                 }`}
               >
@@ -203,7 +203,7 @@ export default function LiveCombustionAndAshtakavargaSuite({
                     <h3 className="text-base font-bold text-white font-mono">Sarvashtakavarga (SAV) 12-Sign Energy Heatmap</h3>
                     <p className="text-xs text-slate-400 font-sans">Total 337 benefic bindus distributed across signs (28 is the neutral equilibrium)</p>
                   </div>
-                  <span className="text-[11px] font-mono text-amber-300 bg-amber-400/10 px-2.5 py-1 rounded border border-amber-400/20 w-fit">
+                  <span className="text-[11px] font-mono text-amber-300 bg-amber-400/10 px-2.5 py-1 rounded border border-white/[0.08] w-fit">
                     Parashara Hora Shastra Ch. 66
                   </span>
                 </div>

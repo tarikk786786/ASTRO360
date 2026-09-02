@@ -278,7 +278,7 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
 
   return (
     <div className="max-w-7xl mx-auto p-6 space-y-10">
-      <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-start gap-3">
+      <div className="p-4 rounded-2xl bg-emerald-500/10 border border-white/[0.08] flex items-start gap-3">
         <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
         <div className="text-xs text-slate-300 space-y-1">
           <p className="font-bold text-emerald-300">Authentic Islamic Knowledge & Astronomical Sciences (Ilm al-Nujum)</p>
@@ -300,7 +300,7 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
         </div>
 
         <div className="flex items-center gap-3 shrink-0 flex-wrap">
-          <div className="glass-card px-3 py-1.5 rounded-2xl border border-emerald-500/30 flex items-center gap-2">
+          <div className="glass-card px-3 py-1.5 rounded-2xl border border-white/[0.08] flex items-center gap-2">
             <Coins className="w-4 h-4 text-emerald-400" />
             <select
               value={selectedCurrency}
@@ -312,7 +312,7 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
               ))}
             </select>
           </div>
-          <div className="glass-card px-4 py-2.5 rounded-2xl border border-emerald-500/30 flex items-center gap-3">
+          <div className="glass-card px-4 py-2.5 rounded-2xl border border-white/[0.08] flex items-center gap-3">
             <Award className="w-5 h-5 text-emerald-400" />
             <div>
               <p className="text-[10px] text-slate-400 uppercase tracking-wider font-mono">Active Currency</p>
@@ -358,7 +358,7 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
 
       {activeTab === 'names' && (
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-          <div className="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 space-y-6">
+          <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <h3 className="text-xl font-bold text-white flex items-center gap-2">
                 <Heart className="w-5 h-5 text-emerald-400" /> All 99 Names of Allah (Asma al-Husna)
@@ -374,7 +374,7 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
 
             <motion.div variants={containerVariants} initial="hidden" animate="show" className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 pt-2">
               {filteredNames.map((n) => (
-                <motion.div key={n.id} variants={itemVariants} className="p-4 rounded-2xl bg-white/5 border border-white/10 text-center space-y-2 hover:bg-emerald-500/10 hover:border-emerald-500/30 hover:scale-105 transition-all cursor-default group relative overflow-hidden">
+                <motion.div key={n.id} variants={itemVariants} className="p-4 rounded-2xl bg-white/5 border border-white/10 text-center space-y-2 hover:bg-emerald-500/10 hover:border-white/[0.08] hover:scale-105 transition-all cursor-default group relative overflow-hidden">
                   <div className="absolute inset-0 bg-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity animate-pulse" />
                   <span className="text-xs font-mono text-emerald-400 relative z-10">{n.id}</span>
                   <p className="text-3xl font-serif text-emerald-200 relative z-10 py-2">{n.arabic}</p>
@@ -388,7 +388,7 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
       )}
 
       {activeTab === 'tasbeeh' && (
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 space-y-8 text-center relative overflow-hidden">
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] space-y-8 text-center relative overflow-hidden">
           <h3 className="text-xl font-bold text-white flex items-center justify-center gap-2">
             <RotateCcw className="w-5 h-5 text-emerald-400" /> Enhanced Digital Tasbeeh
           </h3>
@@ -426,7 +426,7 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
             <motion.div 
               animate={{ scale: isPulsing ? 0.9 : 1 }}
               transition={{ duration: 0.1 }}
-              className={`w-48 h-48 rounded-full bg-slate-900/80 border-4 border-emerald-500/30 flex flex-col items-center justify-center space-y-2 shadow-2xl ${showCelebration ? 'shadow-emerald-500/50 bg-emerald-900/50' : ''}`}
+              className={`w-48 h-48 rounded-full bg-slate-900/80 border-4 border-white/[0.08] flex flex-col items-center justify-center space-y-2 shadow-2xl ${showCelebration ? 'shadow-emerald-500/50 bg-emerald-900/50' : ''}`}
             >
               <p className="text-xs font-mono text-emerald-400 uppercase tracking-widest px-4 leading-tight">{dhikrPreset.name}</p>
               <p className="text-6xl font-mono font-bold text-white">{tasbeehCount}</p>
@@ -564,12 +564,12 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
               <h3 className="text-xl font-bold text-white flex items-center gap-2 font-display">
                 <Moon className="w-5 h-5 text-emerald-400" /> Real-Time 3D Islamic Astronomy Orrery (Ilm al-Falak)
               </h3>
-              <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30">
+              <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-white/[0.08]">
                 Sidereal (Lahiri Ayanamsha)
               </span>
             </div>
 
-            <div className="relative w-full h-56 sm:h-64 rounded-3xl overflow-hidden glass-card border border-emerald-500/30 shadow-2xl p-6 flex flex-col justify-between bg-gradient-to-br from-emerald-950/40 via-slate-900 to-slate-950">
+            <div className="relative w-full h-56 sm:h-64 rounded-3xl overflow-hidden glass-card border border-white/[0.08] shadow-2xl p-6 flex flex-col justify-between bg-gradient-to-br from-emerald-950/40 via-slate-900 to-slate-950">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-2">
                   <Moon className="w-4 h-4 text-emerald-400" /> 28 Lunar Mansions (Manazil al-Qamar)
@@ -606,7 +606,7 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
           </div>
 
           {/* 3. 28 LUNAR MANSIONS (MANAZIL AL-QAMAR) */}
-          <div className="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 space-y-6">
+          <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] space-y-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <h3 className="text-xl font-bold text-white flex items-center gap-2 font-display">
@@ -616,14 +616,14 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
                   Classical Islamic lunar station calculations for spiritual timing and energy alignment.
                 </p>
               </div>
-              <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30">
+              <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-white/[0.08]">
                 28 Sacred Stations
               </span>
             </div>
 
             <motion.div variants={containerVariants} initial="hidden" animate="show" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-2">
               {MANAZIL_AL_QAMAR.map((m) => (
-                <motion.div variants={itemVariants} key={m.id} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 hover:bg-emerald-500/10 hover:border-emerald-500/30 hover:scale-105 transition-all">
+                <motion.div variants={itemVariants} key={m.id} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 hover:bg-emerald-500/10 hover:border-white/[0.08] hover:scale-105 transition-all">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-mono font-bold text-emerald-400">Station #{m.id}</span>
                     <span className="text-[10px] font-mono text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">{m.element}</span>
@@ -652,7 +652,7 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
                 { name: 'Ibn Yunus al-Sadafi', era: '950–1009 CE', contribution: 'Compiled Al-Zij al-Kabir al-Hakimi; precise pendulum timekeeping & planetary conjunctions.' },
                 { name: 'Al-Farghani (Alfraganus)', era: '800–870 CE', contribution: 'Calculated Earth axial tilt ($23.5^\circ$) & wrote foundational treatises on celestial motions.' }
               ].map((pioneer, idx) => (
-                <div key={idx} className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/40 transition-colors space-y-2">
+                <div key={idx} className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-white/[0.12] transition-colors space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-bold text-amber-300">{pioneer.name}</span>
                     <span className="text-[10px] font-mono text-slate-400 bg-slate-800 px-2 py-0.5 rounded">{pioneer.era}</span>
@@ -666,19 +666,19 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
       )}
 
       {activeTab === 'abjad' && (
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 space-y-6">
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] space-y-6">
           <h3 className="text-xl font-bold text-white flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-emerald-400" /> Abjad Numeric Gematria Calculator
           </h3>
           <input type="text" value={abjadText} onChange={(e) => setAbjadText(e.target.value)} className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-800 text-right text-lg text-emerald-300 focus:outline-none focus:border-emerald-500" />
-          <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center">
+          <div className="p-6 rounded-2xl bg-emerald-500/10 border border-white/[0.08] text-center">
             <p className="text-4xl font-bold text-emerald-300">{currentAbjadValue}</p>
           </div>
         </motion.div>
       )}
 
       {activeTab === 'zakat' && (
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 space-y-6">
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] space-y-6">
           <h3 className="text-xl font-bold text-white flex items-center gap-2">
             <Calculator className="w-5 h-5 text-emerald-400" /> Multi-Currency Zakat Calculator
           </h3>
@@ -686,14 +686,14 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
             <input type="number" value={zakatCash} onChange={(e) => setZakatCash(Number(e.target.value))} className="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-800 text-white font-mono focus:outline-none focus:border-emerald-500" />
             <input type="number" value={zakatGoldGrams} onChange={(e) => setZakatGoldGrams(Number(e.target.value))} className="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-800 text-white font-mono focus:outline-none focus:border-emerald-500" />
           </div>
-          <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30">
+          <div className="p-6 rounded-2xl bg-emerald-500/10 border border-white/[0.08]">
             <p className="text-2xl font-mono font-bold text-emerald-300">{curr.symbol}{zakatDue.toLocaleString()} {curr.code}</p>
           </div>
         </motion.div>
       )}
 
       {activeTab === 'inheritance' && (
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 space-y-6">
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] space-y-6">
           <h3 className="text-xl font-bold text-white flex items-center gap-2">
             <Coins className="w-5 h-5 text-emerald-400" /> Fara'id / Mirath Calculator
           </h3>
@@ -704,7 +704,7 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
       )}
 
       {activeTab === 'ethics' && (
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 space-y-6">
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] space-y-6">
           <h3 className="text-xl font-bold text-white flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-emerald-400" /> Halal Ethics
           </h3>
@@ -718,7 +718,7 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
       )}
 
       {activeTab === 'remedies' && (
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-8 rounded-3xl border border-emerald-500/30 space-y-6 text-left">
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-8 rounded-3xl border border-white/[0.08] space-y-6 text-left">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
             <div>
               <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider mb-1">
@@ -727,17 +727,17 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
               </div>
               <h3 className="text-2xl font-bold font-display text-white">Authentic Islamic Spiritual Remedies (Ruqyah & Duas)</h3>
             </div>
-            <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-mono font-bold">
+            <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-white/[0.08] text-emerald-300 text-xs font-mono font-bold">
               6 Verified Problem Categories
             </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* 1. Rizq */}
-            <div className="p-6 rounded-2xl bg-slate-900/90 border border-emerald-500/30 space-y-4 shadow-xl">
+            <div className="p-6 rounded-2xl bg-slate-900/90 border border-white/[0.08] space-y-4 shadow-xl">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono text-emerald-400 font-bold uppercase">1. Financial Distress & Sustenance (Rizq)</span>
-                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">Surah Nuh 71:10-12</span>
+                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-white/[0.08]">Surah Nuh 71:10-12</span>
               </div>
               <h4 className="text-base font-bold text-white">Hardship in Income, Debt, or Poverty</h4>
               <p className="text-xs text-slate-300 leading-relaxed font-mono">
@@ -749,10 +749,10 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
             </div>
 
             {/* 2. Huzn & Qalaq */}
-            <div className="p-6 rounded-2xl bg-slate-900/90 border border-emerald-500/30 space-y-4 shadow-xl">
+            <div className="p-6 rounded-2xl bg-slate-900/90 border border-white/[0.08] space-y-4 shadow-xl">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono text-emerald-400 font-bold uppercase">2. Anxiety & Depression (Huzn & Qalaq)</span>
-                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">Surah Ar-Ra'd 13:28</span>
+                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-white/[0.08]">Surah Ar-Ra'd 13:28</span>
               </div>
               <h4 className="text-base font-bold text-white">Mental Distress, Panic, & Restlessness</h4>
               <p className="text-xs text-slate-300 leading-relaxed font-mono">
@@ -764,10 +764,10 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
             </div>
 
             {/* 3. Hayrah / Decisions */}
-            <div className="p-6 rounded-2xl bg-slate-900/90 border border-emerald-500/30 space-y-4 shadow-xl">
+            <div className="p-6 rounded-2xl bg-slate-900/90 border border-white/[0.08] space-y-4 shadow-xl">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono text-emerald-400 font-bold uppercase">3. Confusion & Major Life Decisions (Hayrah)</span>
-                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">Sahih al-Bukhari #1166</span>
+                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-white/[0.08]">Sahih al-Bukhari #1166</span>
               </div>
               <h4 className="text-base font-bold text-white">Indecision in Marriage, Career, or Business</h4>
               <p className="text-xs text-slate-300 leading-relaxed font-mono">
@@ -779,10 +779,10 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
             </div>
 
             {/* 4. Evil Eye & Harm */}
-            <div className="p-6 rounded-2xl bg-slate-900/90 border border-emerald-500/30 space-y-4 shadow-xl">
+            <div className="p-6 rounded-2xl bg-slate-900/90 border border-white/[0.08] space-y-4 shadow-xl">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono text-emerald-400 font-bold uppercase">4. Evil Eye, Envy & Harm (Ayn & Hasad)</span>
-                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">Sahih Muslim #2188</span>
+                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-white/[0.08]">Sahih Muslim #2188</span>
               </div>
               <h4 className="text-base font-bold text-white">Unexplained Illness, Envy, & Lethargy</h4>
               <p className="text-xs text-slate-300 leading-relaxed font-mono">
@@ -794,10 +794,10 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
             </div>
 
             {/* 5. Family Disharmony */}
-            <div className="p-6 rounded-2xl bg-slate-900/90 border border-emerald-500/30 space-y-4 shadow-xl">
+            <div className="p-6 rounded-2xl bg-slate-900/90 border border-white/[0.08] space-y-4 shadow-xl">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono text-emerald-400 font-bold uppercase">5. Family & Marital Conflict</span>
-                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">Surah Al-Furqan 25:74</span>
+                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-white/[0.08]">Surah Al-Furqan 25:74</span>
               </div>
               <h4 className="text-base font-bold text-white">Arguments, Domestic Friction, & Loss of Affection</h4>
               <p className="text-xs text-slate-300 leading-relaxed font-mono">
@@ -809,10 +809,10 @@ export default function UnifiedIslamicSuite({ userProfile }: UnifiedIslamicSuite
             </div>
 
             {/* 6. Physical Healing */}
-            <div className="p-6 rounded-2xl bg-slate-900/90 border border-emerald-500/30 space-y-4 shadow-xl">
+            <div className="p-6 rounded-2xl bg-slate-900/90 border border-white/[0.08] space-y-4 shadow-xl">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono text-emerald-400 font-bold uppercase">6. Physical & Emotional Healing (Shifa)</span>
-                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">Sahih al-Bukhari #5688</span>
+                <span className="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-white/[0.08]">Sahih al-Bukhari #5688</span>
               </div>
               <h4 className="text-base font-bold text-white">Body Aches, Chronic Ailments, & Exhaustion</h4>
               <p className="text-xs text-slate-300 leading-relaxed font-mono">

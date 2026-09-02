@@ -235,7 +235,7 @@ export default function UIGuideSection() {
                   onClick={() => setDemoMode('normal')}
                   className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                     demoMode === 'normal'
-                      ? 'bg-amber-500/25 text-amber-300 border border-amber-500/40 shadow-sm'
+                      ? 'bg-amber-500/25 text-amber-300 border border-white/[0.12] shadow-sm'
                       : 'text-slate-400 hover:text-slate-200'
                   }`}
                 >
@@ -255,7 +255,7 @@ export default function UIGuideSection() {
             </div>
 
             {demoMode === 'normal' ? (
-              <div className="p-6 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-3">
+              <div className="p-6 rounded-2xl bg-amber-500/10 border border-white/[0.08] space-y-3">
                 <div className="flex items-center gap-2 text-amber-300">
                   <Sun className="w-5 h-5" />
                   <h4 className="font-bold text-sm">Everyday Seeker Plain-English View</h4>

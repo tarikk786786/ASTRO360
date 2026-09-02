@@ -125,8 +125,8 @@ export default function OmniWhyDrawer({
                       <span className="font-bold text-xs text-white">{sys.name}</span>
                       <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-md ${
                         sys.status === 'Strong'
-                          ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
-                          : 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30'
+                          ? 'bg-emerald-500/15 text-emerald-300 border border-white/[0.08]'
+                          : 'bg-cyan-500/15 text-cyan-300 border border-white/[0.08]'
                       }`}>
                         {sys.status}
                       </span>
