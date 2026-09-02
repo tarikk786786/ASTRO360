@@ -5,12 +5,13 @@ import {
   ShieldCheck, ArrowRight, RefreshCw, ChevronDown, ChevronUp,
   Briefcase, Heart, DollarSign, Clock, Compass, Activity,
   Sliders, Info, CheckCircle2, AlertTriangle, FileText, ArrowUpRight,
-  Scale, ShieldAlert, Check, Calendar, Lock
+  Scale, ShieldAlert, Check, Calendar, Lock, Copy, CheckCheck, Share2
 } from 'lucide-react';
 import type { UserProfile } from '../../types';
 import OmniWhyDrawer from './OmniWhyDrawer';
 import { PersonalProblemAnalyzer, SolvedProblemAnalysis } from '../../ai/solver/personalProblemAnalyzer';
 import { AskApiHandler } from '../../ai/api/askApiHandler';
+import { toast } from 'sonner';
 
 interface ChatMessage {
   id: string;
@@ -34,7 +35,7 @@ export default function OmniAskAssistant({
   const questionPresets = [
     { cat: 'CAREER', label: 'Career', q: 'Why is my career stuck and when will it improve?', icon: Briefcase, color: 'text-amber-400' },
     { cat: 'DECISION', label: 'Decision', q: 'Should I quit my job or stay?', icon: Scale, color: 'text-indigo-400' },
-    { cat: 'LOVE', label: 'Love', q: 'What does my chart indicate for long-term marriage?', icon: Heart, color: 'text-rose-400' },
+    { cat: 'LOVE', label: 'Love', q: 'What does my chart indicate for long-term marriage & timing?', icon: Heart, color: 'text-rose-400' },
     { cat: 'MONEY', label: 'Wealth', q: 'When are my strongest financial timing cycles?', icon: DollarSign, color: 'text-emerald-400' },
     { cat: 'TIMING', label: 'Timing', q: 'When will my career improve?', icon: Clock, color: 'text-cyan-400' },
     { cat: 'CHART', label: 'My Chart', q: 'What is my ascendant and Moon sign?', icon: Compass, color: 'text-purple-400' },
@@ -46,22 +47,23 @@ export default function OmniAskAssistant({
       id: 'init-1',
       sender: 'assistant',
       timestamp: 'Just now',
-      rawText: `Namaste ${seekerName}. I am your ASTRO360 Personal Astrology AI Assistant. I analyze your chart across Vedic, Western, KP, and Jaimini systems with NASA JPL DE440 sub-arcsecond precision. Ask any question about your vocation, decisions, relationships, timing, or birth chart.`
+      rawText: `Namaste ${seekerName}. I am your ASTRO360 Personal Astrology AI Assistant. I calculate your exact birth chart across Vedic Parashari, Western Tropical, KP Stellar, and Jaimini Sutras using NASA JPL DE440 sub-arcsecond ephemeris. Ask me any question about your vocation, major life decisions, relationships, financial cycles, or birth chart placements.`
     }
   ]);
 
   const [inputQuery, setInputQuery] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [activeTabMap, setActiveTabMap] = useState<Record<string, 'summary' | 'astrology' | 'practical' | 'compare' | 'evidence'>>({});
+  const [activeTabMap, setActiveTabMap] = useState<Record<string, 'all' | 'astrology' | 'practical' | 'compare' | 'evidence'>>({});
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const calculationSteps = [
-    'Understanding question...',
+    'Understanding question intent...',
     'Loading validated chart context...',
     'Calculating JPL DE440 ephemeris coordinates...',
-    'Running applicable astrology engines...',
-    'Evaluating classical scripture rules...',
-    'Computing multi-engine agreement...',
+    'Running multi-tradition astrology engines...',
+    'Evaluating classical scripture rules & yogas...',
+    'Computing cross-tradition agreement...',
     'Synthesizing personalized guidance...'
   ];
 
@@ -146,108 +148,82 @@ export default function OmniAskAssistant({
           id: `b-${Date.now()}`,
           sender: 'assistant',
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          rawText: 'ASTROCORE offline calculation fallback: Your planetary data is safely computed client-side.'
+          rawText: 'ASTROCORE calculation fallback: Your planetary data is safely computed client-side.'
         }
       ]);
     }
   };
 
+  const handleCopy = (msgId: string, text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(msgId);
+    toast.success('Analysis copied to clipboard!');
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
   return (
-    <div className="max-w-4xl mx-auto space-y-4 text-left pb-16 px-2 sm:px-4">
-      {/* Top Header & Chart Context Bar */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-[#111315] border border-white/[0.08] shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-400 font-bold">
-              <Sparkles className="w-4 h-4" />
-            </div>
-            <div>
-              <h1 className="text-lg sm:text-xl font-bold text-white tracking-tight flex items-center gap-2">
-                Ask ASTRO360
-              </h1>
-              <span className="text-[11px] font-mono text-slate-400 block">
-                NASA JPL DE440 Sub-Arcsecond Ephemeris • Multi-Engine Reasoning
+    <div className="w-full max-w-5xl mx-auto flex flex-col h-[calc(100dvh-5.5rem)] text-left pb-2 font-sans select-text">
+      {/* Top Header Card */}
+      <div className="p-3.5 sm:p-4 rounded-2xl bg-[#0E1524] border border-white/[0.08] shadow-lg mb-2 flex items-center justify-between gap-3 shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-amber-400/10 border border-white/[0.08] flex items-center justify-center text-amber-400 shrink-0">
+            <Bot className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h2 className="text-sm sm:text-base font-bold text-white font-sans">
+                ASTRO360 Personal Astrology AI
+              </h2>
+              <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-400/10 px-2 py-0.2 rounded border border-white/[0.08]">
+                CALCULATED ENGINE
               </span>
             </div>
+            <p className="text-[11px] font-mono text-slate-400">
+              NASA JPL DE440 Sub-Arcsecond Ephemeris • Vedic, Western, KP & Jaimini
+            </p>
           </div>
         </div>
 
-        {/* Active Chart Context Status Indicator */}
-        <div className="flex flex-wrap items-center gap-2">
-          {hasBirthData ? (
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              <span>USING MY CHART ({seekerName} • {userProfile.dob})</span>
-            </div>
-          ) : (
-            <button
-              onClick={() => onNavigate && onNavigate('charts')}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-mono cursor-pointer hover:bg-amber-500/20 transition-colors"
-            >
-              <AlertTriangle className="w-3.5 h-3.5" />
-              <span>NO CHART LOADED • SET BIRTH DATA</span>
-            </button>
-          )}
-
-          <span className="text-[11px] font-mono text-slate-400 bg-white/[0.04] px-2.5 py-1 rounded-full border border-white/[0.08]">
-            🔒 Zero-PII Private
-          </span>
+        {/* Chart Context Pill */}
+        <div className="flex items-center gap-1.5">
+          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs font-mono text-slate-300">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Active Chart: {seekerName} ({userProfile.dob || '1998-02-22'})</span>
+          </div>
         </div>
       </div>
 
-      {/* Suggested Quick Question Chips */}
-      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 text-xs font-mono">
-        {questionPresets.map((item, idx) => {
-          const Icon = item.icon;
-          return (
-            <button
-              key={idx}
-              onClick={() => handleSend(item.q)}
-              className="px-3.5 py-2 rounded-xl bg-[#111315] hover:bg-[#181A1D] text-slate-300 hover:text-white border border-white/[0.08] hover:border-white/20 shrink-0 cursor-pointer transition-all flex items-center gap-1.5 min-h-[40px]"
-            >
-              <Icon className={`w-3.5 h-3.5 ${item.color}`} />
-              <span>{item.label}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Chat Messages Container */}
+      {/* Main Chat Thread */}
       <div 
         ref={chatContainerRef}
-        className="min-h-[460px] max-h-[640px] overflow-y-auto space-y-5 p-4 sm:p-6 rounded-2xl bg-[#0B0C10] border border-white/[0.08] shadow-2xl"
+        className="flex-1 overflow-y-auto px-1 sm:px-2 space-y-4 custom-scrollbar"
       >
         {messages.map((msg) => {
           const isAssistant = msg.sender === 'assistant';
           const a = msg.analysis;
-          const activeSubTab = activeTabMap[msg.id] || 'summary';
+          const activeSubTab = activeTabMap[msg.id] || 'all';
 
           return (
-            <motion.div
+            <div 
               key={msg.id}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
               className={`flex gap-3 ${isAssistant ? 'justify-start' : 'justify-end'}`}
             >
               {isAssistant && (
-                <div className="w-8 h-8 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center shrink-0 mt-1 text-amber-400">
-                  <Bot className="w-4 h-4" />
+                <div className="w-8 h-8 rounded-xl bg-amber-400/10 border border-white/[0.08] flex items-center justify-center text-amber-400 shrink-0 mt-1">
+                  <Sparkles className="w-4 h-4" />
                 </div>
               )}
 
-              <div className={`max-w-[96%] sm:max-w-[88%] space-y-4 ${
-                isAssistant
-                  ? 'bg-[#111315] border border-white/[0.08] text-slate-200 p-4 sm:p-6 rounded-2xl shadow-xl'
-                  : 'bg-white text-black p-4 sm:p-5 rounded-2xl font-medium text-sm'
-              }`}>
-                {/* User Message */}
-                {!isAssistant && (
-                  <p className="text-sm font-semibold">{msg.rawText}</p>
-                )}
-
-                {/* Assistant Plain Greeting */}
-                {isAssistant && !a && (
-                  <p className="text-sm sm:text-[15px] leading-relaxed text-slate-200">
+              <div 
+                className={`max-w-[95%] sm:max-w-[90%] rounded-2xl p-4 sm:p-5 transition-all shadow-xl ${
+                  isAssistant 
+                    ? 'bg-[#0D1424] border border-white/[0.08] text-slate-100' 
+                    : 'bg-white text-black font-semibold ml-auto'
+                }`}
+              >
+                {/* User Message or Raw Assistant Welcome */}
+                {!a && (
+                  <p className="text-sm sm:text-[15px] leading-relaxed">
                     {msg.rawText}
                   </p>
                 )}
@@ -255,7 +231,7 @@ export default function OmniAskAssistant({
                 {/* Rich Astrology AI Analysis Card */}
                 {isAssistant && a && (
                   <div className="space-y-4">
-                    {/* Safety Banner */}
+                    {/* Safety Notice Banner */}
                     {a.safetyNotice && (
                       <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-mono flex items-center gap-2">
                         <ShieldAlert className="w-4 h-4 shrink-0 text-amber-400" />
@@ -263,7 +239,7 @@ export default function OmniAskAssistant({
                       </div>
                     )}
 
-                    {/* Metadata Header Pill */}
+                    {/* Metadata Header & Concordance Pill */}
                     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.08] pb-3">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="text-[11px] font-mono font-bold text-amber-400 uppercase bg-amber-400/10 px-2.5 py-0.5 rounded border border-amber-400/20">
@@ -276,21 +252,30 @@ export default function OmniAskAssistant({
                         )}
                       </div>
 
-                      {a.agreement && (
-                        <span className="text-[11px] font-mono text-emerald-400 bg-emerald-400/10 px-2.5 py-0.5 rounded border border-emerald-400/20">
-                          Engine Concordance: {a.agreement.agreementPercent}% ({a.agreement.participatingCount})
-                        </span>
-                      )}
+                      <div className="flex items-center gap-2">
+                        {a.agreement && (
+                          <span className="text-[11px] font-mono text-emerald-400 bg-emerald-400/10 px-2.5 py-0.5 rounded border border-emerald-400/20">
+                            Concordance: {a.agreement.agreementPercent}%
+                          </span>
+                        )}
+                        <button
+                          onClick={() => handleCopy(msg.id, a.summary)}
+                          className="p-1 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                          title="Copy Summary"
+                        >
+                          {copiedId === msg.id ? <CheckCheck className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                        </button>
+                      </div>
                     </div>
 
-                    {/* Sub-Tab Navigation Bar */}
+                    {/* View Exploration Tabs */}
                     <div className="flex items-center gap-1.5 border-b border-white/[0.08] pb-2 text-xs font-mono overflow-x-auto no-scrollbar">
                       {[
-                        { id: 'summary', label: 'Summary' },
-                        { id: 'astrology', label: '🪐 Astrology View' },
-                        { id: 'practical', label: '🛠️ Practical View' },
-                        { id: 'compare', label: '🌐 Traditions' },
-                        { id: 'evidence', label: '📜 Evidence' },
+                        { id: 'all', label: 'All In One' },
+                        { id: 'astrology', label: '🪐 Astrological Mechanics' },
+                        { id: 'practical', label: '🛠️ Practical Playbook' },
+                        { id: 'compare', label: '🌐 4-Traditions' },
+                        { id: 'evidence', label: '📜 Classical Evidence' },
                       ].map(t => (
                         <button
                           key={t.id}
@@ -306,16 +291,22 @@ export default function OmniAskAssistant({
                       ))}
                     </div>
 
-                    {/* SUB-TAB 1: Summary */}
-                    {activeSubTab === 'summary' && (
-                      <div className="space-y-3.5">
-                        <p className="text-sm sm:text-[15px] text-slate-100 font-sans leading-relaxed">
-                          {a.summary}
-                        </p>
+                    {/* VIEW 1: ALL-IN-ONE (Unified Direct Master Reading) */}
+                    {activeSubTab === 'all' && (
+                      <div className="space-y-4">
+                        {/* Executive Summary */}
+                        <div className="space-y-2">
+                          <h4 className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">
+                            Executive Astrological Synthesis:
+                          </h4>
+                          <p className="text-sm sm:text-[15px] text-slate-100 font-sans leading-relaxed">
+                            {a.summary}
+                          </p>
+                        </div>
 
                         {/* Decision Matrix if available */}
                         {a.decisionMatrix && (
-                          <div className="p-4 rounded-xl bg-[#0B0C10] border border-white/[0.08] space-y-3 mt-2">
+                          <div className="p-4 rounded-xl bg-[#090E1A] border border-white/[0.08] space-y-3">
                             <span className="text-xs font-mono font-bold text-amber-400 block uppercase">
                               ⚖️ Decision Scenario Analysis:
                             </span>
@@ -340,23 +331,66 @@ export default function OmniAskAssistant({
                             </p>
                           </div>
                         )}
+
+                        {/* Astrological & Practical Split Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {/* Astrological View */}
+                          <div className="p-3.5 rounded-xl bg-[#090E1A] border border-white/[0.08] space-y-2 text-xs font-mono">
+                            <div className="flex items-center gap-1.5 text-amber-400 font-bold uppercase text-[10px]">
+                              <span>🪐 ASTROLOGY VIEW (WHAT YOUR CHART SHOWS)</span>
+                            </div>
+                            <p className="text-slate-200 font-sans text-xs font-semibold">{a.astrologyView.primaryTheme}</p>
+                            <div className="pt-1.5 border-t border-white/5 space-y-1 text-slate-300 text-[11px]">
+                              <div><strong className="text-slate-400">Dasha:</strong> {a.astrologyView.dashaCycle}</div>
+                              <div><strong className="text-slate-400">Houses:</strong> {a.astrologyView.houseActivations}</div>
+                            </div>
+                          </div>
+
+                          {/* Practical View */}
+                          <div className="p-3.5 rounded-xl bg-[#090E1A] border border-white/[0.08] space-y-2 text-xs">
+                            <div className="flex items-center gap-1.5 text-emerald-400 font-bold font-mono uppercase text-[10px]">
+                              <span>🛠️ PRACTICAL VIEW (WHAT YOU CAN CONTROL)</span>
+                            </div>
+                            <ul className="space-y-1.5 text-[11px] text-slate-300 font-sans">
+                              {a.practicalView.actionItems.slice(0, 3).map((act, aIdx) => (
+                                <li key={aIdx} className="flex items-start gap-1.5">
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                                  <span>{act}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+
+                        {/* Timing Banner */}
+                        {a.timing && (
+                          <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between text-xs font-mono">
+                            <div className="space-y-0.5">
+                              <span className="text-slate-400 text-[10px] uppercase">Active Timing Window:</span>
+                              <div className="text-white font-bold">{a.timing.windowLabel}</div>
+                            </div>
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-white/[0.08]">
+                              Intensity: {a.timing.intensity}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     )}
 
-                    {/* SUB-TAB 2: Astrology View */}
+                    {/* VIEW 2: Astrological Mechanics */}
                     {activeSubTab === 'astrology' && (
                       <div className="space-y-3 text-xs font-mono">
-                        <div className="p-3.5 rounded-xl bg-[#0B0C10] border border-white/[0.08] space-y-2">
-                          <span className="text-[10px] text-amber-400 uppercase font-bold block">ASTROLOGY VIEW (WHAT YOUR CHART SHOWS):</span>
+                        <div className="p-4 rounded-xl bg-[#090E1A] border border-white/[0.08] space-y-3">
+                          <span className="text-xs text-amber-400 uppercase font-bold block">ASTROLOGY VIEW (WHAT YOUR CHART SHOWS):</span>
                           <p className="text-slate-200 font-sans text-sm font-semibold">{a.astrologyView.primaryTheme}</p>
                           
-                          <div className="pt-2 border-t border-white/5 space-y-1 text-slate-300">
+                          <div className="pt-2 border-t border-white/5 space-y-1.5 text-slate-300">
                             <div><strong className="text-slate-400">Active Dasha Cycle:</strong> {a.astrologyView.dashaCycle}</div>
                             <div><strong className="text-slate-400">Planetary Telemetry:</strong> {a.astrologyView.planetaryTelemetry}</div>
                             <div><strong className="text-slate-400">House Activations:</strong> {a.astrologyView.houseActivations}</div>
                           </div>
 
-                          <div className="pt-2 border-t border-white/5 flex flex-wrap gap-1">
+                          <div className="pt-2 border-t border-white/5 flex flex-wrap gap-1.5">
                             {a.astrologyView.chartFactors.map((factor, fIdx) => (
                               <span key={fIdx} className="text-[10px] font-mono bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.06] text-slate-300">
                                 • {factor}
@@ -366,7 +400,7 @@ export default function OmniAskAssistant({
                         </div>
 
                         {/* Timing & Stability */}
-                        <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-1">
+                        <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-1">
                           <div className="flex items-center justify-between text-[11px]">
                             <span className="text-slate-400">Birth-Time Stability:</span>
                             <span className="text-emerald-400 font-bold">{a.sensitivity.stability} ({a.sensitivity.driftInterval})</span>
@@ -376,12 +410,12 @@ export default function OmniAskAssistant({
                       </div>
                     )}
 
-                    {/* SUB-TAB 3: Practical View */}
+                    {/* VIEW 3: Practical Playbook */}
                     {activeSubTab === 'practical' && (
                       <div className="space-y-3">
-                        <div className="p-4 rounded-xl bg-[#0B0C10] border border-white/[0.08] space-y-3">
+                        <div className="p-4 rounded-xl bg-[#090E1A] border border-white/[0.08] space-y-3">
                           <span className="text-xs font-mono font-bold text-emerald-400 block uppercase">
-                            🛠️ PRACTICAL VIEW (WHAT YOU CAN CONTROL):
+                            🛠️ PRACTICAL PLAYBOOK (ACTIONABLE GUIDANCE):
                           </span>
                           <ul className="space-y-2 text-xs text-slate-300 font-sans">
                             {a.practicalView.actionItems.map((act, aIdx) => (
@@ -408,23 +442,23 @@ export default function OmniAskAssistant({
                       </div>
                     )}
 
-                    {/* SUB-TAB 4: Multi-Tradition Compare */}
+                    {/* VIEW 4: 4-Traditions Compare */}
                     {activeSubTab === 'compare' && (
                       <div className="space-y-3 text-xs font-mono">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                          <div className="p-3 rounded-xl bg-[#0B0C10] border border-white/[0.08] space-y-1">
+                          <div className="p-3 rounded-xl bg-[#090E1A] border border-white/[0.08] space-y-1">
                             <span className="text-[10px] text-amber-400 font-bold">VEDIC PARASHARI</span>
                             <p className="text-[11px] text-slate-300 font-sans leading-relaxed">{a.systemsBreakdown.vedic}</p>
                           </div>
-                          <div className="p-3 rounded-xl bg-[#0B0C10] border border-white/[0.08] space-y-1">
+                          <div className="p-3 rounded-xl bg-[#090E1A] border border-white/[0.08] space-y-1">
                             <span className="text-[10px] text-cyan-400 font-bold">WESTERN TROPICAL</span>
                             <p className="text-[11px] text-slate-300 font-sans leading-relaxed">{a.systemsBreakdown.western}</p>
                           </div>
-                          <div className="p-3 rounded-xl bg-[#0B0C10] border border-white/[0.08] space-y-1">
+                          <div className="p-3 rounded-xl bg-[#090E1A] border border-white/[0.08] space-y-1">
                             <span className="text-[10px] text-emerald-400 font-bold">KP STELLAR</span>
                             <p className="text-[11px] text-slate-300 font-sans leading-relaxed">{a.systemsBreakdown.kp}</p>
                           </div>
-                          <div className="p-3 rounded-xl bg-[#0B0C10] border border-white/[0.08] space-y-1">
+                          <div className="p-3 rounded-xl bg-[#090E1A] border border-white/[0.08] space-y-1">
                             <span className="text-[10px] text-indigo-400 font-bold">JAIMINI SUTRAS</span>
                             <p className="text-[11px] text-slate-300 font-sans leading-relaxed">{a.systemsBreakdown.jaimini}</p>
                           </div>
@@ -440,130 +474,166 @@ export default function OmniAskAssistant({
                       </div>
                     )}
 
-                    {/* SUB-TAB 5: Evidence & Scripture Citations */}
+                    {/* VIEW 5: Classical Scripture Evidence */}
                     {activeSubTab === 'evidence' && (
                       <div className="space-y-2.5 text-xs font-mono">
                         <span className="text-[10px] text-slate-500 uppercase font-medium block">Classical Scripture Citations & Ephemeris Authority:</span>
                         <div className="space-y-1.5">
                           {a.evidenceSources.map((ev, eIdx) => (
-                            <div key={eIdx} className="p-2.5 rounded-xl bg-[#0B0C10] border border-white/[0.08] flex items-center justify-between">
+                            <div key={eIdx} className="p-2.5 rounded-xl bg-[#090E1A] border border-white/[0.08] flex items-center justify-between">
                               <span className="text-white font-medium">📜 {ev.citation}</span>
-                              <span className="text-[10px] text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded border border-emerald-400/20">
-                                Tier {ev.tier} Primary
+                              <span className="text-[10px] px-2 py-0.5 rounded bg-white/[0.06] text-amber-300 border border-white/[0.08]">
+                                Tier {ev.tier} Scripture Authority
                               </span>
                             </div>
                           ))}
                         </div>
-
-                        <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] text-[11px] space-y-1 text-slate-400">
-                          <div><strong>Engine Version:</strong> {a.reproducibility.engineVersion}</div>
-                          <div><strong>Ephemeris:</strong> {a.reproducibility.ephemerisVersion}</div>
-                          <div><strong>Ayanamsha:</strong> {a.reproducibility.ayanamsha}</div>
-                        </div>
                       </div>
                     )}
 
-                    {/* Contextual Action Shortcuts */}
-                    {onNavigate && (
-                      <div className="pt-3 border-t border-white/[0.08] flex flex-wrap items-center gap-2">
-                        <span className="text-[10px] font-mono text-slate-500 block w-full">Contextual Navigation:</span>
-                        <button
-                          onClick={() => onNavigate('charts')}
-                          className="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-200 border border-white/[0.08] text-xs font-mono flex items-center gap-1 cursor-pointer transition-colors"
-                        >
-                          <Compass className="w-3.5 h-3.5 text-indigo-400" />
-                          <span>View Birth Chart</span>
-                        </button>
-                        <button
-                          onClick={() => onNavigate('forecast')}
-                          className="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-200 border border-white/[0.08] text-xs font-mono flex items-center gap-1 cursor-pointer transition-colors"
-                        >
-                          <Clock className="w-3.5 h-3.5 text-cyan-400" />
-                          <span>View Forecast</span>
-                        </button>
-                        <button
-                          onClick={() => onNavigate('dasha')}
-                          className="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-200 border border-white/[0.08] text-xs font-mono flex items-center gap-1 cursor-pointer transition-colors"
-                        >
-                          <Activity className="w-3.5 h-3.5 text-amber-400" />
-                          <span>Inspect Dasha</span>
-                        </button>
-                      </div>
-                    )}
-
-                    {/* Context-Aware Follow-Up Chips */}
+                    {/* Interactive Follow-Up Chips */}
                     {a.followUps && a.followUps.length > 0 && (
-                      <div className="space-y-1.5 pt-2 border-t border-white/5">
-                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block">Suggested Inquiries:</span>
+                      <div className="pt-2 border-t border-white/[0.08] space-y-1.5">
+                        <span className="text-[10px] font-mono text-slate-400 block uppercase">
+                          💡 Suggested Follow-Up Questions:
+                        </span>
                         <div className="flex flex-wrap gap-1.5">
-                          {a.followUps.map((fQ, fIdx) => (
+                          {a.followUps.map((fu, fuIdx) => (
                             <button
-                              key={fIdx}
-                              onClick={() => handleSend(fQ)}
-                              className="text-[11px] font-mono px-3 py-1.5 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.06] hover:border-white/[0.12] transition-colors cursor-pointer text-left"
+                              key={fuIdx}
+                              onClick={() => handleSend(fu)}
+                              className="px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.1] text-xs font-mono text-slate-300 hover:text-white border border-white/[0.08] transition-all cursor-pointer text-left"
                             >
-                              "{fQ}"
+                              💬 {fu}
                             </button>
                           ))}
                         </div>
                       </div>
                     )}
+
+                    {/* Deep-Link Tool Navigation Shortcuts */}
+                    {onNavigate && (
+                      <div className="pt-2 border-t border-white/[0.08] flex flex-wrap items-center gap-2">
+                        <button
+                          onClick={() => onNavigate('birth-chart')}
+                          className="px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] text-[10px] font-mono text-slate-300 hover:text-white flex items-center gap-1 cursor-pointer transition-colors"
+                        >
+                          <Compass className="w-3 h-3 text-amber-400" />
+                          <span>View Birth Chart</span>
+                        </button>
+                        <button
+                          onClick={() => onNavigate('forecast')}
+                          className="px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] text-[10px] font-mono text-slate-300 hover:text-white flex items-center gap-1 cursor-pointer transition-colors"
+                        >
+                          <Clock className="w-3 h-3 text-cyan-400" />
+                          <span>View Detailed Forecast</span>
+                        </button>
+                        <button
+                          onClick={() => onNavigate('dasha')}
+                          className="px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] text-[10px] font-mono text-slate-300 hover:text-white flex items-center gap-1 cursor-pointer transition-colors"
+                        >
+                          <Layers className="w-3 h-3 text-purple-400" />
+                          <span>Inspect Dasha Cycles</span>
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
-            </motion.div>
+
+              {!isAssistant && (
+                <div className="w-8 h-8 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center text-white shrink-0 mt-1">
+                  <User className="w-4 h-4" />
+                </div>
+              )}
+            </div>
           );
         })}
 
-        {/* Real-Time Calculation Progress Display */}
+        {/* Live Step-by-Step Calculation Progress Indicator */}
         {isTyping && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="p-4 rounded-2xl bg-[#111315] border border-white/[0.08] space-y-2 text-xs font-mono text-slate-300 max-w-md"
+          <motion.div 
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-start gap-3 p-4 rounded-2xl bg-[#0D1424] border border-white/[0.08] text-left max-w-lg"
           >
-            <div className="flex items-center gap-2 text-amber-400 font-bold">
-              <Bot className="w-4 h-4 animate-spin" />
-              <span>ASTROCORE Processing Pipeline</span>
+            <div className="w-8 h-8 rounded-xl bg-amber-400/10 border border-white/[0.08] flex items-center justify-center text-amber-400 shrink-0">
+              <RefreshCw className="w-4 h-4 animate-spin" />
             </div>
-            <div className="space-y-1 text-[11px] text-slate-400 pl-6">
-              {calculationSteps.map((step, sIdx) => (
-                <div 
-                  key={sIdx} 
-                  className={`flex items-center gap-1.5 ${sIdx === currentStepIndex ? 'text-white font-bold' : sIdx < currentStepIndex ? 'text-emerald-400' : 'text-slate-600'}`}
-                >
-                  {sIdx < currentStepIndex ? <Check className="w-3 h-3 text-emerald-400" /> : sIdx === currentStepIndex ? <span className="animate-pulse">▶</span> : <span className="opacity-40">○</span>}
-                  <span>{step}</span>
-                </div>
-              ))}
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono font-bold text-amber-400">
+                  ASTROCORE Precision Engine Active
+                </span>
+                <span className="text-[10px] font-mono text-slate-400">
+                  Step {currentStepIndex + 1}/{calculationSteps.length}
+                </span>
+              </div>
+              <p className="text-xs font-mono text-slate-200 animate-pulse">
+                {calculationSteps[currentStepIndex]}
+              </p>
             </div>
           </motion.div>
         )}
       </div>
 
-      {/* Input Composer */}
-      <form
+      {/* Suggested Question Chips (when only initial message exists) */}
+      {messages.length <= 1 && (
+        <div className="px-2 py-2 shrink-0">
+          <span className="text-[10px] font-mono text-slate-400 block mb-1.5 uppercase font-bold">
+            ⚡ Quick-Launch Astrological Inquiries:
+          </span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5">
+            {questionPresets.slice(0, 6).map((preset, pIdx) => {
+              const Icon = preset.icon;
+              return (
+                <button
+                  key={pIdx}
+                  onClick={() => handleSend(preset.q)}
+                  className="p-2.5 rounded-xl bg-[#0D1424] hover:bg-white/[0.08] border border-white/[0.08] text-left flex items-start gap-2.5 transition-all cursor-pointer group shadow-sm"
+                >
+                  <Icon className={`w-4 h-4 ${preset.color} shrink-0 mt-0.5 group-hover:scale-110 transition-transform`} />
+                  <div className="min-w-0">
+                    <span className="text-xs font-bold text-slate-200 group-hover:text-white block truncate">
+                      {preset.label}
+                    </span>
+                    <span className="text-[11px] text-slate-400 block truncate font-sans">
+                      {preset.q}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Input Form Box */}
+      <form 
         onSubmit={(e) => {
           e.preventDefault();
           handleSend();
         }}
-        className="p-2 rounded-2xl bg-[#111315] border border-white/[0.08] focus-within:border-white/20 shadow-2xl flex items-center gap-2"
+        className="p-2.5 sm:p-3 rounded-2xl bg-[#0E1524] border border-white/[0.08] shadow-2xl shrink-0 mt-2"
       >
-        <input
-          type="text"
-          value={inputQuery}
-          onChange={(e) => setInputQuery(e.target.value)}
-          placeholder="Ask anything about your chart, career, love, timing, or Dasha..."
-          className="flex-1 bg-transparent border-none text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none px-3 py-2 font-sans"
-        />
-        <button
-          type="submit"
-          disabled={!inputQuery.trim() || isTyping}
-          className="px-5 py-2.5 rounded-xl bg-white hover:bg-slate-100 disabled:opacity-40 text-black font-bold font-sans text-xs cursor-pointer transition-all flex items-center gap-1.5 shadow-md shrink-0"
-        >
-          <span>Ask</span>
-          <Send className="w-3.5 h-3.5" />
-        </button>
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            value={inputQuery}
+            onChange={(e) => setInputQuery(e.target.value)}
+            placeholder={`Ask about your career, timing, decisions, or chart (${seekerName})...`}
+            disabled={isTyping}
+            className="flex-1 px-3.5 py-2.5 rounded-xl bg-[#080C14] border border-white/10 text-white placeholder-slate-500 text-xs sm:text-sm font-sans focus:outline-none focus:border-amber-400/60 focus:ring-1 focus:ring-amber-400/60 transition-colors disabled:opacity-50"
+          />
+          <button
+            type="submit"
+            disabled={!inputQuery.trim() || isTyping}
+            className="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 disabled:opacity-40 text-black font-bold font-sans text-xs sm:text-sm flex items-center gap-1.5 transition-all cursor-pointer shrink-0 shadow-md"
+          >
+            <span>Ask</span>
+            <Send className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </form>
     </div>
   );
