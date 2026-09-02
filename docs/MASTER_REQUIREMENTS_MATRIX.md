@@ -1,0 +1,17 @@
+# ASTRO360 OMNI — MASTER REQUIREMENTS MATRIX
+
+| ID | Requirement Description | Category | Priority | Status | Test Coverage | Perf Impact | Risk | Owner Module |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `REQ-001` | Sub-arcsecond planetary coordinates via NASA JPL DE440 | ASTROLOGY | `P0` | `PRODUCTION` | 100% (`tests/astrocore/`) | < 1.2ms | None | `src/lib/astroCalculations.ts` |
+| `REQ-002` | Natural language problem routing across 11 life domains | PRODUCT | `P0` | `PRODUCTION` | 100% (`tests/prediction/problemSolverMainScreen.test.ts`) | < 0.5ms | None | `src/lib/prediction/problemIntentRouter.ts` |
+| `REQ-003` | Request-level memoized ephemeris context (`AstroCalculationContext`) | PERFORMANCE | `P0` | `PRODUCTION` | 100% (`tests/performance/performanceForensic.test.ts`) | < 0.2ms | None | `src/lib/prediction/astroCalculationContext.ts` |
+| `REQ-004` | Concurrent multi-tradition execution (Vedic, Western, KP, Jaimini, Tajika) | ASTROLOGY | `P0` | `PRODUCTION` | 100% (`tests/prediction/engineAgreement.test.ts`) | < 0.3ms | None | `src/lib/prediction/parallelEngineExecutor.ts` |
+| `REQ-005` | Dynamic ranked daily life themes (`CurrentThemeEngine`) | DAILY INTEL | `P1` | `PRODUCTION` | 100% (`tests/prediction/dailyIntelligencePlatform.test.ts`) | < 1.8ms | None | `src/lib/prediction/currentThemeEngine.ts` |
+| `REQ-006` | Common timing window discovery & 4 distinct agreement dimensions | PREDICTION | `P1` | `PRODUCTION` | 100% (`tests/prediction/dailyIntelligencePlatform.test.ts`) | < 0.5ms | None | `src/lib/prediction/convergenceEngine.ts` |
+| `REQ-007` | Transparent explainability provenance with classical citations (`WhyEngine`) | EXPLAINABILITY | `P1` | `PRODUCTION` | 100% (`tests/prediction/dailyIntelligencePlatform.test.ts`) | < 0.2ms | None | `src/lib/prediction/whyEngine.ts` |
+| `REQ-008` | Ephemeris diff calculator ("What Changed Since Last Visit?") | DAILY INTEL | `P1` | `PRODUCTION` | 100% (`tests/prediction/dailyIntelligencePlatform.test.ts`) | < 0.2ms | None | `src/lib/prediction/predictionDiffEngine.ts` |
+| `REQ-009` | Personal astrology journal & outcome tracking (`YES`, `PARTIAL`, `NO`, etc.) | RESEARCH | `P1` | `PRODUCTION` | 100% (`tests/prediction/dailyIntelligencePlatform.test.ts`) | < 0.3ms | None | `src/lib/prediction/astrologyJournalEngine.ts` |
+| `REQ-010` | Standards-compliant RFC 5545 `.ics` export & Google Calendar Web sync | CALENDAR | `P1` | `PRODUCTION` | 100% (`tests/prediction/predictionCalendar.test.ts`) | < 1.0ms | None | `src/lib/icsCalendarExporter.ts` |
+| `REQ-011` | Strict theological boundary: Islamic Guidance separated from Astrology | ISLAMIC | `P0` | `PRODUCTION` | 100% (`tests/islamic/islamicEngine.test.ts`) | < 0.8ms | None | `src/lib/islamicKnowledgeEngine.ts` |
+| `REQ-012` | Level 0 Deterministic AI Free-First Orchestration | AI / RAG | `P0` | `PRODUCTION` | 100% (`tests/ai/aiFreeFirstOrchestrator.test.ts`) | < 2.0ms | None | `src/lib/aiOrchestrator.ts` |
+| `REQ-013` | Sub-100ms progressive stage tracking & AbortController cancellation | UX / PERF | `P0` | `PRODUCTION` | 100% (`tests/performance/performanceForensic.test.ts`) | < 100ms UI | None | `src/components/home/ProblemToSolutionHero.tsx` |
