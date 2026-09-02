@@ -327,7 +327,7 @@ export default function LandingPage({
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#060A12] text-[#F8FAFC] selection:bg-amber-400 selection:text-slate-950 font-sans relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#0B0C10] text-[#F8FAFC] selection:bg-amber-400 selection:text-slate-950 font-sans relative overflow-x-hidden">
       
       {/* ── Living Crisp Starfield Canvas ─────────────────────────── */}
       <AnimatedStarfield />
@@ -416,17 +416,17 @@ export default function LandingPage({
           <RevealSection className="mt-12 max-w-3xl mx-auto w-full" delay={0.15}>
             <div
               ref={heroGlowRef}
-              className="bg-[#0B1220] border border-white/12 rounded-2xl p-5 sm:p-7 shadow-2xl space-y-6 relative text-left"
+              className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5 sm:p-7 shadow-2xl space-y-6 relative text-left"
             >
               {/* Window Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/8 pb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.08] pb-4">
                 <div className="flex items-center gap-2.5">
                   <div className="w-2.5 h-2.5 rounded-full bg-slate-600" />
                   <div className="w-2.5 h-2.5 rounded-full bg-slate-600" />
                   <div className="w-2.5 h-2.5 rounded-full bg-slate-600" />
                   <span className="text-xs font-mono text-slate-400 ml-2 font-medium">ASTRO360 Interactive Exploration Engine</span>
                 </div>
-                <span className="text-[11px] font-mono text-amber-300 bg-amber-400/10 px-3 py-1 rounded-md border border-amber-400/20">
+                <span className="text-[11px] font-mono text-amber-300 bg-amber-400/10 px-3 py-1 rounded-md border border-white/[0.08]">
                   Sub-Arcsecond Ephemeris Grounding
                 </span>
               </div>
@@ -446,7 +446,7 @@ export default function LandingPage({
                       setCustomInputQuery('');
                     }
                   }}
-                  className="flex items-center gap-2 bg-[#060A12] border border-white/12 rounded-xl p-1.5 focus-within:border-amber-400/50 transition-colors"
+                  className="flex items-center gap-2 bg-[#0B0C10] border border-white/[0.08] rounded-xl p-1.5 focus-within:border-white/[0.08] transition-colors"
                 >
                   <Search className="w-4 h-4 text-amber-400 shrink-0 ml-2.5" />
                   <input
@@ -458,7 +458,7 @@ export default function LandingPage({
                   />
                   <button
                     type="submit"
-                    className="px-3.5 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold font-mono text-xs cursor-pointer transition-colors shrink-0"
+                    className="px-3.5 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-black font-semibold font-sans text-xs cursor-pointer transition-colors shrink-0"
                   >
                     Analyze
                   </button>
@@ -477,8 +477,8 @@ export default function LandingPage({
                       onClick={() => setHeroActiveQuery(chip)}
                       className={`text-[11px] font-mono px-3 py-1.5 rounded-md border transition-all cursor-pointer ${
                         heroActiveQuery === chip
-                          ? 'bg-amber-400/15 text-amber-300 border-amber-400/35 font-medium'
-                          : 'bg-white/4 text-slate-400 hover:text-white border-white/6 hover:border-white/12'
+                          ? 'bg-amber-400/15 text-amber-300 border-white/[0.08] font-medium'
+                          : 'bg-white/4 text-slate-400 hover:text-white border-white/[0.06] hover:border-white/[0.08]'
                       }`}
                     >
                       {chip}
@@ -488,7 +488,7 @@ export default function LandingPage({
               </div>
 
               {/* Dynamic Event Timing Banner */}
-              <div className="bg-[#060A12] border border-amber-400/25 rounded-xl p-4 sm:p-5 space-y-2">
+              <div className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-4 sm:p-5 space-y-2">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <Briefcase className="w-4 h-4 text-amber-400" />
@@ -496,7 +496,7 @@ export default function LandingPage({
                       {activeSolvedResult?.category || 'CAREER & VOCATION'}
                     </span>
                   </div>
-                  <span className="text-xs font-mono bg-amber-400/20 text-amber-300 px-2.5 py-0.5 rounded border border-amber-400/30">
+                  <span className="text-xs font-mono bg-amber-400/20 text-amber-300 px-2.5 py-0.5 rounded border border-white/[0.08]">
                     Confidence: {activeSolvedResult ? `${Math.round(activeSolvedResult.confidence * 100)}% Match` : 'Strong Multi-Tradition Agreement'}
                   </span>
                 </div>
@@ -510,7 +510,7 @@ export default function LandingPage({
 
               {/* Real Interactive Controls: [Why?] [Compare] [Timeline] [Technical] */}
               <div className="space-y-4">
-                <div className="flex flex-wrap gap-2 pt-1 border-b border-white/8 pb-3">
+                <div className="flex flex-wrap gap-2 pt-1 border-b border-white/[0.08] pb-3">
                   {[
                     { id: 'why', label: 'Why?' },
                     { id: 'compare', label: 'Compare' },
@@ -522,8 +522,8 @@ export default function LandingPage({
                       onClick={() => setHeroActiveView(tab.id as typeof heroActiveView)}
                       className={`px-4 py-2 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer min-h-[36px] ${
                         heroActiveView === tab.id
-                          ? 'bg-amber-400 text-slate-950 font-bold'
-                          : 'bg-white/5 text-slate-300 hover:text-white hover:bg-white/8 border border-white/8'
+                          ? 'bg-white text-black font-semibold shadow-sm'
+                          : 'bg-white/5 text-slate-300 hover:text-white hover:bg-white/8 border border-white/[0.08]'
                       }`}
                     >
                       {tab.label}
@@ -542,7 +542,7 @@ export default function LandingPage({
                       transition={{ duration: 0.2 }}
                       className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono"
                     >
-                      <div className="bg-[#060A12] border border-white/8 rounded-xl p-3.5 space-y-1">
+                      <div className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-3.5 space-y-1">
                         <span className="text-[10px] text-slate-500 uppercase font-medium">Primary Planetary Factor</span>
                         <p className="font-semibold text-amber-300">
                           {activeSolvedResult?.answer.technicalEvidence.planetaryDegrees?.split(';')[0] || 'Jupiter in Taurus (10th Bhava)'}
@@ -552,7 +552,7 @@ export default function LandingPage({
                         </p>
                       </div>
 
-                      <div className="bg-[#060A12] border border-white/8 rounded-xl p-3.5 space-y-1">
+                      <div className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-3.5 space-y-1">
                         <span className="text-[10px] text-slate-500 uppercase font-medium">Active Timing Dasha</span>
                         <p className="font-semibold text-cyan-300">
                           {activeSolvedResult?.answer.technicalEvidence.dashaCycle || 'Jupiter-Saturn Dasha Sub-Period'}
@@ -562,7 +562,7 @@ export default function LandingPage({
                         </p>
                       </div>
 
-                      <div className="bg-[#060A12] border border-white/8 rounded-xl p-3.5 space-y-1">
+                      <div className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-3.5 space-y-1">
                         <span className="text-[10px] text-slate-500 uppercase font-medium">Tradition Consensus</span>
                         <p className="font-semibold text-emerald-300">
                           {activeSolvedResult ? `${activeSolvedResult.systems.length} Traditions Evaluated` : 'Agreement Across 4 Traditions'}
@@ -572,7 +572,7 @@ export default function LandingPage({
                         </p>
                       </div>
 
-                      <div className="bg-[#060A12] border border-white/8 rounded-xl p-3.5 space-y-1">
+                      <div className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-3.5 space-y-1">
                         <span className="text-[10px] text-slate-500 uppercase font-medium">Birth-Time Stability</span>
                         <p className="font-semibold text-indigo-300">Stable across ±15 min Drift</p>
                         <p className="text-[11px] text-slate-400 font-sans">Planetary sign positions and Dasha rulers remain unchanged across the interval.</p>
@@ -595,12 +595,12 @@ export default function LandingPage({
                         { system: 'KP Stellar System', status: 'High Precision', desc: 'Cuspal sub-lord significations across 249 sub-divisions.' },
                         { system: 'Jaimini Sutras', status: 'Favorable', desc: 'Chara Dasha sign periods and Amatyakaraka/Atmakaraka dignity.' },
                       ].map((row, idx) => (
-                        <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-[#060A12] border border-white/8 rounded-xl p-3">
+                        <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-[#0B0C10] border border-white/[0.08] rounded-xl p-3">
                           <div className="space-y-0.5">
                             <span className="font-semibold text-white">{row.system}</span>
                             <p className="text-[11px] text-slate-400 font-sans">{row.desc}</p>
                           </div>
-                          <span className="text-[10px] font-medium px-2.5 py-1 rounded bg-emerald-400/10 text-emerald-300 border border-emerald-400/20 w-fit">
+                          <span className="text-[10px] font-medium px-2.5 py-1 rounded bg-emerald-400/10 text-emerald-300 border border-white/[0.08] w-fit">
                             {row.status}
                           </span>
                         </div>
@@ -615,7 +615,7 @@ export default function LandingPage({
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -8 }}
                       transition={{ duration: 0.2 }}
-                      className="bg-[#060A12] border border-white/8 rounded-xl p-4 space-y-3 text-xs font-mono"
+                      className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-4 space-y-3 text-xs font-mono"
                     >
                       <div className="flex items-center justify-between text-slate-400 text-[11px]">
                         <span>Entry Phase</span>
@@ -638,7 +638,7 @@ export default function LandingPage({
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -8 }}
                       transition={{ duration: 0.2 }}
-                      className="bg-[#060A12] border border-white/8 rounded-xl p-4 space-y-2 text-xs font-mono"
+                      className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-4 space-y-2 text-xs font-mono"
                     >
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[11px]">
                         <div><span className="text-slate-500">Ayanamsha:</span> <span className="text-amber-300 font-semibold">True Lahiri (24°13'08")</span></div>
@@ -652,7 +652,7 @@ export default function LandingPage({
               </div>
 
               {/* Bottom Card Footer */}
-              <div className="pt-3 border-t border-white/8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono text-slate-400">
+              <div className="pt-3 border-t border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono text-slate-400">
                 <span className="flex items-center gap-1.5 text-emerald-400">
                   <CheckCircle2 className="w-4 h-4 shrink-0" /> Real computational engine output.
                 </span>
@@ -789,14 +789,14 @@ export default function LandingPage({
         {/* ════════════════════════════════════════════════════════════
             SECTION 5: ASK THE QUESTIONS YOU ACTUALLY CARE ABOUT
             ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
+        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/8 text-slate-300 text-xs font-mono">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/[0.08] text-slate-300 text-xs font-mono">
               <Zap className="w-3.5 h-3.5 text-amber-400" />
               <span>Natural Language Astrological Inquiry</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-              ASK THE QUESTIONS YOU ACTUALLY CARE ABOUT.
+              Ask the questions you actually care about.
             </h2>
             <p className="text-sm text-slate-400 font-sans max-w-xl mx-auto">
               Select a domain to see structured, multi-tradition inquiries ready for exploration.
@@ -814,8 +814,8 @@ export default function LandingPage({
                   onClick={() => setSelectedCategory(cat.id)}
                   className={`px-4 py-2 rounded-xl border text-xs font-mono font-medium flex items-center gap-2 transition-all cursor-pointer min-h-[40px] ${
                     isSelected
-                      ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold'
-                      : 'bg-[#0B1220] text-slate-300 hover:text-white border-white/8 hover:border-white/15'
+                      ? 'bg-white text-black border-transparent font-semibold shadow-sm'
+                      : 'bg-[#111315]/80 backdrop-blur-xl text-slate-300 hover:text-white border-white/[0.08] hover:border-white/15'
                   }`}
                 >
                   <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-slate-950' : cat.color}`} />
@@ -831,7 +831,7 @@ export default function LandingPage({
               <div
                 key={idx}
                 onClick={() => onStartOnboarding()}
-                className="bg-[#0B1220] border border-white/8 hover:border-amber-400/35 rounded-xl p-5 space-y-2.5 text-left cursor-pointer transition-all group"
+                className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] hover:border-white/[0.08] rounded-xl p-5 space-y-2.5 text-left cursor-pointer transition-all group"
               >
                 <div className="flex items-start justify-between gap-2">
                   <p className="text-sm sm:text-base font-semibold text-white group-hover:text-amber-300 transition-colors">
@@ -843,7 +843,7 @@ export default function LandingPage({
                   {item.sub}
                 </p>
                 <div className="pt-1">
-                  <span className="text-[10px] font-mono px-2.5 py-0.5 rounded bg-white/4 border border-white/8 text-slate-400">
+                  <span className="text-[10px] font-mono px-2.5 py-0.5 rounded bg-white/4 border border-white/[0.08] text-slate-400">
                     {item.tag}
                   </span>
                 </div>
@@ -855,17 +855,17 @@ export default function LandingPage({
         {/* ════════════════════════════════════════════════════════════
             SECTION 6: PRODUCT PREVIEW SUITE (4 APPS IN ONE)
             ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
+        <RevealSection className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
           <OmniProductPreview onExplore={() => onStartOnboarding()} />
         </RevealSection>
 
         {/* ════════════════════════════════════════════════════════════
             SECTION 7: COMPARE TRADITIONS & DISCOVER HARMONY
             ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
+        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              COMPARE. DON'T JUST ACCEPT ONE PERSPECTIVE.
+              Compare traditions with full mathematical transparency.
             </h2>
             <p className="text-base text-slate-300 font-sans max-w-2xl mx-auto">
               Different traditions emphasize different dimensions of the same celestial configuration. ASTRO360 calculates them simultaneously so you can explore consensus.
@@ -887,8 +887,8 @@ export default function LandingPage({
                 onClick={() => setSelectedTradition(t.id as typeof selectedTradition)}
                 className={`px-4 py-2 rounded-xl border text-xs font-mono font-medium transition-all cursor-pointer min-h-[38px] ${
                   selectedTradition === t.id
-                    ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold'
-                    : 'bg-[#0B1220] text-slate-300 hover:text-white border-white/8'
+                    ? 'bg-white text-black border-transparent font-semibold shadow-sm'
+                    : 'bg-[#111315]/80 backdrop-blur-xl text-slate-300 hover:text-white border-white/[0.08]'
                 }`}
               >
                 {t.label}
@@ -897,8 +897,8 @@ export default function LandingPage({
           </div>
 
           {/* Active Tradition Detail Card */}
-          <div className="max-w-3xl mx-auto bg-[#0B1220] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-5 text-left">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-b border-white/8 pb-4">
+          <div className="max-w-3xl mx-auto bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 space-y-5 text-left">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-b border-white/[0.08] pb-4">
               <div className="space-y-1">
                 <span className="text-[10px] font-mono uppercase text-slate-500">COMMON THEME</span>
                 <p className="text-base sm:text-lg font-bold text-white">Career Milestone & Vocation Elevation</p>
@@ -911,12 +911,12 @@ export default function LandingPage({
 
             <div className="space-y-2 font-mono text-xs">
               <span className="text-slate-400 font-medium block">Planetary Indicators:</span>
-              <p className="text-slate-200 font-sans text-sm bg-[#060A12] border border-white/8 rounded-xl p-4 leading-relaxed">
+              <p className="text-slate-200 font-sans text-sm bg-[#0B0C10] border border-white/[0.08] rounded-xl p-4 leading-relaxed">
                 {traditionDetails[selectedTradition].indicators}
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono text-slate-400 pt-2 border-t border-white/8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono text-slate-400 pt-2 border-t border-white/[0.08]">
               <span>Classical Source: <strong className="text-slate-200">{traditionDetails[selectedTradition].source}</strong></span>
               <span className="text-amber-400 font-medium">{traditionDetails[selectedTradition].badge}</span>
             </div>
@@ -926,27 +926,27 @@ export default function LandingPage({
         {/* ════════════════════════════════════════════════════════════
             SECTION 8: MOVE THROUGH YOUR FUTURE (TIMELINE STEPPER)
             ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
+        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              MOVE THROUGH YOUR FUTURE.
+              Move through your cosmic timing.
             </h2>
             <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
               Drag through timing horizons and observe astronomical triggers and planetary cycles update.
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto bg-[#0B1220] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-5 text-left">
+          <div className="max-w-4xl mx-auto bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 space-y-5 text-left">
             {/* Stepper Buttons */}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 border-b border-white/8 pb-4">
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 border-b border-white/[0.08] pb-4">
               {timelinePhases.map((phase, idx) => (
                 <button
                   key={idx}
                   onClick={() => setTimelineIndex(idx)}
                   className={`p-3 rounded-xl border text-center transition-all cursor-pointer min-h-[46px] ${
                     timelineIndex === idx
-                      ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold'
-                      : 'bg-[#060A12] text-slate-400 hover:text-white border-white/8'
+                      ? 'bg-white text-black border-transparent font-semibold shadow-sm'
+                      : 'bg-[#0B0C10] text-slate-400 hover:text-white border-white/[0.08]'
                   }`}
                 >
                   <span className="text-xs font-mono font-semibold block">{phase.label}</span>
@@ -956,8 +956,8 @@ export default function LandingPage({
             </div>
 
             {/* Active Phase Details */}
-            <div className="bg-[#060A12] border border-white/8 rounded-xl p-5 space-y-3">
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/8 pb-2.5">
+            <div className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-5 space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.08] pb-2.5">
                 <span className="text-xs font-mono text-amber-300 font-semibold">{timelinePhases[timelineIndex].range}</span>
                 <span className="text-xs font-mono text-slate-400">{timelinePhases[timelineIndex].sky}</span>
               </div>
@@ -980,17 +980,17 @@ export default function LandingPage({
         {/* ════════════════════════════════════════════════════════════
             SECTION 9: BIRTH-TIME SENSITIVITY & UNCERTAINTY TEST
             ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
+        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-10">
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              SEE HOW YOUR ASSUMPTIONS CHANGE THE RESULT.
+              See how your assumptions change the result.
             </h2>
             <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
               Not every result is equally sensitive to birth time. We calculate stability intervals across ±15 minute drift.
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto bg-[#0B1220] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-5 text-left">
+          <div className="max-w-3xl mx-auto bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-6 sm:p-8 space-y-5 text-left">
             <div className="space-y-2">
               <span className="text-xs font-mono font-semibold text-slate-300">Test Birth-Time Variation (±15 Minutes):</span>
               <div className="grid grid-cols-4 gap-2">
@@ -1000,8 +1000,8 @@ export default function LandingPage({
                     onClick={() => setSelectedBirthTime(timeStr)}
                     className={`py-2.5 rounded-xl border text-center font-mono text-xs font-semibold transition-all cursor-pointer min-h-[40px] ${
                       selectedBirthTime === timeStr
-                        ? 'bg-amber-400 text-slate-950 border-amber-400 font-bold'
-                        : 'bg-[#060A12] text-slate-300 hover:text-white border-white/8'
+                        ? 'bg-white text-black border-transparent font-semibold shadow-sm'
+                        : 'bg-[#0B0C10] text-slate-300 hover:text-white border-white/[0.08]'
                     }`}
                   >
                     {timeStr}
@@ -1012,24 +1012,24 @@ export default function LandingPage({
 
             <div className="space-y-2 text-xs font-mono">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                <div className="bg-[#060A12] border border-white/8 rounded-xl p-3.5 space-y-1">
+                <div className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-3.5 space-y-1">
                   <span className="text-[10px] text-slate-500">Career Indicator</span>
                   <p className="font-semibold text-emerald-400">{sensitivityData[selectedBirthTime].career}</p>
                   <span className="text-[9px] text-slate-500">Unaffected by minute drift</span>
                 </div>
-                <div className="bg-[#060A12] border border-white/8 rounded-xl p-3.5 space-y-1">
+                <div className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-3.5 space-y-1">
                   <span className="text-[10px] text-slate-500">Relationship Timing</span>
                   <p className="font-semibold text-amber-300">{sensitivityData[selectedBirthTime].relationship}</p>
                   <span className="text-[9px] text-slate-500">Navamsha D9 Pada sensitivity</span>
                 </div>
-                <div className="bg-[#060A12] border border-white/8 rounded-xl p-3.5 space-y-1">
+                <div className="bg-[#0B0C10] border border-white/[0.08] rounded-xl p-3.5 space-y-1">
                   <span className="text-[10px] text-slate-500">House Cusps</span>
                   <p className="font-semibold text-purple-300 text-[11px] leading-tight">{sensitivityData[selectedBirthTime].cusps}</p>
                   <span className="text-[9px] text-slate-500">Ascendant degree changes</span>
                 </div>
               </div>
 
-              <p className="text-xs text-slate-400 font-sans pt-2 bg-white/4 p-3 rounded-xl border border-white/6 leading-relaxed">
+              <p className="text-xs text-slate-400 font-sans pt-2 bg-white/4 p-3 rounded-xl border border-white/[0.06] leading-relaxed">
                 💡 <strong>Astronomical Insight:</strong> {sensitivityData[selectedBirthTime].note}
               </p>
             </div>
@@ -1039,10 +1039,10 @@ export default function LandingPage({
         {/* ════════════════════════════════════════════════════════════
             SECTION 10: FREE TOOLS CATALOG (12 INSTRUMENTS)
             ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/8">
+        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-white/[0.08]">
           <div className="max-w-3xl mx-auto text-center space-y-3 mb-12">
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              100% FREE. NO LOGIN OR CREDIT CARD REQUIRED.
+              Free, open, and instant calculation.
             </h2>
             <p className="text-base text-slate-300 font-sans max-w-xl mx-auto">
               Explore astronomical calculations directly in your browser.
@@ -1067,7 +1067,7 @@ export default function LandingPage({
               <div
                 key={idx}
                 onClick={() => onNavigateToTab(tool.tab)}
-                className="bg-[#0B1220] border border-white/8 hover:border-amber-400/35 rounded-xl p-4 space-y-1.5 cursor-pointer transition-all group hover:bg-[#0E172A]"
+                className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] hover:border-white/[0.08] rounded-xl p-4 space-y-1.5 cursor-pointer transition-all group hover:bg-[#16181B]"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors font-mono">{tool.title}</span>
@@ -1081,7 +1081,7 @@ export default function LandingPage({
           <div className="pt-8 text-center">
             <MagneticButton
               onClick={() => onNavigateToTab('free-tools')}
-              className="px-8 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-amber-300 border border-amber-400/25 font-semibold font-mono text-sm inline-flex items-center gap-2 cursor-pointer transition-all"
+              className="px-8 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-amber-300 border border-white/[0.08] font-semibold font-mono text-sm inline-flex items-center gap-2 cursor-pointer transition-all"
             >
               <span>Explore Complete Free Tools Catalog</span>
               <ArrowRight className="w-4 h-4" />
@@ -1092,24 +1092,24 @@ export default function LandingPage({
         {/* ════════════════════════════════════════════════════════════
             SECTION 11: THE COMPETITIVE SHOWDOWN MATRIX
             ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-white/8 text-left">
+        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-white/[0.08] text-left">
           <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/25 text-emerald-300 text-xs font-mono font-bold">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/10 border border-white/[0.08] text-emerald-300 text-xs font-mono font-bold">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
               <span>Transparent Architectural Comparison</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              WHY ASTROLOGERS CHOOSE ASTRO360
+              Why seekers choose ASTRO360
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 font-sans">
               See how ASTRO360 compares against legacy calculators and paywalled apps.
             </p>
           </div>
 
-          <div className="p-6 sm:p-8 rounded-3xl bg-[#0B1220] border border-white/12 shadow-2xl overflow-x-auto font-mono text-xs">
+          <div className="p-6 sm:p-8 rounded-3xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] shadow-2xl overflow-x-auto font-mono text-xs">
             <table className="w-full text-left border-collapse min-w-[640px]">
               <thead>
-                <tr className="border-b border-white/10 text-slate-400 text-[11px]">
+                <tr className="border-b border-white/[0.08] text-slate-400 text-[11px]">
                   <th className="py-3 px-4">Evaluation Metric</th>
                   <th className="py-3 px-4 text-amber-400 font-bold bg-amber-400/10 rounded-t-xl">ASTRO360 OMNI</th>
                   <th className="py-3 px-4">Co-Star</th>
@@ -1175,14 +1175,14 @@ export default function LandingPage({
         {/* ════════════════════════════════════════════════════════════
             SECTION 12: VERIFIED SCHOLARS & SEEKERS TESTIMONIALS
             ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-white/8 text-left">
+        <RevealSection className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-white/[0.08] text-left">
           <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/25 text-amber-300 text-xs font-mono font-bold">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-white/[0.08] text-amber-300 text-xs font-mono font-bold">
               <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
               <span>Verified Global Community</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              TRUSTED BY SCHOLARS & SEEKERS WORLDWIDE
+              Trusted by scholars and seekers worldwide
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 font-sans">
               Rated 4.98 / 5.0 across over 12,400+ calculated charts.
@@ -1191,7 +1191,7 @@ export default function LandingPage({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-xs">
             
-            <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 shadow-xl">
+            <div className="p-6 rounded-3xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] space-y-4 shadow-xl">
               <div className="flex items-center gap-1 text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
@@ -1200,13 +1200,13 @@ export default function LandingPage({
               <p className="text-slate-300 font-sans text-xs sm:text-sm leading-relaxed">
                 "As a Vedic Jyotish practitioner of 22 years, ASTRO360's true Lahiri planetary longitudes and Shodashavarga D60 harmonic tables are the most mathematically precise I have ever encountered. The zero-ad clean interface is unmatched."
               </p>
-              <div className="pt-2 border-t border-white/8">
+              <div className="pt-2 border-t border-white/[0.08]">
                 <strong className="text-white text-xs block">Pt. Raghavan Shastri</strong>
                 <span className="text-[11px] text-slate-400 font-sans">Senior Jyotish Scholar, Varanasi</span>
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 shadow-xl">
+            <div className="p-6 rounded-3xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] space-y-4 shadow-xl">
               <div className="flex items-center gap-1 text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
@@ -1215,13 +1215,13 @@ export default function LandingPage({
               <p className="text-slate-300 font-sans text-xs sm:text-sm leading-relaxed">
                 "The Dual Chart Wheel Studio allows me to compare my Western Placidus aspects with my Vedic Navamsha in one single screen. The 30-page PDF dossier export is stunning and truly keepsake-grade."
               </p>
-              <div className="pt-2 border-t border-white/8">
+              <div className="pt-2 border-t border-white/[0.08]">
                 <strong className="text-white text-xs block">Dr. Elena Vance</strong>
                 <span className="text-[11px] text-slate-400 font-sans">Astrological Researcher, Zurich</span>
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 space-y-4 shadow-xl">
+            <div className="p-6 rounded-3xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] space-y-4 shadow-xl">
               <div className="flex items-center gap-1 text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-3.5 h-3.5 fill-amber-400" />
@@ -1230,7 +1230,7 @@ export default function LandingPage({
               <p className="text-slate-300 font-sans text-xs sm:text-sm leading-relaxed">
                 "Finally a platform that doesn't hide behind a $20/month subscription or sell my birth data. The Cosmic Passport card was so easy to share with friends to compare our 36-Guna compatibility."
               </p>
-              <div className="pt-2 border-t border-white/8">
+              <div className="pt-2 border-t border-white/[0.08]">
                 <strong className="text-white text-xs block">Marcus Sterling</strong>
                 <span className="text-[11px] text-slate-400 font-sans">Software Engineer & Astronomy Enthusiast, London</span>
               </div>
@@ -1242,17 +1242,17 @@ export default function LandingPage({
         {/* ════════════════════════════════════════════════════════════
             SECTION 13: FINAL CALL TO ACTION
             ════════════════════════════════════════════════════════════ */}
-        <RevealSection className="py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto border-t border-white/8 text-center relative overflow-hidden">
+        <RevealSection className="py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto border-t border-white/[0.08] text-center relative overflow-hidden">
           <div className="space-y-6 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/25 text-amber-300 text-[11px] font-mono font-medium tracking-wide uppercase">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-white/[0.08] text-amber-300 text-[11px] font-mono font-medium tracking-wide uppercase">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               <span>START YOUR PERSONAL EXPLORATION TODAY</span>
             </div>
 
             <h2 className="text-4xl sm:text-6xl font-black tracking-tight text-white uppercase">
-              BE YOUR OWN <br />
-              <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-amber-100 bg-clip-text text-transparent">
-                ASTROLOGER.
+              Be your own <br />
+              <span className="text-white">
+                cosmic guide.
               </span>
             </h2>
 
@@ -1263,7 +1263,7 @@ export default function LandingPage({
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
               <MagneticButton
                 onClick={() => onStartOnboarding()}
-                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300 hover:from-amber-400 hover:to-amber-200 text-slate-950 font-bold text-sm font-mono flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-98 transition-all cursor-pointer min-h-[48px]"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-white hover:bg-slate-100 text-black font-semibold text-[15px] font-sans flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 active:scale-98 transition-all cursor-pointer min-h-[48px]"
               >
                 <span>Create My Free Chart</span>
                 <ArrowRight className="w-4 h-4" />
@@ -1271,7 +1271,7 @@ export default function LandingPage({
 
               <MagneticButton
                 onClick={() => onNavigateToTab('home')}
-                className="w-full sm:w-auto px-6 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/12 hover:border-white/20 font-medium text-sm font-mono flex items-center justify-center gap-2 transition-all cursor-pointer min-h-[48px]"
+                className="w-full sm:w-auto px-6 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/[0.08] hover:border-white/20 font-medium text-sm font-mono flex items-center justify-center gap-2 transition-all cursor-pointer min-h-[48px]"
               >
                 <Search className="w-4 h-4 text-amber-400" />
                 <span>Ask ASTRO360</span>
@@ -1287,7 +1287,7 @@ export default function LandingPage({
         {/* ════════════════════════════════════════════════════════════
             FOOTER
             ════════════════════════════════════════════════════════════ */}
-        <footer className="border-t border-white/8 py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-left text-xs font-mono text-slate-400">
+        <footer className="border-t border-white/[0.08] py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-left text-xs font-mono text-slate-400">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-white font-bold text-sm">
@@ -1328,7 +1328,7 @@ export default function LandingPage({
             </div>
           </div>
 
-          <div className="border-t border-white/8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px]">
+          <div className="border-t border-white/[0.08] pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px]">
             <span>© {new Date().getFullYear()} ASTRO360. All rights reserved.</span>
             <span className="text-slate-500">Ephemeris Standard: NASA JPL DE440 / True Lahiri (Chitra Paksha)</span>
           </div>
@@ -1343,9 +1343,9 @@ export default function LandingPage({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 15, scale: 0.95 }}
               transition={{ duration: 0.4 }}
-              className="fixed bottom-20 left-4 z-40 max-w-xs p-3 rounded-2xl bg-black/85 backdrop-blur-md border border-amber-400/30 shadow-2xl flex items-center gap-3 text-left pointer-events-none"
+              className="fixed bottom-20 left-4 z-40 max-w-xs p-3 rounded-2xl bg-black/85 backdrop-blur-md border border-white/[0.08] shadow-2xl flex items-center gap-3 text-left pointer-events-none"
             >
-              <div className="w-8 h-8 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center shrink-0 text-amber-300">
+              <div className="w-8 h-8 rounded-xl bg-amber-400/20 border border-white/[0.08] flex items-center justify-center shrink-0 text-amber-300">
                 <Sparkles className="w-4 h-4" />
               </div>
               <div className="text-[11px] font-sans leading-tight">
@@ -1372,11 +1372,11 @@ export default function LandingPage({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 30 }}
               transition={{ duration: 0.3 }}
-              className="fixed bottom-3 inset-x-3 sm:inset-x-auto sm:right-6 sm:left-auto z-50 flex items-center gap-2 p-2 rounded-2xl bg-[#091122]/95 backdrop-blur-xl border border-amber-400/40 shadow-2xl shadow-black/80"
+              className="fixed bottom-3 inset-x-3 sm:inset-x-auto sm:right-6 sm:left-auto z-50 flex items-center gap-2 p-2 rounded-2xl bg-[#111315]/95 backdrop-blur-xl border border-white/[0.08] shadow-2xl shadow-black/80"
             >
               <button
                 onClick={() => onStartOnboarding()}
-                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300 text-slate-950 font-bold text-xs font-mono flex items-center gap-1.5 shadow-lg shadow-amber-500/25 hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+                className="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-black font-semibold text-xs font-sans flex items-center gap-1.5 shadow-lg shadow-amber-500/25 hover:brightness-110 active:scale-95 transition-all cursor-pointer"
               >
                 <Zap className="w-3.5 h-3.5 fill-slate-950" />
                 <span>Calculate Chart Free</span>
@@ -1384,7 +1384,7 @@ export default function LandingPage({
 
               <button
                 onClick={() => onNavigateToTab('home')}
-                className="px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/10 text-xs font-mono font-medium flex items-center gap-1.5 cursor-pointer transition-all"
+                className="px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/[0.08] text-xs font-mono font-medium flex items-center gap-1.5 cursor-pointer transition-all"
               >
                 <Search className="w-3.5 h-3.5 text-amber-400" />
                 <span className="hidden sm:inline">Ask AI</span>
@@ -1392,7 +1392,7 @@ export default function LandingPage({
 
               <button
                 onClick={handleShareViralLink}
-                className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-amber-300 border border-white/10 text-xs font-mono flex items-center justify-center cursor-pointer transition-all"
+                className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-amber-300 border border-white/[0.08] text-xs font-mono flex items-center justify-center cursor-pointer transition-all"
                 title="Share Cosmic Passport invite link"
               >
                 {copiedReferral ? (
