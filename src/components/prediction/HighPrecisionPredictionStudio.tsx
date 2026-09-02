@@ -46,9 +46,9 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
   return (
     <div className="w-full max-w-7xl mx-auto space-y-6 text-left pb-16">
       {/* 1. Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-r from-[#0E172A] via-[#0A101D] to-[#080C16] border border-amber-400/30 shadow-2xl relative overflow-hidden">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-r from-[#0E172A] via-[#0A101D] to-[#080C16] border border-white/[0.08] shadow-2xl relative overflow-hidden">
         <div className="space-y-1.5 z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 text-amber-300 text-xs font-mono font-bold border border-amber-400/30">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 text-amber-300 text-xs font-mono font-bold border border-white/[0.08]">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
             <span>NASA JPL DE440 SUB-ARCSECOND PREDICTION ENGINE</span>
           </div>
@@ -62,12 +62,12 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
 
         {/* Confidence & Ephemeris Grade Badge */}
         <div className="flex items-center gap-3 z-10">
-          <div className="p-3.5 rounded-2xl bg-black/50 border border-emerald-500/30 text-center min-w-[110px]">
+          <div className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] text-center min-w-[110px]">
             <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block">Accuracy Grade</span>
             <span className="text-xl font-black text-emerald-400 font-mono">GRADE A+</span>
             <span className="text-[10px] font-mono text-emerald-300 block">94.8% Verified</span>
           </div>
-          <div className="p-3.5 rounded-2xl bg-black/50 border border-amber-400/30 text-center min-w-[110px]">
+          <div className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/[0.08] text-center min-w-[110px]">
             <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 block">Active Dasha</span>
             <span className="text-xs font-bold text-amber-300 font-mono block truncate max-w-[100px]">{report.birthCoordinates.currentDasha}</span>
             <span className="text-[10px] font-mono text-slate-400 block">{report.macroLifePhase.yearsRemaining}y Remaining</span>
@@ -76,7 +76,7 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
       </div>
 
       {/* 2. Natal Blueprint Telemetry Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-[#090E1A] border border-white/10 text-xs font-mono">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-[#111315]/80 border border-white/[0.08] text-xs font-mono">
         <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/5 space-y-0.5">
           <span className="text-slate-400 text-[10px] uppercase">Ascendant (Lagna)</span>
           <p className="font-bold text-cyan-300 truncate">{report.birthCoordinates.ascendantSign}</p>
@@ -96,7 +96,7 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
       </div>
 
       {/* 3. Time Horizon Selector Tabs */}
-      <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-[#070B14] border border-white/10 overflow-x-auto no-scrollbar shadow-inner">
+      <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-[#111315]/90 border border-white/[0.08] overflow-x-auto no-scrollbar shadow-inner">
         {[
           { id: 'today', label: '⚡ Today (24 Hours)', desc: 'Micro-Timing & Horas' },
           { id: '7days', label: '📅 Next 7 Days', desc: 'Weekly Transits' },
@@ -111,7 +111,7 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
               onClick={() => setSelectedHorizon(tab.id as any)}
               className={`flex-1 min-w-[150px] py-2.5 px-3 rounded-xl text-xs font-mono font-bold flex flex-col items-center justify-center transition-all cursor-pointer ${
                 isSelected
-                  ? 'bg-amber-400 text-slate-950 font-black shadow-lg shadow-amber-400/20 scale-[1.02]'
+                  ? 'bg-white text-black font-semibold shadow-sm'
                   : 'bg-transparent text-slate-400 hover:text-white hover:bg-white/5'
               }`}
             >
@@ -144,7 +144,7 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
               onClick={() => setSelectedCategory(cat.id)}
               className={`px-3 py-1.5 rounded-xl whitespace-nowrap transition-all cursor-pointer font-bold ${
                 isSelected
-                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
+                  ? 'bg-cyan-500/20 text-cyan-300 border border-white/[0.08] shadow-sm'
                   : 'bg-white/[0.04] text-slate-400 hover:text-white border border-white/8'
               }`}
             >
@@ -160,16 +160,16 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
           key={activeItem.id}
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#0E1626] via-[#0A101C] to-[#060912] border border-amber-400/40 shadow-2xl space-y-6 relative overflow-hidden"
+          className="p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#0E1626] via-[#0A101C] to-[#060912] border border-white/[0.08] shadow-2xl space-y-6 relative overflow-hidden"
         >
           {/* Card Top Title Row */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.08] pb-4">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30">
+                <span className="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-amber-400/15 text-amber-300 border border-white/[0.08]">
                   {activeItem.timeframeText}
                 </span>
-                <span className="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                <span className="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-white/[0.08] flex items-center gap-1">
                   <CheckCircle2 className="w-3 h-3" /> {activeItem.confidenceScore}% Confidence Score
                 </span>
               </div>
@@ -191,7 +191,7 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
           </div>
 
           {/* Plain English Core Narrative Summary */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/10 space-y-2">
+          <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.03] border border-white/[0.08] space-y-2">
             <span className="text-[10.5px] font-mono font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
               <Info className="w-3.5 h-3.5 text-cyan-400" /> Plain-English Interpretation:
             </span>
@@ -201,7 +201,7 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
           </div>
 
           {/* Golden Peak Opportunity Window */}
-          <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="p-4 rounded-2xl bg-amber-500/10 border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="space-y-0.5">
               <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-300 flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5 text-amber-400" /> Optimal Golden Timing Window:
@@ -214,7 +214,7 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
               </p>
             </div>
 
-            <div className="p-2.5 rounded-xl bg-black/40 border border-amber-400/20 text-center shrink-0">
+            <div className="p-2.5 rounded-xl bg-black/40 border border-white/[0.08] text-center shrink-0">
               <span className="text-[10px] font-mono text-slate-400 block">Astronomical Aspect</span>
               <span className="text-xs font-bold text-amber-300 font-mono block truncate max-w-[200px]">
                 {activeItem.astronomicalDriver}
@@ -225,7 +225,7 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
           {/* Actionable Do's and Precautions Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Highly Favorable Actions */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-[#090F1C] border border-emerald-500/30 space-y-2.5">
+            <div className="p-4 sm:p-5 rounded-2xl bg-[#090F1C] border border-white/[0.08] space-y-2.5">
               <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Highly Favorable Actions (Do's):
               </h4>
@@ -240,7 +240,7 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
             </div>
 
             {/* Cautionary Guidance */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-[#090F1C] border border-amber-500/30 space-y-2.5">
+            <div className="p-4 sm:p-5 rounded-2xl bg-[#090F1C] border border-white/[0.08] space-y-2.5">
               <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
                 <AlertTriangle className="w-4 h-4 text-amber-400" /> Precautions & Avoidance (Don'ts):
               </h4>
@@ -256,7 +256,7 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
           </div>
 
           {/* Multi-Tradition Consensus Agreement Box */}
-          <div className="p-4 rounded-2xl bg-[#060A14] border border-white/10 space-y-3">
+          <div className="p-4 rounded-2xl bg-[#060A14] border border-white/[0.08] space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-mono font-bold text-white flex items-center gap-1.5">
                 <Layers className="w-3.5 h-3.5 text-cyan-400" /> Multi-Tradition Consensus Verification:
@@ -286,7 +286,7 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
       {/* 6. Macro Sade Sati & Karmic Life Phase Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Major Dasha Phase */}
-        <div className="p-5 rounded-3xl bg-[#0B111E] border border-white/10 space-y-3">
+        <div className="p-5 rounded-3xl bg-[#0B111E] border border-white/[0.08] space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono font-bold text-amber-300 flex items-center gap-1.5">
               <Award className="w-4 h-4 text-amber-400" /> Macro Dasha Era
@@ -300,7 +300,7 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
         </div>
 
         {/* Sade Sati Status */}
-        <div className="p-5 rounded-3xl bg-[#0B111E] border border-white/10 space-y-3">
+        <div className="p-5 rounded-3xl bg-[#0B111E] border border-white/[0.08] space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono font-bold text-cyan-300 flex items-center gap-1.5">
               <ShieldCheck className="w-4 h-4 text-cyan-400" /> Saturn Sade Sati Telemetry
@@ -311,7 +311,7 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
           <p className="text-xs text-slate-300 font-sans leading-relaxed">
             {report.sadeSatiStatus.description}
           </p>
-          <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-[11px] text-cyan-200 font-sans">
+          <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-white/[0.08] text-[11px] text-cyan-200 font-sans">
             <strong>Prescribed Remedy:</strong> {report.sadeSatiStatus.remedy}
           </div>
         </div>

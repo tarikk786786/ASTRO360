@@ -44,7 +44,7 @@ export const PLANETARY_CROSSING_HUBS: PlanetaryCrossingHub[] = [
     remoteWorkAdvice: 'Incorporate entities, pitch venture investors, publish books, and sign multi-million dollar master contracts while tethered to this meridian.',
     color: '#F59E0B',
     gradient: 'from-amber-500/20 via-indigo-950/40 to-[#0A101D]',
-    borderColor: 'border-amber-400/40 hover:border-amber-400'
+    borderColor: 'border-white/[0.08] hover:border-amber-400'
   },
   {
     id: 'dubai-gulf',
@@ -62,7 +62,7 @@ export const PLANETARY_CROSSING_HUBS: PlanetaryCrossingHub[] = [
     remoteWorkAdvice: 'Structure wealth trusts, manage hedge funds, launch luxury commercial brands, and conduct global real estate acquisitions.',
     color: '#10B981',
     gradient: 'from-emerald-500/20 via-cyan-950/40 to-[#0A101D]',
-    borderColor: 'border-emerald-400/40 hover:border-emerald-400'
+    borderColor: 'border-white/[0.08] hover:border-emerald-400'
   },
   {
     id: 'silicon-valley',
@@ -80,7 +80,7 @@ export const PLANETARY_CROSSING_HUBS: PlanetaryCrossingHub[] = [
     remoteWorkAdvice: 'Code core infrastructure, deploy AI foundation models, file patents, and raise seed/series capital from angel syndicates.',
     color: '#38BDF8',
     gradient: 'from-cyan-500/20 via-blue-950/40 to-[#0A101D]',
-    borderColor: 'border-cyan-400/40 hover:border-cyan-400'
+    borderColor: 'border-white/[0.08] hover:border-cyan-400'
   },
   {
     id: 'london-paris',
@@ -98,7 +98,7 @@ export const PLANETARY_CROSSING_HUBS: PlanetaryCrossingHub[] = [
     remoteWorkAdvice: 'Conduct international client negotiations, launch design studios, host cultural symposiums, and form lifelong romantic soulmate bonds.',
     color: '#EC4899',
     gradient: 'from-pink-500/20 via-purple-950/40 to-[#0A101D]',
-    borderColor: 'border-pink-400/40 hover:border-pink-400'
+    borderColor: 'border-white/[0.08] hover:border-pink-400'
   },
   {
     id: 'singapore-gateway',
@@ -170,7 +170,7 @@ export const PLANETARY_CROSSING_HUBS: PlanetaryCrossingHub[] = [
     remoteWorkAdvice: 'Secure family office assets, negotiate sovereign peace pacts, structure long-term endowments, and build enduring legacy systems.',
     color: '#8B5CF6',
     gradient: 'from-purple-500/20 via-slate-950/40 to-[#0A101D]',
-    borderColor: 'border-purple-400/40 hover:border-purple-400'
+    borderColor: 'border-white/[0.08] hover:border-purple-400'
   }
 ];
 
@@ -194,7 +194,7 @@ export default function AstroCartographyMatrix({ userProfile }: { userProfile: U
       />
 
       {/* Mode Switcher Tabs */}
-      <div className="flex items-center justify-between border-b border-white/10 pb-3">
+      <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-amber-400" />
           <h2 className="text-lg sm:text-xl font-black text-white font-sans tracking-tight">
@@ -202,12 +202,12 @@ export default function AstroCartographyMatrix({ userProfile }: { userProfile: U
           </h2>
         </div>
 
-        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-black/60 border border-white/10">
+        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-black/40 border border-white/[0.08]">
           <button
             onClick={() => setActiveTab('hubs')}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
               activeTab === 'hubs'
-                ? 'bg-amber-400 text-slate-950 shadow-md font-black'
+                ? 'bg-white text-black font-semibold shadow-sm'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
@@ -217,7 +217,7 @@ export default function AstroCartographyMatrix({ userProfile }: { userProfile: U
             onClick={() => setActiveTab('cities')}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
               activeTab === 'cities'
-                ? 'bg-cyan-400 text-slate-950 shadow-md font-black'
+                ? 'bg-white text-black font-semibold shadow-sm'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
@@ -243,8 +243,8 @@ export default function AstroCartographyMatrix({ userProfile }: { userProfile: U
                 onClick={() => setSelectedHubCategory(cat.id)}
                 className={`px-3.5 py-1.5 rounded-xl whitespace-nowrap font-bold transition-all cursor-pointer ${
                   selectedHubCategory === cat.id
-                    ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/25 font-black'
-                    : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
+                    ? 'bg-white text-black font-semibold shadow-sm'
+                    : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/[0.08]'
                 }`}
               >
                 {cat.label}
@@ -274,7 +274,7 @@ export default function AstroCartographyMatrix({ userProfile }: { userProfile: U
                       {hub.planetSymbols.map((sym, idx) => (
                         <span 
                           key={idx}
-                          className="w-6 h-6 rounded-lg bg-black/60 border border-white/20 text-amber-300 text-xs font-mono font-bold flex items-center justify-center"
+                          className="w-6 h-6 rounded-lg bg-black/40 border border-white/20 text-amber-300 text-xs font-mono font-bold flex items-center justify-center"
                         >
                           {sym}
                         </span>
@@ -309,8 +309,8 @@ export default function AstroCartographyMatrix({ userProfile }: { userProfile: U
 
           {/* Selected Crossing Hub Full Dossier */}
           {selectedHub && (
-            <div className="p-6 sm:p-7 rounded-3xl bg-gradient-to-r from-[#0E1729] via-[#09101E] to-[#060A14] border border-amber-400/40 shadow-2xl space-y-4 text-left">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+            <div className="p-6 sm:p-7 rounded-3xl bg-gradient-to-r from-[#0E1729] via-[#09101E] to-[#060A14] border border-white/[0.08] shadow-2xl space-y-4 text-left">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.08] pb-4">
                 <div className="flex items-center gap-3">
                   <div 
                     className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg"
@@ -329,14 +329,14 @@ export default function AstroCartographyMatrix({ userProfile }: { userProfile: U
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-emerald-400/15 text-emerald-300 border border-emerald-400/30 text-xs font-mono font-bold">
+                  <span className="px-3 py-1 rounded-full bg-emerald-400/15 text-emerald-300 border border-white/[0.08] text-xs font-mono font-bold">
                     {selectedHub.powerRating}% Maximum Power Rating
                   </span>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-sans">
-                <div className="p-4 rounded-xl bg-black/50 border border-white/10 space-y-1.5">
+                <div className="p-4 rounded-xl bg-white/[0.04] border border-white/[0.08] space-y-1.5">
                   <span className="text-[10.5px] font-mono font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1">
                     <Sparkles className="w-3.5 h-3.5" /> Planetary Energy Synergy:
                   </span>
@@ -345,7 +345,7 @@ export default function AstroCartographyMatrix({ userProfile }: { userProfile: U
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-black/50 border border-white/10 space-y-1.5">
+                <div className="p-4 rounded-xl bg-white/[0.04] border border-white/[0.08] space-y-1.5">
                   <span className="text-[10.5px] font-mono font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1">
                     <Award className="w-3.5 h-3.5" /> Historical Manifestation:
                   </span>
@@ -354,7 +354,7 @@ export default function AstroCartographyMatrix({ userProfile }: { userProfile: U
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-black/50 border border-white/10 space-y-1.5">
+                <div className="p-4 rounded-xl bg-white/[0.04] border border-white/[0.08] space-y-1.5">
                   <span className="text-[10.5px] font-mono font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1">
                     <Zap className="w-3.5 h-3.5" /> Relocation & Remote Action:
                   </span>
@@ -368,8 +368,8 @@ export default function AstroCartographyMatrix({ userProfile }: { userProfile: U
         </div>
       ) : (
         /* 12 Worldwide Primary City Grid */
-        <div className="p-6 rounded-3xl bg-[#0C1220] border border-white/10 space-y-4 shadow-xl">
-          <div className="flex items-center justify-between border-b border-white/10 pb-3">
+        <div className="p-6 rounded-3xl bg-[#0C1220] border border-white/[0.08] space-y-4 shadow-xl">
+          <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
             <div className="flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-cyan-400" />
               <h3 className="text-base font-bold text-white font-sans">
