@@ -5,6 +5,7 @@
  */
 
 import { calculatePlanetaryPositions, calculatePanchang, calculateVimshottariDasha } from './astroCalculations';
+import { AstroCalculationContext } from './prediction/astroCalculationContext';
 import type { UserProfile } from '../types';
 
 export type QuestionCategory =
@@ -325,17 +326,16 @@ export class QuestionIntentEngine {
     const time = userProfile.time || '12:00';
     const seekerName = userProfile.name?.trim() || 'Seeker';
 
-    // Compute actual astronomical coordinates
+    // Compute actual astronomical coordinates via canonical AstroCalculationContext
     let positions: any[] = [];
     let dashaInfo = { mahadasha: 'Jupiter', antardasha: 'Mercury', progressPercent: 60 };
     let panchangInfo = { tithi: 'Shukla Navami', nakshatra: 'Mrigashira', abhijitMuhurta: '11:48 AM - 12:36 PM' };
 
     try {
-      positions = calculatePlanetaryPositions(dob, time);
-      const moon = positions.find(p => p.name === 'Moon');
-      const nakIndex = moon?.degreeDecimal ? Math.floor(moon.degreeDecimal / (360 / 27)) : 3;
-      dashaInfo = calculateVimshottariDasha(nakIndex, dob) as any;
-      panchangInfo = calculatePanchang(new Date()) as any;
+      const ctx = AstroCalculationContext.getOrCreate(userProfile);
+      positions = ctx.positions;
+      dashaInfo = ctx.dasha.raw as any;
+      panchangInfo = ctx.panchang as any;
     } catch {
       // Graceful fallback
     }
