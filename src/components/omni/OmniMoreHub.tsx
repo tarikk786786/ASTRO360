@@ -132,6 +132,26 @@ export default function OmniMoreHub({ onNavigate, userProfile }: OmniMoreHubProp
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 text-left pb-16">
+      {/* Return to Landing Page Action */}
+      <div className="flex items-center justify-between gap-3 p-4 rounded-2xl bg-[#111315] border border-white/[0.08] shadow-lg">
+        <div className="space-y-0.5">
+          <h3 className="text-sm font-bold text-white flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-amber-400" />
+            <span>Public Overview & Features</span>
+          </h3>
+          <p className="text-xs font-mono text-slate-400">
+            Return to the public ASTRO360 home experience anytime.
+          </p>
+        </div>
+        <button
+          onClick={() => onNavigate('landing')}
+          className="px-4 py-2 rounded-xl bg-white hover:bg-slate-100 text-black font-bold font-sans text-xs cursor-pointer transition-all shrink-0 shadow-md flex items-center gap-1.5"
+        >
+          <span>Return to Landing</span>
+          <ChevronRight className="w-3.5 h-3.5" />
+        </button>
+      </div>
+
       {/* Header */}
       <div className="border-b border-white/10 pb-4 space-y-1">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight flex items-center gap-2">

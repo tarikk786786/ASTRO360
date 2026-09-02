@@ -41,6 +41,7 @@ export const COMMAND_CENTER_SECTIONS: CommandSection[] = [
     id: 'dashboard',
     title: 'Dashboard Overview',
     items: [
+      { id: 'landing', name: 'Return to Landing Page', badge: 'Home', badgeColor: 'bg-white/20 text-white border-white/20', icon: Sparkles, description: 'Return to the public ASTRO360 landing & overview' },
       { id: 'radar', name: 'Live Cosmic Radar', badge: 'Live', badgeColor: 'bg-emerald-500/20 text-emerald-300 border-white/[0.08]', icon: Activity, description: 'Real-time celestial telemetry & transit radar' },
       { id: 'copilot', name: 'AI Oracle Copilot', badge: 'AI', badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/30', icon: Bot, description: 'Deterministic multi-tradition synthesis AI' },
       { id: '3d', name: 'Cosmic 3D Studio', badge: '3D', badgeColor: 'bg-cyan-500/20 text-cyan-300 border-white/[0.08]', icon: Box, description: 'WebGL planetary orbit & celestial sphere' },

@@ -101,6 +101,20 @@ export const AstroMoreSheet: React.FC<AstroMoreSheetProps> = ({
             </button>
           </div>
 
+          {/* Return to Landing Page Quick Button */}
+          <div className="px-3 pt-2">
+            <button
+              onClick={() => {
+                onNavigate('landing');
+                onClose();
+              }}
+              className="w-full py-2.5 px-4 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-slate-200 hover:text-white border border-white/[0.1] text-xs font-mono font-bold flex items-center justify-center gap-2 cursor-pointer transition-all shadow-sm"
+            >
+              <Sparkles className="w-4 h-4 text-amber-400" />
+              <span>Return to Landing Page</span>
+            </button>
+          </div>
+
           {/* Quick Search & Category Filter Pills */}
           <div className="p-3 sm:p-4 border-b border-white/10 space-y-3 bg-[#0B1220]/60">
             {/* Search Input */}
