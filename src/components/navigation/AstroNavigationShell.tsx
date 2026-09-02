@@ -95,7 +95,7 @@ export const AstroNavigationShell: React.FC<AstroNavigationShellProps> = ({
       </div>
 
       {/* ── 2. DESKTOP & TABLET GLASS HEADER (Unified 5-Word Navigation) ── */}
-      <header className="hidden md:flex sticky top-0 z-40 w-full h-16 bg-[#060A12]/92 backdrop-blur-xl border-b border-white/[0.08] px-4 lg:px-6 items-center justify-between transition-all select-none">
+      <header className="hidden md:flex sticky top-0 z-40 w-full h-16 bg-[#111315]/90 backdrop-blur-xl border-b border-white/[0.08] px-4 lg:px-6 items-center justify-between transition-all select-none">
         {/* Left: Brand Logo & Wordmark */}
         <div className="flex items-center gap-3">
           <button
@@ -137,7 +137,7 @@ export const AstroNavigationShell: React.FC<AstroNavigationShellProps> = ({
         <nav
           role="tablist"
           aria-label="Desktop Primary Navigation"
-          className="flex items-center gap-1 bg-[#0B1220] p-1 rounded-2xl border border-white/10 shadow-inner"
+          className="flex items-center gap-1 bg-black/40 p-1 rounded-2xl border border-white/[0.08] shadow-inner"
         >
           {PRIMARY_NAV_ITEMS.map((item: PrimaryNavItem) => {
             const Icon = item.icon;
@@ -155,7 +155,7 @@ export const AstroNavigationShell: React.FC<AstroNavigationShellProps> = ({
                 onMouseEnter={() => handlePrefetch(item.id)}
                 className={`relative px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
                   isActive
-                    ? 'text-slate-950 font-black'
+                    ? 'text-black font-bold'
                     : isHero
                     ? 'text-amber-300 hover:text-white bg-amber-400/5 hover:bg-amber-400/10'
                     : 'text-slate-400 hover:text-white hover:bg-white/5'
@@ -164,7 +164,7 @@ export const AstroNavigationShell: React.FC<AstroNavigationShellProps> = ({
                 {isActive && (
                   <motion.div
                     layoutId="desktopActiveNavPill"
-                    className="absolute inset-0 bg-amber-400 rounded-xl shadow-md"
+                    className="absolute inset-0 bg-white rounded-xl shadow-sm"
                     transition={{ type: 'spring', damping: 26, stiffness: 320 }}
                   />
                 )}
