@@ -46,32 +46,43 @@ export default defineConfig({
     outDir: path.resolve(import.meta.dirname, 'dist/public'),
     emptyOutDir: true,
     chunkSizeWarningLimit: 1200,
+    cssCodeSplit: true,
+    sourcemap: false,
+    minify: 'esbuild',
     rollupOptions: {
       output: {
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
-            if (id.includes('three') || id.includes('@react-three')) {
+            if (id.includes('three') || id.includes('@react-three') || id.includes('postprocessing')) {
               return 'vendor-three';
             }
             if (id.includes('lucide-react')) {
               return 'vendor-icons';
             }
-            if (id.includes('recharts') || id.includes('d3')) {
-              return 'vendor-charts';
-            }
             if (id.includes('astronomy-engine')) {
               return 'vendor-astronomy';
             }
-            if (id.includes('motion') || id.includes('framer-motion')) {
+            if (id.includes('motion')) {
               return 'vendor-motion';
             }
-            if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
-              return 'vendor-react';
+            if (
+              id.includes('react') ||
+              id.includes('react-dom') ||
+              id.includes('scheduler') ||
+              id.includes('recharts') ||
+              id.includes('d3') ||
+              id.includes('zustand')
+            ) {
+              return 'vendor-core';
             }
           }
         },
       },
     },
+  },
+  esbuild: {
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
+    legalComments: 'none',
   },
   server: {
     port,
