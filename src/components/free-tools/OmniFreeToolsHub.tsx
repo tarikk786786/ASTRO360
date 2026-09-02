@@ -296,7 +296,7 @@ export default function OmniFreeToolsHub({
             </div>
 
             {/* Soft Conversion Action */}
-            <div className="p-5 rounded-2xl bg-gradient-to-r from-[#0F172A] to-[#1E293B] border border-white/15 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="p-5 rounded-2xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="space-y-0.5">
                 <h4 className="text-sm font-bold text-white">Want to see your full Vimshottari Dasha timeline?</h4>
                 <p className="text-xs text-slate-400">Unlock all 9 Mahadasha cycles and planetary transits across life areas.</p>

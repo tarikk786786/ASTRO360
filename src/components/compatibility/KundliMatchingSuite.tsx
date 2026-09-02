@@ -49,7 +49,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
     <div className="space-y-6 max-w-6xl mx-auto pb-12">
       {/* Header Banner */}
       <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#1E1B4B] to-[#0F172A] border border-rose-500/30 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
+        
         
         <div className="relative z-10 space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/20 border border-rose-500/30 text-rose-300 text-xs font-mono font-bold">

@@ -62,34 +62,32 @@ export default function InteractiveDualChartStudio({ userProfile, onNavigateToTa
   return (
     <div className="space-y-6 max-w-6xl mx-auto text-left pb-12">
       {/* Header Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#1E1B4B] to-[#0F172A] border border-amber-500/30 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-        
-        <div className="relative z-10 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-mono font-bold">
-            <Compass className="w-3.5 h-3.5" />
-            <span>Interactive Multi-Tradition Chart Studio</span>
+      <div className="p-6 sm:p-8 rounded-2xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] relative overflow-hidden">
+        <div className="relative z-10 space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-white text-xs font-mono font-medium">
+            <Compass className="w-3.5 h-3.5 text-white" />
+            <span>Multi-Tradition Ephemeris Wheel Studio</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-            Dual Wheel & Spherical House Studio
+          <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+            Dual Wheel & Spherical Trigonometry Studio
           </h1>
-          <p className="text-sm text-slate-300 max-w-3xl leading-relaxed">
-            Toggle effortlessly between North Indian Diamond, South Indian Square, and Western 360° Circular formats. 
-            Features true spherical trigonometry house cusps across Placidus, Koch, Campanus, and Sripati.
+          <p className="text-xs sm:text-sm text-slate-400 max-w-3xl leading-relaxed">
+            Toggle seamlessly between North Indian Diamond, South Indian Square, and Western 360° Circular formats. 
+            Features exact spherical house cusps across Placidus, Koch, Campanus, Regiomontanus, and Sripati.
           </p>
         </div>
       </div>
 
       {/* Control Bar: Format & House System Selector */}
-      <div className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-4 rounded-2xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Style Selector */}
         <div className="flex items-center gap-2">
           <span className="text-xs font-mono text-slate-400 font-bold uppercase">Chart Format:</span>
-          <div className="flex bg-black/40 p-1 rounded-xl border border-white/10 text-xs font-mono">
+          <div className="flex bg-black/40 p-1 rounded-xl border border-white/[0.08] text-xs font-mono">
             <button
               onClick={() => setChartStyle('north')}
               className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer font-bold ${
-                chartStyle === 'north' ? 'bg-amber-400 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'
+                chartStyle === 'north' ? 'bg-white text-black font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
               }`}
             >
               North Indian (Diamond)
@@ -97,7 +95,7 @@ export default function InteractiveDualChartStudio({ userProfile, onNavigateToTa
             <button
               onClick={() => setChartStyle('south')}
               className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer font-bold ${
-                chartStyle === 'south' ? 'bg-amber-400 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'
+                chartStyle === 'south' ? 'bg-white text-black font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
               }`}
             >
               South Indian (Square)
@@ -105,7 +103,7 @@ export default function InteractiveDualChartStudio({ userProfile, onNavigateToTa
             <button
               onClick={() => setChartStyle('western')}
               className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer font-bold ${
-                chartStyle === 'western' ? 'bg-amber-400 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'
+                chartStyle === 'western' ? 'bg-white text-black font-semibold shadow-sm' : 'text-slate-400 hover:text-white'
               }`}
             >
               Western (360° Wheel)
@@ -134,8 +132,8 @@ export default function InteractiveDualChartStudio({ userProfile, onNavigateToTa
       {/* Main Studio Grid: Chart Visualizer + Telemetry Inspector */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Interactive Visualizer Box */}
-        <div className="lg:col-span-7 p-6 rounded-3xl bg-[#0B1220] border border-white/10 flex flex-col items-center justify-center min-h-[420px] relative overflow-hidden">
-          <div className="w-full flex items-center justify-between border-b border-white/10 pb-3 mb-4">
+        <div className="lg:col-span-7 p-6 rounded-3xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] flex flex-col items-center justify-center min-h-[420px] relative overflow-hidden">
+          <div className="w-full flex items-center justify-between border-b border-white/[0.08] pb-3 mb-4">
             <span className="text-xs font-mono font-bold text-amber-400 uppercase">
               Ascendant: {ascendantPlanet.sign} ({ascDegree.toFixed(2)}°)
             </span>
@@ -145,7 +143,7 @@ export default function InteractiveDualChartStudio({ userProfile, onNavigateToTa
           </div>
 
           {/* Interactive Chart Graphic */}
-          <div className="w-full max-w-[360px] aspect-square rounded-2xl bg-[#070D18] border border-amber-500/30 relative flex items-center justify-center p-4 shadow-2xl">
+          <div className="w-full max-w-[360px] aspect-square rounded-2xl bg-[#070D18] border border-white/[0.08] relative flex items-center justify-center p-4 shadow-2xl">
             {chartStyle === 'north' && (
               <div className="w-full h-full relative border border-amber-400/40">
                 {/* Diagonal Diamond Lines */}
@@ -174,27 +172,27 @@ export default function InteractiveDualChartStudio({ userProfile, onNavigateToTa
 
             {chartStyle === 'south' && (
               <div className="w-full h-full grid grid-cols-4 grid-rows-4 border border-amber-400/40 text-[10px] font-mono font-bold text-center">
-                <div className="p-1 border border-white/10 text-amber-300">Pisces</div>
-                <div className="p-1 border border-white/10 text-amber-300">Aries</div>
-                <div className="p-1 border border-white/10 text-amber-300">Taurus</div>
-                <div className="p-1 border border-white/10 text-amber-300">Gemini</div>
-                <div className="p-1 border border-white/10 text-amber-300">Aquarius</div>
+                <div className="p-1 border border-white/[0.08] text-amber-300">Pisces</div>
+                <div className="p-1 border border-white/[0.08] text-amber-300">Aries</div>
+                <div className="p-1 border border-white/[0.08] text-amber-300">Taurus</div>
+                <div className="p-1 border border-white/[0.08] text-amber-300">Gemini</div>
+                <div className="p-1 border border-white/[0.08] text-amber-300">Aquarius</div>
                 <div className="col-span-2 row-span-2 bg-[#0F172A]/50 flex items-center justify-center text-xs font-bold text-white">
                   South Indian Rashi
                 </div>
-                <div className="p-1 border border-white/10 text-amber-300">Cancer</div>
-                <div className="p-1 border border-white/10 text-amber-300">Capricorn</div>
-                <div className="p-1 border border-white/10 text-amber-300">Leo</div>
-                <div className="p-1 border border-white/10 text-amber-300">Sagittarius</div>
-                <div className="p-1 border border-white/10 text-amber-300">Scorpio</div>
-                <div className="p-1 border border-white/10 text-amber-300">Libra</div>
-                <div className="p-1 border border-white/10 text-amber-300">Virgo</div>
+                <div className="p-1 border border-white/[0.08] text-amber-300">Cancer</div>
+                <div className="p-1 border border-white/[0.08] text-amber-300">Capricorn</div>
+                <div className="p-1 border border-white/[0.08] text-amber-300">Leo</div>
+                <div className="p-1 border border-white/[0.08] text-amber-300">Sagittarius</div>
+                <div className="p-1 border border-white/[0.08] text-amber-300">Scorpio</div>
+                <div className="p-1 border border-white/[0.08] text-amber-300">Libra</div>
+                <div className="p-1 border border-white/[0.08] text-amber-300">Virgo</div>
               </div>
             )}
 
             {chartStyle === 'western' && (
               <div className="w-full h-full rounded-full border-2 border-cyan-400/40 relative flex items-center justify-center p-2">
-                <div className="w-3/4 h-3/4 rounded-full border border-white/10 flex items-center justify-center">
+                <div className="w-3/4 h-3/4 rounded-full border border-white/[0.08] flex items-center justify-center">
                   <div className="text-center">
                     <span className="text-[10px] font-mono text-cyan-400 block font-bold">Western Tropical</span>
                     <span className="text-xs font-bold text-white">360° Wheel</span>
@@ -215,7 +213,7 @@ export default function InteractiveDualChartStudio({ userProfile, onNavigateToTa
 
         {/* Right: Planetary Telemetry & Inspector */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="p-5 rounded-3xl bg-[#0B1220] border border-white/10 space-y-3">
+          <div className="p-5 rounded-3xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] space-y-3">
             <h3 className="text-sm font-bold font-mono uppercase text-slate-300 flex items-center gap-2">
               <Layers className="w-4 h-4 text-amber-400" /> Ephemeris Planetary Coordinates
             </h3>
@@ -247,7 +245,7 @@ export default function InteractiveDualChartStudio({ userProfile, onNavigateToTa
           </div>
 
           {/* Selected Planet Deep Inspector Card */}
-          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#0F172A] to-[#070D18] border border-white/10 space-y-2">
+          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#0F172A] to-[#070D18] border border-white/[0.08] space-y-2">
             <span className="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-bold">
               Selected Inspector: {selectedPlanet.name}
             </span>
