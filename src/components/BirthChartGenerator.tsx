@@ -125,16 +125,16 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
 
   // Vimshottari Dasha Periods
   const dashaPeriods = [
-    { planet: 'Jupiter (Guru Dasha)', years: '2016 – 2032', status: 'Active (Current)', color: 'border-amber-500/50 bg-amber-500/10 text-amber-300' },
+    { planet: 'Jupiter (Guru Dasha)', years: '2016 – 2032', status: 'Active (Current)', color: 'border-white/[0.08] bg-amber-500/10 text-amber-300' },
     { planet: 'Saturn (Shani Dasha)', years: '2032 – 2051', status: 'Upcoming', color: 'border-indigo-500/30 bg-white/5 text-slate-300' },
-    { planet: 'Mercury (Budh Dasha)', years: '2051 – 2068', status: 'Future', color: 'border-white/10 bg-white/5 text-slate-400' },
-    { planet: 'Ketu (Ketu Dasha)', years: '2068 – 2075', status: 'Future', color: 'border-white/10 bg-white/5 text-slate-400' },
+    { planet: 'Mercury (Budh Dasha)', years: '2051 – 2068', status: 'Future', color: 'border-white/[0.08] bg-white/5 text-slate-400' },
+    { planet: 'Ketu (Ketu Dasha)', years: '2068 – 2075', status: 'Future', color: 'border-white/[0.08] bg-white/5 text-slate-400' },
   ];
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-10 text-left">
       {/* Header Banner */}
-      <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
+      <div className="p-4 rounded-2xl bg-amber-500/10 border border-white/[0.08] flex items-start gap-3">
         <Sparkles className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
         <div className="text-xs text-slate-300 space-y-1">
           <p className="font-bold text-amber-300">Astrological Knowledge Framework Notice</p>
@@ -144,16 +144,16 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/10 pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/[0.08] pb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
             {experienceMode === 'astrologer' ? (
-              <span className="text-xs font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40 flex items-center gap-1.5">
+              <span className="text-xs font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-white/[0.08] flex items-center gap-1.5">
                 <span>🔮 Professional Astrologer Mode</span>
                 <span className="text-[10px] text-purple-200">· Swiss Ephemeris Telemetry</span>
               </span>
             ) : (
-              <span className="text-xs font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 flex items-center gap-1.5">
+              <span className="text-xs font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-white/[0.08] flex items-center gap-1.5">
                 <span>👤 Everyday Seeker Mode</span>
                 <span className="text-[10px] text-amber-200">· Plain English Summary</span>
               </span>
@@ -187,7 +187,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
               });
               exportUniversalPdf(htmlContent, `ASTRO360_Master_Dossier_${userProfile?.name ? userProfile.name.replace(/\s+/g, '_') : 'Seeker'}`);
             }}
-            className="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer shadow-sm"
+            className="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-white/[0.08] hover:bg-amber-500/30 text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer shadow-sm"
           >
             <Download className="w-4 h-4" />
             <span>Generate Official Printable PDF Kundli Report</span>
@@ -199,7 +199,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
               onClick={() => setExperienceMode('normal')}
               className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 experienceMode === 'normal'
-                  ? 'bg-amber-500/25 text-amber-300 border border-amber-500/40 shadow-sm'
+                  ? 'bg-white text-black font-semibold shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -209,7 +209,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
               onClick={() => setExperienceMode('astrologer')}
               className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                 experienceMode === 'astrologer'
-                  ? 'bg-purple-500/25 text-purple-300 border border-purple-500/40 shadow-sm'
+                  ? 'bg-white text-black font-semibold shadow-sm'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -218,7 +218,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
           </div>
 
           {/* Ayanamsha System Selector */}
-          <div className="flex items-center gap-1.5 p-1.5 glass-card rounded-2xl border border-white/10">
+          <div className="flex items-center gap-1.5 p-1.5 bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl border border-white/[0.08]">
             <span className="text-[10px] font-mono text-slate-400 uppercase font-bold px-2">Ayanamsha:</span>
             {[
               { id: 'lahiri', label: "Lahiri (24°10')" },
@@ -231,7 +231,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
                 onClick={() => setSelectedAyanamsha(sys.id as any)}
                 className={`px-2.5 py-1 rounded-xl text-xs font-mono font-semibold transition-all cursor-pointer ${
                   selectedAyanamsha === sys.id
-                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
+                    ? 'bg-white text-black font-semibold shadow-sm'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -240,7 +240,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
             ))}
           </div>
 
-          <div className="flex items-center gap-2 p-1.5 glass-card rounded-2xl flex-wrap">
+          <div className="flex items-center gap-2 p-1.5 bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl flex-wrap">
             {[
               { id: 'north', label: 'North Indian Diamond' },
               { id: 'south', label: 'South Indian Grid' },
@@ -251,7 +251,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
                 onClick={() => setChartStyle(style.id as any)}
                 className={`px-3.5 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                   chartStyle === style.id
-                    ? 'bg-gradient-to-r from-cosmic-500 to-purple-600 text-white font-semibold shadow-md'
+                    ? 'bg-white text-black font-semibold shadow-sm'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -263,7 +263,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
       </div>
 
       {/* View Switcher */}
-      <div className="flex flex-wrap items-center gap-2 p-1.5 glass-card rounded-2xl w-fit">
+      <div className="flex flex-wrap items-center gap-2 p-1.5 bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] rounded-2xl w-fit">
         {[
           { id: 'wheel', label: 'Interactive Kundli Chart', icon: <Compass className="w-4 h-4" /> },
           { id: 'divisional', label: 'Divisional Charts (D1–D60)', icon: <Layers className="w-4 h-4" /> },
@@ -281,7 +281,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
             onClick={() => setActiveTab(tab.id as any)}
             className={`px-4 py-2 rounded-xl font-medium text-xs flex items-center gap-2 transition-all cursor-pointer ${
               activeTab === tab.id
-                ? 'bg-amber-500/25 text-amber-300 border border-amber-500/40 shadow-sm'
+                ? 'bg-white text-black font-semibold shadow-sm'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
             }`}
           >
@@ -296,7 +296,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Chart Wheel Render Area */}
           <div className="lg:col-span-7 flex justify-center">
-            <div className="glass-card p-6 rounded-3xl border border-white/10 w-full max-w-[440px] aspect-square flex flex-col items-center justify-center relative overflow-hidden">
+            <div className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] p-6 rounded-3xl border border-white/[0.08] w-full max-w-[440px] aspect-square flex flex-col items-center justify-center relative overflow-hidden">
               
               {/* NORTH INDIAN DIAMOND STYLE */}
               {chartStyle === 'north' && (
@@ -413,14 +413,14 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
           <div className="lg:col-span-5 space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-display font-bold text-white">Planetary Placements</h3>
-              <span className="text-xs font-mono text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/30">
+              <span className="text-xs font-mono text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-lg border border-white/[0.08]">
                 Ayanamsha: {selectedAyanamsha.toUpperCase()}
               </span>
             </div>
 
             <div className="space-y-2 max-h-[360px] overflow-y-auto custom-scrollbar pr-2">
               {planets.map((p, idx) => (
-                <div key={idx} className="p-3.5 rounded-xl glass-card border border-white/5 flex items-center justify-between">
+                <div key={idx} className="p-3.5 rounded-xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] border border-white/5 flex items-center justify-between">
                   <div>
                     <p className="text-sm font-semibold text-white">{p.name}</p>
                     <p className="text-xs text-slate-400">{p.sign} · {p.deg}</p>
@@ -448,7 +448,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
                 onClick={() => setSelectedDivisional(chart.id)}
                 className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                   selectedDivisional === chart.id
-                    ? 'bg-purple-500/25 text-purple-300 border border-purple-500/40 shadow-sm'
+                    ? 'bg-white text-black font-semibold shadow-sm'
                     : 'bg-white/5 border border-white/5 text-slate-400 hover:bg-white/10'
                 }`}
               >
@@ -472,7 +472,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
 
             return (
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div className="lg:col-span-4 glass-card p-6 rounded-3xl border border-white/10 space-y-4">
+                <div className="lg:col-span-4 bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] p-6 rounded-3xl border border-white/[0.08] space-y-4">
                   <div>
                     <h3 className="text-xl font-bold text-white">{divResult.chartName} Overview</h3>
                     <p className="text-xs text-slate-400 mt-1">{divResult.keyInterpretation}</p>
@@ -483,11 +483,11 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
                   </div>
                 </div>
 
-                <div className="lg:col-span-8 glass-card p-6 rounded-3xl border border-white/10">
+                <div className="lg:col-span-8 bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] p-6 rounded-3xl border border-white/[0.08]">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs">
                       <thead>
-                        <tr className="border-b border-white/10 text-slate-400">
+                        <tr className="border-b border-white/[0.08] text-slate-400">
                           <th className="py-2 px-1">Planet</th>
                           <th className="py-2 px-1">Sign Placement</th>
                           <th className="py-2 px-1">House Cusp</th>
@@ -525,7 +525,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
       {/* VIEW 3: DASHA TIMELINE */}
       {activeTab === 'dasha' && (
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-          <div className="glass-card p-8 rounded-3xl border border-white/10 space-y-6">
+          <div className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] p-8 rounded-3xl border border-white/[0.08] space-y-6">
             <div className="flex items-center gap-3">
               <Sun className="w-6 h-6 text-amber-400" />
               <div>
@@ -554,13 +554,13 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
       {/* VIEW 4: PLANETARY DIGNITY & STRENGTH */}
       {activeTab === 'aspects' && (
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-          <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 space-y-4">
+          <div className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] p-6 sm:p-8 rounded-3xl border border-white/[0.08] space-y-4">
             <h3 className="text-xl font-display font-bold text-white">Full Planetary Dignity & Strength Matrix</h3>
             
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="border-b border-white/10 text-slate-400">
+                  <tr className="border-b border-white/[0.08] text-slate-400">
                     <th className="py-3 px-2">Planet</th>
                     <th className="py-3 px-2">Sign & Degree</th>
                     <th className="py-3 px-2">House Cusp</th>
@@ -590,8 +590,8 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
       {/* VIEW 5: ASTRONOMICAL MATH & EPHEMERIS BREAKDOWN */}
       {activeTab === 'ephemeris' && (
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-          <div className="glass-card p-6 sm:p-8 rounded-3xl border border-amber-500/30 space-y-6">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] p-6 sm:p-8 rounded-3xl border border-white/[0.08] space-y-6">
+            <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
               <div>
                 <h3 className="text-2xl font-display font-bold text-white flex items-center gap-2">
                   <Zap className="w-6 h-6 text-amber-400" /> Astronomical Math & Ephemeris Engine
@@ -626,9 +626,9 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
             </div>
 
             {/* Formulae Proof Box */}
-            <div className="p-5 rounded-2xl bg-slate-950 border border-white/10 space-y-3 font-mono text-xs text-slate-300">
+            <div className="p-5 rounded-2xl bg-slate-950 border border-white/[0.08] space-y-3 font-mono text-xs text-slate-300">
               <p className="text-amber-300 font-bold text-sm">🧮 Mathematical Verification Equations:</p>
-              <div className="space-y-1.5 pl-2 border-l-2 border-amber-500/40">
+              <div className="space-y-1.5 pl-2 border-l-2 border-white/[0.08]">
                 <p>• <span className="text-cyan-300">Sidereal Longitude:</span> λ_Sidereal = λ_Tropical - Ayanamsha_{selectedAyanamsha.toUpperCase()}</p>
                 <p>• <span className="text-purple-300">Ascendant (Lagna) Degree:</span> tan(tan λ_asc) = cos(ε) * tan(RAMC)</p>
                 <p>• <span className="text-emerald-300">Moon Nakshatra Span:</span> θ_nakshatra = (λ_moon % 13.3333°) / 3.3333° (Pada 1–4)</p>
@@ -641,8 +641,8 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
       {/* VIEW 6: PANCHANG & TIME SYSTEM */}
       {activeTab === 'panchang' && (
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-          <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 space-y-6">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] p-6 sm:p-8 rounded-3xl space-y-6">
+            <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
               <div>
                 <h3 className="text-2xl font-display font-bold text-white flex items-center gap-2">
                   <Globe2 className="w-6 h-6 text-amber-400" /> Panchang & Astronomical Time Metrics
@@ -651,7 +651,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
                   Daily 5-fold Vedic calendar parameters calculated for {userProfile?.dob || 'Birth Date'}.
                 </p>
               </div>
-              <span className="text-xs font-bold px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-white/[0.08]">
                 5-PANCHANG METRICS
               </span>
             </div>
@@ -678,8 +678,8 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
       {/* VIEW 7: YOGAS & DOSHAS DETECTION */}
       {activeTab === 'yogas' && (
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-          <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 space-y-6">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] p-6 sm:p-8 rounded-3xl space-y-6">
+            <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
               <div>
                 <h3 className="text-2xl font-display font-bold text-white flex items-center gap-2">
                   <Shield className="w-6 h-6 text-emerald-400" /> Yogas & Doshas Automated Evaluator
@@ -720,8 +720,8 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
       {/* VIEW 8: NAKSHATRA ANALYSIS */}
       {activeTab === 'nakshatra' && (
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-          <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 space-y-6">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] p-6 sm:p-8 rounded-3xl space-y-6">
+            <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
               <div>
                 <h3 className="text-2xl font-display font-bold text-white flex items-center gap-2">
                   <Star className="w-6 h-6 text-cyan-400" /> Birth Nakshatra Deep Analysis
@@ -766,8 +766,8 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
       {/* VIEW 9: GOCHAR TRANSIT MOVEMENTS */}
       {activeTab === 'transits' && (
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-          <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 space-y-6">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] p-6 sm:p-8 rounded-3xl space-y-6">
+            <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
               <div>
                 <h3 className="text-2xl font-display font-bold text-white flex items-center gap-2">
                   <Activity className="w-6 h-6 text-amber-400" /> Gochar Planetary Transit Timeline
@@ -776,7 +776,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
                   Real-time movement of major planets relative to your natal Moon sign.
                 </p>
               </div>
-              <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
+              <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-white/[0.08]">
                 LIVE GOCHAR TELEMETRY
               </span>
             </div>
@@ -809,8 +809,8 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
       {/* VIEW 10: BIRTH TIME RECTIFICATION (BTR) */}
       {activeTab === 'btr' && (
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-          <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 space-y-6">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] p-6 sm:p-8 rounded-3xl space-y-6">
+            <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
               <div>
                 <h3 className="text-2xl font-display font-bold text-white flex items-center gap-2">
                   <Clock className="w-6 h-6 text-indigo-400" /> Birth Time Rectification (BTR) Estimator
@@ -859,7 +859,7 @@ export default function BirthChartGenerator({ userProfile }: BirthChartGenerator
                     Event date {eventDate} aligns precisely with D10 career lagna point when birth time is adjusted by +4 minutes.
                   </p>
                 </div>
-                <p className="text-[10px] text-amber-300 bg-amber-500/10 p-2 rounded-xl border border-amber-500/20">
+                <p className="text-[10px] text-amber-300 bg-amber-500/10 p-2 rounded-xl border border-white/[0.08]">
                   Note: Birth Time Rectification is a traditional mathematical estimation methodology, not a guaranteed physical certainty.
                 </p>
               </div>
