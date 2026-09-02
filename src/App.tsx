@@ -680,7 +680,7 @@ export default function AppContent() {
                     />
                   )}
                                     {/* Core 5-Root Views */}
-                  {(activeTab === 'home' || activeTab === 'overview') && (
+                  {(activeTab === 'home' || activeTab === 'overview' || activeTab === 'todays-horoscope' || activeTab === 'daily-summary' || activeTab === 'daily' || activeTab === 'summary') && (
                     <OmniSimpleHome
                       userProfile={userProfile}
                       onNavigate={navigateTo}
@@ -811,6 +811,39 @@ export default function AppContent() {
                   {(activeTab === 'widgets' || activeTab === 'embed') && <EmbeddableWidgetGenerator onNavigateToTab={navigateTo} />}
                   {(activeTab === 'directory' || activeTab === 'celebrities') && <ProgrammaticSeoDirectory onNavigateToTab={navigateTo} />}
                   {(activeTab === 'pwa' || activeTab === 'briefing') && <PwaCosmicBriefing onNavigateToTab={navigateTo} />}
+
+                  {/* Fallback for unknown / direct deep-links */}
+                  {![
+                    'landing', 'free-tools', 'home', 'overview', 'todays-horoscope', 'daily-summary', 'daily', 'summary',
+                    'dashboard', 'pro-dashboard', 'forecast', 'predictions', 'prediction', 'precision-forecast', 'forecast-studio',
+                    'copilot', 'ask', 'oracle', 'charts', 'me', 'profile', 'account', 'more',
+                    'radar', 'transit-radar', '3d', 'studio', 'cosmic-studio', 'omni-research', 'comparative-mode', 'consensus', 'research',
+                    'birth-chart', 'kundli', 'nakshatra', 'dual-wheel', 'chart-studio', 'dual-chart', 'divisional', 'divisional-charts', 'vargas',
+                    'shadbala', 'planetary-strengths', 'frequencies', 'binaural', 'sound-studio', 'planetary-frequencies',
+                    'ephemeris-lab', 'diagnostic-lab', 'sabian', 'sabian-symbols', 'master-chart', 'dasha', 'chart-analytics',
+                    'time-horizon', 'transits', 'sadesati', 'saturn-transit', 'career', 'dossier', 'pdf-report', 'executive-dossier',
+                    'news-radar', 'news-intelligence', 'cosmic-news', 'mundane', 'news-prediction', 'muhurta', 'electional-muhurta',
+                    'horas', 'planetary-horas', 'hora-clock', 'btr', 'btr-suite', 'rectification', 'transit-calendar',
+                    'islamic-astrology', 'islamic-suite', 'islamic', 'vedic', 'vedic-astrology', 'western', 'western-astrology',
+                    'chinese', 'bazi', 'kp', 'jaimini', 'mayan', 'gemstone', 'gemstone-suite', 'gemstones', 'mantras', 'mantra-soundboard',
+                    'chakra', 'chakras', 'chakra-alignment', 'tarot', 'tarot-iching', 'numerology', 'numerology-suite', 'fengshui',
+                    'feng-shui', 'fengshui-matrix', 'shlokas', 'scripture', 'live-diagnostics', 'advisor', 'remedies', 'remedy',
+                    'custom-remedies', 'synastry', 'match', 'compatibility', 'ashta-koota', 'kundli-matching', 'global-suite',
+                    'tools-catalog', 'chat', 'dream-interpreter', 'dream', 'problem-solver', 'spiritual-traditions', 'consultation-hub',
+                    'report-generator', 'executive-report', 'dosha-engine', 'biorhythm-tracker', 'panchang-deities', 'panchang',
+                    'cosmic-compass', 'astrocartography', 'astro-cartography', 'panchanga', 'methodology', 'synastry-overlay',
+                    'mind-map', 'learning-hub', 'admin-dashboard', 'seo', 'seo-suite', 'seo-auditor', 'seo-growth', 'seo-lab',
+                    'keyword-lab', 'keywords', 'seo-lab/keywords', 'backlink-lab', 'backlinks', 'link-lab', 'seo-lab/backlinks',
+                    'control-center', 'horoscope', 'passport', 'widgets', 'embed', 'directory', 'celebrities', 'pwa', 'briefing'
+                  ].includes(activeTab) && (
+                    <OmniSimpleHome
+                      userProfile={userProfile}
+                      onNavigate={navigateTo}
+                      onOpenProfile={() => setIsProfileModalOpen(true)}
+                      onUpdateProfile={(updated: UserProfile) => { setUserProfile(updated); saveProfile(updated); }}
+                    />
+                  )}
+
                 </ErrorBoundary>
                 {activeTab !== 'landing' && <Footer />}
               </div>
