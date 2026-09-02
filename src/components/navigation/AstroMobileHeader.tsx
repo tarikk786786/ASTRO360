@@ -56,7 +56,7 @@ export const AstroMobileHeader: React.FC<AstroMobileHeaderProps> = memo(({
   return (
     <header
       role="banner"
-      className={`sticky top-0 z-30 w-full bg-[#060A14]/96 backdrop-blur-xl border-b border-white/[0.08] px-3 py-2 select-none shadow-[0_4px_20px_rgba(0,0,0,0.6)] ${className}`}
+      className={`sticky top-0 z-30 w-full bg-[#090A0C]/96 backdrop-blur-xl border-b border-white/[0.08] px-3 py-2 select-none shadow-[0_4px_20px_rgba(0,0,0,0.6)] ${className}`}
       style={{
         paddingTop: 'calc(0.4rem + env(safe-area-inset-top, 0px))',
       }}
@@ -71,7 +71,7 @@ export const AstroMobileHeader: React.FC<AstroMobileHeaderProps> = memo(({
               aria-label="Back to dashboard"
               className="flex items-center justify-center min-w-[42px] min-h-[42px] rounded-xl bg-white/[0.08] active:scale-90 text-slate-200 border border-white/12 transition-all cursor-pointer touch-manipulation"
             >
-              <ArrowLeft className="w-5 h-5 text-amber-400" aria-hidden="true" />
+              <ArrowLeft className="w-5 h-5 text-white" aria-hidden="true" />
             </button>
             <div className="flex flex-col min-w-0 text-left">
               <h1 className="text-sm font-extrabold text-white truncate font-sans tracking-tight">
@@ -100,7 +100,7 @@ export const AstroMobileHeader: React.FC<AstroMobileHeaderProps> = memo(({
                   type="button"
                   onClick={onOpenSystemSheet}
                   aria-label={'Change system: ' + activeSystem}
-                  className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-400/15 active:bg-amber-400/30 border border-white/[0.08] text-[9.5px] font-mono font-bold text-amber-300 transition-colors cursor-pointer touch-manipulation"
+                  className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white/[0.08] active:bg-white/[0.15] border border-white/[0.1] text-[9.5px] font-mono font-semibold text-slate-200 transition-colors cursor-pointer touch-manipulation"
                 >
                   <span>{activeSystem}</span>
                   <ChevronDown className="w-2.5 h-2.5 opacity-70" aria-hidden="true" />
@@ -114,7 +114,7 @@ export const AstroMobileHeader: React.FC<AstroMobileHeaderProps> = memo(({
         <div className="flex items-center gap-1.5 shrink-0">
           {/* Offline Warning */}
           {isOffline && (
-            <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-amber-500/20 border border-white/[0.12] text-[9.5px] font-mono font-bold text-amber-300">
+            <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-white/[0.06] border border-white/[0.08] text-[9.5px] font-mono text-slate-300">
               <WifiOff className="w-3 h-3" />
               <span className="hidden xs:inline">Offline</span>
             </div>
@@ -127,7 +127,7 @@ export const AstroMobileHeader: React.FC<AstroMobileHeaderProps> = memo(({
             aria-label="Open command search"
             className="flex items-center justify-center min-w-[40px] min-h-[40px] rounded-xl bg-white/[0.06] active:scale-90 border border-white/10 text-slate-300 transition-all cursor-pointer touch-manipulation"
           >
-            <Search className="w-4 h-4 text-amber-400" aria-hidden="true" />
+            <Search className="w-4 h-4 text-white" aria-hidden="true" />
           </button>
 
           {/* 152+ Tools Drawer Trigger */}
@@ -149,7 +149,7 @@ export const AstroMobileHeader: React.FC<AstroMobileHeaderProps> = memo(({
           >
             <Bell className="w-4 h-4" aria-hidden="true" />
             {notificationCount > 0 && (
-              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.9)]" />
+              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.9)]" />
             )}
           </button>
         </div>
