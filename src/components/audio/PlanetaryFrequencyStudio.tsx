@@ -35,7 +35,7 @@ export default function PlanetaryFrequencyStudio() {
   return (
     <div className="space-y-6">
       {/* Header Banner */}
-      <div className="p-6 rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#1E1B4B] to-[#0F172A] border border-indigo-500/30 relative overflow-hidden">
+      <div className="p-6 rounded-3xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] relative overflow-hidden">
         
         
         <div className="relative z-10 space-y-2">
@@ -54,7 +54,7 @@ export default function PlanetaryFrequencyStudio() {
       </div>
 
       {/* Active Frequency Display & Audio Controls */}
-      <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/[0.08] grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center gap-4">
             <div 
@@ -88,7 +88,7 @@ export default function PlanetaryFrequencyStudio() {
         </div>
 
         {/* Audio Player Controls */}
-        <div className="lg:col-span-5 flex flex-col gap-4 p-5 rounded-2xl bg-[#070D18] border border-white/5">
+        <div className="lg:col-span-5 flex flex-col gap-4 p-5 rounded-2xl bg-white/[0.03] border border-white/5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono text-slate-400">Live Synthesis Status</span>
             <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-bold ${
