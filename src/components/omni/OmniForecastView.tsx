@@ -8,6 +8,8 @@ import {
 } from 'lucide-react';
 import type { UserProfile } from '../../types';
 import OmniWhyDrawer, { type OmniWhyDrawerProps } from './OmniWhyDrawer';
+import { downloadIcsFile, getGoogleCalendarUrl, CalendarEventPayload } from '../../lib/icsCalendarExporter';
+import { toast } from 'sonner';
 
 export interface ForecastEvent {
   id: string;
@@ -1375,20 +1377,69 @@ export default function OmniForecastView({ userProfile }: { userProfile: UserPro
                 </div>
               )}
 
-              {/* Action Buttons: [Why?] & [Details Toggle] */}
-              <div className="flex items-center justify-between pt-2 border-t border-white/10">
-                <button
-                  onClick={() => handleOpenWhy(event.whyPayload)}
-                  className="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-amber-300 hover:text-amber-200 border border-white/[0.08] text-xs font-mono font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
-                >
-                  <HelpCircle className="w-3.5 h-3.5 text-amber-400" /> Why? Explain Calculation
-                </button>
+              {/* Action Buttons: [Why?], [Add to Calendar], [Ask AI], [Details Toggle] */}
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-white/10">
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    onClick={() => handleOpenWhy(event.whyPayload)}
+                    className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-amber-300 hover:text-amber-200 border border-white/[0.08] text-xs font-mono font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <HelpCircle className="w-3.5 h-3.5 text-amber-400" /> Why?
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      const payload: CalendarEventPayload = {
+                        title: `ASTRO360: ${event.title}`,
+                        description: `${event.summary}\n\nActivation: ${event.statusText} (${event.energyLevel}%)\nScripture: ${event.classicalCitation}`,
+                        startDate: '2026-09-12T09:00:00Z',
+                        endDate: '2026-10-28T18:00:00Z',
+                        category: `Astrology - ${event.category.toUpperCase()}`
+                      };
+                      downloadIcsFile([payload], `ASTRO360_${event.id}.ics`);
+                      toast.success('Downloaded .ics calendar file for Apple/Outlook!');
+                    }}
+                    className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/[0.08] text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
+                    title="Export .ics to Apple Calendar or Outlook"
+                  >
+                    <Download className="w-3.5 h-3.5 text-indigo-400" />
+                    <span>Sync (.ics)</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      const payload: CalendarEventPayload = {
+                        title: `ASTRO360: ${event.title}`,
+                        description: `${event.summary}\n\nActivation: ${event.statusText}`,
+                        startDate: '2026-09-12T09:00:00Z',
+                        endDate: '2026-10-28T18:00:00Z',
+                        category: `Astrology - ${event.category.toUpperCase()}`
+                      };
+                      window.open(getGoogleCalendarUrl(payload), '_blank', 'noopener,noreferrer');
+                      toast.success('Opening Google Calendar in new tab!');
+                    }}
+                    className="px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
+                    title="Add directly to Google Calendar Web"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Google Cal</span>
+                  </button>
+
+                  <button
+                    onClick={() => onNavigate && onNavigate('ask')}
+                    className="px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
+                    title="Ask AI Copilot for deep-dive analysis on this window"
+                  >
+                    <MessageSquare className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Ask AI</span>
+                  </button>
+                </div>
 
                 <button
                   onClick={() => setExpandedCardId(isExpanded ? null : event.id)}
                   className="text-xs font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1 cursor-pointer transition-colors"
                 >
-                  {isExpanded ? 'Hide Details' : 'View Action Guidance'} <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
+                  {isExpanded ? 'Hide Guidance' : 'View Action Guidance'} <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
                 </button>
               </div>
 
