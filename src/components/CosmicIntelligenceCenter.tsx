@@ -739,7 +739,7 @@ export default function CosmicIntelligenceCenter({ onNavigate, userProfile, onUp
               <ShimmerButton
                 onClick={() => onNavigate('chat')}
                 shimmerColor="#06B6D4"
-                background="rgba(37, 99, 235, 0.9)"
+                background="#111315"
                 className="w-full sm:w-auto justify-center"
               >
                 <Bot className="w-4 h-4 text-cyan-200" /> AI Oracle Consultation

@@ -825,7 +825,7 @@ export default function AppContent() {
       {activeTab !== 'ask' && activeTab !== 'landing' && (
         <button
           onClick={() => navigateTo('ask')}
-          className="hidden md:flex fixed bottom-6 right-6 z-30 items-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-xs font-mono shadow-xl shadow-amber-500/25 border border-amber-300/40 transition-all active:scale-95 cursor-pointer"
+          className="hidden md:flex fixed bottom-6 right-6 z-30 items-center gap-2 px-4 py-2.5 rounded-2xl bg-white hover:bg-slate-100 text-black font-semibold text-xs font-sans shadow-xl shadow-black/50 border border-white/20 transition-all active:scale-95 cursor-pointer"
           title="Ask ASTRO360"
         >
           <Sparkles className="w-4 h-4 text-slate-950" />

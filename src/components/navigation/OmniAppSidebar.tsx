@@ -92,9 +92,9 @@ export default function OmniAppSidebar({
       items: [
         { id: 'dashboard', label: 'Dashboard Overview', icon: LayoutDashboard },
         { id: 'live-diagnostics', label: 'Live Cosmic Radar', icon: Activity, badge: 'Live', badgeColor: 'bg-emerald-500/20 text-emerald-300 border-white/[0.08]' },
-        { id: 'copilot', label: 'AI Oracle Copilot', icon: MessageCircle, badge: 'AI', badgeColor: 'bg-cyan-500/20 text-cyan-300 border-white/[0.08]' },
-        { id: 'studio', label: 'Master Studio Suite', icon: Sparkles, badge: '152+', badgeColor: 'bg-amber-500/20 text-amber-300 border-white/[0.08]' },
-        { id: 'omni-research', label: 'Consensus Core', icon: Cpu, badge: 'Research', badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' },
+        { id: 'copilot', label: 'AI Oracle Copilot', icon: MessageCircle, badge: 'AI', badgeColor: 'bg-white/[0.06] text-slate-400 border border-white/[0.08]' },
+        { id: 'studio', label: 'Master Studio Suite', icon: Sparkles, badge: '152+', badgeColor: 'bg-white/[0.06] text-slate-400 border border-white/[0.08]' },
+        { id: 'omni-research', label: 'Consensus Core', icon: Cpu, badge: 'Research', badgeColor: 'bg-white/[0.06] text-slate-400 border border-white/[0.08]' },
       ]
     },
     {
@@ -104,10 +104,10 @@ export default function OmniAppSidebar({
       accentColor: 'text-cyan-400',
       items: [
         { id: 'birth-chart', label: 'Birth Chart Engine', icon: Compass },
-        { id: 'chart-studio', label: 'Dual Wheel Studio', icon: Layers, badge: 'Dual', badgeColor: 'bg-cyan-500/20 text-cyan-300 border-white/[0.08]' },
+        { id: 'chart-studio', label: 'Dual Wheel Studio', icon: Layers, badge: 'Dual', badgeColor: 'bg-white/[0.06] text-slate-400 border border-white/[0.08]' },
         { id: 'divisional-charts', label: 'Divisional Charts (D1-D60)', icon: Layers },
         { id: 'shadbala', label: '6-Fold Shadbala Potency', icon: Flame, badge: 'Bala', badgeColor: 'bg-rose-500/20 text-rose-300 border-rose-500/30' },
-        { id: 'frequencies', label: 'Planetary Frequencies', icon: Volume2, badge: 'Audio', badgeColor: 'bg-purple-500/20 text-purple-300 border-purple-500/30' },
+        { id: 'frequencies', label: 'Planetary Frequencies', icon: Volume2, badge: 'Audio', badgeColor: 'bg-white/[0.06] text-slate-400 border border-white/[0.08]' },
         { id: 'ephemeris-lab', label: 'Ephemeris Comparison Lab', icon: Activity },
         { id: 'sabian', label: 'Sabian Symbols (360°)', icon: Sparkles },
       ]
@@ -118,10 +118,10 @@ export default function OmniAppSidebar({
       icon: Calendar,
       accentColor: 'text-indigo-400',
       items: [
-        { id: 'time-horizon', label: 'Dasha & Time Horizon', icon: Clock, badge: '120y', badgeColor: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30' },
+        { id: 'time-horizon', label: 'Dasha & Time Horizon', icon: Clock, badge: '120y', badgeColor: 'bg-white/[0.06] text-slate-400 border border-white/[0.08]' },
         { id: 'transit-radar', label: 'Sade Sati & Transits', icon: Radio },
         { id: 'dossier', label: 'Executive PDF Dossier', icon: FileText, badge: 'PDF', badgeColor: 'bg-emerald-500/20 text-emerald-300 border-white/[0.08]' },
-        { id: 'news-intelligence', label: 'Cosmic News Hub', icon: Radio, badge: 'Live', badgeColor: 'bg-amber-500/20 text-amber-300 border-white/[0.08]' },
+        { id: 'news-intelligence', label: 'Cosmic News Hub', icon: Radio, badge: 'Live', badgeColor: 'bg-white/[0.06] text-slate-400 border border-white/[0.08]' },
         { id: 'electional-muhurta', label: 'Electional Muhurta', icon: Clock },
         { id: 'planetary-horas', label: 'Planetary Horas Clock', icon: Activity },
         { id: 'btr-suite', label: 'Birth Time Rectification', icon: ShieldCheck },
@@ -209,9 +209,9 @@ export default function OmniAppSidebar({
       <div className="p-3 space-y-2.5 border-b border-white/5 shrink-0">
         <button
           onClick={() => onNavigate('landing')}
-          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-mono font-bold bg-gradient-to-r from-amber-500/10 via-white/5 to-cyan-500/10 hover:from-amber-500/20 hover:to-cyan-500/20 text-amber-300 border border-white/[0.08] hover:border-white/[0.12] transition-all cursor-pointer group shadow-sm"
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-mono font-bold bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.08] transition-all cursor-pointer group shadow-sm"
         >
-          <Home className="w-3.5 h-3.5 text-amber-400 group-hover:-translate-x-0.5 transition-transform" />
+          <Home className="w-3.5 h-3.5 text-slate-400 group-hover:text-white group-hover:-translate-x-0.5 transition-transform" />
           <span>Return to Landing Page</span>
         </button>
 
