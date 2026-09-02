@@ -47,7 +47,7 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = memo(({
       className={`md:hidden fixed bottom-0 inset-x-0 z-40 select-none px-3 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] pt-1 pointer-events-auto ${className}`}
     >
       {/* Solid High-Contrast Glass Dock */}
-      <div className="mx-auto max-w-md bg-[#070D1A]/96 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-[0_12px_40px_rgba(0,0,0,0.9)] p-1.5 flex items-center justify-around ring-1 ring-white/10">
+      <div className="mx-auto max-w-md bg-[#111315]/96 backdrop-blur-2xl border border-white/[0.12] rounded-3xl shadow-[0_12px_40px_rgba(0,0,0,0.9)] p-1.5 flex items-center justify-around ring-1 ring-white/10">
         {MOBILE_NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id || (item.id === 'tools-catalog' && (activeTab === 'more' || activeTab === 'tools-catalog'));
@@ -65,13 +65,13 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = memo(({
               onTouchStart={() => onPrefetch?.(item.id)}
               className={`relative flex flex-col items-center justify-center min-w-[58px] min-h-[50px] px-1 py-1 rounded-2xl transition-all cursor-pointer touch-manipulation active:scale-90 focus:outline-none ${
                 isActive
-                  ? 'text-amber-400 font-bold'
+                  ? 'text-white font-bold'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
               {/* Active Tab Highlight Pill */}
               {isActive && !isHero && (
-                <div className="absolute inset-0 rounded-2xl bg-amber-400/15 border border-white/[0.08] -z-10 shadow-[0_0_12px_rgba(251,191,36,0.2)]" />
+                <div className="absolute inset-0 rounded-2xl bg-white/10 border border-white/20 -z-10 shadow-sm" />
               )}
 
               {/* Central "Ask AI" Hero Button */}
@@ -79,8 +79,8 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = memo(({
                 <div
                   className={`flex items-center justify-center w-11 h-11 rounded-2xl transition-all shadow-md ${
                     isActive
-                      ? 'bg-gradient-to-tr from-amber-400 to-amber-300 text-slate-950 shadow-amber-400/40 scale-105 font-black ring-2 ring-amber-300/50'
-                      : 'bg-amber-400/10 text-amber-300 border border-white/[0.12] hover:bg-amber-400/20'
+                      ? 'bg-white text-black shadow-lg scale-105 font-bold ring-2 ring-white/30'
+                      : 'bg-white/5 text-slate-300 border border-white/[0.08] hover:bg-white/10'
                   }`}
                 >
                   <Icon className="w-5 h-5" aria-hidden="true" />
@@ -89,12 +89,12 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = memo(({
                 <div className="relative p-0.5 flex items-center justify-center">
                   <Icon
                     className={`w-5 h-5 transition-transform ${
-                      isActive ? 'scale-110 text-amber-300' : 'text-slate-400'
+                      isActive ? 'scale-110 text-white' : 'text-slate-400'
                     }`}
                     aria-hidden="true"
                   />
                   {isActive && (
-                    <div className="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.9)]" />
+                    <div className="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.9)]" />
                   )}
                 </div>
               )}
@@ -102,7 +102,7 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = memo(({
               {/* Crystal-Clear Typography Label */}
               <span
                 className={`text-[10.5px] mt-0.5 tracking-tight font-sans ${
-                  isActive ? 'font-black text-amber-300' : 'font-medium text-slate-400'
+                  isActive ? 'font-black text-white' : 'font-medium text-slate-400'
                 }`}
               >
                 {item.label}
