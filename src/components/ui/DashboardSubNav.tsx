@@ -39,7 +39,7 @@ export default function DashboardSubNav({ activeCategory, onSelectCategory }: Da
   }, [activeCategory]);
 
   return (
-    <div className="w-full sticky top-0 z-40 bg-[#090d16]/95 backdrop-blur-2xl border-b border-white/[0.06] shadow-lg shadow-black/20">
+    <div className="w-full sticky top-0 z-40 bg-[#111315]/90 backdrop-blur-2xl border-b border-white/[0.06] shadow-lg shadow-black/20">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div
           ref={containerRef}
@@ -49,7 +49,7 @@ export default function DashboardSubNav({ activeCategory, onSelectCategory }: Da
           {/* Animated Sliding Bottom Indicator */}
           <motion.div
             className="absolute bottom-0 h-[3px] rounded-full shadow-[0_0_12px_rgba(6,182,212,0.8)]"
-            style={{ background: 'linear-gradient(90deg, #06b6d4, #3b82f6, #a855f7)' }}
+            style={{ background: '#FFFFFF' }}
             animate={indicatorStyle}
             transition={{ type: 'spring', stiffness: 380, damping: 28 }}
           />
@@ -65,7 +65,7 @@ export default function DashboardSubNav({ activeCategory, onSelectCategory }: Da
                 style={{ scrollSnapAlign: 'center' }}
                 className={`relative flex items-center gap-2 whitespace-nowrap min-h-[42px] sm:min-h-[44px] px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-[13px] font-semibold transition-all duration-200 cursor-pointer active:scale-95 select-none ${
                   isActive
-                    ? 'text-cyan-300 bg-white/[0.08] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] border border-cyan-500/30'
+                    ? 'text-white bg-white/[0.08] border border-white/[0.15]'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.04] border border-transparent'
                 }`}
               >
