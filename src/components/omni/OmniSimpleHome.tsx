@@ -249,7 +249,7 @@ export default function OmniSimpleHome({
       {/* ═══ RELATIVE Z-INDEX CONTENT LAYER ═══ */}
       <div className="relative z-10 space-y-6 sm:space-y-8">
       {/* 1. Header Greeting & Date Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-5">
         <div>
           <div className="flex items-center gap-3">
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
@@ -285,7 +285,7 @@ export default function OmniSimpleHome({
           {/* Beginner Friendly Quick Guide Trigger */}
           <button
             onClick={() => setIsBeginnerGuideOpen(true)}
-            className="px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 hover:text-white border border-cyan-500/30 text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
+            className="px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 hover:text-white border border-white/[0.08] text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
             title="How to use ASTRO360 in 3 simple steps"
           >
             <HelpCircle className="w-3.5 h-3.5 text-cyan-400" />
@@ -297,7 +297,7 @@ export default function OmniSimpleHome({
           <motion.span
             animate={{ boxShadow: ['0 0 0px rgba(16, 185, 129, 0)', '0 0 12px rgba(16, 185, 129, 0.3)', '0 0 0px rgba(16, 185, 129, 0)'] }}
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            className="text-[11px] font-mono text-emerald-300 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-500/30 flex items-center gap-1.5 font-bold shadow-sm hidden md:inline-flex"
+            className="text-[11px] font-mono text-emerald-300 bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-white/[0.08] flex items-center gap-1.5 font-bold shadow-sm hidden md:inline-flex"
           >
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> High-Precision Ephemeris
           </motion.span>
@@ -323,7 +323,7 @@ export default function OmniSimpleHome({
           className="p-3.5 sm:p-4 rounded-2xl bg-[#111315] border border-white/[0.08] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg"
         >
           <div className="flex items-center gap-2.5">
-            <span className="p-2 rounded-xl bg-amber-400/20 text-amber-300 border border-amber-400/30 shrink-0">
+            <span className="p-2 rounded-xl bg-amber-400/20 text-amber-300 border border-white/[0.08] shrink-0">
               <Sparkles className="w-4 h-4 animate-spin" style={{ animationDuration: '8s' }} />
             </span>
             <div className="space-y-0.5">
@@ -354,7 +354,7 @@ export default function OmniSimpleHome({
       {/* 1.25 DASHBOARD COMMAND & CONTROL BAR (Mobile & Desktop) */}
       <div className="space-y-2.5">
         {/* Segmented Mode Selector Bar */}
-        <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-[#070D18] border border-white/10 overflow-x-auto no-scrollbar shadow-inner">
+        <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-[#111315]/90 border border-white/[0.08] overflow-x-auto no-scrollbar shadow-inner">
           {[
             { id: 'simple', label: '⚡ Daily Summary' },
             { id: 'master', label: '📊 Master Dashboard' },
@@ -369,14 +369,14 @@ export default function OmniSimpleHome({
                 onClick={() => setActiveViewMode(tab.id as any)}
                 className={`relative flex-1 min-w-[120px] py-2 px-3 rounded-xl text-xs font-mono font-bold flex flex-col items-center justify-center transition-colors cursor-pointer ${
                   isSelected
-                    ? 'text-slate-950 font-black'
+                    ? 'text-black font-bold'
                     : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >
                 {isSelected && (
                   <motion.div
                     layoutId="homeViewModeHighlight"
-                    className="absolute inset-0 rounded-xl bg-amber-400 shadow-md"
+                    className="absolute inset-0 rounded-xl bg-white shadow-sm"
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -391,7 +391,7 @@ export default function OmniSimpleHome({
           <button
             type="button"
             onClick={() => setIsControlDrawerOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 border border-amber-400/30 font-bold shrink-0 transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 border border-white/[0.08] font-bold shrink-0 transition-all cursor-pointer"
           >
             <Sliders className="w-3.5 h-3.5" />
             <span>Customize Controls & Options</span>
@@ -400,7 +400,7 @@ export default function OmniSimpleHome({
           <button
             type="button"
             onClick={() => setIsControlDrawerOpen(true)}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/10 shrink-0 transition-all cursor-pointer capitalize"
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.08] shrink-0 transition-all cursor-pointer capitalize"
           >
             <Globe2 className="w-3 h-3 text-cyan-400" />
             <span>{userProfile.preferredSystem || 'Vedic'}</span>
@@ -409,7 +409,7 @@ export default function OmniSimpleHome({
           <button
             type="button"
             onClick={() => setIsControlDrawerOpen(true)}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/10 shrink-0 transition-all cursor-pointer"
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.08] shrink-0 transition-all cursor-pointer"
           >
             <Compass className="w-3 h-3 text-amber-400" />
             <span>{config.houseSystem || 'Whole Sign'}</span>
@@ -418,7 +418,7 @@ export default function OmniSimpleHome({
           <button
             type="button"
             onClick={onOpenProfile}
-            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/10 shrink-0 transition-all cursor-pointer"
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.08] shrink-0 transition-all cursor-pointer"
           >
             <User className="w-3 h-3 text-purple-400" />
             <span>Edit Profile</span>
@@ -454,7 +454,7 @@ export default function OmniSimpleHome({
               <motion.div
                 whileHover={{ scale: 1.04, y: -2 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                className="p-3 rounded-xl bg-white/[0.03] hover:bg-amber-500/5 border border-white/5 hover:border-amber-400/30 space-y-1 transition-colors cursor-default"
+                className="p-3 rounded-xl bg-white/[0.03] hover:bg-amber-500/5 border border-white/5 hover:border-white/[0.08] space-y-1 transition-colors cursor-default"
               >
                 <div className={`flex items-center gap-1.5 ${traditionPlacements.card1.color} text-xs font-mono font-bold`}>
                   <traditionPlacements.card1.icon className="w-3.5 h-3.5" />
@@ -468,7 +468,7 @@ export default function OmniSimpleHome({
               <motion.div
                 whileHover={{ scale: 1.04, y: -2 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                className="p-3 rounded-xl bg-white/[0.03] hover:bg-cyan-500/5 border border-white/5 hover:border-cyan-400/30 space-y-1 transition-colors cursor-default"
+                className="p-3 rounded-xl bg-white/[0.03] hover:bg-cyan-500/5 border border-white/5 hover:border-white/[0.08] space-y-1 transition-colors cursor-default"
               >
                 <div className={`flex items-center gap-1.5 ${traditionPlacements.card2.color} text-xs font-mono font-bold`}>
                   <traditionPlacements.card2.icon className="w-3.5 h-3.5" />
@@ -496,7 +496,7 @@ export default function OmniSimpleHome({
               <motion.div
                 whileHover={{ scale: 1.04, y: -2 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                className="p-3 rounded-xl bg-white/[0.03] hover:bg-purple-500/5 border border-white/5 hover:border-purple-400/30 space-y-1 transition-colors cursor-default"
+                className="p-3 rounded-xl bg-white/[0.03] hover:bg-purple-500/5 border border-white/5 hover:border-white/[0.08] space-y-1 transition-colors cursor-default"
               >
                 <div className="flex items-center justify-between">
                   <div className={`flex items-center gap-1.5 ${traditionPlacements.card4.color} text-xs font-mono font-bold`}>
@@ -529,7 +529,7 @@ export default function OmniSimpleHome({
 
       {/* 2.75 6-CARD 3D ILLUSTRATED ACTION LAUNCHPAD (Super Easy For Non-Tech Users) */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between border-b border-white/10 pb-2">
+        <div className="flex items-center justify-between border-b border-white/[0.08] pb-2">
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-amber-400" />
             <h3 className="text-sm sm:text-base font-black text-white font-sans tracking-tight">
@@ -547,9 +547,9 @@ export default function OmniSimpleHome({
               title: '🌟 Full Birth Chart',
               desc: 'Discover your true rising sign, strengths & personality blueprint in 1 second.',
               color: 'from-amber-500/20 via-amber-500/5 to-transparent',
-              borderColor: 'border-amber-400/40 hover:border-amber-400',
+              borderColor: 'border-white/[0.08] hover:border-amber-400',
               accentColor: 'text-amber-300',
-              badgeBg: 'bg-amber-400/15 text-amber-300 border-amber-400/30'
+              badgeBg: 'bg-amber-400/15 text-amber-300 border-white/[0.08]'
             },
             {
               id: 'muhurta',
@@ -557,9 +557,9 @@ export default function OmniSimpleHome({
               title: '⏰ Today\'s Good Hours',
               desc: 'Find the exact golden hours for meetings, signing contracts, travel & shopping.',
               color: 'from-cyan-500/20 via-cyan-500/5 to-transparent',
-              borderColor: 'border-cyan-400/40 hover:border-cyan-400',
+              borderColor: 'border-white/[0.08] hover:border-cyan-400',
               accentColor: 'text-cyan-300',
-              badgeBg: 'bg-cyan-400/15 text-cyan-300 border-cyan-400/30'
+              badgeBg: 'bg-cyan-400/15 text-cyan-300 border-white/[0.08]'
             },
             {
               id: 'compatibility',
@@ -567,9 +567,9 @@ export default function OmniSimpleHome({
               title: '💑 36-Guna Matchmaker',
               desc: 'Check romantic chemistry, trust & long-term marriage harmony with any partner.',
               color: 'from-pink-500/20 via-pink-500/5 to-transparent',
-              borderColor: 'border-pink-400/40 hover:border-pink-400',
+              borderColor: 'border-white/[0.08] hover:border-pink-400',
               accentColor: 'text-pink-300',
-              badgeBg: 'bg-pink-400/15 text-pink-300 border-pink-400/30'
+              badgeBg: 'bg-pink-400/15 text-pink-300 border-white/[0.08]'
             },
             {
               id: 'frequencies',
@@ -577,9 +577,9 @@ export default function OmniSimpleHome({
               title: '🧘 Frequencies & Gems',
               desc: 'Listen to your personalized planetary soundwaves & discover your lucky gemstone.',
               color: 'from-purple-500/20 via-purple-500/5 to-transparent',
-              borderColor: 'border-purple-400/40 hover:border-purple-400',
+              borderColor: 'border-white/[0.08] hover:border-purple-400',
               accentColor: 'text-purple-300',
-              badgeBg: 'bg-purple-400/15 text-purple-300 border-purple-400/30'
+              badgeBg: 'bg-purple-400/15 text-purple-300 border-white/[0.08]'
             },
             {
               id: 'ask',
@@ -597,9 +597,9 @@ export default function OmniSimpleHome({
               title: '📜 5-Page PDF Dossier',
               desc: 'Download and print your keepsake royal golden horoscope life book in 1 click.',
               color: 'from-emerald-500/20 via-emerald-500/5 to-transparent',
-              borderColor: 'border-emerald-400/40 hover:border-emerald-400',
+              borderColor: 'border-white/[0.08] hover:border-emerald-400',
               accentColor: 'text-emerald-300',
-              badgeBg: 'bg-emerald-400/15 text-emerald-300 border-emerald-400/30'
+              badgeBg: 'bg-emerald-400/15 text-emerald-300 border-white/[0.08]'
             },
           ].map((card, idx) => (
             <motion.div
@@ -642,7 +642,7 @@ export default function OmniSimpleHome({
           <button
             key={item.id}
             onClick={() => onNavigate(item.id)}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#0B1220] hover:bg-[#131F37] border border-white/10 hover:border-amber-400/40 text-xs font-mono font-bold text-slate-300 hover:text-white shrink-0 transition-all cursor-pointer shadow-sm active:scale-95"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#111315]/80 hover:bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.08] text-xs font-mono font-bold text-slate-300 hover:text-white shrink-0 transition-all cursor-pointer shadow-sm active:scale-95"
           >
             <span>{item.label}</span>
           </button>
@@ -654,9 +654,9 @@ export default function OmniSimpleHome({
         className="relative overflow-hidden rounded-3xl bg-[#111315] border border-white/[0.08] p-6 sm:p-8 shadow-2xl space-y-5"
       >
         <BorderBeam size={220} duration={12} colorFrom="#F59E0B" colorTo="#6366F1" />
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-4">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.08] pb-4">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-amber-300 bg-amber-400/20 px-2.5 py-1 rounded-full border border-amber-400/40 flex items-center gap-1">
+            <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-amber-300 bg-amber-400/20 px-2.5 py-1 rounded-full border border-white/[0.08] flex items-center gap-1">
               <Sparkles className="w-3 h-3 text-amber-300" /> Strongest Planetary Influence Today
             </span>
             <span className="text-xs text-emerald-400 font-mono font-bold flex items-center gap-1">
@@ -680,7 +680,7 @@ export default function OmniSimpleHome({
         <div className="flex flex-wrap items-center gap-3 pt-2">
           <button
             onClick={() => onNavigate('forecast')}
-            className="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-amber-400/25 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+            className="px-5 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-black font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-sm transition-all cursor-pointer"
           >
             <span>Read In-Depth Day Forecast</span> <ArrowRight className="w-4 h-4" />
           </button>
@@ -697,7 +697,7 @@ export default function OmniSimpleHome({
                 "Daily Panchanga Yoga confirms auspicious momentum for commercial initiation"
               ]
             })}
-            className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 font-mono text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/[0.08] font-mono text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <HelpCircle className="w-3.5 h-3.5 text-amber-400" /> <span>Why? Explain Calculation</span>
           </button>
@@ -747,7 +747,7 @@ export default function OmniSimpleHome({
 
       {/* 7. 4 Core Life Pillar Guidance Cards */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between border-b border-white/10 pb-2">
+        <div className="flex items-center justify-between border-b border-white/[0.08] pb-2">
           <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
             <Zap className="w-4 h-4 text-amber-400" /> 4 Core Life Dimensions (Today's Resonance)
           </h3>
@@ -758,13 +758,13 @@ export default function OmniSimpleHome({
           {/* Love */}
           <div 
             onClick={() => onNavigate('forecast')}
-            className="p-4 sm:p-5 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] border border-white/10 hover:border-pink-500/40 transition-all cursor-pointer space-y-3 group"
+            className="p-4 sm:p-5 rounded-2xl bg-[#111315]/80 hover:bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.08] transition-all cursor-pointer space-y-3 group"
           >
             <div className="flex items-center justify-between">
-              <div className="w-9 h-9 rounded-xl bg-pink-500/10 border border-pink-500/30 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-pink-500/10 border border-white/[0.08] flex items-center justify-center">
                 <Heart className="w-4 h-4 text-pink-400" />
               </div>
-              <span className="text-[10px] font-mono font-bold text-pink-400 bg-pink-500/10 px-2 py-0.5 rounded-md border border-pink-500/20">
+              <span className="text-[10px] font-mono font-bold text-pink-400 bg-pink-500/10 px-2 py-0.5 rounded-md border border-white/[0.08]">
                 {astroData.loveScore}% Resonance
               </span>
             </div>
@@ -777,13 +777,13 @@ export default function OmniSimpleHome({
           {/* Career */}
           <div 
             onClick={() => onNavigate('forecast')}
-            className="p-4 sm:p-5 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] border border-white/10 hover:border-cyan-500/40 transition-all cursor-pointer space-y-3 group"
+            className="p-4 sm:p-5 rounded-2xl bg-[#111315]/80 hover:bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.08] transition-all cursor-pointer space-y-3 group"
           >
             <div className="flex items-center justify-between">
-              <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-white/[0.08] flex items-center justify-center">
                 <Briefcase className="w-4 h-4 text-cyan-400" />
               </div>
-              <span className="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-md border border-cyan-500/20">
+              <span className="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-md border border-white/[0.08]">
                 {astroData.careerScore}% Strong
               </span>
             </div>
@@ -796,13 +796,13 @@ export default function OmniSimpleHome({
           {/* Money */}
           <div 
             onClick={() => onNavigate('forecast')}
-            className="p-4 sm:p-5 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] border border-white/10 hover:border-emerald-500/40 transition-all cursor-pointer space-y-3 group"
+            className="p-4 sm:p-5 rounded-2xl bg-[#111315]/80 hover:bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.08] transition-all cursor-pointer space-y-3 group"
           >
             <div className="flex items-center justify-between">
-              <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-white/[0.08] flex items-center justify-center">
                 <DollarSign className="w-4 h-4 text-emerald-400" />
               </div>
-              <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
+              <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-white/[0.08]">
                 {astroData.moneyScore}% Balanced
               </span>
             </div>
@@ -815,13 +815,13 @@ export default function OmniSimpleHome({
           {/* Travel / Growth */}
           <div 
             onClick={() => onNavigate('forecast')}
-            className="p-4 sm:p-5 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] border border-white/10 hover:border-purple-500/40 transition-all cursor-pointer space-y-3 group"
+            className="p-4 sm:p-5 rounded-2xl bg-[#111315]/80 hover:bg-white/[0.04] border border-white/[0.08] hover:border-white/[0.08] transition-all cursor-pointer space-y-3 group"
           >
             <div className="flex items-center justify-between">
-              <div className="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center">
+              <div className="w-9 h-9 rounded-xl bg-purple-500/10 border border-white/[0.08] flex items-center justify-center">
                 <Compass className="w-4 h-4 text-purple-400" />
               </div>
-              <span className="text-[10px] font-mono font-bold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-md border border-purple-500/20">
+              <span className="text-[10px] font-mono font-bold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-md border border-white/[0.08]">
                 {astroData.travelScore}% Active
               </span>
             </div>
@@ -842,7 +842,7 @@ export default function OmniSimpleHome({
 
       {/* 8. Practical Advice: Favorable vs Caution */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="p-5 rounded-2xl bg-[#0B1220] border border-emerald-500/30 space-y-3">
+        <div className="p-5 rounded-2xl bg-[#111315]/80 border border-white/[0.08] space-y-3">
           <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Highly Favorable Today:
           </h4>
@@ -862,7 +862,7 @@ export default function OmniSimpleHome({
           </ul>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#0B1220] border border-amber-500/30 space-y-3">
+        <div className="p-5 rounded-2xl bg-[#111315]/80 border border-white/[0.08] space-y-3">
           <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
             <AlertTriangle className="w-4 h-4 text-amber-400" /> Cautionary Guidance:
           </h4>
@@ -898,7 +898,7 @@ export default function OmniSimpleHome({
           </div>
           <span className="text-[10px] font-mono text-slate-400">Classical Scripture + Math Grounded</span>
         </div>
-        <div className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-[#070B14] border border-white/10 text-slate-400 group-hover:text-slate-200 transition-colors text-xs font-mono">
+        <div className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-black/40 border border-white/[0.08] text-slate-400 group-hover:text-slate-200 transition-colors text-xs font-mono">
           <span className="truncate">Ask: "When is my peak financial timing window in 2026?" or "Analyze my 7th house compatibility"</span>
           <ArrowRight className="w-4 h-4 text-amber-400 shrink-0 group-hover:translate-x-1 transition-transform" />
         </div>
@@ -906,7 +906,7 @@ export default function OmniSimpleHome({
 
       {/* 11. Master 152+ Universal Tools & Calculation Engines Hub */}
       <div className="space-y-4 pt-2">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/[0.08] pb-3">
           <div>
             <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-amber-400" /> Master 152+ Calculation Tools & Research Engines
@@ -925,22 +925,22 @@ export default function OmniSimpleHome({
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {[
-            { id: 'birth-chart', title: 'Natal Kundli & Planetary Coordinates', desc: 'D1–D60 vargas, planetary degrees & padas', icon: Compass, color: 'text-amber-400', border: 'border-amber-500/30' },
-            { id: 'dasha', title: 'Vimshottari Dasha Engine', desc: '120-year timeline, Mahadasha, Antardasha & Pratyantar', icon: Clock, color: 'text-cyan-400', border: 'border-cyan-500/30' },
-            { id: 'transit-calendar', title: 'Planetary Transit Radar', desc: 'Real-time planetary ingresses & speed tracking', icon: Calendar, color: 'text-purple-400', border: 'border-purple-500/30' },
-            { id: 'compatibility', title: 'Synastry & 36-Guna Matchmaker', desc: 'Ashta Koota marriage & relationship harmony', icon: Heart, color: 'text-pink-400', border: 'border-pink-500/30' },
-            { id: 'islamic-suite', title: 'Islamic Ilm al-Falak Hub', desc: 'Qur\'anic astronomical verses & lunar calendar', icon: Moon, color: 'text-emerald-400', border: 'border-emerald-500/30' },
+            { id: 'birth-chart', title: 'Natal Kundli & Planetary Coordinates', desc: 'D1–D60 vargas, planetary degrees & padas', icon: Compass, color: 'text-amber-400', border: 'border-white/[0.08]' },
+            { id: 'dasha', title: 'Vimshottari Dasha Engine', desc: '120-year timeline, Mahadasha, Antardasha & Pratyantar', icon: Clock, color: 'text-cyan-400', border: 'border-white/[0.08]' },
+            { id: 'transit-calendar', title: 'Planetary Transit Radar', desc: 'Real-time planetary ingresses & speed tracking', icon: Calendar, color: 'text-purple-400', border: 'border-white/[0.08]' },
+            { id: 'compatibility', title: 'Synastry & 36-Guna Matchmaker', desc: 'Ashta Koota marriage & relationship harmony', icon: Heart, color: 'text-pink-400', border: 'border-white/[0.08]' },
+            { id: 'islamic-suite', title: 'Islamic Ilm al-Falak Hub', desc: 'Qur\'anic astronomical verses & lunar calendar', icon: Moon, color: 'text-emerald-400', border: 'border-white/[0.08]' },
             { id: 'numerology', title: 'Pythagorean & Chaldean Numerology', desc: 'Life Path, Destiny, Soul Urge & Name vibration', icon: DollarSign, color: 'text-teal-400', border: 'border-teal-500/30' },
             { id: 'tarot-iching', title: '78 Tarot & 64 I Ching Oracle', desc: 'Hexagram casting, astrological tarot spreads', icon: Layers, color: 'text-indigo-400', border: 'border-indigo-500/30' },
             { id: 'remedies', title: 'Multi-Tradition Remedies & Gems', desc: 'Prescribed gemstones, rudraksha & yantras', icon: Award, color: 'text-yellow-400', border: 'border-yellow-500/30' },
             { id: 'feng-shui', title: 'Cosmic Feng Shui & Bagua Matrix', desc: 'Directional energies, 5-element home balance', icon: Globe, color: 'text-rose-400', border: 'border-rose-500/30' },
             { id: 'muhurta', title: 'Electional Muhurta & Horas', desc: 'Auspicious timings for business, travel & weddings', icon: Clock, color: 'text-orange-400', border: 'border-orange-500/30' },
             { id: 'astrocartography', title: 'AstroCartography Global Map', desc: 'Planetary relocation lines across worldwide cities', icon: Globe, color: 'text-blue-400', border: 'border-blue-500/30' },
-            { id: 'btr-suite', title: 'Birth Time Rectification (BTR)', desc: 'Tattwa Shodhana & life event inverse alignment', icon: ShieldCheck, color: 'text-cyan-400', border: 'border-cyan-500/30' },
-            { id: 'divisional-charts', title: 'D1–D60 Divisional Varga Suite', desc: 'Navamsha (D9), Dashamsha (D10) & Shashtiamsa (D60)', icon: Layers, color: 'text-amber-400', border: 'border-amber-500/30' },
-            { id: 'report-generator', title: 'Executive PDF Dossier Generator', desc: '18+ page structured analytical client reports', icon: FileText, color: 'text-emerald-400', border: 'border-emerald-500/30' },
-            { id: 'chat', title: 'AI Astrological Oracle Assistant', desc: 'Conversational consultation with classical sources', icon: Bot, color: 'text-purple-400', border: 'border-purple-500/30' },
-            { id: 'omni-research', title: 'OMNI Multi-Tradition Research Core', desc: 'Direct side-by-side consensus calculation matrix', icon: Sparkles, color: 'text-amber-300', border: 'border-amber-400/40' },
+            { id: 'btr-suite', title: 'Birth Time Rectification (BTR)', desc: 'Tattwa Shodhana & life event inverse alignment', icon: ShieldCheck, color: 'text-cyan-400', border: 'border-white/[0.08]' },
+            { id: 'divisional-charts', title: 'D1–D60 Divisional Varga Suite', desc: 'Navamsha (D9), Dashamsha (D10) & Shashtiamsa (D60)', icon: Layers, color: 'text-amber-400', border: 'border-white/[0.08]' },
+            { id: 'report-generator', title: 'Executive PDF Dossier Generator', desc: '18+ page structured analytical client reports', icon: FileText, color: 'text-emerald-400', border: 'border-white/[0.08]' },
+            { id: 'chat', title: 'AI Astrological Oracle Assistant', desc: 'Conversational consultation with classical sources', icon: Bot, color: 'text-purple-400', border: 'border-white/[0.08]' },
+            { id: 'omni-research', title: 'OMNI Multi-Tradition Research Core', desc: 'Direct side-by-side consensus calculation matrix', icon: Sparkles, color: 'text-amber-300', border: 'border-white/[0.08]' },
           ].map((tool, idx) => {
             const Icon = tool.icon;
             return (
@@ -952,10 +952,10 @@ export default function OmniSimpleHome({
                 transition={{ delay: 0.03 * idx, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 whileHover={{ scale: 1.04, y: -4, boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}
                 whileTap={{ scale: 0.97 }}
-                className={`p-4 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] border ${tool.border} transition-all duration-200 text-left space-y-2 group cursor-pointer shadow-md`}
+                className={`p-4 rounded-2xl bg-[#111315]/80 hover:bg-white/[0.04] border ${tool.border} transition-all duration-200 text-left space-y-2 group cursor-pointer shadow-md`}
               >
                 <div className="flex items-center justify-between">
-                  <div className="p-2 rounded-xl bg-white/5 border border-white/10 group-hover:border-amber-400/40 transition-colors">
+                  <div className="p-2 rounded-xl bg-white/5 border border-white/[0.08] group-hover:border-white/[0.08] transition-colors">
                     <Icon className={`w-4 h-4 ${tool.color} group-hover:scale-110 transition-transform`} />
                   </div>
                   <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
