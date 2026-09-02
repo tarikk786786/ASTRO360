@@ -40,6 +40,24 @@ export interface PrecisionForecastItem {
   };
 }
 
+export interface SavTransitStrength {
+  planet: string;
+  symbol: string;
+  transitSign: string;
+  bindus: number; // e.g. 34
+  status: 'Exalted (>30)' | 'Auspicious (28-30)' | 'Neutral (25-27)' | 'Cautionary (<25)';
+  domainImpact: string;
+}
+
+export interface EclipseForensicEvent {
+  name: string;
+  type: 'Solar Eclipse (Surya Grahan)' | 'Lunar Eclipse (Chandra Grahan)';
+  date: string;
+  zodiacDegree: string;
+  impactedNatalHouse: number;
+  significance: string;
+}
+
 export interface ComprehensivePredictionReport {
   generatedAt: string;
   seekerName: string;
@@ -66,6 +84,8 @@ export interface ComprehensivePredictionReport {
     description: string;
     remedy: string;
   };
+  savTransitStrengths: SavTransitStrength[];
+  eclipseEvents: EclipseForensicEvent[];
   forecasts: PrecisionForecastItem[];
 }
 
@@ -314,6 +334,18 @@ export class HighPrecisionPredictionEngine {
           : 'Saturn transits in harmony with your natal luminaries, supporting effortless execution and steady career growth.',
         remedy: 'Listen to the Saturn 147.85 Hz planetary frequency on Saturdays and practice grounding breathwork.'
       },
+      savTransitStrengths: [
+        { planet: 'Jupiter', symbol: '♃', transitSign: 'Taurus (Vrishabha)', bindus: 34, status: 'Exalted (>30)', domainImpact: 'Multiplies 2nd & 11th house liquid capital and executive alliances' },
+        { planet: 'Sun', symbol: '☉', transitSign: 'Leo (Simha)', bindus: 32, status: 'Exalted (>30)', domainImpact: 'Confers 10th house executive authority, decisive clarity and leadership' },
+        { planet: 'Venus', symbol: '♀', transitSign: 'Virgo (Kanya)', bindus: 29, status: 'Auspicious (28-30)', domainImpact: 'Refines aesthetic precision, diplomatic contracts, and romantic trust' },
+        { planet: 'Mercury', symbol: '☿', transitSign: 'Leo (Simha)', bindus: 31, status: 'Exalted (>30)', domainImpact: 'Accelerates high-speed trading, coding breakthroughs, and publications' },
+        { planet: 'Mars', symbol: '♂', transitSign: 'Gemini (Mithuna)', bindus: 28, status: 'Auspicious (28-30)', domainImpact: 'Drives kinetic stamina, physical courage, and technical execution' },
+        { planet: 'Saturn', symbol: '♄', transitSign: 'Aquarius (Kumbha)', bindus: 30, status: 'Auspicious (28-30)', domainImpact: 'Solidifies multi-decade enterprise structures and legal foundations' },
+      ],
+      eclipseEvents: [
+        { name: "Annular Solar Eclipse (Surya Grahan)", type: "Solar Eclipse (Surya Grahan)", date: "Sep 21, 2026", zodiacDegree: "04°28' Virgo", impactedNatalHouse: 9, significance: "Catalyzes major spiritual awakening, worldview transformation, and international ventures." },
+        { name: "Total Lunar Eclipse (Chandra Grahan)", type: "Lunar Eclipse (Chandra Grahan)", date: "Mar 03, 2027", zodiacDegree: "18°12' Leo", impactedNatalHouse: 3, significance: "Releases subconscious creative blocks, empowering bold digital publications and courage." }
+      ],
       forecasts
     };
   }

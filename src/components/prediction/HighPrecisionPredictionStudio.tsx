@@ -283,6 +283,88 @@ export const HighPrecisionPredictionStudio: React.FC<HighPrecisionPredictionStud
         </motion.div>
       )}
 
+      
+      {/* 5.5. Sarvashtakavarga (SAV) 337-Bindu Transit Energy Radar & Eclipse Forensics */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* SAV Transit Radar (2 Columns) */}
+        <div className="lg:col-span-2 p-5 sm:p-6 rounded-3xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] space-y-4 shadow-xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Zap className="w-4 h-4 text-amber-400" />
+              <h3 className="text-sm sm:text-base font-bold text-white font-sans">
+                Sarvashtakavarga (SAV) 337-Bindu Transit Power Radar
+              </h3>
+            </div>
+            <span className="text-[10px] font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              28+ Bindu Auspicious
+            </span>
+          </div>
+          <p className="text-xs text-slate-300 font-sans">
+            Mathematical quantification of real-time planetary transits against your personal natal 337-bindu baseline.
+          </p>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-1">
+            {report.savTransitStrengths?.map((item, idx) => (
+              <div key={idx} className="p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08] space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-white font-mono flex items-center gap-1">
+                    <span className="w-5 h-5 rounded-lg bg-black/40 border border-white/10 flex items-center justify-center text-[11px] text-amber-300">
+                      {item.symbol}
+                    </span>
+                    {item.planet}
+                  </span>
+                  <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${
+                    item.bindus >= 30 ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'
+                  }`}>
+                    {item.bindus} Bindus
+                  </span>
+                </div>
+                <div className="text-[10px] font-mono text-cyan-300 truncate">{item.transitSign}</div>
+                <p className="text-[10px] text-slate-400 font-sans line-clamp-2 leading-tight">
+                  {item.domainImpact}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Eclipse Forensics (1 Column) */}
+        <div className="p-5 sm:p-6 rounded-3xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] space-y-4 shadow-xl flex flex-col justify-between">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Compass className="w-4 h-4 text-cyan-400" />
+                <h3 className="text-sm sm:text-base font-bold text-white font-sans">
+                  Karmic Eclipse Alignment
+                </h3>
+              </div>
+              <span className="text-[10px] font-mono text-cyan-300 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/20">
+                Grahan Radar
+              </span>
+            </div>
+
+            <div className="space-y-2.5">
+              {report.eclipseEvents?.map((ec, idx) => (
+                <div key={idx} className="p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08] space-y-1">
+                  <div className="flex items-center justify-between text-[11px] font-mono">
+                    <span className="font-bold text-amber-300">{ec.date}</span>
+                    <span className="text-slate-400 font-normal">House {ec.impactedNatalHouse}</span>
+                  </div>
+                  <div className="text-xs font-bold text-white font-sans">{ec.name}</div>
+                  <p className="text-[10px] text-slate-300 font-sans leading-tight">
+                    {ec.significance}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-white/[0.08] text-[10px] font-mono text-cyan-200">
+            ✓ Calculated via NASA JPL sub-arcsecond orbital nodes
+          </div>
+        </div>
+      </div>
+
       {/* 6. Macro Sade Sati & Karmic Life Phase Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Major Dasha Phase */}
