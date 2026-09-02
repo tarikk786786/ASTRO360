@@ -53,7 +53,7 @@ export default function OmniSimpleHome({
     return 'Good evening';
   }, []);
 
-  const seekerName = userProfile.name?.trim() || 'Cosmic Seeker';
+  const seekerName = userProfile.name?.trim() || 'Tarik Islam';
 
   // Calculate live personalized astronomical natal placements
   const astroData = useMemo(() => {

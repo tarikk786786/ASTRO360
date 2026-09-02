@@ -114,17 +114,17 @@ const STORAGE_KEY = 'astroverse_profile';
 const TAB_KEY = 'astroverse_tab';
 
 const EMPTY_PROFILE: UserProfile = {
-  name: '',
+  name: 'Tarik Islam',
   email: '',
   phone: '',
-  gender: 'universal',
-  dob: '',
+  gender: 'male',
+  dob: '1998-02-22',
   time: '12:00',
-  location: '',
+  location: 'New Delhi, India',
   preferredSystem: 'vedic',
-  careerGoal: 'Personal Growth & Prosperity',
-  relationshipStatus: 'Seeking Harmony',
-  primaryLifeFocus: 'Cosmic Alignment & Purpose',
+  careerGoal: 'Executive Leadership & Technology Mastery',
+  relationshipStatus: 'Sacred Alignment & Harmony',
+  primaryLifeFocus: 'High-Precision Astrological Synthesis',
 };
 
 function loadProfile(): UserProfile {
