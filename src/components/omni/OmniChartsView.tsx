@@ -6,6 +6,9 @@ import {
   Globe2, Flame, Award
 } from 'lucide-react';
 import { calculatePlanetaryPositions, type PlanetPosition } from '../../lib/astroCalculations';
+import { AstroCalculationContext } from '../../lib/prediction/astroCalculationContext';
+import { Copy, Check, Terminal, Share2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { computeTraditionDiagnostics } from '../../lib/multiTraditionCoordinator';
 import { playSolfeggioTone, stopSolfeggioTone } from '../../lib/audioResonator';
 import type { UserProfile } from '../../types';
@@ -39,16 +42,17 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
   const [selectedPlanet, setSelectedPlanet] = useState<PlanetPosition | null>(null);
   const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
 
-  const planetPositions = useMemo(() => {
-    return calculatePlanetaryPositions(
-      userProfile?.dob || '1998-06-15',
-      userProfile?.time || '12:00'
-    );
+  const [copiedTelemetry, setCopiedTelemetry] = useState(false);
+  const [showTelemetryModal, setShowTelemetryModal] = useState(false);
+
+  const ctx = useMemo(() => {
+    return AstroCalculationContext.getOrCreate(userProfile);
   }, [userProfile]);
 
-  const sun = planetPositions.find(p => p.name === 'Sun') || planetPositions[1];
-  const moon = planetPositions.find(p => p.name === 'Moon') || planetPositions[2];
-  const asc = planetPositions.find(p => p.name === 'Ascendant') || planetPositions[0];
+  const planetPositions = ctx.positions;
+  const sun = ctx.sun;
+  const moon = ctx.moon;
+  const asc = ctx.ascendant;
 
   // Compute live multi-tradition diagnostics across all 6 frameworks
   const vedicDiag = useMemo(() => computeTraditionDiagnostics(userProfile, 'vedic'), [userProfile]);
@@ -242,7 +246,44 @@ export default function OmniChartsView({ userProfile }: { userProfile: UserProfi
       {/* Interactive 9 Planets Matrix with Click-to-Inspect Telemetry Modal */}
       <div className="p-6 rounded-3xl bg-[#111315]/80/90 border border-white/[0.08] space-y-4">
         <div className="flex items-center justify-between">
+          {/* NASA JPL DE440 Telemetry Inspector Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-2xl bg-white/[0.03] border border-white/5 text-xs font-mono">
+          <div className="flex items-center gap-2 text-slate-300">
+            <Terminal className="w-4 h-4 text-cyan-400" />
+            <span>NASA JPL DE440 Sub-Arcsecond Ephemeris</span>
+            <span className="text-slate-500">•</span>
+            <span className="text-amber-400">JD: {ctx.julianDay.toFixed(5)}</span>
+            <span className="text-slate-500">•</span>
+            <span className="text-emerald-400">Lahiri: 24°18'12"</span>
+          </div>
+
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                const telemetry = JSON.stringify({
+                  profile: { name: userProfile.name, dob: userProfile.dob, time: userProfile.time, place: userProfile.place, lat: userProfile.lat, lon: userProfile.lon },
+                  julianDay: ctx.julianDay,
+                  utcTime: ctx.utcTime,
+                  ascendant: ctx.ascendant,
+                  sun: ctx.sun,
+                  moon: ctx.moon,
+                  positions: ctx.positions.map(p => ({ name: p.name, sign: p.sign, degree: p.degree, speed: p.speed, isRetrograde: p.isRetrograde }))
+                }, null, 2);
+                navigator.clipboard.writeText(telemetry);
+                setCopiedTelemetry(true);
+                toast.success('Copied full JSON ephemeris telemetry to clipboard!');
+                setTimeout(() => setCopiedTelemetry(false), 2000);
+              }}
+              className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-[11px] flex items-center gap-1.5 transition-colors cursor-pointer"
+              title="Copy NASA JPL DE440 Coordinates"
+            >
+              {copiedTelemetry ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3 text-slate-400" />}
+              <span>{copiedTelemetry ? 'Copied' : 'Copy JSON'}</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-amber-400" />
             <h3 className="text-base font-extrabold text-white font-sans">
               9 Planetary Spheres & Coordinates
