@@ -46,8 +46,8 @@ export default function BirthTimeRectificationSuite() {
   };
 
   return (
-    <div className="p-6 rounded-3xl bg-[#111827] border border-white/10 shadow-2xl space-y-5 text-left relative">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
+    <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/[0.08] shadow-2xl space-y-5 text-left relative">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.08] pb-3">
         <div>
           <h3 className="text-base font-semibold text-white flex items-center gap-2">
             <Clock className="w-5 h-5 text-amber-400" /> Birth Time Rectification (BTR) Engine
@@ -64,25 +64,25 @@ export default function BirthTimeRectificationSuite() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Input Given Time & Life Events */}
         <div className="lg:col-span-7 space-y-4">
-          <div className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 space-y-3">
+          <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] space-y-3">
             <label className="text-xs font-mono font-bold text-cyan-400 block">Approximate Given Birth Time:</label>
             <input
               type="time"
               step="1"
               value={givenTime}
               onChange={(e) => setGivenTime(e.target.value)}
-              className="w-full p-2.5 rounded-xl bg-[#111827] border border-white/10 text-xs font-mono text-white focus:outline-none focus:border-amber-400"
+              className="w-full p-2.5 rounded-xl bg-[#111315]/80 border border-white/[0.08] text-xs font-mono text-white focus:outline-none focus:border-amber-400"
             />
           </div>
 
           {/* Add Event Form */}
-          <form onSubmit={handleAddEvent} className="p-4 rounded-2xl bg-[#0B1220] border border-white/10 space-y-3">
+          <form onSubmit={handleAddEvent} className="p-4 rounded-2xl bg-white/[0.03] border border-white/[0.08] space-y-3">
             <span className="text-xs font-mono font-bold text-purple-400 block">Add Major Life Event Timestamp:</span>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <select
                 value={newType}
                 onChange={(e) => setNewType(e.target.value)}
-                className="p-2 rounded-xl bg-[#111827] border border-white/10 text-xs text-white"
+                className="p-2 rounded-xl bg-[#111315]/80 border border-white/[0.08] text-xs text-white"
               >
                 <option>Marriage</option>
                 <option>Career Promotion</option>
@@ -94,7 +94,7 @@ export default function BirthTimeRectificationSuite() {
                 type="date"
                 value={newDate}
                 onChange={(e) => setNewDate(e.target.value)}
-                className="p-2 rounded-xl bg-[#111827] border border-white/10 text-xs text-white font-mono"
+                className="p-2 rounded-xl bg-[#111315]/80 border border-white/[0.08] text-xs text-white font-mono"
                 required
               />
               <input
@@ -102,7 +102,7 @@ export default function BirthTimeRectificationSuite() {
                 placeholder="Description..."
                 value={newDesc}
                 onChange={(e) => setNewDesc(e.target.value)}
-                className="p-2 rounded-xl bg-[#111827] border border-white/10 text-xs text-white placeholder-slate-500"
+                className="p-2 rounded-xl bg-[#111315]/80 border border-white/[0.08] text-xs text-white placeholder-slate-500"
               />
             </div>
             <button
@@ -117,7 +117,7 @@ export default function BirthTimeRectificationSuite() {
           <div className="space-y-2">
             <span className="text-xs font-mono text-slate-400">Registered Milestones ({events.length}):</span>
             {events.map(ev => (
-              <div key={ev.id} className="p-3 rounded-xl bg-[#0B1220] border border-white/10 flex items-center justify-between text-xs">
+              <div key={ev.id} className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-between text-xs">
                 <div>
                   <span className="font-bold text-amber-300 block">{ev.eventType} ({ev.date})</span>
                   <span className="text-slate-400 text-[11px]">{ev.description}</span>
@@ -140,9 +140,9 @@ export default function BirthTimeRectificationSuite() {
         </div>
 
         {/* Right: Rectification Results */}
-        <div className="lg:col-span-5 p-5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-4 flex flex-col justify-between">
+        <div className="lg:col-span-5 p-5 rounded-2xl bg-white/[0.03] border border-white/[0.08] space-y-4 flex flex-col justify-between">
           <div className="space-y-3">
-            <span className="text-xs font-mono font-bold text-amber-400 block border-b border-white/10 pb-2">
+            <span className="text-xs font-mono font-bold text-amber-400 block border-b border-white/[0.08] pb-2">
               Rectified Birth Time Solution:
             </span>
 

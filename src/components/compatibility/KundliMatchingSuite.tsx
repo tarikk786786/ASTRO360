@@ -48,7 +48,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12">
       {/* Header Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#0F172A] via-[#1E1B4B] to-[#0F172A] border border-rose-500/30 relative overflow-hidden">
+      <div className="p-6 sm:p-8 rounded-3xl bg-[#111315]/80 backdrop-blur-xl border border-white/[0.08] relative overflow-hidden">
         
         
         <div className="relative z-10 space-y-3">
@@ -69,7 +69,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
       {/* Dual Partner Input Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Partner 1 Card */}
-        <div className="p-5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-4">
+        <div className="p-5 rounded-2xl bg-[#111315]/80 border border-white/[0.08] space-y-4">
           <div className="flex items-center gap-2 text-amber-400 font-bold font-mono text-xs uppercase tracking-wider">
             <User className="w-4 h-4" /> Partner 1 (Self)
           </div>
@@ -80,7 +80,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
                 type="text"
                 value={partner1Name}
                 onChange={(e) => setPartner1Name(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-[#070D18] border border-white/10 text-white font-medium focus:border-amber-400 outline-none"
+                className="w-full px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.08] text-white font-medium focus:border-amber-400 outline-none"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -90,7 +90,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
                   type="date"
                   value={partner1Dob}
                   onChange={(e) => setPartner1Dob(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-[#070D18] border border-white/10 text-white font-medium focus:border-amber-400 outline-none"
+                  className="w-full px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.08] text-white font-medium focus:border-amber-400 outline-none"
                 />
               </div>
               <div>
@@ -99,7 +99,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
                   type="time"
                   value={partner1Time}
                   onChange={(e) => setPartner1Time(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-[#070D18] border border-white/10 text-white font-medium focus:border-amber-400 outline-none"
+                  className="w-full px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.08] text-white font-medium focus:border-amber-400 outline-none"
                 />
               </div>
             </div>
@@ -107,7 +107,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
         </div>
 
         {/* Partner 2 Card */}
-        <div className="p-5 rounded-2xl bg-[#0B1220] border border-white/10 space-y-4">
+        <div className="p-5 rounded-2xl bg-[#111315]/80 border border-white/[0.08] space-y-4">
           <div className="flex items-center gap-2 text-rose-400 font-bold font-mono text-xs uppercase tracking-wider">
             <Heart className="w-4 h-4" /> Partner 2 (Prospective Partner)
           </div>
@@ -118,7 +118,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
                 type="text"
                 value={partner2Name}
                 onChange={(e) => setPartner2Name(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-[#070D18] border border-white/10 text-white font-medium focus:border-rose-400 outline-none"
+                className="w-full px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.08] text-white font-medium focus:border-rose-400 outline-none"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -128,7 +128,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
                   type="date"
                   value={partner2Dob}
                   onChange={(e) => setPartner2Dob(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-[#070D18] border border-white/10 text-white font-medium focus:border-rose-400 outline-none"
+                  className="w-full px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.08] text-white font-medium focus:border-rose-400 outline-none"
                 />
               </div>
               <div>
@@ -137,7 +137,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
                   type="time"
                   value={partner2Time}
                   onChange={(e) => setPartner2Time(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-[#070D18] border border-white/10 text-white font-medium focus:border-rose-400 outline-none"
+                  className="w-full px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.08] text-white font-medium focus:border-rose-400 outline-none"
                 />
               </div>
             </div>
@@ -146,7 +146,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
       </div>
 
       {/* Main Score & Recommendation Card */}
-      <div className="p-6 rounded-3xl bg-[#0B1220] border border-white/10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/[0.08] grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         {/* Big Score Dial */}
         <div className="lg:col-span-4 flex flex-col items-center justify-center p-6 rounded-2xl bg-gradient-to-br from-[#0F172A] to-[#070D18] border border-white/5 text-center">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-slate-400 mb-1">Total Compatibility Score</span>
@@ -174,7 +174,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-            <div className="p-3 rounded-xl bg-[#070D18] border border-white/5 space-y-1">
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 space-y-1">
               <span className="text-[10px] font-mono text-slate-400 block">Emotional Bonding</span>
               <div className="text-base font-bold text-cyan-400">{emotionalScore}%</div>
               <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
@@ -182,7 +182,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-[#070D18] border border-white/5 space-y-1">
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 space-y-1">
               <span className="text-[10px] font-mono text-slate-400 block">Physical Attraction</span>
               <div className="text-base font-bold text-rose-400">{physicalScore}%</div>
               <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
@@ -190,7 +190,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-[#070D18] border border-white/5 space-y-1">
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 space-y-1">
               <span className="text-[10px] font-mono text-slate-400 block">Spiritual Health</span>
               <div className="text-base font-bold text-emerald-400">{spiritualScore}%</div>
               <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
@@ -198,7 +198,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-[#070D18] border border-white/5 space-y-1">
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/5 space-y-1">
               <span className="text-[10px] font-mono text-slate-400 block">Destiny & Prosperity</span>
               <div className="text-base font-bold text-amber-400">{destinyScore}%</div>
               <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
@@ -221,7 +221,7 @@ export default function KundliMatchingSuite({ userProfile }: KundliMatchingSuite
             return (
               <div 
                 key={koota.name}
-                className="p-4 rounded-2xl bg-[#090E17] border border-white/10 hover:border-white/20 transition-all space-y-2 flex flex-col justify-between"
+                className="p-4 rounded-2xl bg-[#090E17] border border-white/[0.08] hover:border-white/20 transition-all space-y-2 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between text-xs font-mono mb-1">
