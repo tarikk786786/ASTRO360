@@ -284,46 +284,51 @@ export default function LandingPage({
         <section className="relative pt-28 pb-20 sm:pt-36 sm:pb-28 px-4 sm:px-6 lg:px-8 max-w-[1200px] mx-auto text-center flex flex-col items-center">
           <motion.div style={{ y: heroParallax }} className="max-w-[850px] mx-auto space-y-6 relative z-20">
             
-            {/* Version / Trust Pill */}
+            {/* Eyebrow / Trust Pill */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111315]/90 border border-white/[0.08] text-xs font-mono text-slate-300 shadow-sm"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111315]/90 border border-white/[0.08] text-xs font-mono text-amber-300 shadow-sm"
             >
-              <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>v2.4.0 Live • Zero-PII Client Compute • NASA JPL DE440</span>
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>ASTROLOGY, REIMAGINED • ZERO-PII PRIVATE</span>
             </motion.div>
 
             {/* Master Headline */}
-            <h1 className="text-[40px] sm:text-[60px] lg:text-[76px] font-semibold tracking-[-0.035em] text-white leading-[1.04] font-sans">
-              The Open-Source <br className="hidden sm:block" />
-              Cosmic Operating System
+            <h1 className="text-[44px] sm:text-[68px] lg:text-[84px] font-black tracking-[-0.035em] text-white leading-[1.02] font-sans">
+              BE YOUR OWN <br className="hidden sm:block" />
+              ASTROLOGER.
             </h1>
 
             {/* Supporting Statement */}
-            <p className="text-[17px] sm:text-[20px] text-slate-400 font-sans max-w-[660px] mx-auto leading-relaxed font-normal">
-              ASTRO360 brings together 9 world astrological systems into one lightning-fast, privacy-first analytical platform. Calculated with sub-arcsecond ephemeris precision.
+            <p className="text-[17px] sm:text-[21px] text-slate-300 font-sans max-w-[700px] mx-auto leading-relaxed font-normal">
+              Explore your chart, ask questions, compare astrology systems, and understand the reasoning behind every result.
             </p>
 
             {/* Primary and Secondary CTAs */}
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
+            <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
               <MagneticButton
                 onClick={() => onStartOnboarding()}
-                className="w-full sm:w-auto px-7 py-3.5 rounded-md bg-white hover:bg-slate-100 text-black font-semibold text-[15px] font-sans transition-all cursor-pointer shadow-md flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-white hover:bg-slate-100 text-black font-bold text-[15px] font-sans transition-all cursor-pointer shadow-xl flex items-center justify-center gap-2"
               >
-                <span>Calculate Your Chart Free</span>
+                <span>CREATE YOUR FREE CHART</span>
                 <ArrowRight className="w-4 h-4" />
               </MagneticButton>
 
               <MagneticButton
-                onClick={() => onNavigateToTab('home')}
-                className="w-full sm:w-auto px-6 py-3.5 rounded-md bg-transparent text-white border border-white/20 hover:border-white/40 font-semibold text-[15px] font-sans transition-all cursor-pointer flex items-center justify-center gap-2"
+                onClick={() => onNavigateToTab('ask')}
+                className="w-full sm:w-auto px-7 py-4 rounded-xl bg-white/[0.06] text-white border border-white/20 hover:border-white/40 font-bold text-[15px] font-sans transition-all cursor-pointer flex items-center justify-center gap-2"
               >
-                <Search className="w-4 h-4 text-slate-300" />
-                <span>Explore Live Studio</span>
+                <Sparkles className="w-4 h-4 text-amber-400" />
+                <span>ASK ASTRO360</span>
               </MagneticButton>
             </div>
+
+            {/* Supporting Microcopy */}
+            <p className="text-xs font-mono text-slate-400 pt-1">
+              Vedic • Western • KP • Jaimini • Timing • Charts • Research
+            </p>
           </motion.div>
 
           {/* ════════════════════════════════════════════════════════════
