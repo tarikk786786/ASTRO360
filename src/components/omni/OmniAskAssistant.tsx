@@ -236,7 +236,7 @@ export default function OmniAskAssistant({
   return (
     <div className="max-w-4xl mx-auto space-y-4 text-left pb-16">
       {/* Header */}
-      <div className="border-b border-white/10 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div className="border-b border-white/[0.08] pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
           <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight flex items-center gap-2">
             <Bot className="w-6 h-6 text-indigo-400" />
@@ -246,7 +246,7 @@ export default function OmniAskAssistant({
             Direct, Concise Answers First • Deep Progressive Disclosure When Needed
           </p>
         </div>
-        <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/30 flex items-center gap-1.5 self-start sm:self-auto">
+        <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-white/[0.08] flex items-center gap-1.5 self-start sm:self-auto">
           <ShieldCheck className="w-3.5 h-3.5" /> {traditionMeta.badge}
         </span>
       </div>
@@ -258,7 +258,7 @@ export default function OmniAskAssistant({
           <button
             key={idx}
             onClick={() => handleSend(prompt)}
-            className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 shrink-0 cursor-pointer transition-colors"
+            className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/[0.08] shrink-0 cursor-pointer transition-colors"
           >
             "{prompt}"
           </button>
@@ -268,7 +268,7 @@ export default function OmniAskAssistant({
       {/* Chat Messages Container */}
       <div 
         ref={chatContainerRef}
-        className="min-h-[420px] max-h-[560px] overflow-y-auto space-y-4 p-4 rounded-3xl bg-[#0B1220] border border-white/10"
+        className="min-h-[420px] max-h-[560px] overflow-y-auto space-y-4 p-4 rounded-3xl bg-[#111315]/80 border border-white/[0.08]"
       >
         {messages.map((msg) => {
           const isAssistant = msg.sender === 'assistant';
@@ -282,14 +282,14 @@ export default function OmniAskAssistant({
               className={`flex gap-3 ${isAssistant ? 'justify-start' : 'justify-end'}`}
             >
               {isAssistant && (
-                <div className="w-8 h-8 rounded-xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center shrink-0 mt-1">
+                <div className="w-8 h-8 rounded-xl bg-indigo-500/20 border border-white/[0.08] flex items-center justify-center shrink-0 mt-1">
                   <Bot className="w-4 h-4 text-indigo-400" />
                 </div>
               )}
 
               <div className={`max-w-[85%] sm:max-w-[78%] space-y-3 ${
                 isAssistant
-                  ? 'bg-[#0F172A] border border-white/10 text-slate-200 p-4 sm:p-5 rounded-3xl rounded-tl-sm'
+                  ? 'bg-[#111315]/80 border border-white/[0.08] text-slate-200 p-4 sm:p-5 rounded-3xl rounded-tl-sm'
                   : 'bg-indigo-600 text-white p-4 rounded-3xl rounded-tr-sm'
               }`}>
                 {/* Level 1: Simple Concise Answer */}
@@ -299,7 +299,7 @@ export default function OmniAskAssistant({
 
                 {/* Level 2: Explanation (Why & Themes) */}
                 {msg.explanation && (
-                  <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-2 text-xs">
+                  <div className="p-3 rounded-2xl bg-white/5 border border-white/[0.08] space-y-2 text-xs">
                     <div className="space-y-1">
                       <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-amber-400 block">
                         Why This Timing:
@@ -316,7 +316,7 @@ export default function OmniAskAssistant({
 
                     <div className="pt-1 flex flex-wrap gap-1.5">
                       {msg.explanation.supportedSystems.map((sys, sIdx) => (
-                        <span key={sIdx} className="text-[10px] font-mono bg-white/5 px-2 py-0.5 rounded border border-white/10 text-slate-300">
+                        <span key={sIdx} className="text-[10px] font-mono bg-white/5 px-2 py-0.5 rounded border border-white/[0.08] text-slate-300">
                           ✓ {sys}
                         </span>
                       ))}
@@ -341,7 +341,7 @@ export default function OmniAskAssistant({
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="p-3 rounded-xl bg-[#080E1A] border border-indigo-500/30 space-y-1.5 text-[11px] font-mono text-slate-300"
+                        className="p-3 rounded-xl bg-black/40 border border-white/[0.08] space-y-1.5 text-[11px] font-mono text-slate-300"
                       >
                         <div><strong className="text-slate-400">Planetary Positions:</strong> {msg.technical.planetaryDegrees}</div>
                         <div><strong className="text-slate-400">House Activation:</strong> {msg.technical.activeHouse}</div>
@@ -361,7 +361,7 @@ export default function OmniAskAssistant({
                     {(msg.summary.toLowerCase().includes('dasha') || (msg.technical?.dashaCycle && msg.technical.dashaCycle !== 'N/A')) && (
                       <button
                         onClick={() => onNavigate('dasha')}
-                        className="px-2.5 py-1 rounded-lg bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 border border-amber-400/30 text-[10.5px] font-mono font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                        className="px-2.5 py-1 rounded-lg bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 border border-white/[0.08] text-[10.5px] font-mono font-bold flex items-center gap-1 cursor-pointer transition-colors"
                       >
                         <span>[Open Dasha]</span>
                       </button>
@@ -369,7 +369,7 @@ export default function OmniAskAssistant({
                     {(msg.summary.toLowerCase().includes('chart') || msg.summary.toLowerCase().includes('vedic') || msg.summary.toLowerCase().includes('western')) && (
                       <button
                         onClick={() => onNavigate('charts')}
-                        className="px-2.5 py-1 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[10.5px] font-mono font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                        className="px-2.5 py-1 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-white/[0.08] text-[10.5px] font-mono font-bold flex items-center gap-1 cursor-pointer transition-colors"
                       >
                         <span>[View Chart]</span>
                       </button>
@@ -385,14 +385,14 @@ export default function OmniAskAssistant({
                     {(msg.summary.toLowerCase().includes('career') || msg.summary.toLowerCase().includes('timing') || msg.summary.toLowerCase().includes('month')) && (
                       <button
                         onClick={() => onNavigate('forecast')}
-                        className="px-2.5 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-[10.5px] font-mono font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                        className="px-2.5 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-white/[0.08] text-[10.5px] font-mono font-bold flex items-center gap-1 cursor-pointer transition-colors"
                       >
                         <span>[Explore Timing]</span>
                       </button>
                     )}
                     <button
                       onClick={() => onNavigate('studio')}
-                      className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-[10.5px] font-mono flex items-center gap-1 cursor-pointer transition-colors"
+                      className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/[0.08] text-[10.5px] font-mono flex items-center gap-1 cursor-pointer transition-colors"
                     >
                       <span>[Open in Studio →]</span>
                     </button>
@@ -408,7 +408,7 @@ export default function OmniAskAssistant({
                         <button
                           key={fIdx}
                           onClick={() => handleSend(fUp)}
-                          className="text-[11px] font-mono bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white px-2.5 py-1 rounded-lg border border-white/10 text-left transition-colors cursor-pointer"
+                          className="text-[11px] font-mono bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white px-2.5 py-1 rounded-lg border border-white/[0.08] text-left transition-colors cursor-pointer"
                         >
                           → {fUp}
                         </button>
@@ -419,7 +419,7 @@ export default function OmniAskAssistant({
               </div>
 
               {!isAssistant && (
-                <div className="w-8 h-8 rounded-xl bg-indigo-600/40 border border-indigo-500/60 flex items-center justify-center shrink-0 mt-1">
+                <div className="w-8 h-8 rounded-xl bg-indigo-600/40 border border-white/[0.08] flex items-center justify-center shrink-0 mt-1">
                   <User className="w-4 h-4 text-white" />
                 </div>
               )}
@@ -441,7 +441,7 @@ export default function OmniAskAssistant({
           e.preventDefault();
           handleSend();
         }}
-        className="flex items-center gap-2 p-2 rounded-2xl bg-[#0F172A] border border-white/15 focus-within:border-indigo-500/60 shadow-xl transition-all"
+        className="flex items-center gap-2 p-2 rounded-2xl bg-[#111315]/80 border border-white/15 focus-within:border-white/[0.08] shadow-xl transition-all"
       >
         <input
           type="text"

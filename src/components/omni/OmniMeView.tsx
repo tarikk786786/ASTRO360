@@ -28,9 +28,9 @@ export default function OmniMeView({
     <div className="max-w-3xl mx-auto space-y-6 text-left pb-20">
       
       {/* 1. Header Profile Card */}
-      <div className="p-6 rounded-3xl bg-[#0F172A] border border-white/10 shadow-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-6 rounded-3xl bg-[#111315]/80 border border-white/[0.08] shadow-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-amber-500/20 shrink-0">
+          <div className="w-14 h-14 rounded-2xl bg-white text-black flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-amber-500/20 shrink-0">
             {userProfile.name?.charAt(0).toUpperCase() || <User className="w-6 h-6" />}
           </div>
           <div>
@@ -47,19 +47,19 @@ export default function OmniMeView({
 
         <button
           onClick={onEditProfile}
-          className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/10 text-xs font-mono font-bold transition-all cursor-pointer self-start sm:self-auto"
+          className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/[0.08] text-xs font-mono font-bold transition-all cursor-pointer self-start sm:self-auto"
         >
           Edit Birth Data
         </button>
       </div>
 
       {/* 2. Birth Data Details Summary */}
-      <div className="p-5 rounded-3xl bg-[#0B1220] border border-white/10 space-y-3">
-        <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
+      <div className="p-5 rounded-3xl bg-[#111315]/80 border border-white/[0.08] space-y-3">
+        <div className="flex items-center justify-between border-b border-white/[0.08] pb-2.5">
           <h2 className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
             <Calendar className="w-4 h-4 text-amber-400" /> Your Birth Parameters
           </h2>
-          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-bold">
+          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-white/[0.08] font-bold">
             Verified UTC
           </span>
         </div>
@@ -82,9 +82,9 @@ export default function OmniMeView({
         </div>
 
         {/* Active Tradition Engine Profile */}
-        <div className="p-3.5 rounded-2xl bg-[#0F172A] border border-cyan-500/30 flex items-center justify-between text-xs font-mono">
+        <div className="p-3.5 rounded-2xl bg-[#111315]/80 border border-white/[0.08] flex items-center justify-between text-xs font-mono">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+            <div className="w-8 h-8 rounded-xl bg-cyan-500/10 border border-white/[0.08] flex items-center justify-center text-cyan-400">
               <Cpu className="w-4 h-4" />
             </div>
             <div>
@@ -96,13 +96,13 @@ export default function OmniMeView({
               </span>
             </div>
           </div>
-          <span className="text-[10px] font-bold text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-cyan-500/30 uppercase">
+          <span className="text-[10px] font-bold text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-white/[0.08] uppercase">
             Active Framework
           </span>
         </div>
 
         {/* Pro Free Access Status */}
-        <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-indigo-500/10 border border-amber-400/30 flex items-center justify-between text-xs font-mono">
+        <div className="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-indigo-500/10 border border-white/[0.08] flex items-center justify-between text-xs font-mono">
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-amber-400" />
             <div>
@@ -122,10 +122,10 @@ export default function OmniMeView({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div 
             onClick={() => onNavigate('report-generator')}
-            className="p-4 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] border border-white/10 hover:border-amber-400/40 transition-all cursor-pointer flex items-center justify-between group"
+            className="p-4 rounded-2xl bg-[#111315]/80 hover:bg-[#131F37] border border-white/[0.08] hover:border-white/[0.08] transition-all cursor-pointer flex items-center justify-between group"
           >
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/20">
+              <div className="p-2 rounded-xl bg-amber-400/10 text-amber-400 border border-white/[0.08]">
                 <FileText className="w-4 h-4" />
               </div>
               <div>
@@ -140,10 +140,10 @@ export default function OmniMeView({
 
           <div 
             onClick={() => onNavigate('report-generator')}
-            className="p-4 rounded-2xl bg-[#0F172A] hover:bg-[#131F37] border border-white/10 hover:border-cyan-400/40 transition-all cursor-pointer flex items-center justify-between group"
+            className="p-4 rounded-2xl bg-[#111315]/80 hover:bg-[#131F37] border border-white/[0.08] hover:border-white/[0.08] transition-all cursor-pointer flex items-center justify-between group"
           >
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-cyan-400/10 text-cyan-400 border border-cyan-400/20">
+              <div className="p-2 rounded-xl bg-cyan-400/10 text-cyan-400 border border-white/[0.08]">
                 <Sparkles className="w-4 h-4" />
               </div>
               <div>
@@ -162,7 +162,7 @@ export default function OmniMeView({
       <OmniShareCardGenerator userProfile={userProfile} />
 
       {/* 4. Preferences, Privacy & Settings */}
-      <div className="p-5 rounded-3xl bg-[#0B1220] border border-white/10 space-y-3 text-xs font-mono">
+      <div className="p-5 rounded-3xl bg-[#111315]/80 border border-white/[0.08] space-y-3 text-xs font-mono">
         <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
           Preferences & Privacy
         </h2>
@@ -176,7 +176,7 @@ export default function OmniMeView({
                 <span className="text-[10.5px] text-slate-400 block">Your birth coordinates never leave your device.</span>
               </div>
             </div>
-            <span className="text-emerald-400 font-bold text-[10px] bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+            <span className="text-emerald-400 font-bold text-[10px] bg-emerald-500/10 px-2 py-0.5 rounded border border-white/[0.08]">
               Encrypted
             </span>
           </div>
@@ -230,7 +230,7 @@ export default function OmniMeView({
       </div>
 
       {/* 5. Optional Expert Mode Switcher */}
-      <div className="p-5 rounded-3xl bg-[#0F172A] border border-indigo-500/30 space-y-3">
+      <div className="p-5 rounded-3xl bg-[#111315]/80 border border-white/[0.08] space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <Cpu className="w-4 h-4 text-indigo-400" />
@@ -263,25 +263,25 @@ export default function OmniMeView({
           >
             <button
               onClick={() => onNavigate('divisional-charts')}
-              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/10 text-left cursor-pointer"
+              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/[0.08] text-left cursor-pointer"
             >
               📊 D1–D60 Vargas
             </button>
             <button
               onClick={() => onNavigate('btr-suite')}
-              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/10 text-left cursor-pointer"
+              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/[0.08] text-left cursor-pointer"
             >
               🎯 Birth Time Rectification
             </button>
             <button
               onClick={() => onNavigate('omni-research')}
-              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/10 text-left cursor-pointer"
+              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/[0.08] text-left cursor-pointer"
             >
               🔬 OMNI Research Core
             </button>
             <button
               onClick={() => onNavigate('dashboard')}
-              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/10 text-left cursor-pointer"
+              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 hover:text-white border border-white/[0.08] text-left cursor-pointer"
             >
               🚀 Master 152+ Studio
             </button>
