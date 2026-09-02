@@ -851,7 +851,7 @@ export default function AppContent() {
                   {(activeTab === 'directory' || activeTab === 'celebrities') && <ProgrammaticSeoDirectory onNavigateToTab={navigateTo} />}
                   {(activeTab === 'pwa' || activeTab === 'briefing') && <PwaCosmicBriefing onNavigateToTab={navigateTo} />}
                 </ErrorBoundary>
-                <Footer />
+                {activeTab !== 'landing' && <Footer />}
               </div>
           </Suspense>
 

@@ -130,10 +130,10 @@ export default function OmniLandingNavbar({
             className="flex items-center gap-2.5 cursor-pointer shrink-0 group"
           >
             <div className="relative w-7 h-7 rounded-md bg-white border border-white/20 flex items-center justify-center shadow-sm">
-              <div className="w-2.5 h-2.5 rounded-sm bg-black group-hover:scale-105 transition-transform" />
+              <Sparkles className="w-4 h-4 text-black group-hover:scale-105 transition-transform" />
             </div>
             <div className="flex flex-col text-left">
-              <span className="font-semibold text-[15px] tracking-tight text-white font-sans leading-none">Twenty360</span>
+              <span className="font-semibold text-[15px] tracking-tight text-white font-sans leading-none">ASTRO360</span>
             </div>
           </div>
 
@@ -146,7 +146,7 @@ export default function OmniLandingNavbar({
                 onClick={() => setToolsDropdownOpen(!toolsDropdownOpen)}
                 className="hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 py-1"
               >
-                <span>Product</span>
+                <span>Calculators</span>
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform ${toolsDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
@@ -186,14 +186,17 @@ export default function OmniLandingNavbar({
               )}
             </div>
 
-            <button onClick={() => handleNavSection('birth-chart')} className="hover:text-white transition-colors cursor-pointer">
-              Resources
-            </button>
-            <button onClick={() => handleNavSection('compatibility')} className="hover:text-white transition-colors cursor-pointer">
-              Customers
+            <button onClick={() => handleNavSection('vedic-astrology')} className="hover:text-white transition-colors cursor-pointer">
+              Traditions
             </button>
             <button onClick={() => handleNavSection('panchanga')} className="hover:text-white transition-colors cursor-pointer">
-              Pricing
+              Panchang & Horas
+            </button>
+            <button onClick={() => handleNavSection('ephemeris-lab')} className="hover:text-white transition-colors cursor-pointer">
+              Ephemeris Lab
+            </button>
+            <button onClick={() => handleNavSection('methodology')} className="hover:text-white transition-colors cursor-pointer">
+              Methodology
             </button>
           </nav>
 
