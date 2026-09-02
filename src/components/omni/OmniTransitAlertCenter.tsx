@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Bell, Zap, Sparkles, Calendar, ShieldCheck, ArrowRight, 
-  HelpCircle, Clock, CheckCircle2, Download, AlertTriangle
+  HelpCircle, Clock, CheckCircle2, Download, AlertTriangle,
+  ExternalLink, Copy, Check
 } from 'lucide-react';
 import { AstroBadge, AstroCard, AstroSheet } from '../../design-system';
 import { EvidencePanel } from '../../design-system/patterns';
+import { downloadIcsFile, getGoogleCalendarUrl, CalendarEventPayload } from '../../lib/icsCalendarExporter';
+import { toast } from 'sonner';
 import type { UserProfile } from '../../types';
 
 interface TransitAlert {
@@ -16,6 +19,8 @@ interface TransitAlert {
   title: string;
   natalImpact: string;
   activeWindow: string;
+  startDate: string; // ISO date string
+  endDate: string;   // ISO date string
   intensity: 'High' | 'Moderate' | 'Subtle';
   supportingTraditions: string[];
   actionAdvice: string;
@@ -32,6 +37,8 @@ const LIVE_TRANSIT_ALERTS: TransitAlert[] = [
     title: 'Mars Ingress into 10th House of Career',
     natalImpact: 'Transiting Mars crosses your Midheaven (10th Bhava), activating professional agency, execution speed, and decisive leadership.',
     activeWindow: 'Sep 12 – Oct 28, 2026',
+    startDate: '2026-09-12T09:00:00Z',
+    endDate: '2026-10-28T18:00:00Z',
     intensity: 'High',
     supportingTraditions: ['Vedic (D10)', 'Western (MC Ingress)', 'KP Sub-Lord'],
     actionAdvice: 'Launch pending proposals, lead strategic meetings, and initiate bold career negotiations.',
@@ -40,7 +47,7 @@ const LIVE_TRANSIT_ALERTS: TransitAlert[] = [
       { source: 'Claudius Ptolemy - Tetrabiblos', verse: 'Book IV, Ch. 4', text: 'Mars elevated at the Midheaven grants sudden advancement through energetic application and courage.' }
     ],
     astronomy: [
-      { factor: 'Mars Transiting Ecliptic', degree: '14°22\' Aries', ayanamsha: 'Lahiri 24°13\'' },
+      { factor: 'Mars Transiting Ecliptic', degree: '14°22" Aries', ayanamsha: 'Lahiri 24°13"' },
       { factor: 'Natal Midheaven Aspect', degree: 'Trine within 1.2° orb', ayanamsha: 'Exact Aspect' }
     ]
   },
@@ -52,6 +59,8 @@ const LIVE_TRANSIT_ALERTS: TransitAlert[] = [
     title: 'Jupiter Trine Natal Sun Window',
     natalImpact: 'Benefic radiation from transiting Jupiter expands vitality, institutional support, and financial optimism.',
     activeWindow: 'Oct 04 – Oct 22, 2026',
+    startDate: '2026-10-04T08:00:00Z',
+    endDate: '2026-10-22T20:00:00Z',
     intensity: 'High',
     supportingTraditions: ['Western (Trine)', 'Vedic (5th Drishti)', 'Jaimini Karaka'],
     actionAdvice: 'Apply for grants, sign major contracts, and schedule visionary strategy sessions.',
@@ -59,8 +68,8 @@ const LIVE_TRANSIT_ALERTS: TransitAlert[] = [
       { source: 'Phaladeepika by Mantreswara', verse: 'Ch. 20, Sloka 8', text: 'When Jupiter casts beneficial drishti upon the natal Sun, the native experiences honor from authorities and inner fulfillment.' }
     ],
     astronomy: [
-      { factor: 'Transiting Jupiter', degree: '18°45\' Cancer', ayanamsha: 'Lahiri 24°13\'' },
-      { factor: 'Natal Sun', degree: '19°10\' Scorpio', ayanamsha: 'Exact 120° Trine' }
+      { factor: 'Transiting Jupiter', degree: '18°45" Cancer', ayanamsha: 'Lahiri 24°13"' },
+      { factor: 'Natal Sun', degree: '19°10" Scorpio', ayanamsha: 'Exact 120° Trine' }
     ]
   },
   {
@@ -71,6 +80,8 @@ const LIVE_TRANSIT_ALERTS: TransitAlert[] = [
     title: 'Saturn Stationary Direct in 8th House',
     natalImpact: 'Saturn halts retrograde motion, anchoring structural debt reduction, audit clearance, and long-term consolidation.',
     activeWindow: 'Nov 02 – Dec 15, 2026',
+    startDate: '2026-11-02T06:00:00Z',
+    endDate: '2026-12-15T18:00:00Z',
     intensity: 'Moderate',
     supportingTraditions: ['Vedic (Shani Gochara)', 'Hellenistic Chronocrators'],
     actionAdvice: 'Audit legal agreements, eliminate recurring liabilities, and establish rigorous risk controls.',
@@ -78,7 +89,7 @@ const LIVE_TRANSIT_ALERTS: TransitAlert[] = [
       { source: 'Saravali by Kalyana Varma', verse: 'Ch. 31, Sloka 19', text: 'Saturn halting in retrograde brings culmination to delayed undertakings and rewards disciplined endurance.' }
     ],
     astronomy: [
-      { factor: 'Saturn Stationary Degree', degree: '04°12\' Pisces', ayanamsha: 'Lahiri 24°13\'' }
+      { factor: 'Saturn Stationary Degree', degree: '04°12" Pisces', ayanamsha: 'Lahiri 24°13"' }
     ]
   }
 ];
@@ -86,28 +97,54 @@ const LIVE_TRANSIT_ALERTS: TransitAlert[] = [
 export default function OmniTransitAlertCenter({ userProfile }: { userProfile: UserProfile }) {
   const [selectedAlert, setSelectedAlert] = useState<TransitAlert | null>(null);
   const [filter, setFilter] = useState<'all' | 'opportunity' | 'critical' | 'harmony'>('all');
+  const [activeMenuAlertId, setActiveMenuAlertId] = useState<string | null>(null);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const filteredAlerts = LIVE_TRANSIT_ALERTS.filter(
     a => filter === 'all' || a.type === filter
   );
 
-  const downloadICS = (alert: TransitAlert) => {
-    const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//ASTRO360//Transit Alert//EN
-BEGIN:VEVENT
-SUMMARY:ASTRO360: ${alert.title}
-DESCRIPTION:${alert.natalImpact}\\nAdvice: ${alert.actionAdvice}
-STATUS:CONFIRMED
-END:VEVENT
-END:VCALENDAR`;
-    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${alert.id}.ics`;
-    link.click();
-    URL.revokeObjectURL(url);
+  const handleDownloadIcs = (alert: TransitAlert) => {
+    const payload: CalendarEventPayload = {
+      title: `ASTRO360: ${alert.title}`,
+      description: `${alert.natalImpact}\n\nStrategic Advice: ${alert.actionAdvice}\nWindow: ${alert.activeWindow}\nTraditions: ${alert.supportingTraditions.join(', ')}`,
+      startDate: alert.startDate,
+      endDate: alert.endDate,
+      category: `Astrology - ${alert.planet} Transit`,
+      location: 'Topocentric Meridian (Natal Chart Coordinates)'
+    };
+    downloadIcsFile([payload], `ASTRO360_${alert.planet}_Transit.ics`);
+    toast.success(`Exported ${alert.title} to iCal (.ics)!`);
+    setActiveMenuAlertId(null);
+  };
+
+  const handleOpenGoogleCalendar = (alert: TransitAlert) => {
+    const payload: CalendarEventPayload = {
+      title: `ASTRO360: ${alert.title}`,
+      description: `${alert.natalImpact}\n\nStrategic Advice: ${alert.actionAdvice}\nActive Timing: ${alert.activeWindow}\nSupported by: ${alert.supportingTraditions.join(', ')}`,
+      startDate: alert.startDate,
+      endDate: alert.endDate,
+      category: `Astrology - ${alert.planet} Transit`,
+      location: 'Topocentric Meridian'
+    };
+    const url = getGoogleCalendarUrl(payload);
+    window.open(url, '_blank', 'noopener,noreferrer');
+    toast.success(`Opening Google Calendar for ${alert.title}`);
+    setActiveMenuAlertId(null);
+  };
+
+  const handleCopyAlertDetails = (alert: TransitAlert) => {
+    const text = `🪐 ASTRO360 Transit Alert: ${alert.title}
+🗓️ Window: ${alert.activeWindow}
+⚡ Impact: ${alert.intensity} (${alert.planet} Transit)
+📖 Summary: ${alert.natalImpact}
+🛠️ Strategic Advice: ${alert.actionAdvice}
+🌐 Grounded in: ${alert.supportingTraditions.join(', ')}`;
+    navigator.clipboard.writeText(text);
+    setCopiedId(alert.id);
+    toast.success('Transit alert details copied to clipboard!');
+    setTimeout(() => setCopiedId(null), 2000);
+    setActiveMenuAlertId(null);
   };
 
   return (
@@ -119,7 +156,7 @@ END:VCALENDAR`;
           </div>
           <div>
             <h3 className="text-base font-extrabold text-white tracking-tight">Active Planetary Transit Alerts</h3>
-            <p className="text-xs text-slate-400 font-mono">Calculated for {userProfile.name || 'Your Natal Chart'}</p>
+            <p className="text-xs text-slate-400 font-mono">Calculated for {userProfile.name || 'Your Natal Chart'} • RFC 5545 Calendar Sync</p>
           </div>
         </div>
 
@@ -180,21 +217,68 @@ END:VCALENDAR`;
                 ))}
               </div>
 
-              <div className="flex items-center gap-2 self-end sm:self-auto">
-                <button
-                  onClick={() => downloadICS(alert)}
-                  className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-[11px] flex items-center gap-1 cursor-pointer transition-colors"
-                  title="Export to Calendar (.ics)"
-                >
-                  <Calendar className="w-3 h-3 text-amber-400" />
-                  <span>Calendar</span>
-                </button>
+              <div className="flex items-center gap-2 self-end sm:self-auto relative">
+                {/* Add to Calendar Button with Dropdown / Direct Action */}
+                <div className="relative">
+                  <button
+                    onClick={() => setActiveMenuAlertId(activeMenuAlertId === alert.id ? null : alert.id)}
+                    className="px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-slate-200 hover:text-white border border-white/[0.12] text-xs font-medium flex items-center gap-1.5 cursor-pointer transition-all active:scale-95 shadow-sm"
+                    title="Add this transit window to Apple, Google, or Outlook Calendar"
+                  >
+                    <Calendar className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Add to Calendar</span>
+                  </button>
+
+                  {/* Calendar Sync Menu Popover */}
+                  <AnimatePresence>
+                    {activeMenuAlertId === alert.id && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 6, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute right-0 bottom-full mb-2 w-56 rounded-2xl bg-[#0D1424] border border-white/[0.15] p-1.5 shadow-2xl z-50 text-xs font-sans space-y-1 backdrop-blur-xl"
+                      >
+                        <div className="px-2 py-1 text-[10px] font-mono text-slate-400 border-b border-white/[0.08] uppercase font-bold">
+                          Sync Transit Window
+                        </div>
+                        <button
+                          onClick={() => handleDownloadIcs(alert)}
+                          className="w-full px-2.5 py-1.5 rounded-xl hover:bg-white/10 text-slate-200 hover:text-white flex items-center justify-between text-left transition-colors cursor-pointer"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Download className="w-3.5 h-3.5 text-indigo-400" />
+                            <span>Apple / Outlook (.ics)</span>
+                          </div>
+                        </button>
+                        <button
+                          onClick={() => handleOpenGoogleCalendar(alert)}
+                          className="w-full px-2.5 py-1.5 rounded-xl hover:bg-white/10 text-slate-200 hover:text-white flex items-center justify-between text-left transition-colors cursor-pointer"
+                        >
+                          <div className="flex items-center gap-2">
+                            <ExternalLink className="w-3.5 h-3.5 text-emerald-400" />
+                            <span>Google Calendar Web</span>
+                          </div>
+                        </button>
+                        <button
+                          onClick={() => handleCopyAlertDetails(alert)}
+                          className="w-full px-2.5 py-1.5 rounded-xl hover:bg-white/10 text-slate-200 hover:text-white flex items-center justify-between text-left transition-colors cursor-pointer"
+                        >
+                          <div className="flex items-center gap-2">
+                            {copiedId === alert.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
+                            <span>Copy Event Details</span>
+                          </div>
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
 
                 <button
                   onClick={() => setSelectedAlert(alert)}
-                  className="px-3 py-1 rounded-lg bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 border border-white/[0.12] text-[11px] font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                  className="px-3 py-1.5 rounded-xl bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 border border-white/[0.12] text-xs font-bold flex items-center gap-1.5 cursor-pointer transition-colors active:scale-95"
                 >
-                  <HelpCircle className="w-3 h-3 text-amber-400" />
+                  <HelpCircle className="w-3.5 h-3.5 text-amber-400" />
                   <span>Why this timing? →</span>
                 </button>
               </div>
