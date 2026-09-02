@@ -27,6 +27,8 @@ import CosmicCelestialLoader from './components/ui/CosmicCelestialLoader';
 import { updatePageSEO } from './lib/seoManager';
 import { warmCosmicProfileCache, prefetchRouteData } from './lib/prefetchEngine';
 import { lazyWithRetry } from './lib/lazyWithRetry';
+import { lookupCityCoordinates } from './lib/geocoding';
+import { useProfileStore } from './stores/profileStore';
 
 // Code-split dynamic views for instant landing page load
 const LandingPage = lazyWithRetry(() => import('./components/landing/LandingPage'));
@@ -113,7 +115,8 @@ const HighPrecisionPredictionStudio = lazyWithRetry(() => import('./components/p
 const STORAGE_KEY = 'astroverse_profile';
 const TAB_KEY = 'astroverse_tab';
 
-const EMPTY_PROFILE: UserProfile = {
+export const DEFAULT_USER_PROFILE: UserProfile = {
+  id: 'prof_default_self',
   name: 'Tarik Islam',
   email: '',
   phone: '',
@@ -121,11 +124,27 @@ const EMPTY_PROFILE: UserProfile = {
   dob: '1998-02-22',
   time: '12:00',
   location: 'New Delhi, India',
+  latitude: 28.6139,
+  longitude: 77.2090,
+  timezone: 'Asia/Kolkata',
   preferredSystem: 'vedic',
   careerGoal: 'Executive Leadership & Technology Mastery',
   relationshipStatus: 'Sacred Alignment & Harmony',
   primaryLifeFocus: 'High-Precision Astrological Synthesis',
 };
+
+const EMPTY_PROFILE: UserProfile = DEFAULT_USER_PROFILE;
+
+export function normalizeProfile(raw: Partial<UserProfile>): UserProfile {
+  const merged: UserProfile = { ...DEFAULT_USER_PROFILE, ...raw };
+  if (!merged.latitude || !merged.longitude || !merged.timezone) {
+    const geo = lookupCityCoordinates(merged.location || 'New Delhi, India');
+    merged.latitude = geo.latitude;
+    merged.longitude = geo.longitude;
+    merged.timezone = geo.timezone;
+  }
+  return merged;
+}
 
 function loadProfile(): UserProfile {
   try {
@@ -133,19 +152,28 @@ function loadProfile(): UserProfile {
     if (saved) {
       const parsed = JSON.parse(saved);
       if (parsed && typeof parsed.name === 'string' && parsed.name.trim().length > 0) {
-        return { ...EMPTY_PROFILE, ...parsed };
+        return normalizeProfile(parsed);
       }
     }
   } catch (e) {
     console.warn("localStorage read error", e);
   }
-  return EMPTY_PROFILE;
+  return DEFAULT_USER_PROFILE;
 }
 
 function saveProfile(profile: UserProfile): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+    const normalized = normalizeProfile(profile);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
     localStorage.setItem('astro_has_onboarded', 'true');
+    try {
+      const store = useProfileStore.getState();
+      const activeId = store.activeProfileId || normalized.id || 'prof_default_self';
+      store.updateProfile(activeId, normalized);
+    } catch (e) {}
+    try {
+      warmCosmicProfileCache(normalized);
+    } catch (e) {}
   } catch (e) {
     console.warn("localStorage unavailable", e);
   }
