@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Calendar, Clock, Sparkles, Heart, Briefcase, DollarSign, Compass, 
   HelpCircle, ShieldCheck, ChevronRight, CheckCircle2, Filter, Layers, 
-  ArrowUpRight, AlertTriangle, BookOpen, Activity, ShieldAlert, Award, Zap
+  ArrowUpRight, AlertTriangle, BookOpen, Activity, ShieldAlert, Award, Zap, Download
 } from 'lucide-react';
 import type { UserProfile } from '../../types';
 import OmniWhyDrawer, { type OmniWhyDrawerProps } from './OmniWhyDrawer';
