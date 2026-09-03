@@ -707,8 +707,9 @@ export default function AppContent() {
                       onNavigate={navigateTo}
                     />
                   )}
-                                    {/* Core 5-Root Views */}
-                  {(activeTab === 'home' || activeTab === 'overview' || activeTab === 'todays-horoscope' || activeTab === 'daily-summary' || activeTab === 'daily' || activeTab === 'summary') && (
+
+                  {/* Core 5-Root Views */}
+                  {(activeTab === 'home' || activeTab === 'overview' || activeTab === 'dashboard' || activeTab === 'todays-horoscope' || activeTab === 'daily-summary' || activeTab === 'daily' || activeTab === 'summary') && (
                     <OmniSimpleHome
                       userProfile={userProfile}
                       onNavigate={navigateTo}
@@ -716,7 +717,7 @@ export default function AppContent() {
                       onUpdateProfile={(updated: UserProfile) => { setUserProfile(updated); saveProfile(updated); }}
                     />
                   )}
-                  {(activeTab === 'dashboard' || activeTab === 'pro-dashboard') && (
+                  {(activeTab === 'pro-dashboard' || activeTab === 'intelligence-center') && (
                     <CosmicIntelligenceCenter
                       onNavigate={navigateTo}
                       userProfile={userProfile}
