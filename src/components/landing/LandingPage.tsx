@@ -959,6 +959,8 @@ export default function LandingPage({
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 max-w-6xl mx-auto text-left">
             {[
               { title: 'Free Birth Chart (Kundli)', desc: 'North & South Indian D1 Rashi & planetary placements', tab: 'birth-chart' },
+              { title: 'Interactive Cosmic Studio', desc: 'Real-time 3D orbital dynamics & aspect grid analyzer', tab: 'studio' },
+              { title: 'Dual Chart Wheel Studio', desc: 'North Indian Diamond, South Indian & Western 360° Wheel', tab: 'chart-studio' },
               { title: 'Free Divisional Charts', desc: 'Navamsha D9, Dashamsha D10, Shodashavarga matrix', tab: 'vargas' },
               { title: 'Free Shadbala Potency', desc: '6-fold mathematical planetary strength rankings', tab: 'shadbala' },
               { title: 'Free Vimshottari Dasha', desc: '120-year planetary timeline with Antardasha cycles', tab: 'dasha' },
