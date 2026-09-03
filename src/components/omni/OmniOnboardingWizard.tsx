@@ -252,7 +252,7 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset, onClos
           </div>
 
           {/* Submit Button */}
-          <div className="pt-3 space-y-2.5">
+          <div className="pt-3">
             <button
               type="submit"
               disabled={isSubmitting}
@@ -266,33 +266,10 @@ export default function OmniOnboardingWizard({ onComplete, initialPreset, onClos
               ) : (
                 <>
                   <Sparkles className="w-4 h-4 fill-slate-950" />
-                  <span>Save Profile & Enter ASTRO360 (100% Free)</span>
+                  <span>Save Profile & Calculate My Chart (100% Free)</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
-            </button>
-
-            {/* Instant Seeker Guest Access without Entering Birth Details */}
-            <button
-              type="button"
-              onClick={() => {
-                const guestProfile: UserProfile = {
-                  name: 'Seeker',
-                  dob: '1998-06-15',
-                  time: '12:00',
-                  location: 'London, UK',
-                  gender: 'universal',
-                  preferredSystem: 'universal',
-                  careerGoal: 'Balanced Purpose',
-                  relationshipStatus: 'Reflective',
-                  primaryLifeFocus: 'GROWTH',
-                };
-                onComplete(guestProfile);
-              }}
-              className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white font-mono text-xs border border-white/10 transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
-            >
-              <span>Explore as Guest Seeker (No Details Required)</span>
-              <Compass className="w-3.5 h-3.5 text-cyan-400" />
             </button>
           </div>
 
