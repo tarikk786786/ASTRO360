@@ -34,18 +34,15 @@ export default function OmniAskAssistant({
 
   const questionPresets = [
     { cat: 'CAREER', label: 'Career', q: 'Why is my career stuck and when will it improve?', icon: Briefcase, color: 'text-amber-400' },
-    { cat: 'DECISION', label: 'Decision', q: 'Should I quit my job or stay?', icon: Scale, color: 'text-indigo-400' },
-    { cat: 'PRAYER', label: 'Prayer Times', q: 'When are today\'s exact prayer times for my location?', icon: Clock, color: 'text-emerald-400' },
-    { cat: 'QIBLA', label: 'Qibla', q: 'Which direction is Qibla from my coordinates?', icon: Compass, color: 'text-cyan-400' },
-    { cat: 'ISLAMIC', label: 'Islamic Guidance', q: 'What does Islam teach about overcoming worry and anxiety?', icon: BookOpen, color: 'text-teal-400' },
-    { cat: 'COMPARE', label: 'Mixed View', q: 'What does astrology say about marriage, and what does Islam teach?', icon: Layers, color: 'text-blue-400' },
-    { cat: 'CAREER', label: 'Career', q: 'Why is my career stuck and when will it improve?', icon: Briefcase, color: 'text-amber-400' },
-    { cat: 'DECISION', label: 'Decision', q: 'Should I quit my job or stay?', icon: Scale, color: 'text-indigo-400' },
+    { cat: 'TIMING', label: 'Timing', q: 'When is my next high-growth astrological window?', icon: Clock, color: 'text-cyan-400' },
+    { cat: 'DECISION', label: 'Decision', q: 'Should I quit my job or launch a new venture?', icon: Scale, color: 'text-indigo-400' },
     { cat: 'LOVE', label: 'Love', q: 'What does my chart indicate for long-term marriage & timing?', icon: Heart, color: 'text-rose-400' },
     { cat: 'MONEY', label: 'Wealth', q: 'When are my strongest financial timing cycles?', icon: DollarSign, color: 'text-emerald-400' },
-    { cat: 'TIMING', label: 'Timing', q: 'When will my career improve?', icon: Clock, color: 'text-cyan-400' },
-    { cat: 'CHART', label: 'My Chart', q: 'What is my ascendant and Moon sign?', icon: Compass, color: 'text-purple-400' },
-    { cat: 'COMPARE', label: 'Compare', q: 'Compare my career timing using Vedic, Western and KP.', icon: Layers, color: 'text-blue-400' },
+    { cat: 'CHART', label: 'My Chart', q: 'What is my ascendant, Moon nakshatra, and dasha lord?', icon: Compass, color: 'text-purple-400' },
+    { cat: 'COMPARE', label: 'Compare', q: 'Compare my career timing across Vedic, Western and KP.', icon: Layers, color: 'text-blue-400' },
+    { cat: 'PRAYER', label: 'Prayer Times', q: "When are today's exact prayer times for my location?", icon: Clock, color: 'text-emerald-400' },
+    { cat: 'QIBLA', label: 'Qibla', q: 'Which direction is Qibla from my coordinates?', icon: Compass, color: 'text-cyan-400' },
+    { cat: 'ISLAMIC', label: 'Islamic Guidance', q: 'What does Islam teach about overcoming worry and anxiety?', icon: BookOpen, color: 'text-teal-400' },
   ];
 
   const [messages, setMessages] = useState<ChatMessage[]>([
