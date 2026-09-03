@@ -65,7 +65,7 @@ export default function OmniCompatibilityLab({ userProfile }: OmniCompatibilityL
         overallScore: '94.8%',
         scoreLabel: 'Ptolemaic Aspect Affinity Index',
         verdict: '★ Trine Synergy (Dynamic Harmony)',
-        summary: `Sun trine Moon across cardinal signs creates effortless emotional understanding. Venus conjunct Mars in the 5th house confers magnetic physical chemistry, while Saturn trine Ascendant guarantees long-term durability.`,
+        summary: `Sun trine Moon across cardinal signs creates effortless emotional understanding. Venus conjunct Mars in the 5th house confers magnetic physical chemistry, while Saturn trine Ascendant provides grounding for long-term commitment.`,
         classicalSource: 'Ptolemy Tetrabiblos Book IV • Vettius Valens Anthologies',
         pointsTitle: 'Major Ptolemaic Synastry Aspects & Overlays',
         pointsSub: 'Western Ephemeris Planetary Aspect Matrix',

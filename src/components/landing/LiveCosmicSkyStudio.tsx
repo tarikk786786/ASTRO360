@@ -349,7 +349,7 @@ export default function LiveCosmicSkyStudio({
                     Live Planetary Hora Calculator
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
-                    Ancient Vedic astrologers divided each 24-hour day into planetary Horas. Operating during the aligned Hora guarantees natural harmony with celestial momentum.
+                    Ancient Vedic astrologers divided each 24-hour day into planetary Horas. Operating during the aligned Hora supports natural alignment with celestial momentum.
                   </p>
 
                   <div className="p-4 rounded-xl bg-[#060A12] border border-white/8 space-y-2 font-mono text-xs">

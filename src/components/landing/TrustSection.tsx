@@ -8,7 +8,7 @@ import { motion } from 'motion/react';
 const GUARANTEES = [
   {
     icon: Award,
-    title: '100% Mathematical Precision Guarantee',
+    title: 'Mathematical Ephemeris Precision',
     subtitle: '64-Bit Swiss Ephemeris Standard',
     badge: 'Zero Approximation',
     description: 'Every planetary longitude, house cusp, and dasha fraction is calculated using 64-bit celestial mechanics accurate to arc-seconds. We never invent or approximate celestial coordinates.',
@@ -16,7 +16,7 @@ const GUARANTEES = [
   },
   {
     icon: Lock,
-    title: '100% Privacy & Data Sovereignty Guarantee',
+    title: 'Privacy & Local Data Sovereignty',
     subtitle: 'Zero Data Sharing Policy',
     badge: 'Client-Side Encrypted',
     description: 'Your sacred birth date, time, and coordinates are never sold, rented, or used for third-party advertising. All calculations are executed securely with client-side persistence.',
@@ -24,7 +24,7 @@ const GUARANTEES = [
   },
   {
     icon: ShieldCheck,
-    title: '100% Ethical & Non-Fatalistic Guarantee',
+    title: 'Ethical & Non-Fatalistic Agency',
     subtitle: 'Constructive Guidance Standard',
     badge: 'Strict Anti-Fear Policy',
     description: 'We strictly prohibit manipulative or fatalistic fear-based predictions. Every dosha and difficult transit is paired with classical mitigation, practical remedies, and psychological empowerment.',
@@ -64,10 +64,10 @@ export default function TrustSection() {
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#C9A86A]/10 border border-[#C9A86A]/30 text-[#C9A86A] text-xs font-mono">
             <ShieldCheck className="w-4 h-4 text-[#C9A86A]" />
-            <span>The ASTRO360 Triple Guarantee Standard</span>
+            <span>The ASTRO360 Three Foundations</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white font-serif">
-            Authentic, Rigorous & Guaranteed.
+            Authentic, Rigorous & Transparent.
           </h2>
           <p className="text-sm sm:text-base text-slate-300 font-normal leading-relaxed">
             Built for seekers and scholars who demand uncompromising mathematical accuracy, total data privacy, and ethical clarity.
@@ -152,16 +152,16 @@ export default function TrustSection() {
         {/* Live Telemetry Banner */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
           <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
-            <div className="text-xl sm:text-2xl font-bold text-white font-mono">14,280+</div>
-            <div className="text-[11px] text-slate-400 font-mono mt-0.5">Charts Calculated Today</div>
+            <div className="text-xl sm:text-2xl font-bold text-white font-mono">Sub-Arcsec</div>
+            <div className="text-[11px] text-slate-400 font-mono mt-0.5">DE440 Ephemeris Standard</div>
           </div>
           <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
             <div className="text-xl sm:text-2xl font-bold text-[#C9A86A] font-mono">64-Bit</div>
-            <div className="text-[11px] text-slate-400 font-mono mt-0.5">Swiss Ephemeris Math</div>
+            <div className="text-[11px] text-slate-400 font-mono mt-0.5">Celestial Mechanics Math</div>
           </div>
           <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
-            <div className="text-xl sm:text-2xl font-bold text-emerald-400 font-mono">100%</div>
-            <div className="text-[11px] text-slate-400 font-mono mt-0.5">Data Privacy Guarantee</div>
+            <div className="text-xl sm:text-2xl font-bold text-emerald-400 font-mono">Zero-PII</div>
+            <div className="text-[11px] text-slate-400 font-mono mt-0.5">Client-Side Data Privacy</div>
           </div>
           <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
             <div className="text-xl sm:text-2xl font-bold text-cyan-400 font-mono">D1–D60</div>
