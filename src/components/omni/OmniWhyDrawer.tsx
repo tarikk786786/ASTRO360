@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Sparkles, CheckCircle2, AlertCircle, BookOpen, ShieldCheck, ChevronDown, ChevronUp, Layers } from 'lucide-react';
 
@@ -52,10 +52,25 @@ export default function OmniWhyDrawer({
 }: OmniWhyDrawerProps) {
   const [showTechnical, setShowTechnical] = useState(false);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 text-left">
+        <div 
+          role="dialog" 
+          aria-modal="true" 
+          aria-labelledby="why-drawer-title"
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 text-left"
+        >
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
