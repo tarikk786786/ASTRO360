@@ -46,8 +46,7 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = memo(({
       aria-label="Mobile Navigation Bar"
       className={`md:hidden fixed bottom-0 inset-x-0 z-40 select-none px-3 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))] pt-1 pointer-events-auto ${className}`}
     >
-      {/* Solid High-Contrast Twenty HQ Dock */}
-      <div className="mx-auto max-w-md bg-[#111315]/96 backdrop-blur-2xl border border-white/[0.12] rounded-3xl shadow-[0_12px_40px_rgba(0,0,0,0.9)] p-1.5 flex items-center justify-around ring-1 ring-white/10">
+      <div className="mx-auto max-w-md bg-[#0b0d12]/95 backdrop-blur-2xl border border-[#c9a227]/15 rounded-3xl shadow-[0_12px_40px_rgba(0,0,0,0.8)] p-1.5 flex items-center justify-around">
         {MOBILE_NAV_ITEMS.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id || (item.id === 'me' && (activeTab === 'profile' || activeTab === 'settings'));
@@ -65,22 +64,20 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = memo(({
               onTouchStart={() => onPrefetch?.(item.id)}
               className={`relative flex flex-col items-center justify-center min-w-[58px] min-h-[50px] px-1 py-1 rounded-2xl transition-all cursor-pointer touch-manipulation active:scale-90 focus:outline-none ${
                 isActive
-                  ? 'text-white font-bold'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'text-[#e8d5a3] font-medium'
+                  : 'text-[#57534e] hover:text-[#a8a29e]'
               }`}
             >
-              {/* Active Tab Highlight Pill */}
               {isActive && !isHero && (
-                <div className="absolute inset-0 rounded-2xl bg-white/10 border border-white/20 -z-10 shadow-sm" />
+                <div className="absolute inset-0 rounded-2xl bg-[#c9a227]/10 border border-[#c9a227]/20 -z-10" />
               )}
 
-              {/* Central "Ask" Hero Button */}
               {isHero ? (
                 <div
-                  className={`flex items-center justify-center w-11 h-11 rounded-2xl transition-all shadow-md ${
+                  className={`flex items-center justify-center w-11 h-11 rounded-2xl transition-all ${
                     isActive
-                      ? 'bg-white text-black shadow-lg scale-105 font-bold ring-2 ring-white/30'
-                      : 'bg-white/5 text-slate-300 border border-white/[0.08] hover:bg-white/10'
+                      ? 'bg-[#c9a227] text-[#0b0d12] shadow-md shadow-[#c9a227]/20 scale-105'
+                      : 'bg-white/[0.04] text-[#78716c] border border-white/[0.06] hover:border-[#c9a227]/20'
                   }`}
                 >
                   <Icon className="w-5 h-5" aria-hidden="true" />
@@ -89,20 +86,19 @@ export const AstroMobileBottomNav: React.FC<AstroMobileBottomNavProps> = memo(({
                 <div className="relative p-0.5 flex items-center justify-center">
                   <Icon
                     className={`w-5 h-5 transition-transform ${
-                      isActive ? 'scale-110 text-white' : 'text-slate-400'
+                      isActive ? 'scale-110 text-[#c9a227]' : 'text-[#57534e]'
                     }`}
                     aria-hidden="true"
                   />
                   {isActive && (
-                    <div className="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.9)]" />
+                    <div className="absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-[#c9a227] shadow-[0_0_6px_rgba(201,162,39,0.6)]" />
                   )}
                 </div>
               )}
 
-              {/* Label */}
               <span
-                className={`text-[10px] font-sans tracking-tight mt-0.5 transition-colors ${
-                  isActive ? 'text-white font-bold' : 'text-slate-400 font-medium'
+                className={`text-[10px] tracking-tight mt-0.5 transition-colors ${
+                  isActive ? 'text-[#e8d5a3]' : 'text-[#57534e]'
                 }`}
               >
                 {item.label}

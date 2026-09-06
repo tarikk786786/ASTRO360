@@ -142,44 +142,33 @@ export default function OmniFreeToolsHub({
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16 text-left space-y-10">
       {/* 1. Hero */}
-      <div className="space-y-3 text-center max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-400/20 via-emerald-400/20 to-indigo-400/20 border border-white/[0.12] text-amber-300 font-mono text-xs font-bold uppercase tracking-wider shadow-md">
-          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-          👑 Limited-Time Launch: All Pro Features 100% Free
-        </div>
-        <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-          Free Astrology Tools & Calculators
+      <div className="space-y-4 text-center max-w-3xl mx-auto">
+        <h1 className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl text-[#f5f0e6] font-light tracking-tight">
+          Quiet calculators for real questions
         </h1>
-        <p className="text-sm sm:text-base text-slate-300 font-sans max-w-xl mx-auto leading-relaxed">
-          Explore your birth chart, lunar Nakshatra, rising sign, daily Panchanga, Muhurta, and compatibility instantly. No registration or credit card required.
+        <p className="text-sm sm:text-base text-[#78716c] max-w-xl mx-auto leading-relaxed">
+          Nakshatra, rising sign, panchang, compatibility, muhurta — enter a date and place, read what comes back.
         </p>
-
-        {/* Free Pro Access Banner */}
-        <div className="p-4 rounded-2xl bg-[#0F172A] border border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-slate-300">
-          <span className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span><strong>Early Access Pass Active:</strong> Full 120-year Dasha hierarchy, 4-horizon predictive timelines, and Ashta Koota synastry are currently unlocked free.</span>
-          </span>
-          <button
-            onClick={() => onStartOnboarding({ dob: calcDate, time: calcTime, location: calcCity, name: userName })}
-            className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold shrink-0 shadow-md cursor-pointer transition-all"
-          >
-            Create My Full Pro Chart →
-          </button>
-        </div>
+        <button
+          onClick={() => onStartOnboarding({ dob: calcDate, time: calcTime, location: calcCity, name: userName })}
+          className="text-sm text-[#c9a227] hover:text-[#e8d5a3] transition-colors cursor-pointer inline-flex items-center gap-1"
+        >
+          Save your birth details for a fuller chart
+          <ArrowRight className="w-3.5 h-3.5" />
+        </button>
       </div>
 
       {/* 2. Tool Navigation Switcher */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-white/10 no-scrollbar">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-3 border-b border-white/[0.06] no-scrollbar">
         {[
-          { id: 'nakshatra', label: 'Nakshatra Finder', icon: Moon },
-          { id: 'rising', label: 'Rising Sign (Lagna)', icon: Compass },
-          { id: 'panchanga', label: 'Live Panchanga', icon: Calendar },
+          { id: 'nakshatra', label: 'Nakshatra', icon: Moon },
+          { id: 'rising', label: 'Rising sign', icon: Compass },
+          { id: 'panchanga', label: 'Panchang', icon: Calendar },
           { id: 'compatibility', label: 'Compatibility', icon: Heart },
-          { id: 'muhurta', label: 'Auspicious Muhurta', icon: Clock },
-          { id: 'numerology', label: 'Life Path Numerology', icon: Sparkles },
-          { id: 'planets', label: 'Planet Explorer', icon: Sun },
-          { id: 'glossary', label: 'Astrology Glossary', icon: BookOpen },
+          { id: 'muhurta', label: 'Muhurta', icon: Clock },
+          { id: 'numerology', label: 'Numerology', icon: Sparkles },
+          { id: 'planets', label: 'Planets', icon: Sun },
+          { id: 'glossary', label: 'Glossary', icon: BookOpen },
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTool === tab.id;
@@ -187,13 +176,13 @@ export default function OmniFreeToolsHub({
             <button
               key={tab.id}
               onClick={() => setActiveTool(tab.id as ToolTab)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-mono font-bold shrink-0 transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs shrink-0 transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-white text-black font-semibold shadow-sm shadow-lg shadow-amber-400/20'
-                  : 'bg-[#0F172A] text-slate-300 hover:text-white border border-white/10 hover:border-white/20'
+                  ? 'bg-[#c9a227]/15 text-[#e8d5a3] border border-[#c9a227]/30'
+                  : 'text-[#78716c] hover:text-[#a8a29e] border border-transparent hover:border-white/[0.06]'
               }`}
             >
-              <Icon className="w-4 h-4" />
+              <Icon className="w-3.5 h-3.5" />
               <span>{tab.label}</span>
             </button>
           );

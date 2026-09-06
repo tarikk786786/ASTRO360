@@ -109,8 +109,8 @@ export const MORE_SHEET_ITEMS: MoreSheetItem[] = [
   // ── ASTROLOGY ──────────────────────────────────────────────
   {
     id: 'dasha',
-    label: 'Dasha Timeline',
-    description: '120-year Vimshottari Mahadasha, Antardasha & Pratyantar periods',
+    label: 'Life periods (Dasha)',
+    description: 'Vimshottari mahadasha, antardasha, and the long arc of planetary themes',
     icon: Clock,
     route: '/dasha',
     category: 'astrology',
@@ -128,8 +128,8 @@ export const MORE_SHEET_ITEMS: MoreSheetItem[] = [
   },
   {
     id: 'panchanga',
-    label: '5-Limb Panchanga',
-    description: 'Tithi, Vara, Nakshatra, Yoga, Karana, Abhijit & Rahu Kalam',
+    label: "Today's panchang",
+    description: 'Tithi, vara, nakshatra, yoga, karana, and quiet daily timing',
     icon: Calendar,
     route: '/panchanga',
     category: 'astrology',
@@ -185,8 +185,8 @@ export const MORE_SHEET_ITEMS: MoreSheetItem[] = [
   // ── TOOLS ──────────────────────────────────────────────────
   {
     id: 'compatibility',
-    label: 'Relationship Compatibility',
-    description: 'Ashta Koota 36-Guna matching and Western synastry cross-aspects',
+    label: 'Compatibility',
+    description: 'Ashta koota matching and synastry between two birth charts',
     icon: Heart,
     route: '/compatibility',
     category: 'tools',

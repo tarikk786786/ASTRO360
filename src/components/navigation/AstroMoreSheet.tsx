@@ -82,11 +82,11 @@ export const AstroMoreSheet: React.FC<AstroMoreSheetProps> = ({
                 <Layers className="w-5 h-5" />
               </div>
               <div className="text-left">
-                <h2 id="more-sheet-title" className="text-base sm:text-lg font-extrabold text-white font-sans">
-                  Astrology Systems & Tools Catalog
+                <h2 id="more-sheet-title" className="text-base sm:text-lg font-[family-name:var(--font-display)] text-[#f5f0e6]">
+                  More to explore
                 </h2>
-                <p className="text-xs font-mono text-slate-400">
-                  Access 152+ classical techniques and timing engines
+                <p className="text-xs text-[#78716c]">
+                  Charts, timing, and tools when you need them
                 </p>
               </div>
             </div>
@@ -110,8 +110,8 @@ export const AstroMoreSheet: React.FC<AstroMoreSheetProps> = ({
               }}
               className="w-full py-2.5 px-4 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-slate-200 hover:text-white border border-white/[0.1] text-xs font-mono font-bold flex items-center justify-center gap-2 cursor-pointer transition-all shadow-sm"
             >
-              <Sparkles className="w-4 h-4 text-amber-400" />
-              <span>Return to Landing Page</span>
+              <Sparkles className="w-4 h-4 text-[#c9a227]" />
+              <span>Back to home page</span>
             </button>
           </div>
 
@@ -124,7 +124,7 @@ export const AstroMoreSheet: React.FC<AstroMoreSheetProps> = ({
                 type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search Dasha, Nakshatra, KP, Panchanga, Vargas..."
+                placeholder="Search life periods, panchang, compatibility…"
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/60 focus:ring-1 focus:ring-amber-400/60 transition-colors"
               />
             </div>
@@ -141,7 +141,7 @@ export const AstroMoreSheet: React.FC<AstroMoreSheetProps> = ({
                       : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
                   }`}
                 >
-                  {cat === 'all' ? 'All Systems (152+)' : cat}
+                  {cat === 'all' ? 'All' : cat}
                 </button>
               ))}
             </div>
