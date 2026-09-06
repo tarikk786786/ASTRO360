@@ -623,7 +623,7 @@ export default function AppContent() {
           className={`flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar ${activeTab === 'landing' ? 'p-0' : 'pb-[calc(6rem+env(safe-area-inset-bottom))] md:pb-6'} w-full`}
         >
           <div className={`${activeTab === 'landing' ? 'w-full' : 'max-w-7xl mx-auto px-2.5 sm:px-4 lg:px-6'} h-full w-full`}>
-            <Suspense fallback={<CosmicCelestialLoader message="Synchronizing Celestial Intelligence" />}>
+            <Suspense fallback={<CosmicCelestialLoader message="Opening the sky" />}>
               <div key={activeTab} className="h-full">
                 <ErrorBoundary>
                   {(showOnboarding || activeTab === 'onboarding') && (
