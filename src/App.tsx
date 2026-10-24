@@ -46,6 +46,7 @@ const OmniSEOGrowthSuite = lazyWithRetry(() => import('./components/seo/OmniSEOG
 const KeywordResearchLab = lazyWithRetry(() => import('./components/seo-lab/KeywordResearchLab'));
 const BacklinkOpportunityLab = lazyWithRetry(() => import('./components/backlink-lab/BacklinkOpportunityLab'));
 const CosmicNewsIntelligenceHub = lazyWithRetry(() => import('./components/news-prediction/CosmicNewsIntelligenceHub'));
+const PublicApisHub = lazyWithRetry(() => import('./components/tools/PublicApisHub'));
 
 // Heavy secondary astrology suites
 const CosmicIntelligenceCenter = lazyWithRetry(() => import('./components/CosmicIntelligenceCenter'));
@@ -192,6 +193,7 @@ function resolveInitialTab(): string {
   if (rawPath === 'seo-lab' || rawPath === 'keywords' || rawPath === 'seo-lab/keywords') return 'seo-lab';
   if (rawPath === 'backlink-lab' || rawPath === 'backlinks' || rawPath === 'link-lab') return 'backlink-lab';
   if (rawPath === 'news-intelligence' || rawPath === 'cosmic-news' || rawPath === 'mundane' || rawPath === 'news-prediction') return 'news-intelligence';
+  if (rawPath === 'public-apis' || rawPath === 'apis' || rawPath === 'api-directory' || rawPath === 'open-apis') return 'public-apis';
   if (rawPath.startsWith('learn/')) return 'learning-hub';
   if (rawPath === 'birth-chart' || rawPath === 'kundli') return 'birth-chart';
   if (rawPath === 'vedic-astrology' || rawPath === 'western-astrology' || rawPath === 'panchanga' || rawPath === 'methodology') return rawPath;
@@ -559,6 +561,7 @@ export default function AppContent() {
     if (activeTab === 'seo-lab' || activeTab === 'keyword-lab' || activeTab === 'keywords' || activeTab === 'seo-lab/keywords') return 'SEO Keyword Research Lab';
     if (activeTab === 'backlink-lab' || activeTab === 'backlinks' || activeTab === 'link-lab') return 'Backlink Opportunity & Digital PR Lab';
     if (activeTab === 'news-intelligence' || activeTab === 'cosmic-news' || activeTab === 'mundane' || activeTab === 'news-prediction') return 'Cosmic News & Mundane Prediction Hub';
+    if (activeTab === 'public-apis' || activeTab === 'apis' || activeTab === 'api-directory') return 'Public APIs & Ephemeris Directory';
     if (activeTab === 'landing') return 'Product Overview & Free Birth Chart';
     if (TRADITIONS[activeTab]) return TRADITIONS[activeTab].name;
     return 'Cosmos OMNI';
@@ -766,6 +769,7 @@ export default function AppContent() {
                   {(activeTab === 'time-horizon' || activeTab === 'transits' || activeTab === 'sadesati' || activeTab === 'saturn-transit' || activeTab === 'career') && <TimeHorizonForecastSuite userProfile={userProfile} />}
                   {(activeTab === 'dossier' || activeTab === 'pdf-report' || activeTab === 'executive-dossier') && <ExecutiveCosmicDossierSuite userProfile={userProfile} onNavigateToTab={navigateTo} />}
                   {(activeTab === 'news-radar' || activeTab === 'news-intelligence' || activeTab === 'cosmic-news' || activeTab === 'mundane' || activeTab === 'news-prediction') && <CosmicNewsIntelligenceHub userProfile={userProfile} onNavigate={navigateTo} />}
+                  {(activeTab === 'public-apis' || activeTab === 'apis' || activeTab === 'api-directory') && <PublicApisHub />}
                   {(activeTab === 'muhurta' || activeTab === 'electional-muhurta') && <ElectionalMuhurtaEngine />}
                   {(activeTab === 'horas' || activeTab === 'planetary-horas' || activeTab === 'hora-clock') && <PlanetaryHoraClock />}
                   {(activeTab === 'btr' || activeTab === 'btr-suite' || activeTab === 'rectification') && <BirthTimeRectificationSuite />}

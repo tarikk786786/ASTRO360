@@ -31,10 +31,10 @@ export class IslamicSourceConflictAnalyzer {
         consensusLevel: 'LEGITIMATE_IKHTILAF',
         sources: [
           {
-            sourceName: 'Jumhur (Majority: Shafi'i, Maliki, Hanbali, Ja'fari & Abu Yusuf/Al-Shaybani)',
+            sourceName: "Jumhur (Majority: Shafi'i, Maliki, Hanbali, Ja'fari & Abu Yusuf/Al-Shaybani)",
             sourceTier: 4,
             scholarlyTraditionOrSchool: 'Standard Juristic Method',
-            textPosition: 'Asr begins when an object's shadow equals its midday shadow plus 1x its height.',
+            textPosition: "Asr begins when an object's shadow equals its midday shadow plus 1x its height.",
             reasoning: 'Grounded in the primary Hadith of Jibril narrations where Jibril led the prayer on the first day at 1:1 shadow.',
             evidentialBasis: 'Sahih Muslim & Sunan Abi Dawud'
           },
@@ -42,7 +42,7 @@ export class IslamicSourceConflictAnalyzer {
             sourceName: 'Imam Abu Hanifa (Dominant Hanafi view)',
             sourceTier: 4,
             scholarlyTraditionOrSchool: 'Hanafi Asr Method',
-            textPosition: 'Asr begins when an object's shadow equals its midday shadow plus 2x its height.',
+            textPosition: "Asr begins when an object's shadow equals its midday shadow plus 2x its height.",
             reasoning: 'Precautionary principle (Ihtiyat) to guarantee Dhuhr time has unquestionably ended.',
             evidentialBasis: 'Classical Hanafi legal compendiums (Al-Hidayah)'
           }

@@ -32,6 +32,7 @@ import {
   Globe2,
   Search,
   Radio,
+  Database,
   LucideIcon 
 } from 'lucide-react';
 
@@ -278,7 +279,16 @@ export const MORE_SHEET_ITEMS: MoreSheetItem[] = [
     icon: Radio,
     route: '/news-intelligence',
     category: 'advanced',
-    badge: 'Real-Time',
+        badge: 'Real-Time',
+  },
+  {
+    id: 'public-apis',
+    label: 'Public APIs & Ephemeris Directory',
+    description: 'Curated free public APIs from 7 open-source catalogs, live tester & OpenAPI specs',
+    icon: Database,
+    route: '/public-apis',
+    category: 'advanced',
+    badge: '7 Catalogs',
   },
 ];
 
